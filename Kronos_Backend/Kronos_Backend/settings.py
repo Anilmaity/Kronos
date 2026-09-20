@@ -46,6 +46,8 @@ ALLOWED_HOSTS = [
     "127.0.0.1",
     "13.205.120.68",
 ]
+# Extra hosts for non-production deployments (e.g. a staging box's IP), comma-separated.
+ALLOWED_HOSTS += [h.strip() for h in os.getenv("EXTRA_ALLOWED_HOSTS", "").split(",") if h.strip()]
 
 # Trust the X-Forwarded-Proto header set by nginx (which sits behind Cloudflare)
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")

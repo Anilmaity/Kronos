@@ -1,0 +1,28 @@
+# Production-shaped compose for the Kronos_Backend box (Django behind nginx).
+# Run from the repo root on the box:
+#   docker compose -p kronos-backend -f deploy/compose.prod.yml up -d --build
+services:
+  web:
+    build: .
+    restart: unless-stopped
+    env_file:
+      - .env
+    expose:
+      - "8000"
+    # Code is baked into the image at build time (no bind mount) — rebuild to ship changes.
+    healthcheck:
+      test: ["CMD-SHELL", "python -c \"import urllib.request,sys; sys.exit(0 if urllib.request.urlopen('http://127.0.0.1:8000/graphql/?query=%7B__typename%7D').status==200 else 1)\""]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 40s
+
+  nginx:
+    image: nginx:1.27-alpine
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    volumes:
+      - ./deploy/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - web
