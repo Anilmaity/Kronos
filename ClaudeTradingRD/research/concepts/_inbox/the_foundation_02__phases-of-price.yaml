@@ -1,0 +1,71 @@
+id: phases-of-price
+name: Phases of Price Delivery
+aliases:
+- a new phase of price delivery
+category: structure
+status: contested
+definition: 'The gold example in the top-down video applies the framework with an unusually crisp
+  close-based test. After continued expansion into a fair value gap he says he is looking for a new
+  phase of price delivery, which will be a consolidation, a retracement, or a reversal, and that
+  he uses the daily candles to tell him which - so he lets a further daily candle pass rather than
+  classifying off the expansion itself. The candle that prints is not consolidating (it forms a strong
+  bearish closure), so it is one of the other two, and the next close decides: if we close lower
+  it is a reversal and he trades to the lows; if we close back inside the range he views it as a
+  retracement and trades higher. This mapping conflicts with the library''s existing rule set, drawn
+  from other units, where falling back inside the prior range is what classifies the phase as consolidation.'
+timeframes:
+  htf:
+  - 1D
+  ltf:
+  - 1H
+  - 5m
+  fractal: true
+preconditions:
+- A completed expansion, ideally into a fair value gap or objective.
+detection_rules:
+- 'After expansion, expect exactly one of three next phases: consolidation, retracement, or reversal.'
+- Do not classify from the expansion candle itself - let a further daily candle close and read that.
+- A candle that forms a strong directional closure is not consolidating; the read narrows to retracement
+  or reversal.
+- 'The next close decides: close lower (beyond) -> reversal, trade toward the lows. Close back inside
+  the range -> retracement, trade back in the original direction toward the highs.'
+- Once classified as a retracement, the bias is directional and the top-down procedure is run beneath
+  it.
+invalidation:
+- The classifying close does not arrive - let another daily candle pass.
+measurable:
+- agreement between the close-lower / close-back-inside test and the eventual outcome over a large
+  daily sample
+- base rates of the three phases following an expansion into a fair value gap
+sources:
+- video_id: iEaMbuFZb24
+  title: Trade Like TTrades - Top Down Analysis
+  quote: I'm looking for a new phase of price delivery
+- video_id: iEaMbuFZb24
+  title: Trade Like TTrades - Top Down Analysis
+  quote: I use the daily candles to tell me what is happening
+- video_id: iEaMbuFZb24
+  title: Trade Like TTrades - Top Down Analysis
+  quote: if we close lower it's going to be a reversal
+- video_id: iEaMbuFZb24
+  title: Trade Like TTrades - Top Down Analysis
+  quote: if we close back inside the range I'm viewing it as a retracement
+ambiguities:
+- '''The range'' in ''close back inside the range'' is not defined - the previous candle''s range
+  and the expansion leg''s range give different verdicts.'
+- This maps close-back-inside to RETRACEMENT, whereas the library entry assembled from other units
+  maps failing to close over the opposing series and falling back inside to CONSOLIDATION. The two
+  must be reconciled before a detector is written.
+- '''Strong bearish closure'' (the disqualifier for consolidation) is unquantified.'
+- Nothing is said about how many candles may pass before the classification is abandoned.
+python_detector: null
+related:
+- consolidation
+- displacement
+- top-down-analysis-procedure
+- v-shape-reversal
+- daily-ohlc-candle-shape
+contributing_units:
+- the_foundation_02
+draft_count: 1
+voice: ttrades

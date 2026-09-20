@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:;" />
+  <title>Paper Bot Dashboard — XAUUSD + BTCUSDT</title>
+  <style>
+    :root {
+      --bg: #131722;
+      --panel: #1e222d;
+      --border: #2a2e39;
+      --text: #d1d4dc;
+      --muted: #787b86;
+      --green: #26a69a;
+      --red: #ef5350;
+      --accent: #f0b90b;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    header {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+      padding: 12px 20px;
+      background: var(--panel);
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+    .brand { font-size: 18px; font-weight: 700; color: var(--accent); white-space: nowrap; }
+    .stat { display: flex; flex-direction: column; min-width: 90px; }
+    .stat .label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; }
+    .stat .value { font-size: 17px; font-weight: 600; font-variant-numeric: tabular-nums; }
+    .stat .value.pos { color: var(--green); }
+    .stat .value.neg { color: var(--red); }
+    .progress-wrap { flex: 1; min-width: 220px; }
+    .progress-label { font-size: 11px; color: var(--muted); display: flex; justify-content: space-between; margin-bottom: 4px; }
+    .progress-bar { height: 10px; background: var(--border); border-radius: 5px; overflow: hidden; }
+    .progress-fill { height: 100%; background: linear-gradient(90deg, #26a69a, #f0b90b); border-radius: 5px; width: 0%; transition: width .6s ease; }
+    .updated { font-size: 11px; color: var(--muted); white-space: nowrap; }
+
+    #tabbar {
+      display: flex; gap: 4px; padding: 6px 20px 0;
+      background: var(--panel); border-bottom: 1px solid var(--border); flex-shrink: 0;
+    }
+    .tab {
+      background: transparent; color: var(--muted);
+      border: 1px solid transparent; border-bottom: none;
+      border-radius: 6px 6px 0 0; padding: 7px 18px;
+      font-size: 13px; font-weight: 600; cursor: pointer;
+    }
+    .tab:hover { color: var(--text); }
+    .tab.active {
+      background: var(--bg); color: var(--accent);
+      border-color: var(--border);
+    }
+    .view { flex: 1; min-height: 0; display: none; }
+    .view.active { display: flex; }
+    #view-chart.active { display: flex; }
+    #view-markets, #view-live, #view-history {
+      flex-direction: column; overflow-y: auto; padding: 16px;
+    }
+    #view-markets.active, #view-live.active, #view-history.active { display: flex; }
+    .hist-summary { display: flex; gap: 22px; flex-wrap: wrap; align-items: center; margin-bottom: 12px; }
+    .hist-stat { display: flex; flex-direction: column; min-width: 78px; }
+    .hist-stat .cmp-h { margin-bottom: 2px; }
+    .hist-stat .v { font-size: 19px; font-weight: 800; font-variant-numeric: tabular-nums; }
+    .pill { display: inline-block; padding: 1px 7px; border-radius: 4px; font-size: 10px; font-weight: 700; text-transform: uppercase; }
+    .pill.open { background: rgba(66,165,245,.16); color: #42a5f5; }
+    .pill.closed { background: rgba(120,123,134,.16); color: var(--muted); }
+    .pill.cancelled { background: rgba(240,185,11,.14); color: var(--accent); }
+    .live-banner { padding: 9px 14px; border-radius: 8px; font-size: 12px; font-weight: 700; margin-bottom: 16px; }
+    .live-banner.dry { background: rgba(240,185,11,.12); border: 1px solid rgba(240,185,11,.5); color: var(--accent); }
+    .live-banner.real { background: rgba(239,83,80,.12); border: 1px solid rgba(239,83,80,.6); color: var(--red); }
+    .live-banner.stop { background: rgba(239,83,80,.18); border: 1px solid var(--red); color: var(--red); }
+    .mgrid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+      gap: 16px; align-items: start;
+    }
+    #positionBodyFull { display: flex; flex-wrap: wrap; gap: 18px; }
+    #positionBodyFull .pos-cell { min-width: 260px; }
+    .cmp { display: flex; gap: 14px; flex-wrap: wrap; }
+    .cmp-col {
+      flex: 1; min-width: 200px; background: var(--bg);
+      border: 1px solid var(--border); border-radius: 10px;
+      padding: 16px 14px; text-align: center;
+    }
+    .cmp-h { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: .5px; }
+    .cmp-big { font-size: 30px; font-weight: 800; font-variant-numeric: tabular-nums; margin: 8px 0 4px; }
+    .cmp-sub { font-size: 11px; color: var(--muted); line-height: 1.5; }
+    .pm-stat .cmp-h { margin-bottom: 2px; }
+    .pm-tbl { width: 100%; border-collapse: collapse; font-size: 11px; }
+    .pm-tbl th {
+      text-align: left; color: var(--muted); font-weight: 600;
+      padding: 5px 8px; border-bottom: 1px solid var(--border);
+      text-transform: uppercase; font-size: 10px; letter-spacing: .4px;
+    }
+    .pm-tbl td { padding: 6px 8px; border-bottom: 1px solid var(--border); vertical-align: top; }
+    .pm-purpose { color: var(--muted); font-size: 10px; line-height: 1.45; }
+    #live5mCard { max-width: 1240px; }
+    .ud-venues { display: flex; gap: 14px; flex-wrap: wrap; }
+    .ud-venue {
+      flex: 1; min-width: 258px;
+      border: 1px solid var(--border); border-radius: 10px; padding: 12px;
+      background: rgba(255,255,255,.015);
+    }
+    .ud-vh { font-size: 13px; font-weight: 700; }
+    .ud-head { display: flex; align-items: center; margin-bottom: 12px; }
+    .ud-cd {
+      font-size: 26px; font-weight: 800; font-variant-numeric: tabular-nums;
+      margin-left: auto; letter-spacing: 1px;
+    }
+    .ud-wrap { display: flex; gap: 12px; }
+    .ud-btn {
+      flex: 1; border-radius: 12px; padding: 16px 12px; text-align: center;
+      border: 1px solid; transition: transform .08s ease;
+    }
+    .ud-up { background: rgba(38,166,154,.10); border-color: rgba(38,166,154,.55); }
+    .ud-down { background: rgba(239,83,80,.10); border-color: rgba(239,83,80,.55); }
+    .ud-side { font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; }
+    .ud-cost { font-size: 38px; font-weight: 800; font-variant-numeric: tabular-nums; margin: 6px 0 2px; }
+    .ud-ret { font-size: 11px; color: var(--muted); }
+    .ud-foot { font-size: 10px; color: var(--muted); margin-top: 10px; }
+    .ud-bar { height: 6px; border-radius: 3px; background: var(--border); overflow: hidden; margin: 12px 0 2px; display: flex; }
+    .ud-bar .up { background: var(--green); height: 100%; }
+    .ud-bar .dn { background: var(--red); height: 100%; }
+
+    #content { flex: 1; display: flex; min-height: 0; }
+    #sidebar {
+      width: 290px;
+      flex-shrink: 0;
+      background: var(--panel);
+      border-right: 1px solid var(--border);
+      padding: 14px;
+      overflow-y: auto;
+    }
+    .card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px;
+      margin-bottom: 14px;
+    }
+    .card h3 {
+      font-size: 12px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 10px;
+    }
+    .row { display: flex; justify-content: space-between; font-size: 13px; padding: 3px 0; }
+    .row .k { color: var(--muted); }
+    .row .v { font-variant-numeric: tabular-nums; font-weight: 600; }
+    .side-badge {
+      display: inline-block; padding: 2px 10px; border-radius: 4px;
+      font-size: 12px; font-weight: 700; text-transform: uppercase;
+    }
+    .side-badge.buy { background: rgba(38,166,154,.15); color: var(--green); }
+    .side-badge.sell { background: rgba(239,83,80,.15); color: var(--red); }
+    .empty { color: var(--muted); font-size: 13px; font-style: italic; }
+    .pnl-big { font-size: 22px; font-weight: 700; margin-top: 6px; font-variant-numeric: tabular-nums; }
+    .pnl-big.pos { color: var(--green); }
+    .pnl-big.neg { color: var(--red); }
+
+    #chart-area { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+    #toolbar {
+      display: flex; align-items: center; gap: 8px;
+      padding: 8px 14px; background: var(--panel);
+      border-bottom: 1px solid var(--border); flex-shrink: 0;
+    }
+    .tf-btn, .sym-btn {
+      background: var(--bg); color: var(--muted);
+      border: 1px solid var(--border); border-radius: 4px;
+      padding: 5px 14px; font-size: 13px; font-weight: 600; cursor: pointer;
+    }
+    .tf-btn:hover, .sym-btn:hover { color: var(--text); }
+    .tf-btn.active { background: var(--accent); color: #131722; border-color: var(--accent); }
+    .sym-btn.active { background: #42a5f5; color: #131722; border-color: #42a5f5; }
+    #price-tag { margin-left: auto; font-size: 16px; font-weight: 700; font-variant-numeric: tabular-nums; }
+    #chart { flex: 1; min-height: 0; }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="brand">PAPER BOT</div>
+    <div class="stat"><span class="label">XAUUSD</span><span class="value" id="xauMini">—</span></div>
+    <div class="stat"><span class="label">BTCUSDT</span><span class="value" id="btcMini">—</span></div>
+    <div class="stat"><span class="label">Balance</span><span class="value" id="balance">—</span></div>
+    <div class="stat"><span class="label">Equity</span><span class="value" id="equity">—</span></div>
+    <div class="stat"><span class="label">Float P&amp;L</span><span class="value" id="floatPnl">—</span></div>
+    <div class="stat"><span class="label">Day P&amp;L</span><span class="value" id="dayPnl">—</span></div>
+    <div class="stat"><span class="label">Margin</span><span class="value" id="margin">—</span></div>
+    <div class="stat"><span class="label">Free Margin</span><span class="value" id="freeMargin">—</span></div>
+    <div class="progress-wrap">
+      <div class="progress-label">
+        <span>$5002.40 start</span>
+        <span id="progressPct">0%</span>
+        <span>$5500 target</span>
+      </div>
+      <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+    </div>
+    <div class="updated" id="updated">no data yet</div>
+  </header>
+
+  <div id="tabbar">
+    <button class="tab active" data-view="chart">Chart</button>
+    <button class="tab" data-view="history">Trade History</button>
+    <button class="tab" data-view="markets">Markets &amp; Bets</button>
+    <button class="tab" data-view="live">Live Account</button>
+  </div>
+
+  <div id="view-chart" class="view active">
+    <div id="sidebar">
+      <div class="card" id="positionCard">
+        <h3>Open Position</h3>
+        <div id="positionBody"><div class="empty">No open position</div></div>
+      </div>
+      <div class="card" id="ordersCard">
+        <h3>Pending Orders</h3>
+        <div id="ordersBody"><div class="empty">No pending orders</div></div>
+      </div>
+      <div class="card">
+        <h3>Key Levels</h3>
+        <div id="levelsBody"><div class="empty">levels.json not found</div></div>
+      </div>
+    </div>
+
+    <div id="chart-area">
+      <div id="toolbar">
+        <button class="sym-btn active" data-sym="XAUUSD">XAUUSD</button>
+        <button class="sym-btn" data-sym="BTCUSDT">BTCUSDT</button>
+        <span style="width:1px;height:20px;background:var(--border);margin:0 6px"></span>
+        <button class="tf-btn" data-tf="M1">M1</button>
+        <button class="tf-btn" data-tf="M3">M3</button>
+        <button class="tf-btn" data-tf="M5">M5</button>
+        <button class="tf-btn" data-tf="M15">M15</button>
+        <button class="tf-btn active" data-tf="H1">H1</button>
+        <button class="tf-btn" data-tf="H4">H4</button>
+        <button class="tf-btn" data-tf="D">D</button>
+        <span id="price-tag">—</span>
+      </div>
+      <div id="chart"></div>
+    </div>
+  </div>
+
+  <div id="view-history" class="view">
+    <div class="card">
+      <h3>Gold &mdash; XAUUSD &middot; trades taken by this bot</h3>
+      <div id="histXauSummary"></div>
+      <div id="histXauBody"><div class="empty">loading&hellip;</div></div>
+    </div>
+    <div class="card">
+      <h3>Bitcoin &mdash; BTCUSDT &middot; trades taken by this bot</h3>
+      <div id="histBtcSummary"></div>
+      <div id="histBtcBody"><div class="empty">loading&hellip;</div></div>
+    </div>
+  </div>
+
+  <div id="view-markets" class="view">
+    <div class="card" id="compareCard">
+      <h3>BTC Spot vs Polymarket vs Kalshi</h3>
+      <div id="compareBody"><div class="empty">loading&hellip;</div></div>
+    </div>
+    <div class="card" id="live5mCard">
+      <h3>BTC 5-min Up/Down &mdash; Live</h3>
+      <div id="live5mBody"><div class="empty">connecting&hellip;</div></div>
+    </div>
+    <div class="card" id="pmCard">
+      <h3>PM Paper Account &rarr; $2,000 &middot; Polymarket + Kalshi (fees included)</h3>
+      <div id="pmBody"><div class="empty">loading&hellip;</div></div>
+    </div>
+    <div class="card" id="positionCardFull">
+      <h3>Open Positions (MT5)</h3>
+      <div id="positionBodyFull"><div class="empty">No open position</div></div>
+    </div>
+    <div class="mgrid">
+      <div class="card">
+        <h3>BTC Bets &mdash; Live Odds</h3>
+        <div id="betsBody"><div class="empty">no odds yet</div></div>
+      </div>
+      <div class="card">
+        <h3>Edge Signals &mdash; Research (paper only)</h3>
+        <div id="signalsBody"><div class="empty">no signals yet</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="view-live" class="view">
+    <div style="display:flex; align-items:center; gap:12px; margin-bottom:16px">
+      <div id="liveBanner" style="flex:1; margin-bottom:0"></div>
+      <button id="killBtn" class="tab"
+              style="border:1px solid var(--red); color:var(--red); border-radius:6px; flex-shrink:0">
+        &#9211; Stop trading</button>
+    </div>
+    <div class="card" id="liveBalCard">
+      <h3>Live Execution Account &middot; Polymarket + Kalshi ($10/account smoke test)</h3>
+      <div id="liveBalBody"><div class="empty">connecting&hellip;</div></div>
+    </div>
+    <div class="card" id="livePositionsCard">
+      <h3>Open Positions &middot; Polymarket + Kalshi</h3>
+      <div id="livePositionsBody"><div class="empty">no positions</div></div>
+    </div>
+    <div class="card" id="liveOrdersCard">
+      <h3>Open Orders &middot; resting on each venue</h3>
+      <div id="liveOrdersBody"><div class="empty">no open orders</div></div>
+    </div>
+    <div class="card" id="live15mCard">
+      <h3>BTC 15-min Bets &mdash; Live Prices (the windows this account trades)</h3>
+      <div id="live15mBody"><div class="empty">connecting&hellip;</div></div>
+    </div>
+    <div class="card" id="liveLocksCard">
+      <h3>Order History &middot; locks, P&amp;L &amp; status &mdash; why each trade was taken</h3>
+      <div id="liveLocksBody"><div class="empty">no locks yet</div></div>
+    </div>
+  </div>
+
+  <script src="node_modules/lightweight-charts/dist/lightweight-charts.standalone.production.js"></script>
+  <script src="renderer.js"></script>
+</body>
+</html>

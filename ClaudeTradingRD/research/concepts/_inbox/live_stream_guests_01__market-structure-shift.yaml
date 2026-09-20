@@ -1,0 +1,71 @@
+id: market-structure-shift
+name: "Market Structure Shift (MSS)"
+aliases: ["stop run versus structure shift", "temporary shift"]
+category: structure
+status: specified
+voice: guest
+guest_sources:
+- "Ben (Ben TT)"
+
+definition: >
+  Ben's answer to the sharpest question asked in this unit - how do you tell a market structure
+  shift from a stop run, when both break a swing with displacement and both leave a fair value gap?
+  His first answer is that you cannot, from structure alone: the two are identical locally, and you
+  will keep mistaking one for the other until you have a daily bias and a draw on liquidity, after
+  which the rest of the picture resolves itself. His second answer is a mechanical test that does
+  not need the bias: fib the impulse leg, and if price never came back to equilibrium of it, the
+  extension beyond it is a stop hunt rather than a real swing, because the leg was never balanced.
+  He also distinguishes a TEMPORARY shift - one he will trade toward the next PD array without
+  committing to the far extreme of the range.
+
+timeframes:
+  htf: ["1D", "4H", "1H"]
+  ltf: ["15m", "5m", "1m"]
+  fractal: true
+
+preconditions:
+- "A swing has been broken with displacement and a fair value gap - i.e. the local pattern already looks like a shift."
+
+detection_rules:
+- "Do not classify from the break alone: with displacement and a gap present, a stop run and a structure shift are locally identical."
+- "Apply the directional filter first - establish the daily bias and the likely draw on liquidity (Ben derives his from the dollar)."
+- "Balance test: fib the impulse leg; if price never traded back to its equilibrium, treat the move beyond it as a stop hunt, not a swing."
+- "A break that raids equal lows / clustered stops and immediately rebalances into an unmitigated inefficiency is the stop-run signature; the real shift is the one that then delivers to discount and leaves."
+- "A shift can be classified as temporary: trade toward the near PD arrays but do not assume the far extreme of the range until price confirms it."
+- "Stop selection after a shift: do not use a swing that has just been raided as the stop reference; use the one behind it."
+
+invalidation:
+- "The move classified as a shift is itself retraced and the prior extreme reclaimed."
+
+execution:
+  bias: "Requires the higher-timeframe draw to be established first."
+  entry: "The fair value gap left by the shift, at discount / premium of the new dealing range."
+  stop: "The swing low or high that was not raided."
+  targets: ["the next PD array in the ladder"]
+
+measurable:
+- "outcome of breaks whose impulse leg never returned to equilibrium versus those that did - the direct test of his balance rule"
+- "classification accuracy of the bias-first procedure versus structure-only classification"
+
+sources:
+- video_id: yRmKkR4CojU
+  title: "Fractalizing Entries -Q&A with Ben - ICT Concepts"
+  quote: "you're not going to be able to to differentiate a stop run"
+- video_id: yRmKkR4CojU
+  title: "Fractalizing Entries -Q&A with Ben - ICT Concepts"
+  quote: "this impulse never came back to equilibrium so for me this is a stop hunt"
+- video_id: yRmKkR4CojU
+  title: "Fractalizing Entries -Q&A with Ben - ICT Concepts"
+  quote: "stops the swing low because we can't use this one"
+
+ambiguities:
+- "The balance test depends entirely on which leg is chosen as the impulse and which range is the dealing range; he says identifying dealing ranges accurately is the prerequisite and that getting it wrong will hinder performance, but gives no selection rule."
+- "He states plainly that price may leave from equilibrium without ever filling gaps in the OTE, so the test grades likelihood rather than deciding the case."
+- "'Temporary shift' is not given a bound - nothing says when a temporary shift becomes a committed one."
+- "The whole procedure is circular for an automated system: it needs a daily bias that this unit never specifies mechanically."
+
+python_detector: null
+related: ["displacement", "internal-external-rotation", "sponsorship-vs-execution-timeframe", "stop-loss-placement", "dollar-gate-for-fx"]
+contributing_units:
+- live_stream_guests_01
+draft_count: 1

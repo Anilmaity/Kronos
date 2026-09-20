@@ -1,0 +1,48 @@
+id: options-proxy-execution
+name: Frame On The Futures, Execute The Option On The ETF
+aliases:
+- trade it on QQQ
+category: risk
+status: specified
+definition: 'How he trades options without changing his analysis. The setup is found and framed on
+  the futures chart (NQ); the same setup is then taken on the tracking ETF (QQQ) at the same moment,
+  buying an at-the-money strike, with the target still read off the futures chart. He walks a worked
+  example: a short taken on QQQ with a 742 put bought for about $180 per contract, whose value comes
+  from the intrinsic value gained as price moves into the money.'
+timeframes:
+  htf:
+  - 1D
+  - 4H
+  - 1H
+  ltf:
+  - 15m
+  - 5m
+  fractal: false
+preconditions:
+- A valid setup on the futures contract.
+- A tracking ETF for the same index.
+detection_rules:
+- Do the analysis and framing on the futures chart only.
+- Take the identical setup on the ETF at the same time.
+- Buy the at-the-money strike.
+- Target is the futures-chart target (an hourly gap in the example).
+invalidation:
+- The futures setup invalidates - the option position follows it.
+measurable:
+- option P&L vs the equivalent futures P&L on the same signal
+- decay cost of holding the at-the-money strike to the chart target
+sources:
+- video_id: tDiwwMRWF2k
+  title: New York Open Live Q&A with NickDoesFutures
+  quote: I'm just taking the same setup on QQQ
+ambiguities:
+- Expiry selection is never mentioned - only the strike.
+- No exit rule for the option distinct from the chart target is given.
+- Position sizing in contracts is not addressed.
+related:
+- chart-data-settings
+- relative-strength-asset-selection
+contributing_units:
+- live_streams_05
+draft_count: 1
+voice: ttrades

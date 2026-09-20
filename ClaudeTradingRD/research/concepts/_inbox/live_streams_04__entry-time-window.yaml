@@ -1,0 +1,67 @@
+id: entry-time-window
+name: "Entry Time Window (and rejection of kill zones)"
+aliases: ["6 to 10 a.m. four hour candle", "1800 6 10 1400", "no kill zones"]
+category: time
+status: specified
+
+definition: >
+  This unit supplies the 4-hour boundaries the other streams left unenumerated, and names the
+  window he actually prefers. Asked whether he only trades after 10:00 a.m. he says no - he
+  prefers to trade the 6:00 to 10:00 a.m. 4-hour candle, or inside that range, and 10:00 is
+  simply what he falls back to when the 6-10 candle gives him nothing. In the London-reversal
+  review he says the same thing structurally: with London having reversed, 6:00 to 10:00 a.m.
+  is where price is expected to continue, and the 15-minute entry is taken inside it prior to
+  the NYSE open. Pointing a viewer at his own time-levels lesson he enumerates the levels the
+  video covers as 1800, 6, 10 and 1400, the question having named 9:30, midnight and 1800.
+  Kill zones are rejected again in two of the four streams - he uses higher-timeframe candle
+  boundaries instead - and he never looks at the New York p.m. session.
+
+timeframes:
+  htf: ["4H", "1H"]
+  ltf: ["15m", "5m", "3m"]
+  fractal: false
+
+preconditions:
+  - "US index futures / New York session context."
+
+detection_rules:
+  - "Preferred window: inside the 06:00-10:00 4-hour candle, with the 15-minute entry taken before the 09:30 NYSE open."
+  - "If the 06:00-10:00 candle offers nothing, wait for the 10:00 candle open and re-assess."
+  - "Prefer continuations that expand at 09:30 or 10:00; a continuation sought after that expansion is not wanted."
+  - "The time levels he teaches are 1800, 6, 10 and 1400 (plus 9:30 and midnight as raised by the question)."
+  - "Do not filter by kill zones; the question is which higher-timeframe candle you are inside."
+  - "The New York p.m. session is never used."
+
+invalidation:
+  - "Not applicable - a filter."
+
+measurable:
+  - "entry timestamp distribution and expectancy by hour"
+  - "expectancy of pre-09:30 15-minute continuation entries vs post-10:00 entries"
+
+sources:
+  - video_id: x4sRGuZIqWk
+    title: "New York Open Live Q&A"
+    quote: "how to use 1800 6 10 1400 0 8"
+  - video_id: N3Ml-r0X30o
+    title: "New York Open Live Q&A"
+    quote: "6:00 to 10:00 a.m. we're expecting price to continue lower"
+  - video_id: i2HhHhWdaPQ
+    title: "New York Open Live Q&A"
+    quote: "I like to trade continuations in the like 6 a.m. candle"
+  - video_id: eIPM-D8RrSQ
+    title: "New York Open Live Q&A"
+    quote: "prefer a continuation with 930 or 10 expanding, not really after it"
+
+ambiguities:
+  - "No timezone is stated anywhere in this unit. The named levels (1800, 6, 10, 1400) are self-consistent with 4-hour candles anchored at an 18:00 session open, but that anchoring is an inference, not something he says."
+  - "The auto-caption renders the level list as '1800 6 10 1400 0 8'; the trailing '0 8' is undecoded - it may be 0800 or a mis-transcribed 08:30 and is not read here."
+  - "The 06:00-10:00 preference sits alongside the 08:00-10:30 window recorded from other units; they overlap but are not the same statement, and he never reconciles them."
+  - "He gives no reason for preferring the 06:00 candle beyond it being where his continuations set up."
+
+python_detector: null
+related: ["trading-window", "time-based-exit-htf-close", "london-reversal-ny-continuation", "killzones", "macros-not-used", "new-york-intraday-time-levels"]
+
+contributing_units: ["live_streams_04"]
+draft_count: 1
+voice: ttrades

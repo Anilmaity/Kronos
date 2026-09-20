@@ -1,0 +1,58 @@
+id: small-wick-expansion-rule
+name: "Small Wick Supports Expansion"
+aliases: ["wick supports expansion", "large wick means no expansion", "weak close"]
+category: structure
+status: specified
+
+definition: >
+  Whether a higher timeframe candle can expand in a given direction is read from
+  the size of its wick against that direction. A candle closing with a small wick
+  supports expansion the way it closed; a candle closing with a large wick does not,
+  and the mechanical expectation instead becomes a trade back to that candle's
+  opening price. He calls the large-wick case a weak close.
+
+timeframes:
+  htf: ["1M", "1W", "1D", "4H", "1H"]
+  ltf: ["15m", "5m"]
+  fractal: true
+
+preconditions:
+  - "A completed higher timeframe candle whose direction is being assessed."
+
+detection_rules:
+  - "Measure the wick against the intended direction of travel. Small wick = supports expansion that way."
+  - "Large wick against the intended direction = does not support expansion; mechanically expect a trade back to that candle's opening price."
+  - "For a 4-hour candle to sweep an overhead high, it must close higher with a small wick. A large wick argues the high will not be swept."
+  - "On a weak close, mark 0.5 of the wick; the lower half (bearish case) should support price lower."
+  - "Do not treat a non-supporting higher timeframe candle as an absolute block - the session open can flip it, but the setup is 'harder' and less clean."
+
+invalidation:
+  - "Price closing back through 0.5 of the wick."
+  - "The next higher timeframe candle opening and immediately delivering against the read."
+
+execution:
+  bias: "Only the direction supported by the wick geometry across the stacked timeframes."
+  entry: "Wait for the next higher timeframe candle open (e.g. 10:00 a.m. for a new 4-hour candle) rather than entering against a non-supporting candle."
+  stop: null
+  targets: ["the non-supporting candle's opening price, when trading the counter case"]
+
+measurable:
+  - "wick-to-range ratio distribution and its relationship to next-candle expansion"
+  - "hit rate of the return-to-opening-price expectation after a large-wick close"
+  - "hit rate of 0.5-of-wick holding on weak closes"
+
+sources:
+  - video_id: wM1s7UivQ08
+    title: "New York Open Live Q&A"
+  - video_id: bMkRomKEunU
+    title: "New York Open Live Q&A"
+  - video_id: u8bnmaih_hA
+    title: "TTrades Sunday Session - Live Q&A"
+
+ambiguities:
+  - "'Small' and 'large' wick are never given a numeric threshold or wick-to-body ratio."
+  - "He says a video on wicks is forthcoming, implying the rule as stated here is incomplete."
+  - "Whether the wick is measured against the body or against the full range is not specified."
+
+python_detector: null
+related: ["half-wick-respect", "timeframe-alignment", "opposing-candle", "daily-ohlc-candle-shape"]

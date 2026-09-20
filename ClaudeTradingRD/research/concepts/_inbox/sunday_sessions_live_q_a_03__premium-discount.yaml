@@ -1,0 +1,54 @@
+id: premium-discount
+name: "Premium & Discount (used inverted)"
+aliases: ["discount PD array", "premium retracement", "EQ"]
+category: structure
+status: contested
+
+definition: >
+  He uses premium and discount the opposite way to the common ICT framing. Rather than
+  waiting for a bearish retracement into premium to sell at a better price, he treats a
+  deep retracement into premium as evidence that the move is no longer bearish - it
+  shows a wick forming the other way. What he wants instead is a shallow run. The EQ of
+  the relevant candle or range is the level that must hold for the directional read to
+  survive.
+
+timeframes:
+  htf: ["1M", "1D", "4H", "1H"]
+  ltf: ["15m", "5m"]
+  fractal: true
+
+preconditions:
+  - "A directional read on the higher timeframe candle or leg."
+
+detection_rules:
+  - "If bearish, price should make only a shallow retracement. Price retracing up into premium indicates a wick forming and kills the bearish read."
+  - "If continuing an expansion higher, price should not trade all the way back down into discount."
+  - "The EQ is the practical boundary: a monthly candle that did not close below its open is still counted as bearish as long as the EQ is respected."
+  - "Price trading above 50% of the opposing candle range in a bearish setup means he expects the highs to be taken instead."
+
+invalidation:
+  - "A retracement into premium (bearish case) or discount (bullish case) past the EQ."
+
+execution:
+  bias: "Maintained only while the EQ holds."
+  entry: "Shallow-retracement entries, not deep premium/discount entries."
+  stop: "Beyond the EQ / 50% of the opposing candle range."
+  targets: null
+
+measurable:
+  - "retracement depth distribution on continuation legs vs failed legs"
+  - "hit rate of the EQ holding as a directional filter"
+
+sources:
+  - video_id: r7yW6ou1LDs
+    title: "TTrades Sunday Session - Live Q&A"
+  - video_id: bMkRomKEunU
+    title: "New York Open Live Q&A"
+
+ambiguities:
+  - "CONTESTED against mainstream ICT usage, where a retracement into premium is the sell entry; he states the inverse and calls it 'the opposite'."
+  - "Which range the EQ is taken of - the candle, the leg, or the dealing range - varies across the examples and is not fixed."
+  - "'Shallow' is not quantified."
+
+python_detector: null
+related: ["half-wick-respect", "opposing-candle", "range-edge-trading", "daily-ohlc-candle-shape"]

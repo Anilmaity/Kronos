@@ -1,0 +1,52 @@
+id: consolidation-avoidance
+name: "Consolidation Avoidance"
+aliases: ["don't trade consolidation", "ranging price action"]
+category: model
+status: specified
+
+definition: >
+  Consolidation is treated as a state to be avoided rather than traded. Trading a
+  consolidation means fading the breakout back across the range, which he declines in favour
+  of expansion and continuation. A specific trap is named: after a consolidation forms, a
+  sweep of the range low (or high) is often bought/sold straight back to the other side of
+  the range rather than being a breakout.
+
+timeframes:
+  htf: ["1D", "4H", "1H"]
+  ltf: ["15m", "5m", "3m", "1m"]
+  fractal: true
+
+preconditions:
+  - "A range with a definable high and low has formed."
+
+detection_rules:
+  - "Range high and range low can both be marked and price has traded between them without displacing."
+  - "After a sweep of one boundary, ask whether it is being bought/sold back into the range (fade) or breaking out; treat the fade as the default expectation."
+
+invalidation:
+  - "Price displaces out of the range and produces a continuation from a new swing."
+
+execution:
+  bias: "None taken inside consolidation."
+  entry: "Skip; wait for expansion."
+  stop: "n/a"
+  targets: "If traded at all, the target is the opposite side of the range."
+
+measurable:
+  - "Frequency with which a consolidation-boundary sweep returns to the opposite boundary vs breaks out."
+  - "Realised expectancy of setups taken while the daily/4H state is classified as consolidation."
+
+sources:
+  - video_id: aqnY1yZvfYs
+    title: "New York Open Live Q&A"
+  - video_id: Qv6Ux_Z8VrA
+    title: "New York Open Live Q&A"
+  - video_id: 00iZXPAdR5A
+    title: "New York Open Live Q&A"
+
+ambiguities:
+  - "No quantitative definition of a range/consolidation is given (bar count, range vs ATR, etc.)."
+  - "He notes months of index consolidation as a reason he barely traded - so this is also a regime filter, but with no stated measurement."
+
+python_detector: null
+related: ["expansion-sequence-quality", "continuation-failure-short-term-target", "continuation-over-reversal"]

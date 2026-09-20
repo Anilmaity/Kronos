@@ -1,0 +1,54 @@
+id: timeframe-alignment-ladder
+name: "Timeframe Alignment (HTF level, paired LTF reaction)"
+aliases: ["time frame alignment", "the correlated time frame"]
+category: time
+status: specified
+
+definition: >
+  A fixed mapping from the timeframe on which a key level is identified to the timeframe on which
+  the reaction to that level is read and the trade is executed. The higher timeframe supplies the
+  level; the paired lower timeframe supplies the market structure shift and the entry. Stated as
+  explicit pairs rather than as a ratio rule.
+
+timeframes:
+  htf: ["1M", "1W", "1D", "4H", "1H", "15m"]
+  ltf: ["1D", "4H", "1H", "15m", "5m", "1m"]
+  fractal: true
+
+preconditions:
+  - "A key level (internal or external range liquidity) has been identified on a higher timeframe."
+
+detection_rules:
+  - "Sniper's pairs: monthly level -> watch the daily; weekly -> 4H; daily -> 1H; 4H -> 15m; 1H -> 5m; 15m -> 1m."
+  - "Ash Trades' chain: daily for bias -> hourly for areas of interest -> 5-minute for the entry function."
+  - "DTR's pairs for the C2 unicorn: 15m C2 -> 1m unicorn; 1H C2 -> 5m unicorn; 4H C2 -> 15m unicorn."
+  - "Judge the reaction only on the paired timeframe - if the HTF level is weekly, the reaction is read on 4H, not on 1m."
+
+invalidation:
+  - "Not stated."
+
+execution:
+  bias: "Set on the higher timeframe of the pair."
+  entry: "Taken on the lower timeframe of the pair, after that timeframe confirms (close through a swing, CISD, or unicorn)."
+  stop: "Beyond the extreme that tagged the higher-timeframe level."
+  targets: ["the next opposing pool on the higher timeframe of the pair"]
+
+measurable:
+  - "whether entries taken on the paired LTF outperform the same entry taken one or two timeframes lower or higher"
+  - "count of valid pairings per week per instrument"
+
+sources:
+  - video_id: 5aRB_ZY3474
+    title: "$niper | Internal & External Liquidity - ICT Daily Bias"
+  - video_id: zXtJSSkiNmo
+    title: "Ash Trades | The Journey To Profitability & The Unicorn Model"
+  - video_id: 07lOxv39LdY
+    title: "DTR | C2U - Blending The Fractal Model & Unicorn Model - No Daily Bias"
+
+ambiguities:
+  - "The pairs are asserted, never justified. Sniper's 15m -> 1m breaks the roughly 4x ratio of his other pairs."
+  - "The three speakers' ladders do not agree exactly (daily -> 1H for Sniper, daily -> hourly -> 5m for Ash) and none acknowledges the others."
+  - "No rule for what to do when two HTF levels from different timeframes overlap."
+
+python_detector: null
+related: ["internal-external-range-liquidity", "htf-reaction-mss-retrace-entry", "unicorn-model", "fractal-c2-unicorn-pairing"]

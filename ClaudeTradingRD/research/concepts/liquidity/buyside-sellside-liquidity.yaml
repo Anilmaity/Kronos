@@ -1,0 +1,122 @@
+id: buyside-sellside-liquidity
+name: Buyside & Sellside Liquidity
+definition: 'EARLIER RECORDING of the channel''s liquidity lesson (the old Education - ICT
+  playlist; the topic was later re-recorded). The definition given is the barest in the corpus:
+  liquidity is simply where people''s stops are sitting, and those sit at the most obvious
+  highs and lows. Stops of shorts rest above an obvious high (buyside), stops of longs rest
+  below an obvious low (sellside). The lesson adds a sequencing rule the later material keeps:
+  a pool being taken is not the trade, it is the cue to start looking for the trade. It also
+  adds a granularity rule - you do not have to run the whole range of stops; inside a range,
+  stops sit at the internal obvious highs and lows too, because a trader entering mid-range
+  will not place a stop at the far end of the range.'
+variants:
+  definition:
+  - 'Resting stop orders located beyond swing points. Traders who go long inside a move place
+    protective stops beneath the swing low, so sell stops accumulate there — this is sellside
+    liquidity. Traders who go short place stops above the swing high, so buy stops accumulate
+    there — this is buyside liquidity. The channel''s stated premise is that smart money pairs
+    its orders against these pools, which is why swing extremes are magnets rather than walls.
+
+    '
+category: liquidity
+status: contested
+aliases:
+- where people stops are sitting
+- obvious highs and lows
+- buy-side liquidity
+- sell-side liquidity
+- buy stops
+- sell stops
+- buy side liquidity
+- sell side liquidity
+- liquidity pool
+preconditions:
+- An obvious swing high or swing low is visible on the working timeframe.
+- A confirmed swing high (for buyside) or swing low (for sellside) exists.
+detection_rules:
+- buyside_liquidity := price of an obvious swing high (stops of shorts rest above it).
+- sellside_liquidity := price of an obvious swing low (stops of longs rest below it).
+- Inside a range, also mark the internal obvious highs and lows - a trader who entered mid-range
+  stops there, not at the range extreme.
+- A pool is 'taken' when price trades through it; once taken, stop treating it as a target.
+- Only after the pool is taken do you look for the entry setup (drop to the execution timeframe).
+- Untaken relatively equal highs / lows carry forward as targets for later.
+- buyside_liquidity_level := price of a confirmed swing high (or the cluster price of relatively
+  equal highs).
+- sellside_liquidity_level := price of a confirmed swing low (or the cluster price of relatively
+  equal lows).
+- The pool is 'taken'/'swept' when price trades through the level; the speaker then reassigns
+  attention to the next untaken swing in that direction.
+- 'Additionally always mark, as standing pools: previous week high/low, previous day high/low,
+  and session (Asia/London) highs and lows.'
+invalidation:
+- Once the level is traded through it stops being a target and attention moves to the next
+  untaken pool.
+- Once price trades through the level, that pool no longer exists as a target.
+measurable:
+- frequency with which an obvious high/low is traded through within N bars of being marked
+- hit rate of the 'once taken, look for the setup' sequencing versus entering before the sweep
+- hit rate of an untaken swing pool being traded through within N bars
+- frequency of sweep-then-close-back-inside vs sweep-and-continue
+sources:
+- video_id: Njs-eRpeP9Q
+  title: What is Liquidity? - ICT Concepts
+  quote: All liquidity is is where people stops are sitting
+- video_id: Njs-eRpeP9Q
+  title: What is Liquidity? - ICT Concepts
+  quote: That can be found at the most obvious highs and lows
+- video_id: Njs-eRpeP9Q
+  title: What is Liquidity? - ICT Concepts
+  quote: Once those are taken, that's when you look for your setup
+- video_id: Njs-eRpeP9Q
+  title: What is Liquidity? - ICT Concepts
+  quote: you don't always have to run the whole range of stops
+- video_id: U8xH2dEgH5A
+  title: 'Liquidity: Buyside & Sellside - ICT Concepts'
+  quote: smart money will look to pair orders below these lows and above these highs
+- video_id: YESqIoA7Wyg
+  title: Important Liquidity Levels - Draw On Liquidity - ICT
+- video_id: TCFvsZeYvV8
+  title: ICT Power Of 3 - AMD
+ambiguities:
+- This is the EARLIER of two recordings of this topic; the updated playlist version (the_foundation_01)
+  is the reference reading. The two agree in substance - this one is simply more elementary
+  and adds no smart-money-pairing claim.
+- '''Most obvious'' highs and lows is the whole selection rule and is never bounded - no swing-strength,
+  separation or lookback criterion is given.'
+- Whether a wick through the level counts as taken, or a close beyond is needed, is not addressed.
+- The claim that stops rest at these prices is asserted from trader psychology, never evidenced.
+- No rule for choosing among several untaken pools (nearest? largest? highest timeframe?).
+  Examples use the visually obvious one.
+- Whether a wick through the level counts as 'taken', or a close beyond is needed, is not
+  stated in this video; other videos in the unit distinguish 'reach' from 'close outside'
+  for bias purposes.
+- The claim that stops rest at these levels is asserted from trader psychology, never evidenced.
+related:
+- relatively-equal-highs-lows
+- swing-point
+- draw-on-liquidity
+- liquidity-sweep
+- ict-2022-mentorship-model
+- external-range-liquidity
+- session-high-low
+timeframes:
+  htf:
+  - 15m
+  ltf:
+  - 5m
+  - 1m
+  fractal: true
+execution:
+  bias: Price is expected to draw toward untaken pools; a pool that is taken and then rejected
+    (close back inside) flips bias to the opposite pool.
+  entry: Not an entry in itself — the sweep of a pool is a precondition for order block /
+    breaker / CISD entries.
+  stop: n/a
+  targets:
+  - the opposite untaken pool
+contributing_units:
+- education_ict_03
+- the_foundation_01
+draft_count: 2
+voice: ttrades

@@ -1,0 +1,78 @@
+id: positional-entry
+name: Positional Entry At An Invalidation On The Open
+category: entry
+status: specified
+aliases:
+- positioning for the expansion
+- entering at the open of candle 3
+definition: 'An entry taken at the OPEN of a continuation candle, before its wick has formed, when
+  a protected swing already exists from before that open. Its purpose is stated plainly: some candle
+  3s expand immediately from the open and never give an intracandle CISD, so waiting always costs
+  those trades. The stop goes on that pre-existing protected swing. The distinctive rule is the SELECTION
+  test: the protected swing used must sit BEYOND the equilibrium of the previous candle - a protected
+  swing inside the area where the wick is expected to form is rejected as a stop, because the wick
+  would take it out. He calls it an advanced concept and tells newer traders to skip it.'
+timeframes:
+  htf:
+  - 1D
+  - 4H
+  - 1H
+  ltf:
+  - 1H
+  - 15m
+  - 5m
+  fractal: true
+preconditions:
+- 'A valid model: C2 or C3 closure plus the aligned lower-timeframe CISD.'
+- A protected swing formed BEFORE the open of the continuation candle.
+detection_rules:
+- At the open of the continuation candle, check whether a protected swing already exists from before
+  the open.
+- 'Selection test: that protected swing must sit beyond the EQ of candle 2 / outside the T-spot area
+  where the wick is expected. If it sits inside that area, reject it.'
+- Enter at the open; stop on the selected protected swing.
+- If risk-to-reward does not work, move the entry (e.g. to a fair value gap) rather than tightening
+  the stop inside the wick zone.
+- If the entry is missed, the IC-CISD and any later new continuation remain valid entries.
+invalidation:
+- The protected swing is taken out.
+execution:
+  bias: Direction of the higher-timeframe candle.
+  entry: At the open of the new higher-timeframe candle.
+  stop: On the pre-open protected swing, which must be beyond the candle-2 EQ.
+  targets:
+  - 2R
+  - the indicator's liquidity targets
+measurable:
+- share of continuation candles that expand from the open with no IC-CISD (the trades this recovers)
+- R distribution of positional entries vs IC-CISD entries on the same setups
+- stop-out rate of positional entries whose protected swing sat inside vs beyond the EQ
+sources:
+- video_id: xMFd_kfmIqI
+  title: Positional Entries - Enter Before The Expansion
+  quote: positioning yourself for an expansion candle prior to the formation of its wick
+- video_id: xMFd_kfmIqI
+  title: Positional Entries - Enter Before The Expansion
+  quote: A positional entry is when we have a protected swing going into the open
+- video_id: xMFd_kfmIqI
+  title: Positional Entries - Enter Before The Expansion
+  quote: the stop on candle two is above the EQ of candle two
+- video_id: xMFd_kfmIqI
+  title: Positional Entries - Enter Before The Expansion
+  quote: It is an advanced concept
+ambiguities:
+- '''Beyond the EQ'' is stated for the ideal case, but one final example accepts a protected swing
+  that ''doesn''t technically cover the EQ'' on the grounds that the area is large enough - so the
+  test is a preference, not a hard rule.'
+- No guidance on how recently before the open the protected swing must have formed.
+related:
+- protected-swing
+- ic-cisd
+- fractal-model-c3
+- equilibrium-eq
+- t-spot
+- positional-entry-before-open
+contributing_units:
+- build_a_model_intro_to_ttrades_fractal_model_01
+draft_count: 1
+voice: ttrades

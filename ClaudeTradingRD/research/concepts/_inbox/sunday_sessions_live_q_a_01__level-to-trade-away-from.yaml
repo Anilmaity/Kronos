@@ -1,0 +1,54 @@
+id: level-to-trade-away-from
+name: "No Level to Trade Away From, No Trade"
+aliases: ["sit on hands", "nothing to frame", "point of interest requirement"]
+category: entry
+status: specified
+
+definition: >
+  A trade can only be framed if there is a relevant level that price has interacted with and that
+  the trade can be positioned away from: a swept low for a long, a swept high for a short, or an
+  equivalent point of interest such as a fair value gap that produced a swing point. If no
+  relevant level has been hit during the session, the correct action is to place no trade,
+  regardless of how strong the higher-timeframe bias is.
+
+timeframes:
+  htf: ["1D", "4H", "1H"]
+  ltf: ["15m", "5m", "3m"]
+  fractal: true
+
+preconditions:
+  - "A directional bias exists."
+
+detection_rules:
+  - "For a long: a low must have been swept, giving a protected low to trade away from."
+  - "For a short: a high must have been swept, or the strongest asset must have reversed at its high."
+  - "If neither has occurred, no setup exists and no entry is taken."
+  - "A level that price only reaches without sweeping (leaving equal highs or lows) does not qualify; it reads as consolidation."
+
+invalidation:
+  - "Price consolidates at the level rather than displacing away, which removes the level as a trade-away point."
+
+execution:
+  bias: "Unchanged."
+  entry: "Only after a level is swept and a protected swing forms."
+  stop: "Beyond the swept level."
+  targets: ["The opposing drawn liquidity"]
+
+measurable:
+  - "count of sessions with zero frameable setups under this rule"
+  - "outcome of trades framed without a swept level, if taken"
+
+sources:
+  - video_id: WBwoiMDXT2c
+    title: "New York Open Live Q&A"
+  - video_id: 0AYGNc9czYc
+    title: "New York Open Live Q&A"
+  - video_id: egV_gABTQks
+    title: "(CPI) New York Open Live Q&A"
+
+ambiguities:
+  - "What makes a level relevant is defined mainly by separation from neighbouring swings, which is judged visually."
+  - "He allows exceptions where SMT substitutes for a sweep on one asset, without stating when that substitution is permitted."
+
+python_detector: null
+related: ["relevant-swing-separation", "smt-requires-framework", "daily-profile-confirmation"]

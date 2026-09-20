@@ -1,0 +1,82 @@
+id: time-based-exit-htf-close
+name: Time-Based Exit at the Higher-Timeframe Candle Close
+aliases:
+- time-based exit
+- hold till 10:00 a.m.
+category: time
+status: specified
+
+definition: >
+  The exit rule he applies to an opening-move trade: hold it to the close of the higher-timeframe
+  expansion candle it is running inside. On indices that boundary is 10:00, and he gives the
+  reason explicitly - 10:00 is simultaneously the end of a 4-hour expansion, a 1-hour expansion
+  and a 30-minute expansion, and a new 4-hour candle opens there. Because expansion candles
+  close into their extreme, the position is held to that boundary and taken off. Once 10:00 has
+  passed he says a new phase of price can start and he no longer cares what price does.
+
+timeframes:
+  htf:
+  - 4H
+  - 1H
+  - 30m
+  ltf:
+  - 15m
+  - 5m
+  fractal: true
+
+preconditions:
+- The position is running inside a candle that is behaving as an expansion candle.
+
+detection_rules:
+- Identify the higher-timeframe candle the trade sits inside and the clock time of its close.
+- If it is an expansion candle, hold to that close - on indices, 10:00, where the 4-hour,
+  1-hour and 30-minute candles all close together.
+- Take profit at the target if it is reached before the boundary; the target takes precedence.
+- After the boundary, treat the day as finished rather than re-entering into the new candle.
+
+invalidation:
+- The candle stops expanding and reverses before the boundary.
+
+execution:
+  bias: unchanged
+  entry: n/a
+  stop: unchanged
+  targets:
+  - the logical level (previous day low/high)
+  - the higher-timeframe candle close as a time stop
+
+measurable:
+- distance from the 10:00 exit price to the candle extreme
+- P&L difference between exiting at the boundary and holding into the next candle
+
+sources:
+- video_id: X4XSsv5CNqg
+  title: New York Open Live Q&A
+  quote: end of a 4-hour expansion, end of a 1-hour expansion
+- video_id: X4XSsv5CNqg
+  title: New York Open Live Q&A
+  quote: the main TP final TP would be 10:00 a.m.
+- video_id: U4j-fZD-FJk
+  title: New York Open Live Q&A
+  quote: you can hold this till 10:00 a.m.
+- video_id: W7Fu3Rx5iMs
+  title: New York Open Live Q&A
+  quote: We got a new 4-hour candle
+
+ambiguities:
+- 10:00 being a 4-hour boundary implies a 4-hour grid at 02:00 / 06:00 / 10:00 / 14:00 /
+  18:00 / 22:00, but he never says so and never names the timezone.
+- Whether the rule generalises off indices (he uses higher timeframes on currencies) is not
+  stated.
+- '"Behaving as an expansion candle" is judged live, with no threshold.'
+
+related:
+- new-york-intraday-time-levels
+- time-based-exit
+- small-wick-expansion-rule
+- macros-are-htf-opens
+
+contributing_units:
+- live_streams_03
+draft_count: 1
+voice: ttrades

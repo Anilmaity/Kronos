@@ -1,0 +1,66 @@
+id: timeframe-pairing
+name: "Timeframe Pairing (context / swing point / entry)"
+aliases: ["daily and H1 for bias", "H4 and 15 model", "30 minute and 3 minute"]
+category: time
+status: specified
+
+definition: >
+  Across all four streams he is asked what timeframes to use and gives the same answer with one
+  clock-driven exception. The recommended default for anyone starting out is daily plus hourly
+  for bias and 4-hour plus 15-minute for entry — he says this repeatedly and adds that most
+  people go to too low a timeframe and get chopped up. The pairs are stated as ratios that can
+  be shifted wholesale: hourly-and-5-minute can be replaced by 30-minute-and-3-minute. The
+  exception is time-based: before 10:00 the hourly candle has not closed, so trading the open
+  requires the 30-minute plus 3-minute pair; from 10:00 the 15-minute plus 5-minute pair becomes
+  available. Asked which timeframe he executes on, he answers whichever one the setup appears
+  on — hourly, 15-minute or 5-minute — and says the timeframe itself does not matter, citing a
+  silver trade held around three weeks off the daily.
+
+timeframes:
+  htf: ["1D", "4H", "1H"]
+  ltf: ["30m", "15m", "5m", "3m", "1m"]
+  fractal: true
+
+preconditions:
+  - "A bias timeframe pair and an execution timeframe pair are chosen before the session."
+
+detection_rules:
+  - "Default: 1D + 1H for bias, 4H + 15m for entry."
+  - "Pairs may be shifted as a unit: 1H + 5m is equivalent to 30m + 3m."
+  - "Before 10:00 a.m. use 30m + 3m (the hourly has not closed); from 10:00 use 15m + 5m."
+  - "Execute on whichever timeframe the setup actually appears on."
+  - "If entries are repeatedly stopped out and then run to target, move the pair up one or two timeframes."
+
+invalidation:
+  - "Not applicable — this is a selection rule."
+
+measurable:
+  - "stop-out rate by execution timeframe on the same signal"
+  - "R by pair (1D/1H/4H/15m versus 1H/5m versus 30m/3m)"
+  - "share of setups only visible below 15m and their outcome"
+
+sources:
+  - video_id: Je7cd9HJUBE
+    title: "New York Open Live Q&A"
+    quote: "the daily and H1 for bias and then I use the H4 for M15"
+  - video_id: G1IIdQ3RAkY
+    title: "New York Open Live Q&A"
+    quote: "you'd have to use the 30 minute and then a 3 minute"
+  - video_id: m8xcjkOuBHU
+    title: "New York Open Live Q&A"
+    quote: "using daily and hourly fractal or bias and then using the H4 and 15 model"
+  - video_id: TjUolMJNCMY
+    title: "New York Open Live Q&A"
+    quote: "use the 30 minute and 3 minute"
+
+ambiguities:
+  - "The 1-minute chart is treated inconsistently in this unit: in TjUolMJNCMY he says flatly he does not really use the one minute, while in G1IIdQ3RAkY and Je7cd9HJUBE he analyses and endorses 1-minute entries ('I really don't really like using the one minute, but it is what it is')."
+  - "No rule is given for which pair to use outside the New York open — the London answer is simply '4 hour or 15 minute model'."
+  - "'Whatever timeframe the setup appears on' has no tie-breaker when a setup appears on two."
+
+python_detector: null
+related: ["ten-am-candle-alignment", "timeframe-alignment-pairs", "entry-timeframe-elevation", "top-down-analysis-procedure"]
+
+contributing_units: ["live_streams_02"]
+draft_count: 1
+voice: ttrades

@@ -1,0 +1,35 @@
+id: partial-profit-taking
+name: Partial Profit Taking (contested)
+definition: 'He reframes a partial as a change to the system''s required win rate rather than as secured
+  profit. Taking half off at 1R on a 2R trade leaves +0.5R on the first half and +1R on the second,
+  so a full loss is still -1R while the win is 1.5R: the trade looks like a 2R trade but is not, and
+  the break-even win rate rises from ~34% to roughly 43%. Same argument for exiting the whole position
+  early at 1R, which moves the requirement from 34% to 50%. His stated policy is to take partials
+  only when doing so still meets the model''s requirement.'
+category: risk
+status: contested
+detection_rules:
+- Compute the realised R of a partialled trade, not its nominal target R.
+- Half off at 1R on a 2R trade yields +1.5R on a winner against -1R on a loser.
+- Recompute the break-even win rate on the realised R before deciding the partial is free.
+- Only take the partial when the model still calls for it.
+measurable:
+- backtested expectancy with and without a 1R partial on the same signal set
+- realised average R vs nominal target R
+sources:
+- video_id: NESSCPMzWR0
+  title: New York Open Live Q&A
+  quote: it looks like you took a 2R trade, but you didn't
+ambiguities:
+- The 43% figure for a 1.5R system is explicitly hedged on stream ('I don't have the stats known for
+  that, but... probably something like').
+- '''Still meets my requirement for a model'' is the gate for taking a partial and is never defined.'
+related:
+- realistic-r-expectations
+- mechanical-trade-management
+- break-even-management
+- risk-reward-minimum
+contributing_units:
+- live_streams_01
+draft_count: 1
+voice: ttrades

@@ -1,0 +1,55 @@
+id: chart-timezone-est
+name: Chart Time Zone (EST) and the Session Filter
+aliases:
+- custom time zone
+- filters
+category: time
+status: specified
+definition: The time base of the indicator that draws his model is EST; a 'custom time zone' setting
+  exists purely for users who do not use EST. This is the only place in the corpus where the clock
+  is named, so every session window and intraday time level taught elsewhere is to be read as EST
+  unless a video says otherwise. The same settings panel carries a session filter which suppresses
+  every printed setup that does not occur inside a chosen session; New York is the example he gives,
+  framed as not wanting to see setups that occur while you are asleep. No numeric start or end time
+  for any session is given in this video.
+timeframes:
+  htf:
+  - 1D
+  - 4H
+  ltf:
+  - 1H
+  - 15m
+  - 5m
+  - 1m
+  fractal: false
+preconditions:
+- A TradingView chart running his fractal-model indicator.
+detection_rules:
+- All times the indicator labels or filters on are EST by default.
+- A user on another clock must set the custom time-zone setting; the default is not auto-detected
+  from the chart.
+- The session filter, when enabled, hides every setup outside the selected session (New York is the
+  worked example).
+invalidation:
+- Not applicable - a chart setting, not a signal.
+measurable:
+- count of printed setups per session with the filter on vs off
+- shift in detected setup timestamps when the time zone is changed
+sources:
+- video_id: sdZkE-naNiY
+  title: TTrades Indicator Updates - Walkthrough and Q&A
+  quote: you can also use a custom time zone if you don't use EST
+ambiguities:
+- No numeric boundaries are given for any session in this video, so the filter's own New York window
+  cannot be reconstructed from the transcript.
+- Whether 'EST' means a fixed UTC-5 or US Eastern with daylight saving is not stated.
+- Whether the filter tests the CISD time, the candle-2 closure time or the print time is not stated.
+related:
+- daily-profile-session-windows
+- new-york-intraday-time-levels
+- killzones
+- entry-time-window
+contributing_units:
+- live_streams_05
+draft_count: 1
+voice: ttrades

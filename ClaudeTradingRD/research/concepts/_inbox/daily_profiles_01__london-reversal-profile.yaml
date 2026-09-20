@@ -1,0 +1,60 @@
+id: london-reversal-profile
+name: "London Reversal / New York Continuation"
+aliases: ["London reversal", "London reverses New York continuation", "classic expansion candle (daily)"]
+category: model
+status: underspecified
+
+definition: >
+  A daily profile in which the extreme of the day is formed during the London window
+  (02:00-05:00) by a run counter to the intended daily direction, that run reaches a relevant
+  higher-timeframe PD array, a change in the state of delivery occurs there, and the New York
+  a.m. session then expands in the new direction for the rest of the day. The London leg forms
+  the wick of the daily candle; the completed daily candle is Open-Low-High-Close (bullish) or
+  Open-High-Low-Close (bearish). The speaker calls this daily shape a classic expansion candle.
+
+timeframes:
+  htf: ["1D"]
+  ltf: ["30m", "15m", "5m"]
+  fractal: false
+
+preconditions:
+  - "A directional daily bias exists (e.g. previous day swept a level and closed back inside forming a reversal candle, or price is drawing to a marked HTF level)."
+  - "The London window 02:00-05:00 and the New York a.m. window 08:30-12:00 are marked."
+
+detection_rules:
+  - "Between 02:00 and 05:00 price runs counter to the intended daily direction and makes what will become the day's extreme."
+  - "That London run reaches a relevant higher-timeframe PD array (this is what separates it from a New York Reversal)."
+  - "Price closes back through the opposing series of candles at that extreme (change in the state of delivery / market structure shift / inversion — the speaker treats these as interchangeable)."
+  - "The candles that were closed through form an order block used as the New York entry reference."
+  - "During New York a.m., price continues in the post-CISD direction."
+
+invalidation:
+  - "Not explicitly stated. In one worked example price failed to displace beyond the target high and returned into the range; the speaker kept the idea alive on the basis of the order block mean threshold and midnight open holding, rather than declaring the profile dead."
+
+execution:
+  bias: "The direction of the London change in the state of delivery (i.e. opposite the side London swept)."
+  entry: "Not on the London CISD. Wait for New York to produce an opposing run into London's order block (typically at 08:30) and enter there. If instead 08:30 runs in the SAME direction as the anticipated expansion, expect a retracement back into London's range first and enter on that retracement."
+  stop: "Beyond the extreme of the New York opposing run."
+  targets: ["2R (his default in every worked example)", "internal liquidity above/below", "equilibrium of the higher-timeframe range"]
+
+measurable:
+  - "frequency of days whose extreme forms in 02:00-05:00"
+  - "hit rate of the 2R target when entering on the 08:30 opposing run"
+  - "how often the day's low/high completes near 09:30 or 10:00 (he calls both out as level-completion times)"
+
+sources:
+  - video_id: y6SnEdASVLY
+    title: "ICT Daily Profile - London Reversal / New York Continuation"
+    quote: "a London reversal is basically a classic expansion candle"
+  - video_id: xdzyejskSKE
+    title: "ICT Daily Profile - New York Reversal"
+
+ambiguities:
+  - "'Relevant PD array' is the gating condition but is never defined; see relevant-htf-pd-array-test."
+  - "CISD, market structure shift and inversion are said to be interchangeable ('however you define it'), so the trigger is not decidable from this video alone."
+  - "No rule for choosing between the 2R target, internal liquidity and range equilibrium."
+  - "When the CISD series is 'messy' he steps up one timeframe (15m to 30m) twice, with no stated criterion for messiness."
+  - "Nothing is said about what invalidates the profile mid-session, e.g. if New York breaks back beyond the London extreme."
+
+python_detector: null
+related: ["daily-profile-framework", "new-york-reversal-profile", "opposing-run-entry", "relevant-htf-pd-array-test", "new-york-intraday-time-levels"]

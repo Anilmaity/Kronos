@@ -1,0 +1,63 @@
+id: protected-swing
+name: Protected Swing (the invalidation level)
+aliases:
+- protected swing
+- dot and line
+category: structure
+status: specified
+definition: 'This unit supplies both the verbal test and the coded one. Verbally: a swing is protected
+  when price hits a point of interest and then closes through the series of candles into that point
+  of interest - in one example the series is a single candle. Mechanically, as coded: the protected
+  swing forms on the closure through, and is printed at the open of the next candle, drawn as a dot
+  plus a line. It does not repaint - a protected swing that is later taken out is not deleted, it
+  turns gray and stays on the chart so that a failure can be reviewed afterwards, and a new protected
+  swing forms in its place. A swing that forms without interacting with a point of interest (a fair
+  value gap) is not a protected swing at all.'
+timeframes:
+  htf:
+  - 1D
+  - 4H
+  - 1H
+  ltf:
+  - 15m
+  - 5m
+  - 1m
+  fractal: true
+preconditions:
+- A swing high or low that has traded into a point of interest / fair value gap.
+detection_rules:
+- Price reaches a point of interest.
+- Price closes through the series of candles that traded into it (the series may be a single candle).
+- The swing behind that closure is now protected; it is marked at the open of the following candle.
+- A swing with no interaction with a point of interest does not qualify.
+- Once taken out, the protected swing is greyed rather than removed, and a new one forms - successive
+  protected swings are the trailing reference.
+invalidation:
+- Price trades through the protected extreme - the swing is failed (greyed), not erased.
+measurable:
+- hold rate of protected swings until the target is reached
+- number of protected swings formed per higher-timeframe candle
+- failure rate by instrument (he notes stocks produce messy protected swings)
+sources:
+- video_id: tDiwwMRWF2k
+  title: New York Open Live Q&A with NickDoesFutures
+  quote: It closes through the series of candles into that point of interest
+- video_id: sdZkE-naNiY
+  title: TTrades Indicator Updates - Walkthrough and Q&A
+  quote: protected swings will form on the closure through
+ambiguities:
+- Whether the closure must be a body close through the whole series or only through its extreme is
+  not stated.
+- '''Series of candles'' has no maximum length; one example is a single candle.'
+- On stocks he says the protected-swing display gets messy and he would turn it off, without giving
+  a rule for when it is unreliable.
+related:
+- breakeven-after-new-protected-swing
+- swing-point
+- point-of-interest
+- fair-value-gap
+- stop-loss-placement
+contributing_units:
+- live_streams_05
+draft_count: 1
+voice: ttrades

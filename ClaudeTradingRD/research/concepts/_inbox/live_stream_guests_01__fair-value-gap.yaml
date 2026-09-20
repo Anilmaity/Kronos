@@ -1,0 +1,78 @@
+id: fair-value-gap
+name: "Fair Value Gap (FVG)"
+aliases: ["imbalance", "liquidity void", "inefficient price action"]
+category: structure
+status: specified
+voice: guest
+guest_sources:
+- "Finessee_Fx"
+- "Ben (Ben TT)"
+
+definition: >
+  Two guests supply the two halves a detector needs: how the gap is measured and how it is
+  invalidated. Finessee_Fx measures it from the pre-move candle's extreme to the post-move candle's
+  opposing extreme - but with a merge rule: where two consecutive same-direction candles form the
+  block, BOTH are treated as the block and the gap is spanned across them, so a retrace that only
+  reaches the inner candle does not count as balanced. He treats fair value gap, imbalance,
+  liquidity void and buy-side / sell-side imbalance as one thing, and counts a gap as efficient only
+  once it is fully closed. Ben supplies invalidation by candle close: he marks the defending edge of
+  the gap and requires no candle CLOSE beyond it, and notes from his own study that fair value gaps
+  are somewhat less sensitive than other PD arrays, so a gap can be revisited - especially one that
+  was never completely filled.
+
+timeframes:
+  htf: ["1M", "1W", "1D", "4H"]
+  ltf: ["1H", "15m", "5m", "1m"]
+  fractal: true
+
+preconditions:
+- "Three consecutive candles where candle 1 and candle 3 do not overlap."
+
+detection_rules:
+- "Measure the gap from the pre-move candle's extreme to the post-move candle's opposing extreme."
+- "Finessee_Fx's merge rule: if two consecutive same-direction candles form the block, use both; the span is then measured across the pair, and the gap is balanced only when that entire span has been traded through."
+- "A partial tap does not count as filled - a gap that price never completely closed remains live and may be revisited."
+- "Ben's invalidation: mark the defending edge (the top of a bearish gap, the bottom of a bullish one) and require no candle CLOSE beyond it; wicks through it do not invalidate."
+- "Ben: fair value gaps are treated as less sensitive than other PD arrays, so he prefers to stack one with a breaker or an order block rather than trade it alone."
+- "Finessee_Fx: a large imbalance can be dissected on a lower timeframe to find a nested gap or order block that becomes the precise destination."
+
+invalidation:
+- "A candle closes beyond the defending edge of the gap (Ben)."
+- "The gap is fully closed - it is then efficient and no longer a target (Finessee_Fx)."
+
+execution:
+  bias: "Toward the unfilled gap when it is the draw; away from it when it is the entry array."
+  entry: "Into the gap, ideally stacked with a breaker or order block."
+  stop: "Beyond the gap's far edge."
+  targets: ["the opposing array"]
+
+measurable:
+- "difference in fill statistics between the single-candle and merged-candle measurement"
+- "forward return after a partial tap versus a complete fill"
+- "reaction rate of fair value gaps alone versus gaps stacked with a breaker (Ben's sensitivity claim)"
+
+sources:
+- video_id: eK_6wgNpNh0
+  title: "Advanced ICT Directional Bias Teachings with Finessee_Fx"
+  quote: "my fair value Gap is this candle's low and this candle is high"
+- video_id: eK_6wgNpNh0
+  title: "Advanced ICT Directional Bias Teachings with Finessee_Fx"
+  quote: "if there's two consecutive bullish candles that creates the water blocks"
+- video_id: yRmKkR4CojU
+  title: "Fractalizing Entries -Q&A with Ben - ICT Concepts"
+  quote: "i'm looking for no candle closures above that"
+- video_id: yRmKkR4CojU
+  title: "Fractalizing Entries -Q&A with Ben - ICT Concepts"
+  quote: "them to be a little less sensitive than other pd arrays"
+
+ambiguities:
+- "Asked directly at what point a gap counts as efficient, Finessee_Fx calls it a grey area that depends on context, then answers with the merge rule rather than a fill percentage - which sits awkwardly beside his 'fully closed' rule."
+- "Whether 'fully closed' is measured by wick or by body is not stated."
+- "'Less sensitive than other PD arrays' is Ben's personal-study impression with no measurement."
+- "The Finessee_Fx transcript renders 'order block' as 'water block' and 'fair value gap' as 'for Value Gap'; the Ben transcript renders FVG as 'feg', 'fpg' and 'fiji'. All are auto-caption artifacts."
+
+python_detector: null
+related: ["balanced-price-range-revisit", "displacement", "wick-to-body-order-block-zone", "five-concept-entry-toolkit", "inversion-fair-value-gap"]
+contributing_units:
+- live_stream_guests_01
+draft_count: 1

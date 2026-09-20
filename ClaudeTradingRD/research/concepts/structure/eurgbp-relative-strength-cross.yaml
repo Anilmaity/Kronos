@@ -1,0 +1,113 @@
+id: eurgbp-relative-strength-cross
+name: EURGBP As The Relative-Strength Cross For EU vs GU
+definition: 'A fully mechanical asset-selection procedure for forex. Precondition: the dollar
+  must not be consolidating - only then do you trade EURUSD or GBPUSD at all. To decide WHICH,
+  read the cross EURGBP: if EURGBP is bullish, the euro is stronger and the pound is weaker;
+  if EURGBP is bearish, the euro is weaker and the pound is stronger. Then pair strength against
+  the dollar''s direction - bullish dollar: short the WEAKER foreign currency; bearish dollar:
+  long the STRONGER one. The cross is read with the same machinery as everything else (daily
+  candle 2 closures, hourly CISD). A secondary check is offered: compare the individual daily
+  closures of EURUSD and GBPUSD directly - the weaker one closes more decisively through its
+  opposing candles.'
+variants:
+  definition:
+  - 'Two Shorts run the cross as a two-step decision. Step one: with a bullish dollar, the
+    question is which of the two foreign currencies is weaker, because that is the one to
+    trade. Step two: read EURGBP - if EURGBP is bullish then the euro is stronger than the
+    pound, so the pound is the weaker leg and GBPUSD is the pair to focus on for a short.
+    Both Shorts then cross-check the conclusion against the individual closures on EURUSD
+    versus GBPUSD, treating a bearish closure through a series of up-closed candles on one
+    and not the other as confirming confluence rather than as the primary signal.
+
+    '
+category: structure
+status: contested
+aliases:
+- EU vs GU
+- relative strength cross
+preconditions:
+- The dollar (DXY) is not consolidating and has a directional read.
+detection_rules:
+- 'Gate: if the dollar is consolidating, do not trade EU or GU.'
+- Read EURGBP direction using a daily C2/C3 closure plus hourly CISD.
+- EURGBP bullish -> euro stronger, pound weaker. EURGBP bearish -> euro weaker, pound stronger.
+- Bullish dollar -> short the weaker of EURUSD / GBPUSD.
+- Bearish dollar -> long the stronger of EURUSD / GBPUSD.
+- Cross-check with the individual daily closures of EURUSD and GBPUSD - the weaker asset shows
+  the more decisive closure through its opposing candles.
+- Then apply the ordinary fractal model on the selected pair.
+- Determine the dollar direction first.
+- 'Read EURGBP: bullish EURGBP = euro stronger, pound weaker; bearish EURGBP = the reverse.'
+- With a bullish dollar, trade the weaker foreign currency against the dollar (short it).
+- 'Cross-check on the individual pairs: the weaker one should show the closure through the
+  series of opposing candles that the stronger one lacks.'
+- Use the cross-check as extra confluence, not as the primary signal.
+invalidation:
+- EURGBP itself reverses, flipping the strength read.
+- The individual closures contradict the cross's reading.
+measurable:
+- return difference between trading the selected pair vs the rejected one on the same signal
+  days
+- how often the EURGBP read and the individual-closure read disagree
+- agreement rate between the EURGBP read and the subsequent EU/GU performance spread
+- R outcome of trading the cross-selected leg vs the other
+sources:
+- video_id: nWHint4Yano
+  title: EURGBP for Relative Strength (EU vs GU)
+  quote: if the dollar is not consolidating, that is when we're going to look
+- video_id: nWHint4Yano
+  title: EURGBP for Relative Strength (EU vs GU)
+  quote: When EuroGBP is bullish, that means the euro is stronger
+- video_id: nWHint4Yano
+  title: EURGBP for Relative Strength (EU vs GU)
+  quote: pairing a strong currency with a weak currency gives you a nice bullish trend
+- video_id: nWHint4Yano
+  title: EURGBP for Relative Strength (EU vs GU)
+  quote: if you trade the wrong asset, you're going to be caught off sides
+- video_id: 25V-sGyMj_M
+  title: Using Candle Closures to Find Relative Strength on EURGBP
+  quote: if Euro GBP is bullish, that means Euro is stronger than the pound
+- video_id: 25V-sGyMj_M
+  title: Using Candle Closures to Find Relative Strength on EURGBP
+  quote: with a bullish dollar, we want to be focused on GBP or GBP USD
+- video_id: _VquvUgdQmA
+  title: Using EURGBP for Relative Strength
+  quote: if euro GBP is bullish, that means GBP is weaker
+- video_id: _VquvUgdQmA
+  title: Using EURGBP for Relative Strength
+  quote: Take a look at the individual closures on euro versus GBP.
+ambiguities:
+- '''Consolidating'' for the dollar reuses the consolidation definition and inherits its lack
+  of a duration bound.'
+- No rule is given for what to do when the EURGBP read and the individual-closure cross-check
+  disagree.
+- The same logic is asserted to transfer to NQ/ES but the equivalent 'cross' for indices is
+  not named here.
+- The dollar direction is taken as given in both Shorts; how it was established is not shown.
+- No rule is given for what to do when the cross and the individual closures disagree.
+- The timeframe of the EURGBP closure used is the daily in one Short and unstated in the other.
+related:
+- relative-strength-asset-selection
+- currency-pairing-opposition
+- dollar-gate-for-fx
+- relative-strength-weakness
+- smt-divergence
+timeframes:
+  htf:
+  - 1D
+  - 4H
+  ltf:
+  - 1H
+  - 15m
+  fractal: false
+execution:
+  bias: Dollar direction, expressed on the correctly selected pair.
+  entry: Standard fractal model entry on the selected pair.
+  stop: Standard.
+  targets:
+  - standard
+contributing_units:
+- build_a_model_intro_to_ttrades_fractal_model_01
+- shorts_04
+draft_count: 2
+voice: ttrades

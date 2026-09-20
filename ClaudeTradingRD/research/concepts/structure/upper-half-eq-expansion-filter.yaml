@@ -1,0 +1,242 @@
+id: upper-half-eq-expansion-filter
+name: Upper-Half EQ Rule For Expansion
+definition: 'Three Shorts state the rule as a single crisp filter and add the branch that
+  follows a failure. The requirement: when price is expanding, the next candle must open and
+  make its LOW in the upper half of the previous candle''s range (bearish mirror: its high
+  in the lower half), and then expand. A second, equivalent phrasing is given in fib terms
+  - the retracement must NOT reach into a discount of the higher-timeframe range. The failure
+  branch is stated explicitly and is two-sided: if price opens and trades a lot lower than
+  the EQ, expansion is off, and price will either fail and take out the previous candle''s
+  low, OR reverse back to its opening price, in which case the NEXT candle becomes the expansion
+  candidate. The rule is applied on the fourth day of a swing as well, where 0.5 of the swing
+  range is marked and the upper half must hold.
+
+  '
+variants:
+  definition:
+  - SHORTS EVIDENCE, given as a chart procedure rather than a principle. For expansion higher,
+    the UPPER HALF of the higher-timeframe candle must support price; the operational step
+    is to mark half of that candle's range and then look for a PD array sitting inside that
+    half. That PD array - in the worked example a fair value gap resting above a protected
+    low - is where the higher-timeframe wick is expected to form and where the lower timeframe
+    should print its reversal / change in the state of delivery. The mirror applies to a bearish
+    candle 3, where the lower half must be respected.
+  - Stated here in the channel's own voice (the library previously carried only a guest's
+    version). During an expansion phase he requires the upper half of the reference candle's
+    range to be respected for price to trade higher, and the lower half to be respected for
+    price to trade lower. The half is the operative filter, not a location to enter counter
+    to the move. If the half is not respected he flips the bias and anticipates the opposite
+    extreme of the range being taken.
+  - 'A Short applies the half rule to a candle 3 rather than to a wick, which makes the construction
+    explicit. After a candle 3 closure forms at a point of interest, mark the ENTIRE range
+    of that candle 3 and take its equilibrium. For a bullish continuation, price in the following
+    candle is expected to trade higher from the upper half of that range - the EQ is respected
+    and the move continues. The Short pairs this with the continuation confirmation that the
+    following candle closes over the previous candle''s high.
+
+    '
+  - 'A mechanical proxy for wick size. After a reversal wick or an expansion candle close,
+    mark the equilibrium (50%) of that candle''s range or of the reversal wick. For a bullish
+    continuation, the following candle''s low must form in the upper half of that range; disrespecting
+    the EQ would by construction create a large opposing wick, which does not support expansion.
+    The bearish case mirrors it - the following candle''s high must form in the lower half.
+
+    '
+category: structure
+status: contested
+aliases:
+- upper half to respect
+- lower half to respect
+- premium and discount as a wick-size filter
+- EQ for expansions
+preconditions:
+- Price has been classified as expanding, or a completed swing point exists whose range can
+  be halved.
+- A higher-timeframe candle (typically the C3) has been identified and its range marked.
+- A directional bias exists.
+- A reference candle (usually the previous one) whose EQ has been marked.
+- A reversal wick or expansion candle close exists on the working timeframe.
+detection_rules:
+- Mark 0.5 of the reference candle's (or swing's) range.
+- 'Bullish: the next candle must open and make its LOW in the upper half of that range, then
+  expand higher.'
+- 'Equivalent fib phrasing: the retracement must not reach into a discount of the range.'
+- 'Failure branch A: price opens and trades a lot lower than the EQ - do not look for expansion;
+  expect it to fail and take out the previous candle''s low.'
+- 'Failure branch B: if price instead reverses and comes back to its opening price, the NEXT
+  candle becomes the expansion candidate.'
+- 'Lower-timeframe shape wanted inside the passing candle: open, trade lower, form a change
+  in the state of delivery, then trade higher.'
+- 'Applied to the 4th day of a swing: mark 0.5 of the swing range, require the upper half
+  to hold, and look for the PD arrays sitting in that half.'
+- Mark the 50% level of the higher-timeframe candle's range.
+- 'Bullish: require the upper half to support price; bearish: require the lower half to.'
+- Search that half for a PD array (fair value gap, protected swing) - that is the expected
+  wick location.
+- Enter when the lower timeframe prints a change in the state of delivery inside that PD array.
+- 'The same half-of-candle test is applied to candle 3 specifically: look for the continuation
+  in the upper (bullish) or lower (bearish) half of C3.'
+- Mark the EQ of the reference candle (wick high to wick low; 0.5 of the wick if the wick
+  is very large).
+- 'Bullish: require price to hold the upper half of that range.'
+- 'Bearish: require price to hold the lower half of that range.'
+- If the required half is not respected, flip the bias and anticipate the opposite extreme
+  of the range being taken.
+- 'Applied candle by candle in a run: each day''s respect of the previous day''s EQ is what
+  builds the higher-timeframe wick.'
+- Mark the entire range (high to low) of the candle 3 closure.
+- Compute its equilibrium (50%).
+- 'Bullish: expect the following candle to trade higher out of the upper half; the EQ should
+  be respected.'
+- A close over the previous candle's high in the following candle signals further continuation.
+- Mirror for the bearish case using the lower half.
+- Mark the 50% level of the reference candle's range (or of the reversal wick).
+- 'Bullish: the next candle''s low must form above that 50% level.'
+- 'Bearish: the next candle''s high must form below that 50% level.'
+- A violation of the EQ disqualifies the candle as an expansion candle.
+invalidation:
+- Price makes its extreme in the wrong half of the reference range.
+- The retracement reaches into a discount of the higher-timeframe range.
+- Price trades through the 50% level into the opposing half of the candle.
+- A close through the EQ against the direction being held.
+- The following candle trades and holds below the EQ of the marked range.
+- The following candle trades through the EQ and forms its extreme in the wrong half.
+measurable:
+- continuation rate when the next candle's extreme forms in the required half vs when it does
+  not
+- how often failure branch A (takes out the previous candle's low) occurs vs branch B (returns
+  to the opening price and the next candle expands)
+- hit rate of the 2R target on 4th-day entries taken inside the upper half
+- share of expansion candles whose opposing wick stays within the correct half
+- hit rate of entries at a PD array located inside the correct half versus outside it
+- hold rate of the required half during confirmed expansion sequences
+- hit rate of the flipped target after an EQ violation
+- share of following candles whose wick stays in the marked half
+- continuation rate conditional on the EQ being respected
+- continuation rate when the next candle's extreme respects the EQ vs when it does not
+sources:
+- video_id: g37Z3GpSLGc
+  title: Strong expansion, Shallow retracement
+  quote: When price is expanding, I do not want to see a deep retracement.
+- video_id: g37Z3GpSLGc
+  title: Strong expansion, Shallow retracement
+  quote: make its low in the upper half of its previous candle's range
+- video_id: g37Z3GpSLGc
+  title: Strong expansion, Shallow retracement
+  quote: if price opens and trades a lot lower than the EQ
+- video_id: p6Cgc1mPCf4
+  title: Strong Expansion = Shallow Retracement
+  quote: expansion does not have deep retracements to get on side with the move
+- video_id: p6Cgc1mPCf4
+  title: Strong Expansion = Shallow Retracement
+  quote: Does this retracement reach into a discount? No.
+- video_id: p6Cgc1mPCf4
+  title: Strong Expansion = Shallow Retracement
+  quote: I'd like to see price respect the upper half of this range
+- video_id: EnAoorLVtoQ
+  title: Trading Continuation on the 4th Day of a Swing
+  quote: I want to see price hold the upper half of this area.
+- video_id: wvP9Y74Q_hQ
+  title: Expansion Happens When the HTF Candle’s Upper Half Supports Price Higher
+  quote: the upper half of a higher time frame candle support price higher during expansion
+- video_id: N9Wfch7_h5A
+  title: Aggressive Out → Aggressive Back In
+  quote: the upper half of candle three to form a continuation higher
+- video_id: EupbcX1JOsE
+  title: 4th Day of Swing Forming Continuation Lower
+  quote: I would want to be looking for the lower half of this third candle here
+- video_id: aZCHRSIgyFQ
+  title: Candle 3 Closure Confirmation with Protected Swings
+  quote: I will want to see the upper half be respected to trade it higher
+- video_id: zJLaABC_hM8
+  title: Breaking Down My Favorite Fractal Model Setup
+  quote: The lower half of this 4-hour candle
+- video_id: IPZjNI1B5a0
+  title: You Are Using Discount and Premium Wrong! - EQ For Expansions
+  quote: looking for the upper half to respect for price to trade higher
+- video_id: IPZjNI1B5a0
+  title: You Are Using Discount and Premium Wrong! - EQ For Expansions
+  quote: if these do not respect I then can flip my bias and anticipate the low
+- video_id: IPZjNI1B5a0
+  title: You Are Using Discount and Premium Wrong! - EQ For Expansions
+  quote: this is where I like to use the equilibrium
+- video_id: Nbs0gsth2jw
+  title: With No C2 Closure At A POI, Wait For A C3 Closure To Form Within The Next Candle
+  quote: I'm going to mark out the entire range of this candle three.
+- video_id: Nbs0gsth2jw
+  title: With No C2 Closure At A POI, Wait For A C3 Closure To Form Within The Next Candle
+  quote: I'll be looking for this upper half for price to trade higher
+- video_id: Nbs0gsth2jw
+  title: With No C2 Closure At A POI, Wait For A C3 Closure To Form Within The Next Candle
+  quote: there you can see we respect the EQ and we go and trade higher
+- video_id: J_EeS2_2CAM
+  title: GxTradez | Phases of Price & Profiles For Expansion
+ambiguities:
+- '''Respect'' / ''hold'' is not resolved into wick vs body - whether a wick through the EQ
+  breaks the filter or only a close does is not stated in any of the three Shorts.'
+- '''Trades a lot lower than the EQ'' is a second, looser threshold than ''below the EQ'',
+  and the two are used interchangeably in the same clip.'
+- Failure branch B has no time bound - how long price may take to return to its opening price
+  before the setup is abandoned is not stated.
+- The reference range is variously the previous candle's range, 'this range' on the higher
+  timeframe, and the swing range on the 4th day. Which one applies when several are available
+  is not stated.
+- Whether the halves are measured wick-to-wick or body-to-body is not stated here.
+- Whether 'respected' means no wick through the 50% level or no CLOSE through it is not stated.
+- If there is no PD array inside the correct half, no fallback is given.
+- Whether 'not respected' means a wick through the EQ or a close through it is not stated.
+- The flip is described as immediate, with no re-test or confirmation requirement attached.
+- The rule presumes the expansion phase has already been classified; the phase test is not
+  restated here.
+- The Short marks the range of candle 3, whereas the library's other readings mark the reversal
+  wick - which reference is canonical is not resolved here.
+- '''Respect the EQ'' is not given as body-close or wick-touch.'
+- Whether the EQ is taken from the full candle range or only from the reversal wick varies
+  between the slides described; both are used.
+- Wick-based vs body-based range endpoints are not specified.
+related:
+- shallow-retracement
+- retracement-phase
+- fractal-model-c4
+- small-wick-expansion-rule
+- wick-size-test
+- equilibrium-eq
+- premium-discount
+- expansion-signature
+- fractal-model-c3
+- half-wick-respect
+- t-spot
+- eq-if-then-pd-array-match
+- phases-of-price
+- consequent-encroachment
+- small-wick-supports-expansion
+- discount-requirement-before-entry
+timeframes:
+  htf:
+  - 1D
+  - 4H
+  - 1H
+  ltf:
+  - 1H
+  - 15m
+  - 5m
+  fractal: true
+execution:
+  bias: The expansion direction, held only while the correct half is respected.
+  entry: Inside the required half, after the lower-timeframe change in the state of delivery.
+  stop: On the low (bullish) formed inside that half - the worked 4th-day example stops on
+    the low and targets 2R.
+  targets:
+  - 2R (stated in the 4th-day example)
+  - the highs the swing is heading into
+contributing_units:
+- build_a_model_intro_to_ttrades_fractal_model_03
+- shorts_01
+- shorts_03
+- shorts_04
+- t_talks_02
+draft_count: 5
+voice: ttrades
+voice_playlist: mixed
+guest_sources:
+- GxTradez | Phases of Price & Profiles For Expansion

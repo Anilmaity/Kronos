@@ -1,0 +1,47 @@
+id: stop-loss-placement
+name: Stop At The Short-Term Swing, Or At The Candle That Made The Gap
+aliases:
+- stop placement
+category: risk
+status: specified
+definition: Asked about stop placement, the host gives a short list of two locations and one selection
+  criterion. The stop goes at the short-term low below the entry (or the short-term high above it,
+  for a short), or alternatively at the extreme of the candle that created the fair value gap being
+  entered. Which of the two is used depends on whether an order block sits between them that price
+  is likely to run into. He notes he has made a dedicated video on the subject rather than expanding
+  further on air.
+timeframes:
+  htf:
+  - 15m
+  ltf:
+  - 5m
+  - 1m
+  fractal: true
+preconditions:
+- An entry at a fair value gap or point of interest with a short-term swing behind it.
+detection_rules:
+- Place the stop at the short-term low below the entry (short-term high above it for a short).
+- 'Alternative: the extreme of the candle that created the fair value gap being entered.'
+- Choose between them by whether an order block sits between entry and stop that price is likely to
+  run into.
+invalidation:
+- Price closes beyond the chosen level.
+measurable:
+- stop-out rate at the short-term swing vs at the gap-forming candle for the same entries
+- share of stop-outs that occurred at an intervening order block
+sources:
+- video_id: 0bH_kkG2q6s
+  title: Stream Q & A with Trade For Opportunity  - ICT concepts
+  quote: usually the short term low or short term high above it where i'm entering
+ambiguities:
+- No buffer is specified beyond the swing - ticks, points or a percentage of the range are not mentioned.
+- '''Likely to run into'' is judged by eye; no rule ranks the two candidate order blocks.'
+related:
+- stop-behind-already-swept-liquidity
+- protected-swing
+- position-sizing-fixed-risk
+- fair-value-gap
+contributing_units:
+- live_stream_guests_03
+draft_count: 1
+voice: ttrades

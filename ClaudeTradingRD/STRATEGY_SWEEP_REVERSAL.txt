@@ -1,0 +1,167 @@
+================================================================================
+SWEEP-REVERSAL (MANIPULATION -> DISTRIBUTION) STRATEGY — FULL SPECIFICATION
+================================================================================
+Instrument : XAUUSD (research data: OANDA XAU_USD mid-price)
+Timeframe  : 5-minute candles (resampled from OANDA M1)
+Status     : research prototype, locked config as of 2026-07-07
+Repo       : ClaudeTradingRD (commits b1ad9e9 .. 2f8e4a2)
+
+--------------------------------------------------------------------------------
+1. CONCEPT (user's thesis, statistically confirmed)
+--------------------------------------------------------------------------------
+Before a real move the market makes a MANIPULATION move: it breaks a top /
+bottom / liquidity level (PDH/PDL, session high/low, swing point) to take the
+stops, then reverses and runs the OTHER direction (distribution) toward the
+nearest opposite liquidity. Measured facts (3mo XAU 1m + 18mo BTC 1m):
+  - 75-77% of liquidity-level breaks fail and reverse (manipulation rate)
+  - distribution runs median ~1.1x the manipulation leg; >=2.5x only ~21%
+  - 63-66% of reversals reach the nearest opposite liquidity level within 4h
+  - manipulation is ~20x faster (price/bar) than the distribution that follows
+
+--------------------------------------------------------------------------------
+2. LEVEL & SWEEP DETECTION (backtest_sweep_reversal.py::detect_sweeps)
+--------------------------------------------------------------------------------
+Liquidity levels tracked on the trading TF (5m):
+  PD      : prior-day high & low (UTC day), replaced at each day rollover
+  session : completed-session highs/lows; sessions (UTC): asia 00-07,
+            london 07-12, ny 12-21
+  swing   : fractal swing highs/lows, half-width K=10 bars, become active
+            K bars after the pivot (no lookahead)
+  Level lifetime: swing/session expire after 1440 bars; consumed when swept.
+
+Sweep state machine per level:
+  break     : bar's high crosses above a 'high' level (or low below a 'low')
+  extreme   : max/min excursion while beyond the level
+  CONFIRMED : a bar CLOSES back through the level within CONFIRM_N=15 bars
+              of the break -> this is a manipulation signal
+  breakout  : no close-back within 15 bars -> genuine break, level dropped
+  One signal per confirmation bar: deepest penetration wins.
+  Signal fields: direction (down if a high was swept / up if a low),
+  level, extreme, m_pen = |extreme - level|, manip_bars = break->confirm,
+  target = nearest opposite untouched level at confirmation.
+
+--------------------------------------------------------------------------------
+3. VALIDITY FILTER (the locked one) — HTF15 "contained-or-wick"
+--------------------------------------------------------------------------------
+A signal is VALID if EITHER (both lookahead-safe):
+  contained : the whole manipulation (break bar .. confirmation bar) falls
+              inside ONE 15-minute candle (epoch-aligned bucket), i.e. the
+              sweep prints as a wick on the 15m chart, OR
+  wick      : the previous COMPLETED 15m candle swept the level and closed
+              back through it (high>level & close<level for down signals).
+Implementation: backtest_compare.py::htf_masks(df, sweeps, 15) -> (c15, w15);
+valid = c15 | w15.   (User's rationale: real manipulations appear as wicks
+sweeping levels on 15M/30M.)
+
+--------------------------------------------------------------------------------
+4. TRADE RULES (locked config "HTF15 cont|wick + 2xBE")
+--------------------------------------------------------------------------------
+  Signals   : ALL valid confirmations, overlapping trades allowed
+              (no one-position constraint, no fast/size filters)
+  Entry     : LIMIT order at the swept level (the retest), working for
+              ENTRY_TTL=30 bars after confirmation; if price path would hit
+              the stop on the same touch bar, trade is void (conservative)
+  Stop      : beyond the sweep extreme + 10% of penetration
+              (short: stop = extreme + 0.1*m_pen)
+  Target    : 2.0 x m_pen from entry, in the reversal direction
+  Min RR    : skip if |TP-entry| / |stop-entry| < 1.0
+  BE move   : once price moves +1R in favour, stop -> entry (scratch)
+  Time exit : close position at market after HORIZON=240 bars (20h on 5m)
+  Ties      : if SL and TP touched in the same bar, count SL (conservative)
+  Cost      : $0.30 round trip subtracted from every trade's PnL
+  SIZING    : MUST be risk-normalized (equal $ risk per trade, lots =
+              risk$/(|stop-entry|*100) rounded to 0.01). Fixed-lot sizing
+              DESTROYS the edge (verified: fixed 0.01 lot was net negative).
+
+--------------------------------------------------------------------------------
+5. LOCKED-CONFIG RESULTS (OANDA XAU 5m, 2026-04-05 .. 2026-07-06, 91 days)
+--------------------------------------------------------------------------------
+  479 valid signals -> 217 filled (262 NOFILL: never retraced; ~6.8 signals
+  and ~3.1 fills per trading day, median 3, max 6)
+  Outcomes: 93 TP / 88 SL / 36 BE
+  WR 42% | avgR +0.22 | net +48.2R | PF 1.47 | maxDD -9.7R | worst streak 10
+  Monthly: Apr +20.5R, May +19.1R, Jun +5.3R, Jul(partial) +3.3R  (all +)
+  Shorts +30.5R (44% WR) vs longs +17.7R (39% WR)
+  At $10 risk/trade: ~ +$160/month, max dip ~ $97.
+
+--------------------------------------------------------------------------------
+6. WHAT WAS TESTED AND REJECTED (do not re-add blindly)
+--------------------------------------------------------------------------------
+  - 1m trading TF: spread ($0.30) = ~0.17R per trade on $1.80 stops; every
+    config with WR>=45% was net negative; maxDD -75R. 5m fixes this.
+  - Fixed-multiple TP without BE on 1m: negative in all variants.
+  - Nearest-liquidity TP (no BE): +78R/3mo on 1m but 17% WR, top-10 trades
+    = ALL the profit, 25-loss streaks, monthly instability. Runner-dependent.
+  - Killzone timing as HARD filter: London-open 07-10 UTC ~flat; NY-close
+    19-21 UTC NEGATIVE (-0.34 avgR); NY-open 12-15 UTC is the only window
+    beating baseline quality (avgR +0.17, PF 1.37) but timing filters keep
+    only ~15-20% of total profit. Use as size/skip modifier, not a gate.
+    (Hour effects were the least stable stat across datasets — low trust.)
+  - FAST (<=3 bar) + size-floor filters: efficiency only (fewer trades,
+    similar netR); superseded by the HTF15 filter which actually raises avgR.
+  - RAW 2xBE baseline (no validity filter): +67.8R but avgR only +0.14 and
+    5.3 trades/day — kept as benchmark row, not the locked config.
+
+--------------------------------------------------------------------------------
+7. FILES (all in ClaudeTradingRD; venv: .venv, python 3.14)
+--------------------------------------------------------------------------------
+  fetch_oanda_m1.py          OANDA M1 fetcher -> xau_m1_oanda.parquet
+                             (practice API key via OANDA_API_KEY env or the
+                             KronosStrategies example key; 5000 bars/request)
+  manipulation_research.py   sweep statistics (multiples, reach, speed);
+                             also BTC via --btc (KronosStrategies parquet)
+  backtest_sweep_reversal.py detect_sweeps() + first backtest (entry/TP grid)
+  variant_grid.py            stop/TP/BE/displacement grid, 1m vs 5m
+  backtest_compare.py        THE comparison table; htf_masks(); add every new
+                             filter idea as a row here vs the locked config
+  plot_sweeps.py             chart (lightweight-charts, Kronos layout):
+                             default = locked config, --raw = unfiltered;
+                             red box+leg = manipulation, blue = distribution,
+                             dashed = SD projections (0.5-2.5x manipulation
+                             leg from extreme), markers E/TP/SL/BE/NOFILL
+  fvg_ict.py, plot_fvg.py    earlier FVG ICT strategy (separate)
+  Data caches (gitignored): xau_m1_oanda.parquet, *_signals_5m.csv,
+                             compare_results.csv, sweep_trades_*.csv
+
+  Environment notes: lightweight-charts needs pywebview<6; feed it tz-naive
+  datetime64[ns]; on this Mac use PYWEBVIEW_GUI=qt (WKWebView won't
+  composite); chart windows open on the desktop macOS Space.
+
+--------------------------------------------------------------------------------
+8. UPDATE 2026-07-07 — LEG REDEFINITION + OOS VALIDATION (commits 7e4f66b, 950d3ff)
+--------------------------------------------------------------------------------
+User insight: "if 2.5 SD is not reached easily, the manipulation leg is
+selected wrong." Confirmed. Leg redefined as BRK1 = break candle's opposite
+extreme -> sweep extreme (no pre-break run-up). With brk1 as 1 SD, the
+distribution reaches >=1 SD 96% and >=2.5 SD 77% of the time (vs 54% with
+the old 3-bar leg) — matching the 1x-2.5x model.
+
+CURRENT BEST CONFIG ("brk1 x 2SD"): everything as section 4 EXCEPT
+  TP = extreme + 2.0 x brk1-leg in the reversal direction (not 2x pen).
+  (leg_defs() in leg_analysis.py; sd_mult/legs params in backtest_compare.simulate)
+
+RESULTS — full year OANDA XAU 5m (2025-07-07..2026-07-07, 886 trades):
+  OOS (9 months, never used for any decision): 671 trades, WR 23%,
+    avgR +0.82, +552.9R, PF 2.41, maxDD -25.2R
+  IS  (Apr-Jul 2026): 215 trades, avgR +0.57, +121.8R, PF 2.09
+  ALL 13 MONTHS POSITIVE. Aug-2025 outlier +262R (gold trend month);
+  excluding it the other 12 months average ~+34R/mo.
+  Winners: median +3.3R, avg +5.5R (RR in the 2-4+ target range);
+  low nominal WR is BE scratches, not full losses.
+  At $10 risk/trade: ~ +$560/month average, maxDD ~ $250.
+Remaining risk: limit-fill and BE-amendment assumptions on 5m bars;
+tick-level or demo-forward validation before live.
+
+--------------------------------------------------------------------------------
+9. OPEN ITEMS / NEXT STEPS
+--------------------------------------------------------------------------------
+  - User has more validity parameters to add (benchmark each as a
+    backtest_compare.py row against the locked config).
+  - Candidate combo: skip NY-close signals; consider NY-open for larger size.
+  - Validate on longer history (OANDA allows deeper M1 backfill) and on BTC.
+  - Walk-forward / out-of-sample split before any live deployment.
+  - Live execution would need: limit-order placement on sweep confirmation,
+    30-bar order TTL, BE stop amendment at +1R — maps onto the
+    KronosStrategies runner + position_manager architecture (Strategy/
+    UserStrategy/Position/Trigger rows + MetaAPI orders).
+================================================================================

@@ -1,0 +1,63 @@
+id: strat-scalping-hour-two-filter
+name: Only Scalp While The Hour Is A 2 (and only in volatile names)
+aliases:
+- hourly must be directional to scalp
+category: time
+status: specified
+definition: 'Asked for a scalping method where the hour is the highest timeframe, the guest refuses
+  to drop the higher timeframes but gives a concrete gate: you may only scalp while the current hourly
+  candle is a 2 (directional). If the hour is a 1 (inside bar) it is ''doing nothing'' and there are
+  no scalps to take. He adds that the lower your entry timeframe the more noise you get, so scalping
+  requires volatility - he directs it at gappers and earnings names rather than at an index that is
+  sitting inside on the month. On a gapper he treats the hourly flip as the reset: the moment the hour
+  goes green you should not be short.'
+timeframes:
+  htf:
+  - 1M
+  - 1W
+  - 1D
+  - 1H
+  ltf:
+  - 15m
+  - 5m
+  - 3m
+  - 1m
+  fractal: false
+preconditions:
+- Higher-timeframe continuity established.
+- An instrument with elevated volatility (gap or earnings).
+detection_rules:
+- 'Check the current hourly candle: if it is a 1, do not scalp.'
+- If the hourly is a 2, scalp in the hourly's direction on a 1/3/5/15-minute entry timeframe.
+- Signals that conflict with the hourly direction are flagged as 'in conflict' and are not expected
+  to negate the hour.
+- The lower the entry timeframe chosen, the more noise - raise it unless volatility is high.
+- On the hourly flip, drop the opposite-direction bias immediately.
+invalidation:
+- The hour goes inside (1), or flips colour against the position.
+measurable:
+- win rate of sub-15m signals while the hour is a 2 vs a 1
+- signal count per hour by entry timeframe
+sources:
+- video_id: 1XWyy6Q-_8Q
+  title: Live Stream With Alex's Options - TheSTRAT & Broadening Formations
+  quote: anytime this hour is two that's when you can start scalping
+- video_id: 1XWyy6Q-_8Q
+  title: Live Stream With Alex's Options - TheSTRAT & Broadening Formations
+  quote: every hour is like a new day when you're trading these gappers
+ambiguities:
+- '''Volatile enough'' is illustrated by example (a name whose daily candles are ~1% vs one at 12% on
+  earnings) but never thresholded.'
+- Whether the hourly 2 must be confirmed at close or is read live is not stated - his usage implies
+  live.
+related:
+- timeframe-continuity
+- gap-direction-fade-rule
+- timeframe-decoupling
+- volatility-timeframe-selection
+contributing_units:
+- live_stream_guests_02
+draft_count: 1
+voice: guest
+guest_sources:
+- Alex's Options

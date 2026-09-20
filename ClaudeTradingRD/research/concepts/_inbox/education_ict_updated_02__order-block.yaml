@@ -1,0 +1,97 @@
+id: order-block
+name: Opposing Candle / Order Block
+aliases:
+- order block
+- bullish order block
+- bearish order block
+- series of up close candles
+- opposing candle
+category: structure
+status: specified
+definition: 'Two mutually consistent formulations are given in this unit. Structural (Orderblocks
+  Simplified): a bearish order block requires a sweep of a high followed by a break of structure
+  down; the order block is then the up-close candle or series of up-close candles that took that
+  liquidity immediately before the move down. Mirror for bullish: a sweep of sell-side, a break of
+  structure up, then the single or series of down-close candles before the move up. Candle-level
+  (Propulsion Blocks review): the order block is a single or series of up-close candles into an important
+  level which price then displaces through and closes BELOW the opening price of that single or series,
+  and that close is what validates it; mirror for bullish. The level itself may be taken as the opening
+  price, the wick, or the wick-to-open, and he explicitly tells the viewer to experiment and pick
+  one.'
+timeframes:
+  htf:
+  - 1D
+  - 4H
+  - 1H
+  ltf:
+  - 15m
+  - 5m
+  - 1m
+  fractal: true
+preconditions:
+- Price has reached an important level (a fair value gap, a prior high/low, a PD array).
+- Liquidity has been swept at that level (a high taken for a bearish block, a low for a bullish one).
+detection_rules:
+- 'Bearish: identify a swept swing high, then a break of structure downward.'
+- Bearish block := the single or series of UP-close candles on the move that swept that high, immediately
+  before the break down.
+- 'Bullish: identify a swept swing low, then a break of structure upward; block := the single or
+  series of DOWN-close candles on that move.'
+- 'Alternative validation used in the propulsion-block video: the block is valid once price closes
+  beyond the OPENING PRICE of that single or series of candles.'
+- Prefer the largest full-bodied candle of the move that swept the level, not an adjacent small candle.
+- Level selection is user-chosen among {opening price, the wick, wick-to-open, mean threshold}; he
+  tells the viewer to experiment.
+- In a trend, a run of down-close candles inside an up move (or up-close candles inside a down move)
+  may also be used as a block without a fresh sweep.
+invalidation:
+- Price closing beyond the mean threshold of the block against the intended direction.
+- The break of structure never printing (a sweep alone does not validate a block).
+execution:
+  bias: Direction of the break of structure that validated the block.
+  entry: At the opening price of the block, or at its mean threshold when the opening-price stop
+    is too wide.
+  stop: Beyond the block's extreme (the wick), or at the mean threshold construction for a tighter
+    stop.
+  targets:
+  - the higher timeframe objective / PD array being travelled to
+  - sell-side or buy-side liquidity
+measurable:
+- reaction rate at the opening price vs the wick vs the mean threshold, same sample
+- how often the break-of-structure requirement disqualifies a candidate block that a candle-only
+  rule would accept
+- hit rate of blocks formed in a trend without a fresh liquidity sweep
+sources:
+- video_id: Y8DkNYhq0X0
+  title: Orderblocks Simplified - ICT Concepts
+  quote: in a bearish order block example is a sweep of a high
+- video_id: Y8DkNYhq0X0
+  title: Orderblocks Simplified - ICT Concepts
+- video_id: 9PKJ0U1gl4g
+  title: Propulsion Blocks Simplified - ICT Concepts
+  quote: a single or series of up closed candles into an important level
+- video_id: FXJBFbZQbck
+  title: The Easiest Draw On Liquidity (DOL) - Daily Bias - ICT
+ambiguities:
+- The auto-captioner renders 'break of structure' as 'breaker structure' and once as 'brachet structure';
+  it is read as break of structure throughout.
+- '''Break of structure'' is never given a swing-confirmation rule here - which swing must be closed
+  through, and whether a wick through counts, is not stated.'
+- 'The two validations are not reconciled: the structural version requires a break of structure,
+  the candle version requires only a close beyond the block''s opening price.'
+- Choice among opening price / wick / wick-to-open is explicitly delegated to the trader, so the
+  level is not uniquely determined by the source.
+- '''Important level'' is enumerated by example (fair value gap, prior high/low) but not defined
+  or ranked.'
+related:
+- mean-threshold
+- propulsion-block
+- breaker-block
+- cisd
+- order-block-probability-grading
+- order-block-series-is-htf-candle
+python_detector: null
+contributing_units:
+- education_ict_updated_02
+draft_count: 1
+voice: ttrades

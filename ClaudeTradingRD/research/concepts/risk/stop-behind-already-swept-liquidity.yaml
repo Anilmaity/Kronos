@@ -1,0 +1,56 @@
+id: stop-behind-already-swept-liquidity
+name: A Stop Behind Already-Swept Liquidity Is Safe
+definition: 'A viewer raises the obvious objection - if the whole premise is that the algorithm
+  seeks liquidity, why place a stop at a swing high or low where the liquidity sits? The host''s
+  answer is structural: you entered after the higher-timeframe liquidity was already taken,
+  so the level behind your stop has been run, anyone who was long there is already out, and
+  there is no remaining reason to run it again. The worked case: the lows are swept, structure
+  breaks and price continues higher, and that swept low is then a valid stop location. He
+  names the exception in the same breath - if price puts in a new high, then a new low, and
+  then runs that new low, that is inducement to continue higher, and the new low is a different,
+  unprotected level from the one already swept.'
+category: risk
+status: specified
+aliases:
+- why put your stop where the liquidity is
+preconditions:
+- Entry taken after a liquidity sweep and a subsequent structure break.
+detection_rules:
+- Only place a stop behind a level whose liquidity was already taken before entry.
+- After the sweep and the structure break, the swept low (or high) is treated as protected
+  and is a valid stop location.
+- A low formed after the sweep is not protected - running it is inducement for continuation,
+  not invalidation.
+invalidation:
+- The already-swept level is run a second time - the premise has failed.
+measurable:
+- re-run rate of already-swept levels vs newly formed swings within the same session
+- stop-out rate of stops placed behind swept vs unswept levels
+sources:
+- video_id: 0bH_kkG2q6s
+  title: Stream Q & A with Trade For Opportunity  - ICT concepts
+  quote: we already ran the liquidity there's no real reason to run the liquidity again
+ambiguities:
+- '''No real reason'' is a claim about intent, not a measurable chart condition.'
+- No rule states how much time or price movement may elapse before a swept level becomes re-runnable.
+related:
+- stop-loss-placement
+- protected-swing
+- inducement-equals-sweep
+- liquidity-sweep
+- market-structure-shift
+timeframes:
+  htf:
+  - 1H
+  - 15m
+  ltf:
+  - 5m
+  - 1m
+  fractal: true
+contributing_units:
+- live_stream_guests_03
+draft_count: 1
+voice: ttrades
+voice_playlist: guest
+guest_sources:
+- Stream Q & A with Trade For Opportunity  - ICT concepts

@@ -1,0 +1,45 @@
+id: htf-poi-gate-before-ltf
+name: "Do Not Drop Timeframes Until The POI Is Tagged"
+aliases: ["the POI gate", "no tag no chart"]
+category: risk
+status: specified
+
+definition: >
+  Before the session, one or two higher-timeframe points of interest are marked on the 1-hour
+  and 4-hour - a high or low, a fair value gap, a volume imbalance, occasionally a new-week
+  opening gap - each aligned with the daily bias or the draw on liquidity. If price does not
+  tag one of them during the session, the lower timeframes are not opened at all. The stated
+  purpose is explicitly behavioural: looking at a 1-minute chart with no higher-timeframe
+  justification produces impulsive and FOMO entries.
+
+timeframes:
+  htf: ["4H", "1H"]
+  ltf: ["15m", "5m", "1m"]
+  fractal: false
+
+preconditions:
+  - "A daily bias or a clear session draw on liquidity exists."
+
+detection_rules:
+  - "Mark at most one or two points of interest before the session, on H1/H4."
+  - "Each must be in line with the daily bias; levels on the wrong side are ignored."
+  - "If price does not tag a marked point of interest, do not open the 5m or 15m chart."
+  - "If it does tag, drop only to the paired timeframe: 4H POI -> 15m -> 1m, or 1H POI -> 5m."
+
+invalidation:
+  - "Not applicable - process gate."
+
+measurable:
+  - "number of sessions where the POI went untagged"
+  - "expectancy of trades taken from a tagged POI vs those without one"
+
+sources:
+  - video_id: G44VpidBD_U
+    title: "NickDoesFutures | Unicorn Model & Experiences With ICT"
+
+ambiguities:
+  - "How the daily bias itself is formed is only sketched (obvious market structure shifts, DXY, bonds, clear displacement)."
+  - "A session bias is offered as an acceptable substitute for a daily bias, but is not defined."
+
+python_detector: null
+related: ["unicorn-entry-model", "intermediate-timeframe-bridge", "less-trades-more-capital"]

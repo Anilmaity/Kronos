@@ -1,0 +1,63 @@
+id: cisd
+name: "Change In State Of Delivery (CISD)"
+aliases: ["CISD", "closure through", "change in the state of delivery"]
+category: entry
+status: specified
+
+definition: >
+  Restated mechanically several times in this unit. The CISD is a closure through the series of
+  consecutively opposing-close candles that produced the extreme — he draws the series out for a
+  viewer on USD/CHF and says that if you are trading mechanically you simply wait for that
+  closure, and if you are not trading mechanically you may instead ask whether a high or low has
+  formed that you can trust. Asked whether the CISD has to form from a high or a low, he widens
+  it: it can form from a point of interest, which he enumerates as a high, a low, or a fair
+  value gap. He also gives the provenance — he took the CISD from AM Trades and made it
+  mechanical by combining it with swing points, in contrast to ICT's order-block selection which
+  he calls unmechanical and impossible to code.
+
+timeframes:
+  htf: ["1D", "4H", "1H"]
+  ltf: ["30m", "15m", "5m", "3m", "1m"]
+  fractal: true
+
+preconditions:
+  - "An extreme (high or low) formed at a point of interest: a high, a low, or a fair value gap."
+
+detection_rules:
+  - "Locate the series of consecutively opposing-close candles that made the extreme."
+  - "Require a body close through that entire series."
+  - "The extreme must sit at a point of interest — a high, a low, or a fair value gap."
+  - "Mechanical mode: wait for the closure. Discretionary mode: substitute a high or low you are willing to trust."
+  - "Where the resulting CISD level is too far away for the target's risk-to-reward to work, enter instead off the candle 2 or candle 3 closure at the swing."
+
+invalidation:
+  - "The extreme that produced the CISD is taken out."
+
+measurable:
+  - "hit rate of CISD-confirmed extremes holding"
+  - "R difference between the mechanical closure entry and the swing entry when the CISD level is far"
+  - "count of CISDs per session by timeframe"
+
+sources:
+  - video_id: Je7cd9HJUBE
+    title: "New York Open Live Q&A"
+    quote: "our CISD would be a closure through these candles"
+  - video_id: TjUolMJNCMY
+    title: "New York Open Live Q&A"
+    quote: "it can form from a point of interest, as I said in the video"
+  - video_id: G1IIdQ3RAkY
+    title: "New York Open Live Q&A"
+    quote: "I got that from AM Trades"
+
+ambiguities:
+  - "The length of the 'series of candles' is never bounded, so a detector must choose the run length itself."
+  - "Body close versus wick close through the series is not stated explicitly in this unit."
+  - "He runs an 'early CISD' indicator setting that draws the CISD before the candle 2 closure, which sits awkwardly with his own rule that no decision is made before the close."
+  - "The far-away-CISD alternative entry is described as advanced material he has deliberately not published a video on."
+
+python_detector: null
+related: ["ic-cisd", "protected-swing", "point-of-interest", "cisd-skip-at-target", "rr-gated-entry-refinement", "wait-for-candle-close"]
+
+contributing_units: ["live_streams_02"]
+draft_count: 1
+voice: ttrades

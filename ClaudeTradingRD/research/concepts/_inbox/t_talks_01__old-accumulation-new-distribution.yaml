@@ -1,0 +1,53 @@
+id: old-accumulation-new-distribution
+name: "Old Accumulation Becomes New Distribution"
+aliases: ["old gaps", "old fair value gaps drawn out in time"]
+category: liquidity
+status: specified
+
+definition: >
+  A rule for selecting which fair value gaps to map forward. Only OLD gaps count - gaps price
+  traded into, accumulated within, and then departed from. Projected forward in time they become
+  inversion levels and areas of new distribution, and the algorithm is said to return to them for
+  roughly the next 60 days. Fresh gaps with no accumulation history are not mapped.
+
+timeframes:
+  htf: ["1W", "1D"]
+  ltf: ["1H"]
+  fractal: true
+
+preconditions:
+  - "A market maker model with an identifiable buy-side and sell-side of the curve."
+
+detection_rules:
+  - "Select fair value gaps that price has already traded into, accumulated inside, and then moved away from."
+  - "Do not map gaps that were simply formed and left behind with no accumulation."
+  - "Project the selected gaps forward in time as horizontal levels and expect price to return to them for roughly the next 60 days."
+  - "When bullish, the gaps to map are the BEARISH fair value gaps sitting on the sell-side of the curve; expect them to be respected on the way up."
+  - "A mapped old gap functions both as an inversion level and as an area of new distribution (of longs, in the bullish case)."
+
+invalidation:
+  - "Not stated."
+
+execution:
+  bias: "With the model direction."
+  entry: "On the return into a mapped old gap."
+  stop: "Not stated for this concept."
+  targets: ["the original consolidation"]
+
+measurable:
+  - "reaction rate at projected old gaps versus at unaccumulated gaps"
+  - "decay of that reaction rate with age, to test the ~60 day claim"
+  - "how often a mapped old gap acts as an inversion rather than as support/resistance"
+
+sources:
+  - video_id: wB-fQiT_UDo
+    title: "DayTradingRauf | ICT MMXM Models"
+
+ambiguities:
+  - "The ~60 day validity is asserted with no derivation, instrument, timeframe or test."
+  - "'Accumulated inside' is judged by eye - no dwell-time or candle-count threshold is given."
+  - "It is not stated whether the gap must be fully or partially filled to count as old."
+  - "All examples are schematic, so the claimed respect of these levels cannot be checked from the video."
+
+python_detector: null
+related: ["mmxm-hedging-definition", "mitigation-block", "breakaway-gap-anticipation"]

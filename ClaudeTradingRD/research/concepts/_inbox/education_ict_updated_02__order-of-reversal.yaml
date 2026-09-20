@@ -1,0 +1,76 @@
+id: order-of-reversal
+name: The Order Of A Reversal (confirmation ladder)
+aliases:
+- order of reversal
+- how much confirmation you need
+category: entry
+status: specified
+definition: 'An ordered ladder of PD arrays that appear as a reversal develops, used to grade how
+  much confirmation an entry has. The sequence he names is: turtle soup (the sweep), an inversion,
+  a change in the state of delivery or the formation of an order block, a breaker, and a fair value
+  gap. Each successive item is later in time and carries more confirmation that the extreme is in
+  - and, implicitly, a worse price. Entering at the turtle soup means having no protected high to
+  trade against; entering after the inversion means the fair value gap has been disrespected; entering
+  after the CISD gives a stop on the bodies or the swing highs; entering after the breaker and fair
+  value gap means structure has clearly shifted.'
+timeframes:
+  htf:
+  - 1D
+  - 30m
+  ltf:
+  - 5m
+  - 3m
+  fractal: true
+preconditions:
+- Price has reached a level where a reversal is plausible (previous day highs taken, in his example).
+detection_rules:
+- 'Rung 1 - turtle soup: a sweep above the highs (or below the lows). Least confirmation; no protected
+  extreme yet.'
+- 'Rung 2 - inversion: a close beyond the fair value gap that had supported the move.'
+- 'Rung 3 - change in the state of delivery / order block formation: a close through the series of
+  up-close candles that made the high.'
+- 'Rung 4 - breaker block: the swing-high-to-swing-low structure now exists.'
+- Rung 5 - fair value gap left by the displacement away.
+- Choose ONE rung to trade and use it consistently - the choice is the trader's confirmation appetite.
+- 'The same ladder is fractal: he shows it on a 30-minute chart and then again inside the paired
+  3-minute chart.'
+invalidation:
+- At rung 1 specifically, he warns price will stop you out repeatedly unless it reverses immediately
+  - the low-confirmation rung has no invalidation level.
+execution:
+  bias: Direction of the developing reversal.
+  entry: At the chosen rung - and only that rung.
+  stop: 'Rung-dependent: no protected level at rung 1; the swept high at rung 2; the bodies or the
+    swing highs at rung 3.'
+  targets:
+  - the same lows/highs regardless of rung
+measurable:
+- win rate and average entry price by rung, on the same reversal sample
+- stop-out frequency at rung 1 vs rung 3
+- how often the later rungs never print after a rung-1 sweep
+sources:
+- video_id: r_UF8U-hsL8
+  title: Why You're Failing with ICT Concepts
+  quote: We have a turtle soup, an inversion, a change in the state of delivery
+- video_id: r_UF8U-hsL8
+  title: Why You're Failing with ICT Concepts
+  quote: there is more and more confirmation
+ambiguities:
+- The ladder is presented as an ordering, not as a requirement that all five appear - in some reversals
+  a rung will simply not print, and no rule covers that.
+- '''Turtle soup'' is used here as a synonym for the sweep and is not otherwise defined in this video.'
+- The trade-off between confirmation and price is stated qualitatively; no R:R comparison across
+  rungs is given.
+- The order is described for a bearish reversal; the bullish mirror is implied but not walked through.
+related:
+- single-pd-array-mastery
+- cisd
+- breaker-block
+- inversion-fair-value-gap
+- turtle-soup-sweep-entry
+- bias-confirmation-tradeoff
+python_detector: null
+contributing_units:
+- education_ict_updated_02
+draft_count: 1
+voice: ttrades

@@ -1,0 +1,57 @@
+id: half-wick-respect
+name: Equilibrium Of The Previous Candle's Range Must Support The Next Candle's Low
+aliases:
+- EQ of the previous candle's range
+- upper half
+category: structure
+status: specified
+voice: guest
+guest_sources:
+- GxTradez
+definition: 'GxTradez''s mechanical substitute for eyeballing wick size. After a candle 2 closure (candle
+  2 closes back inside candle 1''s range), mark equilibrium — 0.5 — of the previous candle''s range
+  and require the upper half of that range to support price and to contain the LOW of candle 3. He states
+  the purpose explicitly: it is a mechanical way to measure wick size, because expansion candles have
+  small wicks and reversal candles have large ones. The same test is then reapplied to candle 3''s range
+  for candle 4.'
+timeframes:
+  htf:
+  - 1D
+  - 4H
+  ltf:
+  - 1H
+  - 30m
+  - 15m
+  fractal: true
+preconditions:
+- A candle 2 closure has occurred (or a strong candle 3 closure, for the candle-4 case).
+detection_rules:
+- Mark 0.5 of the previous candle's high-to-low range.
+- 'Bullish case: candle 3''s LOW must form in the upper half of that range.'
+- 'Bearish case (mirrored): candle 3''s high must form in the lower half.'
+- 'For candle 4 continuation: require candle 3 to close above candle 2''s high, then mark EQ of candle
+  3''s range and require candle 4''s low in its upper half.'
+invalidation:
+- The next candle's low forms below EQ of the prior candle's range — the wick is too large to support
+  expansion.
+measurable:
+- expansion rate of candles whose low is above vs below prior-candle EQ
+sources:
+- video_id: 3eVxTV_7L2U
+  title: A Complete Trading Framework (Universal Models, SMT, Swing Points) | GXT
+  quote: It is a mechanical way to measure wick size
+- video_id: 3eVxTV_7L2U
+  title: A Complete Trading Framework (Universal Models, SMT, Swing Points) | GXT
+  quote: It is simply when candle 2 closes back inside of candle 1's range
+ambiguities:
+- EQ is taken on the full high-to-low range; he does not say whether wicks or bodies define that range.
+- This is a guest's mechanisation of the channel's own small-wick rule; whether TTrades himself uses
+  the same 0.5 test is not established by this video.
+related:
+- fractal-model-c2
+- fractal-model-c3
+- small-wick-expansion-rule
+- equilibrium-eq
+contributing_units:
+- education_ict_updated_01
+draft_count: 1

@@ -1,0 +1,86 @@
+id: standard-deviation-projection
+name: Standard Deviation Projection Of The Manipulation Leg (AM Trades' construction)
+aliases:
+- deviations
+- max expansion deviation
+- weekly projections
+category: entry
+status: specified
+definition: 'AM Trades projects standard deviations of the MANIPULATION leg to price the expected expansion.
+  The anchor is not the whole swing: he takes the single swing move that drove INTO the higher-timeframe
+  PD array that reversed price, from that leg''s absolute extreme to the swing point where the change
+  in state of delivery occurred, and projects forward. For a weekly-scale projection he anchors on the
+  hourly chart deliberately, because lower timeframes add wick noise he is trying to cancel out. The
+  numbers he gives are explicit: the 2 and 2.5 deviations are a good first target, and the 4 and 4.5
+  deviations are ''max expansion'' - what should cap the weekly range. Intraday he repeats the same
+  construction from the midnight open on a lower timeframe (marking the manipulation that precedes the
+  distribution) and takes the level where the intraday and weekly projections overlap as the target.'
+timeframes:
+  htf:
+  - 1W
+  - 1D
+  - 1H
+  ltf:
+  - 15m
+  - 5m
+  fractal: true
+preconditions:
+- Price has run into a higher-timeframe PD array and reversed.
+- A change in state of delivery has marked the origin of the reversal.
+detection_rules:
+- Identify the PD array that reversed price and the single swing leg that ran into it.
+- Anchor from that leg's absolute extreme to the swing point at which state of delivery changed (market
+  structure high to low, or low to high).
+- Project 2 / 2.5 deviations - first target.
+- Project 4 / 4.5 deviations - max expansion; this is what should cap the weekly range.
+- Use the hourly (not lower) for weekly-scale projections so wicks do not distort the anchor.
+- Repeat on a lower timeframe from the midnight open for the intraday manipulation, and prefer levels
+  where the intraday and weekly projections overlap.
+invalidation:
+- Price reverses before the 2 deviation, or the anchoring reversal fails.
+execution:
+  bias: Direction of the expansion away from the manipulation.
+  entry: Not specified here - the projection is a target tool.
+  stop: Not specified here.
+  targets:
+  - 2 deviation
+  - 2.5 deviation
+  - 4 / 4.5 deviation (max expansion)
+measurable:
+- hit rate of the 2 / 2.5 deviation on confirmed weekly profiles
+- how often price exceeds the 4 / 4.5 deviation within the same week
+- distribution of week-range vs the projected max expansion
+sources:
+- video_id: wGYde-h84cs
+  title: Live Q&A with AM Trades - Weekly Profile
+  quote: I use standard deviations anchor to Market structure
+- video_id: wGYde-h84cs
+  title: Live Q&A with AM Trades - Weekly Profile
+  quote: I like to use like that one swing move that drives into the PD array
+- video_id: wGYde-h84cs
+  title: Live Q&A with AM Trades - Weekly Profile
+  quote: 2 and 2.5 is a good first Target
+- video_id: wGYde-h84cs
+  title: Live Q&A with AM Trades - Weekly Profile
+  quote: we have a 4 and 4.5 which I consider a Max expansion
+- video_id: wGYde-h84cs
+  title: Live Q&A with AM Trades - Weekly Profile
+  quote: for the week this is what I consider what should cap the weekly range
+ambiguities:
+- Whether the anchor uses wicks or bodies is answered only for the high side ('the absolute High to
+  the swing low'); the low side is not stated.
+- The transcript renders his phrase as 'Judas wins for Aviation' (= Judas swing for deviation), so the
+  exact wording of the anchor definition is corrupt.
+- No rule chooses between the 2 and the 2.5 as the first target.
+- 'PROVENANCE: the channel owner states in the same video that HE learned standard deviations from AM
+  Trades - so a ttrades-voiced version of this concept elsewhere is downstream of this guest.'
+related:
+- max-expansion-deviation-no-trade
+- hourly-cisd-manipulation-confirmation
+- weekly-profile-framework
+contributing_units:
+- live_stream_guests_02
+draft_count: 1
+voice: guest
+guest_sources:
+- AM Trades

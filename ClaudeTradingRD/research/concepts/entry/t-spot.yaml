@@ -1,0 +1,268 @@
+id: t-spot
+name: The T-Spot (overlap of two half levels)
+variants:
+  name:
+  - The T-Spot
+  definition:
+  - 'The Shorts state the T-spot''s function in one line: it is where all entries are looked
+    for, because it is where the higher-timeframe wick is anticipated to form. Inside the
+    T-spot the Short gives two alternative entries off the same zone - a limit entry when
+    price first reaches down into the fair value gap with the stop below the low, or, if confirmation
+    is preferred, waiting for price to close over the series of down-closed candles into the
+    important level and entering there with the stop on the new protected low. Once candle
+    3 closes outside candle 2''s range the same procedure repeats in candle 4.
+
+    '
+  - 'The narrow zone in which the next candle''s wick is expected to form, defined as the
+    overlap of two 50% levels rather than as a single level. In the ES walkthrough it is the
+    overlap of 0.5 of the higher-timeframe wick with 0.5 of the change in the state of delivery:
+    he wants both respected, so the area where they overlap is where price must hold. In the
+    CAD walkthrough the same idea is built from 0.5 of the daily opposing candle overlapped
+    with the upper half of the daily candle - he wants the next candle''s wick to form inside
+    that intersection. In both cases the T-spot is not itself the entry; a point of interest
+    inside it (a fair value gap or an order block) is the entry, and the T-spot is the filter
+    that decides which point of interest is the right one.
+
+    '
+  - 'Asked directly for the definition of the T-spot, he gives the purpose but refuses the
+    derivation: it means where the wick should form — where the wick should go — and he says
+    outright that he is not explaining where the name or the level is derived from (the name
+    is a joke). In use across these streams it is printed by his indicator immediately after
+    the CISD and the protected swing, it is the area the daily wick is expected to form in,
+    and in the Asia example it is named interchangeably with the EQ of the candle being traded
+    from.
+
+    '
+  - 'In this unit the t-spot is defined purely functionally: it is the area in which the higher-timeframe
+    wick is expected to form, drawn by his indicator once the higher-timeframe sweep-and-closure
+    and the lower-timeframe alignment are both present. Its operational uses are stated clearly
+    - it is where a lower-timeframe point of interest is looked for, and it doubles as a diagnostic:
+    if the t-spot has already formed the wick of the higher-timeframe candle, that is what
+    he wants to see; if the higher-timeframe wick is missing, price can be anticipated to
+    retrace into the t-spot to build one. A t-spot that prints large is a reason NOT to take
+    a positional entry, because the stop below its lows makes the risk-to-reward unworkable.'
+  - 'In this unit the T-spot is the box his indicator paints (grey in the index examples,
+    green in the gold example) marking the area in which the wick of the daily candle should
+    form before price trades away. He states the use explicitly - he wants price to open,
+    make a low inside the area, and then trade higher, so the area is where the wick low must
+    be held - and he shows what is inside it: a fair value gap, which is the object actually
+    entered from. Asked directly how the indicator prints the T-spot he answers only that
+    it is what he coded, so the derivation is withheld here.'
+definition: 'The indicator-drawn box inside a higher-timeframe candle marking the area where
+  that candle''s wick is expected to form - i.e. where a bearish day should make its high
+  or a bullish day its low. Functionally it is the zone that must hold: price closing over
+  the T-spot on a bearish setup is treated as the early warning that the continuation will
+  fail. In one worked example the T-spot ''is just the equilibrium'', tying it to the candle
+  EQ; a point of interest inside the T-spot is what the IC-CISD is sought at.'
+category: entry
+status: contested
+aliases:
+- T spot
+- the gray box
+- the green box
+- T-spot
+- the T spot
+- overlapping those two
+- our EQ, our T-spot
+- where the higher time frame wick forms
+- gray box
+- green box
+preconditions:
+- A valid model has printed (closure + CISD).
+- A higher-timeframe wick or opposing candle with a defined range.
+- A change in the state of delivery, or a higher-timeframe candle, whose half level can be
+  measured.
+- A CISD and a protected swing have printed on the higher-timeframe candle.
+- A higher-timeframe sweep and closure back inside.
+- The paired lower timeframe aligned in the same direction.
+- A printed model on the higher-timeframe candle.
+detection_rules:
+- The T-spot is drawn by the indicator inside the higher-timeframe candle, on the side the
+  wick is expected.
+- Seek the point of interest for the entry INSIDE the T-spot; a point of interest beyond it
+  is explicitly not wanted.
+- Price must not close over (bearish) / under (bullish) the T-spot area.
+- T-spots from two timeframes can be overlapped by running two copies of the indicator; the
+  overlap is treated as confluence.
+- Locate the T-spot on the candle following a confirmed candle 2 closure - it is where the
+  next wick is expected.
+- Look for entries only inside it.
+- 'Limit branch: enter when price first trades into the fair value gap in the T-spot, stop
+  below the low.'
+- 'Confirmation branch: wait for a close over the series of opposing candles into the important
+  level, stop on the new protected swing.'
+- Repeat in candle 4 if candle 3 closed outside candle 2's range.
+- Mark 0.5 of the higher-timeframe wick being formed.
+- Mark 0.5 of the change in the state of delivery (or 0.5 of the daily opposing candle).
+- Take the overlap of the two as the zone price must hold.
+- Require the next candle's wick to form inside that zone and inside the relevant half of
+  the higher-timeframe candle.
+- Take the entry from a point of interest (fair value gap or order block) located inside the
+  zone, not from the zone boundary itself.
+- 'The T-spot and the wick location are treated as interchangeable statements of the same
+  requirement: either the T-spot is respected or the wick forms inside it.'
+- Opening beyond the T-spot is called less than ideal but is not an automatic veto - the setup
+  is then carried forward and judged on what the candle does next (whether it makes the wick
+  first).
+- The T-spot is the zone in which the higher-timeframe candle's wick is expected to terminate.
+- It is printed after (not before) the CISD and the protected swing.
+- Require price to hold within it for the continuation to remain valid.
+- In the Asia positional example the level used as the T-spot is the EQ of the candle being
+  traded from.
+- The t-spot is only marked AFTER the higher-timeframe closure and the lower-timeframe alignment
+  (confirmation) have occurred.
+- Look for a PD array or point of interest inside the t-spot; that is where the lower-timeframe
+  entry is sought.
+- If the higher-timeframe wick is absent, anticipate a retrace into the t-spot to form it.
+- If the t-spot is large, do not take a positional entry - wait for price to reach back into
+  it.
+- Chart settings are locked to the model's two timeframes so the t-spot persists while dropping
+  to lower timeframes.
+- The box marks the zone in which the current higher-timeframe candle's wick should form.
+- 'Bullish case: price must open, form its low inside the box, then trade away.'
+- The entry object inside the box is a fair value gap / continuation, not the box boundary.
+- Price trading beyond the box without holding it is the failure case (he shows one that chops
+  through).
+invalidation:
+- A close beyond the T-spot area against the setup.
+- Price trades beyond the low used for the stop.
+- Price trades and holds beyond the T-spot - the shallow-wick condition for expansion has
+  failed.
+- Price trades through and holds beyond the T-spot — the wick is not forming where expected.
+- Price trading beyond the far side of the t-spot / the wick extreme it defines.
+- The wick does not form in the box and price does not respect it.
+measurable:
+- share of higher-timeframe wick extremes that actually land inside the T-spot
+- forward outcome after a close beyond the T-spot
+- share of next-candle wicks that terminate inside the T-spot
+- limit-branch vs confirmation-branch fill rate and R outcome
+- proportion of continuations whose wick terminates inside the T-spot
+- expansion range following T-spot-respecting vs T-spot-violating candles
+- frequency with which the two half levels fail to overlap at all
+- share of higher-timeframe wicks terminating inside the T-spot
+- expansion following T-spot-respecting versus T-spot-violating candles
+- share of higher-timeframe wicks that terminate inside the marked t-spot
+- return rate into the t-spot after alignment
+- R:R distribution of positional entries by t-spot size
+- share of higher-timeframe wicks terminating inside the painted box
+- outcome of continuations that respect the box vs those that do not
+sources:
+- video_id: CqMIh-Vvhbg
+  title: Intro To TTrades Fractal Model [Indicator & Settings]
+  quote: this is the area in the higher time frame candles that I look for
+- video_id: CqMIh-Vvhbg
+  title: Intro To TTrades Fractal Model [Indicator & Settings]
+  quote: that closure right there over my level was the early warning
+- video_id: -KKuZb5Z5aU
+  title: Easy Daily Bias - Mechanical Framework
+  quote: we have the T-spot marked up, which in this case is just the equilibrium
+- video_id: Vo2n47RjjMo
+  title: Intracandle CISD (IC-CISD) - Improve Your Entries
+  quote: that's where the T spot is
+- video_id: Hi8faa5u2uw
+  title: Using the T-Spot to Find Entries Within the Fractal Model
+  quote: I'm going to look for all my entries in the T-spot
+- video_id: Hi8faa5u2uw
+  title: Using the T-Spot to Find Entries Within the Fractal Model
+  quote: which is where I'm anticipating the higher time frame wick to form
+- video_id: Hi8faa5u2uw
+  title: Using the T-Spot to Find Entries Within the Fractal Model
+  quote: I can look to take a limit entry with my stop below the low
+- video_id: gLul2OZQe9Q
+  title: Using a Lower Timeframe Inversion Entry within the Fractal Model
+  quote: price reaches into that fair value gap in the T-spot
+- video_id: IzOQmcgLyA0
+  title: 'TTrades Top-Down Chart Lessons #3'
+  quote: I want to see the wick formed in this area
+- video_id: UBTl7za9obc
+  title: 'TTrades Top-Down Chart Lessons #2'
+- video_id: Nlw-PZhoViQ
+  title: 'TTrades Top-Down Chart Lessons #1'
+  quote: I want to see the T spot respected or the upper wick form
+- video_id: m8xcjkOuBHU
+  title: New York Open Live Q&A
+  quote: what it means is where the wick should form
+- video_id: Je7cd9HJUBE
+  title: New York Open Live Q&A
+  quote: marks out that protected swing, and then prints the T-spot
+- video_id: 4jU547ocod4
+  title: TTrades Fractal Model + Inversion (Intraday Strategy)
+  quote: the area in which I expect this higher time frame Wick to form
+- video_id: sdZkE-naNiY
+  title: TTrades Indicator Updates - Walkthrough and Q&A
+  quote: looking for the wick of the daily candle to essentially try to form
+ambiguities:
+- The derivation of the T-spot is never given in the free material - it is only ever described
+  by its function. One example equates it with the equilibrium, another implies it is a band
+  rather than a line.
+- Whether the box is bounded by the candle EQ and something else (a half level of the wick?)
+  is not stated in this unit.
+- The Short never states how the T-spot's boundaries are constructed - it is shown as drawn
+  by the indicator.
+- No rule is given for choosing the limit branch over the confirmation branch.
+- Sourced from an ASR (whisper-small) transcript, not YouTube captions; wording may be imprecise.
+- In video Nlw-PZhoViQ the T-spot is named without being constructed on screen in the transcript,
+  so this source corroborates how it is used but adds nothing to how it is built.
+- 'The two videos construct the T-spot from different pairs of levels (wick + CISD in #2;
+  opposing candle + daily candle in #3). Whether these are the same rule expressed differently
+  or two variants is not stated.'
+- No rule is given for what to do when the two half levels do not overlap.
+- The name T-spot is used as though already known to the audience, so the canonical definition
+  lives outside this unit.
+- Whether the wick must terminate inside the zone or merely trade into it is not distinguished.
+- The derivation is explicitly withheld — he says he is not explaining where the T-spot is
+  derived from — so it cannot be computed from this unit.
+- Naming it as the EQ in one example conflicts with the two-overlapping-half-levels construction
+  recorded elsewhere in the corpus; both readings are used in this unit without reconciliation.
+- Whether the wick must terminate inside it or merely trade into it is still not distinguished.
+- The t-spot's construction is never given in this unit - it is produced by his paid indicator,
+  so the level cannot be reproduced from this source alone.
+- '''A bit large'' as the disqualifier for a positional entry is not quantified.'
+- Whether the t-spot is derived from the higher-timeframe candle, the lower-timeframe one,
+  or the overlap of both is not stated here.
+- The derivation is explicitly withheld - asked how the indicator prints it, he says only
+  that it is what he coded.
+- The box appears grey in some examples and green in others with no stated difference in meaning.
+- '''Respected'' is not defined as a wick touch, a body close or a full hold.'
+related:
+- equilibrium-eq
+- ic-cisd
+- ttfm-indicator-settings
+- half-wick-respect
+- indicator-print-conditions
+- ltf-inversion-entry-in-tspot
+- fractal-model-c3
+- fractal-model-c4
+- upper-half-eq-expansion-filter
+- small-wick-expansion-rule
+- cisd
+- order-block
+- protected-swing
+- fractal-model-c2
+- fair-value-gap
+- daily-tspot-open-poi
+timeframes:
+  htf:
+  - 1D
+  - 4H
+  - 1H
+  ltf:
+  - 15m
+  - 5m
+  fractal: true
+execution:
+  bias: Direction of the higher-timeframe candle 2 / CISD.
+  entry: At the fair value gap or order block inside the T-spot.
+  stop: Beyond the protected swing formed at the extreme of the wick.
+  targets:
+  - intraday highs or lows
+  - previous period extreme
+contributing_units:
+- build_a_model_intro_to_ttrades_fractal_model_01
+- chart_lessons_01
+- education_ict_updated_02
+- live_streams_02
+- live_streams_05
+- shorts_04
+draft_count: 6
+voice: ttrades

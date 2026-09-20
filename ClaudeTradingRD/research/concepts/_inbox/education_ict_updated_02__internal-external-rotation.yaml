@@ -1,0 +1,57 @@
+id: internal-external-rotation
+name: Internal <-> External Range Liquidity Rotation
+aliases:
+- internal to external
+- external to internal
+category: model
+status: specified
+definition: 'The alternation that drives the whole IRL/ERL model: price is expected to move from
+  internal range liquidity to external and from external back to internal, oscillating until a trend
+  shift or some other move breaks the cycle, at which point it restarts. In a bullish trend the same
+  rotation is re-described as higher low -> higher high -> higher low, where each higher low is a
+  reaction in internal range liquidity and each higher high is external range liquidity taken.'
+timeframes:
+  htf:
+  - 1W
+  - 1D
+  - 4H
+  ltf:
+  - 1H
+  - 15m
+  - 5m
+  fractal: true
+preconditions:
+- A range with identifiable swing extremes and at least one fair value gap.
+detection_rules:
+- After external liquidity is purged, set the draw to the nearest unfilled fair value gap.
+- After internal liquidity is reached and respected, set the draw to the external swing in the direction
+  of the reaction.
+- Repeat; a trend shift or an unusual move resets the cycle.
+- 'Trend form: in an uptrend expect higher low (internal) then higher high (external), alternating.'
+invalidation:
+- A trend shift, or a move that breaks the oscillation - he allows explicitly that something can
+  break it and 'then it restarts'.
+- In the worked example, external liquidity taken WITHOUT a strong narrative means the next leg may
+  go to internal liquidity or to the other side of the range instead - the rotation stops being tradeable.
+measurable:
+- completion rate of the external -> internal -> external sequence by timeframe
+- frequency of skipped legs
+sources:
+- video_id: TfHlNgAZ_II
+  title: Trading IRL & ERL With Order Blocks! - ICT Concepts
+  quote: we expect price to move from internal to external and external to internal
+ambiguities:
+- '''Respect'' of the fair value gap is judged visually here; no close-through test is stated in
+  this video.'
+- The condition that breaks the rotation ('or have some other movement which breaks this') is not
+  specified.
+related:
+- internal-range-liquidity
+- external-range-liquidity
+- irl-erl-flowchart-model
+- draw-on-liquidity
+python_detector: null
+contributing_units:
+- education_ict_updated_02
+draft_count: 1
+voice: ttrades

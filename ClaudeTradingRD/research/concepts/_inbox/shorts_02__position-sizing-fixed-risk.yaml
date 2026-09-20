@@ -1,0 +1,55 @@
+id: position-sizing-fixed-risk
+name: Fixed-Risk Position Sizing
+category: risk
+status: specified
+definition: A platform Short showing the procedure end to end with a concrete number. The risk amount
+  is the input ($300 in the example), and the platform back-solves the contract count from the stop
+  distance. Where the stop is close enough that no whole contract count can express $300 of risk, the
+  fix is to switch to MICRO contracts (he switches to MGC). The tool then automatically calculates the
+  position size needed to get closest to that risk level, and holds the risk constant as the stop widens
+  - seven contracts on a tight stop, one on a wide one.
+timeframes:
+  htf: []
+  ltf: []
+  fractal: false
+preconditions:
+- An entry, a stop loss and a take profit are already placed on the chart.
+- A fixed dollar risk amount has been chosen.
+detection_rules:
+- Input the fixed dollar risk amount, not the contract count.
+- If the stop is too tight for the full-size contract to express that risk, switch to micros (MGC in
+  the example).
+- The platform calculates the size that comes closest to the chosen risk.
+- Risk stays constant as the stop distance changes - more contracts on a tighter stop, fewer on a wider
+  one.
+invalidation:
+- Not applicable - a sizing procedure.
+measurable:
+- realised dollar risk per trade versus the $300 target
+- rounding error introduced by whole-contract sizing at each stop distance
+sources:
+- video_id: JPB273sQJsk
+  title: Position Sizing on TradingView + NinjaTrader
+  quote: There's no way to risk $300 with my stop loss there
+- video_id: JPB273sQJsk
+  title: Position Sizing on TradingView + NinjaTrader
+  quote: That is where we would want to go to micros
+- video_id: JPB273sQJsk
+  title: Position Sizing on TradingView + NinjaTrader
+  quote: it will automatically calculate the position size needed to get closest to that level
+ambiguities:
+- $300 is used as the worked example, not stated as his risk-per-trade policy; no percentage of account
+  is given anywhere in the clip.
+- The rounding is acknowledged ("we can't get any closer to 300 there") but no rule says whether to
+  round up or down.
+- This is a TradingView / NinjaTrader tooling demonstration; nothing in it says the sizing rule applies
+  to any other venue.
+related:
+- position-sizing
+- prop-firm-drawdown-sizing
+- stop-loss-placement
+- risk-reward-minimum
+voice: ttrades
+contributing_units:
+- shorts_02
+draft_count: 1

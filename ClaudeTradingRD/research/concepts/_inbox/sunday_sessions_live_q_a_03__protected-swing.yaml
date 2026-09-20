@@ -1,0 +1,57 @@
+id: protected-swing
+name: "Protected Swing"
+aliases: ["protected low", "protected high", "protected swing point"]
+category: structure
+status: specified
+
+definition: >
+  A swing high or low that has been swept and then closed back through, so that the
+  extreme is now defended by the closure. Once protected, 50% of the swing should be
+  respected on any pullback, and price trading beyond the protected extreme
+  invalidates the idea. It is the object he trades away from, and having one already
+  formed is the precondition for a pre-open positional entry.
+
+timeframes:
+  htf: ["4H", "1H"]
+  ltf: ["15m", "5m", "3m"]
+  fractal: true
+
+preconditions:
+  - "A swing high or low exists and has been swept."
+  - "There is separation between the swept level and the newly formed swing - a swing that forms at equal lows with the swept level is not tradeable away from."
+
+detection_rules:
+  - "Price sweeps out a high (bearish case) and then closes below it - the swept high is now protected."
+  - "That level becomes the point of interest; 50% of it should be respected on the pullback."
+  - "Price retraces into the fair value gap created by the displacement, then closes below the protected swing again - that close is the entry."
+  - "For a pre-open positional entry the protected swing must already exist before 09:30, with all timeframes aligned."
+
+invalidation:
+  - "Price trades beyond the protected extreme."
+  - "The 50% level is not respected on the pullback."
+  - "The swing formed at equal lows/highs with no separation from the swept level - there is nothing to trade away from even if the sweep technically occurred."
+
+execution:
+  bias: "Away from the protected swing."
+  entry: "Close below (bearish) the protected swing after a retracement into the fair value gap."
+  stop: "On the bodies, beyond the protected extreme; for pre-open entries the stop must cover the fair value gap plus its 50% so the trade has room."
+  targets: ["2R minimum", "first failure swing", "previous day high/low"]
+
+measurable:
+  - "hit rate of the 50% level holding after a protected swing forms"
+  - "outcome difference between protected swings with and without separation from the swept level"
+  - "2R hit rate from the close-below entry"
+
+sources:
+  - video_id: bMkRomKEunU
+    title: "New York Open Live Q&A"
+  - video_id: wM1s7UivQ08
+    title: "New York Open Live Q&A"
+
+ambiguities:
+  - "'Separation' - the minimum distance between the swept level and the new swing - is never quantified; he rejected a live setup on this basis without giving a threshold."
+  - "'Stop on the bodies' does not specify which bodies."
+  - "Whether the retracement into the fair value gap is mandatory or merely typical is not stated."
+
+python_detector: null
+related: ["cisd", "liquidity-sweep", "failure-swing", "positional-entry-before-open"]

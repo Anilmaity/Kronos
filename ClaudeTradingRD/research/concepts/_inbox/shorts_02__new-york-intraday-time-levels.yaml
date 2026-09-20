@@ -1,0 +1,65 @@
+id: new-york-intraday-time-levels
+name: New York Intraday Time Levels (8:30 / 9:30 / 9:45 / 10:00)
+category: time
+status: specified
+definition: 'A Short names the specific sequence he wants when trading the New York open, and it is
+  anchored at 08:00, not 08:30: he looks for an 8:00 a.m. reversal, i.e. a candle 2 closure on the HOURLY
+  chart at 08:00. That lets him anticipate the 9-to-10 a.m. hourly candle - or the 09:30 open - to expand,
+  on the reasoning that 8 or 8:30 has already done the reversing. Execution is on the lower timeframe:
+  the 8 a.m. hourly candle forms the reversal, a lower-timeframe change in the state of delivery prints,
+  and a continuation forms PRIOR to the 09:30 open, which is the entry, with the stop on that low. A
+  second Short shows the 08:30 counterpart live: 08:30 makes the opposing run against the anticipated
+  daily order flow (the Judas swing) into the order block.'
+timeframes:
+  htf:
+  - 1D
+  - 1H
+  ltf:
+  - 15m
+  - 5m
+  fractal: false
+preconditions:
+- Intent to trade the New York open.
+- A daily directional read already in place (second Short).
+detection_rules:
+- On the HOURLY chart, look for a candle 2 closure on the 08:00 candle - the "8:00 a.m. reversal".
+- Given that reversal, anticipate the 9-to-10 a.m. hourly candle, or the 09:30 open, to expand.
+- 'Drop to the lower timeframe: require a change in the state of delivery after the 8 a.m. reversal.'
+- Require a continuation to form BEFORE the 09:30 open; enter there with the stop on that low.
+- 'Complementary case: 08:30 makes an opposing run against the anticipated daily order flow - the Judas
+  swing - and the candles it prints into the level become the order block.'
+invalidation:
+- No candle 2 closure prints on the 08:00 hourly candle - the sequence he is looking for is absent.
+measurable:
+- expansion rate of the 09:00-10:00 hourly candle conditional on an 08:00 hourly C2 closure
+- hit rate of entries taken pre-09:30 with the stop on the pre-open continuation low
+sources:
+- video_id: 8fseTcJMiBo
+  title: If I’m Trading the New York Open, I’m Looking for the 8AM Reversal Sequence
+  quote: what I'm going to look for is an 8:00 a.m. reversal
+- video_id: 8fseTcJMiBo
+  title: If I’m Trading the New York Open, I’m Looking for the 8AM Reversal Sequence
+  quote: I'm going to want to see a candle to closure at 8:00
+- video_id: 8fseTcJMiBo
+  title: If I’m Trading the New York Open, I’m Looking for the 8AM Reversal Sequence
+  quote: This allows me to anticipate the 9 to 10 a.m. candle to expand
+- video_id: QRxG7a_JB08
+  title: Important Time Levels Paired with Daily Bias lead to Setups for Entry
+  quote: 8:30 opposes my anticipated daily order flow
+ambiguities:
+- The Short slides between 8 and 8:30 in one sentence ("as 8 or 8:30 has already reversed") without
+  saying whether the hourly candle 2 closure must be the 08:00 candle specifically.
+- No timezone is stated in the clip - EST is assumed from the rest of the corpus, not from here.
+- '"Candle to closure" is the auto-caption rendering of "candle 2 closure" throughout.'
+- No target is given for the anticipated 09:30 expansion in this clip, only the entry and the stop.
+related:
+- important-time-levels
+- opposing-run-entry
+- nine-thirty-expansion-invalidation
+- new-york-reversal-profile
+- fractal-model-c2
+- session-open-volume-nyse
+voice: ttrades
+contributing_units:
+- shorts_02
+draft_count: 1

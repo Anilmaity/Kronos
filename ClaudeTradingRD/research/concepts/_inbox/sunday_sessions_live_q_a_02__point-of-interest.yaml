@@ -1,0 +1,56 @@
+id: point-of-interest
+name: "Point Of Interest (POI) - required for reversals, optional for continuations"
+aliases: ["POI", "T spot"]
+category: entry
+status: contested
+
+definition: >
+  A prior level (fair value gap, previous swing high/low, opposing-candle midpoint) that a
+  C2 closure is expected to occur at. The corpus contains two versions of the requirement:
+  the simplified public rule that a C2 closure must be at a point of interest, and the
+  nuanced rule he states in 00iZXPAdR5A - POI is required 100% for a reversal C2, and is NOT
+  required for a continuation C2, because on a continuation the daily profile itself supplies
+  the extra confirmation. He explicitly says he teaches the simplified version "for
+  simplicity's sake".
+
+timeframes:
+  htf: ["1D", "4H", "1H"]
+  ltf: ["15m", "5m"]
+  fractal: true
+
+preconditions:
+  - "A C2 closure candidate exists."
+  - "The trade has been classified as either a reversal or a continuation."
+
+detection_rules:
+  - "Classify the setup: is the C2 attempting to reverse the higher-timeframe direction, or continue it?"
+  - "If reversal: the C2 must occur at a point of interest, or the setup is rejected."
+  - "If continuation: the POI requirement is waived."
+  - "Acceptable POIs seen in use: fair value gap, previous day high/low, prior swing, 50% of an opposing candle."
+
+invalidation:
+  - "A reversal C2 with no POI - reject."
+
+execution:
+  bias: "Per the C2."
+  entry: "Per the C2/C3 model."
+  stop: "Beyond the POI / C2 extreme."
+  targets: "Per the C2 model."
+
+measurable:
+  - "Expectancy of reversal C2s with vs without a POI."
+  - "Expectancy of continuation C2s with vs without a POI (tests whether the waiver costs anything)."
+
+sources:
+  - video_id: 00iZXPAdR5A
+    title: "New York Open Live Q&A"
+  - video_id: Qv6Ux_Z8VrA
+    title: "New York Open Live Q&A"
+
+ambiguities:
+  - "CONFLICT: his simplified public teaching (POI always required) versus his stated real rule (reversal only). Any concept drafted from the polished lessons should be reconciled with this."
+  - "The classification reversal-vs-continuation is itself judgemental and is the gate on the whole rule."
+  - "The set of acceptable POIs is enumerated by example only."
+
+python_detector: null
+related: ["fractal-model-c2", "ic-cisd", "london-reversal-ny-continuation", "equilibrium-eq"]

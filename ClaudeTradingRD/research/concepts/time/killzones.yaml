@@ -1,0 +1,197 @@
+id: killzones
+name: Killzones (Trading Sessions)
+definition: 'EARLIER RECORDINGS. Two things this unit adds to the library''s killzone entry.
+  First, the kill zone is stated as a REQUIRED CONFIGURATION CHOICE of any entry model - deciding
+  which kill zones you enter in comes second only to deciding the execution timeframe, and
+  models are hunted only inside them; his own choice is stated as the New York open. Second,
+  the only explicit clock reading in the unit: the New York morning session is described as
+  starting at 8:30 and then running into 9:30, with 8:30 also identified as the moment ''the
+  news embargo lifts'' that separates London price action from New York''s.'
+variants:
+  definition:
+  - 'Three guests in this unit gate execution on kill zones, and each names a different window
+    - so the set is a comparison, not a consensus. Trader T is the only one who gives clock
+    bounds: on his simulator''s server clock he trades roughly 07:00-10:30 and 12:30/13:00-15:00,
+    and he cross-references that clock against a live chart to anchor it (on his build 08:00
+    server = London open = 03:00 Eastern, and he deliberately starts an hour earlier at 07:00
+    = 02:00 Eastern). He stops executing around 15:40 and treats 16:00 as outside his time
+    entirely. Ben trades only in kill zones and explicitly prefers the PM session, because
+    that is where he has the most data, where the daily draw is clearest to him, and where
+    trading back inside the range suits him. $niper checks that his entries fall inside kill-zone
+    times as part of confirming a smart money reversal, and says he currently prefers the
+    AM session to the PM.
+
+    '
+  - 'Specific time windows during the trading day in which volatility is higher, making them
+    the preferred windows for catching larger ranges. All times are New York time (EST). The
+    windows differ between forex and index instruments in the New York portion. The speaker
+    states that generally high-probability moves occur during killzones, and uses them both
+    as a filter (an OTE tap outside a killzone is ignored) and as the structural map for the
+    AMD day profile.
+
+    '
+category: time
+status: contested
+aliases:
+- kill zones
+- New York morning session
+- the news embargo lifts
+- session windows
+- AM session vs PM session
+- sessions
+- Asia session
+- London session
+- New York AM
+- London close
+preconditions:
+- Chart timezone configured (not stated in these videos).
+- A session indicator is on the chart; Trader T's requires the platform clock to be verified
+  against a live chart first.
+- Chart timezone set so that it displays as New York time.
+detection_rules:
+- Choose the execution timeframe first, then choose which kill zone(s) the model is hunted
+  in.
+- Search for the entry model only inside the chosen kill zone.
+- 'New York morning session: 8:30 start, running into 9:30.'
+- 8:30 is the news-embargo boundary; price action before it (London) is treated as a different
+  regime.
+- 'His own stated choice: 1-minute / 15-second execution during the New York open.'
+- 'Trader T: execute only inside 07:00-10:30 and 12:30/13:00-15:00 on the verified server
+  clock; stop by about 15:40.'
+- 'Trader T: the offset depends on which MT4 build the simulator runs on, so the mapping must
+  be re-derived per platform, not assumed.'
+- 'Trader T: record which kill zone each journalled trade fell in.'
+- 'Ben: trade only in kill zones; his preferred window is the PM session, and he accepts missing
+  AM moves rather than forcing them.'
+- '$niper: treat the kill-zone window as part of the confirmation - an entry outside the kill
+  zone is not taken.'
+- None of the three trades outside a session window; the disagreement is only about WHICH
+  window.
+- 'FOREX: Asia 20:00-00:00; London 02:00-05:00; New York AM 07:00-10:00; London Close 10:00-12:00
+  (all New York time).'
+- 'INDICES: Asia 20:00-00:00; London 02:00-05:00; New York AM 08:30-11:00; New York PM 13:30-16:00.'
+- Mark each session's high and low (killzone pivots) as liquidity.
+- 'Day profile heuristic observed: Asia accumulates, London manipulates, New York distributes.'
+- 'Filter usage: a setup that triggers outside a killzone is not taken — he skips it explicitly
+  for that reason.'
+invalidation:
+- Not applicable - a time window either contains the bar or it does not.
+- The window closes - Trader T abandons setups that mature after his cut-off even when they
+  look valid.
+- Not applicable — a time window either contains the bar or it does not.
+measurable:
+- hit rate of the same entry model inside vs outside the chosen kill zone
+- share of the day's range formed between 8:30 and 9:30
+- expectancy by hour of day for the same setup, which is the direct test of the three competing
+  windows
+- trade count and expectancy of Trader T's first window versus his second
+- how many valid setups each cut-off discards
+- share of the daily range formed inside each session (the video asserts New York AM dominates)
+- realised volatility per session window vs the rest of the day
+- hit-rate difference for the same entry model taken inside vs outside a killzone
+sources:
+- video_id: A8UpRZlRzlg
+  title: Build An Entry Model - ICT Concepts
+  quote: the next thing you need to know is which kill zones you enter in
+- video_id: A8UpRZlRzlg
+  title: Build An Entry Model - ICT Concepts
+  quote: I trade the New York open
+- video_id: A8UpRZlRzlg
+  title: Build An Entry Model - ICT Concepts
+  quote: I use the 15sec or 1 minute from my entries
+- video_id: CAuN4tvLInQ
+  title: Choosing Dealing Ranges & Displacement Ranges - ICT Concepts
+  quote: which is right about here 8 30 start and then we get into 9 30
+- video_id: aDYzoae3viQ
+  title: 15 Second Chart Example - ICT Concepts
+  quote: during london up until the news embargo lifts
+- video_id: wCtxmWe4KNc
+  title: Back Testing Live Session With Trader T
+  quote: my kill zones are just oh 700 to like roughly 10 30
+- video_id: wCtxmWe4KNc
+  title: Back Testing Live Session With Trader T
+  quote: 800 is London open it's it's 3 A.M Eastern Time
+- video_id: yRmKkR4CojU
+  title: Fractalizing Entries -Q&A with Ben - ICT Concepts
+  quote: i only trade the kill zones
+- video_id: yRmKkR4CojU
+  title: Fractalizing Entries -Q&A with Ben - ICT Concepts
+  quote: i really like the pm session
+- video_id: UmLWRlXd_V8
+  title: 8/14/22  MMXM Live with $niper  - ICT concepts
+  quote: they're within the kill zones
+- video_id: MPeeE55rNOw
+  title: ICT Killzones & Indicator Settings
+  quote: kill zones are specific time Windows during the trading day
+- video_id: YESqIoA7Wyg
+  title: Important Liquidity Levels - Draw On Liquidity - ICT
+- video_id: 1YRs4Z1lMws
+  title: Optimal Trade Entry (OTE) - ICT Concepts
+ambiguities:
+- PARTIAL ANSWER TO THE LIBRARY'S 'SESSION HOURS' GAP. 8:30 and 9:30 are given as the New
+  York morning session's start and its next marker, but NO END TIME is stated and NO TIMEZONE
+  is named in any video in this unit. The library's existing entry (from MPeeE55rNOw) gives
+  full windows; this unit is consistent with its INDICES New York AM 08:30-11:00 but does
+  not independently establish it.
+- '''Which kill zones you enter in'' is framed as a per-trader choice, so the gate is configurable
+  rather than fixed.'
+- No hours at all are given for Asia, London or London close in this unit.
+- Trader T's hours are on a broker server clock whose offset he says varies by MT4 build,
+  so the times are not portable as spoken; both window ends are given as 'roughly' and the
+  second window's start is stated as 12:30 in one place and 13:00 in another.
+- His Eastern conversion implies a fixed 5-hour offset, which will drift across daylight-saving
+  changes; this is not addressed.
+- Ben names no clock times at all - 'the PM session' is left to the listener.
+- $niper's AM preference is explicitly conditional on the current month's price action being
+  poor, not a standing rule.
+- None of the three states his window in a single agreed timezone, so the three cannot be
+  compared directly from the transcripts alone.
+- Daylight saving is handled by a UI instruction ('make TradingView show New York time') rather
+  than a stated UTC-offset convention — a backtest must decide this itself.
+- London Close (10:00-12:00) is listed for forex only; whether it applies to indices is not
+  said.
+- Why New York AM starts at 07:00 for forex and 08:30 for indices is not explained.
+- '''Volatility is higher'' is asserted, never measured.'
+- The killzone filter is applied in examples but only stated as a rule in the OTE video, in
+  passing.
+related:
+- ny-morning-routine
+- economic-calendar-filter
+- four-entry-models
+- new-york-intraday-time-levels
+- trading-window
+- important-time-levels
+- entry-time-window
+- session-high-low
+- est-timezone-anchor
+- killzone-execution-sequence
+- silver-bullet-window
+- power-of-three-amd
+- daily-bias-framework
+guest_sources:
+- $niper (Matt)
+- 8/14/22  MMXM Live with $niper  - ICT concepts
+- Back Testing Live Session With Trader T
+- Ben (Ben TT)
+- Fractalizing Entries -Q&A with Ben - ICT Concepts
+- Trader T
+timeframes:
+  htf:
+  - 1D
+  ltf:
+  - 15m
+  - 5m
+  - 1m
+  - 15s
+  fractal: false
+execution:
+  bias: Not set by this rule.
+  entry: Only inside the chosen window.
+  stop: Not set by this rule.
+  targets: []
+contributing_units:
+- education_ict_01
+- live_stream_guests_01
+- the_foundation_01
+draft_count: 3
+voice: mixed

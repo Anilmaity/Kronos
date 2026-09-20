@@ -1,0 +1,57 @@
+id: phases-of-price
+name: "Phases of Price Delivery"
+aliases: ["expand or consolidate", "new phase of price"]
+category: structure
+status: specified
+
+definition: >
+  Asked how to spot a consolidation early, he compresses the whole framework into three
+  if-then statements: in the simplest sense price either expands or consolidates, so if price
+  manipulates the edge of a range you look for it to expand; if price has already expanded you
+  look for it to consolidate; and if price is retracing you look for it to expand. He couples
+  that with daily closures as the read. Two consequences recur through the unit. A move that
+  expanded into a low or a high is due a new phase of price, which is why he will not initiate
+  in that direction there. And a new higher-timeframe candle - the 10:00 a.m. 4-hour open is
+  his example - is where a new phase of price can start, so it is both the exit for the old
+  phase and the earliest entry for the next.
+
+timeframes:
+  htf: ["1D", "4H"]
+  ltf: ["1H", "15m"]
+  fractal: true
+
+preconditions:
+  - "A range or recent leg whose phase can be classified."
+
+detection_rules:
+  - "Price manipulated the edge of a range -> expect expansion."
+  - "Price has already expanded -> expect consolidation."
+  - "Price is retracing -> expect expansion."
+  - "Price expanded into a high or a low -> expect a new phase of price; do not initiate in that direction."
+  - "A new higher-timeframe candle open is where a new phase of price begins."
+
+invalidation:
+  - "The expected phase does not appear, which itself reclassifies the sequence."
+
+measurable:
+  - "transition matrix between expansion, retracement and consolidation on daily closures"
+  - "share of phase changes that begin within n bars of a 4-hour candle open"
+
+sources:
+  - video_id: i2HhHhWdaPQ
+    title: "New York Open Live Q&A"
+    quote: "if price manipulates the edge of a range, you can look for it to expand"
+  - video_id: N3Ml-r0X30o
+    title: "New York Open Live Q&A"
+    quote: "You have price expanding into a low. You can expect some sort of new phase"
+
+ambiguities:
+  - "No measure separates a retracement from a consolidation; both are read visually off daily closures."
+  - "Whether expansion can follow expansion directly is not addressed here (a guest concept elsewhere says it cannot)."
+
+python_detector: null
+related: ["phases-of-price-transitions", "consolidation-avoidance", "failure-to-manipulate", "continuation-timing", "no-shorting-below-lows"]
+
+contributing_units: ["live_streams_04"]
+draft_count: 1
+voice: ttrades

@@ -1,0 +1,69 @@
+id: stop-loss-placement
+name: "Stop Loss Placement"
+aliases: ["don't use a raided swing", "stop below the order block"]
+category: risk
+status: specified
+voice: guest
+guest_sources:
+- "Ben (Ben TT)"
+- "Finessee_Fx"
+
+definition: >
+  Two guests give compatible, decidable stop rules. Ben's is a selection rule between candidate
+  swings: the stop goes on the swing low that has NOT just been raided - if the nearer swing was
+  taken out by the very move that created the entry, it is unusable, so the stop goes behind it. He
+  also discusses the choice between an aggressive and a conservative swing high on the same setup:
+  the conservative one is less likely to be raided, but the aggressive one is still valid because
+  it is where the move originated, and a large wick beyond it is read as a deviation from the range
+  (liquidity grabbed and returned) rather than as structure. Finessee_Fx's rule is array-based: the
+  stop always goes beyond the order block, because a violated order block means order flow no
+  longer respects that direction, so the stop and the bias flip together.
+
+timeframes:
+  htf: ["1D", "4H"]
+  ltf: ["1H", "15m", "5m", "1m"]
+  fractal: true
+
+preconditions:
+- "An entry has been located at an array or after a structure shift."
+
+detection_rules:
+- "Ben: do not place the stop on a swing that has just been raided by the move producing the entry - use the next one behind it."
+- "Ben: the swing where the move ORIGINATED is a valid stop reference even when a more conservative swing exists further away; the trade-off is raid probability against stop size."
+- "Ben: a large wick beyond a swing is treated as a deviation from the range - liquidity grabbed and returned - and not as a reason to move the stop out."
+- "Finessee_Fx: the stop is always beyond the order block used for entry, never inside it."
+- "Finessee_Fx: violation of that order block is simultaneously the stop-out and the signal to change the directional bias."
+
+invalidation:
+- "Not applicable."
+
+execution:
+  bias: "Flips on the order-block violation (Finessee_Fx)."
+  entry: "Not set by this rule."
+  stop: "Behind the un-raided swing (Ben) or beyond the order block (Finessee_Fx)."
+  targets: []
+
+measurable:
+- "stop-out rate on raided versus un-raided swing references for the same entries"
+- "R difference between the aggressive and conservative swing choice on the same setup"
+- "how often a violated order block is followed by a genuine trend change, which is what Finessee_Fx's bias flip assumes"
+
+sources:
+- video_id: yRmKkR4CojU
+  title: "Fractalizing Entries -Q&A with Ben - ICT Concepts"
+  quote: "stops the swing low because we can't use this one"
+- video_id: eK_6wgNpNh0
+  title: "Advanced ICT Directional Bias Teachings with Finessee_Fx"
+  quote: "stop losses would always be below the order block"
+
+ambiguities:
+- "'Just been raided' is not bounded in time or in candle count."
+- "Ben does not resolve the aggressive-versus-conservative swing choice with a rule; he presents both as valid and leaves it to the trader."
+- "Neither speaker states a buffer beyond the swing or the block."
+- "Finessee_Fx's 'violated' is not defined as a wick or a body event."
+
+python_detector: null
+related: ["market-structure-shift", "stop-size-reduction", "wick-to-body-order-block-zone", "protected-swing"]
+contributing_units:
+- live_stream_guests_01
+draft_count: 1

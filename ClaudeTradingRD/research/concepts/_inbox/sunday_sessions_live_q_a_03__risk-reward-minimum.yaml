@@ -1,0 +1,53 @@
+id: risk-reward-minimum
+name: "Minimum R and Position Management"
+aliases: ["2R minimum", "manage after 2R", "win rate vs R"]
+category: risk
+status: specified
+
+definition: >
+  A small set of stated risk constraints: a 2R minimum on entries, no management of a
+  position until 2R has been reached, and a win-rate/R relationship - a 50% win rate is
+  not viable at 1R but is viable at 1.5R and at 2R. When there is no strong higher
+  timeframe bias he takes most of the position off earlier, at 1.5R to 2R at the first
+  failure swing, and either flattens or leaves a runner at break-even.
+
+timeframes:
+  htf: []
+  ltf: []
+  fractal: false
+
+preconditions:
+  - "An entry with a defined stop, so R is computable."
+
+detection_rules:
+  - "Require at least 2R to the intended target before taking the entry; if the stop is too wide for 2R, do not take it (this is the pre-open case)."
+  - "Do not manage the position until 2R is reached."
+  - "With no strong higher timeframe bias, take most of the position off at 1.5R-2R at the first failure swing rather than holding for the deeper target."
+  - "A 50% win rate is insufficient at 1R and sufficient at 1.5R or 2R."
+  - "Risk is known from the entry price whether the entry is a limit or a market fill, so position size is derivable either way."
+
+invalidation: []
+
+execution:
+  bias: null
+  entry: null
+  stop: "Defined before the entry so R is known."
+  targets: ["2R minimum", "1.5R-2R partial at the first failure swing when bias is weak"]
+
+measurable:
+  - "realised R distribution and its win rate, compared against the 1.5R breakeven threshold"
+  - "outcome of scaling at 1.5R-2R vs holding to the deeper target on weak-bias days"
+
+sources:
+  - video_id: bMkRomKEunU
+    title: "New York Open Live Q&A"
+  - video_id: r7yW6ou1LDs
+    title: "TTrades Sunday Session - Live Q&A"
+
+ambiguities:
+  - "'Manage after 2R' and the trailing-by-opposing-candles demonstration (which would exit well before 2R) are not reconciled."
+  - "'Most of my position' at the partial is not given as a percentage."
+  - "Per-trade risk percentage is never stated in these streams."
+
+python_detector: null
+related: ["trailing-stop-opposing-candles", "max-one-trade-per-day", "failure-swing", "protected-swing"]

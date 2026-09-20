@@ -1,0 +1,54 @@
+id: fractal-model-c3
+name: "Candle 3 (the expansion candle)"
+aliases: ["C3", "candle three", "continuation candle"]
+category: model
+status: specified
+
+definition: >
+  C3 is the candle following a valid C2 closure, in which the expansion is expected and
+  traded. Entry is taken inside C3 around its opening price after its wick has formed. The
+  strongest conditions occur when several timeframes are simultaneously in C3 (described as
+  "multiple C3s"), e.g. a daily C3 that also produces an H1 C3 and, via an H4 C2, a 15m C3.
+
+timeframes:
+  htf: ["1D", "4H", "1H"]
+  ltf: ["15m", "5m", "3m", "1m"]
+  fractal: true
+
+preconditions:
+  - "A valid C2 closure exists on the same timeframe."
+  - "The C3 candle has opened and formed its wick against the intended direction."
+
+detection_rules:
+  - "C3 must close beyond the open of C2 for the sequence to have delivered."
+  - "Within C3, wait for the counter-directional wick to complete, then trade the body."
+  - "Alignment check: count how many timeframes are simultaneously in C3; more alignment implies easier expansion."
+
+invalidation:
+  - "C3 does not close beyond the open of C2 - 'then it is nothing'."
+  - "A deep retracement inside C3 that reaches OTE of the impulse leg converts the read to a V-shape reversal."
+
+execution:
+  bias: "Direction established by C2."
+  entry: "Around the opening price of C3 once its wick has formed."
+  stop: "Beyond the C3 wick / the protected swing."
+  targets: ["previous day high or low", "equal highs or lows", "close of the expansion candle (time-based exit)"]
+
+measurable:
+  - "Hit rate of C3 closing beyond the C2 open, by timeframe."
+  - "Expectancy conditioned on the number of aligned C3 timeframes."
+
+sources:
+  - video_id: aqnY1yZvfYs
+    title: "New York Open Live Q&A"
+  - video_id: Qv6Ux_Z8VrA
+    title: "New York Open Live Q&A"
+  - video_id: 00iZXPAdR5A
+    title: "New York Open Live Q&A"
+
+ambiguities:
+  - "'Multiple C3s' is asserted as the easiest expansion condition but no minimum count is given."
+  - "How far into C3 an entry remains valid is described only qualitatively ('near the opening price', 'not after it has made its average range')."
+
+python_detector: null
+related: ["fractal-model-c2", "fractal-model-c4", "htf-opening-price-entry", "time-based-exit"]

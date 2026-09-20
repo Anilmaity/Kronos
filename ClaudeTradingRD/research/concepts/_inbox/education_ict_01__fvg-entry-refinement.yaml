@@ -1,0 +1,79 @@
+id: fvg-entry-refinement
+name: Three Ways To Refine An Entry Inside A Fair Value Gap
+aliases:
+- improve your trade entries
+- refine your entry
+category: entry
+status: specified
+definition: 'A compact, fully enumerated procedure for reducing risk once a fair value gap has been chosen
+  as the entry area, given as three alternatives that can be stacked. (1) Put a 0.5 fib on the gap and
+  enter at its midpoint rather than at its far edge. (2) Look LEFT for an order block or breaker that
+  overlaps the gap and enter at the OPEN of that block. (3) Drop one or more timeframes and use a smaller
+  imbalance or order block sitting inside the larger gap - a daily gap refined by an hourly order block,
+  a 5-minute gap refined by a 1-minute order block. He states the trade-off explicitly: you will miss
+  some entries, but the smaller stop means the model tolerates a lower win rate. He also notes the methods
+  converge - the 1-minute order block and the 0.5 fib land in nearly the same place.'
+timeframes:
+  htf:
+  - 1D
+  - 1H
+  - 5m
+  ltf:
+  - 1m
+  fractal: true
+preconditions:
+- A fair value gap has already been selected as the entry area by some prior model.
+detection_rules:
+- 'Method 1: fib the gap; the entry is its 0.5 (consequent encroachment) rather than its far edge.'
+- 'Method 2: look to the left of the gap for an order block or breaker whose range overlaps it; enter
+  at that block''s OPENING price.'
+- 'Method 3: drop timeframe(s) and locate a smaller imbalance or order block inside the gap; use that
+  as the entry.'
+- The methods may be stacked and are expected to agree closely.
+- Accept that some entries will be missed as the price of the smaller stop.
+invalidation:
+- Price fills the gap through the refined level without reacting.
+execution:
+  bias: Inherited from the model that selected the gap.
+  entry: 0.5 of the gap, or the open of an overlapping block, or a LTF imbalance inside it.
+  stop: Beyond the gap / the refining block.
+  targets:
+  - Inherited from the parent model
+measurable:
+- fill rate and realised R of the far-edge entry vs the 0.5 entry vs the LTF-refined entry on the same
+  gaps
+- how often the three refinements land within a tick of each other
+- the win-rate reduction that the smaller stop can absorb
+sources:
+- video_id: fwUUkJ5q6tc
+  title: Improve Your Trade Entries Within Fair Value Gaps (FVG)
+  quote: just to throw a 0.5 bib on there and your entry would be here
+- video_id: fwUUkJ5q6tc
+  title: Improve Your Trade Entries Within Fair Value Gaps (FVG)
+  quote: look to your left to see if there is anything
+- video_id: fwUUkJ5q6tc
+  title: Improve Your Trade Entries Within Fair Value Gaps (FVG)
+  quote: using the open of that order block you can refine your entry there
+- video_id: fwUUkJ5q6tc
+  title: Improve Your Trade Entries Within Fair Value Gaps (FVG)
+  quote: using smaller time frame imbalances within a larger timeframe imbalance
+- video_id: fwUUkJ5q6tc
+  title: Improve Your Trade Entries Within Fair Value Gaps (FVG)
+  quote: it allows you to have a lower win percentage
+ambiguities:
+- No rule says which of the three to prefer when they disagree.
+- '''Look to your left'' has no lookback bound.'
+- How far to drop the timeframe is shown (daily->hourly, 5m->1m) but not stated as a ratio.
+- The claim that the refinement 'allows a lower win percentage' is asserted, never quantified.
+- Auto-caption renders 'fib' as 'bib' in the first example.
+related:
+- fvg-three-levels
+- consequent-encroachment
+- order-block
+- breaker-block
+- rr-gated-entry-refinement
+- equilibrium-eq
+voice: ttrades
+contributing_units:
+- education_ict_01
+draft_count: 1

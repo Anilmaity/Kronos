@@ -1,0 +1,56 @@
+id: no-size-reduction-in-drawdown
+name: Do Not Reduce Position Size In Drawdown (with the arithmetic)
+aliases:
+- keep risk fixed after a loss
+- no de-risking ladder
+category: risk
+status: specified
+definition: 'TTrades states that he does not reduce position size when in drawdown and gives the arithmetic
+  on air. Take $100 risk per trade on a fixed 2R strategy - a strategy he says is profitable from a
+  34% win rate. Suppose 50% win rate. Take a loss: you are $100 down. If you then halve the risk, the
+  next 2R winner returns only $100 and puts you back at break-even; if you keep risk constant, the same
+  winner returns $200 and puts you one R in profit. His conclusion is that scaling risk by recent outcome
+  ''adds another variable to the strategy''. AM Trades concurs in the same exchange, with the caveat
+  that he would only reduce if he is mentally not performing or is very deep in drawdown.'
+timeframes:
+  htf: []
+  ltf: []
+  fractal: false
+preconditions:
+- A fixed-R strategy with a known expectancy.
+detection_rules:
+- Risk the same fixed dollar amount on every trade regardless of the previous trade's outcome.
+- Do not step size down after a loss or a losing streak.
+- A 2R strategy is profitable above a 34% win rate - use expectancy, not recent outcomes, to size.
+- The only stated grounds for reducing are psychological (not performing mentally) or a very deep drawdown
+  - and that is the guest's caveat, not the host's rule.
+invalidation: []
+measurable:
+- equity curve of fixed-risk vs outcome-scaled sizing over the same trade sequence
+- realised win rate vs the 34% break-even threshold at 2R
+sources:
+- video_id: wGYde-h84cs
+  title: Live Q&A with AM Trades - Weekly Profile
+  quote: if you have a two hour strategy you can be profitable at 34 win rate
+- video_id: wGYde-h84cs
+  title: Live Q&A with AM Trades - Weekly Profile
+  quote: that adds another variable to the strategy
+- video_id: wGYde-h84cs
+  title: Live Q&A with AM Trades - Weekly Profile
+  quote: it's always fixed dollar risk for me personally
+ambiguities:
+- '''two hour strategy'' in the transcript is the auto-caption rendering of ''2R strategy''; ''34 win
+  rate'' is 34%.'
+- The 34% figure ignores commissions and slippage; it is the bare 2R break-even (1/(1+2) = 33.3%) rounded
+  up.
+- This directly contradicts the scaling-matrix approach recorded elsewhere in the corpus from a different
+  guest - that is a guest-vs-channel difference, not a channel self-inconsistency.
+related:
+- position-sizing-fixed-risk
+- dynamic-risk-scaling-matrix
+- risk-reward-minimum
+- prop-firm-drawdown-sizing
+contributing_units:
+- live_stream_guests_02
+draft_count: 1
+voice: ttrades

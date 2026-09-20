@@ -1,0 +1,52 @@
+id: position-sizing-fixed-risk
+name: "Fixed-Risk Position Sizing"
+aliases: ["fixed dollar risk", "fixed percentage risk", "consistent position sizing", "1R"]
+category: risk
+status: specified
+
+definition: >
+  Size every trade so that the loss at the stop is the same dollar (or percentage) amount, and
+  vary the contract/lot quantity to achieve it — never the reverse. The stated reason is that
+  the familiar win-rate versus risk-to-reward profitability table is only valid under constant
+  risk per trade; with inconsistent sizing the same sequence of outcomes produces a different,
+  possibly negative, result.
+
+timeframes:
+  htf: []
+  ltf: []
+  fractal: false
+
+preconditions:
+  - "A defined stop distance for the trade."
+  - "A known value per point / per pip for the instrument."
+  - "A chosen risk amount (fixed dollar or fixed percentage of account)."
+
+detection_rules:
+  - "contracts = risk_dollars / value_per_point / stop_size_in_points."
+  - "Stated instrument values: NQ = $20 per point; ES = $50 per point."
+  - "Worked examples at $1,000 risk: 20-point stop -> 2.5 contracts; 40-point stop -> 1.25 contracts; 10-point stop -> 5 contracts."
+  - "micros = minis x 10 (a micro is one tenth of a mini); round DOWN to a whole micro."
+  - "CFDs/forex allow decimal sizing, so no rounding constraint; use the broker's per-pip value."
+  - "TradingView risk/reward tool configuration: lot size 1,000 for forex, lot size 1 for futures; save templates per account size and instrument."
+  - "Rejected method: fixed contract size (2 NQ contracts with 20/40/10-point stops = $800/$1,600/$400 risk), which turns a -1R, -1R, +4R sequence into -$800 instead of +2R."
+
+invalidation:
+  - "Any trade whose actual risk deviates from the fixed amount breaks the model."
+
+measurable:
+  - "variance of realised risk per trade across a live sample (should be ~0)"
+  - "equity curve of the same trade sequence under fixed-contract vs fixed-risk sizing"
+
+sources:
+  - video_id: 0OjlQ91TZiU
+    title: "Position Sizing For Trading - Futures & Forex"
+    quote: "this table only works out if you have the same risk per trade"
+
+ambiguities:
+  - "The percentage of account to risk on a normal (non-prop) account is never stated; examples use 1% without endorsing it."
+  - "Commissions, spread and slippage are excluded from every calculation."
+  - "No guidance on concurrent correlated positions or total portfolio heat."
+  - "The auto-transcript garbles several figures ($11,000 for $1,000, '2.81 7' / '2.18' for 2.817 contracts, '17%' for 1.7%); the arithmetic is reconstructable but the raw numbers are unreliable."
+
+python_detector: null
+related: ["prop-firm-drawdown-sizing", "stop-loss-placement"]

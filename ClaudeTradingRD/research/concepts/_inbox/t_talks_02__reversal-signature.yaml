@@ -1,0 +1,54 @@
+id: reversal-signature
+name: "Reversal Signature"
+aliases: ["expansion met with expansion", "the V shape", "AMD reversal"]
+category: structure
+status: specified
+
+definition: >
+  A reversal is identified as expansion into a level met immediately by expansion away from
+  it - a V shape on the chart - confirmed by a CISD and paired with an SMT on a correlated
+  asset. If price engages the level and consolidates instead of reversing, the reversal
+  point is moved to the consolidation high (or low), and the same expansion-into /
+  expansion-away signature is required off that consolidation extreme. On the higher
+  timeframe the reversal signature is simply a swing point, gauged by a candle close.
+
+timeframes:
+  htf: ["1D", "4H"]
+  ltf: ["1H", "15m", "5m", "1m"]
+  fractal: true
+
+preconditions:
+  - "Price has reached a key level (FVG / internal liquidity, swing point, or order block)."
+  - "A correlated asset is being watched for SMT."
+
+detection_rules:
+  - "Expansion into the level followed immediately by expansion away from it."
+  - "A CISD confirms the reversal."
+  - "An SMT with the correlated asset is present at the reversal point."
+  - "If price consolidates at the level instead, revert to the consolidation high/low as the reversal point and require the same signature there."
+  - "On the HTF, the reversal is registered by a candle close forming a swing point."
+
+invalidation:
+  - "Price expands into the level but does not expand away - the candle instead closes as an expansion candle through the level."
+  - "The correlated asset that swept fails to reverse (see fake-smt-strength-switch)."
+
+execution:
+  bias: "Away from the swept extreme."
+  entry: "CISD on the execution timeframe after the reversal signature."
+  stop: "Beyond the reversal extreme; one worked example used the low of the order block."
+  targets: ["the opposing draw on liquidity - internal to external or external to internal"]
+
+measurable:
+  - "hit rate of reversals confirmed by CISD + SMT vs CISD alone"
+  - "frequency of the consolidation-high fallback being required"
+
+sources:
+  - video_id: J_EeS2_2CAM
+    title: "GxTradez | Phases of Price & Profiles For Expansion"
+
+ambiguities:
+  - "The captions render CISD as 'CSD'; the expansion is inferred from context and from the rest of the corpus."
+  - "Inverse fair value gaps are mentioned as an acceptable alternative confirmation but not developed."
+
+python_detector: null
+related: ["fake-smt-strength-switch", "continuation-signature", "trade-away-from-manipulation"]

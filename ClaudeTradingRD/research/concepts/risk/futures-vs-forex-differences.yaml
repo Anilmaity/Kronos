@@ -1,0 +1,65 @@
+id: futures-vs-forex-differences
+name: Why He Trades Futures Rather Than Forex (execution differences)
+definition: 'His own comparison of the two vehicles, given as an execution argument rather
+  than a preference. The stated draws of futures over forex are: no broker manipulation, and
+  a bid-ask spread that is genuinely just the bid and the ask rather than a broker-widened
+  spread - hit buy market on the S&P and you are not slipped, you are filled at the ask. Additional
+  stated differences: pattern day trading rules do not apply, tax treatment differs, and leverage
+  is available without options Greeks because a futures contract tracks the underlying directly.
+  Vocabulary and sizing change with the vehicle - lots become contracts, and pips become points,
+  handles or ticks - and a forex trader wanting the same exposure can trade the currency future
+  (6E for the euro) instead of the pair.'
+category: risk
+status: specified
+aliases:
+- futures over forex
+- no broker manipulation
+- bid ask spread
+preconditions:
+- A choice exists between a futures contract and a spot/CFD equivalent.
+detection_rules:
+- 'Assume no broker-widened spread on futures: quoted bid and ask are the executable prices.'
+- A market order on a liquid index future fills at the ask (or bid) without slippage under
+  normal conditions.
+- Pattern-day-trading restrictions do not apply to futures.
+- 'Convert sizing vocabulary when switching vehicle: lots -> contracts, pips -> points / handles
+  / ticks.'
+- A forex pair can be substituted by its currency future (EURUSD -> 6E) while keeping the
+  same analysis.
+invalidation:
+- Not applicable - vehicle selection.
+measurable:
+- realised slippage on market orders in futures versus a spread-quoted forex feed over the
+  same setups
+- difference in backtest expectancy when the spread assumption is changed from forex-typical
+  to futures-typical
+sources:
+- video_id: dtsrR8dX2Ro
+  title: Intro To Futures Trading & Prop Firms
+  quote: the bid ask spread is really just the bid and the ask
+- video_id: dtsrR8dX2Ro
+  title: Intro To Futures Trading & Prop Firms
+  quote: not going to get slipped you're just going to get filled at the ask
+- video_id: dtsrR8dX2Ro
+  title: Intro To Futures Trading & Prop Firms
+  quote: pattern day trading does not apply
+ambiguities:
+- '''No broker manipulation'' is asserted, not evidenced.'
+- The no-slippage claim is hedged with 'generally' and is made for the S&P; nothing is said
+  about thin instruments or news releases.
+- The euro-future overlay is described as having 'similar movement' to EURUSD with no correlation
+  figure.
+- Tax treatment is named as different but not described.
+related:
+- futures-over-forex-for-fills
+- futures-contract-specs
+- chart-futures-execute-elsewhere
+- oco-bracket-order
+timeframes:
+  htf: []
+  ltf: []
+  fractal: false
+contributing_units:
+- resources_01
+draft_count: 1
+voice: ttrades

@@ -1,0 +1,64 @@
+id: risk-reward-minimum
+name: Minimum R and the Break-Even Win Rate
+category: risk
+status: specified
+aliases:
+- 2R minimum
+- 34% break-even
+definition: 'A 2R minimum on every trade, stated as a system requirement rather than a preference, and
+  for the first time in the corpus with the arithmetic attached: at 2R, a win rate above 34% is break-even
+  or profitable. Everything else in the entry machinery is downstream of this -- refining the entry
+  to a lower timeframe, moving the stop to the bodies, waiting for a retest instead of entering at market,
+  and skipping a setup entirely are all presented as ways to satisfy the 2R constraint. The complementary
+  rule for getting more than 2R is to combine a lower-timeframe invalidation with a higher-timeframe
+  target.'
+timeframes:
+  htf:
+  - 1D
+  - 4H
+  - 1H
+  ltf:
+  - 15m
+  - 5m
+  - 1m
+  fractal: true
+preconditions:
+- A defined stop (protected swing) and a defined target (drawn liquidity or projection).
+detection_rules:
+- Compute R from the protected-swing stop to the nearest logical target. If < 2R, the setup does not
+  qualify as-is.
+- 'Remedies, in the order he uses them: refine the entry to a lower timeframe; move the stop to the
+  body extreme; wait for a retest / place a limit; raise the target to a higher-timeframe objective.'
+- If none of those produce 2R, skip the trade.
+- For maximum R, pair a lower-timeframe invalidation with a higher-timeframe target (demonstrated at
+  4R, 5.63R, 8R).
+- Do not seek entries after the objective has already been hit -- a new phase of price is due.
+invalidation:
+- The target is taken out before entry -- the R calculation is void.
+measurable:
+- 'realised average R and win rate over a large sample (his 5-trade demo: 80%, 2.79R)'
+- share of setups rejected on the R constraint alone
+sources:
+- video_id: TNybDCtwBnc
+  title: TTrades Playbook | Fractal Model Fundamentals (TTFM)
+  quote: with a win rate over 34%, I'm going to be break even or profitable
+- video_id: q3nauvjT3q0
+  title: Stop Overcomplicating Trading (Here's the Fix)
+- video_id: JHVaSKtE1Ys
+  title: 'Stop Losses in Trading: Know When You''re Wrong'
+- video_id: eywpZT3z6GQ
+  title: TTrades Scalping Model - Simple Day Trading Strategy
+ambiguities:
+- Whether 2R is measured to the first target or the final one is not fixed; both are used in examples.
+- The 34% figure ignores costs and partials; no commission/slippage assumption is stated.
+- Moving the stop to the bodies changes R by changing the denominator, which he acknowledges as 'manipulating
+  the risk-to-reward' without bounding how far it may go.
+related:
+- stop-loss-placement
+- rr-gated-entry-refinement
+- realistic-r-expectations
+- partial-profit-taking
+contributing_units:
+- build_a_model_intro_to_ttrades_fractal_model_02
+draft_count: 1
+voice: ttrades

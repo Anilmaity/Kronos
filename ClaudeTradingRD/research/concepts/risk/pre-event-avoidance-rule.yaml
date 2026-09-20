@@ -1,0 +1,61 @@
+id: pre-event-avoidance-rule
+name: Avoid The Days Before High Impact News; Never Hold Through A Release
+definition: 'A scheduling rule derived from the news tiering. Days that precede a high-impact
+  event are treated as accumulated and are avoided; the days after the event are where the
+  opportunity is expected, because the weekly range has by then been shaped. No position is
+  opened before, or held through, a high- or medium-impact release.
+
+  '
+category: risk
+status: specified
+aliases:
+- avoid the days prior
+- trade the days after
+preconditions:
+- The week's events have been tiered (see news-impact-tiering).
+detection_rules:
+- If a high-impact event exists in the week, mark every day before it as avoid.
+- Mark the days after the high-impact event as eligible for trades.
+- If no high-impact event exists in the week, no day-level restriction applies from this rule
+  (Monday is still excluded by a separate rule).
+- On a day carrying a medium-impact release, do not enter before the release and do not hold
+  a position through it.
+- Low-impact events may be held through in certain scenarios.
+invalidation:
+- Not applicable.
+measurable:
+- P&L of trades taken on avoid days versus eligible days
+- adverse excursion of positions held through medium-impact releases
+- proportion of weekly range formed after the high-impact event
+sources:
+- video_id: QmGJFxfSHxM
+  title: AM Trades | Blending The Economic Calendar, Daily Chart, & Weekly Profiles
+ambiguities:
+- How many days before a high-impact event are avoided is only shown per example (Thursday
+  before Friday NFP; Monday-Wednesday before a Wednesday FOMC), never stated as a count.
+- An exception is allowed for a 'really specific and convincing signature in price' on a pre-event
+  day, but that signature is defined only by the one Tuesday NFP-week example.
+- '''In certain scenarios'' for holding through low-impact events is not specified.'
+related:
+- news-impact-tiering
+- nfp-week-protocol
+- fomc-week-protocol
+- no-monday-rule
+timeframes:
+  htf:
+  - 1W
+  - 1D
+  ltf:
+  - 1H
+  fractal: false
+execution:
+  bias: Unchanged.
+  entry: Only on eligible days, and after any medium-impact release on that day.
+  stop: Unchanged.
+  targets: []
+contributing_units:
+- t_talks_01
+draft_count: 1
+voice: guest
+guest_sources:
+- AM Trades | Blending The Economic Calendar, Daily Chart, & Weekly Profiles

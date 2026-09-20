@@ -1,0 +1,210 @@
+id: breakeven-after-new-protected-swing
+name: Move the Stop Only After a New Protected Swing Forms
+definition: 'The complete trailing rule: stops can ONLY be trailed to new protected swings.
+  A down-close candle that price merely moved away from is not a protected swing and is not
+  a valid trail target - the swing must have engaged a point of interest and then been closed
+  through. Break-even is the same rule applied earlier: when a new protected swing happens
+  to sit at the entry price, the stop may go there. Two constraints bound it. First, do not
+  trail too high inside the current higher-timeframe candle - candle 4 is expected to respect
+  50% of candle 3''s range, so a stop above that gets swept by the next candle''s normal wick.
+  Second, whether to trail at all is a function of remaining range: trail when entry was early
+  in the range with a distant draw on liquidity; do not trail when entering halfway through
+  the daily range with 2R sitting at the ADR - take profit at the objective instead.'
+variants:
+  definition:
+  - 'The earliest statement of the trailing rule, in pre-''protected swing'' vocabulary. Two
+    conditions gate every stop move and they are both required: he has taken his FIRST PARTIAL,
+    and STRUCTURE HAS BROKEN. Only then does the stop move - to the entry price or to the
+    short-term high (short) / low (long) that the break has just protected. The procedure
+    then repeats: each subsequent structure break creates a new short-term extreme and the
+    stop is trailed to it. He explicitly permits doing this on the 1-minute for a tighter
+    trail, with the same gate - a shift in structure must occur before the stop moves.'
+  - 'Trailing is anchored to structure, not to profit. As price forms each new protected swing,
+    the stop can be moved to it - the same marked levels are described as being either entries
+    or trail points. For a coarse trail he uses daily swings; when he wants to tighten up
+    because momentum is visibly slowing, he drops to a lower timeframe and trails to the new
+    protected swing there, on the reasoning that price ideally should not return to it. He
+    also reframes the pullback for a nervous trader: a pullback is not a threat, it is the
+    thing that creates the next level to trail to.'
+  - 'Stops are only moved once price has created a new protected swing in the trade direction;
+    the stop can then be moved to that swing or to break-even, because price should not return
+    through it. Moving to break-even earlier than that is identified as the common error that
+    gets traders retested out of trades that then work. As price approaches the target he
+    trails tightly (for example to the prior one-minute bar) rather than giving back a large
+    open profit for a small extra move.
+
+    '
+  - 'Worked live. After the entry, price sweeps a low, prints a candle 2 closure and forms
+    a continuation on the 1-minute; that continuation creates a new invalidation level, and
+    at that point - and only at that point - the position can be moved to break even. The
+    converse is stated in the same session as the exit trigger for the idea: when price comes
+    back and invalidates the protected swing, he is no longer interested because the session
+    becomes choppy.'
+category: risk
+status: contested
+aliases:
+- trailing stop loss
+- when to go break even
+- break even too early
+- trailing the stop
+- new invalidation
+preconditions:
+- An open position taken on a valid model.
+- A position is open.
+- A first partial has been taken.
+- Structure has broken in the trade's direction.
+- An open position with at least one new protected swing formed since entry.
+- A position is open with the original stop beyond the entry protected swing.
+- An open position and an original invalidation level.
+detection_rules:
+- 'A trail target must be a protected swing: point of interest engaged, then closed through.'
+- Do not trail to an opposing candle that never reached a point of interest.
+- Do not trail above/below 50% of the current higher-timeframe candle's range - the next candle's
+  wick is expected there.
+- Break-even is permitted when a new protected swing forms at the entry price.
+- 'Trail only when meaningful range remains: early entry, distant draw on liquidity, ADR not
+  yet spent.'
+- Do not trail when the target is about 2R at the ADR, or when no protected swing exists between
+  price and the target - take profit at the objective.
+- Get more aggressive with trailing only once already at high R.
+- A newly formed protected swing that is instantly invalidated is a warning of consolidation
+  or reversal, not necessarily of trade failure.
+- Do not move the stop until structure breaks in the trade's direction.
+- On the break, move the stop to the entry price or to the short-term high/low that is now
+  protected by the break.
+- Each further structure break creates a new short-term extreme; trail to it.
+- Where the drop between the current stop and the new extreme is very large, take partials
+  instead of only trailing.
+- Tighter trailing is permitted on the 1-minute, but the same gate applies - require a shift
+  in structure before every move.
+- Where the last structure was never broken, use the short-term high once price starts to
+  shift structure against the position.
+- Move the stop only when a new protected swing has formed.
+- 'Coarse trail: daily swing points.'
+- 'Tighter trail: drop a timeframe and use the protected swings there.'
+- Tighten when momentum is visibly slowing, not on a fixed R.
+- Wait until a new protected swing forms in the trade direction.
+- Move the stop to that new swing or to break-even, not before.
+- As the target level approaches, trail to the prior lower-timeframe bar.
+- If the reversal being traded returns to the reversal point, treat it as invalid and go to
+  break-even.
+- Wait for a sweep plus a candle 2 closure plus a formed continuation on the execution timeframe.
+- That structure is the new invalidation; move to break even against it.
+- Do not move the stop merely because price has travelled.
+- If the protected swing is later invalidated, stand down rather than re-entering.
+invalidation:
+- Price returns through the new protected swing.
+- The new protected swing is taken out.
+measurable:
+- realised R with protected-swing trailing vs fixed take-profit, bucketed by ADR already spent
+  at entry
+- frequency of being stopped out by the following candle's wick when trailing past the 50%
+  level
+- realised R with structure-gated trailing vs a fixed stop
+- count of stop moves per trade
+- give-back per trade under structural trailing vs a fixed break-even move
+- how often price returns to the trailed protected swing
+- difference in realised R between moving to break-even at 1R and moving only after a new
+  protected swing
+- frequency of break-even stop-outs followed by the target being reached
+- break-even stop-out rate when moved on a new protected swing vs on distance
+sources:
+- video_id: CKltGYiesHA
+  title: Quit Moving Your Stop Loss Before You Know This (Trailing Stop Loss)
+  quote: Our stop losses can only be trailed to new protected swings
+- video_id: CKltGYiesHA
+  title: Quit Moving Your Stop Loss Before You Know This (Trailing Stop Loss)
+  quote: we want to see it respect 50% of this higher time frame candle
+- video_id: CKltGYiesHA
+  title: Quit Moving Your Stop Loss Before You Know This (Trailing Stop Loss)
+  quote: it doesn't really make sense to try to keep trailing here
+- video_id: CKltGYiesHA
+  title: Quit Moving Your Stop Loss Before You Know This (Trailing Stop Loss)
+  quote: I have no protected swings before my target
+- video_id: CKltGYiesHA
+  title: Quit Moving Your Stop Loss Before You Know This (Trailing Stop Loss)
+  quote: I don't want to get too aggressive with my trailing
+- video_id: LZZAaILYNyI
+  title: Stop Losses, Placement & Trailing - ICT Concepts
+  quote: that is after i normally take my first partial and we break structure
+- video_id: LZZAaILYNyI
+  title: Stop Losses, Placement & Trailing - ICT Concepts
+  quote: you're going to want to only move your stop once structure is broken
+- video_id: LZZAaILYNyI
+  title: Stop Losses, Placement & Trailing - ICT Concepts
+  quote: just make sure you get a shift in structure before you move your stop
+- video_id: yNgx9OAefuI
+  title: New York Open Live Q&A
+  quote: this is either entries or you can trail your stop here
+- video_id: xraklBJHW5k
+  title: New York Open Live Q&A
+  quote: If you want to trail tighter, you can just use a lower time frame
+- video_id: egV_gABTQks
+  title: (CPI) New York Open Live Q&A
+- video_id: WBwoiMDXT2c
+  title: New York Open Live Q&A
+- video_id: tDiwwMRWF2k
+  title: New York Open Live Q&A with NickDoesFutures
+  quote: you can be break even because price formed a new invalidation
+ambiguities:
+- '''How much range is left'' is judged by eye against the average daily range; no calculation
+  is given.'
+- '''High RR'' - the point at which aggressive trailing becomes appropriate - is not quantified
+  (examples show 4-5R already banked).'
+- Whether to move to break-even when no protected swing appears there is not addressed.
+- 'EVOLUTION: the later canon requires the trail target to be a PROTECTED SWING - a point
+  of interest engaged and then closed through - and forbids trailing to an opposing candle
+  that never reached a point of interest. This earlier version has no point-of-interest requirement
+  at all; any short-term high after a structure break qualifies.'
+- The first-partial precondition is stated here and does not appear in the later canon.
+- '''Break structure'' is not given a displacement requirement in this video, unlike in the
+  market-structure-shift lesson.'
+- How large a gap between stop and new extreme justifies partials instead is not stated.
+- '''Momentum slowing'' is the trigger for tightening and is purely visual.'
+- He allows using a swing that is 'not technically protected' when nothing else is available
+  on the timeframe, which weakens the rule.
+- How tight the near-target trail should be is given only as an example (the one-minute bar).
+- He says whether to break even depends on the framework of the trade without enumerating
+  frameworks.
+- Whether the stop goes exactly to entry or behind the new swing is not distinguished here
+  - he says break even.
+related:
+- protected-swing
+- stop-loss-placement
+- partial-profit-taking
+- average-daily-range
+- fractal-model-c4
+- market-structure-shift
+- break-even-management
+- trailing-stop-opposing-candles
+- time-based-exit-htf-close
+- continuation-order-block
+- three-entry-quality-criteria
+- realistic-r-expectations
+- nine-thirty-expansion-invalidation
+- stop-moves-when-adding
+timeframes:
+  htf:
+  - 1D
+  - 4H
+  - 1H
+  ltf:
+  - 15m
+  - 5m
+  - 1m
+  fractal: true
+execution:
+  bias: n/a - management rule.
+  entry: n/a
+  stop: Successive protected swings.
+  targets:
+  - the draw on liquidity
+  - 2R when range is limited
+contributing_units:
+- build_a_model_intro_to_ttrades_fractal_model_01
+- education_ict_02
+- live_streams_01
+- live_streams_05
+- sunday_sessions_live_q_a_01
+draft_count: 5
+voice: ttrades

@@ -1,0 +1,51 @@
+id: no-monday-rule
+name: "Never Trade Monday"
+aliases: ["I do not trade Mondays"]
+category: time
+status: specified
+
+definition: >
+  A categorical exclusion of Monday from the trading week, justified on three grounds: Monday is
+  on average the smallest-range day; Monday carries no scheduled news; and on Monday there is no
+  weekly-profile data yet formed to reference, so trading it means predicting from nothing.
+  Monday's range is instead used as an input to classify the rest of the week.
+
+timeframes:
+  htf: ["1W", "1D"]
+  ltf: []
+  fractal: false
+
+preconditions:
+  - "None. The rule is unconditional."
+
+detection_rules:
+  - "If the day is Monday, take no trade regardless of setup quality."
+  - "At Monday's close, record what Monday did (consolidated / manipulated / expanded) and use it to anticipate Tuesday and the weekly profile."
+  - "Worked application: if Monday manipulates, expect expansion on Tuesday in the opposite direction."
+
+invalidation:
+  - "None - stated as indisputable."
+
+execution:
+  bias: "Monday supplies data for the week's bias, not a trade."
+  entry: "None on Monday."
+  stop: "Not applicable."
+  targets: []
+
+measurable:
+  - "Monday's realised range versus the weekly average range, per instrument"
+  - "P&L that would have accrued from Monday setups that met all other criteria"
+  - "conditional distribution of Tuesday's outcome given Monday's classification"
+
+sources:
+  - video_id: QmGJFxfSHxM
+    title: "AM Trades | Blending The Economic Calendar, Daily Chart, & Weekly Profiles"
+    quote: "I do not trade Mondays that is an indisputable thing for me"
+
+ambiguities:
+  - "The supporting statistic is phrased as 'the smallest Range Day by under 25 percent of the average', which is ambiguous between 25 percent smaller than average and under 25 percent of the average. No instrument, period or source is given."
+  - "The rule is stated for indices futures; no claim is made about other markets."
+  - "No treatment of holiday-shortened weeks where Monday is closed."
+
+python_detector: null
+related: ["weekly-profile-alignment", "pre-event-avoidance-rule", "opening-time-only-execution"]

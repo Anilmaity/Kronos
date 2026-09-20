@@ -1,0 +1,66 @@
+id: average-daily-range
+name: "Average Daily Range (eyeballed) as target filter"
+aliases: ["ADR", "daily range", "how do you calculate ADR"]
+category: risk
+status: specified
+
+definition: >
+  Asked three separate times how he finds ADR, he gives the same manual procedure and
+  explicitly rejects the indicator: an ADR indicator averages all previous ranges, including
+  the quiet ones, whereas he only looks at the expansion candles. The method is to scroll the
+  daily chart of the instrument, read off the ranges of the recent expansion days, and take
+  that band as the expectation for today. Worked live: gold's recent expansion candles were
+  110-170 points, so at 150-170 the daily range is "capped"; in another stream gold's largest
+  candle of the month was 250 while the typical expansion day was 100-130, so 150 was already
+  beyond normal expectation; NQ was quoted at 400-500 points and ES at 38-75. Once the day has
+  covered that band he stands aside and waits for the next daily candle rather than seeking a
+  further continuation - and where no POI exists (all-time highs) the range band becomes the
+  objective in its place.
+
+timeframes:
+  htf: ["1D"]
+  ltf: []
+  fractal: false
+
+preconditions:
+  - "A daily chart of the instrument with at least the current month visible."
+
+detection_rules:
+  - "Read the ranges of the recent expansion days only; ignore quiet and consolidation days."
+  - "Take the band those expansion ranges occupy as today's expectation (his examples: gold 100-170 points, NQ 400-500, ES 38-75)."
+  - "Compare today's range so far against that band."
+  - "If the band is already covered, do not seek a further continuation - wait for the next daily candle."
+  - "Do not use an ADR indicator: it averages in the non-expansion ranges."
+  - "Where no point of interest exists to the left, use the range band as the objective instead."
+
+invalidation:
+  - "An anomalous outsized day, which he treats as rare and not to be anticipated."
+
+measurable:
+  - "distribution of daily ranges split into expansion vs non-expansion days"
+  - "expectancy of entries taken after the expansion-day band was already covered"
+  - "difference between a standard ADR(n) and the expansion-only mean"
+
+sources:
+  - video_id: eIPM-D8RrSQ
+    title: "New York Open Live Q&A"
+    quote: "I'm just focusing on the expansion ones"
+  - video_id: x4sRGuZIqWk
+    title: "New York Open Live Q&A"
+    quote: "that's kind of beyond the range of what our normal expectation"
+  - video_id: N3Ml-r0X30o
+    title: "New York Open Live Q&A"
+    quote: "I generally just look at the uh actual daily candles"
+
+ambiguities:
+  - "No lookback length is given. He scrolls 'lately' in one stream and 'this month' in another."
+  - "No rule separates an expansion day from a normal day when reading the chart - it is eyeballed."
+  - "Whether the band is the mean, the max, or the modal range is never stated; he quotes a range of values, not a number."
+  - "The quoted point values are instrument- and period-specific and should not be treated as constants."
+
+python_detector: null
+related: ["average-daily-range-targeting", "daily-range-budget", "expansion-exhaustion-avoid-price", "dont-trade-after-expansion", "point-of-interest"]
+
+contributing_units: ["live_streams_04"]
+draft_count: 1
+voice: ttrades

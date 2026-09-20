@@ -1,0 +1,61 @@
+id: cisd
+name: "Change In State Of Delivery (CISD)"
+aliases: ["CISD", "change in the state of delivery", "intra-candle CISD"]
+category: entry
+status: contested
+
+definition: >
+  The only entry confirmation he uses (alongside order block formation). A CISD is
+  a close through a series of opposing candles that had been holding price, taken
+  from a series and never from a single candle. It is what turns a swept level or
+  an SMT into a tradeable event. He explicitly rejects the requirement that the
+  close must be beyond the opening price of the opposing candles, saying he does
+  what works for him rather than following that definition.
+
+timeframes:
+  htf: ["4H", "1H"]
+  ltf: ["15m", "5m", "3m", "1m"]
+  fractal: true
+
+preconditions:
+  - "A relevant level or swing has been swept, or the higher timeframe candle has given a framework to trade inside."
+  - "A series of opposing candles is identifiable (not a single candle)."
+
+detection_rules:
+  - "Identify the series of opposing candles that formed the high (bearish case) or low (bullish case)."
+  - "A close through that series is the CISD."
+  - "It may form intra-candle on the higher timeframe (he calls this an intra-candle change in the state of delivery) rather than at the higher timeframe candle's close."
+  - "Structural variant he accepts: a very aggressive up-down (V) shape on the lower timeframe followed by a close below, with the retest of the same level, counts as a CISD even where the strict closure reading is marginal."
+
+invalidation:
+  - "Price returning through the CISD level and closing back beyond the opposing candle series."
+  - "In the bullish case: price reacts at the fair value gap it created and then closes below it - the retracement-inside-a-reversal read is dead and it is continuation lower."
+
+execution:
+  bias: "Direction of the close through the series."
+  entry: "On the close through, not on a retest - he will not risk missing the trade to save a point or two, because the retest often never comes."
+  stop: "On the bodies; if the closure prints far from the level so that the stop would be distant, do not take the break - wait for a new continuation."
+  targets: ["2R minimum", "first failure swing beyond the level", "previous day high/low"]
+
+measurable:
+  - "retest frequency after a CISD close (how often a limit at the level would have filled)"
+  - "hit rate of 2R from a CISD entry with stop on the bodies"
+  - "difference in outcome between close-through entries and retest entries"
+
+sources:
+  - video_id: r7yW6ou1LDs
+    title: "TTrades Sunday Session - Live Q&A"
+    quote: "I never select one candle I always will use a series of candles"
+  - video_id: bMkRomKEunU
+    title: "New York Open Live Q&A"
+  - video_id: wM1s7UivQ08
+    title: "New York Open Live Q&A"
+
+ambiguities:
+  - "CONTESTED against mainstream ICT: ICT's rule that the CISD need not close beyond the opening price is raised by a viewer and explicitly declined; he gives no positive replacement rule beyond 'a series'."
+  - "'Series of candles' has no stated minimum length."
+  - "'Stop on the bodies' - which bodies (the swing candle, the whole series) is not specified."
+  - "The threshold at which a closure is 'too far from the level' to enter on the break is not quantified."
+
+python_detector: null
+related: ["order-block", "opposing-candle", "protected-swing", "smt-as-confirmation-not-signal"]

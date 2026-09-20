@@ -1,0 +1,220 @@
+id: position-sizing-fixed-risk
+name: Fixed $100 Risk Per Trade On A Prop Evaluation (the host's own numbers)
+variants:
+  name:
+  - Fixed-Risk Position Sizing
+  - Fixed-Risk Position Sizing (stop from the chart, size from the risk)
+  definition:
+  - A platform Short showing the procedure end to end with a concrete number. The risk amount
+    is the input ($300 in the example), and the platform back-solves the contract count from
+    the stop distance. Where the stop is close enough that no whole contract count can express
+    $300 of risk, the fix is to switch to MICRO contracts (he switches to MGC). The tool then
+    automatically calculates the position size needed to get closest to that risk level, and
+    holds the risk constant as the stop widens - seven contracts on a tight stop, one on a
+    wide one.
+  - 'The host and two guests converge on the same sizing doctrine on air: risk a fixed fraction
+    of the account on every trade, sized so the stop distance does not change the amount at
+    risk. TTrades states it in his own words as risking the exact same amount on every trade,
+    and adds that this is essentially what risk management reduces to, together with stopping
+    when you are wrong. $niper gives one percent per trade as the number he uses and recommends,
+    with an explicit disclaimer that he is not an advisor. Trader T runs one percent per trade
+    in his backtesting simulator as a fixed-risk setting so that lot size is solved for automatically.
+
+    '
+  - Both host and guest state the same procedure in the same exchange, so this is a genuine
+    convergence rather than one man's rule. The stop goes where the CHART says it goes; the
+    position size is then solved so that the dollar risk is the same on every trade. TTrades
+    adds that on funded accounts the risk figure is set for him and on a personal account
+    it may be a little higher, but it is always a fixed dollar amount. AM Trades declines
+    to say how much anyone should risk, only that this is the process.
+  - 'Size every trade so that the loss at the stop is the same dollar (or percentage) amount,
+    and vary the contract/lot quantity to achieve it — never the reverse. The stated reason
+    is that the familiar win-rate versus risk-to-reward profitability table is only valid
+    under constant risk per trade; with inconsistent sizing the same sequence of outcomes
+    produces a different, possibly negative, result.
+
+    '
+definition: 'The host gives his own sizing numbers twice in this unit, in two different guest
+  streams, and they agree. On a $50,000 Apex evaluation account with a $2,500 trailing drawdown
+  he risked exactly $100 per trade, every time, no matter what - four percent of the drawdown
+  allowance, which he points out is still under one percent of the nominal account balance.
+  Contract count is derived from the stop: a four-point ES stop is five contracts, a two-point
+  ES stop is ten contracts, and a fifteen-point NQ stop is three (micro) contracts. He passed
+  the $3,000 profit target in thirteen days. The argument for the constancy is the one the
+  corpus already carries: with inconsistent sizing even a seventy-five percent win rate can
+  be unprofitable, because a ten-percent-risk loser cancels several one-percent-risk winners.
+  He reports never going through a heavy drawdown under this regime - the worst run was two
+  or three consecutive losses, about $300 - and exactly one deviation, a sizing error that
+  cost $145 instead of $100. He frames the four-percent-of-drawdown figure as specific to
+  a challenge account he wanted to finish in under thirty days, explicitly more than he would
+  otherwise risk, and ''not advice''.'
+category: risk
+status: contested
+aliases:
+- consistent position sizing
+- four percent of the drawdown
+- one percent per trade
+- same risk every trade
+- fixed dollar risk
+- fixed percentage risk
+- 1R
+preconditions:
+- A defined stop distance and a known per-point value for the instrument.
+- A chosen fixed dollar risk.
+- An entry, a stop loss and a take profit are already placed on the chart.
+- A fixed dollar risk amount has been chosen.
+- A stop distance is known before the position is sized.
+- A trade with a chart-derived invalidation level.
+- A defined stop distance for the trade.
+- A known value per point / per pip for the instrument.
+- A chosen risk amount (fixed dollar or fixed percentage of account).
+detection_rules:
+- Fix the dollar risk per trade first; derive the contract count from the stop distance.
+- 'Worked values at $100 risk: ES four-point stop -> 5 contracts; ES two-point stop -> 10
+  contracts; NQ fifteen-point stop -> 3 micro contracts.'
+- 'On a prop evaluation, size the risk against the drawdown allowance rather than the nominal
+  balance: 4% of a $2,500 trailing drawdown = $100.'
+- Never deviate; a single oversized trade breaks the win-rate / payoff arithmetic.
+- Input the fixed dollar risk amount, not the contract count.
+- If the stop is too tight for the full-size contract to express that risk, switch to micros
+  (MGC in the example).
+- The platform calculates the size that comes closest to the chosen risk.
+- Risk stays constant as the stop distance changes - more contracts on a tighter stop, fewer
+  on a wider one.
+- Risk the same percentage of the account on every trade; solve lot size from the stop distance.
+- The number stated by both guests for a normal account is 1 percent per trade.
+- 'TTrades'' second half of the rule: stop when you are wrong - the fixed risk is only meaningful
+  with a real stop.'
+- 'Trader T implements it mechanically: the simulator is set to fixed 1 percent risk so every
+  trade is sized identically regardless of stop size.'
+- Place the stop at the structural invalidation on the chart - never at a fixed distance.
+- Compute position size = fixed dollar risk / stop distance.
+- Keep the fixed dollar risk constant across trades.
+- On a funded account, use the account's prescribed risk figure.
+- contracts = risk_dollars / value_per_point / stop_size_in_points.
+- 'Stated instrument values: NQ = $20 per point; ES = $50 per point.'
+- 'Worked examples at $1,000 risk: 20-point stop -> 2.5 contracts; 40-point stop -> 1.25 contracts;
+  10-point stop -> 5 contracts.'
+- micros = minis x 10 (a micro is one tenth of a mini); round DOWN to a whole micro.
+- CFDs/forex allow decimal sizing, so no rounding constraint; use the broker's per-pip value.
+- 'TradingView risk/reward tool configuration: lot size 1,000 for forex, lot size 1 for futures;
+  save templates per account size and instrument.'
+- 'Rejected method: fixed contract size (2 NQ contracts with 20/40/10-point stops = $800/$1,600/$400
+  risk), which turns a -1R, -1R, +4R sequence into -$800 instead of +2R.'
+invalidation:
+- Any trade whose realised risk deviates from the fixed amount breaks the regime.
+- Not applicable - a sizing procedure.
+- Not applicable.
+- Any trade whose actual risk deviates from the fixed amount breaks the model.
+measurable:
+- variance of realised risk per trade across a live sample (target zero)
+- days to pass an evaluation at 4% of drawdown per trade vs at 1%
+- maximum consecutive-loss drawdown under the fixed regime
+- realised dollar risk per trade versus the $300 target
+- rounding error introduced by whole-contract sizing at each stop distance
+- variance of realised risk per trade (should be flat if the rule is followed)
+- equity-curve shape under fixed-fractional versus fixed-lot sizing on the same trade list
+- variance of realised dollar risk per trade
+- distribution of stop distances
+- variance of realised risk per trade across a live sample (should be ~0)
+- equity curve of the same trade sequence under fixed-contract vs fixed-risk sizing
+sources:
+- video_id: CrUfTskOveo
+  title: Stream Q & A with AM Trades  - ICT concepts
+  quote: the first thing i would have focused on is consistent position sizing
+- video_id: CrUfTskOveo
+  title: Stream Q & A with AM Trades  - ICT concepts
+  quote: i risked a hundred dollars per trade every time no matter what
+- video_id: CrUfTskOveo
+  title: Stream Q & A with AM Trades  - ICT concepts
+  quote: it took me 13 days to pass it using this
+- video_id: 0bH_kkG2q6s
+  title: Stream Q & A with Trade For Opportunity  - ICT concepts
+  quote: four percent per trade on that of my drawdown
+- video_id: JPB273sQJsk
+  title: Position Sizing on TradingView + NinjaTrader
+  quote: There's no way to risk $300 with my stop loss there
+- video_id: JPB273sQJsk
+  title: Position Sizing on TradingView + NinjaTrader
+  quote: That is where we would want to go to micros
+- video_id: JPB273sQJsk
+  title: Position Sizing on TradingView + NinjaTrader
+  quote: it will automatically calculate the position size needed to get closest to that level
+- video_id: UmLWRlXd_V8
+  title: 8/14/22  MMXM Live with $niper  - ICT concepts
+  quote: I try to risk the exact same amount on every trade
+- video_id: wCtxmWe4KNc
+  title: Back Testing Live Session With Trader T
+  quote: one percent risk per trade fixed risk same every time
+- video_id: wGYde-h84cs
+  title: Live Q&A with AM Trades - Weekly Profile
+  quote: it's always fixed dollar risk for me personally
+- video_id: wGYde-h84cs
+  title: Live Q&A with AM Trades - Weekly Profile
+  quote: you should be having your stop based on the chart
+- video_id: 0OjlQ91TZiU
+  title: Position Sizing For Trading - Futures & Forex
+  quote: this table only works out if you have the same risk per trade
+ambiguities:
+- Four percent of the drawdown is conceded to be more than would normally be risked, and is
+  justified only by a thirty-day deadline.
+- Commissions and slippage are excluded from every figure.
+- The $145 deviation shows the regime is manually enforced rather than platform-enforced.
+- The account was an evaluation, so the reported outcome is not a live-funded result.
+- $300 is used as the worked example, not stated as his risk-per-trade policy; no percentage
+  of account is given anywhere in the clip.
+- The rounding is acknowledged ("we can't get any closer to 300 there") but no rule says whether
+  to round up or down.
+- This is a TradingView / NinjaTrader tooling demonstration; nothing in it says the sizing
+  rule applies to any other venue.
+- Neither speaker says whether the percentage is of starting balance, current balance or current
+  equity.
+- Both guests explicitly refuse to give the audience a number to use ('I'm not an advisor'),
+  so 1 percent is stated as personal practice, not as a recommendation.
+- Trader T uses a different, lower number for funded accounts - see prop-firm-drawdown-sizing
+  - so 1 percent is not his universal figure.
+- No percentage-of-account figure is given by either speaker; both explicitly decline to prescribe
+  one.
+- No rule caps the position size when the chart stop is very tight.
+- The percentage of account to risk on a normal (non-prop) account is never stated; examples
+  use 1% without endorsing it.
+- Commissions, spread and slippage are excluded from every calculation.
+- No guidance on concurrent correlated positions or total portfolio heat.
+- The auto-transcript garbles several figures ($11,000 for $1,000, '2.81 7' / '2.18' for 2.817
+  contracts, '17%' for 1.7%); the arithmetic is reconstructable but the raw numbers are unreliable.
+related:
+- prop-firm-drawdown-sizing
+- stop-loss-placement
+- prop-cushion-scaling
+- daily-trade-cap-risk-envelope
+- position-sizing
+- risk-reward-minimum
+- risk-limits-and-trade-frequency
+- stop-size-reduction
+- no-size-reduction-in-drawdown
+guest_sources:
+- $niper (Matt)
+- 8/14/22  MMXM Live with $niper  - ICT concepts
+- AM Trades
+- Back Testing Live Session With Trader T
+- Live Q&A with AM Trades - Weekly Profile
+- Stream Q & A with AM Trades  - ICT concepts
+- Stream Q & A with Trade For Opportunity  - ICT concepts
+- Trader T
+timeframes:
+  htf: []
+  ltf: []
+  fractal: false
+execution:
+  bias: Not applicable.
+  entry: Not applicable.
+  stop: Required - the sizing input.
+  targets: []
+contributing_units:
+- live_stream_guests_01
+- live_stream_guests_02
+- live_stream_guests_03
+- shorts_02
+- the_foundation_01
+draft_count: 5
+voice: mixed

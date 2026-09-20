@@ -1,0 +1,44 @@
+id: upper-half-eq-expansion-filter
+name: "Upper-Half EQ Rule For Expansion"
+aliases: ["premium and discount as a wick-size filter", "EQ for expansions"]
+category: structure
+status: specified
+
+definition: >
+  A mechanical proxy for wick size. After a reversal wick or an expansion candle close, mark
+  the equilibrium (50%) of that candle's range or of the reversal wick. For a bullish
+  continuation, the following candle's low must form in the upper half of that range;
+  disrespecting the EQ would by construction create a large opposing wick, which does not
+  support expansion. The bearish case mirrors it - the following candle's high must form in
+  the lower half.
+
+timeframes:
+  htf: ["1D", "4H"]
+  ltf: ["1H"]
+  fractal: true
+
+preconditions:
+  - "A reversal wick or expansion candle close exists on the working timeframe."
+
+detection_rules:
+  - "Mark the 50% level of the reference candle's range (or of the reversal wick)."
+  - "Bullish: the next candle's low must form above that 50% level."
+  - "Bearish: the next candle's high must form below that 50% level."
+  - "A violation of the EQ disqualifies the candle as an expansion candle."
+
+invalidation:
+  - "The following candle trades through the EQ and forms its extreme in the wrong half."
+
+measurable:
+  - "continuation rate when the next candle's extreme respects the EQ vs when it does not"
+
+sources:
+  - video_id: J_EeS2_2CAM
+    title: "GxTradez | Phases of Price & Profiles For Expansion"
+
+ambiguities:
+  - "Whether the EQ is taken from the full candle range or only from the reversal wick varies between the slides described; both are used."
+  - "Wick-based vs body-based range endpoints are not specified."
+
+python_detector: null
+related: ["small-wick-supports-expansion", "expansion-signature", "discount-requirement-before-entry"]

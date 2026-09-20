@@ -1,0 +1,69 @@
+id: prop-firm-drawdown-types
+name: The Four Prop-Firm Drawdown Types
+definition: 'An enumeration of the drawdown mechanics an evaluation account can carry, which is what
+  determines whether a given risk plan can survive. STATIC: the drawdown does not move for the lifetime
+  of the evaluation or funded account. TRAILING END-OF-DAY: intraday realised and unrealised swings
+  are ignored, and at the day''s close the drawdown floor trails up to wherever the balance finished.
+  TRAILING (UNREALISED): the floor trails the highest value the account reaches including open profit,
+  so an unrealised excursion permanently raises the floor and a subsequent unrealised loss can fail
+  the account even when the realised P&L is identical to the end-of-day case. DAILY LOSS LIMIT PLUS
+  MAXIMUM LOSS LIMIT (his TopStep example): the daily loss limit does not itself fail the account,
+  but hitting the maximum loss limit does, and the maximum loss limit trails up at end of day once
+  the balance is above the initial balance.'
+category: risk
+status: specified
+aliases:
+- static drawdown
+- trailing drawdown
+- end of day trailing
+- daily loss limit
+- maximum loss limit
+preconditions:
+- An evaluation or funded prop account with a stated drawdown rule.
+detection_rules:
+- 'Static: floor = initial_balance - max_drawdown, fixed for the life of the account.'
+- 'Trailing end-of-day: floor = (highest END-OF-DAY balance) - max_drawdown; intraday excursions
+  are ignored.'
+- 'Trailing unrealised: floor = (highest intraday account value INCLUDING open P&L) - max_drawdown;
+  an unrealised loss can breach it.'
+- 'Daily-loss-limit accounts: breaching the daily loss limit stops the day but does not fail the
+  account; breaching the maximum loss limit fails it.'
+- On a daily-loss-limit account the maximum loss limit also trails up at end of day once the balance
+  exceeds the initial balance.
+- Identical realised P&L can pass an end-of-day-trailing account and fail an unrealised-trailing
+  one - classify the account before choosing a management style.
+invalidation:
+- Not applicable - account rules.
+measurable:
+- probability of breach for the same trade sequence under each of the four drawdown types
+- maximum adverse excursion distribution, which only matters under unrealised trailing
+sources:
+- video_id: dtsrR8dX2Ro
+  title: Intro To Futures Trading & Prop Firms
+  quote: the draw down doesn't move throughout the lifetime of the evaluation account
+- video_id: dtsrR8dX2Ro
+  title: Intro To Futures Trading & Prop Firms
+  quote: what it does is it Trails your unrealized p&l
+- video_id: dtsrR8dX2Ro
+  title: Intro To Futures Trading & Prop Firms
+  quote: I have a daily loss limit that doesn't fail the account
+ambiguities:
+- The firm names attached to each type (Apex, TopStep, My Funded Futures) and their discount levels
+  are shown in an on-screen table and are date-specific; only the TopStep daily-loss-limit example
+  is spoken clearly enough to record.
+- Whether the end-of-day trail stops once the account is in profit above the initial balance (a common
+  'trail to breakeven then stop' rule) is not addressed.
+- No guidance is given on which drawdown type to prefer, only on what each does.
+related:
+- prop-firm-drawdown-sizing
+- prop-account-scaling-plan
+- position-sizing-fixed-risk
+- eval-vs-funded-mindset
+timeframes:
+  htf: []
+  ltf: []
+  fractal: false
+contributing_units:
+- resources_01
+draft_count: 1
+voice: ttrades

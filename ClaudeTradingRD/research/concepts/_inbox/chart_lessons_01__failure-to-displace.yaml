@@ -1,0 +1,62 @@
+id: failure-to-displace
+name: "Failure To Displace"
+aliases: ["failure to close below this level", "we can't close below it", "usually the high gets taken out"]
+category: structure
+status: specified
+
+definition: >
+  The unit's clearest statement of the consequence of a failed closure, offered as a general
+  tendency rather than as an observation about the chart in front of him. Price reaches a
+  level it needs to close through in order to continue expanding, trades into it, and cannot
+  produce the close. The stated expectation is that the opposite side - the high, in the
+  bearish case being walked through - is then usually taken out. It is used twice in the same
+  walkthrough: once at the daily scale, where a failure to close bearishly enough turns the
+  next day from a clean continuation into a setup requiring extra lower-timeframe
+  confirmation, and once on the 15-minute, where the failed closure is followed by the sweep
+  it predicts. He is careful to note the tendency is not a certainty - in the second instance
+  the high is not in fact taken and the closure eventually comes anyway.
+
+timeframes:
+  htf: ["1D", "1H"]
+  ltf: ["30m", "15m", "3m"]
+  fractal: true
+
+preconditions:
+  - "A directional bias with a defined level that must be closed through for the move to continue."
+  - "Price has traded to or into that level."
+
+detection_rules:
+  - "Identify the level whose breach continues the move (the opposing candle / the level that would form the change in the state of delivery)."
+  - "Bearish case: price trades to the level but no candle closes below it."
+  - "Expect the opposite side - the nearest high above - to be taken out before the move resumes."
+  - "Do not treat this as an invalidation of the bias: it changes the sequence, not the direction. The bias is kept and the confirmation requirement is raised."
+  - "At the daily scale the same failure appears as a close that is not weak enough - a bearish day that closes back up into its range rather than into its lows requires more lower-timeframe confirmation the following day."
+
+invalidation:
+  - "The closure arrives on a later candle without the opposite side being taken - the tendency did not hold, which the speaker shows happening."
+  - "Price expands away through the level - it displaced after all."
+
+execution:
+  bias: "Unchanged; only the expected route changes."
+  entry: "After the opposite extreme has been swept and the closure finally prints."
+  stop: "The protected swing formed once the closure prints."
+  targets: ["previous day low or high"]
+
+measurable:
+  - "hit rate of 'failed closure at the level => nearest opposite extreme is taken within N candles'"
+  - "how much further the move travels after the sweep-then-closure route vs the direct closure route"
+  - "frequency of the daily variant (close not weak enough) and the next day's outcome"
+
+sources:
+  - video_id: Nlw-PZhoViQ
+    title: "TTrades Top-Down Chart Lessons #1"
+    quote: "failure to close below this level. Usually the high gets taken out"
+
+ambiguities:
+  - "Sourced from an ASR (whisper-small) transcript, not YouTube captions; wording may be imprecise."
+  - "'Usually' is the only strength given - no frequency, and no window within which the opposite extreme should be taken."
+  - "Which high counts as the one that gets taken (the immediate swing, or the range high) is shown on screen and not stated."
+  - "This unit does not use the term 'displacement' at all; the entry is filed under this id because the mechanic - reach the level, fail to close through, expect the other side - is the same one the library records under that name. That identification is an inference."
+
+python_detector: null
+related: ["consolidation-vs-retracement-test", "cisd", "protected-swing", "failure-swing", "phases-of-price"]

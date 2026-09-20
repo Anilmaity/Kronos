@@ -1,0 +1,68 @@
+id: indicator-print-conditions
+name: What Counts As A Valid Model (closure plus CISD)
+category: model
+status: specified
+aliases:
+- valid fractal model
+- the model prints
+definition: 'A ''model'' exists only when a higher-timeframe candle closure (C2 or C3) at a point
+  of interest is PAIRED with a change in the state of delivery on the aligned lower timeframe. Either
+  alone is not a setup. This is stated as the print condition of the indicator and repeated as the
+  gate before any lower-timeframe work: without the CISD you do not drop timeframes, you do not look
+  for SMT, and you do not trade.'
+timeframes:
+  htf:
+  - 1D
+  - 4H
+  - 1H
+  ltf:
+  - 1H
+  - 15m
+  - 5m
+  - 1m
+  fractal: true
+preconditions:
+- A higher-timeframe candle has closed.
+detection_rules:
+- Higher-timeframe C2 or C3 closure.
+- The closure occurred at a point of interest (fair value gap, or a high/low swept).
+- A change in the state of delivery exists on the aligned lower timeframe, inside that candle.
+- 'Only then: look for SMT as confluence, drop to the execution timeframe, and seek an entry.'
+- The model is then expressed as a T-spot (where the HTF wick should form) plus standard deviation
+  projections plus formation liquidity targets.
+invalidation:
+- Price closes over the T-spot / the area the continuation must hold - the setup turns red on the
+  indicator and is treated as an early warning.
+measurable:
+- how many C2 closures fail the point-of-interest gate
+- how many surviving C2s fail the CISD gate
+- outcome difference between gated and ungated C2s
+sources:
+- video_id: v1X8UMWgWmI
+  title: Best Trading Strategy for 2026 - TTFM
+  quote: If there is no change in the state of delivery
+- video_id: -ocfPuD_oqE
+  title: How To Use SMT Divergence - TTrades Fractal Model
+  quote: a valid model before we are looking for SMT
+- video_id: CqMIh-Vvhbg
+  title: Intro To TTrades Fractal Model [Indicator & Settings]
+  quote: taken the previous day's High closed back inside the range
+- video_id: CqMIh-Vvhbg
+  title: Intro To TTrades Fractal Model [Indicator & Settings]
+  quote: that closure right there over my level was the early warning
+ambiguities:
+- '''Aligned lower timeframe'' is defined by the pairing table, which is itself only partially stated
+  (daily->hourly, 4H->15m, hourly->5m).'
+- Whether the CISD must complete before the HTF candle closes or may form after is shown both ways.
+related:
+- fractal-model-c2
+- fractal-model-c3
+- cisd
+- t-spot
+- point-of-interest
+- timeframe-alignment-pairs
+- ttfm-indicator-settings
+contributing_units:
+- build_a_model_intro_to_ttrades_fractal_model_01
+draft_count: 1
+voice: ttrades

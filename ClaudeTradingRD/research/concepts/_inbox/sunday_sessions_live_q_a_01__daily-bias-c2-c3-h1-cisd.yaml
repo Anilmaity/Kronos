@@ -1,0 +1,53 @@
+id: daily-bias-c2-c3-h1-cisd
+name: "Daily Bias = Daily C2/C3 Closure Confirmed by H1 CISD"
+aliases: ["easiest way to get a daily bias", "easy daily bias"]
+category: model
+status: specified
+
+definition: >
+  The stated easiest method for obtaining a daily directional bias: look at the daily chart for a
+  candle-2 or candle-3 closure and confirm it with a change in state of delivery on the hourly
+  chart. That combination is the bias. Equilibrium, phases of price and relevant swings are added
+  afterwards for refinement, and the bias must then be confirmed by the daily profile.
+
+timeframes:
+  htf: ["1D", "1H"]
+  ltf: ["15m", "5m"]
+  fractal: true
+
+preconditions:
+  - "A completed or forming daily candle with a defined relationship to the prior daily candle."
+
+detection_rules:
+  - "Daily candle 2: the daily sweeps the prior daily extreme and closes back inside, with a small wick."
+  - "Daily candle 3: the daily is the expansion candle following a candle 2."
+  - "Confirm with an hourly change in state of delivery in the same direction."
+  - "Then confirm with the daily profile; if the profile does not confirm, intraday direction may oppose the daily bias."
+
+invalidation:
+  - "No hourly CISD in the direction of the daily closure."
+  - "The daily profile contradicts the daily closure."
+
+execution:
+  bias: "Direction of the daily C2/C3 closure."
+  entry: "Lower-timeframe fractal model aligned with the bias."
+  stop: "Per the entry model used."
+  targets: ["Previous day high or low; drawn liquidity on the daily"]
+
+measurable:
+  - "share of days where daily C2/C3 plus H1 CISD is followed by expansion in that direction"
+
+sources:
+  - video_id: WBwoiMDXT2c
+    title: "New York Open Live Q&A"
+  - video_id: 0AYGNc9czYc
+    title: "New York Open Live Q&A"
+  - video_id: egV_gABTQks
+    title: "(CPI) New York Open Live Q&A"
+
+ambiguities:
+  - "The candle-2 and candle-3 definitions are assumed from his other videos and are not restated mechanically in this unit."
+  - "Whether the daily must be closed or may still be forming when the bias is taken is not stated consistently."
+
+python_detector: null
+related: ["daily-profile-confirmation", "small-wick-expansion-rule", "timeframe-alignment-pairs"]

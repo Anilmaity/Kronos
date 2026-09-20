@@ -1,0 +1,53 @@
+id: structure-requires-htf-context
+name: Never Read Lower-Timeframe Structure Without A Higher-Timeframe Bias First
+aliases:
+- you need the context
+category: structure
+status: specified
+definition: 'His answer to how to get better at reading market structure, and the same point appears
+  in the indicator stream as a condition on the hourly. Reading structure cold does not work because
+  a chart with no context alternates bullish and bearish changes in the state of delivery and you
+  cannot tell which to believe. The fix is ordered: first fix a direction from a daily candle 2 closure,
+  then read structure, trend and protected swings on the lower timeframe in that one direction only.
+  Structure on the hourly is still required, but it has to be in line with something - otherwise it
+  is pattern trading.'
+timeframes:
+  htf:
+  - 1D
+  - 1H
+  ltf:
+  - 15m
+  - 5m
+  - 1m
+  fractal: true
+preconditions:
+- A daily chart and a lower-timeframe chart of the same instrument.
+detection_rules:
+- 'Step 1: find a daily candle 2 closure and take its direction.'
+- 'Step 2: inside that day, look for structure only in that direction.'
+- A lower-timeframe CISD against the established direction is not read as a signal.
+- Hourly structure is still required and must line up with the higher-timeframe context.
+invalidation:
+- No higher-timeframe closure exists to anchor the read - do not read structure at all.
+measurable:
+- accuracy of structure calls made with vs without a fixed daily direction
+sources:
+- video_id: tDiwwMRWF2k
+  title: New York Open Live Q&A with NickDoesFutures
+  quote: have a higher time frame bias, then look to look for market structure
+- video_id: sdZkE-naNiY
+  title: TTrades Indicator Updates - Walkthrough and Q&A
+  quote: You need the context. You're not just pattern trading it
+ambiguities:
+- The daily candle 2 closure is the only anchor named; whether a candle 3 closure or a weekly anchor
+  serves equally is not said here.
+- '''In line with something'' is not enumerated.'
+related:
+- pattern-trading-error
+- daily-bias-c2-c3-h1-cisd
+- top-down-analysis-procedure
+- smt-requires-framework
+contributing_units:
+- live_streams_05
+draft_count: 1
+voice: ttrades

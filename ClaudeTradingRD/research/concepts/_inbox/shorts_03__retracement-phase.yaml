@@ -1,0 +1,94 @@
+id: retracement-phase
+name: "Retracement (Phase Of Price)"
+category: structure
+status: specified
+
+definition: >
+  The Shorts compress the retracement definition into a single contrasting pair that the
+  long-form videos never state side by side: expansion is aggressive, fast, and large range;
+  retracement is slow and shallow in a small range. This is the corpus's only explicit gloss on
+  what "aggressive" and "shallow" mean - they are the two halves of the same speed-and-range
+  contrast, defined against each other rather than against a threshold. A second Short adds the
+  degeneration test: a retracement is also supposed to be QUICK, and if price starts back,
+  fails to close through, and then hangs around, it is re-labelled a consolidation. The worked
+  example measures the retracement in time consumed relative to the expansion it retraces
+  (candles on the way back taking up the range of about three hours of expansion).
+
+timeframes:
+  htf: ["1D", "4H", "1H"]
+  ltf: ["15m", "5m"]
+  fractal: true
+
+preconditions:
+  - "An expansion leg has completed."
+  - "In the worked example the continuation candidate is a fair value gap left by that
+    expansion."
+
+detection_rules:
+  - "Contrast test, stated as a pair: expansion = aggressive, fast, large range. Retracement =
+    slow, shallow, small range."
+  - "Measure the counter-move in time consumed against the expansion it retraces (worked
+    example: the move back took up the range of about three hours of expansion)."
+  - "Continuation sequence wanted: expansion, retracement, expansion."
+  - "Degeneration test: if price starts a retracement, fails to confirm it with a close
+    through, and then hangs around, re-label the leg a consolidation."
+  - "Two acceptable actions once the retracement is in place: take the candle closure as the
+    model, or wait for a protected swing to form and take that."
+
+invalidation:
+  - "The counter-move is aggressive, fast and large range - that is an expansion against you,
+    not a retracement."
+  - "The retracement never confirms and price ranges instead - the label moves to consolidation
+    and, if it happens on the lows, that consolidation is itself the thing to read."
+
+measurable:
+  - "bar-count and elapsed-time ratio of the retracement leg to the expansion leg it retraces"
+  - "range of the retracement leg as a fraction of the expansion leg"
+  - "how often a 'failed to close through then hung around' leg resolves in the trend direction
+    versus against it"
+
+sources:
+  - video_id: OzugLBi0PVQ
+    title: "Retracements Are Slow, Shallow, Small Ranges"
+    quote: "Expansion is aggressive, fast, and large range."
+  - video_id: OzugLBi0PVQ
+    title: "Retracements Are Slow, Shallow, Small Ranges"
+    quote: "Retracement is slow and shallow in a small range."
+  - video_id: OzugLBi0PVQ
+    title: "Retracements Are Slow, Shallow, Small Ranges"
+    quote: "see how it is a slow shallow move"
+  - video_id: OzugLBi0PVQ
+    title: "Retracements Are Slow, Shallow, Small Ranges"
+    quote: "took up the range of about 3 hours of expansion"
+  - video_id: WiYZKc6ZAxA
+    title: "Strong Retracements Are Quick"
+    quote: "you want to see with retracements is you want to see them be quick"
+  - video_id: WiYZKc6ZAxA
+    title: "Strong Retracements Are Quick"
+    quote: "we hang around. This is now just a consolidation."
+
+ambiguities:
+  - "THE SAME CONTRADICTION THE LIBRARY ALREADY CARRIES SURVIVES HERE, and these two Shorts are
+    its clearest statement: one says the retracement is SLOW (it consumes more time than the
+    expansion it retraces), the other says it must be QUICK. No bar count or duration separates
+    the two readings."
+  - "'Aggressive', 'fast', 'slow' and 'shallow' are defined only against each other. There is
+    still no threshold - no bar count, no fib depth, no ATR multiple."
+  - "'Small range' and 'large range' are relative to the adjacent leg, which is stated by
+    implication in the worked example but never as a rule."
+  - "'Hangs around' as the consolidation trigger has no duration bound."
+
+related:
+  - phases-of-price
+  - shallow-retracement
+  - expansion-signature
+  - consolidation-phase
+  - continuation-signature
+  - upper-half-eq-expansion-filter
+  - fair-value-gap
+  - protected-swing
+
+python_detector: null
+voice: ttrades
+contributing_units: [shorts_03]
+draft_count: 1

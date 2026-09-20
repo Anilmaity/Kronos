@@ -1,0 +1,52 @@
+id: trend-by-previous-day-extremes
+name: Trend Defined By Repeatedly Taking Previous Day's High Or Low
+aliases:
+- the easiest way to define a trend
+category: structure
+status: specified
+definition: 'His stated easiest definition of trend, and one of the few fully mechanical rules in
+  the corpus: in a bullish trend price takes the previous day''s high over and over again; in a bearish
+  trend it takes the previous day''s low over and over again. The repetition itself is what tells
+  you the trend is intact, and the trend in turn selects which previous-day extreme is the draw for
+  the coming day.'
+timeframes:
+  htf:
+  - 1D
+  ltf: []
+  fractal: false
+preconditions:
+- At least a few days of daily candles with previous day high/low marked.
+detection_rules:
+- Bullish trend := each successive day takes out the previous day's high.
+- Bearish trend := each successive day takes out the previous day's low.
+- While the trend holds, set the draw to the corresponding previous-day extreme for the next day.
+- A day that fails to take the expected extreme is where the read is re-examined (his example inserts
+  a fair value gap as the interim target).
+- Retracements and liquidity sweeps inside the trend produce order blocks (a series of opposing-close
+  candles) that support continuation.
+invalidation:
+- A day that closes against the trend after reaching a daily fair value gap - his example flips the
+  draw at exactly that point.
+- Price entering a consolidation that takes neither previous-day extreme.
+measurable:
+- run-length distribution of consecutive days taking the previous day's high (or low)
+- next-day hit rate of the previous-day extreme conditional on the previous N days having taken it
+sources:
+- video_id: FXJBFbZQbck
+  title: The Easiest Draw On Liquidity (DOL) - Daily Bias - ICT
+  quote: in a bullish Trend price will continue to take previous day's High
+ambiguities:
+- No count is given for how many consecutive days establish the trend, nor how many failures end
+  it.
+- '''Takes'' the previous day high is not specified as a wick through or a close beyond.'
+- The rule is stated for daily candles only; no fractal claim is made here.
+related:
+- draw-on-liquidity
+- daily-bias-framework
+- previous-period-high-low
+- previous-day-lookback-three-days
+python_detector: null
+contributing_units:
+- education_ict_updated_02
+draft_count: 1
+voice: ttrades

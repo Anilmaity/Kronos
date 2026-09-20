@@ -1,0 +1,61 @@
+id: wait-for-candle-close
+name: Wait For The Candle To Close (no intracandle decisions)
+definition: 'The stated reason his live behaviour looks passive: the whole model is built
+  on closures, so no decision can be made until the candle closes. He uses this to diagnose
+  the common complaint that backtesting feels smooth while live trading feels frantic — in
+  a backtest you are mechanically stepping candle by candle and only ever seeing closes, while
+  live you are watching the same candle oscillate and predicting where it will close. His
+  fix is to stop predicting the close and, if that is hard, to move up to the 15-minute where
+  there are fewer fluctuations and there is visibly nothing to do until the bar completes.
+
+  '
+category: psychology
+status: specified
+aliases:
+- let it close
+- based off the closures
+preconditions:
+- A model whose triggers (candle 2 / candle 3 closure, CISD) are defined on closes.
+detection_rules:
+- Evaluate the model only on completed bars; take no action from an unclosed bar's current
+  print.
+- Do not infer the close of a bar in progress — the same bar can close bullish, bearish or
+  as a doji within seconds.
+- If intracandle watching causes forced entries, move the execution timeframe up (e.g. to
+  15-minute) so the wait is explicit.
+- 'Treat the live sequence as identical to the backtest sequence: one decision per closed
+  bar.'
+invalidation:
+- Not applicable — this is an execution discipline.
+measurable:
+- outcome of bar-close-only entries versus intrabar entries on the same signal set
+- count of entries taken before bar close and their R
+sources:
+- video_id: TjUolMJNCMY
+  title: New York Open Live Q&A
+  quote: My whole model is based off the closures
+ambiguities:
+- This sits in tension with his own early-CISD indicator setting and with the anticipation-CISD
+  material he says he has but will not publish — both act before the close.
+- No exception is stated for a stop or a target, which necessarily execute intrabar.
+- Which timeframe's close governs when several are in play is not stated here.
+related:
+- cisd
+- wick-trust-test
+- body-close-confirmation
+- entry-timeframe-elevation
+- ten-am-candle-alignment
+timeframes:
+  htf:
+  - 1D
+  - 4H
+  - 1H
+  ltf:
+  - 15m
+  - 5m
+  - 3m
+  fractal: true
+contributing_units:
+- live_streams_02
+draft_count: 1
+voice: ttrades

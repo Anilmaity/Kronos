@@ -1,0 +1,69 @@
+id: weekly-candle-institutional-profile
+name: 'The Weekly Candle: Accumulation, Profit Release, Distribution'
+definition: 'The weekly candle is read as three institutional phases around its opening price
+  (measured at midnight New York, not GMT). In a bullish week institutions accumulate long
+  below the weekly opening price; the profit release phase is the one-sided expansion above
+  the opening price toward the weekly objective as the market seeks counterparty liquidity
+  to square positions; the distribution phase is where those longs are offset at a higher-timeframe
+  premium. Bearish weeks mirror this. The trader''s job is to buy at or below the weekly open
+  when bullish and sell at or above it when bearish.
+
+  '
+category: model
+status: specified
+aliases:
+- the weekly OHLC read
+- accumulate below the weekly open
+preconditions:
+- A directional weekly draw on liquidity has been established (see no-draw-no-trade).
+- The weekly opening price has been marked at midnight New York.
+detection_rules:
+- Mark the weekly opening price at 00:00 New York.
+- 'Accumulation phase: price trading below the weekly open (bullish case), typically early
+  week.'
+- 'Profit release phase: expansion above the weekly open with one-sided delivery toward the
+  weekly objective.'
+- 'Distribution phase: price at a higher-timeframe premium where longs are offset.'
+invalidation:
+- Not stated explicitly; the implied invalidation is that no directional draw exists.
+measurable:
+- frequency with which the weekly low forms below the midnight-NY weekly open in bullish weeks
+- distribution of weekly-low formation by weekday
+sources:
+- video_id: nncJGt6j19Q
+  title: Gene | Align Yourself For High Probability Trades
+  quote: buy at or below the opening price if I'm bullish
+ambiguities:
+- Whether the weekly open is Sunday 18:00 NY or Monday 00:00 NY is never resolved; only 'midnight
+  New York' is said.
+- No stop placement is given anywhere in the talk.
+- The method for establishing the weekly draw is deferred to a part two not present in this
+  unit.
+related:
+- valuation-by-speculation
+- no-draw-no-trade
+- discount-requirement-before-entry
+- weak-longs-weak-shorts
+timeframes:
+  htf:
+  - 1W
+  - 1D
+  ltf:
+  - 4H
+  - 1H
+  - 15m
+  - 5m
+  fractal: false
+execution:
+  bias: Direction of the weekly draw on liquidity.
+  entry: At or below the weekly opening price when bullish; at or above it when bearish.
+  stop: Not stated.
+  targets:
+  - the weekly objective, expressed as a short-term daily objective
+  - a lower-timeframe premium (daily / H4 / H1 level) for scale-out
+contributing_units:
+- t_talks_02
+draft_count: 1
+voice: guest
+guest_sources:
+- Gene | Align Yourself For High Probability Trades

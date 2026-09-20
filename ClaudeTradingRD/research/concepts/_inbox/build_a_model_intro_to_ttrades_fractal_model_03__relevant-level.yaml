@@ -1,0 +1,70 @@
+id: relevant-level
+name: Relevant Level (key level / drawn liquidity)
+aliases:
+- relevant high
+- relevant low
+- point of interest
+category: liquidity
+status: contested
+definition: 'This unit supplies the level-selection half of the concept and the reaction test at it.
+  The candidate set is the relevant swing highs and lows inside the three-higher-timeframe-candle
+  window, preferentially those that are also a higher-timeframe extreme. When price reaches one, he
+  does not assume a turn: he classifies the phases of price at the level - retracement, reversal,
+  or consolidation - and that classification decides whether the level produced a manipulation (tradeable
+  reversal) or a breakout (continuation through). The reaction he wants at a relevant level is a candle
+  2 or candle 3 closure, with the wick or the EQ of that candle used as the level the candle 3 must
+  respect.'
+timeframes:
+  htf:
+  - 1M
+  - 1D
+  - 4H
+  ltf:
+  - 1H
+  - 15m
+  fractal: true
+preconditions:
+- Relevant swings have been marked and the look-back window applied.
+- Price has traded into one of them.
+detection_rules:
+- Candidate levels := relevant swing highs and lows inside the three-HTF-candle window.
+- Prefer candidates that are also a higher-timeframe high or low.
+- 'On the tag, classify the phase at the level: retracement, reversal, or consolidation.'
+- Reversal at the level -> manipulation; trade to the other side of the range or to the failure swings.
+- Retracement or consolidation at the level -> breakout / continuation through it.
+- Require a candle 2 or candle 3 closure at the level as the actual trigger.
+- Use the wick, or the EQ, of that candle as the level the candle 3 must respect.
+- Without an SMT, do not anticipate a reversal at a level that is not relevant.
+invalidation:
+- Price consolidates or only retraces at the level and continues through - the reversal reading is
+  dead.
+measurable:
+- reversal vs breakout rate at relevant levels, split by phase classification
+- frequency with which a c2/c3 closure prints at a tagged relevant level
+sources:
+- video_id: HbOeD_JVens
+  title: Which Swing Highs and Lows Matter in Trading? (Relevant Swings)
+  quote: relevant swings are where I look for my model to form in the market
+- video_id: HbOeD_JVens
+  title: Which Swing Highs and Lows Matter in Trading? (Relevant Swings)
+  quote: Do we get a retracement, a reversal, or a consolidation?
+- video_id: HbOeD_JVens
+  title: Which Swing Highs and Lows Matter in Trading? (Relevant Swings)
+  quote: I'm going to be looking for a candle 2 or candle 3 closure
+ambiguities:
+- The phase classification at the level is itself visual - no rule is given for how many candles of
+  lingering turn a reversal into a consolidation in this video.
+- '''The wick OR the EQ'' is offered as an either/or with no precedence rule for which to use.'
+- SMT is named once as what would license a reversal at a non-relevant level, but no SMT procedure
+  is given here.
+related:
+- relevant-swings-separation
+- relevant-swing-lookback
+- phases-of-price
+- fractal-model-c2
+- fractal-model-c3
+- equilibrium-eq
+contributing_units:
+- build_a_model_intro_to_ttrades_fractal_model_03
+draft_count: 1
+voice: ttrades

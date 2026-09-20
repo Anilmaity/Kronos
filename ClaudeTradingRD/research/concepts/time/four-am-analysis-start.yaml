@@ -1,0 +1,55 @@
+id: four-am-analysis-start
+name: The Trading Day Starts At 04:00; Nothing Before It Counts
+definition: Rauf states that he starts his day at 04:00 and does not consider any price action
+  before 04:00 significant. He does not like trading the London session and does not care
+  what the euro does before then; he has moved to watching the New York session only, on the
+  grounds that it is the easiest session to trade because it is either a continuation of what
+  London did or a reversal of it - two players, so the framing is simple. He credits the 04:00
+  start to another trader.
+category: time
+status: specified
+aliases:
+- ignore price before 4am
+- New York session only
+detection_rules:
+- Discard price action before 04:00 EST from the intraday read.
+- Do not take London-session entries.
+- 'Frame New York as exactly one of: continuation of London, or reversal of London.'
+- If on side with a continuation, the London leg can be carried into New York.
+measurable:
+- outcome of a fixed model run on pre-04:00 vs post-04:00 setups
+- split of New York sessions between continuation and reversal of London
+sources:
+- video_id: qFtfD09Vv3E
+  title: Live with Day Trading Rauf - Preparing for a New Week
+  quote: I usually start my day from 4am
+- video_id: qFtfD09Vv3E
+  title: Live with Day Trading Rauf - Preparing for a New Week
+  quote: it's either going to be a continuation of what London did or a reversal
+ambiguities:
+- The timezone of '4am' is not stated; his other references (09:30, 03:00 euro news) imply
+  EST.
+- The credit for the 04:00 start is captioned as 'TCM' and the referenced trader cannot be
+  identified from the audio.
+- He also says elsewhere in the same stream that he will trade NASDAQ on a Monday, so the
+  New-York-only rule is a session filter, not a day filter.
+related:
+- killzone-open-avoidance
+- new-york-reversal-profile
+- no-news-judas-swing
+- entry-time-window
+guest_sources:
+- Day Trading Rauf
+- Live with Day Trading Rauf - Preparing for a New Week
+timeframes:
+  htf:
+  - 1D
+  ltf:
+  - 1H
+  - 5m
+  - 1m
+  fractal: false
+contributing_units:
+- live_stream_guests_02
+draft_count: 1
+voice: guest

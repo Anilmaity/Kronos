@@ -1,0 +1,65 @@
+id: entry-time-window
+name: "Entry Time Window (and rejection of kill zones)"
+aliases: ["opening drive movement", "9:30 to 10", "8 to 11 EST"]
+category: time
+status: specified
+
+definition: >
+  The window he actually trades in the New York morning is 9:30 to 10:00, which he calls the
+  opening drive movement and says is where the clean move happens on most days; he also names
+  8 to 9 as an alternative. The wider band he considers at all is given numerically and with a
+  timezone for the only time in this unit: his indicator's setup time filter is set to show
+  setups between 8 and 11 EST. Kill zones are explicitly rejected as the organising principle —
+  when asked why he does not care about the kill zone he answers that he is trading higher
+  timeframe candles, so the only thing that matters is being inside a higher-timeframe candle
+  that has formed its wick, not which named session block the clock is in.
+
+timeframes:
+  htf: ["4H", "1H"]
+  ltf: ["15m", "5m", "3m"]
+  fractal: false
+
+preconditions:
+  - "A bias and a level to trade away from already exist before the window opens."
+
+detection_rules:
+  - "Primary window: 9:30 to 10:00 (the opening drive); secondary window named is 8 to 9."
+  - "Setups outside 8 to 11 EST are filtered out (the stated indicator time-filter setting)."
+  - "Do not require the entry to fall inside a named kill zone."
+  - "Require instead that price be inside a higher-timeframe candle which has already formed its wick."
+  - "The pre-open bias is posted at 8:30 a.m. in his own routine; the stream itself starts around 9:10-9:15."
+
+invalidation:
+  - "The higher-timeframe candle has not yet formed a wick — no entry regardless of the clock."
+
+measurable:
+  - "range covered 9:30-10:00 versus the rest of the session"
+  - "win rate of entries inside 8-11 EST versus outside"
+  - "difference in outcome between kill-zone-filtered and wick-formed-filtered entry sets"
+
+sources:
+  - video_id: Je7cd9HJUBE
+    title: "New York Open Live Q&A"
+    quote: "I only want to see setups between 8 to 11 EST"
+  - video_id: TjUolMJNCMY
+    title: "New York Open Live Q&A"
+    quote: "Because I'm just trading higher time frame candles"
+  - video_id: G1IIdQ3RAkY
+    title: "New York Open Live Q&A"
+    quote: "normally I want this move to occur from 9:30 to 10"
+  - video_id: m8xcjkOuBHU
+    title: "New York Open Live Q&A"
+    quote: "I'll just focus on 9:30 and 10"
+
+ambiguities:
+  - "The 8-11 EST figure is quoted while demonstrating an indicator setting, not stated as a trading rule; whether he personally trades to 11:00 is not said."
+  - "EST is named once and never restated; whether he means EST proper or US Eastern clock time including daylight saving is not addressed anywhere in the corpus."
+  - "The '8 to 9' alternative window is mentioned in passing without saying which instrument or which day it applies to."
+  - "'Formed a wick' as the gating condition is not quantified here (no wick-to-body ratio)."
+
+python_detector: null
+related: ["ten-am-candle-alignment", "killzones", "macros-not-used", "new-york-intraday-time-levels", "trading-window"]
+
+contributing_units: ["live_streams_02"]
+draft_count: 1
+voice: ttrades

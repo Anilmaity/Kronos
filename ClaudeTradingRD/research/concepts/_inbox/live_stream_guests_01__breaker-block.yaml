@@ -1,0 +1,80 @@
+id: breaker-block
+name: "Breaker Block"
+aliases: ["bearish breaker", "bullish breaker", "flipped order block"]
+category: entry
+status: specified
+voice: guest
+guest_sources:
+- "Finessee_Fx"
+- "Ben (Ben TT)"
+
+definition: >
+  Two guests define the breaker compatibly. Finessee_Fx: a bearish breaker is the last bearish
+  down-close candle immediately prior to a stop run higher - the run being two consecutive
+  aggressive bullish candles that take out the old highs - after which price trades back below that
+  candle; the bullish breaker is the mirror, the last bullish candle before a decline that takes
+  out lows and fills an imbalance, confirmed when price then breaks back above the high. Ben adds
+  the compressed definition - a breaker block is simply a flipped order block: the same candle that
+  was a bullish order block becomes a bearish breaker once price has broken through it - and states
+  the discriminator against a mitigation block: a breaker creates a NEW high (so it is not a failure
+  swing), a mitigation block does not.
+
+timeframes:
+  htf: ["1M", "1W", "1D", "4H"]
+  ltf: ["1H", "15m", "5m", "1m"]
+  fractal: true
+
+preconditions:
+- "An old high or low exists to be run."
+- "Finessee_Fx: for a bullish breaker, an inefficiency below price that the decline can fill."
+
+detection_rules:
+- "Bearish breaker: find the last bearish (down-close) candle before the aggressive run that takes out highs; the run must actually take stops out. Confirmation is price closing back below that candle."
+- "Finessee_Fx states the run as two consecutive aggressive candles; in a second example he says 'back to back to back', so the count is at least two."
+- "Bullish breaker: the last bullish candle before the decline that takes out a low AND fills the fair value gap below; confirmation is price breaking back above the swing high that follows."
+- "Ben: a breaker is a flipped order block - the same candle, re-polarised once price has traded through it."
+- "Ben's discriminator: the move must create a new high (bullish case: new low) for it to be a breaker; a candle whose move does not recreate a new swing extreme is a mitigation block, not a breaker."
+- "Finessee_Fx demarcates the zone wick-to-body and extends it forward; the level is expected to be respected repeatedly, not once."
+- "Ben's invalidation test: no candle CLOSE beyond the defending edge of the breaker."
+
+invalidation:
+- "A candle closes beyond the defending side of the breaker zone (Ben)."
+- "Finessee_Fx: the level is traded through and the order flow is no longer respected, at which point the bias flips."
+
+execution:
+  bias: "Direction of the flip."
+  entry: "Limit into the wick-to-body band of the breaker (Finessee_Fx), or on the reaction with no candle close beyond it (Ben)."
+  stop: "Beyond the breaker."
+  targets: ["old highs / old lows on the opposite side"]
+
+measurable:
+- "reaction rate of breakers that ran stops versus those that did not"
+- "how often a breaker is respected more than once (Finessee_Fx shows the same daily breaker holding twice)"
+- "outcome difference between breakers created with a new swing extreme and those without (Ben's discriminator)"
+
+sources:
+- video_id: eK_6wgNpNh0
+  title: "Advanced ICT Directional Bias Teachings with Finessee_Fx"
+  quote: "the last bearish closed candle prior to the stop run"
+- video_id: yRmKkR4CojU
+  title: "Fractalizing Entries -Q&A with Ben - ICT Concepts"
+  quote: "a breaker block is simply a flipped order block"
+- video_id: yRmKkR4CojU
+  title: "Fractalizing Entries -Q&A with Ben - ICT Concepts"
+  quote: "i like high time frame breakers that price submits to over a consolidation period"
+- video_id: yRmKkR4CojU
+  title: "Fractalizing Entries -Q&A with Ben - ICT Concepts"
+  quote: "i'm looking for no candle closures above that"
+
+ambiguities:
+- "'Aggressive' is never quantified by either speaker - no body size, range or displacement threshold."
+- "Finessee_Fx says two consecutive candles in one example and three in another; whether more than two still qualifies is never addressed."
+- "Ben's stated favourite is a HIGH-timeframe breaker that price consolidates on, because the consolidation manufactures an internal liquidity run he can zoom into - but 'consolidation period' is not bounded."
+- "Neither speaker states how long a breaker stays valid."
+- "The auto-captioner renders 'order block' as 'water block' throughout the Finessee_Fx transcript."
+
+python_detector: null
+related: ["wick-to-body-order-block-zone", "mitigation-block", "order-block", "five-concept-entry-toolkit", "sponsorship-vs-execution-timeframe"]
+contributing_units:
+- live_stream_guests_01
+draft_count: 1

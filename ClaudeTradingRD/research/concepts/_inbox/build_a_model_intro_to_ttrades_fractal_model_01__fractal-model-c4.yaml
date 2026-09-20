@@ -1,0 +1,68 @@
+id: fractal-model-c4
+name: Candle 4 (second continuation candle)
+category: model
+status: specified
+aliases:
+- C4
+definition: 'Candle 4 is the second continuation candle, tradeable only when candle 3 produced a
+  continuation closure (closed beyond candle 2''s extreme). It is treated exactly like candle 3 -
+  let the wick form via an intracandle CISD, then trade the body - and it must respect 50% of candle
+  3''s range. The indicator''s own colour coding is anchored on candle 4: a GREY C2 means the setup
+  stayed valid through candle 4, a RED C2 means it failed within the first candle after, and an ORANGE
+  C2 means it failed on the second candle after. Beyond candle 4 - at candle 5 and 6 - the stated
+  risk is being caught in a new phase of price.'
+timeframes:
+  htf:
+  - 1D
+  - 4H
+  - 1H
+  ltf:
+  - 15m
+  - 5m
+  - 1m
+  fractal: true
+preconditions:
+- Candle 3 closed beyond candle 2's extreme.
+detection_rules:
+- Require candle 3's continuation closure first.
+- Candle 4 should respect 50% of candle 3's range.
+- Inside candle 4, apply the same intracandle CISD test to mark its wick as formed.
+- 'Stand-aside: from candle 5 onward, treat a new phase of price as likely.'
+invalidation:
+- Candle 4 closes back through 50% of candle 3's range.
+execution:
+  bias: Same as candle 3.
+  entry: Intracandle CISD in candle 4, or a positional entry at its open on an existing protected
+    swing.
+  stop: On the protected swing.
+  targets:
+  - remaining previous-candle extremes
+measurable:
+- share of C2 setups that survive to candle 4 (the indicator's grey/red/orange split)
+- expectancy of the C4 entry vs the C3 entry
+sources:
+- video_id: tyoxl1l-6iI
+  title: 'Candle 2 Closure: The Foundation of TTrades Fractal Model'
+  quote: we can anticipate price to expand higher as well in candle 4
+- video_id: CqMIh-Vvhbg
+  title: Intro To TTrades Fractal Model [Indicator & Settings]
+  quote: a red C2 is when that setup fails within the first candle
+- video_id: tyoxl1l-6iI
+  title: 'Candle 2 Closure: The Foundation of TTrades Fractal Model'
+  quote: once you get into candle five and six, that's where you can get caught
+- video_id: Vo2n47RjjMo
+  title: Intracandle CISD (IC-CISD) - Improve Your Entries
+  quote: That confirms the wick of candle four right there
+ambiguities:
+- The exact failure test behind the indicator's red/orange colouring is not disclosed.
+- Whether candle 4 needs its own point of interest is never addressed.
+related:
+- fractal-model-c3
+- fractal-model-c2
+- ic-cisd
+- ttfm-indicator-settings
+- dont-trade-after-expansion
+contributing_units:
+- build_a_model_intro_to_ttrades_fractal_model_01
+draft_count: 1
+voice: ttrades

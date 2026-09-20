@@ -1,0 +1,75 @@
+id: entry-time-window
+name: Entry Time Window (and rejection of kill zones)
+aliases:
+- do you consider kill zones
+category: time
+status: specified
+
+definition: >
+  Asked twice whether he uses kill zones, he says no and gives the replacement: he trades
+  within the higher-timeframe candles, not within named session windows. The argument he draws
+  on screen is that a 5-minute trade is always inside an hourly candle, inside a 4-hour candle,
+  inside a daily candle - so the question that matters is whether those candles have already
+  expanded and whether they align toward the same target, not which session block the clock
+  sits in. If the higher-timeframe candle has already expanded he sees no reason to care about
+  the session. In practice his own window is bounded by habit rather than rule: he looks when
+  he wakes up, trades it if it is obvious, otherwise waits for the open, and does not trade
+  past about 11:00 or in the afternoon session.
+
+timeframes:
+  htf:
+  - 1D
+  - 4H
+  - 1H
+  ltf:
+  - 15m
+  - 5m
+  fractal: false
+
+preconditions:
+- A setup is being considered at some point in the day.
+
+detection_rules:
+- Do not filter entries by kill zone or named session block.
+- Ask instead which higher-timeframe candles the entry sits inside, whether they have already
+  expanded, and whether they align toward the same target.
+- If the containing higher-timeframe candle has already expanded, the setup is uninteresting
+  regardless of the time.
+- If a setup is obvious on waking, take it; otherwise wait for the open.
+
+invalidation:
+- n/a - a filter-rejection.
+
+measurable:
+- expectancy of entries grouped by containing-candle expansion state versus grouped by kill zone
+
+sources:
+- video_id: W7Fu3Rx5iMs
+  title: New York Open Live Q&A
+  quote: I just trade within the higher time frame candles
+- video_id: W7Fu3Rx5iMs
+  title: New York Open Live Q&A
+  quote: I don't really care about kill zones
+- video_id: W7Fu3Rx5iMs
+  title: New York Open Live Q&A
+  quote: I just care about the higher time frame candle
+
+ambiguities:
+- The rejection of kill zones sits alongside a session-by-session timeframe map in the same
+  stream, and heavy use of 09:30 / 09:45 / 10:00, so time is clearly not irrelevant to him -
+  only the kill-zone framing is rejected.
+- '"Already expanded" is not quantified.'
+- The 11:00 cut-off and the no-afternoon-session habit are described as personal routine, with
+  no rule attached.
+
+related:
+- killzones
+- macros-not-used
+- session-timeframe-model-map
+- new-york-intraday-time-levels
+- dont-trade-after-expansion
+
+contributing_units:
+- live_streams_03
+draft_count: 1
+voice: ttrades

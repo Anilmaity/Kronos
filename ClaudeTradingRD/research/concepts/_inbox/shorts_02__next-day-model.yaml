@@ -1,0 +1,74 @@
+id: next-day-model
+name: Next Day Model (next candle model)
+category: model
+status: specified
+definition: 'Compressed to its decision table across four Shorts. Relative to the previous candle of
+  the same timeframe, the current candle produces exactly one of three reads for the NEXT candle: closing
+  OUTSIDE the previous range means anticipate a continuation; taking out one side but closing back INSIDE
+  means anticipate a reversal (i.e. a move the other way); taking out BOTH the high and the low and
+  closing back inside means anticipate a consolidation. The reversal read is the definition he gives
+  for a reversal - price takes out its previous candle''s high or low and closes back into the range
+  - and it licenses anticipating a continuation on the following candle in the new direction.'
+timeframes:
+  htf:
+  - 1D
+  ltf:
+  - 4H
+  - 1H
+  fractal: true
+preconditions:
+- A completed previous candle with a defined high and low.
+detection_rules:
+- Close outside the previous candle's range -> anticipate a continuation on the following candle.
+- Reach beyond the previous high (or low) but close back inside the range -> reversal; anticipate the
+  following candle to continue in the reversed direction.
+- Take out BOTH the previous high and the previous low and close back inside -> anticipate a consolidation.
+- Successive closes below the previous day low sustain the "anticipate a continuation lower" read day
+  after day.
+- When a candle closes over the previous high but the setup is muddied (e.g. a swing high on the left
+  was also taken), wait for another candle rather than acting.
+- A candle that closes neither over the previous high nor below the previous low gives no read - wait.
+invalidation:
+- The anticipated continuation candle instead closes back inside the previous range, which converts
+  the read to a reversal.
+measurable:
+- frequency of each of the three classes per instrument per month
+- next-candle directional hit rate conditional on each class
+sources:
+- video_id: ldCvD6iAbdM
+  title: How to Anticipate a Reversal vs a Continuation
+  quote: With price closing outside, I can anticipate a continuation in the following candle
+- video_id: ldCvD6iAbdM
+  title: How to Anticipate a Reversal vs a Continuation
+  quote: fails to close outside the range, closing back inside the range
+- video_id: ldCvD6iAbdM
+  title: How to Anticipate a Reversal vs a Continuation
+  quote: price takes out the high and the low of the range
+- video_id: _CjuP__edac
+  title: How the Next Day Model Helps You Prepare to Trade
+  quote: I focus on price taking out its previous candle's high or low
+- video_id: AArNO58yBiw
+  title: How to Establish Daily Bias with Candle Closures
+  quote: we close below the previous day low. So now I can anticipate a continuation lower
+- video_id: ZzHzsDepC2Y
+  title: 'Next Day Model: Anticipating the Next Daily Candle'
+  quote: we have closed over our previous candle's high
+ambiguities:
+- Whether "takes out" means any trade through the level or a close beyond it differs between the three
+  branches and is never stated as one rule.
+- The consolidation branch gives no rule for which side is taken first.
+- The Shorts do not say how many candles to wait when the read is ambiguous - only "wait for another
+  candle".
+- No confirmation requirement (hourly CISD, etc.) is attached in these clips, although the rest of the
+  corpus requires one. Do not backfill it from those videos.
+related:
+- three-candle-outcomes
+- daily-bias-framework
+- fractal-model-c2
+- fractal-model-c3
+- phases-of-price
+- daily-bias-candle-formation
+voice: ttrades
+contributing_units:
+- shorts_02
+draft_count: 1

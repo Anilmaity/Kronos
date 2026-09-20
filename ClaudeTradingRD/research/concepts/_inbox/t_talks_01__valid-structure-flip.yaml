@@ -1,0 +1,54 @@
+id: valid-structure-flip
+name: "Valid Structure Flip (strong low / weak high)"
+aliases: ["market structure shift", "flip", "strong low", "weak high"]
+category: structure
+status: specified
+
+definition: >
+  A market structure shift is a close beyond the LAST VALID swing - not beyond any arbitrary
+  minor low or high on the right of the chart. Once price closes above a prior high, the low
+  behind that move is a strong low which should not be revisited, and the opposing extreme is the
+  weak high which price is expected to draw to. The strong low becomes the anchor for the fib.
+
+timeframes:
+  htf: ["1D", "4H", "1H"]
+  ltf: ["15m", "5m", "1m", "5s"]
+  fractal: true
+
+preconditions:
+  - "A sequence of swing highs and lows is identifiable on the working timeframe."
+
+detection_rules:
+  - "Identify the last valid swing low (bullish case). A close ABOVE the corresponding prior high flips structure."
+  - "On that flip, the low behind the move is the strong low; expect no return to it while the flip stands."
+  - "The unbroken opposing extreme remains the weak high until the strong low is taken - a high stays weak while the low below it holds."
+  - "Anchor the range for the levels from the strong low to the flipping high."
+  - "To establish a NEW strong high after a flip down, price must close below the low that created it."
+  - "Prefer the second continuation break, not the first flip - first flips frequently fake, especially away from a higher-timeframe key area."
+
+invalidation:
+  - "A close through the strong low (or strong high) - the flip is void and the structure must be re-read."
+
+execution:
+  bias: "In the direction of the flip, toward the weak extreme."
+  entry: "Via the GB level entries anchored on the flip."
+  stop: "Beyond the strong extreme."
+  targets: ["the weak high or weak low"]
+
+measurable:
+  - "how often a strong low as defined survives without being closed through"
+  - "hit rate of the weak extreme being reached after a valid flip"
+  - "failure rate of the first flip versus the second continuation break"
+
+sources:
+  - video_id: gjoRPszj-Qk
+    title: "AP | Use Market Structure & Fibonacci Levels for Sniper Entries"
+    quote: "the last valid low we closed above, that's our market structure shift"
+
+ambiguities:
+  - "'Valid' swing is defined by contrast (not a random low on the right of the chart) rather than positively - no fractal degree or candle-count rule is given."
+  - "The speaker concedes the labelling can be nitpicked by dropping a timeframe, and gives no rule for which timeframe settles it."
+  - "'Second continuation break' has no counting rule for what resets the count."
+
+python_detector: null
+related: ["gb-levels", "failure-swing-draw", "second-continuation-confirmation", "advanced-market-structure-labeling"]

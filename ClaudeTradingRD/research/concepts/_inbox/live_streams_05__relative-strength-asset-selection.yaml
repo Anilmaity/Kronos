@@ -1,0 +1,53 @@
+id: relative-strength-asset-selection
+name: Ranking Correlated Assets And Trading The Middle One
+aliases:
+- strongest
+- weakest
+- decoupled
+category: structure
+status: specified
+definition: 'Worked live across ES, NQ and YM. The draw is confirmed by checking all three: the previous
+  day low remains on ES while neither NQ nor YM has taken theirs, so the previous day low on the indices
+  is the objective. The selection rule he states is about instability rather than extremes - when
+  strength and weakness are switching between the assets intraday (YM was weakest before the open,
+  then switched), he cannot tell which will end up strongest or weakest, so he takes ES because it
+  is generally in the middle.'
+timeframes:
+  htf:
+  - 1D
+  - 1H
+  ltf:
+  - 15m
+  - 5m
+  - 1m
+  fractal: false
+preconditions:
+- ES, NQ and YM charts side by side with the previous day extremes marked.
+detection_rules:
+- Check the shared level on all three assets before committing to a draw.
+- If the strength/weakness ranking is switching during the session, take ES as the middle asset.
+- The intended sequence in a bearish case is that the weakest asset pushes through its low first and
+  drags the others.
+invalidation:
+- The intended weak asset switches to strongest, which is what happened here and is given as the reason
+  the move was slower than wanted.
+measurable:
+- frequency of intraday strength/weakness switching
+- outcome of trading ES vs the extreme-ranked asset on switching days
+sources:
+- video_id: tDiwwMRWF2k
+  title: New York Open Live Q&A with NickDoesFutures
+  quote: I like to take ES, which is generally in the middle
+ambiguities:
+- '''Switching'' is diagnosed by eye; no measurement window is given.'
+- The library entry for this id is contested across units; this unit adds the middle-asset fallback,
+  not a resolution.
+related:
+- relative-strength-weakness
+- cross-asset-reversal-confirmation
+- smt-divergence
+- draw-on-liquidity
+contributing_units:
+- live_streams_05
+draft_count: 1
+voice: ttrades

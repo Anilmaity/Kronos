@@ -1,0 +1,51 @@
+id: consolidation-reversal-week
+name: Consolidation Reversal (weekly profile) - the Thursday external-range protocol
+aliases:
+- Thursday consolidation reversal
+category: model
+status: specified
+definition: AM Trades' handling of a week that gives nothing early. If Monday through Wednesday produce
+  no engagement of a higher-timeframe PD array and price is simply consolidating in an internal range,
+  he calls for a Thursday consolidation reversal. On Thursday he marks out the external high and the
+  external low of that three-day consolidation and looks for a manipulation of one of them, which then
+  sets up the weekly profile and the expansion into Thursday and Friday.
+timeframes:
+  htf:
+  - 1W
+  - 1D
+  ltf:
+  - 1H
+  fractal: false
+preconditions:
+- Monday to Wednesday with no higher-timeframe PD array engagement.
+- Price consolidating in an internal range.
+detection_rules:
+- Confirm that Monday-Wednesday offered no trade and no HTF PD array engagement.
+- On Thursday, mark the external high and the external low of the Monday-Wednesday range.
+- Look for a manipulation (sweep) of one of those two levels on Thursday.
+- Confirm with an hourly change in state of delivery, then trade the expansion away from it.
+invalidation:
+- No manipulation of either external level on Thursday.
+measurable:
+- frequency of a Thursday sweep of a 3-day consolidation's external levels
+- expansion size Thursday-Friday after such a sweep
+sources:
+- video_id: wGYde-h84cs
+  title: Live Q&A with AM Trades - Weekly Profile
+  quote: I'm marking out the external high and low
+- video_id: wGYde-h84cs
+  title: Live Q&A with AM Trades - Weekly Profile
+  quote: always following manipulation we look for expansion
+ambiguities:
+- Whether Wednesday's close or Thursday's open defines the consolidation boundary is not stated.
+- No rule handles a Thursday that sweeps both sides.
+related:
+- hourly-cisd-manipulation-confirmation
+- weekly-profile-not-predicted-in-advance
+- no-monday-rule
+contributing_units:
+- live_stream_guests_02
+draft_count: 1
+voice: guest
+guest_sources:
+- AM Trades

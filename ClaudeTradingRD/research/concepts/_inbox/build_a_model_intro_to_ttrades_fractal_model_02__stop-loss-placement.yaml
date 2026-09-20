@@ -1,0 +1,71 @@
+id: stop-loss-placement
+name: Stop Loss Placement (Swing vs Body)
+category: risk
+status: specified
+aliases:
+- invalidation placement
+- manipulating the stop
+definition: 'The stop is the protected swing -- that is the whole answer, and it is why the protected
+  swing definition is a prerequisite for this topic. When the protected-swing stop does not produce
+  the required risk-to-reward, he permits ONE documented modification: move the stop to the BODY extreme
+  of the opposing-candle series (the mean threshold / 50% logic), with the explicitly acknowledged cost
+  that price will sometimes sweep the wick, stop him out, and then reach the target. He also gives the
+  alternative to widening: instead of moving the stop, take a limit entry or wait for a retest so the
+  entry price improves the R.'
+timeframes:
+  htf:
+  - 1D
+  - 4H
+  - 1H
+  ltf:
+  - 15m
+  - 5m
+  - 3m
+  fractal: true
+preconditions:
+- A protected swing exists (important level reached, then closed through).
+detection_rules:
+- 'Default: stop beyond the protected swing.'
+- If R is insufficient, place the stop at the body extreme of the opposing-candle series instead, accepting
+  sweep risk.
+- 'Alternative to widening: improve entry via a limit at the level or a retest, keeping the swing stop.'
+- For instruments that habitually sweep (he names oil), deliberately allow extra room beyond the normal
+  stop.
+- Where no point of interest exists inside the range, use 0.5 of the opposing-candle series (the T-spot)
+  as the level the stop sits beyond.
+- This placement logic is specific to a model built on changes in the state of delivery and order blocks;
+  users of other PD arrays must define their own invalidation.
+invalidation:
+- Price trades through the protected swing -- the trade idea, not just the trade, is over.
+execution:
+  bias: n/a
+  entry: market on the close through, or limit/retest when R is tight
+  stop: protected swing, else body extreme
+  targets:
+  - 2R minimum
+measurable:
+- stop-out rate at swing stops vs body stops
+- frequency of the sweep-then-target sequence that body stops expose
+- R improvement from retest entries vs market entries
+sources:
+- video_id: JHVaSKtE1Ys
+  title: 'Stop Losses in Trading: Know When You''re Wrong'
+  quote: sometimes it will come sweep me out and then go and hit my TP
+- video_id: qdQYhePcvGE
+  title: TTrades Fractal Model - Trading Candle 3
+- video_id: 9AL41xON3hA
+  title: The Only Trading Strategy You Need For 2026
+- video_id: TNybDCtwBnc
+  title: TTrades Playbook | Fractal Model Fundamentals (TTFM)
+ambiguities:
+- '''A little bit more room than normal'' for oil is not quantified.'
+- No rule says when to prefer the body stop over the retest entry -- both are offered for the same problem.
+related:
+- protected-swing
+- mean-threshold
+- risk-reward-minimum
+- t-spot
+contributing_units:
+- build_a_model_intro_to_ttrades_fractal_model_02
+draft_count: 1
+voice: ttrades

@@ -1,0 +1,69 @@
+id: order-block-requires-bos
+name: An Order Block Must Be A Break-Of-Structure Candle
+definition: 'A stricter order-block definition than the generic ''last opposing candle''.
+  For this speaker a candle only qualifies as an order block if it is the candle that produced
+  a break of structure - that is, it closed above the previous high (bullish case). Candles
+  that did not break structure are not order blocks regardless of appearance.
+
+  '
+category: structure
+status: underspecified
+aliases:
+- break of structure candle
+- CSS
+preconditions:
+- A swing structure is marked on the working timeframe.
+detection_rules:
+- Take the most recent candle that closed above the previous swing high (bullish) or below
+  the previous swing low (bearish).
+- Only that candle is a valid order block; the trade trigger is a subsequent body close back
+  through it.
+- Once such a candle exists, a body close below it (bullish case reversed) marks the point
+  at which a reversal or continuation is likely.
+- The 50 percent of the range that produced the break of structure can be used in place of
+  the candle body, and is expected to coincide with a GB level.
+invalidation:
+- The order block is traded through without reaction - it is then treated as mitigated and
+  dropped.
+measurable:
+- hit rate of order blocks that satisfy the break-of-structure requirement versus those that
+  do not
+- how often the 50 percent of the break-of-structure range coincides with a GB level within
+  N ticks
+sources:
+- video_id: gjoRPszj-Qk
+  title: AP | Use Market Structure & Fibonacci Levels for Sniper Entries
+ambiguities:
+- '''CSS'' is used repeatedly as a near-synonym with ''a little bit more rules'' and those
+  rules are never given, so the distinction between an order block and a CSS is unusable as
+  stated.'
+- '''S&D structure'' is used for the structure responsible for a break and is likewise never
+  defined.'
+- Mitigation is judged by eye ('all these shallow taps into this down close candle') with
+  no depth threshold.
+- Marked underspecified because the two named variants are undefined.
+related:
+- valid-structure-flip
+- gb-retracement-entry
+- three-pd-array-confluence
+timeframes:
+  htf:
+  - 1H
+  ltf:
+  - 15m
+  - 5m
+  - 1m
+  - 5s
+  fractal: true
+execution:
+  bias: The direction of the break of structure.
+  entry: On the return into the unmitigated order block, or at its 50 percent.
+  stop: Beyond the block.
+  targets:
+  - the GB level the block coincides with
+contributing_units:
+- t_talks_01
+draft_count: 1
+voice: guest
+guest_sources:
+- AP | Use Market Structure & Fibonacci Levels for Sniper Entries

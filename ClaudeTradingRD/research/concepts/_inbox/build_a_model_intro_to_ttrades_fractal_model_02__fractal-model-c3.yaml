@@ -1,0 +1,128 @@
+id: fractal-model-c3
+name: Candle 3 Continuation (the easier trade)
+category: model
+status: contested
+aliases:
+- C3
+- candle 3 closure
+- the continuation candle
+- the distribution candle
+definition: 'Candle 3 is the candle after candle 2, and it carries two distinct meanings that the primary
+  teaching finally separates. (a) As a TRADE: candle 3 is the continuation traded away from a confirmed
+  candle 2 reversal -- the direction is supplied by the candle 2, not by candle 3 itself. (b) As a CLOSURE
+  (a swing-point definition in its own right): a candle 3 closure exists only when candle 2 failed to
+  produce a closure, and it is defined as candle 3 closing beyond the OPENING PRICE of candle 2 -- below
+  it in the bearish case, above it in the bullish case. This is the missing direction input: the reference
+  is candle 2''s open (equivalently, in the ideal-formation video, candle 2''s body), not the prior
+  candle''s equilibrium. It is one-sided and therefore decidable. CONTESTED: the sibling unit
+  build_a_model_intro_to_ttrades_fractal_model_01 records a stricter reference for the same closure
+  -- beyond candle 2''s EXTREME (its high/low) rather than its open/body. Both readings are recorded
+  below; this unit''s videos state the open/body reference explicitly and verbatim.'
+timeframes:
+  htf:
+  - 1M
+  - 1W
+  - 1D
+  - 4H
+  - 1H
+  - 30m
+  - 15m
+  ltf:
+  - 1H
+  - 30m
+  - 15m
+  - 5m
+  - 3m
+  - 1m
+  fractal: true
+preconditions:
+- 'For the trade sense: a candle 2 whose reversal is confirmed by a lower-timeframe change in the state
+  of delivery.'
+- 'For the closure sense: candle 2 did NOT produce a valid candle 2 closure.'
+- Drawn liquidity / a target is still open -- if candle 2 already expanded all the way to the objective
+  he will not trade the candle 3.
+detection_rules:
+- 'Candle 3 closure (bearish): candle 2 produced no valid closure, and candle 3 closes BELOW the opening
+  price of candle 2. Bullish: candle 3 closes ABOVE the opening price of candle 2.'
+- If candle 3 never closes beyond candle 2's opening price, it is not a candle 3 closure at all and
+  the lower timeframes are not consulted.
+- 'READING B (from the sibling unit ..._01, not from this unit''s videos): the C3 closure reference
+  is candle 2''s EXTREME -- closes above candle 2''s high (bullish) / below candle 2''s low (bearish).
+  Reading B is strictly stronger than Reading A and will select a subset of Reading A''s bars, so a
+  detector should compute both and report the disagreement rate.'
+- A candle 3 closure, like a candle 2 closure, still requires a change in the state of delivery inside
+  it on the paired lower timeframe before a candle 4 continuation is sought.
+- 'Candle 3 as a trade: direction = the direction the confirmed candle 2 reversed toward. Trade only
+  after candle 2 is a REVERSAL candle (large wick, opens and closes near the same point); a candle 2
+  that expanded is a disqualifier because a new phase of price may begin.'
+- 'Exception to that disqualifier: if candle 2 expanded but left short-term drawn liquidity intact,
+  candle 3 is still tradeable because there is a spot for it to reach for.'
+- Inside candle 3, let the wick form against the intended direction, then trade the body -- entry via
+  a continuation order block, not on the reversal.
+- Aligning candle 3 across several timeframes at once (e.g. daily C3 + 4H C3 + 15m protected swing)
+  is the stated highest-expansion condition.
+invalidation:
+- Candle 3 fails to close beyond candle 2's opening price (closure sense).
+- Candle 3 itself prints as a reversal candle rather than expanding -- he then looks to candle 4 instead.
+- The candle 2 protected swing is taken out.
+- Price closes beyond the EQ of the preceding candle on the aligned timeframe (see invalidation-trade).
+execution:
+  bias: The direction the confirmed candle 2 reversed toward.
+  entry: 'Continuation order block inside candle 3 on the paired lower timeframe: price reaches a point
+    of interest, then closes through the series of opposing candles that went into it.'
+  stop: The protected swing created by that continuation; body extreme if R is insufficient.
+  targets:
+  - previous day / week high or low
+  - failure swings and equal highs/lows
+  - -1 / -2 / -2.5 standard deviation projections
+measurable:
+- frequency of candle 3 closures (close beyond C2 open) vs candle 2 closures, by timeframe
+- expansion of C3 conditioned on whether C2 was a reversal candle or an expansion candle
+- hit rate of C3 continuation when 1 / 2 / 3 timeframes are simultaneously in C3
+sources:
+- video_id: vn1RYjhJUnQ
+  title: Validating Swing Points Using Lower Timeframe Confirmation (CISD)
+  quote: candle 3 closes below the opening price in candle 2
+- video_id: qdQYhePcvGE
+  title: TTrades Fractal Model - Trading Candle 3
+  quote: we want to trade following reversal candles when we are trading candle 3
+- video_id: SF61vCsBl1A
+  title: TTrades Ideal Formation - High Probability Swing Points
+  quote: It is a candle closure paired with a protected swing
+- video_id: q3nauvjT3q0
+  title: Stop Overcomplicating Trading (Here's the Fix)
+  quote: We are only going to focus on trading candle three on all time frames
+- video_id: FgP2lc9nneM
+  title: The Best Timeframe for TTrades Fractal Model (Simple)
+  quote: The easiest expansions occur when you trade candle 3 on multiple different time frames
+- video_id: m4k_1pF5zFI
+  title: TTrades Fractal Model - Trading Candle 2
+ambiguities:
+- 'Two wordings for the same reference level: vn1RYjhJUnQ says ''the opening price in candle 2'', SF61vCsBl1A
+  says ''below the body of candle two''. These coincide only when candle 2 closed in the sweep direction;
+  when candle 2''s body low is its close rather than its open, the two tests differ and no tie-break
+  is given.'
+- The dedicated candle 3 video (qdQYhePcvGE, the longest in the unit) never states the closure test
+  in price terms at all -- it teaches candle 3 purely as 'the continuation after a confirmed candle
+  2'. The mechanical closure definition comes only from vn1RYjhJUnQ and SF61vCsBl1A.
+- In one aside he says candle 3 'can be a reversal candle' too, without saying how to tell that case
+  apart in advance.
+- This unit contains no reading in which candle 3 is defined against the previous candle's EQ; the EQ
+  appears only as the candle-4 continuation filter and as an invalidation level. This matters because
+  the library's previously recorded EQ-based C3 rule was degenerate (nearly every candle closes above
+  or below the prior EQ); the open/extreme references recorded here are not.
+- 'CONTESTED across the two halves of the same playlist: unit ..._01 records the reference as candle
+  2''s high/low, this unit records it as candle 2''s opening price / body. No source read here
+  reconciles them. Sources for reading B are not cited here because those transcripts were not read
+  by this agent -- see the ..._01 drafts.'
+related:
+- fractal-model-c2
+- fractal-model-c4
+- cisd
+- continuation-order-block
+- ideal-formation
+- equilibrium-eq
+contributing_units:
+- build_a_model_intro_to_ttrades_fractal_model_02
+draft_count: 1
+voice: ttrades

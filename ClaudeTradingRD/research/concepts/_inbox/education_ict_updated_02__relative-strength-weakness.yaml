@@ -1,0 +1,59 @@
+id: relative-strength-weakness
+name: Relative Strength & Weakness (ES / NQ)
+aliases:
+- relative strength
+- relative weakness
+category: structure
+status: specified
+definition: 'Relative strength or weakness is simply one of two correlated assets being more bullish
+  or more bearish than the other. The three things he judges it on are named explicitly: swing points,
+  candle closures, and the size of the candle. Concretely - which asset takes out a shared swing
+  point and which fails to reach it; which asset closes inside the body of a shared order block and
+  which closes outside it; which asset respects an order block''s mean threshold and which trades
+  straight through; and which produces the larger candle out of the same level.'
+timeframes:
+  htf:
+  - 1D
+  ltf:
+  - 1H
+  - 5m
+  fractal: true
+preconditions:
+- Two correlated assets charted side by side on the same timeframe (ES and NQ here).
+detection_rules:
+- Mark a swing point that both assets formed on the same date.
+- 'Strength test 1 (swing points): the asset that takes out the shared swing point is relatively
+  stronger; the one that cannot reach it is relatively weaker.'
+- 'Strength test 2 (candle closures): at a shared order block, the asset that closes inside the body
+  and respects the mean threshold is relatively stronger (bullish case); the one that closes outside
+  it is weaker.'
+- 'Strength test 3 (candle size): out of the same level, the asset producing the larger directional
+  candle is the stronger one in that direction.'
+- SMT (one asset makes a higher high while the other makes a lower high) is a fourth read of the
+  same thing.
+invalidation:
+- The correlation itself changing - see ratio-chart-reversal-lead.
+measurable:
+- agreement rate between the three tests on the same bar
+- 'persistence: how long the stronger asset stays stronger once identified'
+sources:
+- video_id: c_mh19e3mhI
+  title: The Best Relative Strength Indicator For ES & NQ - ICT
+  quote: the main things I look for in judging relative strength or weakness is Swing points
+ambiguities:
+- '''More bullish than the other'' is introduced by two side-by-side charts and eyeballed; no numeric
+  measure is given for the three tests.'
+- '''The size of the candle'' is not normalised for the two instruments'' different point values
+  or volatility.'
+- Which shared swing point to use is chosen visually (he uses one dated the same day).
+related:
+- es-nq-ratio-chart
+- relative-strength-asset-selection
+- smt-divergence
+- cross-asset-reversal-confirmation
+- mean-threshold
+python_detector: null
+contributing_units:
+- education_ict_updated_02
+draft_count: 1
+voice: ttrades

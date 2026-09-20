@@ -1,0 +1,65 @@
+id: breaker-block
+name: "Breaker Block"
+aliases: ["breaker", "bullish breaker", "bearish breaker"]
+category: entry
+status: specified
+
+definition: >
+  A four-point swing sequence plus a candle-selection rule. A bullish breaker requires the
+  confirmed sequence low -> high -> lower low -> higher high; the breaker zone is the single or
+  series of UP-CLOSE candles located between the low and the high, marked as a rectangle
+  INCLUDING the wicks. A bearish breaker requires high -> low -> higher high -> lower low, with
+  the zone being the down-close candles. The defining feature versus a mitigation block is that
+  a prior extreme is swept (the lower low / higher high in the middle of the sequence). The
+  speaker states a breaker is "a form of mitigation".
+
+timeframes:
+  htf: ["1D", "4H", "1H"]
+  ltf: ["15m", "5m"]
+  fractal: true
+
+preconditions:
+  - "Four confirmed swing points in the required order."
+  - "Preferred: displacement through the zone, ideally leaving a fair value gap (see unicorn-model)."
+
+detection_rules:
+  - "Bullish: confirmed swing lows/highs in sequence L1, H1, L2, H2 with L2 < L1 and H2 > H1."
+  - "Breaker zone (bullish) := the single or series of up-close candles between L1 and H1; rectangle from the lowest low to the highest high of those candles (wicks included)."
+  - "Bearish: H1, L1, H2, L2 with H2 > H1 and L2 < L1; zone := the down-close candles between H1 and L1."
+  - "The pattern does not exist until the fourth point prints (shown explicitly with a candidate that never made the lower low)."
+  - "Distinguish from an order block at the same location: the order block is marked at the OPENING PRICE only, the breaker as the full candle range."
+
+invalidation:
+  - "Failure of the fourth swing point to form."
+  - "Price trading through the far side of the breaker zone after the retest (his losing example is stopped beyond the zone)."
+
+execution:
+  bias: "Direction of the fourth leg (bullish breaker -> long)."
+  entry: "At the breaker zone on retest, or at the start of the overlapping fair value gap for better R:R with fill risk."
+  stop: "Below the bullish breaker low (or above the bearish breaker high), OR at the swing low/high — explicitly left to the user."
+  targets: ["fixed 2R", "standard deviation projections of the manipulation leg (-2 to -2.5, -4 to -4.5)", "equal highs/lows"]
+
+measurable:
+  - "frequency of the 4-point sequence per instrument/timeframe"
+  - "hit rate of a fixed 2R trade on first retest, split by presence/absence of an overlapping FVG (unicorn vs plain)"
+  - "R:R difference between the two stop placements over the same sample"
+
+sources:
+  - video_id: 75S4vwD4P1U
+    title: "Breaker Blocks Simplified - ICT Concepts"
+    quote: "with a bullish breaker we need a low high lower low then higher high"
+  - video_id: bbWPoajy2MY
+    title: "Mitigation Blocks Simplified - ICT Concepts"
+    quote: "a breaker is a form of mitigation"
+  - video_id: 1YRs4Z1lMws
+    title: "Optimal Trade Entry (OTE) - ICT Concepts"
+
+ambiguities:
+  - "Whether the zone uses only the contiguous up-close candles immediately preceding H1, or every up-close candle between L1 and H1, is not stated."
+  - "'Displacement' paired with the breaker is required in words but never quantified."
+  - "Swing confirmation lag is not restated here."
+  - "Stop and entry selection are explicitly discretionary — the video shows one case where each choice wins and another where it loses."
+  - "The video does not require an 'important level' for breakers the way the order block video does, though the top-down examples always have one."
+
+python_detector: null
+related: ["swing-point", "mitigation-block", "unicorn-model", "order-block", "standard-deviation-projection", "stop-loss-placement"]

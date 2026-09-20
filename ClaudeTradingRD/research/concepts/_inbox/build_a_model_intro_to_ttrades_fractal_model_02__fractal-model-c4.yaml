@@ -1,0 +1,92 @@
+id: fractal-model-c4
+name: Candle 4 (second continuation candle)
+category: model
+status: specified
+aliases:
+- C4
+- the fourth day in a swing
+- day four
+definition: 'Candle 4 is the candle after candle 3 and, in his own words, is always a continuation if
+  the trend read is correct -- there is no candle 4 closure. Its precondition is a COMPLETED three-candle
+  swing point: a low with a higher low on each side (bullish) or a high with a lower high on each side
+  (bearish), i.e. candles 1-2-3 with candle 2 the extreme. Given that, plus a strong candle 3 closure,
+  he anticipates candle 4 to expand, and adds the one numeric filter in the whole sequence: the candle
+  4 wick must form in the upper half of candle 3''s range for a bullish continuation, the lower half
+  for a bearish one, because expansions do not give deep retracements.'
+timeframes:
+  htf:
+  - 1D
+  - 4H
+  - 1H
+  ltf:
+  - 30m
+  - 15m
+  - 5m
+  - 3m
+  fractal: true
+preconditions:
+- 'A confirmed three-candle swing point: candle 2''s extreme has a higher low (or lower high) on each
+  side.'
+- Candle 3 closed strongly in the direction of the swing.
+- If the swing low is not yet confirmed (no candle on the far side), he waits one more candle -- that
+  is a candle 3 trade, not a candle 4 trade.
+detection_rules:
+- 'Confirm candle 2 is a swing point by the three-candle test: a low with a higher low on each side
+  (bullish), a high with a lower high on each side (bearish).'
+- Require a strong candle 3 closure in the swing direction.
+- 'Mark 0.5 of candle 3''s range. Bullish: candle 4''s low must form in the upper half. Bearish: candle
+  4''s high must form in the lower half.'
+- Inside that half, look for a point of interest on the intermediate timeframe for the candle 4 wick
+  to form at, then take the entry on the lower timeframe.
+- A daily change in the state of delivery on the daily itself, or SMT against a correlated asset, can
+  substitute for the sweep at the swing point.
+invalidation:
+- Price trades below the swing low (bullish case) that anchors the sequence.
+- Candle 4's wick forms below 0.5 of candle 3's range (bullish) -- a deep retracement means expansion
+  is not in play.
+- Expansion out and expansion back in inside candle 4 -- that is a reversal, and the extreme is expected
+  to be taken.
+execution:
+  bias: Direction of the confirmed swing point.
+  entry: Lower-timeframe change in the state of delivery inside the upper (or lower) half of candle
+    3's range, ideally paired with a session driver at 08:30 or 09:30.
+  stop: The low that forms the candle 4 wick, or its body low.
+  targets:
+  - previous day high/low
+  - the swing point to the left
+  - equal highs/lows beyond
+measurable:
+- proportion of candle 4s whose wick stays inside the correct half of candle 3's range
+- expansion of C4 after a strong C3 close vs a weak one
+- hit rate of the 2R target on candle 4 continuations
+sources:
+- video_id: 5fnFOh5YuM0
+  title: TTrades Fractal Model - Trading Candle 4
+  quote: continue out of the upper half of candle 3's range
+- video_id: TNybDCtwBnc
+  title: TTrades Playbook | Fractal Model Fundamentals (TTFM)
+  quote: candle 4 is always a continuation if that trend is correct
+- video_id: qdQYhePcvGE
+  title: TTrades Fractal Model - Trading Candle 3
+  quote: candle 4, which is always a continuation within my model
+- video_id: SF61vCsBl1A
+  title: TTrades Ideal Formation - High Probability Swing Points
+- video_id: vn1RYjhJUnQ
+  title: Validating Swing Points Using Lower Timeframe Confirmation (CISD)
+ambiguities:
+- '''Strong closure'' / ''closes strong'' in candle 3 is the gate for taking candle 4 and is never quantified.'
+- The half-of-range test is stated against candle 3's RANGE in the candle 4 video, but the same speaker
+  elsewhere in this unit measures halves against bodies ('the upper half of this from body to body').
+  No rule says which to use when they disagree.
+- Nothing states an upper limit on continuations -- candle 5 is mentioned once in passing in 9AL41xON3hA
+  without being defined.
+related:
+- fractal-model-c3
+- swing-point
+- equilibrium-eq
+- half-wick-respect
+- ideal-formation
+contributing_units:
+- build_a_model_intro_to_ttrades_fractal_model_02
+draft_count: 1
+voice: ttrades

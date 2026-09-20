@@ -1,0 +1,55 @@
+id: gb-levels
+name: "GB Levels"
+aliases: ["GB model", "Yeet", "the levels"]
+category: entry
+status: specified
+
+definition: >
+  A fixed set of five Fibonacci retracement levels - 0.295, 0.41, 0.705, 0.7475 and 0.79 - drawn
+  on the range between the anchor swing low and the anchor swing high of a validly flipped
+  structure. 0.705/0.7475/0.79 form the deep-retracement entry zone; 0.41 and 0.295 form the
+  shallow zone used both as targets and as the trigger band for trading back into the range. The
+  speaker claims 0.295 and 0.41 in particular are not discussed elsewhere.
+
+timeframes:
+  htf: ["1D", "4H", "1H"]
+  ltf: ["15m", "5m", "1m", "5s"]
+  fractal: true
+
+preconditions:
+  - "A valid structure flip has occurred, producing a strong low (or strong high) to anchor from."
+  - "The opposing extreme of that move is treated as the weak high (or weak low)."
+
+detection_rules:
+  - "Anchor the fib at the strong low (0) and the swing high that flipped structure (1); mirror for bearish."
+  - "Plot 0.295, 0.41, 0.705, 0.7475 and 0.79."
+  - "Stated derivations: 0.295 is the polar opposite of 0.7475 on the range; 0.41 is a negative one deviation away from 0.705."
+  - "Require at least one additional point of interest to coincide with the level being used - an unmitigated order block, an imbalance, the 50 percent of an internal flip zone, a peak-consolidation / volume node, or the 50 percent of an extreme wick."
+  - "The same levels are applied unchanged on daily, 4H, 15m, 5m, 1m and 5-second charts."
+
+invalidation:
+  - "The anchor strong low (or strong high) is closed through - the range is no longer valid and must be re-anchored."
+
+execution:
+  bias: "Set by the structure flip, not by the levels."
+  entry: "See gb-retracement-entry and gb-range-return-entry."
+  stop: "Beyond the anchor extreme, or beyond the local extreme of the wick being entered into."
+  targets: ["0.41", "0.295", "a new high or new low when the market is expanding cleanly"]
+
+measurable:
+  - "frequency and precision of reactions at each of the five levels versus a control set of levels (0.5, 0.618, 0.786)"
+  - "maximum adverse excursion from a limit filled at 0.7475"
+  - "hit rate of 0.41 and 0.295 as targets after an entry at 0.7475"
+
+sources:
+  - video_id: gjoRPszj-Qk
+    title: "AP | Use Market Structure & Fibonacci Levels for Sniper Entries"
+
+ambiguities:
+  - "'GB' is never expanded and the origin of the name is not given."
+  - "The two stated derivations do not reconcile arithmetically as spoken (0.295 is not the complement of 0.7475, which would be 0.2525) and are never shown being computed."
+  - "The fib settings are shown on screen but not read aloud, so only the five levels named in speech are recorded here."
+  - "No rule states which swing high to use when several candidates exist above the strong low."
+
+python_detector: null
+related: ["gb-retracement-entry", "gb-range-return-entry", "valid-structure-flip", "three-pd-array-confluence"]

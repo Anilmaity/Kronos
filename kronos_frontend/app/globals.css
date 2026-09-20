@@ -1,0 +1,363 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================================
+   ALGOROBOS — Dark Academic / Alchemist's Codex
+   Design System: globals.css
+   ============================================================ */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body,
+:root {
+  height: 100%;
+  width: 100%;
+}
+
+/* ── TradingView x Apple Token System (2026-08 ground-up rework) ──
+   Light: airy off-white canvas, pure-white elevated cards, hairline borders,
+   soft layered shadows (Apple). Dark: refined graphite scale with hairline
+   rgba borders and real elevation steps (TradingView). Every screen consumes
+   these variables — restyling happens here, not per-component. */
+:root {
+  /* light theme is the :root default; .dark overrides below */
+  --tv-bg:            #FAFAFC;
+  --tv-surface:       #FFFFFF;
+  --tv-surface-2:     #F2F3F7;
+  --tv-border:        rgba(18, 21, 31, 0.09);
+  --tv-border-strong: rgba(18, 21, 31, 0.16);
+  --tv-text-1:        #16181D;
+  --tv-text-2:        #4B4F58;
+  --tv-text-3:        #85888F;
+  --tv-text-soft:     var(--tv-text-3);
+  --tv-accent:        #2962FF;
+  --tv-accent-hover:  #1E53E5;
+  --tv-accent-soft:   rgba(41, 98, 255, 0.09);
+  --tv-up:            #089981;
+  --tv-down:          #F23645;
+  --tv-warn:          #FF9800;
+  --tv-up-soft:       rgba(8, 153, 129, 0.10);
+  --tv-down-soft:     rgba(242, 54, 69, 0.10);
+
+  /* elevation */
+  --tv-shadow-1: 0 1px 2px rgba(16, 18, 26, 0.05), 0 1px 1px rgba(16, 18, 26, 0.03);
+  --tv-shadow-2: 0 4px 16px rgba(16, 18, 26, 0.08), 0 1px 2px rgba(16, 18, 26, 0.05);
+  --tv-shadow-3: 0 12px 32px rgba(16, 18, 26, 0.14), 0 4px 8px rgba(16, 18, 26, 0.06);
+
+  /* motion */
+  --tv-dur-fast: 120ms;
+  --tv-dur:      180ms;
+  --tv-ease:     cubic-bezier(0.2, 0, 0, 1);
+
+  /* radii */
+  --tv-radius:    8px;
+  --tv-radius-lg: 12px;
+
+  /* legacy bridge — old Algorobos names now resolve to the new palette */
+  --gold:        var(--tv-accent);
+  --gold-deep:   var(--tv-accent-hover);
+  --gold-dim:    var(--tv-text-3);
+  --bg-deep:     var(--tv-bg);
+  --bg:          var(--tv-bg);
+  --bg-soft:     var(--tv-surface);
+  --bg-card:     var(--tv-surface);
+  --ink:         var(--tv-text-1);
+  --ink-muted:   var(--tv-text-2);
+  --ink-faint:   var(--tv-text-3);
+  --market-up:   var(--tv-up);
+  --market-down: var(--tv-down);
+  --line:        var(--tv-border);
+  --line-faint:  var(--tv-border);
+
+  /* legacy RGB triplets for rgba(var(--x)) utilities */
+  --myBlue1:    41, 98, 255;
+  --myBlue2:    30, 83, 229;
+  --myCyan1:    41, 98, 255;
+  --myPurple1:  41, 98, 255;
+  --myPurple2:  30, 83, 229;
+  --myText1:    19, 23, 34;
+  --myGray1:    106, 109, 120;
+  --myGray2:    106, 109, 120;
+  --myGreen1:   8, 153, 129;
+  --myRed1:     242, 54, 69;
+  --myRed2:     242, 54, 69;
+  --myYellow1:  255, 152, 0;
+  --myYellow2:  255, 152, 0;
+  --table-bg-1: 240, 243, 250;
+  --main-bg:    255, 255, 255;
+  --myPink1:    242, 54, 69;
+  --myOrange1:  255, 152, 0;
+}
+
+.dark {
+  --tv-bg:            #12151F;
+  --tv-surface:       #1A1E29;
+  --tv-surface-2:     #262B38;
+  --tv-border:        rgba(255, 255, 255, 0.07);
+  --tv-border-strong: rgba(255, 255, 255, 0.14);
+  --tv-text-1:        #E3E6ED;
+  --tv-text-2:        #B4B8C2;
+  --tv-text-3:        #7C8090;
+  --tv-text-soft:     var(--tv-text-3);
+  --tv-accent-soft:   rgba(41, 98, 255, 0.14);
+  --tv-up-soft:       rgba(8, 153, 129, 0.14);
+  --tv-down-soft:     rgba(242, 54, 69, 0.14);
+
+  --tv-shadow-1: 0 1px 2px rgba(0, 0, 0, 0.30);
+  --tv-shadow-2: 0 8px 24px rgba(0, 0, 0, 0.40), 0 2px 4px rgba(0, 0, 0, 0.25);
+  --tv-shadow-3: 0 16px 48px rgba(0, 0, 0, 0.50), 0 4px 12px rgba(0, 0, 0, 0.30);
+
+  --myText1:    227, 230, 237;
+  --myGray1:    124, 128, 144;
+  --myGray2:    124, 128, 144;
+  --table-bg-1: 26, 30, 41;
+  --main-bg:    18, 21, 31;
+}
+
+/* ── Shadcn/ui HSL Variables (TradingView values) ─────────── */
+@layer base {
+  :root {
+    --background: 240 14% 98%;          /* #FAFAFC */
+    --foreground: 223 14% 10%;          /* #16181D */
+    --card: 0 0% 100%;                  /* #FFFFFF */
+    --card-foreground: 223 14% 10%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 223 14% 10%;
+    --primary: 224 100% 58%;            /* #2962FF */
+    --primary-foreground: 0 0% 100%;
+    --secondary: 228 20% 96%;           /* #F2F3F7 */
+    --secondary-foreground: 223 14% 10%;
+    --muted: 228 20% 96%;
+    --muted-foreground: 225 4% 54%;     /* #85888F */
+    --accent: 228 20% 96%;
+    --accent-foreground: 224 100% 58%;
+    --destructive: 355 89% 58%;         /* #F23645 */
+    --destructive-foreground: 0 0% 100%;
+    --border: 227 14% 91%;              /* hairline on white */
+    --input: 227 14% 87%;
+    --ring: 224 100% 58%;
+    --radius: 0.5rem;                   /* 8px */
+  }
+
+  .dark {
+    --background: 226 27% 10%;          /* #12151F */
+    --foreground: 223 22% 91%;          /* #E3E6ED */
+    --card: 224 22% 13%;                /* #1A1E29 */
+    --card-foreground: 223 22% 91%;
+    --popover: 224 22% 13%;
+    --popover-foreground: 223 22% 91%;
+    --primary: 224 100% 58%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 222 19% 18%;           /* #262B38 */
+    --secondary-foreground: 223 22% 91%;
+    --muted: 222 19% 18%;
+    --muted-foreground: 225 8% 53%;     /* #7C8090 */
+    --accent: 222 19% 18%;
+    --accent-foreground: 223 22% 91%;
+    --destructive: 355 89% 58%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 222 19% 18%;
+    --input: 222 19% 22%;
+    --ring: 224 100% 58%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", Inter,
+      "Segoe UI", Roboto, Ubuntu, sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    transition: background-color var(--tv-dur) var(--tv-ease),
+                color var(--tv-dur) var(--tv-ease);
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: inherit;
+    letter-spacing: -0.015em;
+    color: var(--tv-text-1);
+    font-weight: 600;
+  }
+
+  ::selection {
+    background: var(--tv-accent-soft);
+    color: var(--tv-text-1);
+  }
+}
+
+.tnum {
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── Scrollbar (overlay-thin, rounded, quiet until hovered) ── */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--tv-surface-2);
+  border-radius: 9999px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--tv-text-3);
+  background-clip: padding-box;
+}
+
+/* ── Autofill ─────────────────────────────────────────────── */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0px 1000px var(--tv-surface) inset;
+  -webkit-text-fill-color: var(--tv-text-1);
+  caret-color: var(--tv-accent);
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+/* ── Number Input ─────────────────────────────────────────── */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type="number"] {
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
+/* ── Sidebar Links ────────────────────────────────────────── */
+.sidebar-links {
+  @apply h-14 flex items-center justify-start w-full px-[19px];
+  font-size: 15px;
+  font-weight: 600;
+}
+
+/* ── Ornament Rule ────────────────────────────────────────── */
+.ornament-rule {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--ink-faint);
+  font-family: var(--font-mono, monospace);
+  font-size: 12px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+}
+.ornament-rule::before,
+.ornament-rule::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--tv-border), transparent);
+}
+
+
+/* ── Animations ───────────────────────────────────────────── */
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.3; }
+}
+@keyframes reveal-up {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes word-clip {
+  from { transform: translateY(110%); }
+  to   { transform: translateY(0); }
+}
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+@keyframes accordion-down {
+  from { height: 0; }
+  to   { height: var(--radix-accordion-content-height); }
+}
+@keyframes accordion-up {
+  from { height: var(--radix-accordion-content-height); }
+  to   { height: 0; }
+}
+@keyframes caret-blink {
+  0%, 70%, 100% { opacity: 1; }
+  20%, 50%      { opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ── Website / Landing page globals ──────────────────────── */
+.gradient-01 {
+  background-image: linear-gradient(270deg, rgba(41,98,255,.35) 0%, rgba(30,83,229,.22) 50%, rgba(19,23,34,.15) 100%);
+  filter: blur(125px);
+}
+.hero-gradient {
+  background: linear-gradient(97.86deg, #1E53E5 0%, #2962FF 53.65%, #131722 100%);
+}
+.glassmorphism {
+  background: rgba(30,34,45,.6);
+  box-shadow: 0 8px 32px 0 rgba(41,98,255,.10);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid var(--tv-border);
+}
+
+/* tv chips — class-based so hover states work (inline styles cannot) */
+.tv-chip {
+  font-size: 12px;
+  font-weight: 600;
+  border-radius: 4px;
+  padding: 5px 12px;
+  border: 1px solid var(--tv-border);
+  color: var(--tv-text-soft);
+  cursor: pointer;
+  background: transparent;
+  transition: border-color 120ms ease, background 120ms ease;
+}
+.tv-chip:hover {
+  border-color: var(--tv-accent);
+  background: color-mix(in srgb, var(--tv-accent) 8%, transparent);
+}
+.tv-chip--danger {
+  border-color: var(--tv-down);
+  color: var(--tv-down);
+}
+.tv-chip--danger:hover {
+  border-color: var(--tv-down);
+  background: color-mix(in srgb, var(--tv-down) 8%, transparent);
+}
+.tv-chip--up {
+  border-color: var(--tv-up);
+  color: var(--tv-up);
+}
+.tv-chip--up:hover {
+  border-color: var(--tv-up);
+  background: color-mix(in srgb, var(--tv-up) 8%, transparent);
+}

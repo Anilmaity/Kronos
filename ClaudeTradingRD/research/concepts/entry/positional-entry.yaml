@@ -1,0 +1,157 @@
+id: positional-entry
+name: Positional Entry At An Invalidation On The Open
+definition: 'An entry taken at the OPEN of a continuation candle, before its wick has formed,
+  when a protected swing already exists from before that open. Its purpose is stated plainly:
+  some candle 3s expand immediately from the open and never give an intracandle CISD, so waiting
+  always costs those trades. The stop goes on that pre-existing protected swing. The distinctive
+  rule is the SELECTION test: the protected swing used must sit BEYOND the equilibrium of
+  the previous candle - a protected swing inside the area where the wick is expected to form
+  is rejected as a stop, because the wick would take it out. He calls it an advanced concept
+  and tells newer traders to skip it.'
+variants:
+  definition:
+  - 'A Short supplies the crisp gate for entering at the higher-timeframe open rather than
+    waiting for the wick to form: it is permitted when the invalidation sits very close to
+    that opening price. The reasoning given is that if the low is already expected to hold
+    BEFORE the new higher-timeframe candle opens - because an inversion is retesting a change
+    in the state of delivery into a fair value gap and 0.5 of the level should be respected
+    - then the trader can position on the open, with the stop on that low, expecting only
+    a very shallow wick to form before price trades away.
+
+    '
+  - 'An entry taken not on a lower-timeframe trigger but purely on location: when price opens
+    right next to a freshly formed invalidation - a protected swing created by a close over
+    a fair value gap - a position can be taken there and carried into the overnight session,
+    letting the following day resolve it. The stop sits on the protected low and the target
+    is the higher-timeframe draw. In the CAD futures example the sequence is: daily ideal
+    candle 2 closure, hourly protected swing, then a second and tighter protected swing, then
+    price opens adjacent to that invalidation, and he enters when price is seen to respect
+    it. The attraction is stated implicitly - the stop is small because the invalidation is
+    close, so the position is already at 2R by the New York session without an intraday entry
+    sequence.
+
+    '
+category: entry
+status: contested
+aliases:
+- positioning for the expansion
+- entering at the open of candle 3
+- positional entry
+- let this swing into the next day
+- into the overnight
+preconditions:
+- 'A valid model: C2 or C3 closure plus the aligned lower-timeframe CISD.'
+- A protected swing formed BEFORE the open of the continuation candle.
+- A confirmed higher-timeframe candle 2 closure with a defined draw.
+- A recently formed protected swing on the hourly (price into a fair value gap, then a close
+  over it).
+- Price opening near that protected swing.
+detection_rules:
+- At the open of the continuation candle, check whether a protected swing already exists from
+  before the open.
+- 'Selection test: that protected swing must sit beyond the EQ of candle 2 / outside the T-spot
+  area where the wick is expected. If it sits inside that area, reject it.'
+- Enter at the open; stop on the selected protected swing.
+- If risk-to-reward does not work, move the entry (e.g. to a fair value gap) rather than tightening
+  the stop inside the wick zone.
+- If the entry is missed, the IC-CISD and any later new continuation remain valid entries.
+- Before the higher-timeframe candle opens, establish that the low is expected to hold (inversion
+  retesting the CISD into a fair value gap, with 0.5 to be respected).
+- Measure the distance from the opening price to that invalidation.
+- Very close -> enter at the open, stop on the low.
+- Expect only a very shallow wick below the entry.
+- Identify the most recent, tightest protected swing on the hourly.
+- Require price to open near that level rather than extended away from it.
+- Require price to respect the level (trade into it and hold) before entering.
+- Place the stop on the protected swing and the target at the higher-timeframe draw.
+- Hold through the overnight session; reassess at the New York session.
+invalidation:
+- The protected swing is taken out.
+- The low used for the stop is taken out.
+- The protected swing is taken out overnight.
+measurable:
+- share of continuation candles that expand from the open with no IC-CISD (the trades this
+  recovers)
+- R distribution of positional entries vs IC-CISD entries on the same setups
+- stop-out rate of positional entries whose protected swing sat inside vs beyond the EQ
+- distribution of open-to-invalidation distances on trades taken this way
+- depth of the wick that forms after an at-open entry
+- overnight stop-out rate of positional entries at a protected swing
+- R at the New York session open for positions entered this way
+- difference in R between positional entries and same-idea intraday entries
+sources:
+- video_id: xMFd_kfmIqI
+  title: Positional Entries - Enter Before The Expansion
+  quote: positioning yourself for an expansion candle prior to the formation of its wick
+- video_id: xMFd_kfmIqI
+  title: Positional Entries - Enter Before The Expansion
+  quote: A positional entry is when we have a protected swing going into the open
+- video_id: xMFd_kfmIqI
+  title: Positional Entries - Enter Before The Expansion
+  quote: the stop on candle two is above the EQ of candle two
+- video_id: xMFd_kfmIqI
+  title: Positional Entries - Enter Before The Expansion
+  quote: It is an advanced concept
+- video_id: VtFC9SCnlYM
+  title: Using Inversion as an Entry Within the Fractal Model
+  quote: when I have an invalidation very close to the opening price
+- video_id: VtFC9SCnlYM
+  title: Using Inversion as an Entry Within the Fractal Model
+  quote: If I'm already expecting this low to hold prior to the open
+- video_id: VtFC9SCnlYM
+  title: Using Inversion as an Entry Within the Fractal Model
+  quote: that's when I can look to get on side with the open
+- video_id: IzOQmcgLyA0
+  title: 'TTrades Top-Down Chart Lessons #3'
+ambiguities:
+- '''Beyond the EQ'' is stated for the ideal case, but one final example accepts a protected
+  swing that ''doesn''t technically cover the EQ'' on the grounds that the area is large enough
+  - so the test is a preference, not a hard rule.'
+- No guidance on how recently before the open the protected swing must have formed.
+- '''Very close to the opening price'' is the whole gate and is not bounded in points, ticks,
+  ATR or a fraction of the expected range.'
+- '''Very shallow wick'' is likewise unquantified.'
+- Which higher-timeframe open is meant is shown on the chart but never named.
+- Right near an invalidation is not quantified - no maximum distance from the level is given.
+- The actual trigger is the speaker seeing price respect the level, which is not defined as
+  a rule (no candle closure or structure requirement is stated).
+- No condition is given for when a positional overnight entry is preferable to waiting for
+  the session; it is demonstrated once, not taught as a rule.
+- Overnight risk (gaps, news) is not discussed at all.
+related:
+- protected-swing
+- ic-cisd
+- fractal-model-c3
+- equilibrium-eq
+- t-spot
+- positional-entry-before-open
+- htf-opening-price-entry
+- inversion-fair-value-gap
+- ltf-inversion-entry-in-tspot
+- half-wick-respect
+- fractal-model-c2
+- order-block
+- rr-gated-entry-refinement
+timeframes:
+  htf:
+  - 1D
+  - 4H
+  - 1H
+  ltf:
+  - 1H
+  - 15m
+  - 5m
+  fractal: true
+execution:
+  bias: Direction of the higher-timeframe candle.
+  entry: At the open of the new higher-timeframe candle.
+  stop: On the pre-open protected swing, which must be beyond the candle-2 EQ.
+  targets:
+  - 2R
+  - the indicator's liquidity targets
+contributing_units:
+- build_a_model_intro_to_ttrades_fractal_model_01
+- chart_lessons_01
+- shorts_04
+draft_count: 3
+voice: ttrades

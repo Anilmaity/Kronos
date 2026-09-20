@@ -1,0 +1,61 @@
+id: phases-of-price
+name: "Phases of Price Delivery"
+aliases: ["phases of price", "phases of price delivery", "new phase of price"]
+category: structure
+status: specified
+
+definition: >
+  After a period of expansion, price enters exactly one of three next phases:
+  retracement (a shallow pullback that then continues the original direction),
+  reversal (a V-shaped turn - expansion in, expansion straight back out), or
+  consolidation (a range). The phase is classified from daily closures, not from
+  the shape of intraday price. The classification is the gate for whether any
+  trade exists: consolidation means no interest until one side of the range is
+  taken, retracement means look for the continuation, reversal means the prior
+  leg is done.
+
+timeframes:
+  htf: ["1D", "1W"]
+  ltf: ["1H", "15m", "5m"]
+  fractal: true
+
+preconditions:
+  - "A completed expansion leg exists (in the reviews, typically two to three consecutive expansion days)."
+
+detection_rules:
+  - "Retracement is confirmed when price closes over the series of down-close candles that made the pullback (bullish case); mirrored for bearish."
+  - "If price fails to close over that series and instead falls back inside the prior range, classify the phase as consolidation."
+  - "Reversal requires expansion into the level and expansion straight back out - a V shape. Expansion in followed by a shallow retracement or by consolidation is continuation, not reversal."
+  - "Once classified as consolidation, take no position until one side of the range is taken."
+
+invalidation:
+  - "A retracement read is invalidated when price fails to close over the series of opposing candles and re-enters the range."
+  - "A reversal read is invalidated when the move out of the level is slow or consolidatory rather than aggressive."
+
+execution:
+  bias: "Set by which phase follows the expansion; consolidation produces no bias at all."
+  entry: "Only after the phase is classified; he does not drop to a lower timeframe before that."
+  stop: null
+  targets: ["the opposite side of the consolidation range, once one side is taken"]
+
+measurable:
+  - "distribution of which of the three phases follows a 2-3 day expansion leg"
+  - "hit rate of the close-over-the-series test as a predictor of continuation"
+  - "how often a consolidation range resolves to the side that was swept first"
+
+sources:
+  - video_id: r7yW6ou1LDs
+    title: "TTrades Sunday Session - Live Q&A"
+  - video_id: u8bnmaih_hA
+    title: "TTrades Sunday Session - Live Q&A"
+  - video_id: bMkRomKEunU
+    title: "New York Open Live Q&A"
+    quote: "Consolidation means continuation, generally speaking"
+
+ambiguities:
+  - "'Series of down-close candles' has no stated minimum count."
+  - "The V-shape test for a reversal is visual and unquantified - no measure of how aggressive the move out has to be."
+  - "Whether 'expansion' requires a fixed number of days is not stated; the reviews use two to three days but he also says he will not trade after three days of expansion."
+
+python_detector: null
+related: ["expansion-exhaustion-avoid-price", "opposing-candle", "consolidation-range-no-trade", "continuation-over-reversal"]

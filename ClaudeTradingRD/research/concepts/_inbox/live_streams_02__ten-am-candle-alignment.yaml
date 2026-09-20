@@ -1,0 +1,62 @@
+id: ten-am-candle-alignment
+name: "10:00 a.m. — Four Timeframes Open At Once"
+aliases: ["wait for 10", "new candle at 10", "10 a.m."]
+category: time
+status: specified
+
+definition: >
+  10:00 a.m. is treated as a hard structural boundary in the New York morning because a new
+  4-hour, hourly, 30-minute and 15-minute candle all open simultaneously at that moment. He
+  uses this three ways in the same session: as the point after which a fresh phase of price
+  (continuation or reversal) can legitimately begin; as a time-based exit, because every
+  expansion candle he is riding ends there; and as a deadline on the opening idea — if the
+  9:30 move has not reached its objective by 10:00 the day is read as consolidation and the
+  idea is dropped rather than chased. The same boundary also decides which timeframe pair is
+  usable before it: the hourly does not close until 10:00, so pre-10:00 execution has to fall
+  back to the 30-minute and 3-minute.
+
+timeframes:
+  htf: ["4H", "1H"]
+  ltf: ["30m", "15m", "3m"]
+  fractal: false
+
+preconditions:
+  - "A New York morning session with an idea framed at or before the 9:30 open."
+
+detection_rules:
+  - "At 10:00 a.m. a new 4-hour, hourly, 30-minute and 15-minute candle open together."
+  - "Treat 10:00 as the earliest point at which a new phase of price (continuation or reversal) may start."
+  - "Treat 10:00 as a time-based exit for any position riding a 4H/1H/30m expansion candle."
+  - "If the objective of the 9:30-10:00 move has not been reached by 10:00, classify the day as further consolidation and stand aside."
+  - "Before 10:00 the hourly has not closed, so use the 30-minute plus 3-minute pair; from 10:00 the 15-minute plus 5-minute pair becomes usable."
+
+invalidation:
+  - "Not applicable — this is a clock fact, not a setup."
+
+measurable:
+  - "share of daily range covered between 9:30 and 10:00 versus after 10:00"
+  - "outcome of holding a 9:30 entry past 10:00 versus exiting at 10:00"
+  - "hit rate of the opening idea when the objective is unmet at 10:00"
+
+sources:
+  - video_id: G1IIdQ3RAkY
+    title: "New York Open Live Q&A"
+    quote: "We get a new 4hour candle. We get a new hourly candle."
+  - video_id: Je7cd9HJUBE
+    title: "New York Open Live Q&A"
+    quote: "these things end at 10:00 a.m. So that's a timebased exit"
+  - video_id: TjUolMJNCMY
+    title: "New York Open Live Q&A"
+    quote: "you would have to wait for 10 a.m. to properly trade the model"
+
+ambiguities:
+  - "The timezone is never stated in the same breath as 10:00; it is fixed only by a separate remark elsewhere in the unit that the indicator time filter runs 8 to 11 EST."
+  - "Whether the 10:00 exit is unconditional or only applies when the target has been reached is not stated — both are used in different examples."
+  - "Whether a position may be re-entered on the new 10:00 candle after a 10:00 exit is not addressed."
+
+python_detector: null
+related: ["time-based-exit-htf-close", "entry-time-window", "new-york-intraday-time-levels", "timeframe-pairing", "htf-opening-price-entry"]
+
+contributing_units: ["live_streams_02"]
+draft_count: 1
+voice: ttrades

@@ -1,0 +1,46 @@
+id: broadening-formation
+name: "Broadening Formation"
+aliases: ["broadening range"]
+category: structure
+status: specified
+
+definition: >
+  A price structure in which a range is repeatedly extended: mark the range high and low, price
+  takes out one side making a new wider range, falls back inside, then broadens again on the
+  other side. He describes it equivalently as successive liquidity sweeps, and says it generally
+  occurs during consolidation and precedes expansion away from the structure.
+
+timeframes:
+  htf: ["1D", "4H", "1H"]
+  ltf: ["15m", "5m"]
+  fractal: true
+
+preconditions:
+  - "A defined range with a marked high and low exists."
+
+detection_rules:
+  - "Price trades beyond the range extreme, establishing a wider range."
+  - "Price returns inside the range."
+  - "Price then trades beyond the opposite extreme, widening the range again."
+
+invalidation:
+  - "Price expands away from the structure and does not return inside."
+
+execution:
+  bias: "Not directional in itself."
+  entry: "Not specified by this concept."
+  stop: "Not specified by this concept."
+  targets: ["Expansion away from the broadened range"]
+
+measurable:
+  - "frequency of broadening sequences preceding directional expansion"
+
+sources:
+  - video_id: WBwoiMDXT2c
+    title: "New York Open Live Q&A"
+
+ambiguities:
+  - "How many broadening legs are required before expansion is expected is not stated."
+
+python_detector: null
+related: ["liquidity-sweep-vs-consolidation", "relevant-swing-separation"]

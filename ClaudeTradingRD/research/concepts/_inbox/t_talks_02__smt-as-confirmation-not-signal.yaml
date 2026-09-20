@@ -1,0 +1,52 @@
+id: smt-as-confirmation-not-signal
+name: "SMT As Confirmation, Not As A Signal"
+aliases: ["SMT is a confirmation tool not a synchronization tool"]
+category: liquidity
+status: specified
+
+definition: >
+  SMT divergence is used to confirm that a swing extreme has printed, not as a trade
+  trigger in itself. Its value is that at the moment a wick is being printed the candle in
+  development still looks like it is going the wrong way; the correlated market failing to
+  make the matching extreme is what allows the extreme to be trusted. Two further
+  restrictions are stated across the unit: SMT is meaningless without displacement in the
+  direction of the expected order flow, and every reversal should be paired with an SMT
+  rather than SMT being traded on its own.
+
+timeframes:
+  htf: ["1D", "4H"]
+  ltf: ["1H", "15m", "5m", "1m"]
+  fractal: true
+
+preconditions:
+  - "A correlated instrument is being watched alongside the traded one (NQ/ES/YM, gold/silver, CL/HO/RB, EU/GU)."
+  - "Price is at a same-or-higher timeframe PD array or key level."
+
+detection_rules:
+  - "Traded instrument makes a new extreme (sweeps a prior high or low); the correlated instrument fails to make the matching extreme."
+  - "Treat this as confirmation that the wick of the candle in development is printed."
+  - "Require displacement in the expected direction after the divergence before acting on it."
+
+invalidation:
+  - "No displacement follows the divergence."
+  - "Both instruments make the matching extreme (no divergence)."
+
+measurable:
+  - "hit rate of a swing extreme holding when confirmed by SMT vs unconfirmed"
+  - "how often SMT without displacement precedes continuation instead of reversal"
+
+sources:
+  - video_id: wWIHS_dxbEY
+    title: "DexterLab | Putting All The ICT Pieces Together - Master PO3"
+  - video_id: G44VpidBD_U
+    title: "NickDoesFutures | Unicorn Model & Experiences With ICT"
+  - video_id: J_EeS2_2CAM
+    title: "GxTradez | Phases of Price & Profiles For Expansion"
+
+ambiguities:
+  - "Which correlated instrument is canonical for a given market is shown only by example."
+  - "'Displacement' is not quantified in any of the three talks."
+  - "DexterLab's phrase 'no synchronization tool' is ASR-garbled; the intended contrast appears to be confirmation vs timing."
+
+python_detector: null
+related: ["fake-smt-strength-switch", "reversal-signature", "wick-to-pd-array-rule"]

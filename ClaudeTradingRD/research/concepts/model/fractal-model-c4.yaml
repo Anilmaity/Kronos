@@ -1,0 +1,238 @@
+id: fractal-model-c4
+name: Candle 4 (second continuation candle)
+definition: 'Candle 4 is the candle after candle 3 and, in his own words, is always a continuation
+  if the trend read is correct -- there is no candle 4 closure. Its precondition is a COMPLETED
+  three-candle swing point: a low with a higher low on each side (bullish) or a high with
+  a lower high on each side (bearish), i.e. candles 1-2-3 with candle 2 the extreme. Given
+  that, plus a strong candle 3 closure, he anticipates candle 4 to expand, and adds the one
+  numeric filter in the whole sequence: the candle 4 wick must form in the upper half of candle
+  3''s range for a bullish continuation, the lower half for a bearish one, because expansions
+  do not give deep retracements.'
+variants:
+  definition:
+  - 'Two Shorts state candle 4 as a standalone DAILY BIAS PROCEDURE rather than as a position
+    in the sequence, and give the full four-step chain. The trigger is the printing of the
+    third candle, which completes the swing (a low with a higher low on each side). Once that
+    has printed, the fourth day is where he expects the day''s wick to form inside the marked
+    half of the candle - upper half for a bullish scenario, lower half for a bearish one -
+    and then trade away. The half therefore doubles as both the bias and the point of interest.
+    From there: drop to a lower timeframe such as the hourly, find a point of interest inside
+    that half, wait for an intraday change in the state of delivery to show the wick has formed,
+    and align with a lower-timeframe entry. The worked example takes the entry on the closure
+    through the down-close candles, stops on the low, and looks for 2R.
+
+    '
+  - 'Candle 4 is the second continuation candle, tradeable only when candle 3 produced a continuation
+    closure (closed beyond candle 2''s extreme). It is treated exactly like candle 3 - let
+    the wick form via an intracandle CISD, then trade the body - and it must respect 50% of
+    candle 3''s range. The indicator''s own colour coding is anchored on candle 4: a GREY
+    C2 means the setup stayed valid through candle 4, a RED C2 means it failed within the
+    first candle after, and an ORANGE C2 means it failed on the second candle after. Beyond
+    candle 4 - at candle 5 and 6 - the stated risk is being caught in a new phase of price.'
+  - 'C4 is the candle after C3, tradeable as a further continuation of the same sequence.
+    The model explicitly stops at C4 and does not trade C5.
+
+    '
+  - 'A direct correction of a viewer who asked whether candle 2 closure is enough or whether
+    he also needs to learn candle 3 and candle 4. The answer contains the clarification: candle
+    3 and candle 4 come after a candle 2 closure so they do have to be learned, but there
+    is no such thing as a candle 4 closure. Candle 4 is a position in the sequence - the second
+    continuation candle - not a defined closure pattern the way candle 2 and candle 3 are.
+    It is used positionally elsewhere in the unit: the 4-hour candle being a candle 4 inside
+    a daily candle 3 is part of what he calls a clean day, and a day already in candle 4 is
+    a reason to stand aside and wait for a new swing point.
+
+    '
+category: model
+status: contested
+aliases:
+- C4
+- the fourth day in a swing
+- day four
+- candle four
+preconditions:
+- 'A confirmed three-candle swing point: candle 2''s extreme has a higher low (or lower high)
+  on each side.'
+- Candle 3 closed strongly in the direction of the swing.
+- If the swing low is not yet confirmed (no candle on the far side), he waits one more candle
+  -- that is a candle 3 trade, not a candle 4 trade.
+- 'A swing high or swing low has completed - the third candle has printed, leaving a low with
+  a higher low on each side (bearish: a high with a lower high on each side).'
+- Candle 3 closed beyond candle 2's extreme.
+- A completed C2 closure and a C3 candle exist.
+- A candle 2 closure exists and candle 3 has followed it.
+detection_rules:
+- 'Confirm candle 2 is a swing point by the three-candle test: a low with a higher low on
+  each side (bullish), a high with a lower high on each side (bearish).'
+- Require a strong candle 3 closure in the swing direction.
+- 'Mark 0.5 of candle 3''s range. Bullish: candle 4''s low must form in the upper half. Bearish:
+  candle 4''s high must form in the lower half.'
+- Inside that half, look for a point of interest on the intermediate timeframe for the candle
+  4 wick to form at, then take the entry on the lower timeframe.
+- A daily change in the state of delivery on the daily itself, or SMT against a correlated
+  asset, can substitute for the sweep at the swing point.
+- Wait for the third candle of the swing to print, which confirms the swing point.
+- Mark the upper half of the candle for a bullish scenario, the lower half for a bearish one.
+- That half is where the fourth day's upper or lower wick is expected to form before price
+  trades away - it is simultaneously the bias and the point of interest.
+- Drop to a lower timeframe (he names the hourly) and find a point of interest inside that
+  half.
+- Wait for an intraday change in the state of delivery to confirm the wick has formed.
+- Align with a lower-timeframe entry.
+- 'Reinforcing test used in the worked example: if price cannot aggressively move lower and
+  close through the level, expect the low below to get taken out first - unless an SMT forms,
+  which removes the need for that sweep.'
+- Require candle 3's continuation closure first.
+- Candle 4 should respect 50% of candle 3's range.
+- Inside candle 4, apply the same intracandle CISD test to mark its wick as formed.
+- 'Stand-aside: from candle 5 onward, treat a new phase of price as likely.'
+- Trade C4 as a continuation only if a fresh setup (swing point / continuation closure) forms
+  inside it.
+- Candle 4 is the candle following candle 3 in the same sequence - a positional label only.
+- There is no candle 4 closure; do not look for a closure pattern to define it.
+- A 4-hour candle 4 inside a daily candle 3 is one of the alignment criteria for a clean day.
+invalidation:
+- Price trades below the swing low (bullish case) that anchors the sequence.
+- Candle 4's wick forms below 0.5 of candle 3's range (bullish) -- a deep retracement means
+  expansion is not in play.
+- Expansion out and expansion back in inside candle 4 -- that is a reversal, and the extreme
+  is expected to be taken.
+- Price forms its extreme outside the marked half - the expansion read for the fourth day
+  fails (see upper-half-eq-expansion-filter for the failure branches).
+- Candle 4 closes back through 50% of candle 3's range.
+- Both C2 and C3 already expanded - avoid C4 entirely.
+- The sequence has reached C5 - the model does not trade it.
+- The sequence's protected swing is taken out.
+measurable:
+- proportion of candle 4s whose wick stays inside the correct half of candle 3's range
+- expansion of C4 after a strong C3 close vs a weak one
+- hit rate of the 2R target on candle 4 continuations
+- how often the fourth day's extreme forms inside the marked half
+- hit rate of the 2R target on fourth-day continuation entries
+- how often the SMT substitution fires instead of the low being swept
+- share of C2 setups that survive to candle 4 (the indicator's grey/red/orange split)
+- expectancy of the C4 entry vs the C3 entry
+- Expectancy of C4 continuations split by whether C2 and C3 both expanded.
+- expectancy of candle 4 continuations vs candle 3 continuations
+sources:
+- video_id: 5fnFOh5YuM0
+  title: TTrades Fractal Model - Trading Candle 4
+  quote: continue out of the upper half of candle 3's range
+- video_id: TNybDCtwBnc
+  title: TTrades Playbook | Fractal Model Fundamentals (TTFM)
+  quote: candle 4 is always a continuation if that trend is correct
+- video_id: qdQYhePcvGE
+  title: TTrades Fractal Model - Trading Candle 3
+  quote: candle 4, which is always a continuation within my model
+- video_id: SF61vCsBl1A
+  title: TTrades Ideal Formation - High Probability Swing Points
+- video_id: vn1RYjhJUnQ
+  title: Validating Swing Points Using Lower Timeframe Confirmation (CISD)
+- video_id: Te9jUijPXZo
+  title: 'The 4th Day of a Swing: An Easy Way to Get Daily Bias'
+  quote: The fourth day in a swing is an easy way to get daily bias.
+- video_id: Te9jUijPXZo
+  title: 'The 4th Day of a Swing: An Easy Way to Get Daily Bias'
+  quote: mark out the upper half of the candle for a bullish scenario
+- video_id: Te9jUijPXZo
+  title: 'The 4th Day of a Swing: An Easy Way to Get Daily Bias'
+  quote: Here is where I'll look for price to form its upper or lower wick
+- video_id: EnAoorLVtoQ
+  title: Trading Continuation on the 4th Day of a Swing
+  quote: We have a low with a higher low on each side.
+- video_id: EnAoorLVtoQ
+  title: Trading Continuation on the 4th Day of a Swing
+  quote: since we cannot aggressively move lower and then close through here
+- video_id: tyoxl1l-6iI
+  title: 'Candle 2 Closure: The Foundation of TTrades Fractal Model'
+  quote: we can anticipate price to expand higher as well in candle 4
+- video_id: CqMIh-Vvhbg
+  title: Intro To TTrades Fractal Model [Indicator & Settings]
+  quote: a red C2 is when that setup fails within the first candle
+- video_id: tyoxl1l-6iI
+  title: 'Candle 2 Closure: The Foundation of TTrades Fractal Model'
+  quote: once you get into candle five and six, that's where you can get caught
+- video_id: Vo2n47RjjMo
+  title: Intracandle CISD (IC-CISD) - Improve Your Entries
+  quote: That confirms the wick of candle four right there
+- video_id: aqnY1yZvfYs
+  title: New York Open Live Q&A
+- video_id: yud7TpE2AMs
+  title: New York Open Live Q&A
+- video_id: 00iZXPAdR5A
+  title: New York Open Live Q&A
+- video_id: N3Ml-r0X30o
+  title: New York Open Live Q&A
+  quote: But there is no candle four closure.
+ambiguities:
+- '''Strong closure'' / ''closes strong'' in candle 3 is the gate for taking candle 4 and
+  is never quantified.'
+- The half-of-range test is stated against candle 3's RANGE in the candle 4 video, but the
+  same speaker elsewhere in this unit measures halves against bodies ('the upper half of this
+  from body to body'). No rule says which to use when they disagree.
+- Nothing states an upper limit on continuations -- candle 5 is mentioned once in passing
+  in 9AL41xON3hA without being defined.
+- '''The candle'' whose half is marked is ambiguous between candle 3 and the whole swing range;
+  the first Short says ''the candle'', the second marks 0.5 of ''this range''.'
+- Whether the half is measured wick-to-wick or body-to-body is not stated.
+- '''Aggressively move lower'' is used as the gate in the second Short and is not defined
+  - another instance of the corpus''s unquantified ''aggressive''.'
+- Neither Short states an upper bound - whether a fifth day may be traded the same way is
+  not addressed here.
+- 'TRANSCRIPT HYGIENE NOTE for whoever re-reads these: the auto-captions in this corpus render
+  ''candle 2'' as ''candle to''. It does not occur in the quotes cited above but does elsewhere
+  in the unit.'
+- The exact failure test behind the indicator's red/orange colouring is not disclosed.
+- Whether candle 4 needs its own point of interest is never addressed.
+- '''Both expanded'' has no quantitative definition (range vs average range is implied but
+  not stated).'
+- He does not say where the sequence terminates - whether candle 5 and beyond are simply counted
+  on or whether the numbering resets.
+- The 4-hour candle-count he reads on air ('candle two, three, four, five... already went
+  lower') implies counting past 4, contradicting the way candle 4 is treated as the last continuation
+  elsewhere.
+related:
+- fractal-model-c3
+- swing-point
+- equilibrium-eq
+- half-wick-respect
+- ideal-formation
+- fractal-model-c2
+- upper-half-eq-expansion-filter
+- protected-swing
+- cisd
+- smt-swing-point-substitute
+- daily-bias-framework
+- ic-cisd
+- ttfm-indicator-settings
+- dont-trade-after-expansion
+- clean-day-criteria
+- expansion-exhaustion-avoid-price
+timeframes:
+  htf:
+  - 1D
+  - 4H
+  - 1H
+  ltf:
+  - 30m
+  - 15m
+  - 5m
+  - 3m
+  fractal: true
+execution:
+  bias: Direction of the confirmed swing point.
+  entry: Lower-timeframe change in the state of delivery inside the upper (or lower) half
+    of candle 3's range, ideally paired with a session driver at 08:30 or 09:30.
+  stop: The low that forms the candle 4 wick, or its body low.
+  targets:
+  - previous day high/low
+  - the swing point to the left
+  - equal highs/lows beyond
+contributing_units:
+- build_a_model_intro_to_ttrades_fractal_model_01
+- build_a_model_intro_to_ttrades_fractal_model_02
+- live_streams_04
+- shorts_03
+- sunday_sessions_live_q_a_02
+draft_count: 5
+voice: ttrades

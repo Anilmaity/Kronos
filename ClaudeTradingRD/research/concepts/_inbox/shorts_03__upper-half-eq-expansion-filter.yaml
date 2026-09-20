@@ -1,0 +1,109 @@
+id: upper-half-eq-expansion-filter
+name: "Upper-Half EQ Rule For Expansion"
+category: structure
+status: specified
+
+definition: >
+  Three Shorts state the rule as a single crisp filter and add the branch that follows a
+  failure. The requirement: when price is expanding, the next candle must open and make its LOW
+  in the upper half of the previous candle's range (bearish mirror: its high in the lower half),
+  and then expand. A second, equivalent phrasing is given in fib terms - the retracement must
+  NOT reach into a discount of the higher-timeframe range. The failure branch is stated
+  explicitly and is two-sided: if price opens and trades a lot lower than the EQ, expansion is
+  off, and price will either fail and take out the previous candle's low, OR reverse back to
+  its opening price, in which case the NEXT candle becomes the expansion candidate. The rule is
+  applied on the fourth day of a swing as well, where 0.5 of the swing range is marked and the
+  upper half must hold.
+
+timeframes:
+  htf: ["1D", "4H", "1H"]
+  ltf: ["1H", "15m", "5m"]
+  fractal: true
+
+preconditions:
+  - "Price has been classified as expanding, or a completed swing point exists whose range can
+    be halved."
+
+detection_rules:
+  - "Mark 0.5 of the reference candle's (or swing's) range."
+  - "Bullish: the next candle must open and make its LOW in the upper half of that range, then
+    expand higher."
+  - "Equivalent fib phrasing: the retracement must not reach into a discount of the range."
+  - "Failure branch A: price opens and trades a lot lower than the EQ - do not look for
+    expansion; expect it to fail and take out the previous candle's low."
+  - "Failure branch B: if price instead reverses and comes back to its opening price, the NEXT
+    candle becomes the expansion candidate."
+  - "Lower-timeframe shape wanted inside the passing candle: open, trade lower, form a change
+    in the state of delivery, then trade higher."
+  - "Applied to the 4th day of a swing: mark 0.5 of the swing range, require the upper half to
+    hold, and look for the PD arrays sitting in that half."
+
+invalidation:
+  - "Price makes its extreme in the wrong half of the reference range."
+  - "The retracement reaches into a discount of the higher-timeframe range."
+
+execution:
+  bias: "The expansion direction, held only while the correct half is respected."
+  entry: "Inside the required half, after the lower-timeframe change in the state of delivery."
+  stop: "On the low (bullish) formed inside that half - the worked 4th-day example stops on the
+    low and targets 2R."
+  targets:
+    - "2R (stated in the 4th-day example)"
+    - "the highs the swing is heading into"
+
+measurable:
+  - "continuation rate when the next candle's extreme forms in the required half vs when it
+    does not"
+  - "how often failure branch A (takes out the previous candle's low) occurs vs branch B
+    (returns to the opening price and the next candle expands)"
+  - "hit rate of the 2R target on 4th-day entries taken inside the upper half"
+
+sources:
+  - video_id: g37Z3GpSLGc
+    title: "Strong expansion, Shallow retracement"
+    quote: "When price is expanding, I do not want to see a deep retracement."
+  - video_id: g37Z3GpSLGc
+    title: "Strong expansion, Shallow retracement"
+    quote: "make its low in the upper half of its previous candle's range"
+  - video_id: g37Z3GpSLGc
+    title: "Strong expansion, Shallow retracement"
+    quote: "if price opens and trades a lot lower than the EQ"
+  - video_id: p6Cgc1mPCf4
+    title: "Strong Expansion = Shallow Retracement"
+    quote: "expansion does not have deep retracements to get on side with the move"
+  - video_id: p6Cgc1mPCf4
+    title: "Strong Expansion = Shallow Retracement"
+    quote: "Does this retracement reach into a discount? No."
+  - video_id: p6Cgc1mPCf4
+    title: "Strong Expansion = Shallow Retracement"
+    quote: "I'd like to see price respect the upper half of this range"
+  - video_id: EnAoorLVtoQ
+    title: "Trading Continuation on the 4th Day of a Swing"
+    quote: "I want to see price hold the upper half of this area."
+
+ambiguities:
+  - "'Respect' / 'hold' is not resolved into wick vs body - whether a wick through the EQ
+    breaks the filter or only a close does is not stated in any of the three Shorts."
+  - "'Trades a lot lower than the EQ' is a second, looser threshold than 'below the EQ', and
+    the two are used interchangeably in the same clip."
+  - "Failure branch B has no time bound - how long price may take to return to its opening
+    price before the setup is abandoned is not stated."
+  - "The reference range is variously the previous candle's range, 'this range' on the higher
+    timeframe, and the swing range on the 4th day. Which one applies when several are available
+    is not stated."
+  - "Whether the halves are measured wick-to-wick or body-to-body is not stated here."
+
+related:
+  - shallow-retracement
+  - retracement-phase
+  - fractal-model-c4
+  - small-wick-expansion-rule
+  - wick-size-test
+  - equilibrium-eq
+  - premium-discount
+  - expansion-signature
+
+python_detector: null
+voice: ttrades
+contributing_units: [shorts_03]
+draft_count: 1

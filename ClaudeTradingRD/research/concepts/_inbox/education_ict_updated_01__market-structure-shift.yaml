@@ -1,0 +1,89 @@
+id: market-structure-shift
+name: Market Structure Shift (MSS)
+aliases:
+- MSS
+- shift in structure
+- break structure
+category: structure
+status: specified
+definition: A change in trend from bullish to bearish or bearish to bullish, produced by displacement
+  that closes beyond a prior swing high (bullish shift) or swing low (bearish shift). Displacement means
+  a large aggressive move of full-bodied candles, single or multiple, easiest to spot by the fair value
+  gap it leaves. He additionally requires a stop raid of that swing immediately before the displacement,
+  and requires that price had engaged a higher-timeframe level before the shift; without that engagement
+  he does not look for a setup at all.
+timeframes:
+  htf:
+  - 1D
+  - 4H
+  - 1H
+  ltf:
+  - 15m
+  - 5m
+  - 1m
+  fractal: true
+preconditions:
+- Price has engaged a higher-timeframe level (PD array / point of interest) on that or a lower timeframe.
+- A prior swing high or swing low exists to be broken.
+detection_rules:
+- Locate a prior swing high (for a bullish shift) or swing low (for a bearish shift).
+- 'A stop raid occurs first: price sweeps that swing (preferred, not universally enforced in the examples).'
+- Price then displaces — large full-bodied candle(s), typically leaving a fair value gap — and CLOSES
+  beyond that swing level.
+- The close must be beyond the swing itself, not merely beyond an opposing candle's opening price (that
+  is the CISD test instead).
+- Only then does he look left for a PD array (order block / FVG / OTE / breaker) in the retracement
+  to enter.
+invalidation:
+- Price reaches the swing but cannot close beyond it (that is a liquidity grab, not a shift).
+- No higher-timeframe level was engaged before the break — he does not search for a setup.
+execution:
+  bias: Direction of the displacement through the swing.
+  entry: Retracement into a PD array inside the displacement range (premium for shorts, discount for
+    longs).
+  stop: Beyond the swept extreme / the opposing candles.
+  targets:
+  - The liquidity that drew price (old high / old low)
+  - Opposite side of the displacement range
+measurable:
+- frequency of MSS bars that were preceded by a sweep vs not
+- hit rate of MSS with prior HTF-level engagement vs without
+- median bars from CISD to the corresponding MSS
+sources:
+- video_id: E89d1HArbgM
+  title: Market Structure Shift vs Change In State Of Delivery
+  quote: it is when we shift from bullish to bearish or from bearish to bullish
+- video_id: E89d1HArbgM
+  title: Market Structure Shift vs Change In State Of Delivery
+  quote: displacement over or below a swing high or swing low
+- video_id: _94CPMjWi9E
+  title: Market Structure Shift
+  quote: we look for displacement below a previous low or if it is bullish
+- video_id: _94CPMjWi9E
+  title: Market Structure Shift
+  quote: if price engaged a higher time frame level prior to shifting structure
+- video_id: ynFA6E3qHj0
+  title: Market Structure Shift vs Liquidity Grab
+  quote: Market structure shift is when we get a sweep and then that large displacement candle
+- video_id: 0xygpCMwxbQ
+  title: A+ ICT Entry Checklist
+  quote: the next thing I look for is a market structure shift or displacement
+ambiguities:
+- The sweep/stop-raid precondition is 'I also prefer' in _94CPMjWi9E and part of the definition in ynFA6E3qHj0
+  — preference vs requirement is not resolved.
+- '''Aggressive'' / ''large full-bodied'' displacement is never quantified (no body-to-range ratio,
+  no ATR multiple).'
+- In umyCqr_0NsI he says he often waits for an INTERMEDIATE-term high/low to be taken rather than any
+  swing, which raises the bar but is not stated as a rule.
+- Whether the close must be a body close or any close beyond the swing is not stated, though every example
+  shows a body close.
+related:
+- cisd
+- displacement
+- liquidity-grab
+- swing-point
+- advanced-market-structure-labeling
+voice: ttrades
+contributing_units:
+- education_ict_updated_01
+draft_count: 1

@@ -1,0 +1,333 @@
+================================================================================
+ CROSS-VENUE ARBITRAGE (Polymarket + Kalshi) — SESSION HANDOFF
+ Saved: 2026-06-15 (resume later today)
+================================================================================
+
+GOAL
+----
+Place a real cross-venue 15-minute BTC Up/Down arbitrage "lock" across the live
+Polymarket and Kalshi accounts (buy UP on the cheaper venue + DOWN on the dearer
+so one leg always pays $1.00 at settlement), like the paper bot does — but
+bug-free and with NO possibility of a naked (unhedged) leg.
+
+CURRENT ACCOUNT STATE (real money)
+----------------------------------
+  Kalshi : $12.21   (FLAT — no positions)
+  Polymarket pUSD : $3.53   (FLAT — only ~0.12-share settled dust, ignore)
+  KILL SWITCH : ON  (journal/STOP exists -> no live orders will place)
+  Live feed (dashboard/refresh_live5m.py): may or may not be running in bg.
+
+SESSION P&L NOTE: across the session the only "gain" was a LUCKY naked position
+from the very first bug (won +$3.61 by chance). Every CONTROLLED live attempt
+LOST a little to a different execution bug or to the structural barrier below.
+Net real damage from bugs/attempts ≈ $1.5. All bugs are now fixed + tested.
+
+================================================================================
+ WHAT WAS BUILT / FIXED THIS SESSION  (all committed to working tree, no git)
+================================================================================
+
+1. POLYMARKET AUTH (bot/exec_polymarket.py)
+   - `_api_creds()` derives the API key FIRST (create-then-derive spammed a 400).
+   - Live orders REQUIRE signature_type=3 (POLY_1271 "deposit wallet" flow).
+     Set in .env.bets: `signature_type : 3`. Code default also 3.
+   - Fixed cancel(): OrderPayload(orderID=...) not order_id.
+   - Added position_qty(token) + flatten(token,size) (data-api / FOK sell).
+
+2. KALSHI EXEC (bot/exec_kalshi.py)
+   - place_ioc reads FILL via `fill_count_fp` (was reading `count` -> always 0,
+     which caused the original naked-position disaster).
+   - positions() reads `position_fp` / `market_exposure_dollars` (old fields gone).
+   - Added _fill_count(), position_qty(ticker), flatten(ticker,side,count) (IOC
+     sell at 1c floor = fills at the bid), live current-value mark on positions.
+
+3. NEVER-NAKED EXECUTION (bot/live_strategy.py -> step())
+   KEY LESSON (learned the hard way): do NOT drive flattening from venue POSITION
+   endpoints — Polymarket's data-api LAGS new fills (returned 0 right after a real
+   3-share fill -> reconciler flattened the WRONG leg -> naked).
+   Current design (Kalshi-first):
+     a) Kalshi IOC first (returned fill_count_fp is authoritative + immediate).
+     b) Hedge EXACT kf on Polymarket FOK (atomic: kf or 0). Skip if kf*poly_px<$1.
+     c) pairs=min(kf,pf); flatten unmatched Kalshi remainder; window marked done.
+     d) Every order placement is EXCEPTION-SAFE (_place_leg swallows API errors ->
+        filled=0 -> triggers flatten). A crash can never leave a naked leg.
+     e) naked_alert raised only if a flatten under-fills (honest, loud).
+   - Fee gate: only enter when net AFTER fees >= MIN_NET (0.3c/pair).
+   - account_snapshot() exposes naked_alert + naked_live + realized_pnl + enriched
+     locks (cost/fee/pnl/status via _enrich_lock).
+
+4. TEST (test_never_naked.py) — 18/18 PASS
+   Mock venues, drives step() through: clean lock, hedge-fails, LAGGING position
+   endpoints (regression for the data-api bug), no-fill, unwind-underfills,
+   hedge-RAISES-exception, below-$1-min, accumulation guard.
+   RUN:  DRY_RUN=true .venv/Scripts/python.exe test_never_naked.py
+
+5. DASHBOARD UI (dashboard/renderer.js + index.html) — Live Account tab
+   - Red NAKED POSITION DETECTED banner (ignores <1-share / <25c dust).
+   - Open Positions: Size/Avg/Cur/COST/VALUE/P&L/HEDGE (hedged|NAKED|settled).
+   - Cross-venue 15m arb block (lock cost -> gross -> net after fees) — arbBlock().
+   - Order History card: Opened/Trade/Purpose/Stake/Fee/Status&Result/P&L/Mode
+     + Realized P&L total. (_enrich_lock feeds it.)
+   - Feed cache lowered to 8s for near-real-time fills/values.
+   - Screenshot harness: dashboard/screenshot_dash.js (Electron capturePage).
+
+DRIVER (livearb_once.py)
+   - "KEEP-TRYING" loop: retries across windows until a real LOCK, with circuit
+     breakers: LIVE_MAX_UNWINDS (default 10 ≈ $1.20) or timeout minutes; stops
+     immediately on naked_alert (exit 4) or kill switch (exit 2).
+   - RUN (live): DRY_RUN=false LIVE_MAX_NOTIONAL=3 LIVE_MAX_UNWINDS=10 \
+                 .venv/Scripts/python.exe livearb_once.py 45
+   - Hard-asserts nothing; respects journal/STOP.
+
+================================================================================
+ DEFENSIVE LIQUIDITY GATE  (added 2026-06-15 — "stop the bleed")
+================================================================================
+Spec:  docs/superpowers/specs/2026-06-15-liquidity-gate-design.md
+Plan:  docs/superpowers/plans/2026-06-15-liquidity-gate.md
+
+WHY: the real-money log proved the bleed root cause is NOT budget/leg-order. The
+Kalshi 15m book is priced off LAST TRADE (no resting ask there -> IOC fills 0),
+and the two legs are rarely simultaneously fillable at an arb price. The bot
+committed a leg BEFORE knowing the other could hedge it -> flatten -> small loss.
+
+WHAT WAS BUILT:
+  6. SHARED GATE (bot/arb_gate.py) — ONE pure evaluate(p15,k15,poly_bal,kalshi_bal,
+     max_notional) -> {fire,reason,legs,fillable,lock_cost,net}. Reprices each leg
+     at the REAL book ask, sizes to fillable=min(both book depths, $cap/price), and
+     only fires when a FULL hedged lock clears the Poly $1 min AND stays net>=MIN_NET
+     after fees. Four canonical skip reasons: "no book" / "not arb at real asks" /
+     "no joint depth" / "below Poly $1 min". _legs() lives here now.
+  7. BOOK READERS (read-only): kalshi.book_ask(ticker,side) (orderbook endpoint;
+     yes_ask = 1 - best_no_bid) and polymarket.book_ask(token) (CLOB /book, price+size).
+  8. BOTH ACCOUNTS USE THE SAME GATE: live_strategy.step() and pm_strategy.step()
+     both call arb_gate.evaluate -> paper can't be optimistic where live is strict.
+     Paper now sizes to real book depth (not STAKE_FRAC*balance) and reads the SAME
+     LIVE_MAX_NOTIONAL env cap -> paper P&L mirrors real. Never-naked block UNCHANGED
+     (post-gate race backstop). Feed (refresh_live5m.py) enriches poly_15m/kalshi_15m
+     with up_ask/up_ask_size/down_ask/down_ask_size. Skips logged as event=gate_skip.
+  TESTS: test_arb_gate.py (22/0 — readers, gate table incl. fee/net + c2 + gross
+     bound, paper/live parity, paper-sizing) + test_never_naked.py (32/0 — 20
+     never-naked unchanged + 4 gate-skip scenarios asserting ZERO orders on skip).
+     RUN: DRY_RUN=true .venv/Scripts/python.exe test_arb_gate.py ; ...test_never_naked.py
+
+  9. KALSHI ORDERBOOK FIELD FIX (bot/kalshi.py _ask_from_book) + livearb.snapshot()
+     enrichment. The live driver (livearb_once.py via livearb.snapshot) was NOT
+     enriched with book asks (only the dashboard feed was) -> added _enrich_asks().
+     THEN discovered the bigger bug: _ask_from_book read the DEPRECATED `orderbook`
+     (cents) field, which Kalshi now returns empty. Real depth lives in
+     `orderbook_fp` = {yes_dollars, no_dollars}, levels [price_DOLLARS_str, size_str]
+     (fractional sizes). Same _fp migration as fill_count_fp/position_fp. Reader now
+     prefers orderbook_fp (dollar prices, floored int sizes), falls back to legacy.
+     Mapping VERIFIED live against a non-empty book (KXBTCD): book_ask yes=0.49=
+     1-best_no_bid(0.51), no=0.53=1-best_yes_bid(0.47), no inversion. tests 28/0.
+
+  *** THE "EMPTY KALSHI BOOK" WAS A FIELD-PARSING ARTIFACT, NOT A THIN MARKET. ***
+  Live research (research_kalshi_depth.py) shows ALL Kalshi BTC series carry DEEP
+  resting depth: KXBTCD ~449k contracts, KXBTC15M ~809k. The earlier "no book"
+  verdict came from reading the dead `orderbook` field.
+
+  *** DECISIVE CONCLUSION (2026-06-16): NO EDGE AT REAL EXECUTABLE PRICES. ***
+  With BOTH books now read correctly, the 15m lock cost at REAL asks =
+  min(poly_up+kalshi_down, kalshi_up+poly_down) hovers $1.000-$1.005 (sampled 6
+  ticks: gross 0.0-0.1c, sometimes NEGATIVE). The gate correctly returns
+  {'fire': False, 'reason': 'not arb at real asks'}. The venues are efficiently
+  priced relative to each other; you pay each side's ~1-2c bid-ask spread, which
+  eats any cross-venue mispricing. The "arb" only ever looked profitable when
+  priced off LAST-TRADE midpoints — at the asks you'd actually pay, it's gone.
+  This confirms validate_arb.py's negative-EV finding, now at the EXECUTION layer.
+
+  *** FIRST REAL LIVE LOCK -> BASIS-RISK BREAK, LOST FULL STAKE (2026-06-15 20:22Z) ***
+  A 20-min supervised live run (DRY_RUN=false, cap $3, livearb_once.py 20) FIRED on
+  the one in-band window it found: window 20:30:00Z, lock_cost 0.96, gross 4.0c,
+  pairs 5 -> UP Kalshi @0.42 + DOWN Poly @0.54 (real orders, both legs filled,
+  naked_alert=None). It then settled:
+     - Polymarket (Chainlink ref) resolved UP  -> our DOWN leg paid $0.
+     - Kalshi    (its own index)   resolved NO -> our UP   leg paid $0. (market
+       KXBTC15M-26JUN151630-30 status=finalized result=no revenue=0, confirmed via
+       /portfolio/settlements.)
+     - THE TWO VENUES DISAGREED ON DIRECTION -> BOTH LEGS LOST.
+  Account: $15.74 -> $10.91  =  NET -$4.83 (FINAL, ~31% of the prediction-mkt cash),
+  gone on a single near-flat window. This is the basis-risk tail validate_arb.py and
+  the spec's "honest caveat" warned about — it hit on the FIRST live lock.
+  LESSON (hard, real-money): a 4c gross is FAR too thin to pay for a ~? % chance of
+  losing the whole ~96c/pair stake when the references diverge. The 0.3-6c MIN_NET/
+  MAX_GROSS band is NOT a safe entry filter — any cross-venue lock on DIFFERENT
+  settlement references (Kalshi index vs Poly Chainlink) carries this both-lose risk
+  on near-flat windows, and near-flat is exactly when a small gross appears.
+  => DO NOT run this live again as-is. If ever revisited, the band must REQUIRE a
+  margin that survives the basis tail (likely impossible on 15m up/down), or only
+  trade windows with a strong directional move so both refs agree. Caveat: a
+  ~0.51-share Poly DOWN excess (sub-$1, un-flattenable) also rode along and lost.
+
+  10. PAPER NOW REAL-SETTLES (so it CATCHES basis risk) — the old paper model hid
+     this loss. pm_strategy used to settle every lock won=True ("one leg always
+     wins") -> it logged the SAME 20:30 window as +$0.43 while live LOST. Paper's
+     whole +$702 track record was that fiction. FIX:
+       - kalshi.settled_direction(ticker) -> UP/DOWN from /markets result (finalized).
+       - polymarket.settled_direction(slug) -> UP/DOWN from event outcomePrices
+         (winner priced ~1, guarded by umaResolutionStatus/closed + >=0.95).
+       - paper_pm.settle gains payout_per_unit (0/1/2): 0 = basis break (both legs
+         lose full stake), 1 = normal, 2 = windfall.
+       - pm_strategy stores pos['resolve'] {kalshi_ticker,kalshi_side,poly_slug,
+         poly_side} at entry; settle loop settles on BOTH venues' real outcomes,
+         leaves the lock OPEN until both resolve (STALE_HOURS=3 optimistic fallback).
+     VERIFIED: replaying the real 20:30 lock through the new model -> kalshi=DOWN
+     poly=UP -> payout 0 -> paper PnL -$4.87 (matches live -$4.83). Paper no longer
+     lies about basis risk. tests test_arb_gate.py 36/0 (incl. break/normal/windfall/
+     leave-open/stale). NOTE: journal/pm_account.json still holds the OLD optimistic
+     +$702 history — reset/archive it so honest stats start clean (paper_pm.reset()).
+
+  RESIDUAL CLOSED: Kalshi yes/no mapping is now verified against non-empty books.
+
+  *** THRESHOLD PAIRING ALSO RULED OUT (2026-06-16, research_xvenue_threshold.py) ***
+  Compared Kalshi KXBTCD/KXBTC threshold books vs Polymarket "Bitcoin above $X"
+  threshold markets. They ALIGN ON NEITHER axis a lock needs:
+    - SETTLEMENT: Poly settles one daily instant (e.g. Jun 16 16:00Z); Kalshi
+      settles HOURLY -> closest was 19h apart. No common settlement reference.
+    - STRIKES: Poly $2,000 buckets vs Kalshi $100-granular ($X.99). Nearest-strike
+      gaps $250-$7,750; coincide only deep OTM. -> only basis bets, no true lock.
+  Table showed NO positive gross at real asks. RESULT: no executable edge.
+
+  *** OVERALL: cross-venue Kalshi<->Polymarket BTC arb is NOT VIABLE. ***
+    15m up/down  -> products match, but efficiently priced (~$1.00 lock, ~0c gross).
+    threshold    -> products don't match (strike + settlement mismatch).
+  The win of this work is a CORRECT defensive system that reads true prices on both
+  venues and refuses to trade with no edge (vs bleeding on a false last-trade signal).
+
+NEXT STEP (still kill-switched): do NOT expect a profitable cross-venue live fire.
+  If continuing, the only realistic directions are single-venue / read-only:
+  (a) the edge signals already built (funding, Bachelier, cross-venue WATCH);
+  (b) resting Kalshi MAKER bids to EARN the spread rather than pay it (a different
+  strategy entirely, not the lock). Research tools kept: research_kalshi_depth.py,
+  research_xvenue_threshold.py.
+
+================================================================================
+ THE STRUCTURAL PROBLEM (why no lock has completed)  *** see gate above ***
+================================================================================
+The Kalshi 15m order book is THIN — it only fills ~3-5 contracts at our price.
+- Kalshi-first: Kalshi fills few -> hedging that few on a cheap (~19c) Poly leg is
+  < $1 (Poly's min order) OR the Poly FOK gets killed (book moved) -> flatten
+  Kalshi -> small loss (~$0.12-0.15 each). 4 such clean unwinds today, ~$0.5 bled.
+- Raising the cap does NOT help: the binding constraint is Kalshi BOOK liquidity
+  (fill quantity), not our budget.
+
+*** POLY-FIRST: IMPLEMENTED + TESTED 2026-06-15 (test_never_naked.py 20/20). ***
+  step() now: Poly FOK first -> if pf<1 no_fill -> Kalshi IOC hedge for pf ->
+  pairs=min(pf,kf) -> flatten EXCESS Poly -> lock(pairs) or legged_unwound. A
+  PARTIAL Kalshi hedge now COMPLETES a lock of the matched portion (new). Not yet
+  run live with this ordering — that's the next step (resume below).
+
+ORIGINAL DIRECTIVE (now done):
+  *** Flip the order: fill POLYMARKET FIRST, then Kalshi. ***
+  Rationale (user): Poly is now the leg most likely to NOT fill (low $3.53 balance
+  + FOK kills), so commit the UNCERTAIN leg first — if it doesn't fill, nothing is
+  risked; only hedge on Kalshi AFTER Poly fills. This should let us LOCK whatever
+  Kalshi fills (pairs=min(pf,kf)) and flatten the Poly excess on the deep book.
+
+  PLANNED step() rewrite (Poly-first), replacing the leg section in
+  bot/live_strategy.py (currently ~lines 273-329):
+    1) Pre-check: if shares*poly_px < $1 -> skip window (can't place Poly).
+    2) pf = place Poly FOK for `shares`.  if pf<1 -> return no_fill (leg="poly").
+    3) kf = place Kalshi IOC for pf (hedge; partial OK, Kalshi has no $ min).
+    4) pairs = min(pf, kf).
+    5) if pf > pairs: flatten (pf-pairs) EXCESS POLY via exec_polymarket.flatten;
+       if it under-fills -> naked_alert (Poly excess).
+    6) window done; if pairs>=1 record lock(pairs) else legged_unwound.
+    - Keep exception-safety + returned-fills-only reconciliation.
+    - UPDATE test_never_naked.py for Poly-first ordering and re-run (target 18/18).
+  Watch-out: flattening a TINY Poly excess (<$1) can be rejected -> naked_alert;
+  that's acceptable (loop halts for a human). Also the Poly excess flatten costs
+  the bid/ask spread on the over-bought shares — bounded by the cap.
+
+  HONEST CAVEAT: even Poly-first may bleed the spread on flattened Poly excess,
+  and any completed lock still carries basis risk (Polymarket Chainlink ref vs
+  Kalshi index ref can diverge -> rare both-legs-lose). validate_arb.py measured
+  this lock as ~negative EV. Keep the cap small and SUPERVISE.
+
+================================================================================
+ HOW TO RESUME
+================================================================================
+1. Ensure flat:  .venv/Scripts/python.exe -c "from bot import exec_kalshi as K, exec_polymarket as P; print(K.balance(), K.positions()); print(P.balance())"
+2. Implement the Poly-first rewrite above in bot/live_strategy.py.
+3. Update + run test:  DRY_RUN=true .venv/Scripts/python.exe test_never_naked.py
+4. Start dashboard feed:  .venv/Scripts/python.exe dashboard/refresh_live5m.py   (bg)
+   Open dashboard:        cd dashboard && npm start   (or electron .)
+5. RESUME trading (remove kill switch) ONLY when ready:  del journal\STOP
+6. Run supervised:  DRY_RUN=false LIVE_MAX_NOTIONAL=3 .venv/Scripts/python.exe livearb_once.py 45
+7. STOP anytime: create journal/STOP  (or dashboard "Stop trading" button).
+
+KEY FILES
+  bot/live_strategy.py     - step() execution + never-naked + account_snapshot
+  bot/exec_kalshi.py       - Kalshi orders/positions/flatten (fill_count_fp)
+  bot/exec_polymarket.py   - Poly CLOB V2 (sig_type=3), positions/flatten
+  bot/pm_strategy.py       - _legs(), MIN_NET=0.003, MAX_GROSS=0.06, paper fees
+  livearb_once.py          - keep-trying supervised live driver (+ breakers)
+  livearb.py               - original continuous loop / status CLI
+  test_never_naked.py      - 18-check safety test (RUN AFTER ANY step() change)
+  dashboard/renderer.js    - Live Account tab UI (positions/locks/arb/history)
+  dashboard/refresh_live5m.py - per-second feed -> dashboard/live5m.json
+  journal/STOP             - kill switch (presence = no trading)
+  journal/live_account.json- recorded locks + windows_done
+  journal/live_arb_log.csv - per-event log (lock/flatten/unwound/nofill)
+  .env.bets                - venue creds; signature_type : 3 (REQUIRED for Poly)
+
+CONFIG / ENV
+  DRY_RUN               - "false" to place REAL orders (default true = simulated)
+  LIVE_MAX_NOTIONAL     - $/account/lock cap (used 3)
+  LIVE_MAX_UNWINDS      - keep-trying breaker (default 10)
+  POLY_SIGNATURE_TYPE   - 3 (deposit wallet / POLY_1271) — REQUIRED
+  POLY_FUNDER=0x4748Ead5d2C158d8322f1d12156834b63486a24C (proxy wallet, holds pUSD)
+  POLY signer EOA       =0x7f1D9b66416D2C26BfB868252dd55D7F39145c6C
+================================================================================
+
+================================================================================
+ LATEST EMPIRICAL FINDINGS (2026-06-16, real-settlement paper + more live tests)
+================================================================================
+1. POLY RESOLUTION READER FIX (bot/polymarket.py settled_direction): now keys off
+   the DECISIVE outcome PRICE (winner >=0.95), NOT Polymarket's closed/
+   umaResolutionStatus flags, which lag minutes-to-hours behind the price snapping
+   to the Chainlink outcome at window close. Without this, paper locks STALLED open
+   (and risked the 3h optimistic fallback wrongly booking a win). Caller settles only
+   post-window, so a >=0.95 winner is the final result. Safe + verified live.
+
+2. REAL-SETTLEMENT PAPER RESULTS == CONCLUSIVE: THE STRATEGY LOSES.
+   Reset paper to $1000, ran the feed for ~9h (31 settled windows):
+       30 normal wins  = +$4.74   (~+$0.16 each; venues AGREED on direction)
+        1 BASIS BREAK   = -$17.73  (window 05:00Z: kalshi=UP poly=DOWN -> both legs lost)
+       NET realized     = -$12.99  -> balance $1000 -> $987.01 and FALLING.
+   ONE break erased ALL 30 wins and then some. Break rate observed ~1/31 (~3%), but
+   the -$17.73 vs +$0.16 ASYMMETRY makes it a guaranteed loser at any plausible rate.
+   The honest paper model CAUGHT the break the old "won=True always" model hid (which
+   had faked a +$702 track record -> archived to pm_account_archive_optimistic_*.json).
+   This independently confirms the live -$4.83 break: both real money and honest paper
+   prove the cross-venue 15m lock is NET-NEGATIVE.
+
+3. MINIMUM-BET TESTS (real money, tiny):
+   - Near-$1 cross-venue LOCK is UNPLACEABLE: with LIVE_MAX_NOTIONAL=1.2 the gate
+     skipped every window "below Poly $1 min" (the $1 Poly floor + higher per-pair
+     fee at min size squeeze it out). Smallest EXECUTABLE lock is ~$3-cap / ~5 pairs.
+   - Single $1 Poly order DOES execute (4 sh @0.31 FOK filled w/ a price buffer; raw
+     FOK at the stale ask gets killed on the fast 5m book). BUT round-trip cost ~$0.53
+     on a $1.24 order (~43%) = almost all BID-ASK SPREAD. The spread you cross on
+     entry (and again to hedge/exit) is the real killer -- same spread that makes the
+     cross-venue lock ~0c gross at executable prices.
+
+4. SECOND LIVE ARB TEST (DRY_RUN=false, cap $3, ~15m): placed NOTHING -- no in-band
+   window fired (gate correctly refused every window). Accounts flat, no loss.
+
+5. POLY BALANCE: user DEPOSITED funds (Poly ~$12.85, was $3.53). Not a bot event.
+
+CURRENT STATE: kill switch ON, live accounts FLAT (Kalshi $10.18 / Poly ~$12.32),
+no live driver running. DRY-RUN feed + paper watcher may still be running (paper
+account honestly tracking its decline). Paper goal "$1000->$2000" is UNREACHABLE.
+
+FILES ADDED/CHANGED THIS SESSION (beyond the gate): bot/arb_gate.py (shared gate),
+kalshi.book_ask/_ask_from_book(orderbook_fp)/settled_direction,
+polymarket.book_ask/settled_direction, paper_pm.settle(payout_per_unit 0/1/2),
+pm_strategy real-settlement, livearb.snapshot _enrich_asks, live_obs.ps1/.sh,
+research_kalshi_depth.py, research_xvenue_threshold.py, test_arb_gate.py (36 checks).
+
+FINAL VERDICT: cross-venue Kalshi<->Polymarket BTC arbitrage is NOT VIABLE and is a
+confirmed money-loser. Do NOT run it live. The honest paper account now proves this
+continuously (it bleeds on basis breaks). If anything is pursued next, it is
+single-venue / read-only edges or a MAKER strategy (earn the spread) -- never this lock.
+================================================================================

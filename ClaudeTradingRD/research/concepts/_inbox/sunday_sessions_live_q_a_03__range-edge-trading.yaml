@@ -1,0 +1,55 @@
+id: range-edge-trading
+name: "Trade The Edges Of A Range, Into The Range"
+aliases: ["edges of the range", "range trading rule"]
+category: model
+status: specified
+
+definition: >
+  Inside a consolidation, the only trades he will take are at the edges of the range,
+  going back into the range. He explicitly refuses to trade in the middle of a range
+  trying to exit it. Applied to a specific instrument this becomes an entry-window
+  rule: once the range high has already been taken, a long is no longer available -
+  the entry had to happen near the daily open or mid-range, before the high was taken.
+
+timeframes:
+  htf: ["1D", "4H"]
+  ltf: ["1H", "15m", "5m"]
+  fractal: true
+
+preconditions:
+  - "The instrument has been classified as consolidating (see phases-of-price)."
+  - "The range high and low are marked."
+
+detection_rules:
+  - "Only look for entries at the range extremes, directed back toward the middle/opposite side."
+  - "Do not take a trade positioned in the middle of the range aiming to break out of it."
+  - "Do not enter long above the range high, away from the daily open; the window closes once the high has been taken."
+  - "If the range low is being taken, a new continuation is required before shorting - taking the actual low of the range is where people short and get run out."
+  - "When the daily is not obvious, going to a lower timeframe does not help - a non-obvious daily usually means consolidation, and the lower timeframe will just chop."
+
+invalidation:
+  - "One side of the range being taken with continuation - the range is over and the phase changes."
+
+execution:
+  bias: "Back into the range from the edge."
+  entry: "At the edge with confirmation; near the daily open or mid-range before the extreme is taken."
+  stop: "Beyond the range extreme."
+  targets: ["EQ of the range", "the opposite range extreme", "equal lows/highs inside the range"]
+
+measurable:
+  - "win rate of range-edge entries vs mid-range entries"
+  - "how often the range EQ is reached from an edge entry"
+  - "frequency of the range low being swept before the range actually resolves lower"
+
+sources:
+  - video_id: bMkRomKEunU
+    title: "New York Open Live Q&A"
+  - video_id: wM1s7UivQ08
+    title: "New York Open Live Q&A"
+
+ambiguities:
+  - "'Edge' vs 'middle' has no boundary - the EQ is used as a target but not stated as the dividing line."
+  - "Interacts with consolidation-range-no-trade, where he says he has no interest at all in a consolidating asset; the two are reconciled only by the range being large enough to have tradeable edges."
+
+python_detector: null
+related: ["consolidation-range-no-trade", "phases-of-price", "premium-discount", "relevant-level"]

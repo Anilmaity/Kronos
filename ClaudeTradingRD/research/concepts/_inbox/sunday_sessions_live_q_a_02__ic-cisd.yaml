@@ -1,0 +1,42 @@
+id: ic-cisd
+name: "Intracandle CISD (IC-CISD)"
+aliases: ["IC-CISD", "intra-candle change in state of delivery"]
+category: entry
+status: underspecified
+
+definition: >
+  A change in state of delivery occurring inside a higher-timeframe candle, described as
+  the mechanism that forms that candle's wick. Presented in Qv6Ux_Z8VrA as a concept he
+  created and has mostly kept inside his mentorship. It requires a point of interest; if no
+  fair value gap or high/low is available, the CISD level itself can be used as the level.
+
+timeframes:
+  htf: ["4H", "1H"]
+  ltf: ["15m", "5m", "1m"]
+  fractal: true
+
+preconditions:
+  - "A higher-timeframe candle is in progress and has not yet completed its wick."
+
+detection_rules:
+  - "A CISD prints on a lower timeframe inside the developing higher-timeframe candle."
+  - "The CISD must occur off a point of interest; if no FVG or high/low exists, the CISD level itself is used."
+
+invalidation:
+  - "Not stated in these transcripts."
+
+measurable:
+  - "Rate at which an intracandle CISD coincides with the final wick extreme of the HTF candle."
+
+sources:
+  - video_id: Qv6Ux_Z8VrA
+    title: "New York Open Live Q&A"
+
+ambiguities:
+  - "No lower-timeframe is specified for detecting the intracandle CISD."
+  - "No invalidation is given."
+  - "He compares it loosely to a 'unicorn' formation but says it is cleaner; the difference is not defined."
+  - "He states a dedicated public video exists under a different name, which is not identified in this transcript."
+
+python_detector: null
+related: ["cisd", "point-of-interest", "fractal-model-c2"]

@@ -1,0 +1,65 @@
+id: relative-strength-asset-selection
+name: "Ranking Correlated Assets And Trading The Middle One"
+aliases: ["strongest asset", "weakest asset", "middle asset", "relative strength and weakness"]
+category: structure
+status: specified
+
+definition: >
+  Instrument selection is a separate decision from setup identification, made by ranking
+  correlated assets against each other. For index futures the ranking is across YM, ES and
+  NQ using three named inputs: where price currently sits relative to structure, the SMT
+  between them, and the candle type (an expansion candle is strong, a reversal candle is
+  not). The general rule is to long the strongest and short the weakest. The refinement
+  that both walkthroughs actually use is the exception: if the strongest asset has already
+  expanded and is trading over highs, expect consolidation there and take the next
+  strongest - the middle asset - instead. The same logic runs across currencies through the
+  dollar: a bearish dollar bias makes foreign currency futures bullish, the currency futures
+  are then scanned for the cleanest daily formation, and USD-quoted pairs invert the setup.
+
+timeframes:
+  htf: ["1D", "1H"]
+  ltf: ["15m"]
+  fractal: false
+
+preconditions:
+  - "Two or more correlated instruments charted side by side (YM/ES/NQ, or DXY plus currency futures)."
+  - "A directional bias established on one of them or on the dollar."
+
+detection_rules:
+  - "Rank the correlated assets by: location of price relative to structure; SMT (which asset has taken the level and which has not); candle type (expansion candle vs reversal candle)."
+  - "The asset closest to its previous day low is the weakest; the one with a clean bullish expansion candle is the strongest."
+  - "For a long, prefer the strongest; for a short, prefer the weakest."
+  - "If the strongest has already expanded and is trading over highs, expect consolidation there and take the middle asset."
+  - "Currency case: bearish dollar implies bullish foreign currency futures; on a USD-quoted pair the same setup is inverted."
+  - "Among valid candidates, select the one with the cleanest daily formation."
+
+invalidation:
+  - "The ranking flips intraday (the weakest asset reverses off its level and the strongest stalls)."
+
+execution:
+  bias: "From the higher-timeframe analysis, applied to the selected instrument."
+  entry: "Standard model entry on the selected instrument."
+  stop: "Protected swing on the selected instrument."
+  targets: ["equal highs or lows on the selected instrument"]
+
+measurable:
+  - "expansion range of strongest vs middle vs weakest asset after the ranking is made"
+  - "hit rate of long-the-strongest vs long-the-middle when the strongest is already over highs"
+  - "frequency with which the three ranking inputs disagree"
+
+sources:
+  - video_id: w-JekHg6Ldk
+    title: "TTrades Top-Down Chart Lessons #4"
+  - video_id: IzOQmcgLyA0
+    title: "TTrades Top-Down Chart Lessons #3"
+  - video_id: UBTl7za9obc
+    title: "TTrades Top-Down Chart Lessons #2"
+
+ambiguities:
+  - "The three ranking inputs are unweighted and no tie-break is given when they disagree."
+  - "Already expanded and over highs is the disqualifier for the strongest asset and is not quantified."
+  - "In video UBTl7za9obc the ordering is given as YM strongest, NQ weakest and ES in the middle, or the reverse, so the ordering is observed per day, not fixed."
+  - "In video IzOQmcgLyA0 the speaker chose CAD futures on structure while GBPUSD produced the larger expansion that day, and he calls this a mistake - so structure quality and expansion magnitude can point to different instruments, with no rule for resolving it."
+
+python_detector: null
+related: ["smt-divergence", "cross-asset-reversal-confirmation", "failure-swing", "phases-of-price"]

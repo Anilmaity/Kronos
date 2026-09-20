@@ -1,0 +1,53 @@
+id: cross-asset-target-transfer
+name: "Take Profit On One Asset When The Correlated Asset Hits Its Target"
+aliases: ["the target isn't on this chart", "ES hits its low, that's the target on NQ"]
+category: structure
+status: specified
+
+definition: >
+  A target that exists on a *different* instrument's chart. In the Je7cd9HJUBE session NQ has
+  already run past every level on its own chart, so he sets the NQ exit by reference to ES: ES
+  still has an unswept low, and the moment ES takes that low is the moment to take profit on NQ.
+  He states the general form explicitly — you can take profit on one asset because the other
+  asset hits a target — and pairs it with the time-based exit as the two kinds of exit available
+  when the traded instrument has no level of its own left. He sets a price alert on the *other*
+  chart to implement it.
+
+timeframes:
+  htf: ["1H", "15m"]
+  ltf: ["5m", "3m"]
+  fractal: false
+
+preconditions:
+  - "Two correlated instruments, one leading and one lagging."
+  - "The traded instrument has no remaining level of its own in the direction of the trade."
+
+detection_rules:
+  - "Identify the nearest unswept level on the correlated instrument (the one that has not yet caught up)."
+  - "Set the exit trigger on that instrument's level, not on the traded instrument's price."
+  - "Exit the traded instrument when the correlated instrument tags that level."
+  - "If no such level exists either, fall back to the time-based exit (the next higher-timeframe candle open)."
+
+invalidation:
+  - "The correlated instrument stops advancing toward its level — the transfer target is stale and the time-based exit governs."
+
+measurable:
+  - "give-back after the correlated-level exit versus holding"
+  - "how often the traded asset turns within N bars of the correlated asset tagging its level"
+
+sources:
+  - video_id: Je7cd9HJUBE
+    title: "New York Open Live Q&A"
+    quote: "you can take profit on one asset because the other asset hits a target"
+
+ambiguities:
+  - "Which correlated instrument supplies the transferred target is chosen by eye from the strength ranking; no rule is given when two lag."
+  - "Whether the exit is on the tag or on a reaction at that level is not stated."
+  - "The technique is demonstrated on index futures only; nothing is said about metals or FX."
+
+python_detector: null
+related: ["relative-strength-asset-selection", "cross-asset-reversal-confirmation", "time-based-exit-htf-close", "ten-am-candle-alignment"]
+
+contributing_units: ["live_streams_02"]
+draft_count: 1
+voice: ttrades

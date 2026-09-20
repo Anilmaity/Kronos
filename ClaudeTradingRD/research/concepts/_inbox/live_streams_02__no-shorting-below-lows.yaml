@@ -1,0 +1,54 @@
+id: no-shorting-below-lows
+name: "Do Not Short Below Lows (trade back into the range instead)"
+aliases: ["short before it runs the low", "don't enter at the lowest lows"]
+category: entry
+status: specified
+
+definition: >
+  A location filter he states as close to a personal absolute as anything in this unit: he is
+  almost never interested in shorting below lows, because that is exactly where his losses come
+  from — price runs the low and reverses. If a late short must be taken, the stated refinement
+  is to short *before* price runs the low, and to take it in the middle-ranked asset rather than
+  the one already extended. The same instinct is expressed positively elsewhere in the unit — he
+  does not like picking lows either, preferring to let price open, start to trend, and then join
+  it.
+
+timeframes:
+  htf: ["1H", "15m"]
+  ltf: ["5m", "3m", "1m"]
+  fractal: true
+
+preconditions:
+  - "Price is at or approaching a prior low in a move that is already extended."
+
+detection_rules:
+  - "Do not initiate a short below a prior low."
+  - "If a late short is taken at all, enter before the low is run, not after."
+  - "Prefer the middle-ranked correlated asset for such an entry, not the one that has already travelled."
+  - "Equivalently, do not pick lows for longs — wait for the open and for a trend to start."
+
+invalidation:
+  - "Not applicable — this is a location filter."
+
+measurable:
+  - "R of shorts initiated below a prior low versus above it"
+  - "reversal rate immediately after a prior low is run"
+
+sources:
+  - video_id: Je7cd9HJUBE
+    title: "New York Open Live Q&A"
+    quote: "I'm not interested really almost ever trying to short below lows like this"
+  - video_id: TjUolMJNCMY
+    title: "New York Open Live Q&A"
+    quote: "I just don't like picking lows"
+
+ambiguities:
+  - "'Below lows' is not scoped to a timeframe — which low (session, previous day, swing) is the reference is left to context."
+  - "The 'almost ever' leaves an unstated exception; the only case shown is already holding a short from higher up."
+
+python_detector: null
+related: ["range-edge-trading", "htf-opening-price-entry", "relative-strength-asset-selection", "dont-trade-after-expansion"]
+
+contributing_units: ["live_streams_02"]
+draft_count: 1
+voice: ttrades

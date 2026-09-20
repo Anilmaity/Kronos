@@ -1,0 +1,56 @@
+id: t-spot
+name: "The T-Spot (overlap of two half levels)"
+category: entry
+status: specified
+definition: >
+  The Shorts state the T-spot's function in one line: it is where all entries are looked for,
+  because it is where the higher-timeframe wick is anticipated to form. Inside the T-spot the
+  Short gives two alternative entries off the same zone - a limit entry when price first reaches
+  down into the fair value gap with the stop below the low, or, if confirmation is preferred,
+  waiting for price to close over the series of down-closed candles into the important level and
+  entering there with the stop on the new protected low. Once candle 3 closes outside candle 2's
+  range the same procedure repeats in candle 4.
+
+timeframes:
+  htf: ["1D", "4H", "1H"]
+  ltf: ["15m", "5m", "1m"]
+  fractal: true
+
+detection_rules:
+  - "Locate the T-spot on the candle following a confirmed candle 2 closure - it is where the next wick is expected."
+  - "Look for entries only inside it."
+  - "Limit branch: enter when price first trades into the fair value gap in the T-spot, stop below the low."
+  - "Confirmation branch: wait for a close over the series of opposing candles into the important level, stop on the new protected swing."
+  - "Repeat in candle 4 if candle 3 closed outside candle 2's range."
+
+invalidation:
+  - "Price trades beyond the low used for the stop."
+
+measurable:
+  - "share of next-candle wicks that terminate inside the T-spot"
+  - "limit-branch vs confirmation-branch fill rate and R outcome"
+
+sources:
+  - video_id: Hi8faa5u2uw
+    title: "Using the T-Spot to Find Entries Within the Fractal Model"
+    quote: "I'm going to look for all my entries in the T-spot"
+  - video_id: Hi8faa5u2uw
+    title: "Using the T-Spot to Find Entries Within the Fractal Model"
+    quote: "which is where I'm anticipating the higher time frame wick to form"
+  - video_id: Hi8faa5u2uw
+    title: "Using the T-Spot to Find Entries Within the Fractal Model"
+    quote: "I can look to take a limit entry with my stop below the low"
+  - video_id: gLul2OZQe9Q
+    title: "Using a Lower Timeframe Inversion Entry within the Fractal Model"
+    quote: "price reaches into that fair value gap in the T-spot"
+
+ambiguities:
+  - "The Short never states how the T-spot's boundaries are constructed - it is shown as drawn by the indicator."
+  - "No rule is given for choosing the limit branch over the confirmation branch."
+
+python_detector: null
+related: ["equilibrium-eq", "ltf-inversion-entry-in-tspot", "fractal-model-c3", "fractal-model-c4", "upper-half-eq-expansion-filter"]
+
+voice: ttrades
+contributing_units: [shorts_04]
+draft_count: 1

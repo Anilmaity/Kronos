@@ -1,0 +1,85 @@
+id: breakeven-after-new-protected-swing
+name: Move the Stop Only After a New Protected Swing Forms
+category: risk
+status: specified
+aliases:
+- trailing stop loss
+- when to go break even
+definition: 'The complete trailing rule: stops can ONLY be trailed to new protected swings. A down-close
+  candle that price merely moved away from is not a protected swing and is not a valid trail target
+  - the swing must have engaged a point of interest and then been closed through. Break-even is the
+  same rule applied earlier: when a new protected swing happens to sit at the entry price, the stop
+  may go there. Two constraints bound it. First, do not trail too high inside the current higher-timeframe
+  candle - candle 4 is expected to respect 50% of candle 3''s range, so a stop above that gets swept
+  by the next candle''s normal wick. Second, whether to trail at all is a function of remaining range:
+  trail when entry was early in the range with a distant draw on liquidity; do not trail when entering
+  halfway through the daily range with 2R sitting at the ADR - take profit at the objective instead.'
+timeframes:
+  htf:
+  - 1D
+  - 4H
+  - 1H
+  ltf:
+  - 15m
+  - 5m
+  - 1m
+  fractal: true
+preconditions:
+- An open position taken on a valid model.
+detection_rules:
+- 'A trail target must be a protected swing: point of interest engaged, then closed through.'
+- Do not trail to an opposing candle that never reached a point of interest.
+- Do not trail above/below 50% of the current higher-timeframe candle's range - the next candle's
+  wick is expected there.
+- Break-even is permitted when a new protected swing forms at the entry price.
+- 'Trail only when meaningful range remains: early entry, distant draw on liquidity, ADR not yet
+  spent.'
+- Do not trail when the target is about 2R at the ADR, or when no protected swing exists between
+  price and the target - take profit at the objective.
+- Get more aggressive with trailing only once already at high R.
+- A newly formed protected swing that is instantly invalidated is a warning of consolidation or reversal,
+  not necessarily of trade failure.
+invalidation: []
+execution:
+  bias: n/a - management rule.
+  entry: n/a
+  stop: Successive protected swings.
+  targets:
+  - the draw on liquidity
+  - 2R when range is limited
+measurable:
+- realised R with protected-swing trailing vs fixed take-profit, bucketed by ADR already spent at
+  entry
+- frequency of being stopped out by the following candle's wick when trailing past the 50% level
+sources:
+- video_id: CKltGYiesHA
+  title: Quit Moving Your Stop Loss Before You Know This (Trailing Stop Loss)
+  quote: Our stop losses can only be trailed to new protected swings
+- video_id: CKltGYiesHA
+  title: Quit Moving Your Stop Loss Before You Know This (Trailing Stop Loss)
+  quote: we want to see it respect 50% of this higher time frame candle
+- video_id: CKltGYiesHA
+  title: Quit Moving Your Stop Loss Before You Know This (Trailing Stop Loss)
+  quote: it doesn't really make sense to try to keep trailing here
+- video_id: CKltGYiesHA
+  title: Quit Moving Your Stop Loss Before You Know This (Trailing Stop Loss)
+  quote: I have no protected swings before my target
+- video_id: CKltGYiesHA
+  title: Quit Moving Your Stop Loss Before You Know This (Trailing Stop Loss)
+  quote: I don't want to get too aggressive with my trailing
+ambiguities:
+- '''How much range is left'' is judged by eye against the average daily range; no calculation is
+  given.'
+- '''High RR'' - the point at which aggressive trailing becomes appropriate - is not quantified (examples
+  show 4-5R already banked).'
+- Whether to move to break-even when no protected swing appears there is not addressed.
+related:
+- protected-swing
+- stop-loss-placement
+- partial-profit-taking
+- average-daily-range
+- fractal-model-c4
+contributing_units:
+- build_a_model_intro_to_ttrades_fractal_model_01
+draft_count: 1
+voice: ttrades

@@ -1,0 +1,62 @@
+id: small-wick-expansion-rule
+name: "Small Wick Supports Expansion; Large Wick Waits for Candle 3"
+aliases: ["support expansion", "large opposing run"]
+category: model
+status: specified
+
+definition: >
+  Asked whether a 15-minute or 30-minute CISD in London can be traded without the 4-hour
+  closure, he gives the gate directly: the 4-hour candle still has to support expansion, and
+  that means either a small wick or a reversal already formed. The same filter is applied
+  repeatedly in these sessions in both directions — a daily sweep of previous day low with a
+  small wick is read as supporting expansion higher, so the mechanical target becomes previous
+  day high; a daily candle with a large wick is read as a reversal candle that is not expected
+  to expand, so the target is only the opening print or previous day high rather than a trend
+  move, and the trade is held to smaller expectations. On the lower timeframe the same word is
+  used of the entry candle: a large wick or a "larger opposing run" means the reversal is not
+  yet worth trading and he waits for the next candle open and a continuation instead.
+
+timeframes:
+  htf: ["1D", "4H", "1H"]
+  ltf: ["15m", "5m", "3m", "1m"]
+  fractal: true
+
+preconditions:
+  - "A higher-timeframe candle is open and its wick can be assessed."
+
+detection_rules:
+  - "Before taking a lower-timeframe CISD, require the governing higher-timeframe candle to support expansion — either a small wick, or a reversal already formed inside it."
+  - "Small wick on a daily sweep of the previous day extreme → expansion expected; target the opposite previous day extreme."
+  - "Large wick → treat the candle as a reversal candle; expect a return toward the opening print / previous day extreme rather than a trend expansion, and reduce range expectations."
+  - "A large opposing run on the entry timeframe disqualifies trading that reversal directly — wait for the next candle open and take the continuation."
+
+invalidation:
+  - "The higher-timeframe candle prints a large opposing wick after entry — expansion is no longer supported."
+
+measurable:
+  - "range expansion following small-wick versus large-wick higher-timeframe candles"
+  - "win rate of lower-timeframe CISDs filtered by the 4-hour support test"
+  - "outcome of reversal-day trades that target only the opening print"
+
+sources:
+  - video_id: m8xcjkOuBHU
+    title: "New York Open Live Q&A"
+    quote: "you still need the 4hour candle to support expansion whether that's a small wick"
+  - video_id: TjUolMJNCMY
+    title: "New York Open Live Q&A"
+    quote: "has a small candle or a small wick to support extension lower"
+  - video_id: G1IIdQ3RAkY
+    title: "New York Open Live Q&A"
+    quote: "It has a larger opposing run than it would be candle three"
+
+ambiguities:
+  - "'Small wick' is never quantified anywhere in this unit — no wick-to-body or wick-to-range ratio is given, and the judgement is made by eye on each candle."
+  - "'Or the reversal has formed' makes the gate disjunctive, so a large-wick candle can still qualify once a reversal is present; the test for 'reversal has formed' is the lower-timeframe CISD, which makes the rule partly circular."
+  - "How much smaller expectations should be on a large-wick day is given only by example (the opening print / previous day high)."
+
+python_detector: null
+related: ["small-wick-supports-expansion", "reversal-candle-quality", "daily-ohlc-candle-shape", "fractal-model-c3", "expansion-exhaustion-avoid-price"]
+
+contributing_units: ["live_streams_02"]
+draft_count: 1
+voice: ttrades

@@ -1,0 +1,78 @@
+id: opposing-candle
+name: Opposing Candles (as a series)
+definition: 'The candles that oppose the direction of travel and which price should respect
+  while a move continues - the up-close candles that formed a high in a bearish move, the
+  down-close candles that formed a low in a bullish move. He always uses the whole series,
+  never one candle, and the series is the raw material for both his order blocks and his CISD.
+  Crucially, not every opposing-coloured candle qualifies: a candle that simply opens and
+  delivers in one direction with no wick does not make a relevant high or low and gives no
+  validation.
+
+  '
+category: structure
+status: specified
+aliases:
+- opposing candle
+- down close candles
+- up close candles
+- series of opposing candles
+preconditions:
+- A directional leg is in progress so that 'opposing' has a meaning.
+detection_rules:
+- Take the contiguous run of opposite-closing candles that formed the extreme, not a single
+  candle.
+- The candle must have open-high-low-close shape - it must have a wick and make a relevant
+  high (bearish case). A candle that opens and goes straight lower with no wick is not counted
+  as an opposing candle.
+- 'While expansion continues, each newly formed opposing candle supplies the current invalidation
+  level: its extreme should not be traded back to.'
+- As new opposing candles form, the invalidation point rolls forward to the newest one.
+- 0.5 of the opposing candle range (or of a large wick on a weak close) is the level that
+  should hold in a strong trend.
+invalidation:
+- Price trading back through the extreme of the most recent opposing candle - trend/expansion
+  read is over.
+- Price trading above 50% of the opposing candle's range in a bearish setup - he then expects
+  the highs to be taken instead.
+measurable:
+- how often the newest opposing candle extreme is respected during a confirmed expansion leg
+- hit rate of the 0.5-of-range level holding in a strong trend
+- how many wickless candles would be misclassified as opposing candles by a naive detector
+sources:
+- video_id: u8bnmaih_hA
+  title: TTrades Sunday Session - Live Q&A
+- video_id: r7yW6ou1LDs
+  title: TTrades Sunday Session - Live Q&A
+ambiguities:
+- No minimum wick size is given for the 'must have a wick' test.
+- No maximum series length; 'series' is judged by eye.
+- Whether 0.5 is taken of the candle's full range or of its body is not stated consistently
+  - he uses 0.5 of the wick on weak closes and 0.5 of the range on the positional variant.
+related:
+- order-block
+- cisd
+- half-wick-respect
+- trailing-stop-opposing-candles
+timeframes:
+  htf:
+  - 1M
+  - 1W
+  - 1D
+  - 4H
+  ltf:
+  - 1H
+  - 15m
+  - 5m
+  fractal: true
+execution:
+  bias: Continuation in the direction that keeps violating opposing candles.
+  entry: Close through the series (see cisd); or support from the series when trading with
+    the trend.
+  stop: Beyond the opposing candle extreme, or beyond 50% of its range for the positional
+    variant.
+  targets:
+  - next relevant level
+contributing_units:
+- sunday_sessions_live_q_a_03
+draft_count: 1
+voice: ttrades

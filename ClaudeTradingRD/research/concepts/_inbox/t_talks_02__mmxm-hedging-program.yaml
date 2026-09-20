@@ -1,0 +1,46 @@
+id: mmxm-hedging-program
+name: "Market Maker Model As A Central Bank Hedging Program"
+aliases: ["sell side of the curve", "buy side of the curve"]
+category: model
+status: underspecified
+
+definition: >
+  The macro rationale offered for the market maker model. On the sell side of a bullish
+  curve, as price declines, central banks are said to be building a net long position by
+  buying into sell-side liquidity, because their function is to provide liquidity to large
+  institutions and to retail and providing it requires hedging. Those hedges break even; the
+  profit is taken from the extreme net-long position at the very low, the smart money
+  reversal. The buy side of the curve is where those positions are mitigated and passed on to
+  the large funds - which is why old areas of institutional buying (up-close candles on the
+  sell side) become mitigation blocks and the places where a retail participant can join.
+
+timeframes:
+  htf: ["1M", "1W", "1D"]
+  ltf: ["4H", "1H", "15m"]
+  fractal: true
+
+preconditions:
+  - "A market maker buy or sell model has been identified as a range."
+
+detection_rules:
+  - "On the sell side of a buy model, mark the up-close candles as the areas of institutional buying."
+  - "The curve is split at the lowest low (buy model) or the highest high (sell model)."
+  - "Those sell-side up-close candles are extended to the buy side of the curve as mitigation blocks."
+
+invalidation:
+  - "Not stated - the talk gives no invalidation for the model once the curve is drawn."
+
+measurable:
+  - "hold rate of extended mitigation blocks on the buy side of the curve"
+
+sources:
+  - video_id: Ibw4saRtYMk
+    title: "The MMXM Trader | Advanced ICT MMXM Lesson (Everything You Need To Know)"
+    quote: "it's a hedging program that the central banks use"
+
+ambiguities:
+  - "The causal claim about central bank hedging is asserted, not evidenced beyond a single COT chart; marked underspecified because the mechanism is not testable from price alone."
+  - "Nothing is said about what invalidates a market maker model once the curve is drawn."
+
+python_detector: null
+related: ["mmxm-range-definition", "mmxm-phase-sequence", "mitigation-block-nested-pd", "cot-commercial-net-check"]

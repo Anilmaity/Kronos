@@ -1,0 +1,39 @@
+id: max-one-trade-per-day
+name: One Trade Per Day Cap
+definition: 'Prescribed repeatedly as the structural fix for tilt, revenge trading and blown accounts:
+  cap exposure at one trade per day, because a trader who blows up after his first loss cannot do
+  so if there is no second trade. He rejects the counter-proposal of a two-trade cap on the grounds
+  that it just doubles the chance to blow up. The cap is a maximum, explicitly not a quota - most
+  days produce no trade at all. It is paired with a constant position size and, separately, with a
+  hard daily max loss.'
+category: risk
+status: specified
+detection_rules:
+- At most one trade per session; after it closes, stop for the day regardless of result.
+- It is a ceiling, not a minimum - a day with no qualifying setup produces no trade.
+- Pair it with a fixed position size across trades.
+- Pair it with a pre-set maximum daily loss.
+measurable:
+- how many trades a detector would take per day vs the cap
+- expectancy of the first signal of the day vs later signals
+sources:
+- video_id: NESSCPMzWR0
+  title: New York Open Live Q&A
+  quote: Consistent position size. One trade a day max
+- video_id: xraklBJHW5k
+  title: New York Open Live Q&A
+  quote: max one trade a day
+ambiguities:
+- '''Day'' is not defined against the futures session boundary - whether the overnight session belongs
+  to the previous or next day is not addressed.'
+- Whether a swing position already open counts against the cap is not stated; in practice he holds
+  swings while declining intraday trades for a different reason (see hedge-not-double-exposure).
+related:
+- hedge-not-double-exposure
+- trade-frequency-baseline
+- overtrading-gate
+- position-sizing
+contributing_units:
+- live_streams_01
+draft_count: 1
+voice: ttrades

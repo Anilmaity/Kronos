@@ -1,0 +1,57 @@
+id: continuation-over-reversal
+name: "Trade Continuations, Not Reversals"
+aliases: ["continuation preference", "I don't trade reversals", "I'd rather be late than early"]
+category: model
+status: specified
+
+definition: >
+  A standing selection rule: he only looks to trade continuations, and does not trade
+  the reversal itself. The reason given is that reversal entries get stopped out of the
+  move they correctly predicted, and continuations are simply easier and cleaner. The
+  practical consequences are that he does not trade reversal days, he does not use PSP
+  (which he says is a reversal tool), and he lets the reversal print and takes the next
+  day / next leg instead.
+
+timeframes:
+  htf: ["1D", "4H", "1H"]
+  ltf: ["15m", "5m"]
+  fractal: true
+
+preconditions:
+  - "A reversal has already printed and been confirmed, so a continuation is available."
+
+detection_rules:
+  - "Let the reversal form; take the continuation off it (Monday reversal -> Tuesday continuation is the canonical weekly case)."
+  - "Do not trade reversal days."
+  - "When a range low is being swept, require a NEW continuation before shorting - entering short on the sweep itself is where people get run out."
+  - "When unsure, wait: he states the preference as being late rather than early."
+  - "Do not chase after three days of expansion - that is where a new phase begins."
+
+invalidation:
+  - "The reversal failing to confirm, leaving no continuation to trade."
+
+execution:
+  bias: "The direction established by the confirmed reversal."
+  entry: "The continuation structure after the reversal - CISD / new order block."
+  stop: "Beyond the continuation structure."
+  targets: ["2R minimum", "first failure swing", "previous day high/low"]
+
+measurable:
+  - "win rate of reversal-day entries vs continuation-day entries"
+  - "how often a swept range low produces an immediate continuation vs a stop-out"
+
+sources:
+  - video_id: bMkRomKEunU
+    title: "New York Open Live Q&A"
+    quote: "I'd rather be late than early"
+  - video_id: wM1s7UivQ08
+    title: "New York Open Live Q&A"
+  - video_id: r7yW6ou1LDs
+    title: "TTrades Sunday Session - Live Q&A"
+
+ambiguities:
+  - "In wM1s7UivQ08 he describes weighing 'trade a reversal here or wait for structure to trade a continuation' as a live choice, implying the rule is a strong preference rather than an absolute."
+  - "'New continuation' after a sweep is not defined beyond requiring new structure."
+
+python_detector: null
+related: ["phases-of-price", "cisd", "expansion-exhaustion-avoid-price", "pattern-trading-error"]

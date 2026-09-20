@@ -1,0 +1,55 @@
+id: smart-money-reversal
+name: "Smart Money Reversal"
+aliases: ["SMR", "the reversal point", "the turn of the curve"]
+category: model
+status: underspecified
+
+definition: >
+  The turn at the low or high of a market maker model — the point at which the curve switches
+  from the sell side to the buy side (or vice versa). It is used as a known term throughout the
+  unit and its components are listed once — change in state of delivery, inversion, market
+  structure shift, and a short-term low being put in — but it is never given a formal definition
+  or an ordering requirement.
+
+timeframes:
+  htf: ["1D", "4H", "1H"]
+  ltf: ["15m", "5m"]
+  fractal: true
+
+preconditions:
+  - "Price has reached a higher timeframe level (examples: a weekly fair value gap, an hourly fair value gap, equal highs)."
+
+detection_rules:
+  - "Components listed by the speaker at the reversal: a change in state of delivery (close through the opposing candle series), an inversion (a fair value gap closed through), a market structure shift, and a short-term low (or high) being put in."
+  - "Practical test used in the gold example: a close over the bearish fair value gap AND a close over the series of down-close candles, followed by a short-term low forming."
+  - "After the reversal, the prior side of the curve becomes a source of mitigation blocks and old fair value gaps to be dragged forward for reaccumulation/redistribution."
+
+invalidation:
+  - "Not stated."
+
+execution:
+  bias: "Direction of the reversal."
+  entry: "Order block at the reversal itself, or the reaccumulation/redistribution zones on the new side of the curve."
+  stop: "Beyond the reversal extreme."
+  targets: ["the liquidity that framed the reversal (equal highs/lows), then the opposite side of the curve"]
+
+measurable:
+  - "how often all four listed components appear together at a genuine reversal"
+  - "hit rate of entries taken at the reversal vs on the subsequent curve-side zones"
+
+sources:
+  - video_id: uDJI2AbyyCs
+    title: "Inversion Fair Value Gaps (IFVG) - ICT Concepts"
+  - video_id: bbWPoajy2MY
+    title: "Mitigation Blocks Simplified - ICT Concepts"
+  - video_id: DMUiDBnTYc8
+    title: "Order Blocks Simplified - ICT Concepts"
+
+ambiguities:
+  - "Never formally defined in any available transcript — the components are listed in passing in one video and assumed elsewhere."
+  - "No ordering or minimum subset is specified: are all four components required, or any one of them?"
+  - "'Market structure shift' is itself undefined in this unit and may or may not be the same event as the change in state of delivery."
+  - "'Short-term low' is not defined (bar count, swing degree)."
+
+python_detector: null
+related: ["cisd", "inversion-fair-value-gap", "market-maker-model", "mitigation-block", "old-fvg-across-the-curve"]

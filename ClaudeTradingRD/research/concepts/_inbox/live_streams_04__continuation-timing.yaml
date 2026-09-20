@@ -1,0 +1,64 @@
+id: continuation-timing
+name: "Continuations Must Form Early in a New Higher-Timeframe Candle"
+aliases: ["around the opening price early in the candle", "chase"]
+category: entry
+status: specified
+
+definition: >
+  Restated repeatedly in this unit as the reason for declining entries that are otherwise
+  structurally valid. The entry belongs around the opening price of the higher-timeframe
+  candle, or above its wick, and early in that candle. Late in a candle - almost at its end,
+  far from the open and far from the wick - the same setup is a chase and he will not take it,
+  because the risk-to-reward is already destroyed. The corollary he gives for consolidations
+  is the same rule from the other side: a range, if it is going to be left, is normally left at
+  the new higher-timeframe candle, so he would rather trade the beginning of a new candle than
+  the end of the current one. Where the current 4-hour candle does not support the direction,
+  the practical consequence is to wait for the 10:00 a.m. open.
+
+timeframes:
+  htf: ["4H", "1H", "1D"]
+  ltf: ["15m", "5m", "3m"]
+  fractal: true
+
+preconditions:
+  - "A higher-timeframe candle whose direction supports the intended trade."
+
+detection_rules:
+  - "Enter around the opening price of the higher-timeframe candle, or just above / below its wick."
+  - "Enter early in that candle; reject entries taken near its end."
+  - "A move already extended away from the open is a chase - decline it regardless of the lower-timeframe structure."
+  - "Expect a consolidation to resolve at the open of a new higher-timeframe candle rather than inside the current one."
+  - "New 15-minute candles (09:45, 10:00) are the more likely points for a continuation to form."
+
+invalidation:
+  - "The new higher-timeframe candle opens against the intended direction."
+
+execution:
+  bias: "Direction of the higher-timeframe candle."
+  entry: "At or near the higher-timeframe open, early in the candle."
+  stop: "Beyond the candle's wick."
+  targets: null
+
+measurable:
+  - "expectancy by position of entry within the higher-timeframe candle (first quartile vs last)"
+  - "share of range exits from consolidation that occur within n minutes of a 4-hour open"
+
+sources:
+  - video_id: N3Ml-r0X30o
+    title: "New York Open Live Q&A"
+    quote: "Ideally, you want to be entering around the open or above the wick."
+  - video_id: i2HhHhWdaPQ
+    title: "New York Open Live Q&A"
+    quote: "It's more likely to occur when you have a new 15-minute candle."
+
+ambiguities:
+  - "'Early' is not quantified as a fraction of the candle; the rejections are made visually."
+  - "'Above the wick' is stated without saying how far above, and sits alongside the 0.5-of-the-wick rule from other units without reconciliation."
+  - "Which higher-timeframe candle's open governs when several are in play (daily, 4-hour, 1-hour) is not stated."
+
+python_detector: null
+related: ["htf-opening-price-entry", "entry-time-window", "missed-move-no-chase", "consolidation-avoidance", "time-based-exit-htf-close"]
+
+contributing_units: ["live_streams_04"]
+draft_count: 1
+voice: ttrades

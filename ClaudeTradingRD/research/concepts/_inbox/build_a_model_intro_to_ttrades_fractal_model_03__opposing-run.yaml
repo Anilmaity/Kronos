@@ -1,0 +1,61 @@
+id: opposing-run
+name: Opposing Run
+aliases:
+- shallow opposing run
+- large opposing run
+- the move opposite my bias
+category: structure
+status: specified
+definition: 'His own term for the leg that forms a candle''s wick, and the primitive that wick size
+  is actually measured on. He defines it explicitly: the move from the candle''s opening price to
+  the extreme in the direction opposite his bias. He prefers it to the word ''wick'' when grading
+  a candle that is still forming, because the opposing run can be measured live whereas a wick is
+  only final at the close. A shallow opposing run preserves both the range and the time needed to
+  expand; a large one consumes both.'
+timeframes:
+  htf:
+  - 1D
+  - 4H
+  - 1H
+  ltf:
+  - 15m
+  - 5m
+  - 1m
+  fractal: true
+preconditions:
+- A candle has opened and a directional bias defines which side is opposing.
+detection_rules:
+- opposing_run := distance from the candle's opening price to the extreme against the intended direction,
+  measured within that candle.
+- Measure it while the candle is still open; at the close it becomes that candle's wick.
+- Also record the elapsed fraction of the candle's period at which the extreme printed.
+- Shallow / small opposing run -> the candle supports expansion in the intended direction.
+- Large opposing run -> the candle does not support expansion; targets revert to the opening price
+  and its surrounding liquidity.
+invalidation:
+- The candle prints a new extreme against the bias, enlarging the opposing run.
+measurable:
+- distribution of opposing_run / candle_range at the time of entry
+- distribution of time-to-extreme as a fraction of the candle period
+sources:
+- video_id: SlWxhzhLo3A
+  title: 'Wick Size Matters: The Key to Understanding Reversal and Expansion Candles'
+  quote: when I say opposing run, I mean from the opening price to that high
+- video_id: SlWxhzhLo3A
+  title: 'Wick Size Matters: The Key to Understanding Reversal and Expansion Candles'
+  quote: This small wick supports expansion because it is making a shallow opposing run.
+- video_id: SlWxhzhLo3A
+  title: 'Wick Size Matters: The Key to Understanding Reversal and Expansion Candles'
+  quote: a large opposing run, that's when I need to adjust my targets
+ambiguities:
+- Whether the run is measured to the wick extreme or to a body extreme is not stated.
+- No threshold separates shallow from large - that gap is inherited by every rule built on this primitive.
+related:
+- small-wick-expansion-rule
+- reversal-candle-target-adjustment
+- opposing-candle
+- wick-trust-test
+contributing_units:
+- build_a_model_intro_to_ttrades_fractal_model_03
+draft_count: 1
+voice: ttrades

@@ -1,0 +1,69 @@
+id: market-maker-model
+name: Market Maker Model (MMXM)
+aliases:
+- market maker sell model
+- original consolidation
+category: model
+status: underspecified
+definition: 'EARLIER RECORDING, given as a worked sell-model trade rather than a taught structure. The
+  elements he names in sequence: an ORIGINAL CONSOLIDATION which is also the previous day low and which
+  becomes the target; a manipulation leg upward that sweeps previous day high and the day before it, driven
+  by the 8:30 CPI release, into a daily PD array (an order block formed by a close below a series of up-close
+  candles); a premium-of-the-range retracement in which the short is taken; and distribution back down
+  to the original consolidation. The distinguishing claim is that the target of a market maker sell model
+  is the original consolidation itself.'
+timeframes:
+  htf:
+  - 1D
+  - 1H
+  ltf:
+  - 5m
+  fractal: true
+preconditions:
+- A daily PD array above (order block / fair value gap) for the manipulation to reach into.
+- A consolidation whose level coincides with previous day low.
+detection_rules:
+- Mark the original consolidation - in the example it is the previous day low - as the eventual target.
+- Require a manipulation leg that sweeps previous day high (and the day prior) into a higher-timeframe
+  PD array.
+- Fib from the manipulation high to the reversal low, EXCLUDING the news wick, to locate the premium.
+- Take the short in the premium of that range at a PD array (fair value gap overlapping a mitigation block).
+- Target the original consolidation; the full draw beyond it is optional extra R.
+invalidation:
+- The confirmed intermediate-term high is traded through.
+execution:
+  bias: Short after the manipulation into the HTF PD array.
+  entry: Premium-of-range fair value gap overlapping a mitigation block.
+  stop: The confirmed intermediate-term high.
+  targets:
+  - Previous day low / the original consolidation (2R)
+  - the full daily draw (3R)
+measurable:
+- how often the original consolidation is reached after a completed manipulation leg
+- R available at the original consolidation vs at the full draw
+sources:
+- video_id: 0R61Y6Pn74Q
+  title: CPI Gold Trade Review | ICT Market Maker Sell Model [MMXM]
+  quote: that is our original consolidation in this market maker sell model
+- video_id: 0R61Y6Pn74Q
+  title: CPI Gold Trade Review | ICT Market Maker Sell Model [MMXM]
+  quote: this is where my interest lies post 8:30 or after CPI
+- video_id: 0R61Y6Pn74Q
+  title: CPI Gold Trade Review | ICT Market Maker Sell Model [MMXM]
+  quote: I'm ignoring the wick here because it's just CPI manipulation
+ambiguities:
+- EARLIER RECORDING and a single trade review - the model's phases are named in passing, never enumerated.
+- How the 'original consolidation' is identified in general (beyond it coinciding with previous day low
+  here) is not stated.
+- No distribution-phase rules are given; the trade simply targets the consolidation.
+related:
+- ignore-news-wick-in-range-fib
+- mmxm-twitter-model
+- advanced-market-structure-labeling
+- mitigation-block
+- power-of-three-amd
+- economic-calendar-filter
+voice: ttrades
+contributing_units:
+- education_ict_01
+draft_count: 1

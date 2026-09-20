@@ -1,0 +1,55 @@
+id: internal-external-rotation
+name: Internal <-> External Range Liquidity Rotation
+category: model
+status: specified
+definition: 'A Short states both terms and the rotation between them in about forty words. INTERNAL
+  liquidity is just a fair value gap. EXTERNAL liquidity is simply highs and lows - a high with a lower
+  high on each side, a low with a higher low on each side. The rotation: because price swept and could
+  NOT displace through the external liquidity, it is likely to reach back for internal liquidity; once
+  price reaches the internal liquidity and respects the fair value gap (evidenced by the closure there),
+  the expectation flips back to external liquidity.'
+timeframes:
+  htf: []
+  ltf: []
+  fractal: true
+preconditions:
+- A marked range with a swing high and a swing low, and at least one fair value gap inside it.
+detection_rules:
+- Internal range liquidity := a fair value gap.
+- External range liquidity := swing highs and swing lows (high with a lower high each side; low with
+  a higher low each side).
+- 'Trigger: price sweeps external liquidity but FAILS TO DISPLACE through it -> expect a rotation back
+  to internal liquidity.'
+- On arrival, require price to respect the fair value gap - evidenced by a closure there.
+- Once respected, the expectation flips to the opposite external liquidity.
+invalidation:
+- Price displaces through the external liquidity instead of failing at it - no rotation is expected.
+measurable:
+- rotation completion rate from failed external sweep to the internal fair value gap
+- follow-through rate from a respected internal FVG to the opposite external extreme
+sources:
+- video_id: Ix8l6yDRpp8
+  title: Relationship between External and Internal Liquidity
+  quote: Internal liquidity is just a fair value gap
+- video_id: Ix8l6yDRpp8
+  title: Relationship between External and Internal Liquidity
+  quote: External liquidity is simply highs and lows
+- video_id: Ix8l6yDRpp8
+  title: Relationship between External and Internal Liquidity
+  quote: price swept and could not displace through this external liquidity
+ambiguities:
+- '"Could not displace" is the trigger and is not defined in this clip - no candle-count, no closure
+  requirement, no time limit.'
+- When several fair value gaps sit inside the range, no rule selects which one is "the" internal liquidity.
+- No timeframe is named; the clip is taught on a generic diagram.
+related:
+- internal-range-liquidity
+- external-range-liquidity
+- irl-erl-flowchart-model
+- fair-value-gap
+- failure-to-displace
+- liquidity-sweep
+voice: ttrades
+contributing_units:
+- shorts_02
+draft_count: 1

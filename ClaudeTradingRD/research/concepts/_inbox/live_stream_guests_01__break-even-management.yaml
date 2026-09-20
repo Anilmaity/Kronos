@@ -1,0 +1,68 @@
+id: break-even-management
+name: "Break-Even and Stop Migration Rules"
+aliases: ["break even at 2R when SMT is present", "trail to the second entry"]
+category: risk
+status: specified
+voice: guest
+guest_sources:
+- "Trader T"
+- "Ben (Ben TT)"
+
+definition: >
+  Two guests give conditional break-even rules rather than blanket ones. Trader T's is the more
+  mechanical and is the only rule in this unit he explicitly says he backtested: when SMT is
+  present he goes to the 5-minute chart for the entry and moves the stop to break even at 2R -
+  i.e. the presence of a divergence changes the management, not just the confidence. Ben's is
+  driven by scaling: because he adds to positions, the first tranche is moved to break even (or the
+  stop trailed to where the second tranche's stop sits, typically above his first entry) once the
+  second entry is on. Both treat break-even as an event triggered by something observable, not as a
+  reflex after a fixed number of points.
+
+timeframes:
+  htf: ["1H"]
+  ltf: ["5m", "1m"]
+  fractal: false
+
+preconditions:
+- "Trader T: SMT is present on the setup."
+- "Ben: a second tranche has been added to the position."
+
+detection_rules:
+- "Trader T: if SMT is present, take the entry on the 5-minute and set the stop to break even once 2R is reached."
+- "Trader T states this specific pairing as backtested, while noting it will differ by situation."
+- "Ben: once a second entry is on, move the first position's stop to break even, or trail it to where the second position's stop sits."
+- "Ben: consequently a break-even exit is neither a win nor a loss in his statistics (see realistic-r-expectations)."
+
+invalidation:
+- "Not applicable."
+
+execution:
+  bias: "Unchanged."
+  entry: "Unchanged."
+  stop: "Migrates to break even on the stated trigger."
+  targets: ["unchanged - 2R for Trader T"]
+
+measurable:
+- "expectancy with and without the SMT-conditioned break-even move, on the same trade list"
+- "how often the break-even stop is hit and price then reaches the original target anyway"
+- "the cost of Ben's scale-in break-even rule versus holding the full first tranche"
+
+sources:
+- video_id: wCtxmWe4KNc
+  title: "Back Testing Live Session With Trader T"
+  quote: "I put my stops break even at 2R"
+- video_id: yRmKkR4CojU
+  title: "Fractalizing Entries -Q&A with Ben - ICT Concepts"
+  quote: "if i'm scaling into a position my first position is coming to break even"
+
+ambiguities:
+- "Trader T's rule reads as break-even AT the 2R target, which is also his exit - the transcript does not resolve whether the stop moves at some fraction of 2R or whether he is describing a partial-and-runner structure."
+- "He gives no sample or period for the claim that this was backtested."
+- "Ben does not state the size ratio between his tranches, so the blended break-even price is undefined."
+- "Neither says what happens to the break-even stop if the setup's structure changes afterwards."
+
+python_detector: null
+related: ["partial-profit-taking", "stop-moves-when-adding", "risk-reward-minimum", "smt-divergence-confluence"]
+contributing_units:
+- live_stream_guests_01
+draft_count: 1

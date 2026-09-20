@@ -1,0 +1,69 @@
+id: cancel-limit-after-target-run
+name: Cancel The Limit If Price Reaches The Target Before Filling It
+definition: 'Trader T''s most mechanical rule and the one he supports with his own logged
+  sample. When a pending limit has not been filled and price instead runs all the way to where
+  his take-profit would have been, he deletes the order rather than leaving it working - because
+  in most of the cases he has logged, a limit that fills only after the target has already
+  been reached goes on to hit the stop. He demonstrates it twice inside the session, and in
+  both replays the abandoned entry would have lost.
+
+  '
+category: entry
+status: specified
+aliases:
+- no fill, no trade
+- remove the pending order
+preconditions:
+- A pending limit order sits unfilled at the entry array.
+- A fixed take-profit distance is defined (his is 2R, so the reference price is unambiguous).
+detection_rules:
+- While the limit is unfilled, track whether price reaches the intended take-profit price.
+- If the take-profit price is reached before the limit fills, cancel the pending order and
+  do not re-enter on the retracement.
+- The rule is about the ORDER OF EVENTS, not about the time elapsed - a near-miss that never
+  reaches the target leaves the order working.
+invalidation:
+- Not applicable - the rule is itself an abort condition.
+measurable:
+- outcome of limits filled AFTER price already reached the target price versus limits filled
+  before - directly testable and exactly what he claims to have logged
+- 'opportunity cost: how many of the cancelled orders would in fact have won'
+sources:
+- video_id: wCtxmWe4KNc
+  title: Back Testing Live Session With Trader T
+  quote: once it runs to my target without fill I usually um I do remove
+- video_id: wCtxmWe4KNc
+  title: Back Testing Live Session With Trader T
+  quote: when it runs to my TV before filling my order in most cases
+ambiguities:
+- '''In most cases'' is his logged impression; no count, period or instrument is given.'
+- He does not say whether a partial approach to the target (e.g. 1.5R of a 2R target) triggers
+  the rule.
+- The rule presumes the target is fixed in advance; it is not stated how it applies to a variable
+  structural target.
+- The auto-captioner renders take-profit as 'TV' and 'TP' inconsistently in this passage.
+related:
+- htf-reaction-mss-retrace-entry
+- risk-reward-minimum
+- market-order-entry
+- missed-move-no-chase
+guest_sources:
+- Back Testing Live Session With Trader T
+- Trader T
+timeframes:
+  htf:
+  - 1H
+  ltf:
+  - 15m
+  - 5m
+  - 1m
+  fractal: true
+execution:
+  bias: Unchanged.
+  entry: Abandoned.
+  stop: Not applicable.
+  targets: []
+contributing_units:
+- live_stream_guests_01
+draft_count: 1
+voice: guest

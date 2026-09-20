@@ -1,0 +1,54 @@
+id: gb-retracement-entry
+name: "GB Retracement Entry (blind limit at 0.7475)"
+aliases: ["entry technique one", "blind limit"]
+category: entry
+status: specified
+
+definition: >
+  The primary entry. After a valid structure flip, place a resting limit order at the 0.7475 of
+  the anchored range (with 0.705 and 0.79 as the surrounding zone) without waiting for
+  confirmation, and target the shallow band. The speaker states 90 to 95 percent of his trades are
+  blind limits at these levels.
+
+timeframes:
+  htf: ["1D", "4H", "1H"]
+  ltf: ["15m", "5m", "1m", "5s"]
+  fractal: true
+
+preconditions:
+  - "A valid flip has produced a strong low (bullish) or strong high (bearish) and the fib is anchored."
+  - "At least one additional point of interest coincides with the 0.705-0.79 zone."
+
+detection_rules:
+  - "Place a limit at 0.7475 in the direction of the flip."
+  - "In a consolidating higher-timeframe context, exit at 0.41 or 0.295."
+  - "In a cleanly expanding context, hold for a new high or new low instead."
+  - "For those unwilling to take a blind limit, the confirmed alternative is: let price reach the zone, wait for a body close back through the 0.705, then re-enter on a limit at the 0.705/0.7475."
+  - "The confirmed alternative may also wait for an order block - which for this speaker requires a candle that closed above the previous high (a break-of-structure candle)."
+
+invalidation:
+  - "Price closes through the anchor extreme."
+
+execution:
+  bias: "The direction of the structure flip."
+  entry: "Resting limit at 0.7475 (zone 0.705-0.79)."
+  stop: "Beyond the local extreme - stated loosely as 'at this extreme' in the case a deeper mitigation occurs."
+  targets: ["0.41 (low-hanging fruit)", "0.295", "a new high or low in expanding conditions"]
+
+measurable:
+  - "fill rate of a resting 0.7475 limit per valid flip"
+  - "maximum adverse excursion after fill (worked examples cite 13 points on a 4H, 2.25 points and 3 ticks on 1m)"
+  - "hit rate of 0.41 versus 0.295 versus new-extreme targets, split by regime"
+
+sources:
+  - video_id: gjoRPszj-Qk
+    title: "AP | Use Market Structure & Fibonacci Levels for Sniper Entries"
+
+ambiguities:
+  - "The choice between the shallow target and the new-extreme target depends entirely on classifying the market as consolidating or expanding, and no test for that classification is given."
+  - "The 90-95 percent blind-limit figure is asserted with no sample."
+  - "Stop placement is never stated as a rule, only gestured at."
+  - "No time limit on how long a resting limit stays valid."
+
+python_detector: null
+related: ["gb-levels", "gb-range-return-entry", "valid-structure-flip", "order-block-requires-bos"]

@@ -1,0 +1,110 @@
+id: small-wick-expansion-rule
+name: "Small Wick Supports Expansion; Large Wick Waits for Candle 3"
+category: model
+status: specified
+
+definition: >
+  Four Shorts restate the rule in its most compressed form and add three things the long-form
+  treatments leave implicit. First, the confirmation package: a small wick is not read alone -
+  in the worked example it is stated together with a change in the state of delivery and an
+  SMT, and that package is what "supports expansion". Second, the target that follows from a
+  small wick inside the fractal model is named: the EQ. Third, an edge case is handled - a
+  candle that does NOT support expansion but also has NO wick at all is not tradeable as a
+  wick; it is downgraded to drawn liquidity and the trader waits for a new candle open. A run
+  of expansion days is characterised as a run of days that all carry relatively small wicks.
+
+timeframes:
+  htf: ["1D", "4H", "1H"]
+  ltf: ["15m", "5m", "1m"]
+  fractal: true
+
+preconditions:
+  - "A higher-timeframe candle whose extreme is believed to have formed."
+  - "In the worked example the extreme formed early in the candle, off a previous candle's
+    high that was also a failure swing."
+
+detection_rules:
+  - "A small wick supports expansion in the direction away from the wick."
+  - "Read the small wick as part of a package: small wick + change in the state of delivery +
+    SMT is what he states as confirming the expansion."
+  - "Once the wick is confirmed formed, the EQ is the mechanical target for that expansion
+    inside the fractal model."
+  - "A run of expansion days is expected to keep printing relatively small wicks; a large wick
+    breaks the run."
+  - "Edge case: if a candle does not support expansion AND has no wick, do not treat it as a
+    wick to trade away from - use it as drawn liquidity and wait for a new candle open."
+  - "Timing constraint stated in the same clip: with little time left in the candle it does not
+    make sense for price to consolidate, sweep the high, and then expand - expect the sweep,
+    then let the candle close and work from the new candle."
+
+invalidation:
+  - "A large opposing run forms instead of a small wick - switch to the target-adjustment
+    branch (see large-wick-target-adjustment)."
+  - "Price manipulates the low and comes back into the range rather than failing to manipulate
+    it - the expansion read is off."
+
+execution:
+  bias: "Away from the small wick."
+  entry: "After the lower-timeframe change in the state of delivery confirms the wick formed."
+  stop: "Not restated in these Shorts."
+  targets:
+    - "EQ (stated as the mechanical target when the small wick supports expansion)"
+
+measurable:
+  - "expansion rate to EQ following a confirmed small-wick + CISD + SMT package"
+  - "how often a candle with no wick at all is later traded from as drawn liquidity, and its
+    outcome"
+  - "distribution of wick size across consecutive expansion days"
+
+sources:
+  - video_id: nyTiWfwWM6M
+    title: "Small Wicks Support Expansion"
+    quote: "we have a small wick which supports expansion where? Lower."
+  - video_id: nyTiWfwWM6M
+    title: "Small Wicks Support Expansion"
+    quote: "EQ can be the target for that expansion if we're going to expand lower"
+  - video_id: 9dC9_ZunnTg
+    title: "Small Wicks Support Expansion Lower"
+    quote: "small wicks support expansion lower"
+  - video_id: 9dC9_ZunnTg
+    title: "Small Wicks Support Expansion Lower"
+    quote: "And you see how all of these days here have relatively small wicks."
+  - video_id: dZz7ZG6oZQM
+    title: "Understanding Wick Size For Expansion"
+    quote: "a small wick, a change in the state of delivery, we had the SMT"
+  - video_id: dZz7ZG6oZQM
+    title: "Understanding Wick Size For Expansion"
+    quote: "it would just take out the high and then wait for the next candle"
+  - video_id: bsgh2HiRIXQ
+    title: "Trading IFVGs Within Market Context"
+    quote: "this candle does not support expansion, but it doesn't have a wick"
+  - video_id: bsgh2HiRIXQ
+    title: "Trading IFVGs Within Market Context"
+    quote: "So this can be used as a drawn liquidity, but we would want to wait"
+
+ambiguities:
+  - "'Small' is still unquantified in every one of these four Shorts - see wick-size-test."
+  - "Whether the CISD and the SMT are REQUIRED alongside the small wick or merely accompanied
+    it in this example is not stated. The clip lists them together; it does not say all three
+    are necessary. Do not assume the long-form preconditions here."
+  - "'EQ' is named as the target without saying EQ of what - the candle, the swing, or the
+    daily range. The clip does not specify."
+  - "'40 minutes left in the candle' is the only time reference given for the too-late
+    condition, and no general threshold is derived from it."
+  - "The no-wick edge case gives no rule for how long the candle stays usable as drawn
+    liquidity."
+
+related:
+  - wick-size-test
+  - large-wick-target-adjustment
+  - aligning-expansion-candles
+  - reversal-candle-quality
+  - expansion-signature
+  - upper-half-eq-expansion-filter
+  - equilibrium-eq
+  - smt-divergence
+
+python_detector: null
+voice: ttrades
+contributing_units: [shorts_03]
+draft_count: 1

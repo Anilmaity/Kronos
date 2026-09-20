@@ -1,0 +1,35 @@
+id: hedge-not-double-exposure
+name: Intraday Trades Hedge the Swing, They Do Not Double It
+definition: While holding a higher-timeframe swing position, he declines intraday trades in
+  the same direction because they double exposure to one direction. Intraday trades against
+  the swing are preferred, on the grounds that they hedge the open position. In practice this
+  is why he sits out days whose intraday setup agrees with a swing he already holds.
+category: risk
+status: specified
+preconditions:
+- An open higher-timeframe swing position.
+detection_rules:
+- If an intraday signal is in the same direction as the open swing, skip it - taking it doubles
+  directional exposure.
+- An intraday signal against the open swing is acceptable and is treated as a hedge.
+- Position management of the swing is done on daily closures, not on the intraday chart.
+measurable:
+- aggregate directional exposure with and without the rule
+- how many intraday signals the rule removes over a sample
+sources:
+- video_id: m0wTBdUe7gs
+  title: New York Open Live Q&A
+  quote: I prefer trading short intraday against my long swings
+ambiguities:
+- No sizing relationship is given between the swing and the hedging intraday trade.
+- He also declined a hedge on one occasion because price was 'too low into the range and around
+  the EQ' - so location gates the hedge too, but no rule is given.
+related:
+- position-sizing
+- max-one-trade-per-day
+- overtrading-gate
+- break-even-management
+contributing_units:
+- live_streams_01
+draft_count: 1
+voice: ttrades

@@ -1,0 +1,73 @@
+id: timeframe-alignment-pairs
+name: Timeframe Pairing and Alignment
+category: model
+status: specified
+aliases:
+- aligned time frames
+- fractal pairing
+definition: 'Every model is a pair: a higher timeframe supplying the candle closure and an aligned
+  lower timeframe supplying the change in the state of delivery. The pairs actually named in this
+  unit are DAILY -> HOURLY, 4-HOUR -> 15-MINUTE, HOURLY -> 5-MINUTE, and (used once, when the 15-minute
+  was unclean) HOURLY -> 3-MINUTE. The full model stack for an intraday trade is daily bias -> 4-hour
+  swing point -> 15-minute execution. Targets are always read from the HIGHER timeframe of the pair.
+  The indicator''s ''automatic'' mode applies these pairings by itself.'
+timeframes:
+  htf:
+  - 1M
+  - 1W
+  - 1D
+  - 4H
+  - 1H
+  ltf:
+  - 1H
+  - 15m
+  - 5m
+  - 3m
+  - 1m
+  fractal: true
+preconditions:
+- A chosen higher timeframe for the closure.
+detection_rules:
+- Daily closure -> confirm on the hourly.
+- 4-hour closure -> confirm on the 15-minute.
+- Hourly closure -> confirm on the 5-minute.
+- If the paired lower timeframe's structure is unclean, refine down one step (5m -> 3m) or step up
+  (15m -> 30m) rather than abandoning the setup.
+- Targets come from the higher timeframe of the pair - its previous candles' unswept extremes.
+- 'Full intraday stack: daily bias, then a 4-hour swing point inside the daily candle, then a 15-minute
+  continuation entry.'
+- 'Fractal upward too: monthly -> daily -> hourly is walked in one example.'
+invalidation: []
+measurable:
+- how often the paired lower timeframe produces a CISD within the HTF candle
+- outcome difference between refining down vs stepping up when structure is unclean
+sources:
+- video_id: tyoxl1l-6iI
+  title: 'Candle 2 Closure: The Foundation of TTrades Fractal Model'
+  quote: I'm going to use the hourly for a change in the state of delivery
+- video_id: tyoxl1l-6iI
+  title: 'Candle 2 Closure: The Foundation of TTrades Fractal Model'
+  quote: If I'm on the hourly, I will use the 5minute
+- video_id: v1X8UMWgWmI
+  title: Best Trading Strategy for 2026 - TTFM
+  quote: with the four-hour and 15-minute fractal model
+- video_id: Mo9QMtotQyo
+  title: How to Confirm Daily Profile (High or Low of Day)
+  quote: maybe I will go to the 5-minute, see if that cleans up the structure
+- video_id: A4NasIa371c
+  title: How to Set Price Targets Using the Fractal Model
+  quote: whatever the higher time frame reference is, those are going to be your targets
+ambiguities:
+- The pairing is stated as a fixed table but is also allowed to flex by one step for cleanliness
+  - no rule says when flexing is permitted.
+- The 4-hour -> 15-minute pairing skips the hourly, while the daily -> hourly pairing skips the 4-hour;
+  the ratio between pairs is therefore not constant.
+related:
+- indicator-print-conditions
+- aligning-expansion-candles
+- daily-wick-confirmation-timeframes
+- automatic-fractal-pairing
+contributing_units:
+- build_a_model_intro_to_ttrades_fractal_model_01
+draft_count: 1
+voice: ttrades

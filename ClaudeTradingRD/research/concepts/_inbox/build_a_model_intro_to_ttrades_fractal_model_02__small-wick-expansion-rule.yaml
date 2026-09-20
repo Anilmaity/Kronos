@@ -1,0 +1,76 @@
+id: small-wick-expansion-rule
+name: Small Wick Supports Expansion; Large Wick Waits for Candle 3
+category: model
+status: specified
+aliases:
+- wick size
+- expansion candle vs reversal candle
+definition: 'The single filter that decides whether the current candle is tradeable or whether to wait
+  for the next one. An EXPANSION candle has a small wick each side and a large body -- price trended
+  one way for the period. A REVERSAL candle opens, makes a large opposing run to form its wick, then
+  returns toward its opening price before closing. A small wick supports expansion because little of
+  the period''s range has been spent; a large opposing run does not, because he is not willing to expect
+  price to travel down, back up, and then far beyond within one period. Two consequences: (a) trade
+  a small-wick candle 2 directly; (b) on a large-wick candle 2, do not trade it -- let it close and
+  trade candle 3.'
+timeframes:
+  htf:
+  - 1W
+  - 1D
+  - 4H
+  - 1H
+  - 30m
+  - 15m
+  ltf:
+  - 15m
+  - 5m
+  - 3m
+  - 1m
+  fractal: true
+preconditions:
+- The candle in question has opened and has formed a wick against the intended direction.
+detection_rules:
+- Small wick + large body in one direction = expansion candle; the move can continue.
+- Large opposing wick + close near the open = reversal candle; expansion in this period is not expected.
+- 'Small-wick candle 2: tradeable inside candle 2 once the lower timeframe gives a change in the state
+  of delivery.'
+- 'Large-wick candle 2: wait for the close, then trade candle 3 as the continuation.'
+- 'The reason given is range budgeting: in candle 2 and candle 3 price travels roughly the same distance,
+  but candle 2 spends half its time going up and half going down while candle 3 is one-sided.'
+- The same test is applied at every layer simultaneously -- daily wick, 4-hour wick and hourly wick
+  all being small is what produces a trend.
+invalidation:
+- The wick grows beyond 'shallow' before the CISD confirms it -- switch from expansion targets to the
+  reduced target set (see large-wick-target-adjustment).
+measurable:
+- wick-to-body ratio distribution of candles that did vs did not expand
+- 'range travelled in C2 vs C3 (his claim: roughly equal)'
+sources:
+- video_id: m4k_1pF5zFI
+  title: TTrades Fractal Model - Trading Candle 2
+  quote: Small wick supports expansion. Large wick doesn't support expansion.
+- video_id: qdQYhePcvGE
+  title: TTrades Fractal Model - Trading Candle 3
+  quote: focus on trading candle 3 when we have a candle 2 expansion
+- video_id: FAKWJ-1NlLE
+  title: Trading The 4 Hour Power Of Three - OHLC / OLHC
+  quote: it can be the manipulation as well as the distribution
+- video_id: eywpZT3z6GQ
+  title: TTrades Scalping Model - Simple Day Trading Strategy
+- video_id: FgP2lc9nneM
+  title: The Best Timeframe for TTrades Fractal Model (Simple)
+ambiguities:
+- No numeric boundary between 'small' and 'large' is given in any of the five videos in this unit that
+  use the rule.
+- The rule is applied to the wick against the intended direction; whether the opposite wick also matters
+  is not addressed.
+related:
+- fractal-model-c2
+- fractal-model-c3
+- power-of-three-amd
+- large-wick-target-adjustment
+- wick-trust-test
+contributing_units:
+- build_a_model_intro_to_ttrades_fractal_model_02
+draft_count: 1
+voice: ttrades

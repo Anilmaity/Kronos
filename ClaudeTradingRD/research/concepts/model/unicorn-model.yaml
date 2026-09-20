@@ -1,0 +1,153 @@
+id: unicorn-model
+name: Unicorn Model (breaker block + overlapping fair value gap)
+variants:
+  name:
+  - The Unicorn Model (breaker block + fair value gap)
+  - Unicorn Model
+  definition:
+  - 'A single-pattern entry model. After a stop hunt of a swing point into a higher-timeframe
+    area of interest, price must displace THROUGH the breaker block and, in doing so, leave
+    a fair value gap aligned with that breaker. The overlap of breaker and fair value gap
+    is the unicorn, and it is the only entry taken. Bias comes from the daily, the area of
+    interest from the hourly, and the entry function is read on the 5-minute at a session
+    open.
+
+    '
+  - 'A breaker block overlapped by a fair value gap of the same polarity: a bullish breaker
+    overlapping a bullish fair value gap, or a bearish breaker overlapping a bearish fair
+    value gap. It is the channel''s expression of the requirement that a breaker be accompanied
+    by displacement — the fair value gap is the evidence of that displacement.
+
+    '
+definition: A breaker block combined with a fair value gap that OVERLAPS it. The breaker comes
+  from the four-point structure (high, low, higher high, lower low); the displacement leg
+  through the breaker leaves the gap; the overlap is what is used for entry. He attributes
+  the model to Tyler and Ash and points at their 40-page PDF rather than claiming it.
+category: model
+status: contested
+aliases:
+- the unicorn
+- unicorn entry model
+- unicorn
+- breaker plus FVG
+- the entry function
+- breaker + FVG overlap
+preconditions:
+- A draw on liquidity is identified (smooth or equal highs/lows).
+- A completed breaker structure exists.
+- Daily bias established from internal versus external liquidity (price at a daily bearish
+  FVG implies a draw to the daily swing low, and the mirror).
+- An hourly area of interest exists in the direction of bias - for a short, an hourly bearish
+  FVG or an hourly swing high; for a long, an hourly bullish FVG or an hourly swing low.
+- It is a session open - London 02:00 EST or New York 09:30.
+- A valid breaker block (four-point swing sequence).
+- A fair value gap created by the displacement leg that produced the fourth swing point.
+detection_rules:
+- 'Complete the breaker sequence: low, high, lower low (sweep), higher high with displacement
+  (bullish case).'
+- Mark the last opposing-close candle before the sweeping leg — the breaker.
+- Require a fair value gap that OVERLAPS that breaker; without the overlap it is not a unicorn.
+- Entry inside the overlap; bodies must not close beyond the mean threshold of the breaker
+  candles even if wicks dig in.
+- Price reaches the hourly area of interest at or after the session open.
+- A stop hunt occurs - price runs a swing point (a swing high has a lower high on each side;
+  a swing low has higher lows on each side).
+- Price displaces through the breaker block, closing beyond it.
+- That displacement leaves a fair value gap aligned with the breaker block.
+- Only when all four are true is a limit order set.
+- Detect a breaker block zone [b_low, b_high] (see breaker-block).
+- Detect a fair value gap zone [f_low, f_high] of the same direction created by the displacement
+  through the breaker.
+- unicorn := the two zones overlap in price.
+- Entry choice is then between the breaker zone and the near edge of the FVG.
+invalidation:
+- Bodies closing below the mean threshold of the breaker candles (bullish case).
+- Price closes back through the far side of the breaker block - that is where the stop sits.
+- If price displaces but leaves no fair value gap aligned with the breaker, there is no unicorn
+  and no trade.
+- Price trading beyond the breaker extreme after entry (demonstrated in the losing ES example).
+measurable:
+- share of breakers that carry an overlapping FVG
+- fill rate — one of his three examples was left behind
+- count of unicorns formed per session open per instrument
+- fill rate of the limit at the beginning of the breaker
+- hit rate of the fixed 2R target versus the breaker stop
+- how often price only just touches the breaker before running (the fill-risk case he cites
+  for forex)
+- hit rate of unicorn setups vs plain breakers at 2R
+- fill rate of the FVG-edge entry vs the breaker entry
+- loss rate (the video shows a full losing example, so the sample must include failures)
+sources:
+- video_id: rXMVPUZPw4A
+  title: Breaker Block & FVG Entry Model
+  quote: The unicorn is a breaker block paired with a fair value gap
+- video_id: rXMVPUZPw4A
+  title: Breaker Block & FVG Entry Model
+  quote: I would suggest checking out Tyler and Ash on Twitter
+- video_id: rXMVPUZPw4A
+  title: Breaker Block & FVG Entry Model
+  quote: it is a high low higher high lower low
+- video_id: q40pRwjuPYQ
+  title: ICT Son's Model - 30 Second Setup
+  quote: I don't really like waiting for the 5 minute close
+- video_id: zXtJSSkiNmo
+  title: Ash Trades | The Journey To Profitability & The Unicorn Model
+- video_id: 07lOxv39LdY
+  title: DTR | C2U - Blending The Fractal Model & Unicorn Model - No Daily Bias
+- video_id: 75S4vwD4P1U
+  title: Breaker Blocks Simplified - ICT Concepts
+  quote: I want to see displacement paired with them
+ambiguities:
+- '''Overlapping'' is not quantified — any overlap appears to qualify.'
+- Which of the two stop placements to use is left to risk-to-reward.
+- He teaches the model and credits it to others; whether it is part of his own routine is
+  not stated.
+- '''Displacement'' is given no size, body-ratio or candle-count threshold.'
+- '''Aligned with the breaker'' is not defined - whether the FVG must overlap, be contained
+  by, or merely sit in the same price band is not stated.'
+- No maximum delay is given between the session open and the formation of the entry function.
+- The daily bias rule is given only for the case where price is sitting AT a daily FVG; no
+  rule covers price at neither an FVG nor a swing.
+- DTR uses the same pattern name but supplies an additional candle-count filter that Ash does
+  not state.
+- No minimum overlap between the breaker zone and the FVG is specified.
+- Whether the FVG must be created by the displacement leg specifically, or any same-direction
+  FVG in the zone qualifies, is not stated.
+- Entry selection between the two candidate prices is explicitly discretionary.
+related:
+- breaker-block
+- fair-value-gap
+- standard-deviation-projection
+- sons-model
+- swing-point-stop-hunt
+- internal-external-range-liquidity
+- mechanical-trade-management
+- c2-unicorn
+- displacement
+timeframes:
+  htf:
+  - 1H
+  ltf:
+  - 15m
+  - 5m
+  - 2m
+  - 1m
+  fractal: true
+execution:
+  bias: Toward the identified draw on liquidity.
+  entry: The overlapping fair value gap inside the breaker.
+  stop: On the swept extreme (2.3R in his example) or just beyond the breaker (5R on the same
+    trade).
+  targets:
+  - The draw on liquidity — equal/smooth highs or lows
+  - 2 to 2.5 standard deviations of the projected manipulation leg
+contributing_units:
+- education_ict_updated_01
+- t_talks_01
+- the_foundation_01
+draft_count: 3
+voice: ttrades
+voice_playlist: mixed
+guest_sources:
+- Ash Trades | The Journey To Profitability & The Unicorn Model
+- DTR | C2U - Blending The Fractal Model & Unicorn Model - No Daily Bias

@@ -1,0 +1,87 @@
+id: breaker-block
+name: Breaker Block
+aliases:
+- bearish breaker block
+- bullish breaker block
+category: entry
+status: contested
+definition: 'EARLIER RECORDING (old ''Education - ICT'' playlist; the channel later re-recorded this as
+  ''Breaker Block & FVG Entry Model'', rXMVPUZPw4A, which is the canonical reading). The structural definition
+  is identical to the later one - bearish: a high, a low, a higher high relative to that high, then a
+  lower low relative to that low; bullish mirrors. The block is the down-close candle OR SERIES of down-close
+  candles between the first high and the first low. What this earlier recording adds and the later one
+  drops is (a) an explicit rationale - the would-be support becomes resistance when price breaks through
+  it - and (b) a marking procedure that switches level by the candle''s wick-to-body proportion (see wick-vs-body-marking-rule).
+  It also states why a SERIES is used rather than a single candle: the series is one candle on the next
+  timeframe up.'
+timeframes:
+  htf:
+  - 4H
+  - 1H
+  - 30m
+  ltf:
+  - 15m
+  - 5m
+  fractal: true
+preconditions:
+- A swing high and a swing low are already in place on the working timeframe.
+- A draw on liquidity / higher-timeframe point of interest has been identified.
+detection_rules:
+- 'Bearish: mark H1, then L1. Require a higher high H2 > H1, then a lower low L2 < L1.'
+- 'Bullish: mark L1, then H1. Require a lower low L2 < L1, then a higher high H2 > H1.'
+- Block := the down-close candle(s) (bearish) or up-close candle(s) (bullish) located between H1 and L1.
+- Use the whole consecutive SERIES, not a single candle, because the series is a single candle one timeframe
+  up.
+- Full-bodied candle with little wick -> mark the whole body; watch the closing price and the mean threshold
+  (50% of the body).
+- Large-wick / small-body candle -> mark close-to-extreme instead, and use the 0.5 level of that wick.
+- Expect the reaction in that zone; bodies must not close beyond the marked level, wicks may dig in.
+- 'Ideal case: price taps the mean threshold and closes back out of it.'
+invalidation:
+- Bodies close beyond the marked level (mean threshold / 0.5 of the wick).
+- The higher high or the lower low never forms - the structure is not a breaker.
+execution:
+  bias: Away from the broken structure - short below a bearish breaker, long above a bullish one.
+  entry: On the retest of the marked body / wick level or its mean threshold.
+  stop: Beyond the block's extreme.
+  targets:
+  - The higher-timeframe draw on liquidity
+  - The opposing swing
+measurable:
+- hit rate of the mean-threshold reaction, split by full-body vs large-wick marking
+- frequency of the tap-and-close-out-of-mean-threshold ideal case
+- how often bodies (vs wicks) violate the marked level before the move
+sources:
+- video_id: dcIdzqD3kMU
+  title: Breaker Blocks Simplified - ICT Concepts
+  quote: a high a low a higher high relative to this high
+- video_id: dcIdzqD3kMU
+  title: Breaker Blocks Simplified - ICT Concepts
+  quote: the reason for using the series and not just a single is because
+- video_id: dcIdzqD3kMU
+  title: Breaker Blocks Simplified - ICT Concepts
+  quote: I will focus on the entire body of the candle
+- video_id: dcIdzqD3kMU
+  title: Breaker Blocks Simplified - ICT Concepts
+  quote: the mean threshold or 50 of the body
+- video_id: dcIdzqD3kMU
+  title: Breaker Blocks Simplified - ICT Concepts
+  quote: when price Taps the mean threshold but closes out of it
+ambiguities:
+- 'EVOLUTION, NOT CONTRADICTION: this is the earlier recording. The later rXMVPUZPw4A narrows the block
+  to ''the lowest down close candle prior to the move that made the higher high''; this earlier video
+  says the series between H1 and L1 without the lowest-candle qualifier. Both readings kept.'
+- Whether the higher high / lower low must CLOSE beyond the prior extreme or may only wick beyond is not
+  stated.
+- '''Little wicks'' vs ''a large Wick and smaller body'' is a comparison, never a ratio.'
+- The volume imbalance used as a second level in the first example is marked but not defined here.
+related:
+- wick-vs-body-marking-rule
+- mean-threshold
+- order-block-series-is-htf-candle
+- unicorn-model
+- volume-imbalance
+voice: ttrades
+contributing_units:
+- education_ict_01
+draft_count: 1

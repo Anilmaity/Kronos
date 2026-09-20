@@ -1,0 +1,116 @@
+id: reversal-candle-target-adjustment
+name: Reversal Candle - Adjust Targets, Do Not Expect Expansion Past The Open
+definition: 'The channel''s own version of the rule (the library previously held only a guest''s
+  statement of it, and this corroborates it). When the candle in play has a large opposing
+  run, expansion is not expected and the targets are cut back to the candle''s own opening
+  price and the liquidity or PD arrays sitting around it - typically a fair value gap near
+  the open. Reaching for the current period''s opposing extreme instead is only justified
+  when that extreme is low-resistance liquidity: he wants the day to have opened and made
+  a steady one-sided move leaving a run of failure swings behind. Where a protected swing
+  sits on the intraday extreme he deliberately takes the smaller target at the open, on the
+  reasoning that if he is wrong the higher low forms in exactly that area.'
+variants:
+  definition:
+  - 'When the daily candle being traded has a large opposing wick, it is classified as a reversal
+    candle rather than a reversal-into-expansion candle. Such a candle is not expected to
+    displace past its own opening price, so targets are reduced to objectives inside the current
+    day''s range - typically the current day''s opposing extreme, which will be a session
+    high or low. The setup requires the day to have opened in the correct direction first
+    so that the opposing extreme is low-resistance liquidity (a session high or low that tagged
+    no key level).
+
+    '
+category: model
+status: contested
+aliases:
+- adjust our targets
+- back towards the daily open
+- trading a large-wick daily candle
+preconditions:
+- The candle in play has a large opposing run (see opposing-run).
+- A lower-timeframe change in the state of delivery has confirmed the reversal.
+- The daily candle in play has a large opposing wick.
+- The day opened in the required direction first (low first for a bullish reversal candle).
+- The day's extreme formed from a key level.
+detection_rules:
+- 'Classify the candle: large opposing run -> reversal candle, no expansion expected.'
+- Default target set := the candle's own opening price, plus fair value gaps and liquidity
+  points around it.
+- 'Escalate to the current period''s opposing extreme ONLY if that extreme is low-resistance:
+  a steady one-sided move leaving failure swings on the session extreme.'
+- If a protected swing sits on the intraday extreme instead, do not reach for it - take the
+  target around the open.
+- On the daily specifically, this is executed on the lower timeframes back toward the daily
+  open; on the 4-hour he prefers to skip and wait for the next candle.
+- 'Classify the daily candle: large opposing wick -> reversal candle.'
+- Confirm the opposing extreme of the day is a session high/low that did not tag a key level
+  (low-resistance liquidity).
+- Set targets inside the current day's range; do not target beyond the daily opening price.
+invalidation:
+- Price closes beyond the candle's opening price with expansion - the reversal-candle read
+  was wrong and it was an expansion candle.
+- The opposing extreme of the day already tagged a relevant key level - the profile does not
+  apply.
+measurable:
+- hit rate of the return-to-open target on large-opposing-run candles
+- R difference between taking the open vs holding for the session extreme
+- frequency with which large-wick daily candles close beyond their open
+- R achieved with reduced targets vs full targets on these days
+sources:
+- video_id: SlWxhzhLo3A
+  title: 'Wick Size Matters: The Key to Understanding Reversal and Expansion Candles'
+  quote: we're just looking for it to reverse or return back to its opening price
+- video_id: SlWxhzhLo3A
+  title: 'Wick Size Matters: The Key to Understanding Reversal and Expansion Candles'
+  quote: the opening price or liquidity points or points of interest around there
+- video_id: SlWxhzhLo3A
+  title: 'Wick Size Matters: The Key to Understanding Reversal and Expansion Candles'
+  quote: if I have a protected swing on the intraday low
+- video_id: SlWxhzhLo3A
+  title: 'Wick Size Matters: The Key to Understanding Reversal and Expansion Candles'
+  quote: make a bunch of failure swings and then we can trade that reversal
+- video_id: J_EeS2_2CAM
+  title: GxTradez | Phases of Price & Profiles For Expansion
+ambiguities:
+- '''Large'' opposing run remains unquantified.'
+- '''Liquidity points or points of interest around there'' is not bounded - how far from the
+  open a target may sit and still count is not stated.'
+- He gives the failure-swing / protected-swing test as the escalation rule but does not say
+  how many failure swings are enough.
+- This exception applies only to the daily timeframe; the speaker says 4-hour reversal candles
+  are not traded at all, with one unstated exception.
+- '''Large'' wick remains unquantified.'
+related:
+- small-wick-expansion-rule
+- opposing-run
+- wick-scenario-difficulty-ladder
+- htf-opening-price-entry
+- failure-swing
+- protected-swing
+- small-wick-supports-expansion
+- daily-candle-profile-open-low-first
+timeframes:
+  htf:
+  - 1D
+  - 4H
+  ltf:
+  - 1H
+  - 15m
+  - 5m
+  fractal: true
+execution:
+  bias: Away from the candle's extreme, toward its opening price.
+  entry: Lower-timeframe CISD after the opposing run completes.
+  stop: Beyond the confirmed extreme.
+  targets:
+  - the candle's opening price
+  - fair value gap around the open
+  - session extreme only when it carries failure swings
+contributing_units:
+- build_a_model_intro_to_ttrades_fractal_model_03
+- t_talks_02
+draft_count: 2
+voice: ttrades
+voice_playlist: mixed
+guest_sources:
+- GxTradez | Phases of Price & Profiles For Expansion

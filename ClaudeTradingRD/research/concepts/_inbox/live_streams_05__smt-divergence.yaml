@@ -1,0 +1,54 @@
+id: smt-divergence
+name: SMT Divergence (as confluence only)
+aliases:
+- SMT
+- asset correlation
+category: liquidity
+status: specified
+definition: 'This unit gives the mechanical version. SMT is defined as a divergence between the assets,
+  and it is only marked when it occurs within the swing point being framed. The default correlation
+  set is stated outright: for NQ he uses ES and YM. Custom pairs can be substituted, and an ''inverse''
+  option exists for negatively correlated pairs such as dollar against euro. The mark is event-driven
+  and live: nothing prints until the correlated asset actually takes the level the traded asset failed
+  to take.'
+timeframes:
+  htf:
+  - 1D
+  - 4H
+  - 1H
+  ltf:
+  - 15m
+  - 5m
+  - 3m
+  fractal: true
+preconditions:
+- Two or three correlated assets displayed with a shared level.
+detection_rules:
+- 'Default set for NQ: ES and YM. Custom pairs may be substituted.'
+- For negatively correlated pairs, use the inverse setting.
+- SMT is only marked when the divergence sits inside the swing point being framed.
+- The mark prints at the moment the correlated asset takes the level (live), not retrospectively.
+invalidation:
+- Both assets take the level - no divergence.
+measurable:
+- frequency of SMT at swing points by correlation set
+- outcome with SMT present vs absent at the same setup
+sources:
+- video_id: sdZkE-naNiY
+  title: TTrades Indicator Updates - Walkthrough and Q&A
+  quote: I'll use ES and YM for MQ
+ambiguities:
+- The auto-captioner writes NQ as 'MQ' in the quoted line; the surrounding discussion makes the instrument
+  unambiguous.
+- '''Within the swing point'' is not bounded in bars or price.'
+- The library entry for this id is contested across units; this unit adds mechanics, not a resolution
+  of that dispute.
+related:
+- smt-reversal-continuation-double
+- psp-precision-swing-point
+- smt-as-confirmation-not-signal
+- relative-strength-weakness
+contributing_units:
+- live_streams_05
+draft_count: 1
+voice: ttrades

@@ -1,0 +1,52 @@
+id: continuation-timing
+name: Continuations Must Form Early in a New Higher-Timeframe Candle
+aliases:
+- forms too late into the move
+category: entry
+status: specified
+definition: 'This unit turns the timing rule into a coded constraint. Continuations are only printed
+  for a limited extent of time after the model forms; a structure that otherwise qualifies but forms
+  too late into the move is deliberately not marked, because the model is only concerned with a couple
+  of candles. He gives the negative example of an instrument far past its last valid model, where
+  he does not want a continuation printed at all. Continuations that fail are greyed rather than removed.
+  A separate labelling rule: only continuations originating in a fair value gap are labelled.'
+timeframes:
+  htf:
+  - 1D
+  - 4H
+  - 1H
+  ltf:
+  - 15m
+  - 5m
+  - 1m
+  fractal: true
+preconditions:
+- A valid model (closure plus CISD) has printed.
+detection_rules:
+- Only accept a continuation that forms within a limited window after the model - one forming late
+  into the move is rejected even if the structure is there.
+- The window is scoped to the couple of candles the model spans, not to the whole trend.
+- A failed continuation is greyed, not erased.
+- Continuations originating in a fair value gap are the labelled ones.
+invalidation:
+- The continuation forms after the model's window has passed.
+measurable:
+- outcome of continuations by bar-distance from the model print
+- share of continuations that originate in a fair value gap
+sources:
+- video_id: sdZkE-naNiY
+  title: TTrades Indicator Updates - Walkthrough and Q&A
+  quote: This one forms too late into the move
+ambiguities:
+- '''A certain extent of time'' is never given as a bar count - the only numeric anchor anywhere near
+  it is that the model spans four higher-timeframe candles.'
+- Whether the FVG-origin rule is only a labelling convention or also a quality filter is not stated.
+related:
+- four-candle-model-window
+- continuation-order-block
+- fair-value-gap
+- indicator-print-conditions
+contributing_units:
+- live_streams_05
+draft_count: 1
+voice: ttrades

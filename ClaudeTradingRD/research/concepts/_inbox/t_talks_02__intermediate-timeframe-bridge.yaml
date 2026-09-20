@@ -1,0 +1,48 @@
+id: intermediate-timeframe-bridge
+name: "Intermediate Timeframes Bridge HTF Analysis And LTF Execution"
+aliases: ["the rabbit and the eagle", "H4/H1 narrative, M15/M5 execution"]
+category: structure
+status: specified
+
+definition: >
+  The failure mode named in this unit is framing trades directly from the execution
+  timeframe against a higher-timeframe idea. The fix is an explicit intermediate layer: the
+  daily and weekly supply direction, the 4-hour and 1-hour supply the narrative and the
+  dealing range, and the 15-minute or 5-minute are used only to time an entry that was
+  already justified on the intermediate timeframe. A parallel rule from another speaker in
+  this unit pairs each higher-timeframe point of interest with a specific execution
+  timeframe: a 4H point of interest requires 15-minute confirmation before a 1-minute
+  execution, and a 1-hour point of interest maps to a 5-minute execution.
+
+timeframes:
+  htf: ["1W", "1D"]
+  ltf: ["4H", "1H", "15m", "5m", "1m"]
+  fractal: true
+
+preconditions:
+  - "A higher-timeframe directional bias exists."
+
+detection_rules:
+  - "Direction is taken from the daily/weekly."
+  - "The dealing range and narrative are drawn on H4/H1."
+  - "M15 is used to confirm what was already visible on H1; M5/M1 are execution only."
+  - "Pairing: 4H POI -> 15m confirmation -> 1m execution; 1H POI -> 5m execution."
+
+invalidation:
+  - "An execution-timeframe pattern is taken with no intermediate-timeframe justification."
+
+measurable:
+  - "win rate of executions that had intermediate-timeframe confirmation vs those that did not"
+
+sources:
+  - video_id: nncJGt6j19Q
+    title: "Gene | Align Yourself For High Probability Trades"
+  - video_id: G44VpidBD_U
+    title: "NickDoesFutures | Unicorn Model & Experiences With ICT"
+
+ambiguities:
+  - "Gene gives the principle (H4/H1 as intermediate) and Nick gives the explicit pairing table; the two are compatible but were not stated as one rule."
+  - "The MMXM talk in this unit gives a different pairing table (monthly-daily, weekly-4H, daily-1H, 4H-15m, H1-5m, M15-M1) for internal/external range plays specifically."
+
+python_detector: null
+related: ["mmxm-timeframe-alignment", "htf-poi-gate-before-ltf", "aligning-expansion-candles"]

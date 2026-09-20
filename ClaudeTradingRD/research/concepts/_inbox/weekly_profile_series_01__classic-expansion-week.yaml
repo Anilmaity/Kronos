@@ -1,0 +1,66 @@
+id: classic-expansion-week
+name: "Classic Expansion (weekly profile)"
+aliases: ["classic expansion", "classic expansion week"]
+category: model
+status: specified
+
+definition: >
+  A week whose weekly candle is a directional / expansion candle. The low of the week
+  (bullish bias) or high of the week (bearish bias) forms on Monday or Tuesday as a daily
+  candle 2 closure, confirmed by an hourly change in the state of delivery inside that
+  candle. Two to three consecutive days of expansion follow - generally Tuesday, Wednesday,
+  Thursday or Wednesday, Thursday, Friday - running into a higher-timeframe key level or
+  until the average range is covered, after which Friday caps off the weekly range. The
+  tradeable days are candle 3 (the day after the extreme) and, if candle 3 closes well,
+  candle 4. Ideally Monday makes a shallow opposing run of the weekly range first.
+
+timeframes:
+  htf: ["1W", "1D"]
+  ltf: ["1H"]
+  fractal: true
+
+preconditions:
+  - "A directional bias exists, generally after a weekly-timeframe reversal candle."
+  - "A higher-timeframe key level or objective exists in the direction of the bias."
+
+detection_rules:
+  - "Bullish: the low of the week forms on Monday or Tuesday. Bearish: the high of the week forms on Monday or Tuesday."
+  - "That day closes as a daily candle 2 closure."
+  - "An hourly change in the state of delivery exists inside that daily candle, confirming the wick."
+  - "The following day (candle 3) closes as a continuation in the bias direction."
+  - "If candle 3 closes well, candle 4 also continues, giving two to three days of expansion."
+  - "Expansion runs into the higher-timeframe key level or until the average range is covered; Friday then caps the weekly range."
+
+invalidation:
+  - "The Monday/Tuesday candidate closes as an opposing expansion candle rather than a candle 2 closure - let another day print."
+  - "No hourly change in the state of delivery inside the candidate candle - the extreme is unconfirmed."
+  - "Price trades back through the Monday/Tuesday extreme."
+
+execution:
+  bias: "In the direction of the pre-existing bias, away from the Monday/Tuesday extreme."
+  entry: "On candle 3 (the day after the confirmed extreme), after the hourly change in the state of delivery."
+  stop: "Not stated numerically in this video; the confirmed Monday/Tuesday extreme is the level being traded away from."
+  targets: ["higher-timeframe key level / objective", "average range", "prior swing highs / equal highs (bullish) or lows (bearish)"]
+
+measurable:
+  - "frequency of weeks whose extreme forms on Monday or Tuesday"
+  - "hit rate of candle 3 closing as a continuation after a confirmed Monday/Tuesday candle 2 closure"
+  - "hit rate of candle 4 continuing, conditioned on candle 3 closing strong"
+  - "how often the higher-timeframe objective is reached by Thursday's close"
+
+sources:
+  - video_id: Qt7Ek4keMzs
+    title: "Weekly Profile for Daily Bias - Classic Expansion"
+    quote: "We want to see the weekly candle open low then reach for its high"
+  - video_id: _CSO5Mf7CM8
+    title: "Weekly Profile - TGIF Setup"
+
+ambiguities:
+  - "'Closes well' / 'closes strong', the gate for taking candle 4, is never quantified."
+  - "'Average range' is given as an alternative stop-point to the key level with no calculation."
+  - "Monday's shallow opposing run is called ideal but is explicitly not required; one example has no opposing run at all."
+  - "The final example is described as 'not a classic expansion' because Monday made the low but Tuesday also reversed, yet it is still traded the same way - the boundary between this profile and midweek/intraweek reversal is fuzzy in practice."
+  - "Whether the hourly CISD must lie inside the wick or anywhere inside the daily candle is stated as 'inside this wick' here and differently elsewhere in the series."
+
+python_detector: null
+related: ["weekly-profile-framework", "hourly-cisd-confirmation", "tgif-setup", "expansion-exhaustion-avoid-price"]

@@ -1,0 +1,90 @@
+id: new-york-intraday-time-levels
+name: New York Intraday Time Levels (8:30 / 9:30 / 9:45 / 10:00)
+aliases:
+- the opening move
+- 9:30 to 10:00
+category: time
+status: underspecified
+
+definition: >
+  The clock structure of his trading morning, stated repeatedly and with numbers. 09:30 is the
+  open he waits for, and when asked why that time matters at all he answers that it is when the
+  New York stock market opens - the only causal anchor for the clock given anywhere in this
+  unit. The volatility he needs comes in the 09:30-10:00 window; he says the move he wants
+  normally happens in the first fifteen minutes and that 09:30-09:45 runs out the targets.
+  09:45 is named as an area where he can take profit, and 10:00 as the final take-profit and
+  the point after which he stops caring. He also notes an 08:30 reversal followed by a 09:30
+  continuation as a sequence he has covered in his time video.
+
+timeframes:
+  htf:
+  - 4H
+  - 1H
+  - 30m
+  ltf:
+  - 15m
+  - 5m
+  - 3m
+  fractal: false
+
+preconditions:
+- Instrument is an index future (he says the same times do not drive currencies).
+
+detection_rules:
+- '09:30 - the equity open; wait for it when the pre-open structure is ambiguous, and let it
+  resolve direction.'
+- '09:30-10:00 - the volatility window; the move is expected to complete inside it, often
+  within the first fifteen minutes.'
+- '09:45 - first take-profit area for an opening-move trade.'
+- '10:00 - final take-profit / time-based exit; after it he treats the day as over.'
+- '08:30 reversal into a 09:30 continuation is a recognised sequence.'
+
+invalidation:
+- Not stated - these are windows in which events cluster, not signals.
+
+measurable:
+- distribution of the day's extreme timestamp across 09:30 / 09:45 / 10:00
+- share of the day's realised range delivered inside 09:30-10:00
+- give-up in R from exiting at 10:00 versus holding
+
+sources:
+- video_id: U4j-fZD-FJk
+  title: New York Open Live Q&A
+  quote: the reason is the New York stock market opens
+- video_id: X4XSsv5CNqg
+  title: New York Open Live Q&A
+  quote: the volatility from 9:30 to 10:00
+- video_id: X4XSsv5CNqg
+  title: New York Open Live Q&A
+  quote: '9:45 becomes an area I can TP'
+- video_id: X4XSsv5CNqg
+  title: New York Open Live Q&A
+  quote: just hop on at 9:30 trade indices and have movement and volatility
+- video_id: W7Fu3Rx5iMs
+  title: New York Open Live Q&A
+  quote: '9:30 9:45 runs out all the targets'
+- video_id: W7Fu3Rx5iMs
+  title: New York Open Live Q&A
+  quote: ideally this hits before 10:00 a.m.
+
+ambiguities:
+- No timezone label is ever spoken in these four streams. The clock is pinned only indirectly -
+  09:30 is stated to be the New York stock market open, which is 09:30 New York time by
+  definition, and 10:00 is stated to open a new 4-hour candle. Both are inferences from what
+  he says, not statements he makes.
+- No tolerance window around any time (is 09:33 still "9:30"?).
+- The 08:30 reversal / 09:30 continuation pairing is referred back to a separate time video
+  that is not in this unit.
+- He says he does not trade past about 11:00 but gives no rule, only a habit.
+
+related:
+- session-open-volume-nyse
+- time-based-exit-htf-close
+- trading-window
+- opposing-run-entry
+- volatility-timeframe-selection
+
+contributing_units:
+- live_streams_03
+draft_count: 1
+voice: ttrades

@@ -1,0 +1,70 @@
+id: breaker-wick-vs-body-invalidation
+name: A Breaker Survives Wicks Through It, Not Body Closes
+definition: 'Rauf''s testable filter on breaker quality, given as something the audience can
+  study. Take a bullish breaker (low, high, lower low, with the up-close candle(s) between
+  the low and the high). Look at what price does to the low of that breaker afterwards. If
+  BODIES close below that low, he does not trust the breaker. If only WICKS go below it, the
+  breaker holds, and he reports that when price trades back into such a breaker it trades
+  much better than when bodies had closed beneath it. He generalises the underlying principle
+  to ICT''s: bodies tell the story of the market narrative.'
+category: entry
+status: specified
+aliases:
+- bodies below the breaker low
+- breaker body-close filter
+preconditions:
+- 'An identified bullish breaker: a low, then a high, then a lower low (mirror for bearish).'
+detection_rules:
+- 'Identify the breaker: for a bullish breaker, low -> high -> lower low; the significant
+  candle is the one no bodies subsequently pass.'
+- Track candle CLOSES relative to the breaker's low.
+- If any body closes below the breaker low, mark the breaker as untrusted and do not use it.
+- If only wicks pierce the low, keep the breaker live; trade the retracement back into it.
+- Mirror for a bearish breaker at the breaker high.
+invalidation:
+- A body close beyond the breaker's defining extreme.
+measurable:
+- reaction size on returns into wick-only breakers vs body-violated breakers
+- proportion of breakers that survive as wick-only
+sources:
+- video_id: qFtfD09Vv3E
+  title: Live with Day Trading Rauf - Preparing for a New Week
+  quote: we have this breaker we've got a low high and a lower low
+- video_id: qFtfD09Vv3E
+  title: Live with Day Trading Rauf - Preparing for a New Week
+  quote: bodies that close below this low instead of weeks
+- video_id: qFtfD09Vv3E
+  title: Live with Day Trading Rauf - Preparing for a New Week
+  quote: bodies are telling the story of the market narrative
+ambiguities:
+- Which timeframe's bodies count is never stated - he demonstrates on a 1-minute chart inside
+  an MMXM.
+- It is not stated whether one body close kills the breaker permanently or only until reclaimed.
+- The transcript renders 'wicks' as 'weeks'.
+related:
+- breaker-block
+- body-close-confirmation
+- wick-trust-test
+- half-wick-respect
+guest_sources:
+- Day Trading Rauf
+- Live with Day Trading Rauf - Preparing for a New Week
+timeframes:
+  htf:
+  - 4H
+  - 1H
+  ltf:
+  - 15m
+  - 5m
+  - 1m
+  fractal: true
+execution:
+  bias: Direction of the breaker.
+  entry: On the return into the breaker.
+  stop: Not stated.
+  targets:
+  - Not stated.
+contributing_units:
+- live_stream_guests_02
+draft_count: 1
+voice: guest

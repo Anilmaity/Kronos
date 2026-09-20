@@ -1,0 +1,60 @@
+id: relative-strength-asset-selection
+name: "Relative Strength / Weakness Asset Selection"
+aliases: ["weakest asset", "strongest asset", "leading and lagging asset"]
+category: structure
+status: contested
+
+definition: >
+  Among a set of correlated assets, rank them into strongest, middle and weakest,
+  then route the trade to the correct one: short the weakest, long the strongest,
+  and never trade the lagging asset. For the US index futures he states the ranking
+  is structural - YM and NQ sit at opposite ends of the strength spectrum and ES is
+  always the middle, so if YM is strong then NQ is weak and vice versa. The same
+  idea and the same trade can lose on the wrong asset and win on the right one.
+
+timeframes:
+  htf: ["1D", "4H"]
+  ltf: ["15m", "5m", "3m", "1m"]
+  fractal: true
+
+preconditions:
+  - "Two or more genuinely correlated assets are on the screen (he uses YM, ES, NQ together; also gold with a correlated metal, and oil with gasoline)."
+
+detection_rules:
+  - "Step 1 - SMT: check which asset failed to make the corresponding high or low."
+  - "Step 2 - separation / structure: check which asset has traded further from the shared level."
+  - "Step 3 - candle closures: a large bearish closure on one asset against a bullish closure on the correlated asset marks the weak/strong pair."
+  - "Assign strongest / middle / weakest. For the index triad, YM and NQ occupy the two ends and ES the middle."
+  - "If shorting, execute on the weakest. If longing, execute on the strongest."
+  - "Do not execute on the lagging asset even when its own chart looks clean; prefer the leading or the middle asset."
+
+invalidation:
+  - "The strongest asset failing to reverse off a level means the weaker assets should reach for their corresponding level rather than turning - the pairing has not broken, the direction has."
+  - "Strength can switch after a sweep; he states he does not attempt to anticipate a switch and treats it as a reason to stand aside."
+
+execution:
+  bias: "Direction from the higher timeframe framework; the asset choice comes from this ranking."
+  entry: "Two-branch tree: if the weakest asset sweeps its relevant low and reverses aggressively (ideally with SMT), trade the strongest asset long. If it does not reverse, expect the middle and strong assets to follow it down."
+  stop: null
+  targets: ["the corresponding level on the asset actually traded"]
+
+measurable:
+  - "hit rate of the same signal taken on strongest vs weakest vs middle asset"
+  - "frequency with which ES resolves as the middle of the YM/NQ pair"
+  - "frequency of strength switching after a relevant sweep"
+
+sources:
+  - video_id: bMkRomKEunU
+    title: "New York Open Live Q&A"
+  - video_id: wM1s7UivQ08
+    title: "New York Open Live Q&A"
+  - video_id: r7yW6ou1LDs
+    title: "TTrades Sunday Session - Live Q&A"
+
+ambiguities:
+  - "CONTESTED: in bMkRomKEunU YM is central to the triad and he routes trades by it; in r7yW6ou1LDs he says he never watches YM at all and finds it very uncorrelated to ES and NQ. Neither statement is qualified or reconciled."
+  - "'Separation' is judged visually with no threshold."
+  - "No rule is given for how to rank more than three assets, or for metals, where he says he is much less confident."
+
+python_detector: null
+related: ["smt-as-confirmation-not-signal", "liquidity-sweep", "opposing-candle"]

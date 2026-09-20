@@ -1,0 +1,42 @@
+id: est-timezone-anchor
+name: Session Clock Is EST (New York Time)
+definition: 'Every clock time used in this corpus - 8:30, 9:15, 9:30, 9:45, 10:00, 10:30, 11:00 -
+  is New York time. The speaker states the timezone once, explicitly, while telling a viewer where
+  to scrub back to in the stream recording: ''Go to 954 EST on the video.'' The anchor is corroborated
+  structurally: he explains that 9:30 matters because that is when SPY / the normal (US cash) market
+  opens, which is 9:30 New York time.'
+category: time
+status: specified
+aliases:
+- EST
+- New York time
+detection_rules:
+- Interpret every bare clock time in this corpus as America/New_York.
+- 9:30 is the US cash equity open (SPY / NYSE), which fixes the clock to New York.
+- The stream itself starts at 9:15 a.m., fifteen minutes before that open.
+measurable:
+- re-running any session-window backtest under America/New_York vs UTC and comparing trade counts
+sources:
+- video_id: yNgx9OAefuI
+  title: New York Open Live Q&A
+  quote: Go to 954 EST on the video
+- video_id: xraklBJHW5k
+  title: New York Open Live Q&A
+  quote: 9:30 and it's why we have 9:30 volatility
+ambiguities:
+- He says 'EST' literally, not 'EDT' or 'New York time'. Whether he means the fixed UTC-5 offset or
+  the observed US Eastern clock (which is EDT for most of the trading year) is not addressed anywhere
+  in the corpus. The 9:30 = cash-open anchor implies the observed Eastern clock, i.e. America/New_York
+  with DST.
+- He trades CME futures on Ninja Trader with CME data; whether his platform clock is exchange time
+  (CT) shifted to display ET is never stated.
+related:
+- entry-time-window
+- macros-are-htf-opens
+- new-york-intraday-time-levels
+- session-open-volume-nyse
+- killzones
+contributing_units:
+- live_streams_01
+draft_count: 1
+voice: ttrades

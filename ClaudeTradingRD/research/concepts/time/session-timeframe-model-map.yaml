@@ -1,0 +1,67 @@
+id: session-timeframe-model-map
+name: Which Timeframe Model For Which Session (Asia / London / New York AM)
+definition: 'A live-drawn map of which timeframe pair he uses in which session, given in answer
+  to "1-hour 5-minute model for New York AM?". Asia is traded with a daily/hourly model or
+  a 4-hour/15-minute model. London can use any of those, or hourly/5-minute. New York a.m.
+  can use 4-hour/15-minute, hourly/5-minute, or 30-minute/3-minute. The list is explicitly
+  ordered by volatility - volatility increases going down the list from Asia to New York -
+  and the permitted execution timeframe drops as volatility rises.
+
+  '
+category: time
+status: specified
+aliases:
+- 1-hour 5-minute model for New York AM
+- H4 M15
+preconditions:
+- The session being traded is identified.
+detection_rules:
+- 'Asia: daily + hourly model, or 4-hour + 15-minute.'
+- 'London: any of the Asia pairings, or hourly + 5-minute.'
+- 'New York a.m.: 4-hour + 15-minute, or hourly + 5-minute, or 30-minute + 3-minute.'
+- Select within the permitted set by current volatility - higher volatility permits the lower
+  execution timeframe.
+- He names 4-hour / 15-minute as his own preference for Asia and London, and as his favourite
+  pairing generally.
+invalidation:
+- n/a - this is a selection table, not a signal.
+measurable:
+- expectancy by (session, timeframe pair) cell
+- frequency with which each pairing produces a setup per week
+sources:
+- video_id: W7Fu3Rx5iMs
+  title: New York Open Live Q&A
+  quote: Asia usually will do like a just daily H1 model
+- video_id: W7Fu3Rx5iMs
+  title: New York Open Live Q&A
+  quote: London, you can do all of the above, or H1 M5
+- video_id: W7Fu3Rx5iMs
+  title: New York Open Live Q&A
+  quote: New York AM, you can use H4 M15, or H1 M5
+ambiguities:
+- No clock times or timezone are attached to Asia / London / New York in this answer, so the
+  session boundaries must come from elsewhere in the corpus.
+- '"Volatility increases as you go down this list" is asserted, never measured.'
+- Whether 30-minute / 3-minute is permitted outside New York is not stated.
+- He separately says he is "pretty flexible" and does not require the mechanical plan, so
+  the table is a default rather than a constraint.
+related:
+- timeframe-pairing
+- volatility-timeframe-selection
+- killzones
+- entry-time-window
+timeframes:
+  htf:
+  - 1D
+  - 4H
+  - 1H
+  - 30m
+  ltf:
+  - 15m
+  - 5m
+  - 3m
+  fractal: true
+contributing_units:
+- live_streams_03
+draft_count: 1
+voice: ttrades

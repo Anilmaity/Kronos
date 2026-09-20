@@ -1,0 +1,51 @@
+id: hourly-cisd-manipulation-confirmation
+name: "Hourly Change In State Of Delivery As Manipulation Confirmation"
+aliases: ["hourly CISD", "final confirmation of manipulation"]
+category: entry
+status: specified
+
+definition: >
+  The trigger that converts a suspected manipulation into a tradeable weekly profile. After price
+  runs an external level, an hourly candle must close through the opposing candle that dug into
+  that level. Only after that close is the manipulation treated as confirmed and the weekly
+  profile assigned.
+
+timeframes:
+  htf: ["1D", "1W"]
+  ltf: ["1H", "15m", "5m"]
+  fractal: true
+
+preconditions:
+  - "An external high or low has been run."
+  - "Ideally the run coincides with a medium- or high-impact release."
+
+detection_rules:
+  - "Identify the opposing-close candle that traded into the swept level (an up-close candle for a bearish setup)."
+  - "Wait for an hourly candle to close beyond that candle - below it for a bearish setup, above it for a bullish setup."
+  - "The return into the range must be convincing: manipulation should be aggressive and fast; shallow, unconvincing returns into the range are not manipulation."
+  - "On the close, look back at the days so far and assign the weekly profile; from then on trade continuations."
+
+invalidation:
+  - "The return into the range is shallow and unconvincing, or price fails to close through the opposing candle."
+
+execution:
+  bias: "Opposite the swept side."
+  entry: "In the wick following the confirming hourly close (worked example), then at New York open on subsequent days."
+  stop: "Not stated."
+  targets: ["the external level on the opposite side of the range"]
+
+measurable:
+  - "hit rate of continuation after an hourly CISD following an external sweep, split by whether the sweep coincided with a news release"
+  - "how often the confirming close occurs within N hours of the sweep"
+
+sources:
+  - video_id: QmGJFxfSHxM
+    title: "AM Trades | Blending The Economic Calendar, Daily Chart, & Weekly Profiles"
+
+ambiguities:
+  - "'Aggressive and fast and convincing' is a qualitative filter with no measure."
+  - "No maximum delay between the sweep and the confirming hourly close is given."
+  - "Whether the close must be a body close is not stated (though 'close below this up closed candle' implies it)."
+
+python_detector: null
+related: ["weekly-profile-alignment", "consolidation-external-liquidity-only", "valid-structure-flip"]

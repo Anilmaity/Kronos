@@ -1,0 +1,54 @@
+id: low-probability-day-checklist
+name: "Low Probability Day / Session Checklist"
+aliases: ["when not to trade"]
+category: risk
+status: specified
+
+definition: >
+  An enumerated list of conditions under which the session is classified low probability and
+  either skipped or traded only on an A+ setup with reduced risk. The list: Monday with no
+  news (the first day back from the weekend, generally the false move of the week); the day
+  before CPI; the day before NFP; the session before FOMC (the AM session is waiting for the
+  2pm release); a London session that has aggressively taken both the high and the low of
+  the Asia range; a central bank chair speech before or during the session; indecision on
+  the daily bias (trapped order flow); and a higher-timeframe level already met before the
+  session began. First day of the month and first day of the quarter are flagged as
+  manipulation-heavy - not skipped, but requiring more selectivity and less risk.
+
+timeframes:
+  htf: ["1D"]
+  ltf: []
+  fractal: false
+
+preconditions:
+  - "The economic calendar for the week is known."
+
+detection_rules:
+  - "Monday and no scheduled news -> low probability."
+  - "Day before CPI -> low probability."
+  - "Day before NFP -> low probability."
+  - "Session before FOMC -> low probability."
+  - "London took both the Asia high and Asia low aggressively -> low probability."
+  - "Central bank chair speech before or during the session -> low probability."
+  - "Daily bias indecisive / trapped order flow -> low probability."
+  - "HTF draw on liquidity already met before the session -> low probability."
+  - "First day of month or quarter -> tradeable but reduce risk and raise selectivity."
+
+invalidation:
+  - "Not applicable - filter."
+
+measurable:
+  - "expectancy per condition flag over a sample"
+  - "count of sessions skipped per month"
+
+sources:
+  - video_id: G44VpidBD_U
+    title: "NickDoesFutures | Unicorn Model & Experiences With ICT"
+
+ambiguities:
+  - "'Aggressively' taking both Asia extremes is not quantified."
+  - "The list is instrument-specific to index futures (9:30 open, CPI/NFP/FOMC)."
+  - "The speaker still permits A+ setups on most low-probability days, so the flag reduces risk rather than forbidding trading."
+
+python_detector: null
+related: ["valuation-by-speculation", "stuck-orderflow", "weekly-written-game-plan", "driver-pairing-rule"]

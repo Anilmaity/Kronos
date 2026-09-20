@@ -1,0 +1,203 @@
+id: prop-firm-drawdown-sizing
+name: Prop Firm Sizing Off The Drawdown
+definition: 'The one place in this unit where TTrades states a risk principle in his own words,
+  and the guest had just stated its arithmetic counterpart. Trader T''s version: on a prop
+  account you only have the drawdown to play with, so hitting the profit target is effectively
+  doubling the money you actually control. TTrades'' version, offered immediately after and
+  in his own framing: a 25,000 dollar account with a 1,500 dollar drawdown is treated by most
+  people as a 25,000 dollar account when in reality it is a 1,500 dollar account. Trader T''s
+  implementation follows from it - he risks 0.5 percent per trade on funded accounts (having
+  previously used 1 percent and found it too aggressive when only 10 percent of the balance
+  is available), averages roughly 3-7 percent a month on them, and deliberately pushes risk
+  up to about 1 percent during a challenge to get it passed. He was funded with 400k at FTMO
+  plus 300k at a second firm, about 700k total.
+
+  '
+variants:
+  definition:
+  - 'The only place in this unit where risk per trade is given as a number. He frames evaluation
+    sizing as a money-versus-time trade-off and gives three tiers as a percentage of the account''s
+    *drawdown* (not of equity): aggressive, where you do not mind spending money to pass fast,
+    is roughly 20% and may go to 50%; the middle ground is about 7-10% (he first says "five
+    to seven" then corrects to "maybe seven to 10"); conservative is about 5% or below. Worked
+    on his own example of a $1,500 drawdown account, that is roughly $750 aggressive, $150
+    middle, $75 conservative. The stated design constraint behind the conservative end is
+    that sizing should survive about 10 losers in a row without hitting the drawdown, and
+    the middle tier is described as taking about 10 trades to blow up and about 5-10 winners
+    to pass. Separately, on a live account the sizing procedure is stated generically: decide
+    the dollars you are willing to risk, then derive contract size from your stop distance.
+
+    '
+  - 'The same principle stated from the purchasing side rather than the sizing side: the headline
+    account size is not what you are buying. A ''50k'' evaluation whose drawdown is a couple
+    of thousand dollars is really an account of that couple of thousand, and the number that
+    actually matters when comparing offers is the drawdown-to-profit-target ratio - a $3,000
+    profit target against roughly $2,000 of drawdown means the trader must make about 150%
+    on the capital genuinely at risk. He applies the same lens to cost, totalling evaluation
+    fee plus activation fee per firm and noting that a cheaper evaluation is the better buy
+    for anyone likely to fail several attempts.'
+  - 'On a funded/evaluation account the nominal account size is not the capital at risk —
+    the drawdown allowance is. Sizing off the headline number therefore massively understates
+    real risk (1% of a $25,000 account is roughly 1.7% of a $1,500 drawdown). The rule given
+    is to compute risk as a percentage of the DRAWDOWN amount, targeting 7-10% per trade,
+    which leaves roughly 10-15 consecutive losses of runway. Once funded, risk is reduced
+    further to build a cushion. The same logic with different numbers applies to forex prop
+    firms.
+
+    '
+category: risk
+status: contested
+aliases:
+- it's really a fifteen hundred dollar account
+- 0.5 percent on funded
+- risk per trade
+- percent of drawdown
+- money-versus-time tradeoff
+- effective account size
+- drawdown to profit target ratio
+- drawdown-based sizing
+- evaluation risk
+preconditions:
+- The account is a prop / evaluation account with a maximum drawdown much smaller than its
+  nominal balance.
+- An account with a defined maximum drawdown.
+- A stop distance implied by the setup (protected swing) before size is chosen.
+- An evaluation account with a stated drawdown and profit target.
+- A prop account with a stated maximum drawdown.
+detection_rules:
+- Size from the DRAWDOWN, not from the nominal balance - the drawdown is the real account.
+- 'Funded account: 0.5 percent of nominal per trade (Trader T), chosen because 1 percent leaves
+  only about ten losing trades of headroom.'
+- 'Challenge / evaluation: risk may be raised to about 1 percent to pass, and he does push
+  it when the account is only slightly in profit late in the period.'
+- Do not push risk once already above the extension threshold (he cites 5 percent) - the extension
+  makes the gamble unnecessary.
+- 'Expected return on a funded account at 0.5 percent risk: about 3-7 percent per month.'
+- Express risk per trade as a percentage of the account drawdown, not of equity.
+- 'Aggressive (optimising for speed over cost): ~20% of drawdown, up to 50%.'
+- 'Middle: ~7-10% of drawdown; expect ~10 trades to blow up, ~5-10 winners to pass.'
+- 'Conservative (optimising for cost over speed): ~5% of drawdown or below.'
+- 'Sanity check the conservative end: sizing should absorb ~10 consecutive losers without
+  breaching drawdown.'
+- 'On a live account: fix the dollar risk first, then compute contract size from the stop
+  distance.'
+- effective_capital := max_drawdown, NOT the nominal account size.
+- required_return := profit_target / max_drawdown (his example is roughly 150%).
+- Compare offers on required_return and on total cost = evaluation fee + activation fee.
+- If several failed attempts are likely, weight the evaluation fee more heavily than the activation
+  fee.
+- effective_capital := max_drawdown (NOT the nominal account size).
+- risk_per_trade := 7% to 10% of effective_capital during an evaluation.
+- 'Sanity check: consecutive_losses_to_failure = effective_capital / risk_per_trade, target
+  10-15.'
+- 'Worked example: a $25k account with $1,500 drawdown; risking 1% of $25,000 = ~1.7% of the
+  drawdown, and six or seven losses blow it.'
+- After funding, reduce risk below the evaluation level.
+invalidation:
+- Not applicable.
+- Not applicable — this is a sizing policy.
+- Any sizing or comparison derived from the nominal account balance.
+- Any sizing derived from the nominal account balance rather than the drawdown.
+measurable:
+- risk per trade expressed as a fraction of the DRAWDOWN rather than of the balance
+- probability of ruin at 0.5 percent versus 1 percent of nominal given the firm's drawdown
+  cap and the measured win rate
+- pass rate of challenges run at 1 percent versus 0.5 percent
+- probability of breaching drawdown at each tier given a measured win rate and R
+- expected cost and expected time to pass at each tier
+- realised maximum consecutive-loss run versus the 10-loser assumption
+- expected total cost to reach a payout at each firm given a measured win rate and R
+- probability of achieving required_return before breaching max_drawdown
+- simulated probability of hitting the drawdown limit at 7% vs 10% vs 1%-of-nominal, given
+  a strategy's win rate and R
+- expected number of trades to pass an evaluation at each risk level
+sources:
+- video_id: wCtxmWe4KNc
+  title: Back Testing Live Session With Trader T
+  quote: when in reality it's a fifteen hundred dollar account
+- video_id: wCtxmWe4KNc
+  title: Back Testing Live Session With Trader T
+  quote: you only actually have 10 to play with
+- video_id: wCtxmWe4KNc
+  title: Back Testing Live Session With Trader T
+  quote: for my funded accounts I only risk point five percent per trade
+- video_id: wCtxmWe4KNc
+  title: Back Testing Live Session With Trader T
+  quote: I usually average like three to seven percent per month
+- video_id: wCtxmWe4KNc
+  title: Back Testing Live Session With Trader T
+  quote: for challenges I risk one percent
+- video_id: m8xcjkOuBHU
+  title: New York Open Live Q&A
+  quote: risk where you can have, you know, those 10 losers in a row
+- video_id: TjUolMJNCMY
+  title: New York Open Live Q&A
+  quote: you decide how many dollars you want to risk on a trade
+- video_id: dtsrR8dX2Ro
+  title: Intro To Futures Trading & Prop Firms
+  quote: it's not actually a 50k account
+- video_id: dtsrR8dX2Ro
+  title: Intro To Futures Trading & Prop Firms
+  quote: the other important thing to note is the draw down to profit Target ratio
+- video_id: 0OjlQ91TZiU
+  title: Position Sizing For Trading - Futures & Forex
+  quote: I'm not looking to risk 1% of the overall account size
+ambiguities:
+- The 25,000 / 1,500 framing is TTrades' own statement; the '10 percent to play with' arithmetic
+  immediately preceding it is Trader T's. They converge on air, but the transcript has no
+  speaker labels, so the exact turn boundary is inferred from context - TTrades introduces
+  the point with 'I was just gonna say to go along with accounts'.
+- Raising risk during a challenge is stated as personal practice and is in tension with the
+  same speaker's own drawdown-is-the-account logic; the tension is not addressed.
+- The percentages are of nominal balance, not of drawdown, so the sizing rule and the framing
+  principle are stated in different units.
+- The second firm is named only in garbled caption form ('my 4x1'), so only the FTMO 400k
+  figure is reliably attributable.
+- The tiers are drawn on a whiteboard-style curve as illustration, not stated as prescriptions;
+  he says explicitly 'it's not oh you need to risk this amount'.
+- He self-corrects the middle tier mid-sentence (five-to-seven then seven-to-ten), so the
+  middle band is soft.
+- The 10-losers-in-a-row constraint is asserted, not derived from a stated win rate.
+- No equivalent percentage is ever given for a personal (non-prop) account.
+- The dollar figures are garbled by the auto-captioner ('$2,000 000 draw down', 'it's really
+  a $22,000 account'); the ratio argument survives but the exact drawdown figure for the 50k
+  tier is not reliably recoverable from the transcript. The $3,000 profit target and the 150%
+  figure are stated clearly.
+- The firm-by-firm fee table is on screen only; the spoken figures ($95, ~$177, $49 + $149
+  ~ $200) are partial and date-specific.
+- No risk-per-trade percentage is given in this video - that comes from other units under
+  this id.
+- The post-funding risk reduction is not quantified.
+- Trailing versus static drawdown (a major difference between prop firms) is not addressed.
+- Daily loss limits, which usually bind before the total drawdown, are not mentioned.
+- The 7-10% band is asserted from the losses-in-a-row arithmetic only; no expectancy or ruin-probability
+  calculation is shown.
+related:
+- position-sizing-fixed-risk
+- realistic-r-expectations
+- risk-limits-and-trade-frequency
+- eval-vs-funded-mindset
+- position-sizing
+- stop-loss-placement
+- max-one-trade-per-day
+- prop-firm-drawdown-types
+- prop-account-scaling-plan
+guest_sources:
+- Back Testing Live Session With Trader T
+- Trader T
+timeframes:
+  htf: []
+  ltf: []
+  fractal: false
+execution:
+  bias: Not applicable.
+  entry: Not applicable.
+  stop: Not applicable.
+  targets: []
+contributing_units:
+- live_stream_guests_01
+- live_streams_02
+- resources_01
+- the_foundation_01
+draft_count: 4
+voice: mixed

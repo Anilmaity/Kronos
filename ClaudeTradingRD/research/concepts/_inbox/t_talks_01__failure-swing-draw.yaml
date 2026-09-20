@@ -1,0 +1,50 @@
+id: failure-swing-draw
+name: "Failure Swing Sets The Draw"
+aliases: ["failure swing high", "failure swing low"]
+category: structure
+status: specified
+
+definition: >
+  When price returns toward a prior extreme and fails to make a new high (or low), the swing that
+  failed is a failure swing, and the lows (or highs) that produced it become the draw on price.
+  Failure to extend is read as the prior extreme being defended and the opposite side being weak.
+
+timeframes:
+  htf: ["1D", "4H"]
+  ltf: ["15m", "5m", "1m"]
+  fractal: true
+
+preconditions:
+  - "Price has retraced toward a prior swing extreme."
+
+detection_rules:
+  - "If price approaches the prior high and turns without exceeding it, mark the swing as a failure swing high."
+  - "The lows that produced that failure swing become the anticipated draw."
+  - "Confirm on a lower timeframe: a close above then a close below inside the retrace (an internal flip) indicates the failure swing is being established."
+  - "Once established, measure the total range of the failure swing and expect the retracement percentages (30 / 50 / 70) to be respected on the way to the draw."
+  - "Mirror for a failure swing low."
+
+invalidation:
+  - "Price makes the new high after all - the swing was not a failure swing."
+
+execution:
+  bias: "Toward the lows (or highs) that produced the failure swing."
+  entry: "Via the GB levels anchored on the failure swing range."
+  stop: "Beyond the failure-swing extreme."
+  targets: ["the weak low or weak high on the other side"]
+
+measurable:
+  - "how often the failure-swing draw is reached before the failed extreme is exceeded"
+  - "time to reach the draw after the internal flip confirms"
+
+sources:
+  - video_id: gjoRPszj-Qk
+    title: "AP | Use Market Structure & Fibonacci Levels for Sniper Entries"
+
+ambiguities:
+  - "How close price must come to the prior extreme to count as a failure rather than an unrelated swing is not stated."
+  - "The 30 / 50 / 70 percentages are mentioned in passing as retracement expectations and are not the same set as the GB levels; their relationship is not explained."
+  - "The confirming internal flip is acknowledged to look messy on the working timeframe and to need a lower timeframe, with no rule for which."
+
+python_detector: null
+related: ["valid-structure-flip", "gb-levels", "smt-divergence-confluence"]

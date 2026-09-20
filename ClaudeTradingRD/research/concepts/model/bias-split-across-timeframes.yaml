@@ -1,0 +1,67 @@
+id: bias-split-across-timeframes
+name: Bias Can Be Opposite On Higher And Lower Timeframes
+definition: 'An explicit statement that the higher-timeframe bias and the tradeable lower-timeframe
+  bias can point in opposite directions at the same time, and that this is normal rather than
+  a contradiction. The construction: overall he is bullish to an upside target, but he first
+  requires a move DOWN to take resting liquidity - therefore he is bearish on the daily and
+  lower timeframes UNTIL that liquidity is grabbed, and bullish immediately after. He states
+  the practical payoff twice: it lets you trade the leg you are actually in, and it means
+  a wrong directional call still does not put you in trades you should not be in, because
+  you are trading to and from liquidity either way. The conservative alternative is offered
+  in the same breath - simply wait for the liquidity to be grabbed and only trade the bullish
+  leg.'
+category: model
+status: specified
+aliases:
+- bearish until this liquidity is grabbed
+preconditions:
+- An overall directional target (e.g. equal highs above) has been identified.
+- Untaken liquidity exists on the opposite side, between price and the target.
+detection_rules:
+- Identify the overall target (e.g. relatively equal highs) - that is the higher-timeframe
+  bias.
+- Identify untaken liquidity on the opposite side that price is expected to take first.
+- Until that liquidity is taken, run the OPPOSITE bias on the daily and lower timeframes.
+- Once it is taken, flip to the higher-timeframe direction.
+- 'Conservative variant: skip the first leg entirely and wait for the grab.'
+invalidation:
+- Price reaches the overall target without taking the intervening liquidity.
+measurable:
+- how often the intervening liquidity is taken before the overall target is reached
+- P&L of trading both legs vs waiting for the grab and trading only the second
+sources:
+- video_id: tZMgGsTqqVM
+  title: ICT Daily Bias
+  quote: i am bearish until this liquidity is grabbed and then back to being bullish
+- video_id: tZMgGsTqqVM
+  title: ICT Daily Bias
+  quote: even if your bias is wrong
+ambiguities:
+- No rule bounds how far the counter-trend leg may extend before the overall bias is abandoned.
+- '''The lower time frames'' is not pinned to specific timeframes here (hourly and 15m are
+  the examples).'
+- The claim that a wrong bias still keeps you out of bad trades is asserted, not demonstrated.
+related:
+- daily-bias-framework
+- draw-on-liquidity
+- internal-external-rotation
+- liquidity-grab
+- point-of-interest
+timeframes:
+  htf:
+  - 1D
+  ltf:
+  - 1H
+  - 15m
+  fractal: true
+execution:
+  bias: Opposite the overall target until the intervening liquidity is taken, then with it.
+  entry: A false move up to grab liquidity, distributed lower - then the reverse.
+  stop: Beyond the liquidity being grabbed.
+  targets:
+  - The intervening liquidity pool
+  - then the overall target
+contributing_units:
+- education_ict_01
+draft_count: 1
+voice: ttrades

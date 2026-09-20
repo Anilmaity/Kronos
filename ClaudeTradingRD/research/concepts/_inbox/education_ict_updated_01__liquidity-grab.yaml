@@ -1,0 +1,49 @@
+id: liquidity-grab
+name: Liquidity Grab
+aliases:
+- stop raid
+- stop rate
+category: liquidity
+status: specified
+definition: 'A liquidity grab is, in his words, a failure to displace over structure: price reaches
+  over an old high (or under an old low), does not produce aggressive candles closing outside it, and
+  comes back in. It is contrasted directly with a market structure shift, which is a sweep FOLLOWED
+  BY displacement that closes beyond the level.'
+timeframes:
+  htf:
+  - 4H
+  - 1H
+  ltf:
+  - 15m
+  - 5m
+  - 1m
+  fractal: true
+detection_rules:
+- Price trades through a prior swing high/low.
+- No large aggressive candle closes beyond that level; price closes back inside.
+- Classify as grab (not shift). Look to the opposite side of the range for the draw.
+invalidation:
+- A subsequent aggressive close beyond the level reclassifies it as a market structure shift.
+measurable:
+- ratio of grabs to shifts at swept swings, per timeframe
+sources:
+- video_id: ynFA6E3qHj0
+  title: Market Structure Shift vs Liquidity Grab
+  quote: a liquidity grab simply put is a failure to displace over structure
+- video_id: ynFA6E3qHj0
+  title: Market Structure Shift vs Liquidity Grab
+  quote: Market structure shift is when we get a sweep and then that large displacement candle
+- video_id: 0xygpCMwxbQ
+  title: A+ ICT Entry Checklist
+  quote: I prefer to have a stop rate prior to the displacement
+ambiguities:
+- The transcript renders 'stop raid' as 'stop rate' throughout; both refer to the sweep.
+- The classification is decidable only after the candle closes; no intra-candle rule is given.
+related:
+- failure-to-displace
+- market-structure-shift
+- inducement-equals-sweep
+voice: ttrades
+contributing_units:
+- education_ict_updated_01
+draft_count: 1

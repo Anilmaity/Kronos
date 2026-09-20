@@ -1,0 +1,53 @@
+id: stop-loss-placement
+name: "Stop Loss Placement (Swing vs Zone)"
+aliases: ["stop placement", "invalidation point"]
+category: risk
+status: specified
+
+definition: >
+  Across the entry videos there are exactly two candidate stop locations: the swing high/low
+  that defines the setup, or the far end of the PD array being entered (order block low,
+  breaker low). The trade-off is stated explicitly: the zone stop gives better risk-to-reward
+  but can be wicked out while the trade is still structurally valid; the swing stop is safer but
+  pushes fixed-R targets further away. The speaker's own stated preference is to keep the stop
+  at the swing and instead move the ENTRY closer to invalidation (via the mean threshold or an
+  overlapping fair value gap) rather than moving the invalidation closer to the entry.
+
+timeframes:
+  htf: ["1D", "1H"]
+  ltf: ["15m", "5m", "1m"]
+  fractal: true
+
+preconditions:
+  - "An entry pattern (order block, breaker, CISD, OTE) with an identified swing extreme and zone."
+
+detection_rules:
+  - "stop_swing := beyond the swing high/low that the setup swept or formed."
+  - "stop_zone := beyond the far edge of the order block / breaker being entered."
+  - "Preference stated in the order block video: use stop_swing and improve R:R by moving the entry (mean threshold, fair value gap edge)."
+  - "The breaker video leaves the choice to the user and demonstrates one case where stop_swing would have missed the target and then been hit, and another where stop_zone produced a much better R:R."
+  - "In the CISD entry model the stop is specifically the manipulation extreme."
+  - "Minimum acceptable risk-to-reward across the unit is 2R; entries are refined until that is met."
+
+invalidation:
+  - "n/a"
+
+measurable:
+  - "share of winning trades whose adverse excursion would have hit stop_zone but not stop_swing"
+  - "expectancy of the same signal set under each stop rule"
+
+sources:
+  - video_id: DMUiDBnTYc8
+    title: "Order Blocks Simplified - ICT Concepts"
+  - video_id: 75S4vwD4P1U
+    title: "Breaker Blocks Simplified - ICT Concepts"
+  - video_id: CHIK5oBRKiw
+    title: "Change In State Of Delivery [CISD] - Orderblock Formation - ICT Concepts"
+
+ambiguities:
+  - "The two videos give opposite emphases: the order block video prefers the swing stop as a principle, the breaker video calls it user discretion and shows the zone stop outperforming. Neither is presented as overriding — this is genuine unresolved discretion, not a contradiction of fact."
+  - "No buffer is specified beyond the swing or zone (ticks, points, ATR)."
+  - "No rule for moving to breakeven, partials, or trailing, other than one mention of leaving runners."
+
+python_detector: null
+related: ["order-block", "breaker-block", "mean-threshold", "position-sizing-fixed-risk", "cisd-entry-model"]

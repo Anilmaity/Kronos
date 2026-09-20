@@ -1,0 +1,67 @@
+id: protected-swing
+name: "Protected Swing (the invalidation level)"
+aliases: ["protected high", "protected low"]
+category: structure
+status: specified
+
+definition: >
+  Two viewer questions in this unit pin down properties of the protected swing that the
+  lesson videos leave open. First, duration: asked how long a protected high or low stays
+  protected, he says every protected swing in a sequence stays protected until the opposing
+  extreme - the high the sequence is trading toward - is taken out. Once that high is taken,
+  the protection lapses, and the pattern he then expects is that price runs back through a
+  former protected swing and forms a continuation there, often around the equilibrium.
+  Second, quality: a low is not a protected swing merely because price closed over it. He
+  rejects a candidate because of how long it took to form - by the time price took out the
+  high above it, the structure read as a consolidation range rather than a protected swing.
+
+timeframes:
+  htf: ["1D", "4H", "1H"]
+  ltf: ["15m", "5m"]
+  fractal: true
+
+preconditions:
+  - "A swing low (or high) with a close over (under) it."
+
+detection_rules:
+  - "Each protected swing in a sequence remains protected until the opposing extreme it is trading toward is taken out."
+  - "Once that opposing extreme is taken, treat the protection as lapsed and expect price to run back through the former protected swing and form a continuation, frequently near the equilibrium."
+  - "Reject a candidate protected swing that took a long time to form relative to the move: if price consumed many candles between forming it and taking the opposing extreme, read it as a consolidation range instead."
+  - "A protected swing formed on a lower timeframe before the open of the higher-timeframe candle is what produces a candle 3 that opens with no wick."
+
+invalidation:
+  - "Price trades beyond the protected swing."
+
+execution:
+  bias: "Away from the protected swing."
+  entry: "Continuation formed at or after the protected swing."
+  stop: "Beyond the protected swing."
+  targets: ["the opposing extreme"]
+
+measurable:
+  - "hold rate of protected swings, measured until the opposing extreme is taken"
+  - "frequency of the run-back-through-then-continuation pattern after protection lapses, and how often it lands within x% of the EQ"
+  - "difference in hold rate between fast-forming and slow-forming protected swings"
+
+sources:
+  - video_id: i2HhHhWdaPQ
+    title: "New York Open Live Q&A"
+    quote: "These all are protected until when till this high is taken out"
+  - video_id: eIPM-D8RrSQ
+    title: "New York Open Live Q&A"
+    quote: "it's more of a consolidation range than an actual protected swing to me"
+  - video_id: x4sRGuZIqWk
+    title: "New York Open Live Q&A"
+    quote: "lower time frame protected swing prior to the open of the higher"
+
+ambiguities:
+  - "'Took how long to form' is the disqualifier but no candle count or time threshold is given."
+  - "The run-back-then-continuation pattern is said to happen 'a lot of times' and 'kind of advanced', with the EQ location given as a tendency, not a rule."
+  - "Whether protection lapses for all swings in the sequence at once, or only for those below the taken extreme, is not stated."
+
+python_detector: null
+related: ["swing-point", "breakeven-after-new-protected-swing", "equilibrium-eq", "fractal-model-c3", "clean-day-criteria"]
+
+contributing_units: ["live_streams_04"]
+draft_count: 1
+voice: ttrades

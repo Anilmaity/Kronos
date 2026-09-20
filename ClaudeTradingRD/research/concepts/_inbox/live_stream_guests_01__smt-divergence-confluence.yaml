@@ -1,0 +1,70 @@
+id: smt-divergence-confluence
+name: "SMT Divergence As Confluence"
+aliases: ["divergence", "SMT on the higher timeframe"]
+category: liquidity
+status: specified
+voice: guest
+guest_sources:
+- "Finessee_Fx"
+- "Ben (Ben TT)"
+
+definition: >
+  Both guests in this unit demote SMT from a signal to a confirmation, and both give the same
+  reason. Finessee_Fx warns explicitly against the habit of hunting SMT on the 1-minute and
+  5-minute all day - he says that is exactly what he did when Michael (ICT) first taught him
+  divergences and it got him burned - and demonstrates SMT instead on a WEEKLY candle, where EURUSD
+  filled its weekly fair value gap and tagged its weekly order block while the Dollar Index never
+  traded below its own low, never hit its block and never filled its gap. Ben says he definitely
+  uses SMT but that it is explicitly not a leading indication for him - it is a secondary
+  confluence, checked in zones, using SPY against NASDAQ and DXY against the majors.
+
+timeframes:
+  htf: ["1W", "1D"]
+  ltf: ["1H", "5m", "1m"]
+  fractal: true
+
+preconditions:
+- "A correlated reference instrument is chosen: Finessee_Fx uses the Dollar Index against EURUSD; Ben uses SPY against NASDAQ and DXY against AUDUSD / EURUSD / GBPUSD."
+- "A zone / PD array is already in play - Ben checks SMT only in zones, not continuously."
+
+detection_rules:
+- "Compare the two instruments at the same PD array: one makes the higher high (or lower low) and reaches / fills its array while the other fails to."
+- "Finessee_Fx's worked form: the primary filled its weekly fair value gap and hit its weekly order block; the reference never traded below its low, never hit the block and never filled the gap - the reference is therefore failing to make the lower low, which shows the aggression."
+- "Do NOT trade the divergence on its own - it is confirmation for a setup that already exists (Ben: secondary confluence, not leading)."
+- "Finessee_Fx's negative rule: hunting divergences on the 1-minute and 5-minute all day is the failure mode, not the method."
+
+invalidation:
+- "The lagging instrument catches up and reaches its own array - the divergence is gone."
+
+execution:
+  bias: "Toward the instrument showing strength / away from the one failing."
+  entry: "Not set by SMT - it grades an entry produced by another rule."
+  stop: "Not set by SMT."
+  targets: []
+
+measurable:
+- "expectancy of the same entries with and without an SMT confirmation, split by the timeframe the SMT is read on"
+- "false-positive rate of 1-minute and 5-minute SMT versus weekly SMT (Finessee_Fx's warning, made testable)"
+
+sources:
+- video_id: eK_6wgNpNh0
+  title: "Advanced ICT Directional Bias Teachings with Finessee_Fx"
+  quote: "let's go ahead and take a trade that would get burned"
+- video_id: yRmKkR4CojU
+  title: "Fractalizing Entries -Q&A with Ben - ICT Concepts"
+  quote: "it is not a leading indication for me"
+- video_id: yRmKkR4CojU
+  title: "Fractalizing Entries -Q&A with Ben - ICT Concepts"
+  quote: "it is a secondary confluence for me"
+
+ambiguities:
+- "Neither speaker gives a timeframe floor below which SMT should be ignored - Finessee_Fx warns about 1m and 5m but never rules them out formally."
+- "Ben says he checks SMT 'in zones' without defining how large a zone or how long the window is."
+- "Neither states what to do when the SMT and the setup disagree."
+- "A third guest in this unit (Trader T) simply cannot run SMT in his backtesting software because it will not display DXY alongside the pair, so his SMT rules are untested in his own sample."
+
+python_detector: null
+related: ["smt-as-confirmation-not-signal", "smt-divergence", "dollar-gate-for-fx", "correlated-triads"]
+contributing_units:
+- live_stream_guests_01
+draft_count: 1

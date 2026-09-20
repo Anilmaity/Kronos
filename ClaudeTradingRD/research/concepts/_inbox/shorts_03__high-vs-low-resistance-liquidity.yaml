@@ -1,0 +1,98 @@
+id: high-vs-low-resistance-liquidity
+name: "High Resistance vs Low Resistance Liquidity"
+category: liquidity
+status: specified
+
+definition: >
+  A dedicated Short gives the cleanest structural definition in the corpus plus the operational
+  assignment the library was missing. HIGH RESISTANCE liquidity: a swing high or low with
+  liquidity resting on it that is then SWEPT as price reverses, leaving liquidity resting on
+  the new high or low. LOW RESISTANCE liquidity: the same swing high or low with liquidity
+  resting on it, except price FAILS to reach up and sweep it, so liquidity builds up there -
+  these are the failure swings. The assignment: low resistance liquidity (the failure swings)
+  is what you TARGET; high resistance liquidity (the sweeps) is where you put your STOP LOSS. A
+  companion Short shows the manufacturing step - inside a consolidation he waits for a purge of
+  the low specifically in order to CREATE high resistance liquidity to sit behind, and then
+  expects expansion through the low resistance liquidity above.
+
+timeframes:
+  htf: ["1D", "4H", "1H"]
+  ltf: ["15m", "5m"]
+  fractal: true
+
+preconditions:
+  - "Identified swing highs and lows with liquidity resting on them."
+
+detection_rules:
+  - "Classify each swing: was its liquidity swept as price reversed (HIGH resistance), or did
+    price fail to reach it, leaving a buildup (LOW resistance / failure swing)?"
+  - "Target selection: use low resistance liquidity - the failure swings - as targets."
+  - "Stop placement: use high resistance liquidity - the sweeps - as the stop-loss location."
+  - "Manufacturing step in a consolidation: wait for a purge of the low to create high
+    resistance liquidity, then take the bullish candle closure and expect expansion through the
+    low resistance liquidity above."
+  - "Sequence read: expansion, consolidation, manipulation, expansion - the manipulation is the
+    step that creates the high resistance side."
+  - "Precondition before targeting the failure swings: wait for price to shift bullish (the
+    change in the state of delivery), do not front-run it."
+
+invalidation:
+  - "Not stated as such; the classification changes when the untouched level is finally swept,
+    which converts low resistance into high resistance."
+
+execution:
+  bias: "Toward the low resistance side."
+  entry: "On the bullish candle closure / change in the state of delivery after the purge."
+  stop: "Beyond the high resistance liquidity (the swept extreme)."
+  targets:
+    - "the failure swings (low resistance liquidity)"
+
+measurable:
+  - "hit rate of failure-swing targets vs already-swept-level targets"
+  - "stop-out rate for stops placed beyond swept extremes vs beyond unswept ones"
+  - "how often a consolidation purges one side before expanding through the other"
+
+sources:
+  - video_id: EuW3h0gKZKw
+    title: "The Importance of High vs Low Resistance Liquidity"
+    quote: "I want to use low resistance liquidity or these failure swings as a target"
+  - video_id: EuW3h0gKZKw
+    title: "The Importance of High vs Low Resistance Liquidity"
+    quote: "use high resistance liquidity or these sweeps as a spot for my stop-loss"
+  - video_id: EuW3h0gKZKw
+    title: "The Importance of High vs Low Resistance Liquidity"
+    quote: "price fails to reach up and sweep out that liquidity"
+  - video_id: kWKo5Mu0ANQ
+    title: "Trading the Buyside of the Curve"
+    quote: "I want to wait for a purge of the low to create high resistance liquidity"
+  - video_id: kWKo5Mu0ANQ
+    title: "Trading the Buyside of the Curve"
+    quote: "we first want to wait for price to shift to bullish"
+
+ambiguities:
+  - "This is the SWING-LEVEL sense of the terms. The library also carries a market-condition
+    sense from the live streams (daily set up to expand = low resistance conditions). These
+    Shorts use only the swing-level sense and never mention the conditions sense; the two are
+    still unreconciled."
+  - "'Fails to reach up and sweep out that liquidity' has no time bound - how long a level must
+    stand unswept before it counts as low resistance is not stated."
+  - "No rule is given for choosing among several failure swings when more than one is available
+    as a target."
+  - "Whether the stop goes at the swept extreme or some distance beyond it is not stated."
+  - "The corpus's auto-captions render 'reach' as 'wretch' elsewhere; here the word survives
+    intact in the cited quote."
+
+related:
+  - failure-swing
+  - liquidity-sweep
+  - buyside-sellside-liquidity
+  - low-expectation-target-selection
+  - stop-loss-placement
+  - consolidation-phase
+  - phases-of-price
+  - relatively-equal-highs-lows
+
+python_detector: null
+voice: ttrades
+contributing_units: [shorts_03]
+draft_count: 1

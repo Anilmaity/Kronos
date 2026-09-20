@@ -1,0 +1,71 @@
+id: killzone-execution-sequence
+name: Kill Zone Execution Sequence
+definition: 'A four-step gate between a higher-timeframe point of interest and an entry. Refine
+  the daily PD array into an H1 point of interest; wait for price to reach it during a kill
+  zone (London or New York only - Asia is skipped); require a sweep of the opposing liquidity
+  at that level; then require a lower-timeframe change in order flow. The change in order
+  flow is read the same way as on the daily: an M15/M5 dealing range forms, opposing fair
+  value gaps are disrespected and overlap into a balanced price range, and an order block
+  that fails becomes a breaker. The first entry is taken at the balanced price range, a second
+  is added on the close through the order block turned breaker, and the first position''s
+  stop is moved to break-even at that point.
+
+  '
+category: entry
+status: specified
+aliases:
+- POI plus killzone plus sweep plus LTF orderflow change
+preconditions:
+- A daily bias with a confirmed draw exists.
+- A daily PD array has been refined into an H1 point of interest.
+- The session is London or New York.
+detection_rules:
+- Price trades into the H1 point of interest during a kill zone.
+- The opposing liquidity (session highs/lows, previous day high/low, Monday high/low) is swept.
+- 'A lower-timeframe change in order flow occurs: opposing gaps disrespected, balanced price
+  range formed.'
+- Entry 1 at the M15/M5 balanced price range; stop above the London/session high.
+- Entry 2 on the close through the order block turned breaker, stop at the same level as entry
+  1.
+- Move entry 1 to break-even once the breaker close occurs.
+- A bearish breaker should not see a close above its EQ.
+invalidation:
+- A close above the balanced price range (bearish case) returns bias to neutral.
+measurable:
+- R distribution of first entry vs the breaker add
+- frequency with which all four gates are satisfied per week
+sources:
+- video_id: JABOO4LYNjQ
+  title: Jokerszn | Daily Orderflow - ICT Daily Bias
+ambiguities:
+- Kill zone clock times are never stated; only 'London session' and 'New York session'.
+- Position sizing across the two entries is not specified.
+- Whether the news event in the worked example is a requirement or a convenience is not clarified.
+related:
+- balanced-price-range-overlap
+- daily-wick-as-balanced-price-range
+- monday-range-marker
+- unicorn-entry-model
+timeframes:
+  htf:
+  - 1D
+  - 1H
+  ltf:
+  - 15m
+  - 5m
+  - 1m
+  fractal: true
+execution:
+  bias: Daily bias direction.
+  entry: M15/M5 balanced price range, then the order-block-turned-breaker.
+  stop: Above the session high used for the sweep; the worked examples used 13 and 25 pips.
+  targets:
+  - previous session lows (Asia, Monday)
+  - previous week lows
+  - the daily draw
+contributing_units:
+- t_talks_02
+draft_count: 1
+voice: guest
+guest_sources:
+- Jokerszn | Daily Orderflow - ICT Daily Bias

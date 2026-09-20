@@ -1,0 +1,49 @@
+id: external-range-liquidity
+name: External Range Liquidity
+aliases:
+- external liquidity
+- ERL
+category: liquidity
+status: specified
+definition: 'External range liquidity is a swing high or a swing low. Stated as flatly as the internal
+  definition, and used in the examples as the outer target of the range: a 4-hour swing high, a previous
+  week high, or a pair of equal highs all serve as external range liquidity.'
+timeframes:
+  htf:
+  - 1W
+  - 1D
+  - 4H
+  ltf:
+  - 1H
+  - 15m
+  fractal: true
+preconditions:
+- A confirmed swing high or swing low bounding the working range.
+detection_rules:
+- external_range_liquidity := the nearest untaken swing high (upside) or swing low (downside).
+- Previous week / previous day extremes are used as external liquidity alongside intraday swings.
+- Equal highs or equal lows count as external range liquidity.
+- It becomes the draw once internal range liquidity has been reached and respected.
+invalidation:
+- Price trading through the swing consumes it.
+measurable:
+- hit rate of external liquidity being reached after an FVG is respected
+- distance in R from the FVG reaction to the external target
+sources:
+- video_id: TfHlNgAZ_II
+  title: Trading IRL & ERL With Order Blocks! - ICT Concepts
+  quote: external range liquidity is just a swing high or a swing low
+ambiguities:
+- Which swing bounds 'the range' is judged visually; nested swings are not filtered.
+- No rule ties the timeframe of the external swing to the timeframe of the internal gap - one example
+  pairs a 4H gap with a previous-week high.
+related:
+- internal-range-liquidity
+- internal-external-rotation
+- swing-point
+- previous-period-high-low
+python_detector: null
+contributing_units:
+- education_ict_updated_02
+draft_count: 1
+voice: ttrades

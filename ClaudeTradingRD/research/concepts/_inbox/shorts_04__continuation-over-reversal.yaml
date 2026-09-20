@@ -1,0 +1,50 @@
+id: continuation-over-reversal
+name: "Continuation-Only Doctrine"
+category: model
+status: specified
+definition: >
+  The doctrine compressed into its shortest form: trading continuations is far easier than
+  trading reversals. The Short then shows the mechanism that makes it so - the reversal (candle
+  2) is allowed to complete and be confirmed by a change in the state of delivery first, and only
+  then is candle 3 traded, with the entry taken on the close of the intracandle protected swing
+  and the stop on that protected low.
+
+timeframes:
+  htf: ["1D", "4H"]
+  ltf: ["1H", "15m", "5m"]
+  fractal: true
+
+detection_rules:
+  - "Let candle 2 form and require its change in the state of delivery before considering any entry."
+  - "Take the trade in candle 3 as a continuation, not in candle 2 as a reversal."
+  - "Inside candle 3, require a sweep of a short-term low and a close over the series of down-close candles that swept it."
+  - "Enter on that close, stop on the protected low, target 2R."
+
+invalidation:
+  - "The protected low created inside candle 3 is taken out."
+
+measurable:
+  - "win rate of C3 continuation entries vs C2 reversal entries"
+  - "share of taken trades that are continuations"
+
+sources:
+  - video_id: yZVevl-tMHA
+    title: "Why Trading Continuations Is Easier Than Reversals"
+    quote: "Trading continuations is far easier than trading reversals."
+  - video_id: yZVevl-tMHA
+    title: "Why Trading Continuations Is Easier Than Reversals"
+    quote: "That means it's valid to look for continuations in candle three."
+  - video_id: U1NJUh1RqMw
+    title: "Why You Need a Small Wick to Confirm a C2 Reversal"
+    quote: "I can look to take an entry on the close, my stop on the low"
+
+ambiguities:
+  - "'Far easier' is asserted with no win-rate or expectancy figure attached."
+  - "The captions render '2R' as 'two hour' throughout this Short; the target is 2R."
+
+python_detector: null
+related: ["fractal-model-c3", "wick-scenario-difficulty-ladder", "protected-swing"]
+
+voice: ttrades
+contributing_units: [shorts_04]
+draft_count: 1

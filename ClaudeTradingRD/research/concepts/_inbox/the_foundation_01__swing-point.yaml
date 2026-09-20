@@ -1,0 +1,52 @@
+id: swing-point
+name: "Swing High / Swing Low"
+aliases: ["swing point", "swing high", "swing low", "old high", "old low"]
+category: structure
+status: specified
+
+definition: >
+  A swing low is a low that has a higher low immediately to its left and a higher low
+  immediately to its right; a swing high is a high that has a lower high immediately to its
+  left and a lower high immediately to its right. The swing is only readable once the
+  right-hand bar exists, so identification always lags by at least one bar. Swing points are
+  the anchors for every other primitive in this corpus: liquidity pools sit beyond them,
+  ranges are drawn between them, and fib/OTE tools are anchored to them.
+
+timeframes:
+  htf: ["1M", "1W", "1D", "4H", "1H"]
+  ltf: ["15m", "5m", "1m"]
+  fractal: true
+
+preconditions:
+  - "At least three consecutive bars exist."
+
+detection_rules:
+  - "swing_low(i) := low[i] < low[i-1] AND low[i] < low[i+1]."
+  - "swing_high(i) := high[i] > high[i-1] AND high[i] > high[i+1]."
+  - "A swing at index i may only be used from bar i+1 onward (the right-hand bar must have closed)."
+  - "If a subsequent low fails to trade below the prior swing low, treat the two as one pool (see relatively-equal-highs-lows)."
+
+invalidation:
+  - "The swing low is 'taken' / 'swept' once price trades below it; the speaker then stops tracking it and moves attention to the next swing in that direction."
+
+measurable:
+  - "count of raw 3-bar swings per session vs count the speaker actually annotates (measures the size of the discretionary filter)"
+  - "median bars between a swing forming and being swept"
+
+sources:
+  - video_id: U8xH2dEgH5A
+    title: "Liquidity: Buyside & Sellside - ICT Concepts"
+    quote: "we have a low right here with a higher low to the left"
+  - video_id: 1YRs4Z1lMws
+    title: "Optimal Trade Entry (OTE) - ICT Concepts"
+  - video_id: 75S4vwD4P1U
+    title: "Breaker Blocks Simplified - ICT Concepts"
+
+ambiguities:
+  - "The 3-bar fractal definition is stated, but in practice the speaker filters heavily, attending only to the obvious highs and lows on the outside of the range. No filter criterion (bar count, range size, ATR, lookback) is given, so a literal 3-bar detector will produce many more swings than he uses. This is the largest automation gap in the unit."
+  - "Wick-based vs body-based highs/lows is never stated; all chart examples appear to use wicks."
+  - "Strict vs non-strict inequality (equal lows on either side) is not addressed."
+  - "The breaker video says a swing must be 'confirmed' before counting but does not restate how many bars confirmation takes."
+
+python_detector: null
+related: ["buyside-sellside-liquidity", "relatively-equal-highs-lows", "external-range-liquidity", "premium-discount-equilibrium", "optimal-trade-entry"]

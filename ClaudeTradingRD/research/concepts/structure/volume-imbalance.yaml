@@ -1,0 +1,70 @@
+id: volume-imbalance
+name: Volume Imbalance (and how it differs from a Gap)
+definition: Two two-candle objects, defined by contrast with each other and with the three-candle
+  fair value gap. A volume imbalance is a gap between the closing price of one candle and
+  the opening price of the next where price nonetheless traded through the area - the two
+  candles' high/low ranges overlap. A gap is the same construction with a complete absence
+  of trading between the two candles. He shows price returning to a volume imbalance and reacting
+  from it, so it is treated as a reactive level rather than a curiosity.
+category: structure
+status: specified
+aliases:
+- volume imbalance
+- gap
+preconditions:
+- Two consecutive candles on the working timeframe.
+detection_rules:
+- 'volume_imbalance between candle i and candle i+1: close[i] != open[i+1], AND the two candles''
+  high/low ranges overlap (price traded through the area).'
+- 'gap between candle i and candle i+1: a complete absence of trading between them - no overlap
+  between the two candles'' ranges.'
+- 'The distinguishing test is stated in exactly those terms: a gap has a complete absence
+  of trading, a volume imbalance had trading or overlap between the high and the low.'
+- Both are two-candle objects; a fair value gap is a three-candle object - this is the whole
+  point of the closing section.
+- The zone is the span between that closing price and that opening price.
+invalidation:
+- Not stated. No fill, expiry or violation rule is given for either object.
+measurable:
+- fill rate of volume imbalances by timeframe
+- reaction rate on first return, compared against fair value gaps at the same distance
+- frequency of true gaps (no overlap) by instrument and session
+sources:
+- video_id: ZVUDpCyvxfQ
+  title: Understanding Fair Value Gaps (FVG) - ICT Concepts
+  quote: a volume imbalance is a gap between the closing and opening price
+- video_id: ZVUDpCyvxfQ
+  title: Understanding Fair Value Gaps (FVG) - ICT Concepts
+  quote: a gap has a complete absence of trading between two candles
+- video_id: ZVUDpCyvxfQ
+  title: Understanding Fair Value Gaps (FVG) - ICT Concepts
+  quote: so it is a volume imbalance and not a gap
+ambiguities:
+- '''Complete absence of trading'' is stated in words but the price test (high[i] < low[i+1]
+  for an up gap) is never written out.'
+- No minimum size, so on a tick-dense instrument nearly every candle boundary produces a volume
+  imbalance.
+- Whether the zone is close-to-open or open-to-close when the two candles are opposite-coloured
+  is not addressed.
+- No invalidation, expiry or consequent-encroachment analogue is given for a volume imbalance.
+- No ranking rule for what to do when a volume imbalance and a fair value gap sit at the same
+  price.
+related:
+- fair-value-gap
+- consequent-encroachment
+- fvg-three-levels
+- point-of-interest
+timeframes:
+  htf:
+  - 1D
+  - 4H
+  - 1H
+  ltf:
+  - 15m
+  - 5m
+  - 1m
+  fractal: true
+contributing_units:
+- the_foundation_02
+draft_count: 1
+voice: ttrades

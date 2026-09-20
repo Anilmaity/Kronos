@@ -1,0 +1,63 @@
+id: fractal-model-c2
+name: "Candle 2 Closure (the reversal candle)"
+category: model
+status: specified
+definition: >
+  Across five Shorts the candle 2 closure is presented as a two-part gate that is used to PRUNE
+  marked swings, not to generate them. Part one: price must sweep the previous candle's extreme
+  and close back inside it (equivalently, close below the body of candle 2 in the bearish case).
+  Part two: the sweep must have occurred AT a point of interest - a swept high/low or a fair
+  value gap. A closure that satisfies one but not the other is removed from the chart. A third,
+  discretionary step removes a mechanically valid closure whose swing sits too close to an
+  adjacent swing. The same test is applied on the 5-minute chart, which he uses to state that the
+  validation is fractal and applies on any timeframe.
+
+timeframes:
+  htf: ["1M", "1W", "1D", "4H"]
+  ltf: ["1H", "15m", "5m"]
+  fractal: true
+
+detection_rules:
+  - "Candidate: price trades beyond the previous candle's extreme and closes back inside that candle's range."
+  - "Gate 1 - a point of interest must be present at the sweep (a swept previous high/low, or a fair value gap traded into)."
+  - "Gate 2 - the closure must be a valid candle 2 (or candle 3) closure; neither alone is sufficient."
+  - "If either gate fails, discard the swing rather than trading it."
+  - "Discretionary third step: discard a mechanically valid swing that sits too close to an adjacent same-side swing."
+  - "The test is applied identically on any timeframe, including the 5-minute."
+
+invalidation:
+  - "No point of interest at the sweep."
+  - "Price does not close back inside the previous candle's range."
+
+measurable:
+  - "fraction of raw sweeps that survive both gates"
+  - "follow-through of surviving vs discarded closures"
+
+sources:
+  - video_id: p1xrHuEHpQY
+    title: "Using POIs and Valid Closures to Confirm Swings"
+    quote: "if we do not have a point of interest or a valid closure"
+  - video_id: jo2D1AOuxHM
+    title: "Validating C2 Closures at Points of Interest"
+    quote: "do they all occur at a point of interest"
+  - video_id: jo2D1AOuxHM
+    title: "Validating C2 Closures at Points of Interest"
+    quote: "we failed to take out this high, so it is not valid"
+  - video_id: La4MlftJc14
+    title: "Validating Swing Points for Continuation"
+    quote: "We have the sweep, we have the change in the state of delivery"
+  - video_id: 0fhZ_jpespw
+    title: "Validating Swing Points Is a Fractal Concept"
+    quote: "it's a fractal concept, and so we can apply it to any time frame"
+
+ambiguities:
+  - "The 'too close' discard step is explicitly discretionary ('does it make sense... probably not') with no distance threshold."
+  - "The Shorts do not say how far left a point of interest may be drawn from; one example reaches back to a monthly-chart high."
+  - "'Closes back inside' is shown but never stated as body-close vs wick-close."
+
+python_detector: null
+related: ["ideal-formation", "point-of-interest", "relevant-swing-separation", "fractal-model-c3", "indicator-print-conditions"]
+
+voice: ttrades
+contributing_units: [shorts_04]
+draft_count: 1

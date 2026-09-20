@@ -1,0 +1,50 @@
+id: continuation-signature
+name: "Continuation Signatures (Consolidation And Retracement)"
+aliases: ["fail to manipulate the consolidation high", "failure swings"]
+category: structure
+status: specified
+
+definition: >
+  Two signatures indicate that price will continue through a level rather than reverse from
+  it. Consolidation continuation: price expands into the objective and consolidates; the
+  continuation is confirmed when price engages the consolidation high, prints opposing
+  candles, and closes back through it - a failure to manipulate. Retracement continuation:
+  price expands to the objective and pulls back deeply, leaving failure swings with no
+  manipulation and no displacement back into the range, moving slowly and choppily. Seeing
+  failure swings on the opposing side of an internal-range tag is read as a signal to
+  continue internal-to-external. The higher-timeframe signature of consolidation is an
+  inside bar; of retracement, three consecutive candles or one large candle into an
+  objective.
+
+timeframes:
+  htf: ["1D", "4H"]
+  ltf: ["1H", "15m", "5m"]
+  fractal: true
+
+preconditions:
+  - "Price has expanded into a relevant level or objective."
+
+detection_rules:
+  - "Consolidation continuation: price engages the consolidation high, prints opposing candles, and closes back through the high without holding above it."
+  - "Retracement continuation: deep pullback leaving failure swings - stacked highs close together with no sweep - and no displacement back into the range."
+  - "HTF consolidation signature: an inside bar (current candle takes neither the previous candle's high nor its low)."
+  - "HTF retracement signature: three consecutive candles, or one large displacement candle, into the objective."
+  - "Failure swings on the opposing side of an internal-range tag imply continuation, not reversal."
+
+invalidation:
+  - "The consolidation high is successfully manipulated (swept and held) - reversal becomes possible instead."
+
+measurable:
+  - "continuation rate after a failed manipulation of the consolidation high"
+  - "continuation rate after an inside bar at a level"
+
+sources:
+  - video_id: J_EeS2_2CAM
+    title: "GxTradez | Phases of Price & Profiles For Expansion"
+
+ambiguities:
+  - "'Failure swing' is defined by contrast with manipulation (no sweep) rather than positively."
+  - "'Deep' vs 'shallow' retracement is not quantified."
+
+python_detector: null
+related: ["phases-of-price-transitions", "trade-away-from-manipulation", "reversal-signature"]

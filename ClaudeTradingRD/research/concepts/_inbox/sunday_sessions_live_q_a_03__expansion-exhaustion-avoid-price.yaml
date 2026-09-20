@@ -1,0 +1,56 @@
+id: expansion-exhaustion-avoid-price
+name: "Do Not Trade After Three Days Of Expansion"
+aliases: ["expansion exhaustion", "three days of expansion", "chasing price"]
+category: time
+status: specified
+
+definition: >
+  After three consecutive days of expansion he stops taking trades in that direction,
+  because that is where a new phase of price delivery begins and further entries are
+  chasing. The same logic is applied to leg counting on any timeframe: he does not
+  enter after the fourth leg of a move, and his model deliberately looks only at the
+  third and fourth candles of a sequence so that it does not carry a trader into a
+  new phase.
+
+timeframes:
+  htf: ["1D", "1W"]
+  ltf: ["4H", "1H"]
+  fractal: true
+
+preconditions:
+  - "A directional move with countable expansion days or legs."
+
+detection_rules:
+  - "Count consecutive expansion days. At three, stop taking new entries in that direction."
+  - "Count legs of the move; do not enter after the fourth leg - his model targets candle three and candle four positions."
+  - "After three expansion days, expect a new phase of price (retracement, reversal or consolidation) rather than more expansion."
+  - "The corollary on the daily: after two days of expansion he is 'more so interested in waiting to see a new phase' rather than adding a third entry."
+
+invalidation:
+  - "A new phase of price printing resets the count."
+
+execution:
+  bias: "Neutral - the rule removes trades rather than creating them."
+  entry: null
+  stop: null
+  targets: null
+
+measurable:
+  - "distribution of consecutive expansion-day run lengths per instrument"
+  - "win rate of entries taken on day 1, 2, 3 and 4+ of an expansion run"
+
+sources:
+  - video_id: r7yW6ou1LDs
+    title: "TTrades Sunday Session - Live Q&A"
+  - video_id: u8bnmaih_hA
+    title: "TTrades Sunday Session - Live Q&A"
+  - video_id: bMkRomKEunU
+    title: "New York Open Live Q&A"
+
+ambiguities:
+  - "'Expansion day' is not defined by a size threshold - it is read from daily closures."
+  - "Whether the three-day count resets on a single non-expansion day or requires a confirmed new phase is not stated."
+  - "The leg-counting variant (three and four) and the day-counting variant (three days) are described separately and their relationship is not spelled out."
+
+python_detector: null
+related: ["phases-of-price", "continuation-over-reversal", "average-daily-range-targeting"]

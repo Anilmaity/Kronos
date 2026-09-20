@@ -1,0 +1,75 @@
+id: wick-scenario-difficulty-ladder
+name: Three Ways To Trade A Reversal, Ranked By Difficulty
+definition: 'He enumerates and explicitly ranks the only three ways he will engage a reversal,
+  ordered easiest to hardest. Tier 1, the preferred one: let the large-wick reversal candle
+  close, then trade candle 3 provided candle 3 has a small wick and a lower-timeframe change
+  in the state of delivery. Tier 2, harder: trade the reversal-to-expansion candle - a candle
+  that both reverses and expands within itself - which requires a small opposing run, a lower-timeframe
+  CISD, and enough time left in the candle for the range to expand. Tier 3, the one he typically
+  avoids: trading the large-wick reversal candle itself, which he does only on the daily,
+  executed on lower timeframes back toward the daily open. The stated reason tier 3 is worst
+  is that without the candle close there is no filter, and price frequently just keeps trending.'
+category: model
+status: specified
+aliases:
+- three different scenarios in which I could look to trade
+- reversal to expansion candle
+preconditions:
+- Price has reached a relevant level and a reversal is being considered.
+detection_rules:
+- 'Tier 1 (preferred): wait for the reversal candle to close with its large wick; require
+  the next candle (candle 3) to show a small wick plus a lower-timeframe CISD; trade that.'
+- 'Tier 2: a reversal-to-expansion candle requires ALL of - a small opposing run, a lower-timeframe
+  CISD, and enough time remaining in the candle for the range to expand.'
+- 'Tier 3 (avoided): a large-wick reversal candle is engaged only on the daily, on lower timeframes,
+  with targets at the daily open.'
+- 'Selection rule: prefer the lowest tier available; if the current candle fails its tier
+  test, drop to waiting for the next candle open.'
+invalidation:
+- The candle close removes the tier-2 option; the setup either becomes tier 1 on the next
+  candle or is dropped.
+measurable:
+- win rate and R by tier
+- frequency of each tier occurring per month
+sources:
+- video_id: SlWxhzhLo3A
+  title: 'Wick Size Matters: The Key to Understanding Reversal and Expansion Candles'
+  quote: the easiest is letting this candle to close
+- video_id: SlWxhzhLo3A
+  title: 'Wick Size Matters: The Key to Understanding Reversal and Expansion Candles'
+  quote: I might as well just wait for the next candle to have a small wick
+- video_id: SlWxhzhLo3A
+  title: 'Wick Size Matters: The Key to Understanding Reversal and Expansion Candles'
+  quote: we don't really have the filter of the candle close
+- video_id: SlWxhzhLo3A
+  title: 'Wick Size Matters: The Key to Understanding Reversal and Expansion Candles'
+  quote: a reversal candle on the daily, then I look to trade the lower time frames
+ambiguities:
+- The tier-2 requirement 'enough time for this range to expand' has no threshold; the only
+  worked rejection is 40 minutes left in an hourly candle.
+- Tier 3 is said to be reserved for the daily, but the corpus elsewhere shows him trading
+  reversal candles on other timeframes - no reconciliation is given.
+- Whether tier 2 and tier 3 can both be live on the same candle (a small wick that later becomes
+  large) is not addressed.
+related:
+- small-wick-expansion-rule
+- reversal-candle-target-adjustment
+- fractal-model-c3
+- continuation-timing
+- wick-trust-test
+timeframes:
+  htf:
+  - 1D
+  - 4H
+  - 1H
+  - 15m
+  ltf:
+  - 1H
+  - 15m
+  - 5m
+  - 1m
+  fractal: true
+contributing_units:
+- build_a_model_intro_to_ttrades_fractal_model_03
+draft_count: 1
+voice: ttrades

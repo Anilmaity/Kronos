@@ -1,0 +1,59 @@
+id: breakaway-gap-anticipation
+name: Anticipating A Breakaway Gap From A Mitigation Block Overlap
+definition: 'A test for which fair value gaps will NOT be filled. When a mitigation block
+  and a fair value gap overlap, the orders have already been accumulated inside the block
+  and the gap, so the gap is expected to stay open and price should leave it behind - a breakaway
+  gap. A secondary rule handles clusters of gaps.
+
+  '
+category: liquidity
+status: specified
+aliases:
+- breakaway gap
+preconditions:
+- A mitigation block has been identified (an up-close candle that traded into fair value,
+  consecutive ones merged).
+- Fair value gaps on the same leg are marked.
+detection_rules:
+- If a mitigation block and a fair value gap overlap - two PD arrays on the same price - treat
+  that fair value gap as a breakaway gap and expect it to remain open.
+- A long may still be taken there, with the stop below the low, targeting the original consolidation.
+- If three consecutive fair value gaps are present, use the MIDDLE one and expect the one
+  below it to stay open.
+invalidation:
+- The gap is filled and closed through - it was not a breakaway gap.
+measurable:
+- fill rate of fair value gaps that overlap a mitigation block versus those that do not
+- fill rate of the lowest gap in a three-gap cluster versus the middle one
+- R achieved from the overlap entry with the stop below the low
+sources:
+- video_id: wB-fQiT_UDo
+  title: DayTradingRauf | ICT MMXM Models
+ambiguities:
+- '''Overlapping'' is not given a minimum overlap in ticks or percentage.'
+- The three-consecutive-gaps rule is stated once with no reasoning and no example.
+- '''Consecutive'' gaps are not defined - adjacent in time, or adjacent in price with no intervening
+  structure.'
+related:
+- mitigation-block
+- old-accumulation-new-distribution
+- three-pd-array-confluence
+timeframes:
+  htf:
+  - 1W
+  - 1D
+  ltf:
+  - 1H
+  fractal: true
+execution:
+  bias: With the model direction.
+  entry: At the mitigation block / fair value gap overlap.
+  stop: Below the low of the block.
+  targets:
+  - the original consolidation
+contributing_units:
+- t_talks_01
+draft_count: 1
+voice: guest
+guest_sources:
+- DayTradingRauf | ICT MMXM Models

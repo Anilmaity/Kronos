@@ -1,0 +1,66 @@
+id: fractal-model-c3
+name: Candle 3 Continuation (the easier trade)
+category: model
+status: specified
+definition: 'Two Shorts state the candle 3 closure test in identical, unusually crisp terms: a candle
+  3 closure is price CLOSING OVER THE BODY OF CANDLE 2 (mirrored below for bearish). It is the fallback
+  when no candle 2 closure printed - price reached the point of interest but did not close back inside
+  the previous candle, so there is no C2; the two admissible continuations are then either that price
+  sweeps the previous low and forms a C2 (tradeable the following day), or that the next candle closes
+  over the body of C2, which is a C3 closure and licenses anticipating expansion in the following candle.
+  A C3 closure that also creates a protected swing is called the ideal one.'
+timeframes:
+  htf:
+  - 1D
+  - 4H
+  ltf:
+  - 1H
+  - 15m
+  fractal: true
+preconditions:
+- A candle 2 exists (the candidate reversal candle), whether or not it closed back inside the previous
+  range.
+detection_rules:
+- C3 closure := the candle closes over the BODY of candle 2 (bullish); below the body of candle 2 (bearish).
+- Use C3 when the reach into the point of interest produced NO candle 2 closure - i.e. price did not
+  close back inside the previous candle.
+- 'Two admissible outcomes when C2 is absent: (a) price sweeps the previous low and then forms a C2,
+  tradeable the following day, or (b) the next candle closes over the body of C2 - the C3 closure.'
+- On a confirmed C3 closure, anticipate price to trade in that direction on the FOLLOWING candle.
+- An ideal C3 closure additionally creates a protected swing.
+invalidation:
+- The candle fails to close beyond the body of candle 2 - no C3, gather more information.
+measurable:
+- hit rate of next-candle expansion after a C3 closure
+- difference in outcome between C3 closures that do and do not form a protected swing
+sources:
+- video_id: O4YAMIey-JQ
+  title: How to Confirm a Valid C3 Closure
+  quote: price is going to close over the body of candle two
+- video_id: O4YAMIey-JQ
+  title: How to Confirm a Valid C3 Closure
+  quote: it is a candle three closure, and I can anticipate price to trade higher
+- video_id: 8HBZ-jlK18I
+  title: No C2 closure? Wait for a C3 closure for confirmation.
+  quote: we close back above the body of candle two
+- video_id: 8HBZ-jlK18I
+  title: No C2 closure? Wait for a C3 closure for confirmation.
+  quote: an ideal one because it creates a protected swing
+ambiguities:
+- Body of candle 2 means the open-or-close extreme of C2, but which one (the open, the close, or whichever
+  is further) is not said - on a bullish C3 over a bearish C2 those differ.
+- Whether the C3 close must be a body close or merely a trade through the level is not stated.
+- The Shorts do not say the C3 read requires a lower-timeframe CISD, though other videos in the corpus
+  do. Not backfilled here.
+- Neither Short states how many candles may pass between C2 and the C3 closure.
+related:
+- fractal-model-c2
+- fractal-model-c4
+- protected-swing
+- ideal-formation
+- daily-bias-c2-c3-h1-cisd
+- keep-it-simple-c3-stack
+voice: ttrades
+contributing_units:
+- shorts_02
+draft_count: 1

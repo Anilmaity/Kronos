@@ -1,0 +1,51 @@
+id: session-cascade
+name: "Session Cascade (which session is set up to expand)"
+aliases: ["Asia London New York cascade", "which session expands"]
+category: time
+status: underspecified
+
+definition: >
+  Sessions are read as a chain of accumulation, manipulation and distribution: a session can
+  only expand if a prior session supplied the manipulation. Worked statement: if Asia produced
+  no manipulation then London cannot expand, so London manipulates, which sets up New York to
+  expand. On other days the cascade sits differently and a different session is the one to
+  trade. He states the same setup is timeframe- and asset-agnostic - the question is only
+  which session is positioned to expand.
+
+timeframes:
+  htf: ["1D", "4H"]
+  ltf: ["1H", "15m"]
+  fractal: true
+
+preconditions:
+  - "A day with identifiable Asia, London and New York session ranges."
+
+detection_rules:
+  - "Ask whether the earlier session produced a manipulation (a sweep and reversal)."
+  - "If it did not, the next session is expected to manipulate rather than expand."
+  - "The session following the manipulation is the one expected to expand, and is the session to trade."
+
+invalidation:
+  - "Not stated."
+
+execution:
+  bias: "n/a - session selection."
+  entry: "Take the model in the session identified as the expansion session."
+  stop: "Per the entry model."
+  targets: "Per the entry model."
+
+measurable:
+  - "Frequency of each cascade arrangement."
+  - "Expansion-range captured in the predicted expansion session vs the others."
+
+sources:
+  - video_id: 00iZXPAdR5A
+    title: "New York Open Live Q&A"
+
+ambiguities:
+  - "Session boundaries are never defined in this transcript."
+  - "'Manipulation' is used without a detection rule here (implicitly a sweep and reversal)."
+  - "Only the Asia-quiet / London-manipulates / New-York-expands arrangement is worked through; the alternatives are asserted, not shown."
+
+python_detector: null
+related: ["london-reversal-ny-continuation", "trading-window", "daily-bias-candle-formation"]

@@ -1,0 +1,204 @@
+id: reversal-candle-quality
+name: Candle 2 Closure Quality (reversal candle vs expansion candle)
+definition: 'A set of quality tests the speaker applies to a daily candle 2 closure before
+  he will trade away from it. The primary test is the candle''s internal sequence: a bullish
+  reversal candle should be open-low-high-close, whereas an open-high-low-close candle is
+  an expansion candle and is explicitly rejected as a reversal even when it closes in the
+  right place. Secondary markers of an ideal candle 2 closure are that it also forms a protected
+  swing, and that it sits at a point of interest. Two degraded cases are named and handled:
+  a candle that is merely ''reversal looking'' without being a candle 2 closure is not tradeable
+  on its own and requires waiting for the next day''s closure; and a candle that is simultaneously
+  a bullish and a bearish candle 2 closure is low quality, resolved by taking only the side
+  that carries an hourly change in the state of delivery and by demanding additional intraday
+  confirmation.
+
+  '
+variants:
+  definition:
+  - 'This unit supplies the shape definition the library previously flagged as missing: a
+    reversal candle has a LARGE WICK and a SMALL BODY. He then narrates what that looks like
+    a timeframe down - price opens, makes a run in one direction, then trades back and closes
+    - and states the discriminator against a directional (expansion) candle: the reversal
+    candle made a large move from its open to its extreme, consuming a lot of time and a lot
+    of range, and therefore he is not expecting price to expand out of it. This is a shape
+    test on the closed candle, complementary to (and stated independently of) the open-low-high-close
+    path test recorded in the library from the weekly-profile series.
+
+    '
+  - 'The quality grade this unit applies to a higher-timeframe closure, and - unusually -
+    what is done with a failing grade. The ideal bearish daily candle closes weakly, into
+    its lows; he draws what the candle would have had to look like and says that had it closed
+    there, two opposing candles would have been in place, a shallow retracement could be anticipated
+    and a protected high would exist. The actual candle closes bullishly and late in the day,
+    and he names the consequence rather than abandoning the idea: the setup is now less than
+    ideal for a bearish continuation the next day, so if the bearish view is kept, more confirmation
+    is required on the lower timeframes before getting short. Quality here is therefore a
+    dial on the confirmation requirement, not a binary gate. A second quality input in the
+    same walkthrough runs the other way - the candle opened and made its high first, which
+    supports the bearish read - so the grade is assembled from several partly conflicting
+    signals.
+
+    '
+category: structure
+status: contested
+aliases:
+- reversal candle
+- reversal looking candle
+- ideal candle 2 closure
+- two-sided candle 2
+- a lot weaker of a close
+- less than ideal setup
+- close into the lows
+preconditions:
+- A daily candle has closed and is a candidate reversal for a weekly profile.
+- A candle has closed on the working timeframe and is a candidate reversal.
+- A completed higher-timeframe candle that is a candidate closure for the intended direction.
+- A stated directional bias for the following period.
+detection_rules:
+- 'Bullish candidate: require the sequence open, low, high, close. Reject open, high, low,
+  close - that is an expansion candle.'
+- 'Bearish candidate: the mirror - reject a candle that opened, made its low first and then
+  its high.'
+- Prefer a candidate that also forms a protected swing and that sits at a point of interest.
+- If the candle is a candle 2 closure on both the bullish and the bearish side, take only
+  the side that carries an hourly change in the state of delivery, and additionally wait intraday
+  for price to open, make its extreme, and form a new continuation before entering.
+- If the candle is only 'reversal looking' and is not a candle 2 closure, do not trade it
+  - let the next daily candle close and use that closure plus the hourly CISD as the confirmation
+  instead.
+- On a candle 2 closure with a large wick, mark 0.5 of the wick as the level price should
+  reach and react from.
+- 'Shape test: the candle has a large wick and a small body. That is the reversal candle.'
+- 'Complement: a small wick with a large body is a directional / expansion candle, not a reversal
+  candle.'
+- 'Discriminator narrated on the lower timeframe: price opens, makes a large move to its extreme,
+  then trades back and closes - the large open-to-extreme leg is what makes it a reversal
+  rather than a directional candle.'
+- The size of that open-to-extreme leg is judged by the time and the range it consumed.
+- 'Consequence: after a reversal candle, do not expect expansion out of it (see large-wick-target-adjustment
+  for what to target instead).'
+- 'Bearish ideal: the candle closes into its lows. Grade the closure by where in the range
+  it sits, not only by its sign.'
+- A weak close in the intended direction additionally places opposing candles and a protected
+  extreme, so a shallow retracement can be anticipated on the next candle.
+- A close that fails the grade does not cancel the bias - it raises the lower-timeframe confirmation
+  requirement before any entry.
+- A close late in the session against the intended direction is called out specifically as
+  degrading the next day's continuation.
+- If the candle fails to close beyond the level entirely, treat it as a consolidation instead
+  and switch to waiting for the range extreme to be taken.
+invalidation:
+- The candidate is an opposing expansion candle - do not call the reversal, let another day
+  play out.
+- 'The additional intraday confirmation fails: price does not respect the area it was required
+  to respect.'
+- On a monthly-scale candle 2, 50% of the candle stops being respected.
+- The candle's open-to-extreme leg is small - it is a directional candle and the reversal
+  read does not apply.
+- The protected extreme implied by an ideal closure is taken out.
+- The additional lower-timeframe confirmation demanded by a degraded closure never appears
+  - no trade.
+measurable:
+- hit rate of open-low-high-close candle 2 closures versus open-high-low-close candles as
+  weekly-extreme triggers
+- frequency of two-sided candle 2 days and their outcome once filtered by which side carries
+  the hourly CISD
+- how often the 0.5-of-wick level is reached and reacted from on a large-wick candle 2
+- outcome difference when the candle 2 closure also forms a protected swing versus when it
+  does not
+- wick-to-body ratio on candles he annotates as reversal candles vs directional candles
+- forward expansion rate after a large-wick / small-body candle vs after a small-wick / large-body
+  candle
+- next-period follow-through split by where in the range the closure sits (deciles)
+- win rate of entries after an ideal closure vs after a degraded closure with extra confirmation
+- how often a degraded closure produces the extra confirmation at all
+sources:
+- video_id: FvOUvQ7odiw
+  title: Weekly Profile for Daily Bias - Intraweek Reversal
+- video_id: -gyDd_E_qD4
+  title: Weekly Profile for Daily Bias - Midweek Reversal
+- video_id: McJflkKuvrI
+  title: Weekly Profile for Daily Bias - Consolidation Reversal
+- video_id: uPUNOi_R9fA
+  title: Weekly Profile for Daily Bias - Thursday Counter
+- video_id: _CSO5Mf7CM8
+  title: Weekly Profile - TGIF Setup
+- video_id: ecTRHQrbYzI
+  title: Understanding What a Reversal Candle Looks Like
+  quote: A reversal candle has a large wick and a small body.
+- video_id: ecTRHQrbYzI
+  title: Understanding What a Reversal Candle Looks Like
+  quote: price opens, makes a run lower, and then trades higher and closes
+- video_id: ecTRHQrbYzI
+  title: Understanding What a Reversal Candle Looks Like
+  quote: So, I'm not expecting price to expand.
+- video_id: Nlw-PZhoViQ
+  title: 'TTrades Top-Down Chart Lessons #1'
+  quote: we would have wanted to see a lot weaker of a close
+ambiguities:
+- '''Candle 2 closure'' itself is assumed knowledge from the TTrades Fractal Model playlists;
+  its sweep-and-close-back definition is never restated anywhere in this unit, so this entry
+  describes quality filters on a term this unit does not define.'
+- '''Reversal looking candle'' is treated as categorically different from a candle 2 closure
+  and is acted on, but is never defined.'
+- The open-low-high-close test is a statement about the intracandle path, which is not recoverable
+  from daily OHLC alone - it needs lower-timeframe data or an explicit rule the videos do
+  not give.
+- '''Somewhat of a bearish expansion candle'' is used to describe a candle 2 closure that
+  is accepted anyway with extra hourly confirmation, so the OLHC test is a preference rather
+  than a hard filter.'
+- 'Wick size thresholds are relative and unquantified: ''larger wick'' triggers the 0.5-of-wick
+  marking, and ''small wick'' versus ''large wick'' carry opposite meanings in the Thursday
+  Counter video.'
+- Status is underspecified because every test in it is comparative or visual rather than numeric.
+- '''Large'' and ''small'' are still unquantified - no wick-to-body ratio is given.'
+- The Short does not restate the open-low-high-close path test the library holds from the
+  weekly-profile series; whether the shape test and the path test are two views of one rule
+  or two independent filters is not stated.
+- Only the bullish-reversal illustration (run lower, trade higher, close) is narrated; the
+  bearish mirror is implied.
+- The Short does not say whether the reversal candle must sit at a level or a point of interest,
+  a condition every long-form treatment attaches. Do not assume it from the long-form videos
+  - this clip omits it.
+- Sourced from an ASR (whisper-small) transcript, not YouTube captions; wording may be imprecise.
+- '''Weaker'' and ''into the lows'' are not quantified - no fraction of the range is given
+  for what counts as a weak close.'
+- '''More confirmation on the lower time frames'' is the operative consequence of a degraded
+  grade and is never specified: no list of what would satisfy it, and no timeframe.'
+- The grade combines a closure signal and a candle-shape signal that point opposite ways in
+  this example, with no stated weighting.
+related:
+- hourly-cisd-confirmation
+- intraweek-reversal-week
+- midweek-reversal-week
+- smt-swing-point-substitute
+- wick-size-test
+- fractal-model-c2
+- small-wick-expansion-rule
+- large-wick-target-adjustment
+- daily-ohlc-candle-shape
+- reversal-signature
+- v-shape-reversal
+- protected-swing
+- cisd
+- phases-of-price
+- consolidation-vs-retracement-test
+timeframes:
+  htf:
+  - 1D
+  ltf:
+  - 1H
+  fractal: true
+execution:
+  bias: From the closure, weighted by its grade.
+  entry: Ideal closure - the next candle's continuation directly. Degraded closure - only
+    after extra lower-timeframe confirmation.
+  stop: The protected extreme created by the closure, where one exists.
+  targets:
+  - previous day low or high
+contributing_units:
+- chart_lessons_01
+- shorts_03
+- weekly_profile_series_01
+draft_count: 3
+voice: ttrades

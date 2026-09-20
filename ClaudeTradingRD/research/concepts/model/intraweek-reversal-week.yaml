@@ -1,0 +1,124 @@
+id: intraweek-reversal-week
+name: Intraweek Reversal (weekly profile)
+definition: 'SHORTS EVIDENCE with a stand-aside rule attached. Monday expands (continuing
+  the previous week''s Thursday reversal), Tuesday also expands, and Wednesday forms the intraweek
+  reversal - which then sets up Thursday as a continuation day and, depending on how Thursday
+  closes, Friday as another. The operative instruction is what to do with Tuesday: leave it
+  alone because it has already expanded a fair bit, and wait for a NEW SWING POINT to form.
+  That swing point is Wednesday, and it is what licenses the Thursday and Friday continuations.'
+variants:
+  definition:
+  - 'A week in which the tradeable reversal does not form the high or low of the week. The
+    canonical shape given is: Monday expands away from the weekly open - which is itself the
+    directional information, telling you which way the weekly candle wants to go - Tuesday
+    consolidates, Wednesday forms a reversal, and Thursday and Friday expand. The trigger
+    is a daily candle 2 closure (or even a candle 3 closure) printed inside the week after
+    price has already moved away from the weekly open, confirmed as always by an hourly change
+    in the state of delivery inside that reversal candle. The speaker presents this as the
+    profile for weeks that are not picture-perfect: the reversal day can shift to Thursday
+    if Wednesday also consolidates, and the point is to wait for a new swing point on the
+    daily and then trade away from it.
+
+    '
+category: model
+status: contested
+aliases:
+- intraweek reversal
+preconditions:
+- Monday and Tuesday have both expanded in the same direction.
+- Price has already expanded away from the weekly open, so the week's directional intent is
+  established.
+- The week does not match classic expansion, midweek reversal or Thursday counter.
+detection_rules:
+- Do not trade the second consecutive expansion day - it has already spent its range.
+- Wait for a new swing point to form (typically Wednesday).
+- Once that swing point exists, look for Thursday to continue in the reversed direction.
+- Judge Friday on how Thursday closes - a continuation closure licenses a Friday continuation.
+- Confirm the level with a close below the up-close candles and below the equal lows.
+- Monday (or the early week) expands away from the weekly open; that expansion is read as
+  the weekly candle's intended direction.
+- A subsequent day inside the same week prints a candle 2 closure (or candle 3 closure) that
+  reverses, without being the weekly high or low.
+- An hourly change in the state of delivery exists inside that reversal candle.
+- The following one or two days are traded as continuations in the established direction.
+- The reversal day is not fixed to a weekday - if Wednesday consolidates instead, Thursday
+  becomes the reversal and Friday the trade.
+invalidation:
+- The candidate reversal day is an open-high-low-close expansion candle rather than an open-low-high-close
+  reversal candle (bullish case).
+- The day is simultaneously a bullish and a bearish candle 2 closure and the required additional
+  intraday confirmation fails - price does not respect the area.
+- Price trades below the protected swing that the continuation was built from.
+- On a monthly candle 2 context, 50% of that candle stops being respected.
+measurable:
+- frequency of the Wednesday-reversal profile per quarter
+- hit rate of Thursday and Friday continuations after a Wednesday swing point
+- frequency of weeks where the tradeable reversal is not the weekly extreme
+- hit rate of the continuation day after a confirmed intraweek reversal
+- comparative hit rate of open-low-high-close reversal candles versus open-high-low-close
+  candles as candle 2 triggers
+- how often the reversal day slips from Wednesday to Thursday
+sources:
+- video_id: T3aqrI6P4G8
+  title: Breaking Down the Intraweek Reversal Weekly Profile
+  quote: We leave Tuesday alone as it's already expanded a fair bit
+- video_id: T3aqrI6P4G8
+  title: Breaking Down the Intraweek Reversal Weekly Profile
+  quote: Wait for a new swing point to form
+- video_id: T3aqrI6P4G8
+  title: Breaking Down the Intraweek Reversal Weekly Profile
+  quote: we could be looking for Thursday to get a continuation
+- video_id: FvOUvQ7odiw
+  title: Weekly Profile for Daily Bias - Intraweek Reversal
+  quote: where we don't have the reversal forming the high of the week
+ambiguities:
+- '''Already expanded a fair bit'' is not quantified - no range or ADR fraction is given.'
+- The Short does not say what happens if the new swing point forms on Thursday instead of
+  Wednesday.
+- What counts as 'expanding away from the weekly open' is not quantified - no ATR, range or
+  percentage threshold is given, so the profile's entry condition is not decidable from a
+  chart alone.
+- Whether a candle 3 closure is fully equivalent to a candle 2 closure as the trigger, or
+  only a fallback, is not made explicit.
+- For the two-sided candle 2 case the remedy is 'more intraday confirmation' - the amount
+  and the timeframe are unspecified.
+- '''RB'', the correlated instrument supplying the SMT in the third example, is never expanded
+  in the transcript and the chart is not visible; the instrument is deliberately left unidentified
+  here rather than guessed.'
+- Status is underspecified because the defining condition (Monday's expansion away from the
+  weekly open) has no threshold, and the reversal day is explicitly allowed to float across
+  weekdays.
+related:
+- weekly-profile-framework
+- midweek-reversal-week
+- thursday-counter-week
+- expansion-exhaustion-avoid-price
+- swing-point
+- hourly-cisd-confirmation
+- reversal-candle-quality
+- smt-swing-point-substitute
+- monday-trade-rule
+timeframes:
+  htf:
+  - 1W
+  - 1D
+  ltf:
+  - 4H
+  - 1H
+  fractal: false
+execution:
+  bias: The direction established by the expansion away from the weekly open.
+  entry: After the hourly change in the state of delivery inside the reversal day; where the
+    daily candle is two-sided, additionally wait intraday for price to open, make its low,
+    and form a new continuation before entering.
+  stop: Below the protected swing (bullish case) formed at the reversal.
+  targets:
+  - prior daily highs / lows
+  - equal lows or equal highs
+  - previous month's low or high
+  - the next fair value gap in the direction of travel
+contributing_units:
+- shorts_01
+- weekly_profile_series_01
+draft_count: 2
+voice: ttrades

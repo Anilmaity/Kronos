@@ -1,0 +1,53 @@
+id: nfp-week-protocol
+name: "Non-Farm Payroll Week Protocol"
+aliases: ["NFP protocol"]
+category: time
+status: specified
+
+definition: >
+  A fixed day-by-day plan for a week containing non-farm payroll (usually the first Friday of the
+  month). Monday is never traded; Tuesday and Wednesday are possible but require an unusually
+  convincing price signature because they precede a high-impact event; Thursday is avoided as the
+  day before; the main opportunity is Friday after the release.
+
+timeframes:
+  htf: ["1W", "1D"]
+  ltf: ["1H", "15m"]
+  fractal: false
+
+preconditions:
+  - "The economic calendar shows non-farm payroll in the week."
+
+detection_rules:
+  - "Monday - do not trade. Use its range as data."
+  - "Tuesday and Wednesday - eligible, but open a position only on a specific and convincing signature in price."
+  - "Thursday - avoid (the day before the release)."
+  - "Friday - the primary opportunity, after the 08:30 release."
+  - "On the Friday, first classify Monday-Thursday: if the week so far remained internal to a prior daily range, expect the release to manipulate the external high (or low) and return into the range, and trade the return."
+  - "If the release fails to run the external level, or trades in the continuation direction, or simply consolidates, take no trade."
+
+invalidation:
+  - "The release runs the external level and continues rather than returning - no return, no trade."
+
+execution:
+  bias: "Against the release's external-range manipulation when the week is internal / consolidated."
+  entry: "Intraday signature on the release candle - the worked example used SMT plus a lower-timeframe change in state of delivery."
+  stop: "Not stated."
+  targets: ["back inside the weekly range", "the opposing external level"]
+
+measurable:
+  - "hit rate of the fade-the-NFP-manipulation trade when the week is internal"
+  - "range of the Friday candle versus the week's other days"
+  - "cost of the Tuesday/Wednesday exception trades"
+
+sources:
+  - video_id: QmGJFxfSHxM
+    title: "AM Trades | Blending The Economic Calendar, Daily Chart, & Weekly Profiles"
+
+ambiguities:
+  - "The 'specific and convincing signature' permitting a Tuesday/Wednesday trade is illustrated once (ES ran previous week/day high and closed below the up-close candle, with NQ SMT) but never generalised."
+  - "No stop rule is given for the Friday trade."
+  - "Whether the protocol changes when NFP falls outside the first Friday is not addressed."
+
+python_detector: null
+related: ["news-impact-tiering", "pre-event-avoidance-rule", "no-monday-rule", "consolidation-external-liquidity-only"]

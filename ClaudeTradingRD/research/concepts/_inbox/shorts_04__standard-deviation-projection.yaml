@@ -1,0 +1,59 @@
+id: standard-deviation-projection
+name: "Standard Deviation Projection Of The Manipulation Leg"
+category: entry
+status: specified
+definition: >
+  Three Shorts give the projection workflow and, between them, the size-conditional target rule.
+  The anchor is always candle 2 at the reversal: after the change in the state of delivery, find
+  the extreme and the swing that made it, mark that manipulation leg, and project it with a
+  Fibonacci retracement (the indicator can draw the same levels automatically). Where the leg is
+  small relative to the day, -2 to -2.5 is the working target and is checked for confluence with
+  a previous day high/low or liquidity to the left, with -4 to -4.5 as the extension if it trades
+  through. Where the manipulation leg is LARGE relative to the available range, the further
+  deviations are more than the period can deliver and -1 becomes the target instead, kept inside
+  the current daily range.
+
+timeframes:
+  htf: ["1D", "4H"]
+  ltf: ["1H", "15m", "5m"]
+  fractal: true
+
+detection_rules:
+  - "Anchor in candle 2 at the reversal, after the change in the state of delivery has formed."
+  - "Mark the manipulation leg from the extreme to the swing that made it."
+  - "Project with a Fibonacci retracement (or the indicator's projections setting)."
+  - "Small leg: target -2 to -2.5, preferring confluence with a previous day extreme or liquidity to the left; -4 to -4.5 if it trades through."
+  - "Large leg relative to the available range: target -1 only, and keep the target inside the current daily range."
+
+invalidation:
+  - "Price returns through the anchor extreme before reaching -1."
+
+measurable:
+  - "hit rate of -1 vs -2/-2.5 conditional on manipulation-leg size relative to ADR"
+  - "frequency with which -2/-2.5 coincides with a previous day extreme"
+
+sources:
+  - video_id: yVgn2rBhysQ
+    title: "Using Projections to Set Targets"
+    quote: "it's always going to be in candle two at the reversal"
+  - video_id: yVgn2rBhysQ
+    title: "Using Projections to Set Targets"
+    quote: "the -2 to -2.5 is also lining up with this previous day's high"
+  - video_id: WC6yqIli3iU
+    title: "Using Projections When the Manipulation Leg Is Large"
+    quote: "When we have a large manipulation leg, I can use that -1 standard deviation"
+  - video_id: 82M87plzCho
+    title: "Using Projections as Targets Within the Daily Range"
+    quote: "expand to the negative one within this current daily range"
+
+ambiguities:
+  - "'Large' manipulation leg is judged by eye against the day's expected range - no ratio is given in any of the three Shorts."
+  - "The switch point between the -1 branch and the -2/-2.5 branch is therefore not decidable as taught."
+  - "The Fibonacci anchor direction ('anchor to the low, go to that swing high') is stated for one example only."
+
+python_detector: null
+related: ["average-daily-range", "draw-on-liquidity", "previous-period-high-low", "cisd-entry-model", "risk-reward-minimum"]
+
+voice: ttrades
+contributing_units: [shorts_04]
+draft_count: 1

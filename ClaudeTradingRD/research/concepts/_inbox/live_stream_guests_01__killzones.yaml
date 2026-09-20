@@ -1,0 +1,82 @@
+id: killzones
+name: "Killzones (Trading Sessions)"
+aliases: ["kill zones", "session windows", "AM session vs PM session"]
+category: time
+status: specified
+voice: guest
+guest_sources:
+- "Trader T"
+- "Ben (Ben TT)"
+- "$niper (Matt)"
+
+definition: >
+  Three guests in this unit gate execution on kill zones, and each names a different window - so
+  the set is a comparison, not a consensus. Trader T is the only one who gives clock bounds: on his
+  simulator's server clock he trades roughly 07:00-10:30 and 12:30/13:00-15:00, and he
+  cross-references that clock against a live chart to anchor it (on his build 08:00 server = London
+  open = 03:00 Eastern, and he deliberately starts an hour earlier at 07:00 = 02:00 Eastern). He
+  stops executing around 15:40 and treats 16:00 as outside his time entirely. Ben trades only in
+  kill zones and explicitly prefers the PM session, because that is where he has the most data,
+  where the daily draw is clearest to him, and where trading back inside the range suits him.
+  $niper checks that his entries fall inside kill-zone times as part of confirming a smart money
+  reversal, and says he currently prefers the AM session to the PM.
+
+timeframes:
+  htf: ["1D"]
+  ltf: ["1H", "15m", "5m", "1m"]
+  fractal: false
+
+preconditions:
+- "A session indicator is on the chart; Trader T's requires the platform clock to be verified against a live chart first."
+
+detection_rules:
+- "Trader T: execute only inside 07:00-10:30 and 12:30/13:00-15:00 on the verified server clock; stop by about 15:40."
+- "Trader T: the offset depends on which MT4 build the simulator runs on, so the mapping must be re-derived per platform, not assumed."
+- "Trader T: record which kill zone each journalled trade fell in."
+- "Ben: trade only in kill zones; his preferred window is the PM session, and he accepts missing AM moves rather than forcing them."
+- "$niper: treat the kill-zone window as part of the confirmation - an entry outside the kill zone is not taken."
+- "None of the three trades outside a session window; the disagreement is only about WHICH window."
+
+invalidation:
+- "The window closes - Trader T abandons setups that mature after his cut-off even when they look valid."
+
+execution:
+  bias: "Not set by this rule."
+  entry: "Only inside the chosen window."
+  stop: "Not set by this rule."
+  targets: []
+
+measurable:
+- "expectancy by hour of day for the same setup, which is the direct test of the three competing windows"
+- "trade count and expectancy of Trader T's first window versus his second"
+- "how many valid setups each cut-off discards"
+
+sources:
+- video_id: wCtxmWe4KNc
+  title: "Back Testing Live Session With Trader T"
+  quote: "my kill zones are just oh 700 to like roughly 10 30"
+- video_id: wCtxmWe4KNc
+  title: "Back Testing Live Session With Trader T"
+  quote: "800 is London open it's it's 3 A.M Eastern Time"
+- video_id: yRmKkR4CojU
+  title: "Fractalizing Entries -Q&A with Ben - ICT Concepts"
+  quote: "i only trade the kill zones"
+- video_id: yRmKkR4CojU
+  title: "Fractalizing Entries -Q&A with Ben - ICT Concepts"
+  quote: "i really like the pm session"
+- video_id: UmLWRlXd_V8
+  title: "8/14/22  MMXM Live with $niper  - ICT concepts"
+  quote: "they're within the kill zones"
+
+ambiguities:
+- "Trader T's hours are on a broker server clock whose offset he says varies by MT4 build, so the times are not portable as spoken; both window ends are given as 'roughly' and the second window's start is stated as 12:30 in one place and 13:00 in another."
+- "His Eastern conversion implies a fixed 5-hour offset, which will drift across daylight-saving changes; this is not addressed."
+- "Ben names no clock times at all - 'the PM session' is left to the listener."
+- "$niper's AM preference is explicitly conditional on the current month's price action being poor, not a standing rule."
+- "None of the three states his window in a single agreed timezone, so the three cannot be compared directly from the transcripts alone."
+
+python_detector: null
+related: ["entry-time-window", "session-high-low", "est-timezone-anchor", "killzone-execution-sequence"]
+contributing_units:
+- live_stream_guests_01
+draft_count: 1

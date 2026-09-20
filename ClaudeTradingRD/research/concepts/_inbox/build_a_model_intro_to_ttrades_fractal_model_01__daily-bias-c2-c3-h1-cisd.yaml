@@ -1,0 +1,103 @@
+id: daily-bias-c2-c3-h1-cisd
+name: Daily Bias = Daily C2/C3 Closure Confirmed by H1 CISD
+category: model
+status: specified
+aliases:
+- easy daily bias
+- mechanical framework
+definition: 'The channel''s own ''mechanical framework'' for daily bias. Bias is a binary choice
+  between a REVERSAL and a CONTINUATION, and the reversal is ALWAYS framed off the previous day''s
+  high or previous day''s low - never an arbitrary level. REVERSAL: price opens, trades into the
+  previous day high (bearish case) / low (bullish case), a lower-timeframe change in the state of
+  delivery confirms the wick, and price trades back into the range toward the EQ of the previous
+  day''s range or the opposite previous-day extreme. Whether the reversal DAY itself can be traded
+  depends on wick size: small wick yes, large wick no - wait for candle 3. CONTINUATION: price opens,
+  trades AGAINST the bias first, respects the EQ of the previous day''s range, then trades through
+  the previous day''s extreme in the bias direction. ''Respect the EQ'' is operationalised as: no
+  lower-timeframe (hourly) CLOSURES beyond that EQ level; the extreme itself need not reach the EQ.
+  The whole procedure is fractal - on lower timeframes ''previous day high'' becomes ''previous candle''s
+  high''.'
+timeframes:
+  htf:
+  - 1D
+  - 4H
+  ltf:
+  - 1H
+  - 30m
+  - 15m
+  - 5m
+  fractal: true
+preconditions:
+- A daily candle 2 or candle 3 closure exists, ideally also forming a protected swing.
+- Previous day high, previous day low and previous day EQ are marked.
+detection_rules:
+- Mark previous day high, previous day low, and the EQ of the previous day's range.
+- 'Continuation branch: price must open, trade against the bias first, hold the EQ (no lower-timeframe
+  closes beyond it), then trade through the previous day extreme.'
+- 'Reversal branch: price must open, trade into the previous day extreme, then form a lower-timeframe
+  CISD there.'
+- 'Timeframe for that CISD by session: hourly or 30-minute in Asia/London; 5-minute or 15-minute
+  in New York.'
+- Points of interest are sought on the correct side of the EQ (below it for a bullish continuation)
+  - do not guess which of several will react; wait for a swing / protected swing to form in that
+  area.
+- 'Reversal-day tradeability gate: small wick -> trade the reversal candle; large wick -> do not,
+  trade the following candle instead.'
+- A protected swing is only protected until it hits liquidity; a common pattern is liquidity taken,
+  then the protected swing swept, then the true move.
+- 'Fractal application: on the hourly use the previous candle''s high/low instead of the previous
+  day''s; below the 4-hour it gets messy and he prefers not to frame reversals there.'
+invalidation:
+- Price closes beyond the EQ of the previous day's range against the continuation bias.
+- The day opens with the wrong extreme first for the intended bias.
+execution:
+  bias: From the daily C2/C3 closure plus its confirmation.
+  entry: After the lower-timeframe CISD that confirms the day's wick.
+  stop: On the confirmed wick extreme (or its body where the wick gives poor R).
+  targets:
+  - previous day high / low
+  - the EQ of the previous day's range
+  - 2R
+measurable:
+- hit rate of previous-day-extreme reversals vs continuations by prior-day closure type
+- how often the EQ of the previous day's range is respected on continuation days
+- reversal-day outcome bucketed by wick size (the missing threshold recoverable here)
+sources:
+- video_id: -KKuZb5Z5aU
+  title: Easy Daily Bias - Mechanical Framework
+  quote: I'm always going to frame that reversal off of previous day's high
+- video_id: -KKuZb5Z5aU
+  title: Easy Daily Bias - Mechanical Framework
+  quote: respect the EQ of the previous day's range, and then trade higher
+- video_id: -KKuZb5Z5aU
+  title: Easy Daily Bias - Mechanical Framework
+  quote: it's not ideal to have closures on the hourly chart below that
+- video_id: -KKuZb5Z5aU
+  title: Easy Daily Bias - Mechanical Framework
+  quote: If it has a small wick, then we can look to trade the reversal candle
+- video_id: -KKuZb5Z5aU
+  title: Easy Daily Bias - Mechanical Framework
+  quote: I don't prefer to go below the four-hour time frame
+- video_id: v1X8UMWgWmI
+  title: Best Trading Strategy for 2026 - TTFM
+  quote: reversal then expansion
+ambiguities:
+- The EQ used is the EQ of the PREVIOUS DAY'S RANGE here; elsewhere in the corpus 'EQ' means the
+  current candle's equilibrium / T-spot. Both appear in this unit.
+- '''Respect the EQ'' is defined negatively (no hourly closures beyond it) but the timeframe for
+  that closure test is only stated for the daily/hourly pairing.'
+- The reversal-day wick gate reuses the unquantified small/large wick distinction.
+- How far beyond the previous day's extreme to expect price to travel is said to depend on wick size,
+  with no scale given.
+related:
+- daily-ohlc-candle-shape
+- equilibrium-eq
+- fractal-model-c2
+- fractal-model-c3
+- daily-wick-confirmation-timeframes
+- cisd
+- previous-period-high-low
+contributing_units:
+- build_a_model_intro_to_ttrades_fractal_model_01
+draft_count: 1
+voice: ttrades

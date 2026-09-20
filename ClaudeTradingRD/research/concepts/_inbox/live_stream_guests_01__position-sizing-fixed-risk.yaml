@@ -1,0 +1,64 @@
+id: position-sizing-fixed-risk
+name: "Fixed-Risk Position Sizing"
+aliases: ["one percent per trade", "same risk every trade"]
+category: risk
+status: specified
+voice: mixed
+guest_sources:
+- "$niper (Matt)"
+- "Trader T"
+
+definition: >
+  The host and two guests converge on the same sizing doctrine on air: risk a fixed fraction of the
+  account on every trade, sized so the stop distance does not change the amount at risk. TTrades
+  states it in his own words as risking the exact same amount on every trade, and adds that this is
+  essentially what risk management reduces to, together with stopping when you are wrong. $niper
+  gives one percent per trade as the number he uses and recommends, with an explicit disclaimer
+  that he is not an advisor. Trader T runs one percent per trade in his backtesting simulator as a
+  fixed-risk setting so that lot size is solved for automatically.
+
+timeframes:
+  htf: []
+  ltf: []
+  fractal: false
+
+preconditions:
+- "A stop distance is known before the position is sized."
+
+detection_rules:
+- "Risk the same percentage of the account on every trade; solve lot size from the stop distance."
+- "The number stated by both guests for a normal account is 1 percent per trade."
+- "TTrades' second half of the rule: stop when you are wrong - the fixed risk is only meaningful with a real stop."
+- "Trader T implements it mechanically: the simulator is set to fixed 1 percent risk so every trade is sized identically regardless of stop size."
+
+invalidation:
+- "Not applicable."
+
+execution:
+  bias: "Not applicable."
+  entry: "Not applicable."
+  stop: "Required - the sizing input."
+  targets: []
+
+measurable:
+- "variance of realised risk per trade (should be flat if the rule is followed)"
+- "equity-curve shape under fixed-fractional versus fixed-lot sizing on the same trade list"
+
+sources:
+- video_id: UmLWRlXd_V8
+  title: "8/14/22  MMXM Live with $niper  - ICT concepts"
+  quote: "I try to risk the exact same amount on every trade"
+- video_id: wCtxmWe4KNc
+  title: "Back Testing Live Session With Trader T"
+  quote: "one percent risk per trade fixed risk same every time"
+
+ambiguities:
+- "Neither speaker says whether the percentage is of starting balance, current balance or current equity."
+- "Both guests explicitly refuse to give the audience a number to use ('I'm not an advisor'), so 1 percent is stated as personal practice, not as a recommendation."
+- "Trader T uses a different, lower number for funded accounts - see prop-firm-drawdown-sizing - so 1 percent is not his universal figure."
+
+python_detector: null
+related: ["prop-firm-drawdown-sizing", "risk-limits-and-trade-frequency", "stop-size-reduction"]
+contributing_units:
+- live_stream_guests_01
+draft_count: 1

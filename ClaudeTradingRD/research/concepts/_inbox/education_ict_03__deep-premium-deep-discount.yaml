@@ -1,0 +1,63 @@
+id: deep-premium-deep-discount
+name: Deep Discount / Deep Premium (below or above BOTH opens)
+definition: 'A two-level refinement of premium and discount that is fully mechanical. Price below
+  EITHER the 08:30 open or the midnight open is a discount; price below BOTH is a deep discount,
+  and that is where he wants to be looking for buys on a buy day. Mirror image above: above either
+  is a premium, above both is a deep premium, and that is where shorts are looked for. The deep zone
+  is what he points at in the examples as the place the daily manipulation leg ends and as the location
+  price returns to before the afternoon move.'
+category: structure
+status: specified
+aliases:
+- deep discount
+- deep premium
+preconditions:
+- Both the midnight open and the 08:30 open are marked for the current day.
+detection_rules:
+- discount := price < midnight_open OR price < eight_thirty_open.
+- deep_discount := price < midnight_open AND price < eight_thirty_open.
+- premium := price > midnight_open OR price > eight_thirty_open.
+- deep_premium := price > midnight_open AND price > eight_thirty_open.
+- On a buy day, look for the entry in deep discount; on a sell day, in deep premium.
+invalidation:
+- Price returning between the two levels leaves the deep zone; the plain discount/premium classification
+  applies again.
+measurable:
+- share of days whose extreme forms inside the deep zone rather than the plain zone
+- expectancy of entries taken in deep discount versus plain discount
+- time spent per session in each of the four zones
+sources:
+- video_id: b6yvRKf8haE
+  title: Why You Should Use 8:30 & Midnight Open (EST) -  ICT Concepts
+  quote: if you're below both of those it is a deep discount
+- video_id: b6yvRKf8haE
+  title: Why You Should Use 8:30 & Midnight Open (EST) -  ICT Concepts
+  quote: if you're above both that is what I consider to be a deep premium
+- video_id: b6yvRKf8haE
+  title: Why You Should Use 8:30 & Midnight Open (EST) -  ICT Concepts
+  quote: where you want to look for buys on a buy day
+ambiguities:
+- This is from the EARLIER Education - ICT playlist; the updated material uses premium/discount inverted
+  and against a range EQ rather than against these two clock levels (see premium-discount).
+- No timezone is spoken; the corpus elsewhere fixes bare clock times to New York.
+- Nothing is said about what happens when the two opens are at the same price, or when price sits
+  exactly between them beyond it being the non-deep case.
+- No depth requirement beyond crossing both levels - a tick below both counts the same as a large
+  excursion.
+related:
+- midnight-open-directional-filter
+- premium-discount
+- premium-discount-equilibrium
+- important-time-levels
+timeframes:
+  htf:
+  - 1D
+  ltf:
+  - 15m
+  - 5m
+  - 1m
+  fractal: false
+contributing_units:
+- education_ict_03
+draft_count: 1
+voice: ttrades

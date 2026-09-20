@@ -1,0 +1,60 @@
+id: displacement-range-re-anchor-ladder
+name: Re-anchor The Displacement Range After Every Missed Entry
+definition: 'A repeatable recovery procedure for a missed entry, stated as a loop and demonstrated
+  four times in a row on one chart. After displacement, draw the range from where the displacement
+  STARTED to where it ENDED and look for a PD array in its discount (long case). If price
+  does not reach your level, or you miss the fill, do not chase: wait for the next displacement
+  leg, MOVE the range anchors to that new leg, and look again in the new discount. Each iteration
+  also creates fresh internal liquidity, which he wants swept before the continuation - so
+  each cycle is: new displacement leg -> re-anchor -> internal liquidity below -> sweep ->
+  long. He states the stopping condition explicitly: keep doing this until you reach your
+  objective.'
+category: entry
+status: specified
+preconditions:
+- A higher-timeframe objective is already fixed.
+- A displacement leg has occurred.
+detection_rules:
+- Anchor the range at the start and end of the displacement leg.
+- Look for a PD array (order block, fair value gap) in the discount (long) / premium (short).
+- If the entry is missed or not reached, wait for the next displacement leg and re-anchor
+  to it.
+- Before each continuation, expect the internal liquidity created by the previous leg to be
+  swept.
+- Repeat until the higher-timeframe objective is reached; the objective, not the entry, ends
+  the loop.
+- 'Confirmation that a sweep is a sweep and not a reversal: no displacement below the structure
+  after the low is taken.'
+measurable:
+- number of re-anchor iterations per objective
+- R of the Nth iteration vs the first
+sources:
+- video_id: YmdC_LKT-Pk
+  title: Lower Time Frame Entries Using HTF POI - ICT Concepts
+  quote: draw out your OTE from where your displacement range started to where it ended
+- video_id: YmdC_LKT-Pk
+  title: Lower Time Frame Entries Using HTF POI - ICT Concepts
+  quote: you can just keep doing this until you reach your objective
+- video_id: YmdC_LKT-Pk
+  title: Lower Time Frame Entries Using HTF POI - ICT Concepts
+  quote: failure to displace lower popped up there is our entry long
+ambiguities:
+- What qualifies as 'the next displacement leg' inherits the unquantified `displacement` problem.
+- No cap on iterations, and no rule for abandoning the objective.
+- Whether the old range is discarded or kept alongside the new one is not stated.
+related:
+- optimal-trade-entry
+- displacement
+- failure-to-displace
+- rr-gated-entry-refinement
+- internal-range-liquidity
+timeframes:
+  htf:
+  - 15m
+  ltf:
+  - 1m
+  fractal: true
+contributing_units:
+- education_ict_02
+draft_count: 1
+voice: ttrades

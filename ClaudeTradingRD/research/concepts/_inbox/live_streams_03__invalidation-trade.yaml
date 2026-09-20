@@ -1,0 +1,94 @@
+id: invalidation-trade
+name: Invalidation Trade (trading the failure of a valid model)
+aliases:
+- invalidation
+- invalidation of daily bias
+- invalidation of EQ
+category: model
+status: specified
+
+definition: >
+  The trade taken when a model that was valid on one side fails at its own equilibrium. The
+  precondition is a genuinely valid setup - a candle 2 closure, a change in state of delivery,
+  SMT and expansion - which should produce a small wick and then expand. Instead price opens
+  and closes beyond the EQ (midpoint) of that structure on the aligned timeframe and does not
+  reclaim it. That failure is the signal: the trade is taken in the opposite direction toward
+  the opposing liquidity, in the worked example the previous day low, and the path there
+  typically includes a retracement into a fair value gap, or a consolidation whose high is
+  swept and then used as resistance. He read the sequence off his own published invalidation
+  graphic and then matched it to the live hourly chart on ES.
+
+timeframes:
+  htf:
+  - 1D
+  - 1H
+  ltf:
+  - 15m
+  - 5m
+  fractal: true
+
+preconditions:
+- A valid bullish (or bearish) model exists on the aligned timeframe - C2 closure plus CISD,
+  optionally with SMT and expansion.
+- The EQ (midpoint) of that structure is marked.
+
+detection_rules:
+- Establish that a valid model exists on one side and mark its EQ.
+- 'Expansion test: if the model is going to work, price forms its low with a small wick and
+  expands away.'
+- 'Invalidation test: price closes beyond the EQ on the aligned timeframe and fails to reclaim
+  it.'
+- On invalidation, take the opposite direction with the opposing liquidity as target (previous
+  day low / high).
+- Expect a retracement first - a fair value gap, or a consolidation that is swept and then
+  used as resistance - before the continuation.
+
+invalidation:
+- Price reclaims the EQ after closing beyond it - the failure is not confirmed.
+
+execution:
+  bias: Opposite to the invalidated model.
+  entry: On the retest after the EQ close - fair value gap, or the swept consolidation high
+    used as resistance.
+  stop: Above the retest structure (he showed stops on the high or above the bodies).
+  targets:
+  - previous day low / high
+  - the opposing liquidity of the invalidated model
+
+measurable:
+- hit rate of the opposing previous-day extreme after an EQ close-and-fail
+- how often the retracement-to-FVG leg appears before the continuation
+
+sources:
+- video_id: X4XSsv5CNqg
+  title: New York Open Live Q&A
+  quote: an invalidation is when we have a valid bullish model or valid bearish model
+- video_id: X4XSsv5CNqg
+  title: New York Open Live Q&A
+  quote: price closes below that EQ on the aligned time frame and fails to reclaim
+- video_id: X4XSsv5CNqg
+  title: New York Open Live Q&A
+  quote: Price opens, closes below the EQ, retest, trades into the low
+- video_id: W7Fu3Rx5iMs
+  title: New York Open Live Q&A
+  quote: that's an invalidation trade
+
+ambiguities:
+- '"The aligned time frame" is never defined - in the worked example the EQ was read on the
+  hourly, but no rule maps a model to its aligned timeframe.'
+- No time limit is given for "fails to reclaim it"; the example simply never reclaimed.
+- The wording is read aloud off a graphic on his own site, so the transcript is a paraphrase
+  of a slide the reader cannot see. The transcript's "directly from their website" is an
+  auto-caption artifact for his own site.
+- Whether an invalidation trade needs its own point of interest / CISD before entry is not stated.
+
+related:
+- equilibrium-eq
+- daily-bias-c2-c3-h1-cisd
+- draw-on-liquidity
+- no-fading-the-daily-candle
+
+contributing_units:
+- live_streams_03
+draft_count: 1
+voice: ttrades

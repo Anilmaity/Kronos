@@ -1,0 +1,64 @@
+id: mmxm-timeframe-alignment
+name: MMXM Timeframe Alignment Table
+definition: 'A fixed pairing between the timeframe of the PD array defining the internal/external
+  range play and the timeframe on which the market maker model is drawn: monthly PD array
+  with a daily MMXM, weekly with 4-hour, daily with 1-hour, 4-hour with 15-minute, 1-hour
+  with 5-minute, and 15-minute with 1-minute. The speaker is explicit that this table applies
+  to the internal-to-external and external-to-internal pairing, not to the selection of the
+  ranges themselves, and states that adhering to it is what produces clean and identifiable
+  market maker models.
+
+  '
+category: time
+status: specified
+aliases:
+- monthly PD with a daily MMXM
+- internal to external timeframe pairing
+preconditions:
+- An internal or external range liquidity objective has been identified on the higher timeframe.
+detection_rules:
+- Monthly PD array -> look for the MMXM on the daily.
+- Weekly -> 4-hour.
+- Daily -> 1-hour.
+- 4-hour -> 15-minute.
+- 1-hour -> 5-minute.
+- 15-minute -> 1-minute.
+- Do not apply the table to range selection itself.
+invalidation:
+- Not applicable - this is a pairing convention.
+measurable:
+- how often a clean MMXM is identifiable on the paired timeframe vs an adjacent one
+sources:
+- video_id: Ibw4saRtYMk
+  title: The MMXM Trader | Advanced ICT MMXM Lesson (Everything You Need To Know)
+ambiguities:
+- The 30-minute timeframe is absent from the ladder without comment.
+- This table differs from the H4/H1-narrative-plus-M15/M5-execution scheme taught by other
+  speakers in the same unit; the two are used for different purposes (range pairing vs execution
+  refinement) and are not presented as competing.
+related:
+- mmxm-range-definition
+- intermediate-timeframe-bridge
+- mmxm-phase-sequence
+timeframes:
+  htf:
+  - 1M
+  - 1W
+  - 1D
+  - 4H
+  - 1H
+  - 15m
+  ltf:
+  - 1D
+  - 4H
+  - 1H
+  - 15m
+  - 5m
+  - 1m
+  fractal: true
+contributing_units:
+- t_talks_02
+draft_count: 1
+voice: guest
+guest_sources:
+- The MMXM Trader | Advanced ICT MMXM Lesson (Everything You Need To Know)

@@ -1,0 +1,63 @@
+id: protected-swing
+name: "Protected Swing (the invalidation level)"
+aliases: ["protected low", "protected high", "new protected swing"]
+category: structure
+status: specified
+
+definition: >
+  Asked what the protected swing replaced, he answers that it is his deliberate simplification
+  of ICT's advanced market structure (short-term / intermediate-term point labelling), which he
+  found too confusing to code. His replacement is stated as a two-step mechanical test: price
+  must sweep out a low (or reach into a gap), and then produce a change in the state of
+  delivery — at that moment the low is a protected swing, without waiting for a further swing to
+  form the way the advanced-market-structure labelling requires. He also gives the print timing
+  that matters for backtesting: the protected swing is valid on the closure through, but it is
+  drawn on the *open of the next higher-timeframe candle*, one second in, so a replay that looks
+  delayed is not actually delayed.
+
+timeframes:
+  htf: ["1D", "4H", "1H"]
+  ltf: ["15m", "5m", "3m", "1m"]
+  fractal: true
+
+preconditions:
+  - "A low (or high) that has swept liquidity or reached into a gap."
+
+detection_rules:
+  - "Require the extreme to have swept out a prior low/high OR to have reached into a fair value gap."
+  - "Require a change in the state of delivery after that extreme."
+  - "The extreme is then a protected swing — no additional swing formation is required."
+  - "Once price continues, a new protected swing forms and the previous one is superseded."
+  - "Timing: valid on the closure through, printed at the open of the following higher-timeframe candle."
+
+invalidation:
+  - "Price trades through the protected swing — this is the stated invalidation of the idea, not a level to give room to."
+
+measurable:
+  - "frequency with which a protected swing is violated before target"
+  - "R difference between stops at the protected swing and stops beyond it"
+  - "count of protected swings formed per higher-timeframe candle"
+
+sources:
+  - video_id: G1IIdQ3RAkY
+    title: "New York Open Live Q&A"
+    quote: "we have to sweep out a low or reach into a gap"
+  - video_id: Je7cd9HJUBE
+    title: "New York Open Live Q&A"
+    quote: "It's going to print on the open of the next candle"
+  - video_id: m8xcjkOuBHU
+    title: "New York Open Live Q&A"
+    quote: "this is a protected low within trading in this range"
+
+ambiguities:
+  - "Whether the sweep and the gap-entry are true alternatives or whether one is preferred is not stated."
+  - "The CISD that confirms the protected swing is the same unbounded 'series of opposing-close candles' test — the series length is never defined."
+  - "In the m8xcjkOuBHU walkthrough he adds a refinement step (a lower-timeframe low below the 50% level 'that needs to get swept out') without saying when refinement is required versus optional."
+  - "He also says he is 'not a huge fan of trying to trade protected swings that form a higher time frame gap', which implies a quality filter on protected swings that is never spelled out."
+
+python_detector: null
+related: ["cisd", "ic-cisd", "stop-loss-placement", "advanced-market-structure-labeling", "swing-point"]
+
+contributing_units: ["live_streams_02"]
+draft_count: 1
+voice: ttrades

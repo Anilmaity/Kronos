@@ -1,0 +1,74 @@
+id: equilibrium-eq
+name: Equilibrium / 50% Level (EQ)
+category: entry
+status: specified
+aliases:
+- EQ
+- the 50% level
+- T-spot overlap
+definition: 'The 50% of a reference candle''s range, used in this unit for three distinct jobs. (1)
+  CANDLE 4 FILTER: for a bullish continuation the candle 4 wick must form in the upper half of candle
+  3''s range (lower half for bearish), because expansions do not give deep retracements. (2) INVALIDATION:
+  a close beyond the EQ of the previous candle on the aligned timeframe is one of only two conditions
+  under which he will trade against his own bias. (3) TARGET: on a large-wick reversal candle the EQ
+  of the previous candle is the target, in place of expansion targets. He is careful that (2) is probabilistic
+  -- an EQ break makes expansion unlikely, it does not guarantee reversal.'
+timeframes:
+  htf:
+  - 1M
+  - 1D
+  - 4H
+  - 1H
+  ltf:
+  - 30m
+  - 15m
+  - 5m
+  fractal: true
+preconditions:
+- A reference candle whose range is being halved (usually candle 3, or the previous candle).
+detection_rules:
+- Mark 0.5 of the reference candle's range.
+- 'Continuation filter: the next candle''s counter-directional wick must stay in the upper half (bullish)
+  / lower half (bearish).'
+- 'Invalidation: a close beyond the EQ on the aligned lower timeframe, with no continuation formed in
+  the original direction, flips the read.'
+- 'Target: on a large-wick candle, use the EQ of the previous candle (plus the daily open and session
+  extremes) instead of expansion targets.'
+- 'Stop-placement reference: a low that sits below the EQ of the previous candle is a defensible stop
+  location.'
+- The EQ frequently overlaps the opposing-candle opening price; the overlap band is what he wants respected.
+invalidation:
+- Price closes beyond the EQ -- 'once price reaches beyond that EQ, it's not a small wick anymore mechanically'.
+measurable:
+- respect rate of the EQ of candle 3 by candle 4's wick
+- forward return after an EQ close-through vs an EQ hold
+sources:
+- video_id: 5fnFOh5YuM0
+  title: TTrades Fractal Model - Trading Candle 4
+  quote: this is due to expansions not giving those deep retracements
+- video_id: jKuXaC84Qx4
+  title: Trading the Invalidation of Daily Bias
+  quote: an opposing setup that forms or the invalidation of the EQ
+- video_id: qdQYhePcvGE
+  title: TTrades Fractal Model - Trading Candle 3
+- video_id: m4k_1pF5zFI
+  title: TTrades Fractal Model - Trading Candle 2
+- video_id: FAKWJ-1NlLE
+  title: Trading The 4 Hour Power Of Three - OHLC / OLHC
+ambiguities:
+- Range-based EQ and body-based EQ are both used in this unit ('the upper half of this from body to
+  body') without a selection rule.
+- Which candle is 'the previous candle' for the invalidation test depends on the aligned timeframe,
+  which is not pinned down.
+- He explicitly says an EQ break is not deterministic and offers a counter-example, but gives no filter
+  to separate the cases.
+related:
+- half-wick-respect
+- fractal-model-c4
+- invalidation-trade
+- t-spot
+- mean-threshold
+contributing_units:
+- build_a_model_intro_to_ttrades_fractal_model_02
+draft_count: 1
+voice: ttrades

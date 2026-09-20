@@ -1,0 +1,54 @@
+id: continuation-failure-short-term-target
+name: "Short-Term Target Already Taken (continuation invalidator)"
+aliases: ["why your continuations fail", "short-term targets taken"]
+category: model
+status: specified
+
+definition: >
+  A mechanically valid continuation setup whose short-term target has already been reached
+  is not tradeable as-is. In that situation additional confirmation is required, or the
+  setup is ignored, because the completed objective is exactly where a new phase of price
+  can begin. A second, related failure mode: a level that price failed to close through,
+  then consolidated around, then finally closed through, is often a liquidity sweep to run
+  the other way rather than a continuation.
+
+timeframes:
+  htf: ["1D", "4H", "1H"]
+  ltf: ["15m", "5m", "3m", "1m"]
+  fractal: true
+
+preconditions:
+  - "A structurally valid continuation setup exists (C2 closure / CISD in the direction of bias)."
+
+detection_rules:
+  - "Identify the setup's nearest objective (opposite side of the range, previous day high/low)."
+  - "If that objective has already been taken before entry, mark the setup as requiring additional confirmation."
+  - "If the closure through the level came only after a failed attempt plus consolidation around it, treat the closure as suspect."
+
+invalidation:
+  - "Additional confirmation (a fresh continuation from a new swing) does print - the setup becomes tradeable again."
+
+execution:
+  bias: "Unchanged."
+  entry: "Only after a new continuation forms from a new swing; otherwise skip."
+  stop: "Behind the new swing."
+  targets: ["a new objective beyond the already-taken one"]
+
+measurable:
+  - "Expectancy of continuation setups split by whether the nearest objective was already taken."
+  - "Rate at which a post-consolidation closure through a level reverses within N bars."
+
+sources:
+  - video_id: aqnY1yZvfYs
+    title: "New York Open Live Q&A"
+  - video_id: Qv6Ux_Z8VrA
+    title: "New York Open Live Q&A"
+  - video_id: yud7TpE2AMs
+    title: "New York Open Live Q&A"
+
+ambiguities:
+  - "'Additional confirmation' is named but never enumerated."
+  - "The relevant objective (short-term swing vs previous day level) is chosen by eye in each example."
+
+python_detector: null
+related: ["continuation-over-reversal", "consolidation-avoidance", "draw-on-liquidity"]

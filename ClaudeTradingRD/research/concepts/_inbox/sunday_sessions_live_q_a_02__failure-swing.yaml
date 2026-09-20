@@ -1,0 +1,50 @@
+id: failure-swing
+name: "Failure Swing"
+aliases: ["failure swings", "short-term low", "short-term high"]
+category: structure
+status: underspecified
+
+definition: >
+  A minor high or low that did not sweep meaningful liquidity. Failure swings are not
+  trusted as levels to trade away from and cannot support a stop; the stop must be placed
+  behind the genuine swing point above/below them. A run through a cluster of failure
+  swings into a real swing point is what creates the tradeable structure.
+
+timeframes:
+  htf: ["4H", "1H"]
+  ltf: ["15m", "5m", "1m"]
+  fractal: true
+
+preconditions:
+  - "A visible sequence of minor highs or lows below/above a larger swing point."
+
+detection_rules:
+  - "A minor extreme that price makes without sweeping a prior extreme is treated as a failure swing."
+  - "A genuine swing point is one whose sweep takes out a prior extreme (liquidity)."
+
+invalidation:
+  - "Not stated as a separate condition."
+
+execution:
+  bias: "n/a - a filter, not a setup."
+  entry: "Do not enter or place stops on the basis of a failure swing."
+  stop: "Above/below the genuine swing point that sits beyond the failure swings."
+  targets: "n/a"
+
+measurable:
+  - "Stop-out rate of stops placed behind failure swings vs behind the next genuine swing."
+
+sources:
+  - video_id: aqnY1yZvfYs
+    title: "New York Open Live Q&A"
+  - video_id: Qv6Ux_Z8VrA
+    title: "New York Open Live Q&A"
+  - video_id: yud7TpE2AMs
+    title: "New York Open Live Q&A"
+
+ambiguities:
+  - "The boundary between a failure swing and a genuine swing point is asserted visually; the only stated test is whether the sweep took out a prior extreme."
+  - "In aqnY1yZvfYs he says 'don't really trust those failure swings' as a reason to skip a whole idea, implying they can also invalidate a setup, not just a stop placement."
+
+python_detector: null
+related: ["protected-swing", "relevant-swings-separation", "liquidity-sweep"]

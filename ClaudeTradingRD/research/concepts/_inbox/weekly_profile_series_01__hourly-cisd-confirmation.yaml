@@ -1,0 +1,72 @@
+id: hourly-cisd-confirmation
+name: "Hourly Change In The State Of Delivery (confirming a daily wick)"
+aliases: ["hourly change in the state of delivery", "hourly CISD", "the confirmation"]
+category: entry
+status: specified
+
+definition: >
+  The single confirmation gate used in every video of this series. Once a daily candle is
+  a candidate reversal (a candle 2 closure), you drop to the 1H chart, locate the extreme
+  inside that daily candle, identify the consecutive series of candles that produced that
+  extreme (down-close candles at a low, up-close candles at a high), and require price to
+  close through that series. That close-through is the change in the state of delivery,
+  and it is what confirms the daily wick — and by extension the weekly high or low — as
+  formed and tradeable away from. Until the close-through occurs the daily candle 2
+  closure is explicitly not confirmed and no trade is taken.
+
+timeframes:
+  htf: ["1D"]
+  ltf: ["1H"]
+  fractal: true
+
+preconditions:
+  - "A daily candle 2 closure / candidate reversal day has closed or is forming."
+  - "That daily candle contains a lower-timeframe extreme (the wick being confirmed)."
+
+detection_rules:
+  - "On the 1H chart, restrict attention to the price action inside the candidate daily candle."
+  - "Bullish case: find the low. Identify the consecutive series of down-close candles that made that low."
+  - "Require a 1H close above the high of that series of down-close candles."
+  - "Bearish case: find the high, identify the consecutive series of up-close candles that made it, and require a 1H close below the low of that series."
+  - "Only after that close-through is the daily wick considered confirmed and the following daily candle tradeable as a continuation."
+
+invalidation:
+  - "Price has not yet closed through the series of candles that made the extreme - not confirmed, wait."
+  - "Price takes out the confirmed extreme after the close-through."
+  - "Both a bullish and a bearish change in the state of delivery are present inside the same daily candle; the signal is treated as low quality and additional intraday confirmation is required."
+
+execution:
+  bias: "Away from the confirmed daily wick."
+  entry: "After the close-through; in several examples on the open of a subsequent continuation formed on the lower timeframe."
+  stop: "Beyond the confirmed extreme / below the protected swing referenced in the individual profile."
+  targets: ["higher-timeframe key level / objective", "average daily range"]
+
+measurable:
+  - "proportion of daily candle 2 closures at a weekly extreme that produce an hourly close-through within the same daily candle"
+  - "next-day continuation hit rate with the hourly CISD present vs absent"
+  - "elapsed hours from the daily extreme to the confirming hourly close-through"
+
+sources:
+  - video_id: -gyDd_E_qD4
+    title: "Weekly Profile for Daily Bias - Midweek Reversal"
+    quote: "This confirms this daily high which helps us to confirm the wick high"
+  - video_id: Qt7Ek4keMzs
+    title: "Weekly Profile for Daily Bias - Classic Expansion"
+  - video_id: McJflkKuvrI
+    title: "Weekly Profile for Daily Bias - Consolidation Reversal"
+  - video_id: FvOUvQ7odiw
+    title: "Weekly Profile for Daily Bias - Intraweek Reversal"
+  - video_id: uPUNOi_R9fA
+    title: "Weekly Profile for Daily Bias - Thursday Counter"
+  - video_id: _CSO5Mf7CM8
+    title: "Weekly Profile - TGIF Setup"
+
+ambiguities:
+  - "The scope of the search is stated inconsistently across the series: 'inside this wick' (Classic Expansion) versus 'inside that candle two' / 'inside Thursday's range' (Midweek Reversal, Consolidation Reversal, Thursday Counter). Whether the CISD must occur within the wick portion only, or anywhere inside the daily candle, is not resolved."
+  - "Whether the required close-through is a body close or may be a wick through the level is never stated."
+  - "The 'series of candles that made the low' is not bounded - no maximum count, and no rule for what breaks a series."
+  - "In the TGIF video the speaker permits substituting a plain candle closure for the CISD once New York is in session, on volatility grounds, which weakens the gate at a time boundary that is not precisely given."
+  - "The CISD is repeatedly read off his own indicator on screen; the indicator's exact rule set is not published in these transcripts."
+
+python_detector: null
+related: ["weekly-profile-framework", "reversal-candle-quality", "smt-swing-point-substitute"]

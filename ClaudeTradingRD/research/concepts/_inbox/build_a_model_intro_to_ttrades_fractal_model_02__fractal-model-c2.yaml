@@ -1,0 +1,109 @@
+id: fractal-model-c2
+name: Candle 2 Closure (the reversal candle)
+category: model
+status: specified
+aliases:
+- C2
+- candle 2 closure
+- candle to closure
+- reversal candle
+- the swing point candle
+definition: 'The swing-point candle of the fractal model. Mechanically, candle 2 trades beyond candle
+  1''s extreme (a sweep) and closes back inside candle 1''s range. In the playbook he states it categorically:
+  candle 2 is always the swing low or the swing high, candle 1 is the candle before it, candle 3 the
+  one after. A candle 2 closure is never tradeable on the closure alone -- it must be paired with a
+  change in the state of delivery inside that candle on the paired lower timeframe, which is what confirms
+  the wick has formed. Whether the candle 2 itself is tradeable, or only the candle 3 that follows it,
+  is decided by wick size: a small wick supports expansion inside candle 2, a large opposing run does
+  not and forces the trader to wait for candle 3.'
+timeframes:
+  htf:
+  - 1M
+  - 1W
+  - 1D
+  - 4H
+  - 1H
+  - 30m
+  - 15m
+  ltf:
+  - 1H
+  - 30m
+  - 15m
+  - 5m
+  - 3m
+  - 1m
+  fractal: true
+preconditions:
+- A candle 1 exists with a defined high and low.
+- A point of interest (fair value gap, or a swing high/low) is present at the extreme, on the daily
+  and lower; on the 4-hour a point of interest is preferred but not required.
+detection_rules:
+- Candle 2 trades beyond candle 1's high (bearish case) or below candle 1's low (bullish case).
+- Candle 2 closes back inside candle 1's range.
+- Drop to the paired lower timeframe and require a change in the state of delivery inside candle 2 before
+  the closure counts as confirmed.
+- 'Classify the candle 2 by wick size: an expansion candle has a small wick each side and a large body;
+  a reversal candle opens, makes a large opposing run to form its wick, then returns toward its opening
+  price before closing.'
+- Small wick -> candle 2 itself may be traded for expansion. Large opposing run -> do not trade candle
+  2; let it close and trade candle 3.
+- A candle 2 closure that occurs on both the bullish and bearish side is resolved by the higher-timeframe
+  bias; the side against bias is ignored.
+- An ideal candle 2 closure additionally closes through the series of opposing candles that reached
+  the point of interest, creating a protected swing in the same bar (see ideal-formation).
+invalidation:
+- No change in the state of delivery forms inside the candle 2 on the lower timeframe -- the swing point
+  is not confirmed and the model does not print.
+- Price closes back outside candle 1's range in the direction of the sweep (it was expansion, not manipulation).
+- The protected swing formed at the candle 2 extreme is taken out.
+execution:
+  bias: Opposite the swept side of candle 1.
+  entry: 'Only when the candle 2 wick is small: enter inside candle 2 after the lower-timeframe change
+    in the state of delivery, at market or on a retest.'
+  stop: On the protected swing at the candle 2 extreme, or on the body extreme when the swing stop does
+    not give the required R.
+  targets:
+  - previous candle's low/high
+  - the EQ of the previous candle
+  - standard deviation projections of the manipulation leg
+  - the daily open and session lows when the wick is large
+measurable:
+- rate at which a daily C2 closure is followed by an LTF CISD inside it
+- expansion range of C2 conditioned on wick-to-body ratio
+- hit rate of trading C2 directly vs waiting for C3
+sources:
+- video_id: m4k_1pF5zFI
+  title: TTrades Fractal Model - Trading Candle 2
+  quote: An expansion candle has a small wick on each side and a large body
+- video_id: TNybDCtwBnc
+  title: TTrades Playbook | Fractal Model Fundamentals (TTFM)
+  quote: Candle 2 will always be the swing low or swing high
+- video_id: vn1RYjhJUnQ
+  title: Validating Swing Points Using Lower Timeframe Confirmation (CISD)
+  quote: unless it is paired with a higher time frame candle closure
+- video_id: q3nauvjT3q0
+  title: Stop Overcomplicating Trading (Here's the Fix)
+  quote: when a candle sweeps out its previous and closes back above that level
+- video_id: SF61vCsBl1A
+  title: TTrades Ideal Formation - High Probability Swing Points
+- video_id: FgP2lc9nneM
+  title: The Best Timeframe for TTrades Fractal Model (Simple)
+ambiguities:
+- '''Small wick'' vs ''large opposing run'' is never given a numeric threshold (no wick-to-body ratio,
+  no percentage of range) anywhere in this unit, despite the whole trade/no-trade decision resting on
+  it.'
+- Whether the sweep must be of candle 1's wick extreme or its body extreme is not stated.
+- The auto-captioner renders 'candle 2' as 'candle to' in the Weekly Profile series; in this unit the
+  numeral is transcribed correctly throughout.
+related:
+- fractal-model-c3
+- fractal-model-c4
+- cisd
+- ideal-formation
+- small-wick-expansion-rule
+- protected-swing
+- point-of-interest
+contributing_units:
+- build_a_model_intro_to_ttrades_fractal_model_02
+draft_count: 1
+voice: ttrades

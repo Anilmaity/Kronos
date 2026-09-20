@@ -1,0 +1,73 @@
+id: tgif-setup
+name: "TGIF Setup"
+aliases: ["TGIF", "TGIF setup"]
+category: model
+status: specified
+
+definition: >
+  A Friday-only trade of the weekly candle's wick, defined on top of a classic expansion
+  week. In a bullish week it is the move from the wick high back down toward the close; in
+  a bearish week, from the wick low back up toward the close. Three conditions must all
+  hold: the weekly extreme formed on Monday or Tuesday, there was expansion through
+  Thursday (ideally three days - Tuesday, Wednesday, Thursday), and a key level or the
+  drawn-on liquidity has actually been hit. The target is a retracement of 20 to 30% of
+  the weekly range measured from the week's high to the week's low (0.2 to 0.3 on a fib),
+  preferably coinciding with nearby PD arrays. If Thursday already formed a reversal,
+  Friday simply continues off it; if Thursday did not, Friday must form the reversal
+  itself.
+
+timeframes:
+  htf: ["1W", "1D"]
+  ltf: ["4H", "1H"]
+  fractal: false
+
+preconditions:
+  - "A classic expansion week is in progress."
+  - "Bullish: the low of the week formed on Monday or Tuesday. Bearish: the high of the week formed on Monday or Tuesday."
+  - "Expansion has run through Thursday, ideally three consecutive days."
+  - "A key level or the drawn liquidity has been hit. If it has not, TGIF does not apply - expect continuation into that level instead."
+
+detection_rules:
+  - "Verify the Monday-or-Tuesday weekly extreme."
+  - "Verify two to three days of expansion through Thursday."
+  - "Verify a relevant level has been reached; a level already traded through does not count, and a level that produced only a small retracement and continuation rather than a V-shape reversal does not count."
+  - "Determine the branch: if Thursday formed a reversal, Friday is a continuation of it; if Thursday did not, Friday must form the reversal."
+  - "On the hourly, wait for a previous high (bullish week) to be swept, then take either a change in the state of delivery or a candle closure - prefer the CISD earlier in the day because volatility is lower, and allow candle closures once New York is in."
+  - "On a candle 2 closure with a large wick, mark 0.5 of the wick, expect price to reach it, form an intra-candle change in the state of delivery there, then trade away."
+  - "Mark the weekly range high to low and take 20 to 30% as the retracement area to trade into."
+
+invalidation:
+  - "No key level has been hit - the setup does not exist and continuation is expected instead."
+  - "The level was reached but price did not reverse off it (only a small retracement then continuation)."
+  - "The fair value gaps that would have been the level have already been traded through, so they are no longer relevant."
+
+execution:
+  bias: "Counter to the week's expansion, back into the weekly range."
+  entry: "Friday on the hourly, after a sweep of a previous high (bullish week) plus a change in the state of delivery, or a candle closure once in New York. In one worked example a bullish 4-hour candle closure served as the counter-trend confirmation, then entry was taken on the open of a new continuation on the 4H/15m model."
+  stop: "On the low chosen because it sits below the EQ of the previous candle."
+  targets: ["20-30% of the weekly range (0.2-0.3 fib, high to low)", "nearby PD arrays aligning with that zone", "2R in the worked example"]
+
+measurable:
+  - "frequency of classic expansion weeks that also satisfy the key-level condition"
+  - "hit rate of Friday retracing into the 20-30% zone of the weekly range"
+  - "distribution of the actual Friday retracement depth as a fraction of the weekly range"
+  - "comparative outcome when Thursday formed the reversal versus when Friday had to form it"
+
+sources:
+  - video_id: _CSO5Mf7CM8
+    title: "Weekly Profile - TGIF Setup"
+    quote: "TGIF is going to be looking to trade that wick low to the close"
+  - video_id: Qt7Ek4keMzs
+    title: "Weekly Profile for Daily Bias - Classic Expansion"
+
+ambiguities:
+  - "The 20-30% band is described as 'the area we want to see price go back up to', not as an order-placement rule; whether to enter at 0.2, at 0.3, or on a reaction anywhere inside the band is not stated."
+  - "'Key level', 'relevant level' and 'drawn liquidity' are used interchangeably; instances are enumerated (prior swing highs/lows, equal highs/lows, fair value gaps, failure swings) but no ranking or selection rule is given when several exist."
+  - "The V-shape-reversal test for whether a level actually produced a turn is visual and unquantified."
+  - "The 2R target belongs to one worked example and is not stated as a general TGIF rule."
+  - "The New York boundary at which candle closures become acceptable in place of a CISD is not given as a clock time."
+  - "Whether TGIF can occur in a midweek-reversal or consolidation-reversal week is not addressed; it is defined only on top of classic expansion."
+  - "No instrument is named in any TGIF example."
+
+python_detector: null
+related: ["classic-expansion-week", "relevant-level", "hourly-cisd-confirmation", "weekly-profile-framework"]

@@ -1,0 +1,502 @@
+"""
+Deploy the Strategy Manager v1 roster into the live Kronos DB.
+
+Design spec: docs/superpowers/specs/2026-07-02-strategy-manager-design.md (§4, §5).
+
+The scalper slot is intentionally EMPTY: S98 ZScore MR M15 was pulled after its
+train-set validation FAILED (spec 2026-07-03), and no strategy replaced it. The
+quiet_mr policy stays registered but unused; the S98 module/tests remain in-tree.
+
+Inserts (idempotently):
+  - apis_strategy + apis_userstrategy rows for the two new child strategies
+        "S95 Session Breakout"        (backtest_strategies/s95_session_breakout.py)
+        "S96 H1 Momentum"             (backtest_strategies/s96_h1_momentum.py)
+    Names MUST match entry_manager._VARIATION_STRATEGY_NAME values.
+    UserStrategy rows are seeded deployed=True but **is_active=False** — the
+    Strategy Manager starts them when (and only when) the user arms them and
+    the gating policy says go. Nothing trades on --commit alone.
+  - apis_managedstrategy rows placing each UserStrategy under manager control:
+        s95 -> slot=session  policy=session_vol   live_eligible=False
+        s96 -> slot=momentum policy=trending      live_eligible=False
+        (scalper slot empty -- S98 failed validation, spec 2026-07-03)
+        challenge_xau -> slot=trend policy=always_on live_eligible=True
+          (only if a deployed UserStrategy for "Challenge XAU H4 Trend" exists;
+           its is_active is NOT touched — it keeps trading exactly as today).
+    live_eligible stays False for the two new ones until the held-out
+    backtest (spec §8) produces a positive test-set expectancy.
+  - apis_managerconfig default row (master_mode=OFF, kill $150, max 3 open).
+
+Rollout env knobs (2026-07-06 live-account deployment):
+  MANAGER_USER_BROKER_ID  bind everything to this UserBroker (fresh account).
+  MANAGER_ARM_MODE        arm_mode for NEWLY created managed rows (OFF|PAPER|LIVE).
+  MANAGER_LIVE_ELIGIBLE   "true" -> children live_eligible=True (held-out
+                          backtest passed 2026-07-06). CHALLENGE_XAU is created
+                          on the resolved broker when absent, so a fresh account
+                          gets the full 3-strategy roster (scalper slot empty).
+  Pausing is enforced by master_mode=OFF + is_active=False regardless.
+
+Broker binding
+--------------
+Like deploy_challenge_xau: mirrors an existing XAU_USD UserBroker so the new
+strategies trade through an already-configured MetaAPI binding. Resolution
+order: MANAGER_USER_BROKER_ID env override -> the deployed UserStrategy of
+REFERENCE_STRATEGY_NAME -> any deployed XAU_USD UserStrategy. Verify the
+dry-run output before --commit. (The compose services also run DRY_RUN=true,
+so no broker order can be placed regardless of the binding.)
+
+Run (from strategies/):
+  python -m db.deploy_manager            # dry-run (print plan, no writes)
+  python -m db.deploy_manager --commit   # actually write the rows
+"""
+from __future__ import annotations
+
+import os
+import sys
+import uuid
+from decimal import Decimal
+
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+from shared.models import (
+    CurrencyPair,
+    ManagedStrategy,
+    ManagerConfig,
+    Session,
+    Strategy,
+    UserBroker,
+    UserStrategy,
+)
+
+SYMBOL = "XAU_USD"
+
+# Reference strategy whose UserBroker (live MetaAPI account binding) we mirror.
+# Deliberately NOT the FundingPips challenge account.
+REFERENCE_STRATEGY_NAME = "ICT Breaker Block (M15)"
+
+# Existing validated strategy adopted under manager control (spec §4 row 1).
+CHALLENGE_STRATEGY_NAME = "Challenge XAU H4 Trend"
+
+# Fixed lot per trade for the new children. Small on purpose: these are
+# paper/probation strategies.
+ENTRY_QTY = Decimal(os.getenv("MANAGER_CHILD_LOT", "0.01"))
+
+
+def _arm_mode() -> str:
+    """arm_mode applied to NEWLY created ManagedStrategy rows only (re-runs
+    never touch an existing row's arm). Default OFF; the 2026-07-06 live
+    account rollout passes MANAGER_ARM_MODE=LIVE with everything paused via
+    master_mode=OFF + is_active=False."""
+    mode = os.getenv("MANAGER_ARM_MODE", "OFF").strip().upper() or "OFF"
+    if mode not in ("OFF", "PAPER", "LIVE"):
+        raise SystemExit(f"MANAGER_ARM_MODE must be OFF|PAPER|LIVE, got '{mode}'")
+    return mode
+
+
+def _live_eligible_override() -> bool:
+    """MANAGER_LIVE_ELIGIBLE=true marks the child strategies live-eligible at
+    seed time. Justified only once the held-out backtest passed — it did on
+    2026-07-06 (optimize_manager_strategies: s95 test WR 72.3%/PF 1.57,
+    s96 test WR 79.8%/PF 1.36, challenge test WR 86.2%/PF 1.90)."""
+    return os.getenv("MANAGER_LIVE_ELIGIBLE", "").strip().lower() in ("1", "true", "yes")
+
+# (strategy name, variation tag, slot, policy_key, policy_params, description)
+# Names must equal entry_manager._VARIATION_STRATEGY_NAME[variation].
+# policy_params mirror the spec §4 defaults explicitly so the frontend can
+# render them read-only; policies.py falls back to the same values if empty.
+# Slot taxonomy simplified 2026-07-06 (user decision): every strategy is one
+# of THREE categories — "trend" (breakout/continuation: S95 ORB, S96 H1
+# Donchian, Challenge XAU H4), "reversal" (S99 MSS+FVG), "scalping"
+# (EMPTY — four validation campaigns failed after costs: S97, S98, M5 z-fade
+# sweep, M1 liquidity-sweep sweep). _ensure_managed syncs slot/policy renames
+# onto existing rows.
+ROSTER = [
+    (
+        "S93 FVG Scalp",
+        "KRONOS_S93_FVG_SCALP",
+        "scalping",
+        "always_on",
+        {},
+        "FVG continuation scalp (M5): displacement FVG >=0.3xATR in killzones "
+        "{7-9,12-14} UTC, retrace entry, SL beyond distal edge, TP 1.5R, "
+        "120-min backstop. Validated 2026-07-06 (train PF 1.30 / test PF 1.24; "
+        "survives 0.80pt stress). Category: scalping "
+        "(backtest_strategies/s93_fvg_scalp.py).",
+    ),
+    (
+        "S99 MSS FVG Reversal",
+        "KRONOS_S99_MSS_FVG",
+        "reversal",
+        "always_on",
+        {},
+        "ICT MSS+FVG reversal (M5): liquidity sweep -> structure shift -> FVG "
+        "retrace entry, SL beyond distal edge, TP 1.5R, hours 6-15 UTC (Asia 1-5 dropped 2026-07-07 after live friction "
+        "measurement). Validated: 6-15 train PF 1.33 / test PF 1.22, ~5 trades/day. "
+        "Category: reversal (backtest_strategies/s99_mss_fvg.py).",
+    ),
+    (
+        "S100 M3 Combo Scalper",
+        "KRONOS_S100_M3_COMBO",
+        "scalping",
+        "always_on",
+        {},
+        "M3 combo scalper (spec v3, 2026-07-23): FVG retrace + OB edge retest "
+        "+ RSI3-momentum, EMA20/200 direction gate, hours 1-8/13-15 UTC, TP "
+        "max(2.5R, 1.5pt), 72-min backstop. 3y-validated (2026 PF 1.68 / 2025 "
+        "1.36 / 2024 1.05 / 2023H2 0.74 — regime-dependent, deployed PAUSED). "
+        "Category: scalping (backtest_strategies/s100_m3_combo.py).",
+    ),
+    (
+        "S94 Sweep Reversal",
+        "KRONOS_S94_SWEEP_REVERSAL",
+        "trend",
+        "always_on",
+        {},
+        "Liquidity-sweep reversal (M5): PD/session/swing level swept and "
+        "closed back within 15 bars, HTF15 wick-validated, retest entry, SL "
+        "beyond sweep extreme +10% pen, TP 2x break-bar leg, 1200-min "
+        "backstop, 24h. Full-year OOS validation 2026-07-07 (static exits): "
+        "886 trades, WR 29%, PF 1.82, +623R, 12/13 months positive; the 9 "
+        "OOS months beat the 3 IS months. Category: trend "
+        "(backtest_strategies/s94_sweep_reversal.py).",
+    ),
+    # 2026-09-18 -- the two survivors of the pre-registered 24-month ICT screen
+    # (lab/REPORT_xau2y_2026-09-18.md): both pass TEST PF > 1 at 0.45 and 0.80
+    # cost, 100% positive TEST months, regime-independent, and hold up under
+    # 5-second bid/ask exit resolution. Deployed to the DEMO book by operator
+    # decision; the backtest enters at bar close with no slippage beyond cost,
+    # so live-vs-sim parity is the open question these rows exist to answer.
+    (
+        "Concept C03_FVG_FILL",
+        "C03_FVG_FILL",
+        "scalping",
+        "always_on",
+        {},
+        "5m FVG fill inside an impulse leg that broke prior structure, entry on "
+        "the reaction close back outside the gap, H1 EMA-slope bias, killzones "
+        "07-20 UTC, TP at the 20-bar extreme. 24-month screen 2024-09..2026-09: "
+        "TEST PF 1.57 @0.45 / 1.46 @0.80, ~4 trades/day, quote-exit haircut -8%. "
+        "Category: scalping (concept_strategies/c03_fvg_fill.py).",
+    ),
+    (
+        "Research OB_MIT_BIAS",
+        "OB_MIT_BIAS",
+        "trend",
+        "always_on",
+        {},
+        "5m order-block mitigation (S03) gated by 15m EMA21 bias, TP 2R, "
+        "07-16 UTC. The bias filter is the edge: S03 alone fails the same "
+        "screen. 24-month screen: TEST PF 1.67 @0.45 / 1.40 @0.80, ~8 trades/day, "
+        "quote-exit haircut -9%. Category: trend (backtest_strategies/s14_ob_mit_bias.py).",
+    ),
+]
+
+# Strategies pulled from the roster: their UserStrategy is de-deployed and the
+# ManagedStrategy row deleted so the manager never gates them again. Identified
+# by strategy name (this file's canonical lookup key; the variation tag lives
+# in Strategy.json_data, not a column). (name, variation) for readable prints.
+RETIRED_STRATEGIES = [
+    ("S97 Snap Scalper M5 (paper)", "KRONOS_S97_SNAP_SCALPER"),
+    # S96 removed from the roster 2026-07-06 (operator decision): weakest
+    # 3-month contributor (+$30 @0.01 lot); module/tests stay in-tree.
+    ("S96 H1 Momentum", "KRONOS_S96_H1_MOMENTUM"),
+    # S95 retired 2026-07-23 (operator decision, live-vs-sim capture audit):
+    # 5 live trades in 2.5 weeks (generation was starved by DAYS_5M=3 < its
+    # 290-bar warmup post-weekend), tiny-sample live PF misleading. UserStrategy
+    # rows archived + ManagedStrategy rows deleted on the live DB same day.
+    ("S95 Session Breakout", "KRONOS_S95_SESSION_BREAKOUT"),
+]
+
+
+def _resolve_user_broker(sess, cp) -> "UserBroker | None":
+    """MANAGER_USER_BROKER_ID override -> reference strategy -> any deployed
+    XAU_USD UserStrategy. Returns None if nothing resolves."""
+    override = os.getenv("MANAGER_USER_BROKER_ID", "").strip()
+    if override:
+        ub = sess.query(UserBroker).filter_by(id=override).first()
+        if ub is None:
+            print(f"FATAL: MANAGER_USER_BROKER_ID={override} not found.")
+            return None
+        print(f"[OK]  Explicit UserBroker override -> id={ub.id} status={ub.status}")
+        return ub
+
+    ref_us = None
+    ref_strat = (
+        sess.query(Strategy)
+        .filter_by(name=REFERENCE_STRATEGY_NAME, currencypair_id=cp.id)
+        .first()
+    )
+    if ref_strat is not None:
+        ref_us = (
+            sess.query(UserStrategy)
+            .filter_by(strategy_id=ref_strat.id, deployed=True)
+            .first()
+        )
+    if ref_us is None:
+        print(f"[WARN] no deployed UserStrategy on '{REFERENCE_STRATEGY_NAME}', "
+              f"falling back to any deployed XAU_USD UserStrategy.")
+        ref_us = (
+            sess.query(UserStrategy)
+            .join(Strategy, UserStrategy.strategy_id == Strategy.id)
+            .filter(Strategy.currencypair_id == cp.id, UserStrategy.deployed == True)  # noqa: E712
+            .first()
+        )
+    if ref_us is None:
+        print("FATAL: no deployed UserStrategy on any XAU_USD strategy -- "
+              "no UserBroker to bind to.")
+        return None
+    ub = sess.query(UserBroker).filter_by(id=ref_us.user_broker_id).first()
+    if ub is None:
+        print(f"FATAL: UserBroker id={ref_us.user_broker_id} not found.")
+        return None
+    return ub
+
+
+def _ensure_strategy(sess, cp, name, variation, description) -> Strategy:
+    strat = sess.query(Strategy).filter_by(name=name).first()
+    if strat is None:
+        strat = Strategy(
+            id=uuid.uuid4(),
+            name=name,
+            description=description,
+            is_active=True,
+            capital_required="5000.00",
+            json_data={"variation": variation, "deployed_via": "deploy_manager"},
+            params={},
+            entry_quantity=ENTRY_QTY,
+            currencypair_id=cp.id,
+        )
+        sess.add(strat)
+        sess.flush()
+        print(f"[NEW] Strategy '{name}' id={strat.id} qty={strat.entry_quantity}")
+    else:
+        print(f"[SKIP] Strategy '{name}' already present id={strat.id}")
+    return strat
+
+
+def _ensure_user_strategy(sess, strat, user_broker) -> UserStrategy:
+    us = (
+        sess.query(UserStrategy)
+        .filter_by(strategy_id=strat.id, user_broker_id=user_broker.id)
+        .first()
+    )
+    if us is None:
+        us = UserStrategy(
+            id=uuid.uuid4(),
+            name=f"{strat.name} (managed)",
+            is_active=False,   # the manager starts it when armed + policy says go
+            multiplyer=1,
+            deployed=True,
+            strategy_id=strat.id,
+            user_broker_id=user_broker.id,
+        )
+        sess.add(us)
+        sess.flush()
+        print(f"[NEW] UserStrategy id={us.id} deployed=True active=False (manager-gated)")
+    else:
+        if not us.deployed:
+            us.deployed = True
+            print(f"[UPD] UserStrategy id={us.id} deployed -> True")
+        else:
+            print(f"[SKIP] UserStrategy id={us.id} already deployed")
+        # is_active is intentionally left alone on re-runs — it's the
+        # manager's (or the operator's) to flip, not this script's.
+    return us
+
+
+def _ensure_managed(sess, us, slot, policy_key, policy_params,
+                    live_eligible=False) -> ManagedStrategy:
+    m = sess.query(ManagedStrategy).filter_by(user_strategy_id=us.id).first()
+    if m is None:
+        arm = _arm_mode()
+        m = ManagedStrategy(
+            id=uuid.uuid4(),
+            user_strategy_id=us.id,
+            slot=slot,
+            policy_key=policy_key,
+            policy_params=policy_params,
+            arm_mode=arm,              # default OFF; env override for rollouts
+            live_eligible=live_eligible,
+            desired_active=False,
+            last_reason="",
+        )
+        sess.add(m)
+        sess.flush()
+        print(f"[NEW] ManagedStrategy slot={slot} policy={policy_key} "
+              f"arm={arm} live_eligible={live_eligible}")
+    else:
+        # Sync category/policy renames onto existing rows (2026-07-06 slot
+        # taxonomy: trend | scalping | reversal). arm_mode / live_eligible /
+        # desired_active remain the operator's — never touched on re-runs.
+        changed = []
+        if m.slot != slot:
+            changed.append(f"slot {m.slot}->{slot}")
+            m.slot = slot
+        if m.policy_key != policy_key:
+            changed.append(f"policy {m.policy_key}->{policy_key}")
+            m.policy_key = policy_key
+        if changed:
+            print(f"[UPD] ManagedStrategy for UserStrategy {us.id}: "
+                  + ", ".join(changed))
+        else:
+            print(f"[SKIP] ManagedStrategy for UserStrategy {us.id} already present "
+                  f"(slot={m.slot} policy={m.policy_key} arm={m.arm_mode})")
+    return m
+
+
+def _ensure_config(sess) -> ManagerConfig:
+    cfg = sess.query(ManagerConfig).first()
+    if cfg is None:
+        cfg = ManagerConfig(
+            id=uuid.uuid4(),
+            master_mode="OFF",
+            kill_switch_loss_usd=Decimal("150.00"),
+            max_concurrent_positions=3,
+            state={},
+        )
+        sess.add(cfg)
+        sess.flush()
+        print("[NEW] ManagerConfig master_mode=OFF kill=-$150 max_open=3")
+    else:
+        print(f"[SKIP] ManagerConfig already present (master={cfg.master_mode})")
+    return cfg
+
+
+def seed(sess, only: "set[str] | None" = None) -> int:
+    """Idempotent seeding pass on an open session. Caller owns commit/rollback.
+    Returns 0 on success, 1 on a fatal precondition failure."""
+    cp = sess.query(CurrencyPair).filter_by(symbol=SYMBOL).first()
+    if cp is None:
+        print(f"FATAL: CurrencyPair symbol='{SYMBOL}' not found.")
+        return 1
+    print(f"[OK]  CurrencyPair {SYMBOL} -> id={cp.id}")
+
+    user_broker = _resolve_user_broker(sess, cp)
+    if user_broker is None:
+        return 1
+    print(f"[OK]  Binding to UserBroker={user_broker.id} ({user_broker.status}) "
+          f"-- verify this is the intended account.")
+    print(f"[OK]  Fixed entry_quantity = {ENTRY_QTY} lot per child strategy")
+
+    # ── Retire strategies pulled from the roster ──────────────────────────────
+    # De-deploy the UserStrategy and delete its ManagedStrategy so the manager
+    # never gates it again. Lookup by name (this file's canonical key), then
+    # UserStrategy by strategy_id and ManagedStrategy by user_strategy_id --
+    # exactly the query style of _ensure_user_strategy / _ensure_managed.
+    if only is not None:
+        print(f"[ONLY] scope limited to {sorted(only)}: retire pass and "
+              f"'{CHALLENGE_STRATEGY_NAME}' pass skipped")
+    for name, variation in (RETIRED_STRATEGIES if only is None else []):
+        strat = sess.query(Strategy).filter_by(name=name).first()
+        if strat is None:
+            print(f"[RETIRE] {variation}: Strategy '{name}' not found (ok)")
+            continue
+        us_rows = sess.query(UserStrategy).filter_by(strategy_id=strat.id).all()
+        if not us_rows:
+            print(f"[RETIRE] {variation}: no UserStrategy found (ok)")
+            continue
+        for us in us_rows:
+            m = (sess.query(ManagedStrategy)
+                 .filter_by(user_strategy_id=us.id).first())
+            if m is not None:
+                sess.delete(m)
+                print(f"[RETIRE] {variation}: ManagedStrategy removed "
+                      f"(UserStrategy {us.id})")
+            if us.deployed or us.is_active:
+                us.deployed = False
+                us.is_active = False
+                print(f"[RETIRE] {variation}: UserStrategy {us.id} de-deployed")
+
+    # ── The two new children ──────────────────────────────────────────────────
+    child_live_eligible = _live_eligible_override()
+    if only is not None:
+        unknown = only - {r[0] for r in ROSTER}
+        if unknown:
+            print(f"FATAL: --only names not in ROSTER: {sorted(unknown)}")
+            return 2
+    for name, variation, slot, policy_key, policy_params, description in ROSTER:
+        if only is not None and name not in only:
+            continue
+        strat = _ensure_strategy(sess, cp, name, variation, description)
+        us = _ensure_user_strategy(sess, strat, user_broker)
+        _ensure_managed(sess, us, slot, policy_key, policy_params,
+                        live_eligible=child_live_eligible)
+
+    # ── CHALLENGE_XAU fills the trend slot ────────────────────────────────────
+    # Prefer an existing deployed UserStrategy on the RESOLVED broker; adopt an
+    # existing one on any broker second (pre-2026-07-06 behaviour); create the
+    # Strategy/UserStrategy pair on the resolved broker when nothing exists, so
+    # a fresh-account rollout gets the full 3-strategy roster in one pass.
+    if only is not None:
+        _ensure_config(sess)
+        return 0
+    ch_strat = (
+        sess.query(Strategy)
+        .filter_by(name=CHALLENGE_STRATEGY_NAME, currencypair_id=cp.id)
+        .first()
+    )
+    if ch_strat is None:
+        ch_strat = _ensure_strategy(
+            sess, cp, CHALLENGE_STRATEGY_NAME, "CHALLENGE_XAU",
+            "H4 Donchian(20) trend-follow, EMA20/50 bias, static SL 4xATR / "
+            "static TP 0.4R (1.6xATR). High-WR geometry validated 2026-07-06 "
+            "(train WR 81.0%/PF 1.73, test WR 86.2%/PF 1.90).",
+        )
+    ch_us = (
+        sess.query(UserStrategy)
+        .filter_by(strategy_id=ch_strat.id, user_broker_id=user_broker.id,
+                   deployed=True)
+        .first()
+    ) or (
+        sess.query(UserStrategy)
+        .filter_by(strategy_id=ch_strat.id, deployed=True)
+        .first()
+    )
+    if ch_us is not None:
+        _ensure_managed(sess, ch_us, "trend", "always_on", {},
+                        live_eligible=True)
+        print(f"[OK]  '{CHALLENGE_STRATEGY_NAME}' adopted (UserStrategy {ch_us.id}); "
+              f"is_active untouched — the manager only acts on it once armed.")
+    else:
+        ch_us = _ensure_user_strategy(sess, ch_strat, user_broker)
+        _ensure_managed(sess, ch_us, "trend", "always_on", {},
+                        live_eligible=True)
+        print(f"[OK]  '{CHALLENGE_STRATEGY_NAME}' created on the resolved broker "
+              f"(UserStrategy {ch_us.id}, is_active=False).")
+
+    # ── Global config ─────────────────────────────────────────────────────────
+    _ensure_config(sess)
+    return 0
+
+
+def main(commit: bool, only: "set[str] | None" = None) -> int:
+    sess = Session()
+    try:
+        rc = seed(sess, only=only)
+        if rc != 0:
+            sess.rollback()
+            return rc
+        if commit:
+            sess.commit()
+            print("\nCOMMITTED.")
+        else:
+            sess.rollback()
+            print("\nDRY-RUN (no writes). Re-run with --commit to persist.")
+        return 0
+    except Exception as e:
+        sess.rollback()
+        print(f"FATAL: {type(e).__name__}: {e}")
+        raise
+    finally:
+        sess.close()
+
+
+if __name__ == "__main__":
+    # --only "Name A,Name B": ensure just those ROSTER entries and skip the retire
+    # and Challenge-XAU passes -- for adding strategies to a live book without the
+    # seeder touching anything else (2026-09-18: the full pass would have
+    # re-created the retired Challenge XAU row, armed LIVE).
+    _only = None
+    for _i, _a in enumerate(sys.argv):
+        if _a == "--only" and _i + 1 < len(sys.argv):
+            _only = {x.strip() for x in sys.argv[_i + 1].split(",") if x.strip()}
+    raise SystemExit(main(commit="--commit" in sys.argv, only=_only))

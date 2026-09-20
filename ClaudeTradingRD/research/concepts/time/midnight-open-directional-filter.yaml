@@ -1,0 +1,233 @@
+id: midnight-open-directional-filter
+name: Midnight Open As A Directional Filter
+variants:
+  name:
+  - Only Short Above The Midnight Open, Only Long Below It
+  definition:
+  - 'EARLIER RECORDING, and the channel''s dedicated video on the two levels. Two opening
+    prices are marked - the midnight open and the 08:30 open - and they are used three ways.
+    (1) As a directional filter expressed in premium/discount language: below either level
+    is a discount and is where longs are looked for; above either is a premium and is where
+    shorts are looked for. (2) As pivots: in choppy conditions price bounces around the level,
+    and failing to close beyond it is read as a signal for continuation the other way. (3)
+    As targets: after an aggressive sell-off or breakout away from them, the same two levels
+    become the objective for the move back. The stated purpose behind all three is capturing
+    the daily range - the manipulation leg of a buy day normally sits below these levels and
+    of a sell day above them.'
+  - 'A hard directional gate on entry price used inside the Twitter model: shorts may only
+    be taken above the midnight open, longs only below it. The level is drawn automatically
+    by the ICT Killzones & Pivots indicator with everything switched off except the midnight
+    opening price. In the final example he substitutes the DAILY open for the midnight open
+    and takes a short above that instead, without giving a rule for when the substitution
+    applies.'
+  - 'A Short works the filter inside a three-timeframe stack and makes the target explicit.
+    Daily: price has reached above the previous day high. Hourly: identify a bullish fair
+    value gap below. 15-minute: look to SHORT ABOVE THE MIDNIGHT OPEN, targeting that hourly
+    fair value gap. The trigger shown is an SMT plus a market structure shift, after which
+    any retracement is sold above the midnight open. He closes by stating the stack is fractal:
+    the same daily / hourly / 15-minute triple can be shifted up to weekly / 4-hour / hourly,
+    or down.'
+  - '$niper''s two-line reading of the midnight and 08:30 opening prices, which he attributes
+    to ICT. Price trading below BOTH the midnight opening price and the 08:30 opening price
+    is in deep discount: he will not look for sells there, only buys at or above those levels.
+    Price trading above both is in deep premium: he anticipates a retracement down into discount.
+    He frames the purpose as a risk-to-reward device - it stops you selling the bottom.
+
+    '
+definition: 'EARLIER RECORDING. The midnight opening price is marked during preparation and
+  used as a directional precondition: on a day he expects to be bullish he wants to see price
+  trade BELOW the midnight open before looking to get long - he calls that the classic buy
+  day. In the same unit it is also used passively as a reference the market respects (in the
+  Twitter-model examples, price retests midnight and no bodies close below it before expanding),
+  and as a timing marker for where the hourly point of interest should form.'
+category: time
+status: contested
+aliases:
+- midnight opening price
+- classic buy day
+- midnight open
+- 8:30 open
+- 830 open
+- line in the sand
+- above midnight open
+- daily open filter
+- deep discount
+- deep premium
+- midnight and 8:30 opening price
+preconditions:
+- A directional expectation for the day already exists.
+- The midnight opening price is drawn on the chart.
+- The midnight (00:00) and 08:30 opening prices are marked on the intraday chart.
+- A daily directional read (buy day / sell day) exists.
+- The midnight (00:00) opening price is marked on the chart.
+- Price has reached above the previous day high (bearish case).
+- An opposing higher-timeframe fair value gap exists as the target.
+- The midnight opening price and the 08:30 opening price are plotted (he uses an indicator
+  for this).
+detection_rules:
+- Mark the midnight opening price.
+- 'Bullish day: require a move BELOW the midnight open before taking a long (''classic buy
+  day''). Bearish mirrors.'
+- Watch whether bodies close through the level - bodies respecting it while wicks pierce it
+  is treated as confirmation.
+- The hourly point of interest is expected to form around the midnight open or just before
+  New York.
+- 'Mark two levels: midnight_open (00:00 open) and eight_thirty_open (08:30 open).'
+- Longs are looked for below either level; shorts above either level.
+- On a sell day the manipulation / opposing run normally prints ABOVE these levels; on a buy
+  day BELOW them.
+- 'Pivot use: price failing to close back above a level after trading below it signals continued
+  downside (mirror for upside).'
+- 'Target use: after an aggressive move away from the levels, they become the objective for
+  the return move.'
+- Look for the lower-timeframe setup, and for PD arrays, in the area beyond these levels rather
+  than at the levels themselves.
+- Compute midnight_open := the opening price of the 00:00 candle.
+- Short entries are permitted only at prices above midnight_open.
+- Long entries are permitted only at prices below midnight_open.
+- A stated variant substitutes the daily open for the midnight open.
+- 'Daily: price reaches above the previous day high.'
+- 'Hourly: identify the bullish fair value gap that will be the target.'
+- '15-minute: sell only ABOVE the midnight open.'
+- 'Trigger: an SMT plus a market structure shift; then sell any retracement above the midnight
+  open.'
+- 'Target: the hourly fair value gap.'
+- The whole triple is fractal - shift it up to weekly / 4-hour / hourly or down to lower timeframes.
+- 'If price is below the midnight open AND below the 08:30 open, classify as deep discount:
+  no sells; look for buys at or above those two levels.'
+- 'If price is above the midnight open AND above the 08:30 open, classify as deep premium:
+  anticipate a retracement into discount.'
+- Both levels must agree - the classification is stated on the pair, not on either alone.
+invalidation:
+- Price never trades back through the midnight open.
+- Price closing back through the level after failing to displace away from it reverses the
+  read.
+- Price never offering an entry on the permitted side of the level - the setup is skipped.
+- Price holds above and trades away from the midnight open without reaching the fair value
+  gap.
+- Not stated as a separate condition; the classification simply flips when price crosses back
+  through the two opens.
+measurable:
+- share of bullish days on which price trades below the midnight open before the low of day
+- hit rate of longs taken with vs without the below-midnight-open condition satisfied
+- share of days whose high (sell days) or low (buy days) forms beyond the midnight / 08:30
+  open
+- hit rate of the two opens as return targets after a day's aggressive move away from them
+- expectancy of entries taken on the permitted side of the level versus the other side
+- share of otherwise valid signals filtered out by the midnight-open condition
+- expectancy of filtered vs unfiltered signals on the same sample
+- difference in outcome between the midnight-open and daily-open variants
+- fill rate of the opposing hourly FVG after a PDH run
+- hit rate of shorts taken above versus below the midnight open on the same signal
+- expectancy of the same entry model with and without the both-opens filter applied
+- how often price closes the day back through the two opens after being classified deep
+sources:
+- video_id: Zm2oKad3Tb8
+  title: How I Prepare For NY Session (Morning Routine) - ICT Concepts
+  quote: you can also mark out the midnight opening price
+- video_id: Zm2oKad3Tb8
+  title: How I Prepare For NY Session (Morning Routine) - ICT Concepts
+  quote: we want to see a move below that in order to get long
+- video_id: Zm2oKad3Tb8
+  title: How I Prepare For NY Session (Morning Routine) - ICT Concepts
+  quote: that would be your classic by day
+- video_id: b6yvRKf8haE
+  title: Why You Should Use 8:30 & Midnight Open (EST) -  ICT Concepts
+  quote: if you're looking for Longs you want below the a30 or midnight open
+- video_id: b6yvRKf8haE
+  title: Why You Should Use 8:30 & Midnight Open (EST) -  ICT Concepts
+  quote: if you are above the 830 or midnight open that is a premium
+- video_id: WwmS47Gb3M0
+  title: The "Twitter Model" The MMXM Trader - ICT Concepts
+  quote: looking to only short above midnight open and then vice versa for Longs
+- video_id: WwmS47Gb3M0
+  title: The "Twitter Model" The MMXM Trader - ICT Concepts
+  quote: instead of using midnight open I use the daily open
+- video_id: MewB_Ero8vo
+  title: Price Targets FVG After Running PDH
+  quote: we're looking to short above midnight open to that hourly fair value gap
+- video_id: MewB_Ero8vo
+  title: Price Targets FVG After Running PDH
+  quote: any sort of retracement I'm looking to sell above midnight open
+- video_id: UmLWRlXd_V8
+  title: 8/14/22  MMXM Live with $niper  - ICT concepts
+  quote: I'm not looking for cells underneath the 830 open and the midnight open
+ambiguities:
+- NO TIMEZONE IS STATED for 'midnight' anywhere in this unit - the same gap the later corpus
+  has.
+- How far below the midnight open price must trade is not stated.
+- Whether the condition is a wick through or a close through is not stated.
+- Auto-caption renders 'buy day' as 'by day'.
+- 'PROVENANCE: this is the EARLIER Education - ICT recording. The later, canonical material
+  (ttfm-minimal-toolkit, entry-time-window) lists the midnight open among the tools he NO
+  LONGER uses, and the existing entry under this id comes from the updated playlist''s Twitter-model
+  video. Both readings are kept; this one is the older.'
+- No timezone is spoken in the transcript body - only the video title carries (EST).
+- No rule is given for when the midnight open and when the 08:30 open governs; both are used,
+  and 'either' is enough for the plain filter while 'both' defines the deep case.
+- '''Failing to close above/below'' is applied to intraday candles whose timeframe is never
+  named.'
+- The chart is index futures throughout; the 08:30 level is a US-data-release open and no
+  equivalent is offered for other asset classes.
+- The time zone of 'midnight' is not stated in this video (the rest of the corpus uses New
+  York time).
+- No rule distinguishes when to use the midnight open and when to use the daily open - both
+  are shown, the swap is unexplained.
+- Whether the filter applies to the entry price only or also to the stop and target is not
+  addressed.
+- The Short shows the short-above-midnight side only; the long-below mirror is not stated
+  here.
+- No stop is given anywhere in the clip.
+- The transcript renders "reached above previous day high" as "wretched above previous day
+  high" - an auto-caption artifact, not a term.
+- It is not said whether the midnight-open filter is a hard gate or a preference.
+- Time zone is not stated in this video; the levels are named as 'midnight' and '8 30' with
+  no exchange or zone.
+- Whether the test is on the wick or the body being below both opens is not stated.
+- The rule is asserted as ICT's teaching and given no evidence.
+- No rule for the case where price is above one open and below the other.
+related:
+- ny-morning-routine
+- mmxm-twitter-model
+- important-time-levels
+- new-york-intraday-time-levels
+- htf-opening-price-entry
+- deep-premium-deep-discount
+- opposing-run-entry
+- premium-discount
+- daily-ohlc-candle-shape
+- ttfm-minimal-toolkit
+- daily-open-eighteen-hundred
+- est-timezone-anchor
+- smt-divergence
+- market-structure-shift
+- timeframe-alignment-pairs
+- premium-discount-equilibrium
+- discount-requirement-before-entry
+guest_sources:
+- $niper (Matt)
+- 8/14/22  MMXM Live with $niper  - ICT concepts
+timeframes:
+  htf:
+  - 1D
+  - 1H
+  ltf:
+  - 15m
+  - 5m
+  - 1m
+  fractal: false
+execution:
+  bias: Long only in deep discount, short only in deep premium.
+  entry: Not specified by this rule - it is a location filter applied on top of the entry
+    model.
+  stop: Not stated.
+  targets:
+  - the opposing premium / discount region
+contributing_units:
+- education_ict_01
+- education_ict_03
+- education_ict_updated_02
+- live_stream_guests_01
+- shorts_02
+draft_count: 5
+voice: mixed

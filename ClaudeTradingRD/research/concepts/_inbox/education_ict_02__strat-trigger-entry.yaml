@@ -1,0 +1,67 @@
+id: strat-trigger-entry
+name: Strat Trigger Entries Inside An ICT Setup
+category: entry
+status: specified
+definition: Part two of a Strat + ICT series, and the only place in the corpus where Strat vocabulary
+  is used mechanically. The ICT setup supplies the location - liquidity swept, structure broken, a
+  fair value gap to enter from - and the Strat supplies the TRIGGER, so that the trade is not entered
+  while price is still moving against you. The triggers named are the 2-2 reversal (enter when the
+  current candle breaks the previous candle's low, for shorts), the 2-1-2 reversal, and the inside
+  bar (take the break of the inside bar in the intended direction). He walks the same setup on 15-minute,
+  5-minute and 1-minute and recommends the 5-minute or 3-minute for this purpose, because lower timeframes
+  fake you out more.
+timeframes:
+  htf:
+  - 15m
+  ltf:
+  - 5m
+  - 3m
+  - 1m
+  fractal: true
+preconditions:
+- 'An ICT setup exists: liquidity swept, structure broken, a fair value gap present.'
+detection_rules:
+- Wait for price to reach the fair value gap / setup area.
+- '2-2 reversal trigger: enter short when the current candle trades through the PREVIOUS candle''s
+  low (mirrored for longs).'
+- '2-1-2 reversal trigger: an inside bar between two directional bars; enter on the break of the inside
+  bar in the intended direction.'
+- 'Inside bar trigger: take the inside bar''s break up or down.'
+- Stop on the high of the trigger candle, or looser, beyond the swing above it.
+- 'Recommended trigger timeframe: 5-minute or 3-minute; the 1-minute requires waiting for an additional
+  lower-timeframe model and fakes out more.'
+measurable:
+- fake-out rate of the 1m trigger vs the 5m trigger on the same setups
+- R difference between entering at the gap and entering at the trigger
+sources:
+- video_id: 9MUej4g9Jyg
+  title: Strat Entries - Strat and ICT Part 2
+  quote: how to take strat entries in ict setups
+- video_id: 9MUej4g9Jyg
+  title: Strat Entries - Strat and ICT Part 2
+  quote: you will then enter short when this candle breaks this low
+- video_id: 9MUej4g9Jyg
+  title: Strat Entries - Strat and ICT Part 2
+  quote: focus on like a five minute three minute something like that
+- video_id: 9MUej4g9Jyg
+  title: Strat Entries - Strat and ICT Part 2
+  quote: it's just gonna fake you out a lot less and give more clear entries
+ambiguities:
+- 'EVOLUTION: the Strat is used as a first-class tool here and disappears entirely from the Updated
+  playlist and from later units; it appears in the library''s `excluded-tooling` list of things deliberately
+  not in the model. This is the earlier position.'
+- The Strat numbering (1 = inside bar, 2 = directional bar) is assumed from part one and never restated
+  here.
+- No rule chooses among the three triggers.
+- The transcript renders 'a two up and shooter' and 'two up and red' for the Strat combinations, so
+  the exact naming is partly lost to captioning.
+related:
+- excluded-tooling
+- market-order-entry
+- fair-value-gap
+- rr-gated-entry-refinement
+voice: ttrades
+contributing_units:
+- education_ict_02
+draft_count: 1
+python_detector: null

@@ -1,0 +1,49 @@
+id: entry-timeframe-elevation
+name: "Entry Timeframe Elevation (root-cause fix for stop-outs)"
+aliases: ["go up a timeframe", "stop getting swept"]
+category: psychology
+status: specified
+
+definition: >
+  A diagnostic rule he applies twice to viewer problems. If entries feel rushed and stressful,
+  or if the directional bias is right but the stop is repeatedly swept before price runs to
+  target, the root cause is an entry timeframe that is too low relative to the trader's grasp
+  of the higher-timeframe opening context. The remedy is to move the entry timeframe up one
+  step: M1/M3 to M5, M5 to M15, M15 to H1.
+
+timeframes:
+  htf: ["1H", "15m"]
+  ltf: ["5m", "3m", "1m"]
+  fractal: false
+
+preconditions:
+  - "A recurring pattern of correct bias with premature stop-outs, or of entry stress."
+
+detection_rules:
+  - "Identify the current entry timeframe."
+  - "If stop-outs precede the intended move, or entries feel rushed, elevate one timeframe step."
+  - "Separately note that the model itself is timeframe-agnostic - only a daily framework and a wick to trade away from are required."
+
+invalidation:
+  - "n/a"
+
+execution:
+  bias: "Unchanged."
+  entry: "Same model, higher timeframe."
+  stop: "Wider, per the higher-timeframe structure."
+  targets: "Unchanged."
+
+measurable:
+  - "MAE and stop-out rate by entry timeframe on the same signal set."
+
+sources:
+  - video_id: Qv6Ux_Z8VrA
+    title: "New York Open Live Q&A"
+  - video_id: yud7TpE2AMs
+    title: "New York Open Live Q&A"
+
+ambiguities:
+  - "No test is given for when elevation has gone too far (the trade becoming untradeable on risk)."
+
+python_detector: null
+related: ["htf-opening-price-entry", "failure-swing", "position-sizing"]

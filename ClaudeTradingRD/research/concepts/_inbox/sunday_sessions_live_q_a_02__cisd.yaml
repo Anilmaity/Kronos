@@ -1,0 +1,56 @@
+id: cisd
+name: "Change In State Of Delivery (CISD)"
+aliases: ["CISD", "change in the state of delivery", "closure through the level"]
+category: entry
+status: specified
+
+definition: >
+  A closure through a defined level that confirms delivery has changed direction. In these
+  streams CISD is used in three roles: to confirm that a swing high/low of the day is in,
+  to confirm a continuation, and as the entry trigger itself. The entry is taken on the
+  closure through the level - he explicitly does not wait for a retest of the resulting
+  order block.
+
+timeframes:
+  htf: ["1D", "4H", "1H"]
+  ltf: ["30m", "15m", "5m", "3m", "1m"]
+  fractal: true
+
+preconditions:
+  - "A defined level exists to close through (prior swing, opposing candle midpoint, fair value gap edge, consolidation boundary)."
+
+detection_rules:
+  - "Price closes through the identified level in the intended direction."
+  - "A bullish CISD is present when the closure is upward through the level; bearish when downward."
+  - "Absence of a bearish CISD inside a developing daily candle is used as evidence the daily read is not bearish (aqnY1yZvfYs)."
+
+invalidation:
+  - "Price fails to produce the closure - the setup does not exist, regardless of how the shape looks."
+  - "The closure occurs only after price has consolidated around the level; the closure may then be a liquidity sweep to run the other way (Qv6Ux_Z8VrA, 'why your continuations fail' graphic)."
+
+execution:
+  bias: "Direction of the closure, subject to the higher-timeframe bias."
+  entry: "On the closure itself; no retest required."
+  stop: "Beyond the swing that the closure protects."
+  targets: ["next relevant high or low"]
+
+measurable:
+  - "Rate at which a closure through the level is followed by continuation vs immediate reversal."
+  - "Difference in fill and expectancy between closure-entry and retest-entry."
+
+sources:
+  - video_id: aqnY1yZvfYs
+    title: "New York Open Live Q&A"
+  - video_id: Qv6Ux_Z8VrA
+    title: "New York Open Live Q&A"
+  - video_id: yud7TpE2AMs
+    title: "New York Open Live Q&A"
+  - video_id: 00iZXPAdR5A
+    title: "New York Open Live Q&A"
+
+ambiguities:
+  - "Whether the closure must be a body close or may be any close is never stated explicitly."
+  - "The level a CISD is measured against varies by context (opposing-candle 50%, wick 50%, gap edge, consolidation boundary) with no precedence rule."
+
+python_detector: null
+related: ["ic-cisd", "fractal-model-c2", "protected-swing", "continuation-failure-short-term-target"]

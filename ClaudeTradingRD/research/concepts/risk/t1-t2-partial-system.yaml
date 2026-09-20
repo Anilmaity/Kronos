@@ -1,0 +1,73 @@
+id: t1-t2-partial-system
+name: T1 / T2 Partial-And-Break-Even System
+definition: 'A two-target management scheme applied identically to futures and to options.
+  T1 is the nearest opposing extreme the model structurally targets - in an ICT lower-low
+  / lower-high sequence, the prior low. On T1 being reached he takes roughly 20% off and moves
+  the stop to break even (the entry price) or to the swing extreme he does not expect price
+  to revisit. T2 is the higher-timeframe objective; there he either closes the remaining 80%
+  or scales half of it and leaves the rest running with the stop still at break even. The
+  stated purpose is removing risk as fast as possible so the remainder can be ignored and
+  the day carried on with; he describes the alternative - watching ten or fifteen ES contracts
+  swing a thousand dollars every few minutes - as the thing this defends against. He explicitly
+  prefers a break-even stop-out to a loss and reports a run of five break-even stop-outs in
+  a row as an acceptable outcome. The options version is the same shape: at +100% take 50%
+  off and run the remainder to T2.'
+category: risk
+status: specified
+aliases:
+- T1
+- T2
+- risk-free runners
+preconditions:
+- An entry with a defined stop and at least two structural targets.
+detection_rules:
+- 'T1 := the nearest prior swing low (for a short: high) that the model''s structure targets.'
+- 'On T1: take about 20% off, then move the stop to the entry price or to the last swing extreme
+  not expected to be revisited.'
+- T2 := the higher-timeframe liquidity objective; close the remainder, or scale half and hold
+  the rest at break even.
+- Once the stop is at break even, do not manage the position further.
+- 'Options variant: at +100% on the contract, take 50% off and run the rest to T2.'
+invalidation:
+- Stop taken before T1 - a full-risk loss; after T1, a break-even exit.
+measurable:
+- expectancy of the 20%-at-T1 scheme vs holding the full position to T2
+- frequency of break-even stop-outs after T1 and the forgone move on each
+sources:
+- video_id: V8P6lNIisvc
+  title: Q&A Live with Alex's Options - ICT + Strat
+  quote: my T1 is where I'm going to move stops break even
+- video_id: V8P6lNIisvc
+  title: Q&A Live with Alex's Options - ICT + Strat
+  quote: I would be taking off around 20% of my position
+ambiguities:
+- The scale-out fraction is given as 20% in one place and 'half' in another, with no rule
+  for choosing.
+- No rule chooses between exiting fully at T2 and scaling half there.
+- Break even is applied unconditionally on T1, which is the opposite of the mechanical no-break-even,
+  no-trail doctrine recorded from a different guest, and of the channel's own protected-swing
+  gate - three traders' rules, not one inconsistency.
+related:
+- partial-profit-taking
+- break-even-management
+- mechanical-trade-management
+- no-stop-change-before-first-target
+- trail-market-structure-swings
+guest_sources:
+- Alex's Options
+- Q&A Live with Alex's Options - ICT + Strat
+timeframes:
+  htf: []
+  ltf: []
+  fractal: false
+execution:
+  bias: As per the entry model.
+  entry: As per the entry model.
+  stop: Initial stop at the entry-model invalidation; moved to break even on T1.
+  targets:
+  - T1 = nearest prior swing extreme
+  - T2 = higher-timeframe liquidity objective
+contributing_units:
+- live_stream_guests_03
+draft_count: 1
+voice: guest

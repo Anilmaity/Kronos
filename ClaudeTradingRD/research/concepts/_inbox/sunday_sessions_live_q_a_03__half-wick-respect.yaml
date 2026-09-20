@@ -1,0 +1,56 @@
+id: half-wick-respect
+name: "0.5 Of The Wick Must Be Respected"
+aliases: ["half the wick", "0.5 of the wick", "50% of the opposing candle"]
+category: structure
+status: specified
+
+definition: >
+  Where a higher timeframe candle closes leaving a significant wick, the midpoint of
+  that wick is the level that decides whether the read survives. In a continuing move
+  price may reach into 0.5 of the wick and trade away from it; price closing beyond
+  0.5 of the wick means the candle is no longer supporting that direction. The same
+  50% logic is applied to the opposing candle's range for positional entries.
+
+timeframes:
+  htf: ["1D", "4H", "1H"]
+  ltf: ["15m", "5m"]
+  fractal: true
+
+preconditions:
+  - "A closed higher timeframe candle with an identifiable wick against the direction of travel."
+
+detection_rules:
+  - "Mark 0.5 of the wick of the relevant candle."
+  - "In the continuation case, expect the next candle to open, reach into 0.5 of the wick, and then deliver away from it."
+  - "In the bearish case, the lower half of a weak-close wick should support price lower."
+  - "For positional entries: price trading above 50% of the opposing candle range invalidates a bearish idea and shifts the expectation to the highs being taken."
+  - "Bullish continuation: price should respect 0.5 of the opposing candles during a strong trend or expansion; closing below it ends that reading."
+
+invalidation:
+  - "A close beyond 0.5 of the wick / 0.5 of the opposing candle range."
+
+execution:
+  bias: "Unchanged while 0.5 holds."
+  entry: "The reach into 0.5 of the wick is the area where he looks for the lower timeframe confirmation."
+  stop: "Beyond the wick extreme, or beyond 0.5 for a tighter positional variant."
+  targets: null
+
+measurable:
+  - "hit rate of price reaching 0.5 of the wick before continuation"
+  - "hit rate of 0.5 holding as support/resistance during confirmed expansion"
+
+sources:
+  - video_id: bMkRomKEunU
+    title: "New York Open Live Q&A"
+  - video_id: u8bnmaih_hA
+    title: "TTrades Sunday Session - Live Q&A"
+  - video_id: r7yW6ou1LDs
+    title: "TTrades Sunday Session - Live Q&A"
+
+ambiguities:
+  - "0.5 is sometimes of the wick and sometimes of the opposing candle's full range; the two are used interchangeably in speech."
+  - "Whether a wick through 0.5 without a close counts as a violation is not stated."
+  - "No minimum wick size for the rule to apply."
+
+python_detector: null
+related: ["small-wick-expansion-rule", "opposing-candle", "premium-discount"]

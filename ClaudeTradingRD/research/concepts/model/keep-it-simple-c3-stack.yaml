@@ -1,0 +1,68 @@
+id: keep-it-simple-c3-stack
+name: Keep It Simple - Trade Only Candle 3, On Every Timeframe
+definition: 'The deliberately reduced version of the model: drop candle 2 and candle 4 entirely
+  and trade ONLY candle 3, but do so on several timeframes at once. Daily candle 2 closure
+  + hourly CISD gives the day; then either the 4-hour or the hourly supplies a second candle
+  2 closure; then the paired lower timeframe (15-minute or 5-minute) supplies a change in
+  the state of delivery and a protected swing. Carries one explicit asymmetry that is easy
+  to miss: on the 4-HOUR a point of interest is NOT required, on the HOURLY it is.'
+category: model
+status: specified
+aliases:
+- stacked candle 3
+- the simple version
+preconditions:
+- A daily candle 2 closure confirmed by an hourly change in the state of delivery.
+detection_rules:
+- Daily candle 2 closure + hourly CISD -> the day is tradeable; look to trade candle 3.
+- 'Choose the structure timeframe: 4-hour (candle 2 closure required, point of interest NOT
+  required) or hourly (candle 2 closure AND a point of interest both required).'
+- Drop to the paired entry timeframe (4H->15m, 1H->5m) and require a change in the state of
+  delivery.
+- 'Enter on a continuation inside candle 3: price reaches a point of interest / fair value
+  gap, then closes through the series of opposing candles.'
+- Where a 4-hour candle 2 closure is two-sided (valid both bullish and bearish), the higher-timeframe
+  bias decides which side is taken; the other side is ignored.
+- 'Separation test before trading away from equal highs/lows: if price is close to them, do
+  not trade away; if there is a lot of separation between the opening price and that level,
+  it is acceptable.'
+invalidation:
+- The protected swing used for the entry is taken out (he shows a fully mechanical, fully
+  valid setup that still stops out).
+measurable:
+- loss rate of mechanically valid stacked-C3 setups (he demonstrates one)
+- expectancy of the 4H route vs the 1H route
+sources:
+- video_id: q3nauvjT3q0
+  title: Stop Overcomplicating Trading (Here's the Fix)
+  quote: We are only going to focus on trading candle three on all time frames
+ambiguities:
+- Why the 4-hour is exempt from the point-of-interest requirement while the hourly is not
+  is asserted, never justified.
+- '''A lot of separation'' between price and equal highs/lows is the stated filter and is
+  not quantified.'
+related:
+- fractal-model-c3
+- timeframe-pairing
+- point-of-interest
+- relevant-swing-separation
+timeframes:
+  htf:
+  - 1D
+  - 4H
+  - 1H
+  ltf:
+  - 15m
+  - 5m
+  fractal: true
+execution:
+  bias: Daily candle 2 closure.
+  entry: Protected swing / continuation on the paired entry timeframe inside candle 3.
+  stop: The protected swing, widened slightly when the reach into the point of interest was
+    very shallow.
+  targets:
+  - 2R minimum
+contributing_units:
+- build_a_model_intro_to_ttrades_fractal_model_02
+draft_count: 1
+voice: ttrades

@@ -1,0 +1,54 @@
+id: average-daily-range-targeting
+name: "Average Daily Range As A Target Ceiling"
+aliases: ["average daily range", "expansion candle size", "ADR"]
+category: risk
+status: underspecified
+
+definition: >
+  Targets are capped by how far the instrument typically expands in a day, not by the
+  next drawn level. He measures typical expansion candle size on the instrument (about
+  700-800 points on YM), subtracts what has already been delivered, and refuses to set
+  a target that would require an atypically large day. The corollary is that the day
+  after a very large range day should be expected to deliver a smaller range.
+
+timeframes:
+  htf: ["1D"]
+  ltf: []
+  fractal: false
+
+preconditions:
+  - "A sample of recent expansion candles on the instrument is visible."
+
+detection_rules:
+  - "Read typical expansion candle size off recent daily candles (he cites ~700-800 points on YM)."
+  - "Measure how much of that has already been delivered on the current day."
+  - "Do not set a target that requires materially more than the typical expansion (he declined a target implying ~1,000 points after ~500 was already delivered)."
+  - "Prefer targets that land near the typical daily range boundary, and prefer daily highs and lows over deeper intraday levels."
+  - "After a very large range day (~1,000 points on YM), expect a smaller range and more consolidation conditions the next day."
+
+invalidation:
+  - "Not stated - this is a target-selection heuristic rather than a trade condition."
+
+execution:
+  bias: null
+  entry: null
+  stop: null
+  targets: ["the level nearest the typical daily expansion boundary", "previous day high/low"]
+
+measurable:
+  - "ADR distribution per instrument and hit rate of targets inside vs beyond it"
+  - "next-day range conditional on a >1.5x ADR day"
+
+sources:
+  - video_id: bMkRomKEunU
+    title: "New York Open Live Q&A"
+  - video_id: wM1s7UivQ08
+    title: "New York Open Live Q&A"
+
+ambiguities:
+  - "He is asked directly how to calculate average daily range and the question is not answered - the numbers are eyeballed off the chart."
+  - "No lookback window or averaging method is given."
+  - "Whether the measure is high-to-low range or open-to-close expansion is not distinguished."
+
+python_detector: null
+related: ["high-vs-low-resistance-liquidity", "relevant-level", "phases-of-price"]

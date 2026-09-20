@@ -1,0 +1,74 @@
+id: balanced-price-range-revisit
+name: Balanced Price Range (a filled fair value gap, revisited)
+definition: 'Ben''s definition of a balanced price range and his stated reason for preferring
+  it: a BPR is a fair value gap that has ALREADY been filled and is then revisited. Because
+  the inefficiency was balanced on the first pass, the second approach to that band is, in
+  his experience, a more sensitive area than an untouched fair value gap - which is why he
+  ranks BPRs above plain gaps in his own toolkit. He notes the composite case in the same
+  breath: if the same band is also a breaker, it is a breaker plus fair value gap rather than
+  a plain BPR.
+
+  '
+category: structure
+status: specified
+aliases:
+- BPR
+- breaker FVG
+preconditions:
+- A fair value gap exists and has been completely filled.
+detection_rules:
+- Mark fair value gaps that price has already traded fully through; keep the band on the chart.
+- Treat a return to that filled band as the point of interest, expecting it to be respected.
+- Rank a BPR above an unfilled fair value gap when both are available.
+- If the band coincides with a breaker, treat it as a breaker + fair value gap stack, which
+  he prefers again.
+- The same no-candle-close invalidation he applies to fair value gaps applies here.
+invalidation:
+- A candle closes through the band in the direction against the trade.
+measurable:
+- reaction rate at filled-and-revisited gaps versus unfilled gaps - the direct test of his
+  sensitivity claim
+- how often a filled gap is revisited at all, by timeframe
+sources:
+- video_id: yRmKkR4CojU
+  title: Fractalizing Entries -Q&A with Ben - ICT Concepts
+  quote: balance price ranges which are fegs that have already been filled that get revisited
+- video_id: yRmKkR4CojU
+  title: Fractalizing Entries -Q&A with Ben - ICT Concepts
+  quote: i like bprs because they tend to be more sensitive than fair value gaps
+ambiguities:
+- This definition - a filled gap revisited - is NOT the same as the overlapping-opposing-gaps
+  definition of a balanced price range used elsewhere in the corpus. It is recorded under
+  its own id for that reason; the two readings come from different traders, not from the channel
+  contradicting itself.
+- How long a filled gap stays eligible is not stated.
+- '''More sensitive'' is his impression from personal study, with no measurement.'
+- The auto-captioner renders FVG as 'feg' throughout this passage.
+related:
+- balanced-price-range-overlap
+- fair-value-gap
+- breaker-block
+- pd-array-matrix-ladder
+guest_sources:
+- Ben (Ben TT)
+- Fractalizing Entries -Q&A with Ben - ICT Concepts
+timeframes:
+  htf:
+  - 1D
+  - 4H
+  ltf:
+  - 1H
+  - 15m
+  - 5m
+  - 1m
+  fractal: true
+execution:
+  bias: Direction of the leg that originally created and then filled the gap.
+  entry: On the revisit into the band.
+  stop: Beyond the band.
+  targets:
+  - the next step of the PD array ladder
+contributing_units:
+- live_stream_guests_01
+draft_count: 1
+voice: guest

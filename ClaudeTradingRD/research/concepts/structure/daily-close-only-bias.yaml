@@ -1,0 +1,45 @@
+id: daily-close-only-bias
+name: Only Daily Opens And Closes Define Narrative
+definition: 'Bias and narrative are determined exclusively from the daily candle''s open and
+  close. Wicks are treated as having a single function - taking liquidity from old highs and
+  lows - and are never used to determine direction. The practical consequence is that a level
+  is only considered disrespected once a daily body close occurs through it; an intraday wick
+  through a level changes nothing.
+
+  '
+category: structure
+status: specified
+aliases:
+- wicks only take liquidity
+preconditions:
+- A PD array or level has been marked on the daily chart.
+detection_rules:
+- To confirm a level is broken, require a daily close beyond it, not a wick.
+- A wick through an old high or low is read as liquidity taken, not as a directional change.
+- 'Bias is re-evaluated at every daily close: which PD arrays have formed, which have been
+  disrespected.'
+invalidation:
+- Not applicable - this is a measurement convention.
+measurable:
+- continuation rate after a daily body close through a level vs a wick-only breach
+sources:
+- video_id: JABOO4LYNjQ
+  title: Jokerszn | Daily Orderflow - ICT Daily Bias
+  quote: I always only used the daily candle closes to determine my buyers
+ambiguities:
+- The daily close timezone / broker session used is never stated.
+related:
+- daily-close-inversion
+- pd-array-mean-threshold-test
+- daily-orderflow-confirms-draw
+timeframes:
+  htf:
+  - 1D
+  ltf: []
+  fractal: true
+contributing_units:
+- t_talks_02
+draft_count: 1
+voice: guest
+guest_sources:
+- Jokerszn | Daily Orderflow - ICT Daily Bias

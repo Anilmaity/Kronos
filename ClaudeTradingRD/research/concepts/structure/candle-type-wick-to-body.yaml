@@ -1,0 +1,83 @@
+id: candle-type-wick-to-body
+name: Candle Types Classified By Wick Size Relative To Body
+definition: 'The Shorts state, for the first time in the corpus with an explicit comparison,
+  what makes a candle a REVERSAL candle rather than a directional one: the wick is larger
+  than the body. The speaker points at the wick that formed first (the manipulation leg) and
+  compares its length against the body, and reads the candle as a lower-timeframe move in
+  one direction that was reversed before the close. A second named type in the same series
+  is the INDECISION candle: a longer wick on EACH side with a small body, where the open and
+  the close sit very close together, meaning price did not go anywhere over that period. These
+  two are presented as members of an enumerated list of "candle types" he looks for; the third
+  (the directional / expansion candle, small wick and large body) is asserted elsewhere in
+  the unit but not enumerated here.'
+category: structure
+status: specified
+aliases:
+- reversal candle
+- indecision candle
+- candle type
+preconditions:
+- A completed candle with a defined open, high, low and close.
+detection_rules:
+- Reversal candle := the wick is larger than the body.
+- 'The relevant wick is the one made FIRST in time - the leg price ran before reversing (bullish
+  reversal candle: open, high, then reversal down to the close; bearish: open, low, then reversal
+  up).'
+- 'Read a reversal candle as a lower-timeframe reversal: price ran one way, then reversed
+  to close the other way.'
+- Indecision candle := a longer wick on each side plus a small body, with the open and the
+  close very close together.
+- An indecision candle means no direction was delivered over that period.
+invalidation:
+- Not applicable - this is a classification of a completed candle, not a setup.
+measurable:
+- frequency of wick > body candles per instrument per month, by timeframe
+- next-candle expansion rate conditional on wick>body versus body>wick
+- the wick-to-body ratio cut-off that best separates his labelled reversal candles from his
+  expansion candles
+sources:
+- video_id: TND1aTpnq5c
+  title: How OHLC Plays Out in Reversal Candles
+  quote: the wick is larger than the body
+- video_id: TND1aTpnq5c
+  title: How OHLC Plays Out in Reversal Candles
+  quote: the next candle type I focus on is a reversal candle
+- video_id: Vh_iZkhAzAI
+  title: Indecision Candles Show No Real Direction in the Market
+  quote: the last candle type I look for is an indecision candle
+- video_id: Vh_iZkhAzAI
+  title: Indecision Candles Show No Real Direction in the Market
+  quote: we have a longer wick on each side, and the body is fairly small
+- video_id: Vh_iZkhAzAI
+  title: Indecision Candles Show No Real Direction in the Market
+  quote: closes very close to the opening price
+ambiguities:
+- This is the ONLY explicit wick-size comparison found in the corpus so far. It is a comparison
+  (wick > body), not a ratio - no percentage or multiple is given, and no tolerance band is
+  given for the case where wick and body are nearly equal.
+- Whether "the wick" means the single directional wick or the sum of both wicks is not stated.
+  The chart he points at has one dominant wick, so the single-wick reading is the more likely
+  one, but a candle with two medium wicks is not covered.
+- The reversal-candle test is stated as a property of a completed candle, but the sequencing
+  he narrates (which extreme came first) is not recoverable from OHLC alone.
+- '"Fairly small" body and "very close" open-to-close for the indecision candle are not quantified.'
+- The Shorts say "the next candle type" and "the last candle type", so at least one earlier
+  type (presumably the directional / expansion candle) is defined in a Short not in this unit.
+  Do not assume its threshold is the mirror of this one.
+related:
+- small-wick-expansion-rule
+- reversal-candle-quality
+- daily-ohlc-candle-shape
+- htf-wick-formation
+- expansion-signature
+- wick-trust-test
+timeframes:
+  htf:
+  - 1D
+  - 4H
+  ltf: []
+  fractal: true
+contributing_units:
+- shorts_02
+draft_count: 1
+voice: ttrades

@@ -1,0 +1,52 @@
+id: time-based-exit-htf-close
+name: "Time-Based Exit at the Higher-Timeframe Candle Close"
+aliases: ["time based exit", "hold to 10am", "expansion candle closes at its extreme"]
+category: time
+status: specified
+
+definition: >
+  Because an expansion candle closes at or near its extreme, a position taken inside an expansion
+  candle can be held to the end of that candle period and exited there. On indices he uses the
+  10:00 a.m. boundary because that is where new higher-timeframe candles (4-hour, 1-hour,
+  30-minute) open; a 6:00-10:00 4-hour expansion candle is expected to complete its move before
+  10:00.
+
+timeframes:
+  htf: ["4H", "1H", "30m", "15m"]
+  ltf: ["5m", "3m", "1m"]
+  fractal: true
+
+preconditions:
+  - "The position is held inside a candle that is behaving as an expansion candle."
+
+detection_rules:
+  - "Identify the higher-timeframe candle the trade is running inside and its close time."
+  - "If that candle is an expansion candle (closing into its extreme), hold to the close of the period."
+  - "For a move framed inside the 06:00-10:00 4-hour candle, expect completion before the 10:00 open."
+
+invalidation:
+  - "The candle stops behaving as an expansion candle and reverses."
+  - "The target level is reached before the period ends, in which case the target takes precedence."
+
+execution:
+  bias: "Unchanged."
+  entry: "Not specified by this concept."
+  stop: "Not specified by this concept."
+  targets: ["Close of the higher-timeframe candle period, e.g. 10:00 a.m. New York time"]
+
+measurable:
+  - "distance from the exit price to the candle extreme when holding expansion candles to their close"
+  - "share of expansion candles closing within the top or bottom quartile of their range"
+
+sources:
+  - video_id: egV_gABTQks
+    title: "(CPI) New York Open Live Q&A"
+  - video_id: 0AYGNc9czYc
+    title: "New York Open Live Q&A"
+
+ambiguities:
+  - "He hesitates between 9:45 and 10:00 as the relevant boundary in one passage."
+  - "No definition is given for classifying a candle as an expansion candle in real time, only after the close."
+
+python_detector: null
+related: ["macros-are-htf-opens", "three-entry-quality-criteria", "dont-trade-after-expansion"]

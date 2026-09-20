@@ -1,0 +1,66 @@
+id: midweek-reversal-week
+name: "Midweek Reversal (weekly profile)"
+aliases: ["midweek reversal", "Wednesday low of week", "Wednesday high of week"]
+category: model
+status: specified
+
+definition: >
+  A week in which Wednesday forms the high or low of the week. Monday and Tuesday both
+  trade against the intended bias, and in doing so build the wick of the weekly candle.
+  Wednesday then prints a daily candle 2 closure / reversal candle, which must contain an
+  hourly change in the state of delivery; that hourly close-through confirms the daily
+  extreme, which in turn confirms the weekly wick being traded away from. Thursday and
+  Friday are the expansion days - candle 3 and candle 4 of the fractal model - and the
+  speaker will also trade Wednesday itself if he wants to trade candle 2. Expansion is run
+  until the average daily range is covered or the higher-timeframe objective is met.
+
+timeframes:
+  htf: ["1W", "1D"]
+  ltf: ["1H"]
+  fractal: true
+
+preconditions:
+  - "A directional bias exists for the week."
+  - "The weekly extreme did not form on Monday or Tuesday (that would be classic expansion)."
+
+detection_rules:
+  - "Monday and Tuesday close against the anticipated bias (bullish bias -> both are down days), forming the weekly wick."
+  - "Wednesday closes as a daily candle 2 closure / reversal candle."
+  - "An hourly change in the state of delivery exists inside Wednesday's range."
+  - "Thursday (candle 3) is then traded as a continuation."
+  - "Friday (candle 4) is traded only if Thursday closed strong AND a higher-timeframe objective is still open."
+  - "Fallback: if Wednesday's closure is not clean, let Thursday close - Thursday's candle 3 closure plus the hourly CISD retroactively confirms Wednesday as the extreme, and only Friday is then traded."
+
+invalidation:
+  - "Wednesday produces only a 'reversal looking candle' without a candle 2 closure - not tradeable on its own."
+  - "The hourly close-through over the series of candles that made the extreme has not occurred - not confirmed, wait."
+  - "Price trades back through the Wednesday extreme."
+
+execution:
+  bias: "Away from the Wednesday extreme, in the direction of the pre-existing bias."
+  entry: "Thursday, after the hourly change in the state of delivery inside Wednesday. Intraday sequencing for a bullish day: price opens, forms its low, then closes over the level."
+  stop: "Beyond the confirmed Wednesday extreme / the protected swing carried into the continuation day."
+  targets: ["higher-timeframe objective", "average daily range", "failure swings above (bullish) or below (bearish)", "previous daily high / low"]
+
+measurable:
+  - "frequency of weeks whose extreme forms on Wednesday"
+  - "hit rate of Thursday continuing after a confirmed Wednesday candle 2 closure"
+  - "hit rate of the Friday second continuation, conditioned on a strong Thursday close and an open objective"
+  - "how often Wednesday's closure is 'unclean' and the setup defers to a Thursday confirmation"
+
+sources:
+  - video_id: -gyDd_E_qD4
+    title: "Weekly Profile for Daily Bias - Midweek Reversal"
+    quote: "Monday and Tuesday oppose our bias. Candle two closure created on Wednesday"
+  - video_id: McJflkKuvrI
+    title: "Weekly Profile for Daily Bias - Consolidation Reversal"
+
+ambiguities:
+  - "'Reversal looking candle' versus 'candle 2 closure' is acted on as a hard distinction but never defined."
+  - "'Closes strong' (the Friday gate) is unquantified."
+  - "Whether both Monday and Tuesday must oppose the bias, or one is sufficient, is not stated categorically; the diagrams show both, and one example collapses Monday and Tuesday into a single bank-holiday candle and is still accepted."
+  - "In one example the speaker declines a Thursday entry as 'not super clean' on the lower timeframe and prefers to wait; the cleanliness criterion is visual only."
+  - "An SMT off the low is cited as extra confluence at the extreme but no correlated instrument is named."
+
+python_detector: null
+related: ["weekly-profile-framework", "hourly-cisd-confirmation", "consolidation-reversal-week", "reversal-candle-quality"]

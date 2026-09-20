@@ -1,0 +1,78 @@
+id: backtesting-protocol
+name: "Backtesting Protocol (treat the replay as live)"
+aliases: ["soft4fx workflow", "bar-by-bar replay"]
+category: psychology
+status: specified
+voice: guest
+guest_sources:
+- "Trader T"
+- "Ben (Ben TT)"
+
+definition: >
+  Two guests give complementary backtesting protocols. Trader T's is a simulator workflow and one
+  behavioural rule that he returns to three times: the failure mode of replay software is spamming
+  through bars, so you must move bar by bar and treat the session exactly as if it were live -
+  plan the trade, think about it, then execute - because that is the behaviour you are actually
+  training. His setup is a broker-replay simulator on MT4 with 1m, 5m, 15m, 1h, 4h, 12h, daily and
+  weekly loaded, a realistic account size (100k-200k, matching prop sizes), fixed 1 percent risk so
+  lot size is solved automatically, and a full journal entry per trade. Ben's is a chart-reading
+  drill rather than a simulator: pick an instrument, put the kill-zone indicator on, map previous
+  day high / low, session highs and lows and weekly highs and lows, then just watch price deliver
+  at those levels - bar replay optional.
+
+timeframes:
+  htf: ["1W", "1D", "4H"]
+  ltf: ["1H", "15m", "5m", "1m"]
+  fractal: false
+
+preconditions:
+- "Trader T: replay software that can show lower-timeframe history (his stated reason for using it is that a charting platform's replay cannot show 1-minute data years back)."
+
+detection_rules:
+- "Trader T: advance the replay bar by bar; do not press play and do not rush. Watch the order fill and watch price at the take-profit or the stop."
+- "Trader T: set fixed percentage risk in the simulator so every trade is sized identically."
+- "Trader T: use an account size that matches what you will really trade (100k-200k, i.e. prop-firm sizes)."
+- "Trader T: journal every loss with screenshots of the 4h, 1h, 5m and 1m; winners are logged more loosely."
+- "Trader T: verify the simulator's server clock against a live chart before trusting any session times - the MT4 build determines the offset."
+- "Ben: map previous day high / low, session highs and lows and weekly highs and lows first, then watch what price does when it reaches them."
+- "Ben: bar replay is optional - scrolling through multiple timeframes of formed charts also works."
+
+invalidation:
+- "Not applicable."
+
+execution:
+  bias: "Not applicable."
+  entry: "Not applicable."
+  stop: "Not applicable."
+  targets: []
+
+measurable:
+- "monthly return dispersion in the replay sample - Trader T reports 20-25 percent months and 2-3 percent months in the same strategy"
+- "difference in results between bar-by-bar and fast-forwarded replay sessions"
+- "hours logged versus strategy stability (he reports 5 hours a day, 8-10 on weekends, thousands of hours total)"
+
+sources:
+- video_id: wCtxmWe4KNc
+  title: "Back Testing Live Session With Trader T"
+  quote: "take your time treat it like it's live don't just Spam through it"
+- video_id: wCtxmWe4KNc
+  title: "Back Testing Live Session With Trader T"
+  quote: "one percent risk per trade fixed risk same every time"
+- video_id: yRmKkR4CojU
+  title: "Fractalizing Entries -Q&A with Ben - ICT Concepts"
+  quote: "map out your session highs and lows"
+- video_id: yRmKkR4CojU
+  title: "Fractalizing Entries -Q&A with Ben - ICT Concepts"
+  quote: "just watch price deliver"
+
+ambiguities:
+- "Trader T gives no minimum sample size; the protocol is about fidelity, not about statistical sufficiency."
+- "He notes the simulator's index data is gappy at the open and close, which is why he prefers forex and gold in it - so the sample is instrument-biased for reasons of data quality."
+- "He also cannot display DXY alongside a pair in that software, so SMT-conditioned rules cannot be tested inside his own sample."
+- "Ben's drill has no scoring step - nothing records whether the prediction at a level was right."
+
+python_detector: null
+related: ["post-trade-journaling-protocol", "journal-losers-only", "hindsight-daily-bias-drill", "position-sizing-fixed-risk"]
+contributing_units:
+- live_stream_guests_01
+draft_count: 1

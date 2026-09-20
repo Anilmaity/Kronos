@@ -1,0 +1,124 @@
+id: nfp-week-protocol
+name: Non-Farm Payroll Week Protocol
+definition: AM Trades treats NFP week as a special case with a fixed order of operations.
+  Monday is never traded. Tuesday is only a candidate if Monday engaged a higher-timeframe
+  PD array. He usually avoids the beginning of NFP week entirely. Monday through Thursday
+  are used as DATA to see whether a weekly profile has set up. Friday's 08:30 NFP release
+  is then used as the volatility driver that delivers the move, and he follows the profile
+  through on Friday.
+variants:
+  definition:
+  - 'The week-shape rule for a non-farm payroll week, which he credits to AM Trades: interest
+    lies mainly on FRIDAY, post release. Tuesday and Wednesday are also watched. Thursday
+    is avoided because it is the day prior to a high-impact release. Monday is already excluded
+    by his standing rule.'
+  - 'A fixed day-by-day plan for a week containing non-farm payroll (usually the first Friday
+    of the month). Monday is never traded; Tuesday and Wednesday are possible but require
+    an unusually convincing price signature because they precede a high-impact event; Thursday
+    is avoided as the day before; the main opportunity is Friday after the release.
+
+    '
+category: time
+status: contested
+aliases:
+- NFP week
+- NFP protocol
+preconditions:
+- It is the week containing the non-farm payroll release.
+- The economic calendar shows non-farm payroll in the week.
+detection_rules:
+- 'Monday: no trade.'
+- 'Tuesday: trade only if Monday engaged a higher-timeframe PD array.'
+- Generally avoid the first half of the week.
+- 'Monday-Thursday: record the range and check whether a weekly profile has formed.'
+- 'Friday: use the 08:30 release as the volatility driver and trade the profile that the week
+  has painted.'
+- NFP is scheduled this week (Friday).
+- 'Friday post-release: primary focus.'
+- 'Tuesday and Wednesday: watch.'
+- 'Thursday: avoid (day prior to high impact).'
+- 'Monday: already skipped.'
+- Monday - do not trade. Use its range as data.
+- Tuesday and Wednesday - eligible, but open a position only on a specific and convincing
+  signature in price.
+- Thursday - avoid (the day before the release).
+- Friday - the primary opportunity, after the 08:30 release.
+- 'On the Friday, first classify Monday-Thursday: if the week so far remained internal to
+  a prior daily range, expect the release to manipulate the external high (or low) and return
+  into the range, and trade the return.'
+- If the release fails to run the external level, or trades in the continuation direction,
+  or simply consolidates, take no trade.
+invalidation:
+- No weekly profile has formed by Thursday's close - Friday is not traded on the profile.
+- The release runs the external level and continues rather than returning - no return, no
+  trade.
+measurable:
+- frequency of a confirmed profile by Thursday in NFP weeks
+- Friday post-08:30 expansion size in NFP weeks
+- distribution of tradeable-day outcomes in NFP weeks vs non-NFP weeks
+- hit rate of the fade-the-NFP-manipulation trade when the week is internal
+- range of the Friday candle versus the week's other days
+- cost of the Tuesday/Wednesday exception trades
+sources:
+- video_id: wGYde-h84cs
+  title: Live Q&A with AM Trades - Weekly Profile
+  quote: I never trade Mondays
+- video_id: wGYde-h84cs
+  title: Live Q&A with AM Trades - Weekly Profile
+  quote: Monday is data you can use to anticipate the profile
+- video_id: wGYde-h84cs
+  title: Live Q&A with AM Trades - Weekly Profile
+  quote: I only focus on red folder
+- video_id: hKCMqh0ZsY0
+  title: How To Use The Economic Calendar For Trading
+  quote: my interest lies mainly on Friday post news release
+- video_id: hKCMqh0ZsY0
+  title: How To Use The Economic Calendar For Trading
+  quote: I will also watch Tuesday and Wednesday but avoid Thursday
+- video_id: QmGJFxfSHxM
+  title: AM Trades | Blending The Economic Calendar, Daily Chart, & Weekly Profiles
+ambiguities:
+- Whether to enter before or only after 08:30 on Friday is implied ('use the release as a
+  driver') but not stated as a time gate.
+- The transcript renders NFP as 'NSP' in places.
+- '''Post release'' is not bounded — how long after 08:30 the avoidance lifts is not stated.'
+- A week carrying both FOMC and NFP (his first example) collapses to two tradeable days; whether
+  that is the general consequence is not stated as a rule.
+- The 'specific and convincing signature' permitting a Tuesday/Wednesday trade is illustrated
+  once (ES ran previous week/day high and closed below the up-close candle, with NQ SMT) but
+  never generalised.
+- No stop rule is given for the Friday trade.
+- Whether the protocol changes when NFP falls outside the first Friday is not addressed.
+related:
+- no-monday-rule
+- news-impact-tiering
+- fomc-week-protocol
+- pre-event-avoidance-rule
+- economic-calendar-filter
+- fomc-nfp-cpi-only
+- consolidation-external-liquidity-only
+guest_sources:
+- AM Trades
+- AM Trades | Blending The Economic Calendar, Daily Chart, & Weekly Profiles
+- Live Q&A with AM Trades - Weekly Profile
+timeframes:
+  htf:
+  - 1W
+  - 1D
+  ltf:
+  - 1H
+  fractal: false
+execution:
+  bias: Against the release's external-range manipulation when the week is internal / consolidated.
+  entry: Intraday signature on the release candle - the worked example used SMT plus a lower-timeframe
+    change in state of delivery.
+  stop: Not stated.
+  targets:
+  - back inside the weekly range
+  - the opposing external level
+contributing_units:
+- education_ict_updated_01
+- live_stream_guests_02
+- t_talks_01
+draft_count: 3
+voice: mixed

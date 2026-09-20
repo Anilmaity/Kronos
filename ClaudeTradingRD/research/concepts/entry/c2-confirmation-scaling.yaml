@@ -1,0 +1,70 @@
+id: c2-confirmation-scaling
+name: Candle 2 Confirmation Scaling
+definition: 'The amount of confirmation required before entering a higher-timeframe candle-2
+  (reversal) candle is inversely proportional to the strength of the higher-timeframe bias
+  and structure. With a strong, clean daily bias the first change in state of delivery that
+  confirms the wick is a sufficient entry. With a weaker bias the trader must additionally
+  wait for a continuation entry, and with a very weak bias must require both a continuation
+  and SMT, or not trade at all.
+
+  '
+category: entry
+status: specified
+aliases:
+- how much confirmation should you demand
+- confirmation vs bias
+preconditions:
+- A higher-timeframe candle 2 (reversal candle) is forming against a prior expansion.
+- The candle-2 wick is small enough to support expansion within that candle.
+detection_rules:
+- 'Classify higher-timeframe bias/structure as strong, medium or weak: a clean expansion,
+  consolidation, sweep of the high and an ideal closure is strong.'
+- 'Strong: entry allowed on the first lower-timeframe change in state of delivery that confirms
+  the wick.'
+- 'Medium: require a continuation entry after that CISD, or SMT with a correlated asset.'
+- 'Weak: require both a continuation entry and SMT; otherwise no trade.'
+invalidation:
+- The higher-timeframe candle prints a large opposing wick, which moves the setup to candle
+  3.
+- The reversal forms midway through the higher-timeframe candle rather than early in it.
+measurable:
+- hit rate of reversal entries vs continuation entries, split by bias-strength bucket
+- average R achieved by continuation entries vs reversal entries on the same signal
+sources:
+- video_id: uzPGXVYpVGc
+  title: Candle 2 Confirmations - Live Lesson, Q&A
+  quote: if we have more bias and structure, we can demand less from the market
+ambiguities:
+- The strong/medium/weak bias scale is a hand-drawn continuum; no checklist decides which
+  bucket a given day falls in.
+- SMT is sometimes described as an alternative to a continuation and sometimes as an addition
+  to it.
+related:
+- wick-trust-test
+- small-wick-expansion-rule
+- continuation-order-block
+- smt-requires-framework
+timeframes:
+  htf:
+  - 1M
+  - 1D
+  - 4H
+  - 1H
+  ltf:
+  - 15m
+  - 5m
+  - 3m
+  - 1m
+  fractal: true
+execution:
+  bias: Opposite the swept side of the candle-2 extreme.
+  entry: Reversal entry (first CISD) when strongly biased; continuation entry otherwise.
+  stop: Beyond the candle-2 extreme for a reversal entry; beyond the new higher-timeframe
+    extreme for a continuation entry.
+  targets:
+  - Internal liquidity / opposite side of the prior range
+  - 2R stated as the normal expectation
+contributing_units:
+- sunday_sessions_live_q_a_01
+draft_count: 1
+voice: ttrades

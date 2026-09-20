@@ -1,0 +1,85 @@
+id: timeframe-continuity
+name: Timeframe Continuity (TheSTRAT)
+aliases:
+- full timeframe continuity
+- FTFC
+- twos on all time frames
+category: time
+status: specified
+definition: 'Timeframe continuity is reading multiple timeframes purely by candle colour (up-close vs
+  down-close relative to that timeframe''s open) and requiring them to agree. For day trading the guest
+  uses month / week / day; he adds the quarter and year for positioning. His stated ideal is that every
+  timeframe is OUT of a 1 (not an inside bar) before taking a trade, because a timeframe sitting inside
+  is ''by definition consolidating'' and its participants are not in control. The mechanism he gives
+  is participation: roughly 70% of traded volume is algorithmic, an algorithm must be told what to trade,
+  how, and WHEN, so every new timeframe open introduces a new participant group - which is why a new
+  monthly or quarterly open flipping colour is the event to watch. When volatility rises you drop to
+  lower timeframes for continuity.'
+timeframes:
+  htf:
+  - 1Y
+  - 1Q
+  - 1M
+  - 1W
+  - 1D
+  ltf:
+  - 1H
+  - 30m
+  - 15m
+  - 5m
+  - 3m
+  - 1m
+  fractal: true
+preconditions:
+- Each timeframe's current candle is classified 1/2/3 and coloured by its open.
+detection_rules:
+- 'For a long: month, week and day are all green (trading above their own opens) and none of them is
+  a 1.'
+- 'For a short: month, week and day are all red and none of them is a 1.'
+- A timeframe printing a 1 (inside bar) means those participants are not in control - that timeframe
+  does not vote.
+- A new higher-timeframe open that flips colour (e.g. last month red, this month green) is the signal
+  that a new participant group has taken over.
+- When volatility increases, move the continuity read down a timeframe.
+- Trade the lower timeframes with the explicit aim of TRIGGERING a 2 on the next timeframe up.
+invalidation:
+- A reversal signal on a lower timeframe that changes a higher timeframe's colour negates the continuity
+  read.
+- A higher timeframe going inside (a 1) removes it from the stack.
+measurable:
+- outcome of 2s taken with 3-timeframe continuity vs 2 vs 1
+- outcome of trades taken while any timeframe is a 1
+- frequency of a monthly-open colour flip and forward return over the rest of the month
+sources:
+- video_id: 1XWyy6Q-_8Q
+  title: Live Stream With Alex's Options - TheSTRAT & Broadening Formations
+  quote: every time you get a new monthly open you're going to get new participants
+- video_id: 1XWyy6Q-_8Q
+  title: Live Stream With Alex's Options - TheSTRAT & Broadening Formations
+  quote: every single time frame that opens
+- video_id: 1XWyy6Q-_8Q
+  title: Live Stream With Alex's Options - TheSTRAT & Broadening Formations
+  quote: the market has to trade in the direction of the most twos
+- video_id: 1XWyy6Q-_8Q
+  title: Live Stream With Alex's Options - TheSTRAT & Broadening Formations
+  quote: trade the lower time frames to trigger twos on the higher time frames
+ambiguities:
+- The 70% algorithmic figure is asserted with no source, market or period.
+- '''Colour'' is by open, but whether it is measured live intrabar or only at close is never stated
+  - and it must be live for the method to work.'
+- Which timeframe set to use is given as month/week/day for day trading and 'go lower when volatility
+  increases', with no volatility threshold.
+- The claim that the market 'has to' trade in the direction of the most 2s is a definitional claim about
+  labels, presented as a market claim.
+related:
+- strat-candle-taxonomy
+- strat-actionable-signals
+- timeframe-decoupling
+- new-period-open-new-participants
+- timeframe-alignment
+contributing_units:
+- live_stream_guests_02
+draft_count: 1
+voice: guest
+guest_sources:
+- Alex's Options

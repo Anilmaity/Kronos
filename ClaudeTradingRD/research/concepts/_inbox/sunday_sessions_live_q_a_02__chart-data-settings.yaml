@@ -1,0 +1,53 @@
+id: chart-data-settings
+name: "Chart Data Settings (back-adjust on, settlement off)"
+aliases: ["B adjust", "settlement", "contract rollover"]
+category: risk
+status: specified
+
+definition: >
+  Two futures data settings he insists on, both of which change the candles the model reads.
+  Back-adjustment is ON, which removes the contract-rollover gap by aligning the new contract
+  to the previous day's close. Settlement is OFF, because he wants the actual close rather
+  than the settlement close - he notes daily candles look materially different with settlement
+  on. He also warns that quoted price levels will differ between traders who have these
+  settings configured differently.
+
+timeframes:
+  htf: ["1D"]
+  ltf: []
+  fractal: false
+
+preconditions:
+  - "Trading continuous futures contracts."
+
+detection_rules:
+  - "Back-adjust: ON."
+  - "Settlement: OFF."
+  - "A large unexplained daily gap indicates back-adjustment is off and a contract rollover occurred."
+
+invalidation:
+  - "n/a"
+
+execution:
+  bias: "n/a"
+  entry: "n/a"
+  stop: "n/a"
+  targets: "n/a"
+
+measurable:
+  - "Difference in detected C2 closures and level hits between back-adjusted and raw continuous series."
+  - "Difference in daily close classification with settlement on vs off."
+
+sources:
+  - video_id: aqnY1yZvfYs
+    title: "New York Open Live Q&A"
+  - video_id: Qv6Ux_Z8VrA
+    title: "New York Open Live Q&A"
+  - video_id: 00iZXPAdR5A
+    title: "New York Open Live Q&A"
+
+ambiguities:
+  - "The specific back-adjustment method (difference vs ratio) is not stated beyond 'aligns with the previous day's close'."
+
+python_detector: null
+related: ["daily-bias-candle-formation", "average-daily-range"]

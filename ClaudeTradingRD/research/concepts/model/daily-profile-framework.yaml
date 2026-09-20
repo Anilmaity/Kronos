@@ -1,0 +1,89 @@
+id: daily-profile-framework
+name: Daily Profiles
+definition: 'A four-way taxonomy of the shape a single daily candle takes, classified by WHERE
+  in the day the reversal or manipulation occurs relative to two session windows (London 02:00-05:00
+  and New York a.m. 08:30-12:00). The four profiles taught are London Reversal (New York continuation),
+  New York Reversal, New York Manipulation, and Seek & Destroy. The first three all produce
+  a directional daily candle (Open-High-Low-Close or Open-Low-High-Close); the fourth produces
+  an indecision candle and is explicitly a stand-aside day. The purpose is to know, before
+  New York opens, whether and how to trade the session.
+
+  '
+category: model
+status: underspecified
+aliases:
+- daily profile
+- the four daily profiles
+preconditions:
+- The session windows are defined and marked (London 02:00-05:00, New York a.m. 08:30-12:00).
+- A directional bias for the day exists from the daily chart (previous day reversal candle,
+  closes over previous day high/low, HTF PD array in play) for the three directional profiles.
+detection_rules:
+- Observe London 02:00-05:00. If London ran counter to the intended daily direction AND reached
+  a relevant higher-timeframe PD array AND changed the state of delivery there, classify as
+  London Reversal.
+- 'If London ran counter to the intended direction but did NOT reach a relevant higher-timeframe
+  PD array, classify as (pending) New York Reversal: expect the run to continue until New
+  York reaches the level.'
+- If London consolidated, or failed to produce a significant high/low usable as a reference,
+  classify as (pending) New York Manipulation of London's range.
+- If London took out BOTH sides of the Asia range without holding beyond either, or if London
+  already produced most of the daily range, classify as Seek & Destroy.
+invalidation:
+- Not stated as a single rule. Per-profile invalidations are recorded on the individual profile
+  concepts.
+measurable:
+- frequency of each of the four profiles per month per instrument
+- hit rate of the 2R target per profile
+- how often the profile classified by 05:00 matches the profile the completed daily candle
+  actually shows
+sources:
+- video_id: y6SnEdASVLY
+  title: ICT Daily Profile - London Reversal / New York Continuation
+- video_id: xdzyejskSKE
+  title: ICT Daily Profile - New York Reversal
+- video_id: IeXtmeKqjnQ
+  title: ICT Daily Profile - New York Manipulation
+- video_id: 4WCiIyCiBrQ
+  title: ICT Daily Profile - Seek & Destroy
+ambiguities:
+- The decision tree above is assembled by the reader from four separate videos; the speaker
+  never states it as a tree in one place.
+- 'The profiles are NOT mutually exclusive: the New York Reversal video explicitly shows a
+  day that is a London Reversal and then a New York Reversal, with no rule for how to label
+  it.'
+- No timezone is stated anywhere in the unit; EST is the ICT convention but is never said.
+- Only these four profiles are covered; the speaker does not claim the taxonomy is exhaustive.
+related:
+- london-reversal-profile
+- new-york-reversal-profile
+- new-york-manipulation-profile
+- seek-and-destroy-profile
+- daily-profile-session-windows
+- relevant-htf-pd-array-test
+timeframes:
+  htf:
+  - 1D
+  - 4H
+  ltf:
+  - 30m
+  - 15m
+  - 5m
+  fractal: false
+execution:
+  bias: From the daily chart, established before the session (previous day reversal candle,
+    order flow of closes, HTF PD array being drawn to).
+  entry: Profile-specific; in all three directional profiles the trigger is a change in the
+    state of delivery followed by entry on the resulting order block, usually after an opposing
+    run at 08:30.
+  stop: Beyond the extreme of the manipulation/opposing run, or beyond the order block, chosen
+    by risk-to-reward.
+  targets:
+  - previous day high/low
+  - opposite side of the range
+  - failure swings / low resistance liquidity
+  - 2R (his stated default)
+contributing_units:
+- daily_profiles_01
+draft_count: 1
+voice: ttrades

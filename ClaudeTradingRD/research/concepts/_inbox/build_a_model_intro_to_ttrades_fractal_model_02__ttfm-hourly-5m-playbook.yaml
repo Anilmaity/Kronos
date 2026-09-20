@@ -1,0 +1,68 @@
+id: ttfm-hourly-5m-playbook
+name: TTFM Playbook - Daily Bias / Hourly Structure / 5-Minute Entry
+category: model
+status: specified
+aliases:
+- the TTrades playbook
+- hourly and 5 minute model
+definition: 'The channel''s own written, ordered checklist for the intraday model, published as a TradeZella
+  playbook. Six steps, executed strictly in order, with an explicit stop-gate at step 1: use the daily
+  chart for a one-sided bias from daily closures; if there is no bias, do not go down to the hourly.
+  Then on the hourly: is there a change in the state of delivery in the candle 2 reversal; is there
+  a point of interest; is there a candle closure at that point of interest. With all met, drop to the
+  5-minute and require a change in the state of delivery there before taking any entry. The demonstrated
+  sample was 5 trades, 80% win rate, 2.79R average, which he himself discounts as a small sample.'
+timeframes:
+  htf:
+  - 1D
+  ltf:
+  - 1H
+  - 5m
+  fractal: true
+preconditions:
+- A completed daily candle.
+detection_rules:
+- '1. Daily chart: derive a one-sided bias from the daily closure. No bias -> stop, do not go to the
+  hourly.'
+- '2. Hourly: confirm a change in the state of delivery inside the candle 2 reversal.'
+- '3. Hourly: identify a point of interest in the upper half (bearish) or lower half (bullish) of the
+  previous day''s range.'
+- '4. Hourly: require a candle closure at that point of interest (sweep the previous hourly extreme
+  and close back inside).'
+- '5. 5-minute: require a change in the state of delivery inside that hourly candle 2. If absent, wait
+  -- it is part of the checklist.'
+- 6. Enter; stop on the protected swing; minimum 2R, or use the hourly target for a larger R.
+invalidation:
+- The point of interest is closed through rather than respected -- either drop the bias or switch the
+  target from expansion to the daily open.
+- The expansion candle opens and goes AGAINST the intended wick direction first (open-low-first on a
+  short day) -- flagged as concerning in the losing example.
+execution:
+  bias: Daily closure.
+  entry: 5-minute closure through the series of opposing candles after the hourly candle 2.
+  stop: Protected swing (the low out of a fair value gap).
+  targets:
+  - 2R minimum
+  - negative one standard deviation of the manipulation leg
+  - the hourly target (previous day high/low) for higher R
+measurable:
+- 'win rate and average R over a large sample (his own 5-trade sample: 80%, 2.79R)'
+- 'step-by-step attrition: how many daily biases survive to a 5m CISD'
+sources:
+- video_id: TNybDCtwBnc
+  title: TTrades Playbook | Fractal Model Fundamentals (TTFM)
+  quote: take a lower time frame entry and just use a higher time frame target
+ambiguities:
+- The point of interest is required to be in the upper/lower half of the previous day's range, but no
+  rule ranks candidates when several exist.
+- The 80% / 2.79R figures are 5 trades in a backtesting tool, explicitly acknowledged as unrepresentative.
+related:
+- daily-bias-framework
+- cisd
+- point-of-interest
+- timeframe-pairing
+- risk-reward-minimum
+contributing_units:
+- build_a_model_intro_to_ttrades_fractal_model_02
+draft_count: 1
+voice: ttrades

@@ -1,0 +1,59 @@
+id: half-wick-respect
+name: "0.5 of the Wick Must Be Respected"
+category: structure
+status: specified
+definition: >
+  Four Shorts state the half-wick rule as a matched respected/disrespected pair, which makes it
+  the cleanest if-then in the unit. After a higher-timeframe reversal candle prints, mark 50% of
+  that candle's wick. If price is going to continue in the reversal direction, the following
+  period's low (bullish case) must form in the UPPER half of that wick: open, low into the upper
+  half, change in the state of delivery to confirm the low, then trade higher. If instead price
+  closes through 0.5 of the wick, the swing is expected to fail and the extreme to be taken out.
+
+timeframes:
+  htf: ["1D", "4H", "1H"]
+  ltf: ["1H", "15m", "5m"]
+  fractal: true
+
+detection_rules:
+  - "After a higher-timeframe reversal candle, mark 50% of its wick."
+  - "Bullish: the following candle should open, form its low in the upper half of the wick, and trade higher."
+  - "Confirm that low with a change in the state of delivery before treating it as held."
+  - "A close through 0.5 of the wick inverts the read: anticipate the swing to fail and the low to be taken out."
+  - "Mirror for the bearish case using the lower half."
+
+invalidation:
+  - "Price closes through the 50% level of the wick."
+
+measurable:
+  - "hit rate of the extreme being taken out after a close through 0.5 of the wick"
+  - "share of next-period lows that form in the upper half after a bullish reversal candle"
+
+sources:
+  - video_id: KGw0lLST3pU
+    title: "What It Means When a Higher Timeframe Reversal Candle Is Respected"
+    quote: "mark out the 50% of this higher time frame wick"
+  - video_id: KGw0lLST3pU
+    title: "What It Means When a Higher Timeframe Reversal Candle Is Respected"
+    quote: "the upper half form the higher time frame wick the next day"
+  - video_id: UFejYNnDCuA
+    title: "What Happens When a HTF Reversal Candle Isn’t Respected"
+    quote: "price would respect the upper half of this wick"
+  - video_id: WLFThXBRk0I
+    title: "Wick Disrespected. What’s It Telling You?"
+    quote: "if the upper half of this wick is not respected"
+  - video_id: OuyHuNe-IP0
+    title: "Wicks Don't Lie, Mastering Them Will Change Your Trading"
+    quote: "I'm going to be focused on price respecting the upper half of this wick"
+
+ambiguities:
+  - "'Closure through' 0.5 of the wick is stated for the failure case, but the respect case is shown as a wick low, so the two sides use different tests (close vs touch)."
+  - "The wick measured is the reversal candle's own wick; whether an intervening candle's wick may substitute is not stated."
+  - "No tolerance band around the 50% level is given."
+
+python_detector: null
+related: ["wick-trust-test", "consequent-encroachment", "equilibrium-eq", "small-wick-expansion-rule", "htf-wick-formation"]
+
+voice: ttrades
+contributing_units: [shorts_04]
+draft_count: 1

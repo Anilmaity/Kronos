@@ -1,0 +1,69 @@
+id: daily-bias-candle-formation
+name: Daily Bias From Candle Formation (including inside days)
+definition: 'Daily directional bias is read from the shape of the developing/most recent daily
+  candle rather than from a range break. Sweeping the previous low and closing back above
+  it is bullish; opening, trading lower first and closing up is a bullish internal formation.
+  This applies even on an inside day, where he does not expect the range to be exceeded but
+  still reads the candle''s internal formation for direction, cross-checked against the absence
+  of a contrary CISD on lower timeframes. A weak close reduces expectation of a range break
+  without flipping the read.
+
+  '
+category: time
+status: specified
+aliases:
+- daily bias
+- inside day bias
+- candle formation
+preconditions:
+- A completed previous daily candle plus a developing one.
+detection_rules:
+- 'Bullish: previous day swept the prior day''s low and closed back above it.'
+- 'Bearish: previous day swept the prior day''s high and closed back below it.'
+- Read the internal sequence of the developing candle (open, first extreme, close) - open-low-then-close-up
+  is bullish, and vice versa.
+- 'Cross-check: a contrary CISD inside the daily candle on lower timeframes argues against
+  the read.'
+- A close inside the prior range with a weak close reduces expectation of a range break but
+  does not by itself flip the bias.
+invalidation:
+- The developing daily candle degenerates into open-low-high-low (or the mirror) - the formation
+  is no longer clean and the day is downgraded.
+measurable:
+- Next-day directional accuracy of each formation class.
+- Accuracy on inside days specifically, where he claims the method still applies.
+sources:
+- video_id: aqnY1yZvfYs
+  title: New York Open Live Q&A
+- video_id: 00iZXPAdR5A
+  title: New York Open Live Q&A
+- video_id: yud7TpE2AMs
+  title: New York Open Live Q&A
+ambiguities:
+- The lower-timeframe CISD cross-check is invoked but the timeframe is never named.
+- '''Weak close'' is not quantified (no fraction-of-range threshold).'
+- In 00iZXPAdR5A he overrides a mechanically bearish close-back-through with a discretionary
+  'slow and shallow, no aggressive reaction' judgement - the override has no threshold.
+related:
+- fractal-model-c2
+- bias-confirmation-tradeoff
+- draw-on-liquidity
+- weekly-profile
+timeframes:
+  htf:
+  - 1D
+  ltf:
+  - 4H
+  - 1H
+  - 15m
+  fractal: true
+execution:
+  bias: Direction implied by the formation.
+  entry: Delegated to the C2/C3 model on lower timeframes.
+  stop: Per the entry model.
+  targets:
+  - previous day high or low
+contributing_units:
+- sunday_sessions_live_q_a_02
+draft_count: 1
+voice: ttrades

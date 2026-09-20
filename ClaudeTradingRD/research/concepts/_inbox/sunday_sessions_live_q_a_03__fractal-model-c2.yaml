@@ -1,0 +1,55 @@
+id: fractal-model-c2
+name: "Candle 2 Closure"
+aliases: ["C2", "candle two closure", "C2 closure"]
+category: model
+status: underspecified
+
+definition: >
+  Referred to throughout these live streams as an already-taught building block rather
+  than re-derived. A candle two closure is the mechanical swing-point definition on the
+  higher timeframe candle - price trades beyond the prior candle's extreme and closes
+  back inside it. Once a change in state of delivery confirms it on the lower timeframe,
+  the following candle is a candle three in the new direction.
+
+timeframes:
+  htf: ["1M", "1D", "4H", "1H"]
+  ltf: ["15m", "5m"]
+  fractal: true
+
+preconditions:
+  - "A completed prior candle with a defined high and low."
+
+detection_rules:
+  - "Price trades beyond the prior candle's extreme and closes back inside its range."
+  - "He prefers, but does not require, that the C2 closure forms from a key level; on the 4-hour and daily it does not always need to."
+  - "A C2 with a small wick supports expansion; a C2 with a large wick suggests a trade back to the opening price instead."
+  - "On a C2 with a large wick, mark 0.5 of the wick and expect price to reach it before delivering away."
+  - "Once a change in state of delivery confirms the C2, the following candle is a candle three."
+
+invalidation:
+  - "The candle closes outside the prior candle's range - expansion, not a C2 closure."
+
+execution:
+  bias: "Opposite the swept side of the prior candle."
+  entry: "Lower timeframe CISD after the closure; intra-candle CISD is accepted."
+  stop: "Beyond the C2 extreme."
+  targets: ["2R", "the drawn objective"]
+
+measurable:
+  - "C2 formation frequency per timeframe"
+  - "outcome split by whether the C2 formed at a key level"
+  - "outcome split by C2 wick size"
+
+sources:
+  - video_id: wM1s7UivQ08
+    title: "New York Open Live Q&A"
+  - video_id: bMkRomKEunU
+    title: "New York Open Live Q&A"
+
+ambiguities:
+  - "The definition is assumed knowledge in these streams and never fully restated - the sweep-and-close-inside reading here is assembled from how he uses it, and should be corroborated against the dedicated C2 videos."
+  - "'Key level' preference is stated without a rule for when it becomes mandatory."
+  - "Whether a body close or a wick close inside the range is required is not stated."
+
+python_detector: null
+related: ["fractal-model-c3", "cisd", "small-wick-expansion-rule", "half-wick-respect"]

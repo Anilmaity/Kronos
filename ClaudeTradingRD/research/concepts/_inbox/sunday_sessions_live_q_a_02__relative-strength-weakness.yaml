@@ -1,0 +1,61 @@
+id: relative-strength-weakness
+name: "Relative Strength & Weakness (ES / NQ / YM)"
+aliases: ["relative strength", "strongest asset", "weakest asset", "lagging asset"]
+category: structure
+status: specified
+
+definition: >
+  A daily ranking of the three correlated index futures (ES, NQ, YM) into strongest,
+  middle and weakest, derived from three inputs only: SMT at the relevant level, candle
+  closures on lower timeframes, and structure/separation from the target. Longs are taken
+  on the strongest asset and shorts on the weakest; the lagging asset is never traded. ES
+  is treated as structurally the middle asset. The ranking is re-derived every day after
+  the directional bias is set, and it can flip intraday.
+
+timeframes:
+  htf: ["1D", "4H"]
+  ltf: ["30m", "15m", "5m", "1m"]
+  fractal: false
+
+preconditions:
+  - "A directional bias for the day already exists (strength is assessed after bias, not before)."
+  - "A shared reference level exists across the assets (e.g. previous day high/low)."
+
+detection_rules:
+  - "Check SMT at the reference level: the asset that failed to take the level is the strong one on that side."
+  - "Compare candle closures on a lower timeframe (30m/15m) across the three assets; the weakest close marks the weakest asset."
+  - "Compare separation from the target: the asset closest to the downside target is weakest for shorts."
+  - "Rank the three; ES is expected to sit in the middle."
+
+invalidation:
+  - "The ranking flips intraday; the flip typically occurs at a higher low (bullish) and after the leading asset has hit its targets."
+
+execution:
+  bias: "Same as the day bias."
+  entry: "Take the setup on the strongest asset for longs / weakest asset for shorts only."
+  stop: "As per the entry model on the chosen asset."
+  targets: "The chosen asset's own previous-day / equal-high-or-low objectives."
+
+measurable:
+  - "Per-day agreement rate between the three ranking inputs (SMT, closures, separation)."
+  - "Realised R of the ranked-strongest vs ranked-weakest vs middle asset on the same idea."
+  - "Frequency and time-of-day of intraday strength flips."
+
+sources:
+  - video_id: aqnY1yZvfYs
+    title: "New York Open Live Q&A"
+  - video_id: Qv6Ux_Z8VrA
+    title: "New York Open Live Q&A"
+  - video_id: yud7TpE2AMs
+    title: "New York Open Live Q&A"
+    quote: "I prefer not to trade the lagging or middle assets"
+  - video_id: 00iZXPAdR5A
+    title: "New York Open Live Q&A"
+
+ambiguities:
+  - "The three inputs are never weighted or ordered when they disagree."
+  - "In aqnY1yZvfYs he tells struggling traders to default to ES (the middle asset) because it 'does what actually is happening'; in yud7TpE2AMs he says he prefers NOT to trade the lagging or middle asset. Advice for beginners vs his own practice."
+  - "No rule is given for whether to switch assets after an intraday strength flip; in aqnY1yZvfYs he explicitly refuses to."
+
+python_detector: null
+related: ["smt-divergence", "relevant-swings-separation", "draw-on-liquidity"]

@@ -1,0 +1,56 @@
+id: buyside-sellside-liquidity
+name: "Buyside & Sellside Liquidity"
+aliases: ["buy stops", "sell stops", "buy side liquidity", "sell side liquidity", "liquidity pool"]
+category: liquidity
+status: specified
+
+definition: >
+  Resting stop orders located beyond swing points. Traders who go long inside a move place
+  protective stops beneath the swing low, so sell stops accumulate there — this is sellside
+  liquidity. Traders who go short place stops above the swing high, so buy stops accumulate
+  there — this is buyside liquidity. The channel's stated premise is that smart money pairs
+  its orders against these pools, which is why swing extremes are magnets rather than walls.
+
+timeframes:
+  htf: ["1M", "1W", "1D", "4H", "1H"]
+  ltf: ["15m", "5m", "1m"]
+  fractal: true
+
+preconditions:
+  - "A confirmed swing high (for buyside) or swing low (for sellside) exists."
+
+detection_rules:
+  - "buyside_liquidity_level := price of a confirmed swing high (or the cluster price of relatively equal highs)."
+  - "sellside_liquidity_level := price of a confirmed swing low (or the cluster price of relatively equal lows)."
+  - "The pool is 'taken'/'swept' when price trades through the level; the speaker then reassigns attention to the next untaken swing in that direction."
+  - "Additionally always mark, as standing pools: previous week high/low, previous day high/low, and session (Asia/London) highs and lows."
+
+invalidation:
+  - "Once price trades through the level, that pool no longer exists as a target."
+
+execution:
+  bias: "Price is expected to draw toward untaken pools; a pool that is taken and then rejected (close back inside) flips bias to the opposite pool."
+  entry: "Not an entry in itself — the sweep of a pool is a precondition for order block / breaker / CISD entries."
+  stop: "n/a"
+  targets: ["the opposite untaken pool"]
+
+measurable:
+  - "hit rate of an untaken swing pool being traded through within N bars"
+  - "frequency of sweep-then-close-back-inside vs sweep-and-continue"
+
+sources:
+  - video_id: U8xH2dEgH5A
+    title: "Liquidity: Buyside & Sellside - ICT Concepts"
+    quote: "smart money will look to pair orders below these lows and above these highs"
+  - video_id: YESqIoA7Wyg
+    title: "Important Liquidity Levels - Draw On Liquidity - ICT"
+  - video_id: TCFvsZeYvV8
+    title: "ICT Power Of 3 - AMD"
+
+ambiguities:
+  - "No rule for choosing among several untaken pools (nearest? largest? highest timeframe?). Examples use the visually obvious one."
+  - "Whether a wick through the level counts as 'taken', or a close beyond is needed, is not stated in this video; other videos in the unit distinguish 'reach' from 'close outside' for bias purposes."
+  - "The claim that stops rest at these levels is asserted from trader psychology, never evidenced."
+
+python_detector: null
+related: ["swing-point", "relatively-equal-highs-lows", "draw-on-liquidity", "external-range-liquidity", "session-high-low"]

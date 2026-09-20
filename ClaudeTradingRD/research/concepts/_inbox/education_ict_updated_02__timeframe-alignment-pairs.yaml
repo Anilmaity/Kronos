@@ -1,0 +1,69 @@
+id: timeframe-alignment-pairs
+name: Timeframe Pairing and Alignment
+aliases:
+- time frame alignment
+- locked to the hourly and 5 minutes
+category: time
+status: specified
+definition: 'Pairs used explicitly in this unit, with the alignment condition attached. The model
+  runs on a pair - hourly with 5-minute, daily with hourly, 15-minute with 1-minute, 30-minute with
+  3-minute - and a third, lower timeframe is used only to refine the entry (1-minute under the hourly/5-minute
+  pair, 15-minute under the daily/hourly pair). Alignment is not assumed: after the higher-timeframe
+  sweep and closure he waits until BOTH timeframes are directional the same way, which happens when
+  the lower timeframe closes through the series of opposing candles that made the extreme. Until
+  that close, the pair is not aligned and the setup is not live.'
+timeframes:
+  htf:
+  - 1D
+  - 1H
+  - 30m
+  - 15m
+  ltf:
+  - 1H
+  - 15m
+  - 5m
+  - 3m
+  - 1m
+  fractal: true
+preconditions:
+- A directional higher-timeframe candle event (sweep and closure back inside).
+detection_rules:
+- 'Select the pair: 1D-1H, 1H-5m, 30m-3m, or 15m-1m.'
+- Alignment := the lower timeframe has closed through the series of opposing candles that made the
+  swept extreme, in the same direction as the higher timeframe.
+- If that close has not happened, wait - 'we have to wait through a close through that level'.
+- Once aligned, a third and lower timeframe may be used purely for entry refinement.
+- Lock the indicator/model to the pair's two timeframes so the levels persist when dropping lower.
+invalidation:
+- The lower timeframe making a new extreme before closing through - alignment is not achieved.
+measurable:
+- lag in bars between the higher-timeframe closure and lower-timeframe alignment
+- share of higher-timeframe closures that never achieve alignment
+- outcome difference between entries taken before and after alignment
+sources:
+- video_id: 4jU547ocod4
+  title: TTrades Fractal Model + Inversion (Intraday Strategy)
+  quote: I will wait until those time frames are aligned in the same direction
+- video_id: r_UF8U-hsL8
+  title: Why You're Failing with ICT Concepts
+  quote: we are on the 30 minute and that is my time frame alignment
+- video_id: xP-o11jRCyg
+  title: Trade Continuations Using Breaker Blocks
+- video_id: WwmS47Gb3M0
+  title: The "Twitter Model" The MMXM Trader - ICT Concepts
+ambiguities:
+- The pairing rule itself (why 1H goes with 5m) is deferred to his timeframe alignment video and
+  not derived here.
+- The 30m-3m pair is stated once in passing and the 1H-1m pairing used in one breaker example is
+  not reconciled with it.
+- Whether the third refinement timeframe is fixed by the pair or chosen freely is not stated.
+related:
+- ltf-inversion-entry-in-tspot
+- fractal-model-c2
+- automatic-fractal-pairing
+- timeframe-pairing
+python_detector: null
+contributing_units:
+- education_ict_updated_02
+draft_count: 1
+voice: ttrades

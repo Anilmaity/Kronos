@@ -1,0 +1,56 @@
+id: relevant-htf-pd-array-test
+name: "Relevant Higher-Timeframe PD Array Test (London Reversal vs New York Reversal)"
+category: structure
+status: underspecified
+definition: >
+  A 46-second Short states the discriminator in a single sentence: what separates a New York
+  reversal from a London reversal is that in the New York case London never reached a relevant PD
+  array. The retracement therefore continues past London into New York, where the
+  higher-timeframe key level is finally reached; the change in the state of delivery prints there
+  and the move follows. The Short also gives the resulting daily candle shape for both directions
+  - open, high, low, close for the bearish case and open, low, high, close for the bullish one.
+
+timeframes:
+  htf: ["1D", "4H"]
+  ltf: ["1H", "15m"]
+  fractal: false
+
+detection_rules:
+  - "When London runs counter to the intended daily direction, test whether that run reached a relevant higher-timeframe PD array."
+  - "Reached -> the reversal stands in London (London reversal)."
+  - "Not reached -> the retracement continues into New York, where the level is reached and the reversal forms there."
+  - "Confirm the New York reversal with a change in the state of delivery at that level before entering."
+  - "Expect the daily candle to print open-low-high-close (bullish) or open-high-low-close (bearish)."
+
+invalidation:
+  - "The higher-timeframe level is never reached in either session."
+
+measurable:
+  - "share of London counter-runs that reach a marked HTF level"
+  - "hit rate of the New York branch when London did not reach one"
+
+sources:
+  - video_id: 2ctrcNs4tFo
+    title: "What Sets NY Reversals Apart from London Reversals?"
+    quote: "London never reached a relevant PD array"
+  - video_id: 2ctrcNs4tFo
+    title: "What Sets NY Reversals Apart from London Reversals?"
+    quote: "we never reached a PDA to form the reversal"
+  - video_id: 2ctrcNs4tFo
+    title: "What Sets NY Reversals Apart from London Reversals?"
+    quote: "London moves lower, never reaches a relevant higher time frame level"
+  - video_id: 2ctrcNs4tFo
+    title: "What Sets NY Reversals Apart from London Reversals?"
+    quote: "we go higher until New York to form the reversal"
+
+ambiguities:
+  - "'Relevant' PD array is again asserted and never defined - this Short repeats the term without adding a test."
+  - "NO SESSION HOURS ARE GIVEN. 'London' and 'New York' are used as hard gates in this Short with no clock times attached."
+  - "No tolerance for 'reached' (wick touch vs body trade into the level)."
+
+python_detector: null
+related: ["new-york-reversal-profile", "london-reversal-profile", "daily-ohlc-candle-shape", "killzones", "entry-time-window"]
+
+voice: ttrades
+contributing_units: [shorts_04]
+draft_count: 1

@@ -1,0 +1,56 @@
+id: high-vs-low-resistance-liquidity
+name: "High Resistance vs Low Resistance Liquidity"
+aliases: ["high resistance liquidity", "low resistance liquidity", "HRL", "LRL"]
+category: liquidity
+status: specified
+
+definition: >
+  Whether price will slice through levels or stall is decided on the daily chart, not
+  intraday. When the daily setup calls for expansion, conditions are low resistance and
+  he expects price to cut through everything in the way. Where a very large range has
+  already printed, or ahead of very high impact news, conditions are high resistance and
+  he expects consolidation instead. Within the daily profile he refuses to trade into
+  high resistance liquidity - he wants the failure swings on the side he is heading toward.
+
+timeframes:
+  htf: ["1D"]
+  ltf: ["1H", "15m", "5m"]
+  fractal: false
+
+preconditions:
+  - "The daily chart has been assessed for whether it is set up to expand."
+
+detection_rules:
+  - "Daily set up for expansion (within his model) = low resistance liquidity conditions; expect price to slice through levels."
+  - "Extremely large range already printed with nothing further set up = high resistance / consolidation conditions."
+  - "Immediately prior to very high impact news = high resistance conditions."
+  - "Identify which side of the daily chart carries the failure swings - that is the low-resistance side and the side he expects to be run first."
+  - "Do not take a trade whose path runs into high resistance liquidity within the daily profile; the USDJPY example is a long that would have had to trade up through highs already taken overnight."
+
+invalidation:
+  - "The daily read changing (a new phase of price)."
+
+execution:
+  bias: "Toward the low-resistance side."
+  entry: null
+  stop: null
+  targets: ["the levels on the low-resistance side"]
+
+measurable:
+  - "range delivered on days classified low vs high resistance"
+  - "how often the failure-swing side is run first"
+  - "range compression on the day following a very large range day"
+
+sources:
+  - video_id: r7yW6ou1LDs
+    title: "TTrades Sunday Session - Live Q&A"
+  - video_id: u8bnmaih_hA
+    title: "TTrades Sunday Session - Live Q&A"
+
+ambiguities:
+  - "'Set up to have an expansion within my model' is circular here - the daily classification depends on his model rather than on a stated test."
+  - "'Very high impact news' is not enumerated."
+  - "'Extremely large range' has no threshold, though elsewhere he uses average expansion size (700-800 points on YM) as a reference."
+
+python_detector: null
+related: ["failure-swing", "average-daily-range-targeting", "phases-of-price", "relevant-level"]

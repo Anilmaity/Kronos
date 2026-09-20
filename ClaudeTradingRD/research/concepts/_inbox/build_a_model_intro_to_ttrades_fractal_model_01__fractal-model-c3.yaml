@@ -1,0 +1,83 @@
+id: fractal-model-c3
+name: Candle 3 Continuation (the easier trade)
+category: model
+status: specified
+aliases:
+- C3
+- continuation closure
+- expansion candle
+definition: 'Candle 3 is the expansion candle that follows a confirmed candle 2. A candle 3 CLOSURE
+  is a continuation closure: it closes BEYOND candle 2''s extreme (over candle 2''s high in a bullish
+  sequence, below candle 2''s low in a bearish one) - the video also describes it as engulfing the
+  previous candle by closing over its body. That strong close is what licenses candle 4. Candle 3
+  is also the fallback when candle 2 never printed: if the sweep candle failed to close back inside,
+  you wait, and a candle 3 closure on the next candle lets you trade candle 4 instead. Trading candle
+  3 is stated to be the goal of the model - ''the easiest is aligning that candle three with a lower
+  time frame candle three, and then a continuation entry''.'
+timeframes:
+  htf:
+  - 1M
+  - 1D
+  - 4H
+  - 1H
+  ltf:
+  - 15m
+  - 5m
+  - 1m
+  fractal: true
+preconditions:
+- A confirmed candle 2 (point of interest + lower-timeframe CISD), OR a swept candle that failed
+  to close back inside, making the NEXT candle a C3 candidate.
+detection_rules:
+- 'C3 closure (bullish): the candle closes above candle 2''s high. Bearish: closes below candle 2''s
+  low.'
+- 'Alternative wording used for the no-C2 path: the candle engulfs the previous candle by closing
+  over its body.'
+- A C3 closure requires the same lower-timeframe CISD confirmation before candle 4 is traded.
+- 'Inside candle 3, let the wick form: wait for the intracandle CISD (or a protected swing already
+  formed before the open) before trading the body.'
+- 50% of candle 3's whole range is marked and expected to be respected by candle 4.
+invalidation:
+- Candle 3 closes back inside candle 2's range instead of beyond it - no candle 4 continuation.
+- Candle 4 fails to respect 50% of candle 3's range.
+execution:
+  bias: Direction of the C2 reversal.
+  entry: Intracandle CISD inside C3, a new protected swing, or a positional entry at the open when
+    a protected swing already exists.
+  stop: On the protected swing / beyond the forming wick.
+  targets:
+  - previous higher-timeframe candle extremes
+  - 2R with runners to HTF targets
+measurable:
+- expansion range of C3 conditional on C2 wick size
+- share of C3s that close beyond C2's extreme (licensing C4)
+- R distribution of C3-inside-C3 alignments vs single-timeframe C3
+sources:
+- video_id: tyoxl1l-6iI
+  title: 'Candle 2 Closure: The Foundation of TTrades Fractal Model'
+  quote: Candle 3 closes strong or over candle 2's high
+- video_id: v1X8UMWgWmI
+  title: Best Trading Strategy for 2026 - TTFM
+  quote: it is engulfing this candle previous if it closes over its body
+- video_id: v1X8UMWgWmI
+  title: Best Trading Strategy for 2026 - TTFM
+  quote: the goal of this model is to trade candle three on multiple time frames
+- video_id: A4NasIa371c
+  title: How to Set Price Targets Using the Fractal Model
+  quote: when I'm saying trading C3 inside a C3
+ambiguities:
+- '''Closes strong'' and ''closes over candle 2''s high'' are given as alternatives in the same sentence;
+  whether a strong close short of candle 2''s high qualifies is not resolved.'
+- The C3-without-C2 path requires closing 'over its body' while the C3-after-C2 path requires closing
+  over the HIGH - two different thresholds for the same label.
+related:
+- fractal-model-c2
+- fractal-model-c4
+- ic-cisd
+- positional-entry
+- aligning-expansion-candles
+- equilibrium-eq
+contributing_units:
+- build_a_model_intro_to_ttrades_fractal_model_01
+draft_count: 1
+voice: ttrades

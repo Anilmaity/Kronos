@@ -1,0 +1,58 @@
+id: daily-ohlc-candle-shape
+name: "Daily Open High Low Close (OHLC / OLHC)"
+aliases: ["open high low close", "OHLC", "OLHC", "trading the daily candle"]
+category: time
+status: specified
+
+definition: >
+  The foundation of his model: he is only ever trying to trade the shape of the
+  daily candle. If bearish he expects open, then a high (the wick), then delivery
+  lower into the close - so he wants to be selling at or above the daily open, in
+  the wick of the candle. If bullish, open, then a low, then delivery higher. The
+  entire chart he analyses on carries only the daily open and an equilibrium mark.
+
+timeframes:
+  htf: ["1D"]
+  ltf: ["1H", "15m", "5m"]
+  fractal: true
+
+preconditions:
+  - "A directional read on the daily candle exists (from daily closures and phases of price)."
+
+detection_rules:
+  - "Bearish daily: expect open -> high -> lower -> close. Position at or above the daily open."
+  - "Bullish daily: expect open -> low -> higher -> close. Position at or below the daily open."
+  - "If bearish, price should NOT retrace above 50% of the opposing candle range; that indicates a wick forming the other way and the bearish read is done."
+  - "A candle that opens and delivers immediately with no wick gives no OHLC shape and therefore no validation of the idea."
+  - "Only the daily open and an equilibrium mark stay on the chart during analysis."
+
+invalidation:
+  - "Price trading above the invalidation level above the daily open (bearish case)."
+  - "Price trading above 50% of the opposing candle range."
+  - "The daily candle building the opposite shape (open-low-high-close when bearish was expected)."
+
+execution:
+  bias: "From the expected daily candle shape."
+  entry: "Sell above the daily open (bearish) or buy below it (bullish), inside the developing wick."
+  stop: "Above the invalidation point, allowing for the wick - specifically above 50% of the opposing candle range."
+  targets: ["the daily close area / opposite extreme of the expected candle"]
+
+measurable:
+  - "distribution of daily candle shapes (OHLC vs OLHC vs other) per instrument"
+  - "hit rate of the 50%-of-opposing-candle invalidation"
+  - "how often the daily wick reaches back past the daily open"
+
+sources:
+  - video_id: u8bnmaih_hA
+    title: "TTrades Sunday Session - Live Q&A"
+    quote: "I am only looking to trade the daily open high low close"
+  - video_id: r7yW6ou1LDs
+    title: "TTrades Sunday Session - Live Q&A"
+
+ambiguities:
+  - "The daily candle open convention is inconsistent - he says he uses the 6 p.m. open but also that he does not care what happens at midnight price."
+  - "'Equilibrium mark' is described as the EQ of the previous day range in one place but not defined generally."
+  - "How far above the daily open selling is acceptable is bounded only by the 50%-of-opposing-candle rule."
+
+python_detector: null
+related: ["opposing-candle", "premium-discount", "positional-entry-before-open", "macros-not-used"]

@@ -1,0 +1,58 @@
+id: realistic-r-expectations
+name: "Realistic R and Win-Rate Expectations"
+aliases: ["win rate of the fractal model", "break-even win rate"]
+category: risk
+status: specified
+
+definition: >
+  Asked outright for the win rate of the fractal model at 1:2 risk-to-reward, he gives a range
+  rather than a figure: users report anywhere from 30% to 80%, and the most common number he
+  sees is around 50%, with the caveat that it depends on instrument and timeframes. The second
+  number in this unit is a break-even calculation used to argue against interfering with trades:
+  a 2R take-profit needs about a 34% win rate to break even, and moving to break-even early
+  raises the requirement by roughly 16 points to about 50% — the same edge, destroyed by
+  management. He also states plainly that runs of five, six or seven consecutive losses are
+  statistically normal and that three losses do not mean a 0% win rate; sample size has to grow
+  before a win rate means anything.
+
+timeframes:
+  htf: []
+  ltf: []
+  fractal: false
+
+preconditions:
+  - "A model traded consistently enough to produce a sample."
+
+detection_rules:
+  - "Expect roughly 50% win rate at 1:2 R for the fractal model; the reported spread is 30-80%."
+  - "At a 2R target the break-even win rate is about 34%."
+  - "Interfering with the trade (early break-even) pushes the required win rate to about 50%."
+  - "Treat runs of 5-7 consecutive losses as within normal variance; do not re-estimate the win rate from a handful of trades."
+
+invalidation:
+  - "Not applicable — this is a calibration statement."
+
+measurable:
+  - "realised win rate at a fixed 2R target versus the 34% break-even line"
+  - "win-rate delta between trades held to target and trades moved to break-even"
+  - "longest realised losing run versus the 5-7 expectation"
+
+sources:
+  - video_id: Je7cd9HJUBE
+    title: "New York Open Live Q&A"
+    quote: "people range from 30% to 80%"
+  - video_id: m8xcjkOuBHU
+    title: "New York Open Live Q&A"
+    quote: "Now you have to have a 50% win rate to be break even"
+
+ambiguities:
+  - "The 30-80% range is reported second-hand from viewers, not measured; the ~50% figure is an impression, not a statistic he has published."
+  - "The 34% break-even figure is stated for a 2R target without stating commissions or slippage assumptions."
+  - "He does not say what he personally achieves, and refuses to publish trade results on stream."
+
+python_detector: null
+related: ["risk-reward-minimum", "break-even-management", "prop-firm-drawdown-sizing", "loss-is-not-a-bad-trade", "partial-profit-taking"]
+
+contributing_units: ["live_streams_02"]
+draft_count: 1
+voice: ttrades

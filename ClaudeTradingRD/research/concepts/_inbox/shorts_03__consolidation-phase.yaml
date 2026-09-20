@@ -1,0 +1,100 @@
+id: consolidation-phase
+name: "Consolidation (Phase Of Price)"
+category: structure
+status: specified
+
+definition: >
+  A dedicated Short restates the definition and, importantly, states the DIRECTIONAL rule the
+  other way round from the library's existing entry. Definition: consolidation is price staying
+  within a given range for a period of time; it is expected following a large range, or after
+  price reaches an important level. Interaction: wait for either the high or the low of the
+  range to be taken out - and here the side that is taken FIRST supplies the direction, rather
+  than a pre-existing bias selecting which side must be taken. If the low is taken out first
+  that is generally bullish and he trades to the other side of the range; if the high is taken
+  out first that is generally bearish and he trades to the low of the range. The one exception:
+  the range does not have to be taken out at all if a correlated asset takes it out or creates
+  SMT, in which case he trades to the other side without a manipulation on this asset.
+
+timeframes:
+  htf: ["1D", "4H", "1H"]
+  ltf: ["15m", "5m"]
+  fractal: true
+
+preconditions:
+  - "A high and a low can be marked that price has not traded beyond."
+  - "Typically following a large range, or after price has reached an important level."
+
+detection_rules:
+  - "Consolidation = price stays within a given range for a period of time."
+  - "Expect it after a large range, or after price reaches an important level."
+  - "Confirmation in the worked example is negative and mechanical: price has not traded below
+    the marked low and has not traded above the marked high."
+  - "Wait for one side of the range to be taken out before trading."
+  - "Low taken out FIRST -> generally bullish -> trade to the other side of the range."
+  - "High taken out FIRST -> generally bearish -> trade to the low of the range."
+  - "Exception: if a correlated asset takes the side out, or SMT forms, trade to the other side
+    without requiring the manipulation on this asset."
+  - "Behavioural marker he narrates while it is happening: price is lethargic, just hanging
+    around."
+
+invalidation:
+  - "Price trades and holds beyond the marked range - the phase has resolved."
+
+execution:
+  bias: "Set by which side of the range is run out first (or by the correlated asset / SMT)."
+  entry: "After the sweep, on the closure through the opposing candles into the level."
+  stop: "Not restated in these Shorts."
+  targets:
+    - "the opposite side of the range"
+
+measurable:
+  - "share of consolidations where the first side taken predicts the eventual resolution"
+  - "how often the SMT exception fires instead of a same-asset sweep"
+  - "how often consolidation follows a large range or an important-level tag, versus at random"
+
+sources:
+  - video_id: yfj10dtkRKY
+    title: "Understanding When Consolidation Happens"
+    quote: "Consolidation is when price stays within a given range for a period of time."
+  - video_id: yfj10dtkRKY
+    title: "Understanding When Consolidation Happens"
+    quote: "that is following a large range or after price reaches an important level"
+  - video_id: yfj10dtkRKY
+    title: "Understanding When Consolidation Happens"
+    quote: "If the low of the range gets taken out first, that is generally bullish"
+  - video_id: yfj10dtkRKY
+    title: "Understanding When Consolidation Happens"
+    quote: "the only time the range doesn't have to get taken out"
+  - video_id: -YZBFoNfeUA
+    title: "Understanding Price Inside a Consolidation"
+    quote: "price hasn't traded below this low, and price hasn't traded above this high"
+  - video_id: -YZBFoNfeUA
+    title: "Understanding Price Inside a Consolidation"
+    quote: "Price is pretty lethargic, right? It's just hanging around."
+
+ambiguities:
+  - "DIRECT TENSION WITH THE LIBRARY'S EXISTING RULE. The library holds that the manipulated
+    side is chosen BY BIAS (bullish requires the low to be run). This Short reads the direction
+    OFF the side that is taken first, with no prior bias needed. Both readings are the channel
+    owner's own voice. They are not reconciled anywhere in this unit."
+  - "'For a period of time' is still unbounded - no minimum bar count or duration."
+  - "'Generally bullish' / 'generally bearish' are hedged, and no condition is given for when
+    the generalisation fails."
+  - "'A large range' as the precondition is not quantified."
+  - "In the second Short he says he does not need to catch the sweep at all because he prefers
+    continuations, which is a third interaction mode not integrated with the other two."
+
+related:
+  - consolidation
+  - phases-of-price
+  - range-edge-trading
+  - consolidation-sweep-entry
+  - consolidation-avoidance
+  - smt-swing-point-substitute
+  - liquidity-sweep-vs-consolidation
+  - seek-and-destroy-profile
+
+python_detector: null
+voice: ttrades
+contributing_units: [shorts_03]
+draft_count: 1

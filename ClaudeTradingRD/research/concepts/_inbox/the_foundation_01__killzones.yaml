@@ -1,0 +1,62 @@
+id: killzones
+name: "Killzones (Trading Sessions)"
+aliases: ["kill zones", "sessions", "Asia session", "London session", "New York AM", "London close"]
+category: time
+status: specified
+
+definition: >
+  Specific time windows during the trading day in which volatility is higher, making them the
+  preferred windows for catching larger ranges. All times are New York time (EST). The windows
+  differ between forex and index instruments in the New York portion. The speaker states that
+  generally high-probability moves occur during killzones, and uses them both as a filter (an
+  OTE tap outside a killzone is ignored) and as the structural map for the AMD day profile.
+
+timeframes:
+  htf: ["1D"]
+  ltf: ["1H", "15m", "5m", "1m"]
+  fractal: false
+
+preconditions:
+  - "Chart timezone set so that it displays as New York time."
+
+detection_rules:
+  - "FOREX: Asia 20:00-00:00; London 02:00-05:00; New York AM 07:00-10:00; London Close 10:00-12:00 (all New York time)."
+  - "INDICES: Asia 20:00-00:00; London 02:00-05:00; New York AM 08:30-11:00; New York PM 13:30-16:00."
+  - "Mark each session's high and low (killzone pivots) as liquidity."
+  - "Day profile heuristic observed: Asia accumulates, London manipulates, New York distributes."
+  - "Filter usage: a setup that triggers outside a killzone is not taken — he skips it explicitly for that reason."
+
+invalidation:
+  - "Not applicable — a time window either contains the bar or it does not."
+
+execution:
+  bias: "n/a — a filter and structural map, not a directional signal."
+  entry: "Restrict entries to killzone windows."
+  stop: "n/a"
+  targets: ["session highs and lows as liquidity"]
+
+measurable:
+  - "share of the daily range formed inside each session (the video asserts New York AM dominates)"
+  - "realised volatility per session window vs the rest of the day"
+  - "hit-rate difference for the same entry model taken inside vs outside a killzone"
+
+sources:
+  - video_id: MPeeE55rNOw
+    title: "ICT Killzones & Indicator Settings"
+    quote: "kill zones are specific time Windows during the trading day"
+  - video_id: YESqIoA7Wyg
+    title: "Important Liquidity Levels - Draw On Liquidity - ICT"
+  - video_id: 1YRs4Z1lMws
+    title: "Optimal Trade Entry (OTE) - ICT Concepts"
+
+ambiguities:
+  - "Daylight saving is handled by a UI instruction ('make TradingView show New York time') rather than a stated UTC-offset convention — a backtest must decide this itself."
+  - "London Close (10:00-12:00) is listed for forex only; whether it applies to indices is not said."
+  - "Why New York AM starts at 07:00 for forex and 08:30 for indices is not explained."
+  - "'Volatility is higher' is asserted, never measured."
+  - "The killzone filter is applied in examples but only stated as a rule in the OTE video, in passing."
+
+external_corroboration: []
+
+python_detector: null
+related: ["session-high-low", "silver-bullet-window", "power-of-three-amd", "daily-bias-framework"]

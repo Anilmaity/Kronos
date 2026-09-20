@@ -1,0 +1,64 @@
+id: opposing-run-entry
+name: "Opposing Run (New York Entry Trigger)"
+aliases: ["opposing run", "the 8:30 manipulation", "opposing candles", "opposing move"]
+category: entry
+status: underspecified
+
+definition: >
+  The common execution trigger across all three directional daily profiles. Once a directional
+  bias for the New York session exists, the trader does not enter at the session open but waits
+  for price to make a run COUNTER to that bias - typically at 08:30 - because that counter run
+  is what builds the order block to enter from. The entry is taken on the close back through the
+  series of opposing candles; the stop sits beyond the opposing run's extreme. If instead the
+  08:30 move goes WITH the expected direction, the speaker reads it as premature and expects a
+  retracement back into the prior session's range, entering there instead.
+
+timeframes:
+  htf: ["1D"]
+  ltf: ["30m", "15m", "5m"]
+  fractal: true
+
+preconditions:
+  - "A directional bias for the New York session from one of the daily profiles."
+  - "A reference level to enter from: London's order block, London's range edge, or a higher-timeframe PD array."
+
+detection_rules:
+  - "At 08:30 (or 09:30), price runs counter to the anticipated daily direction."
+  - "That run prints a series of candles closing in the counter direction (up-close candles when short-biased, down-close candles when long-biased)."
+  - "Price closes back through that series; those candles are the order block."
+  - "Entry is placed on the order block (or on its mean threshold, or on a fair value gap paired with the close-through)."
+  - "If the 08:30 move instead goes WITH the anticipated direction, do not chase; expect a retracement into the previous session's range and enter from there."
+
+invalidation:
+  - "Price trades beyond the extreme of the opposing run (the stop level)."
+
+execution:
+  bias: "Opposite the opposing run."
+  entry: "On the order block formed by the close back through the opposing candle series; refinements used are the order block's mean threshold and a coincident fair value gap."
+  stop: "Beyond the extreme of the opposing run, or beyond the far side of the order block, chosen for risk-to-reward."
+  targets: ["2R (his repeated default)", "previous day high/low", "the opposite side of the range", "failure swings / low resistance liquidity"]
+
+measurable:
+  - "fill rate of order-block entries after an 08:30 opposing run"
+  - "hit rate of 2R from those entries"
+  - "how often the 08:30 move is counter to the eventual daily direction versus with it"
+  - "difference in outcome between entering at the order block edge and at its mean threshold"
+
+sources:
+  - video_id: y6SnEdASVLY
+    title: "ICT Daily Profile - London Reversal / New York Continuation"
+    quote: "London reverses New York continuation"
+  - video_id: xdzyejskSKE
+    title: "ICT Daily Profile - New York Reversal"
+  - video_id: IeXtmeKqjnQ
+    title: "ICT Daily Profile - New York Manipulation"
+
+ambiguities:
+  - "'A series of opposing candles' is never given a minimum count."
+  - "'Close back through' is not specified as a body close or a wick through the series."
+  - "No stated minimum size for the opposing run, so a one-tick counter move technically qualifies."
+  - "One worked example is explicitly never filled - he shows the miss and moves on - but there is no rule for how long a limit order stays valid."
+  - "The 'wrong-direction 8:30' branch (expect a retracement instead) is demonstrated once and asserted once; it is not stated as a general rule."
+
+python_detector: null
+related: ["london-reversal-profile", "new-york-reversal-profile", "new-york-manipulation-profile", "new-york-intraday-time-levels"]

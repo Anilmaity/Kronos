@@ -1,0 +1,79 @@
+id: breaker-continuation
+name: Breaker Block In A Continuation (not at the reversal)
+aliases:
+- breaker continuation
+- breaker in a continuation
+category: entry
+status: specified
+definition: 'The application he actually teaches for breakers: not the reversal breaker everyone
+  trades, but a breaker formed inside an already-established trend, used as a continuation entry.
+  Once a reversal has produced a low-high-lower-low-higher-high sequence and the trend is bullish,
+  you wait for a SWEEP of a low; that gives low, high, lower low, and the breaker is created the
+  moment a higher high prints. The swept low is mandatory - ''yes it does unless it is paired with
+  smt'' - and SMT against a correlated asset is the only stated substitute, in which case the low
+  is treated as protected and the structure traded as a breaker without an actual sweep.'
+timeframes:
+  htf:
+  - 1D
+  - 1H
+  ltf:
+  - 15m
+  - 5m
+  - 1m
+  fractal: true
+preconditions:
+- A directional read already exists (a daily/HTF closure or a completed reversal with a CISD).
+- A swing low (bullish case) or swing high (bearish case) exists that can be run.
+detection_rules:
+- Establish the trend direction first via the higher timeframe closure and a change in the state
+  of delivery.
+- Find a swing low (bullish continuation) and wait for it to be swept - this produces low, high,
+  lower low.
+- The breaker forms only when a higher high then prints.
+- Mark the up-close candles of that structure as the breaker zone (bodies if the wicks are messy).
+- 'Substitute rule: if no low is swept but an SMT against the correlated asset exists at that low,
+  treat the low as protected and the structure as a breaker anyway.'
+- Mirror everything for a bearish continuation (sweep a high, then a lower low completes it).
+invalidation:
+- The higher high (bullish) never printing after the sweep.
+- Price trading back through the far side of the breaker zone.
+execution:
+  bias: Continuation of the established trend.
+  entry: On the close through the breaker, or on the retest of the zone.
+  stop: On the other side of the breaker, or on the swept low.
+  targets:
+  - 2R
+  - the range high / range low
+  - prior highs or lows to the left
+measurable:
+- hit rate of 2R continuation entries after a swept-low breaker vs an SMT-substituted one
+- how often a higher high follows the sweep within N bars
+- frequency of breaker continuations per trending day
+sources:
+- video_id: xP-o11jRCyg
+  title: Trade Continuations Using Breaker Blocks
+  quote: yes it does unless it is paired with smt
+- video_id: xP-o11jRCyg
+  title: Trade Continuations Using Breaker Blocks
+  quote: First find a swing low wait for the swing low to be ran out
+- video_id: xP-o11jRCyg
+  title: Trade Continuations Using Breaker Blocks
+  quote: a breaker and it really isn't but I do find that it works
+ambiguities:
+- Which swing low qualifies as 'a low that can be swept' is not filtered - no separation or age requirement
+  is given.
+- The SMT substitution names no correlated asset in most examples and gives no divergence tolerance.
+- The fair-value-gap variant (see intermediate-term-swing-formation) is admitted by the speaker not
+  to be a real breaker at all.
+- No maximum distance or bar count between the sweep and the higher high is stated.
+related:
+- breaker-block
+- smt-swing-point-substitute
+- intermediate-term-swing-formation
+- continuation-order-block
+- cisd
+python_detector: null
+contributing_units:
+- education_ict_updated_02
+draft_count: 1
+voice: ttrades

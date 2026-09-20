@@ -1,0 +1,61 @@
+id: stop-size-reduction
+name: "How To Reduce A Stop That Feels Too Big"
+aliases: ["12 pips on Euro", "move the limit, not the stop"]
+category: risk
+status: specified
+voice: guest
+guest_sources:
+- "Trader T"
+
+definition: >
+  Trader T applies a hard pip ceiling to the stop and fixes an over-sized stop by moving the ENTRY,
+  never by moving the stop closer to the entry. On EURUSD his stated ceiling is about 12 pips - 12
+  is fine, anything over about 13 is not - and when a setup would need more he raises the sell
+  limit (lowers the buy limit) further into the block so the same structural stop becomes a smaller
+  number of pips. He does the same when the 2R target is unreachably far: tighten the limit rather
+  than shorten the target.
+
+timeframes:
+  htf: ["1H"]
+  ltf: ["15m", "5m", "1m"]
+  fractal: false
+
+preconditions:
+- "A structural stop level has been chosen (beyond the block / swing)."
+
+detection_rules:
+- "Measure the stop in pips before placing the order."
+- "On EURUSD, accept about 12 pips; reject much beyond 13."
+- "If the stop is too large, move the limit deeper into the block so the distance to the same structural stop shrinks - do not move the stop in."
+- "Apply the same adjustment when the fixed R target would otherwise sit too far away."
+
+invalidation:
+- "Not applicable."
+
+execution:
+  bias: "Unchanged."
+  entry: "Moved deeper into the block."
+  stop: "Kept at the structural level."
+  targets: ["unchanged R multiple, now closer in price"]
+
+measurable:
+- "fill rate of the tightened limit versus the original (the cost of the adjustment)"
+- "distribution of stop sizes in pips by instrument, to see how often the ceiling binds"
+- "expectancy of trades taken at 12 pips or less versus those above it"
+
+sources:
+- video_id: wCtxmWe4KNc
+  title: "Back Testing Live Session With Trader T"
+  quote: "12 Pips on Euro not too bad anything over your boat 13"
+
+ambiguities:
+- "The 12-pip figure is stated only for EURUSD; no equivalent is given for gold or the indices he also tests."
+- "The auto-captioner renders his phrase as 'anything over your boat 13' - the intended words are almost certainly 'anything over, you're about 13', so the ceiling is approximate as spoken."
+- "He does not say how much the limit may be moved before the setup stops being the same setup."
+- "No account-size or volatility conditioning is attached to the pip ceiling."
+
+python_detector: null
+related: ["stop-loss-placement", "risk-reward-minimum", "position-sizing-fixed-risk", "cancel-limit-after-target-run"]
+contributing_units:
+- live_stream_guests_01
+draft_count: 1

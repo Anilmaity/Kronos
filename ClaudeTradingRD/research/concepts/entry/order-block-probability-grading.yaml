@@ -1,0 +1,63 @@
+id: order-block-probability-grading
+name: High Probability vs Low Probability Order Blocks
+definition: 'A two-class grading of order blocks by candle shape, which selects WHICH level
+  inside the block is used. A high-probability order block has large candle bodies and small
+  wicks; for these he uses the opening price of the candle. A low-probability order block
+  is the other shape shown on the right of his diagram (small body / large wick); for these
+  he uses the wick, or the wick-to-the-opening-price, as the zone. He adds a usage restriction:
+  he only uses low-probability order blocks when price is in an established downtrend or uptrend
+  AND the candle is the only up-close (or down-close) candle in that range.'
+category: entry
+status: specified
+aliases:
+- high probability order block
+- low probability order block
+preconditions:
+- A validated order block exists (see order-block).
+detection_rules:
+- 'Grade the block: large body + small wick -> high probability; otherwise low probability.'
+- High probability -> the entry level is the candle's OPENING PRICE.
+- Low probability -> the entry zone is the WICK, or the span from the wick to the opening
+  price.
+- Only use a low-probability block when (a) price is in an established uptrend or downtrend
+  and (b) it is the only up-close / down-close candle on that range.
+invalidation:
+- Not stated separately from the parent order block.
+measurable:
+- reaction rate of large-body/small-wick blocks vs small-body/large-wick blocks
+- fill rate difference between an opening-price entry and a wick-to-open zone entry
+sources:
+- video_id: Y8DkNYhq0X0
+  title: Orderblocks Simplified - ICT Concepts
+  quote: with large candle bodies and small Wicks I prefer to use the opening price
+- video_id: Y8DkNYhq0X0
+  title: Orderblocks Simplified - ICT Concepts
+  quote: the low probability order blocks when we are either in a downtrend or uptrend
+ambiguities:
+- '''Large candle bodies and small wicks'' carries no body-to-range ratio threshold; the classes
+  are shown on a diagram, not defined numerically.'
+- The low-probability class is described only by what he does with it, never by its shape
+  in words - the shape is visual ('such as these on the right').
+- '''Established downtrend or uptrend'' is not defined in this video.'
+related:
+- order-block
+- mean-threshold
+- small-wick-expansion-rule
+timeframes:
+  htf:
+  - 1D
+  - 1H
+  ltf:
+  - 5m
+  - 1m
+  fractal: true
+execution:
+  bias: Direction of the parent order block.
+  entry: Opening price (high probability) or wick-to-open zone (low probability).
+  stop: Not restated in this video; the parent order block's stop rules apply.
+  targets:
+  - the higher timeframe objective
+contributing_units:
+- education_ict_updated_02
+draft_count: 1
+voice: ttrades

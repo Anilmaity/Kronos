@@ -1,0 +1,66 @@
+id: fractal-model-c2
+name: "Candle 2 Closure (the reversal candle)"
+aliases: ["candle 2 closure", "candle to closure", "ideal candle 2 closure", "C2"]
+category: model
+status: specified
+
+definition: >
+  The reversal candle in the fractal model, used here as the bias-setting event on
+  whatever timeframe it is found. In these walkthroughs a candle 2 closure is a candle
+  that sweeps the prior candle's extreme (or a nearby consolidation extreme) and closes
+  back in the opposite direction, producing the aggressive-in / aggressive-out signature
+  on the timeframe below. Its function is directional: a bearish candle 2 closure on the
+  monthly makes the question "is price more likely to reach the previous month's high or
+  the previous month's low", and the answer becomes the draw. A candle 2 closure is
+  called *ideal* when it additionally forms a protected swing. A candle 2 closure is not
+  acted on until it is confirmed by a change in the state of delivery on the timeframe
+  below, and the trade taken from it is normally the following candle's continuation
+  rather than the reversal itself.
+
+timeframes:
+  htf: ["1M", "1D", "1H", "15m"]
+  ltf: ["1H", "5m", "1m"]
+  fractal: true
+
+preconditions:
+  - "A prior candle with a defined high and low, or a consolidation with a defined range."
+  - "A phase classification for the leg into the candle (expansion into the level)."
+
+detection_rules:
+  - "The candle trades beyond the prior candle's extreme (or sweeps the consolidation extreme) and closes back inside, against the direction of the sweep."
+  - "Bearish candle 2 closure: sweeps the high and closes down. Bullish candle 2 closure: sweeps the low and closes up."
+  - "The candle is called ideal if it also forms a protected swing."
+  - "Confirm on the timeframe below with a change in the state of delivery inside the candle 2 before acting."
+  - "Read the confirmation on the bodies (stated for the hourly confirmation on the dollar example)."
+
+invalidation:
+  - "The extreme of the candle 2 is taken out after the closure."
+  - "No change in the state of delivery forms inside the candle 2 on the timeframe below - not confirmed, no trade."
+
+execution:
+  bias: "Away from the swept side; toward the previous period's opposite extreme."
+  entry: "On the following candle (candle 3) as a continuation, refined on the lower timeframes."
+  stop: "Beyond the candle 2 extreme or the protected swing it formed."
+  targets: ["previous period high or low", "equal highs or equal lows beyond it"]
+
+measurable:
+  - "count of candle 2 closures per month per timeframe"
+  - "hit rate of the previous-period-extreme draw following a confirmed candle 2 closure"
+  - "difference in follow-through between ideal (protected-swing-forming) and ordinary candle 2 closures"
+
+sources:
+  - video_id: IzOQmcgLyA0
+    title: "TTrades Top-Down Chart Lessons #3"
+  - video_id: w-JekHg6Ldk
+    title: "TTrades Top-Down Chart Lessons #4"
+  - video_id: UBTl7za9obc
+    title: "TTrades Top-Down Chart Lessons #2"
+
+ambiguities:
+  - "These videos refer back to a separate candle 2 lesson and never restate the definition in full; the reconstruction above is from usage across the three walkthroughs."
+  - "Whether the sweep must exceed the prior candle's extreme or merely a nearby liquidity pool is used inconsistently: previous day low in #2, a consolidation low in #2, and previous month's structure in #3."
+  - "Whether the closure must be a body close back inside is not explicitly stated, though the speaker does say to focus on the bodies for the hourly confirmation."
+  - "The auto-transcript renders candle 2 as candle to throughout video IzOQmcgLyA0."
+
+python_detector: null
+related: ["fractal-model-c3", "cisd", "protected-swing", "htf-wick-formation", "top-down-analysis-procedure"]

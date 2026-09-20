@@ -1,0 +1,70 @@
+id: seven-hour-candle-daily-profile
+name: The 7-Hour Candle As A Simplified Daily Profile
+definition: 'A charting device borrowed from AM Trades'' expansion model: viewing the day
+  as 7-hour candles so that each session becomes one candle. The 01:00 candle spans 01:00
+  to 08:00 and is the London candle. Session behaviour - a London reversal, an Asia high,
+  a New York continuation - is then read off single candles instead of intraday structure.
+
+  '
+category: time
+status: underspecified
+aliases:
+- 7 hour candle
+- London candle
+preconditions:
+- The chart supports a 7-hour aggregation aligned so that one candle starts at 01:00.
+detection_rules:
+- The 01:00 to 08:00 candle is the London candle.
+- A London C2 candle inside a 7-hour bearish fair value gap that has swept highs is read as
+  a London reversal.
+- On a London reversal, 50 percent of the previous 7-hour candle should be respected; if that
+  candle has a large wick, use 50 percent of the wick instead.
+- If Asia made the high of the day and London did not continue lower, expect a New York reversal.
+- 'Formation preference at this scale too: a 7-hour swing low sitting just above a 7-hour
+  bullish fair value gap.'
+invalidation:
+- Price closes through the 50 percent reference that the reversal reading depends on.
+measurable:
+- how often the 50 percent of the previous 7-hour candle is respected on a classified London
+  reversal
+- frequency of each session classification per month
+sources:
+- video_id: 07lOxv39LdY
+  title: DTR | C2U - Blending The Fractal Model & Unicorn Model - No Daily Bias
+ambiguities:
+- No timezone is stated for the 01:00 start, and the rest of the day's 7-hour candles are
+  never enumerated.
+- The device is credited to AM Trades' paid expansion-model course and is not fully taught
+  here - marked underspecified for that reason.
+- '''Large wick'' triggering the switch from 50 percent of the candle to 50 percent of the
+  wick has no threshold.'
+- The 7-hour aggregation does not divide the 24-hour day evenly and the handling of the remainder
+  is not discussed.
+related:
+- c2-unicorn
+- adr-remaining-filter
+- opening-time-only-execution
+- fractal-c2-unicorn-pairing
+timeframes:
+  htf:
+  - 7H
+  ltf:
+  - 1H
+  - 15m
+  - 5m
+  - 1m
+  fractal: false
+execution:
+  bias: The session-level reading (London reversal, New York reversal, continuation).
+  entry: Down on the 5-minute at the stacked points of interest.
+  stop: Not stated.
+  targets:
+  - the London low or high
+  - the Asia high or low
+  - the previous day high or low
+contributing_units:
+- t_talks_01
+draft_count: 1
+voice: guest
+guest_sources:
+- DTR | C2U - Blending The Fractal Model & Unicorn Model - No Daily Bias

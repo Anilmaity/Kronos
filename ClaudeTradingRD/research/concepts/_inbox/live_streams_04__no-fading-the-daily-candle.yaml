@@ -1,0 +1,66 @@
+id: no-fading-the-daily-candle
+name: "Do Not Fade The Daily Candle"
+aliases: ["I don't fade the daily candle", "align with the daily candle", "trade candles in the direction of their daily timeframe"]
+category: model
+status: specified
+
+definition: >
+  The single most repeated refusal in this unit, stated in three of the four streams and used
+  to decline viewer trade ideas every time. Whatever the intraday structure says, he will only
+  take trades in the direction the current daily candle supports. A daily candle that opens,
+  leaves a small wick and expands lower supports shorts; the counter-trend long back into it
+  is "fading the daily candle" and he will not take it. The consequence he states explicitly
+  is not that the fade cannot work but that it is inherently harder: a reversal against the
+  daily range gets stopped out more often, needs more confirmation, and justifies less
+  aggressive entry sizing than a trade aligned with both the daily and the next timeframe down.
+
+timeframes:
+  htf: ["1D", "4H"]
+  ltf: ["15m", "5m"]
+  fractal: false
+
+preconditions:
+  - "The current daily candle has an established direction (open plus a small wick on one side)."
+
+detection_rules:
+  - "Read the current daily candle: a small wick on the open side plus expansion away from it defines the supported direction."
+  - "Only take entries in that supported direction."
+  - "Reject any setup whose direction opposes the daily candle, even when the lower timeframe model is present (SMT, CISD, continuation all valid)."
+  - "If the daily candle is bullish, do not short into it; wait for the next daily candle to close and re-read."
+  - "A trade opposing the daily range is downgraded, not merely allowed: require more confirmation and be less aggressive on the entry."
+
+invalidation:
+  - "The daily candle closes and a new one opens, resetting the supported direction."
+
+execution:
+  bias: "Direction of the current daily candle."
+  entry: "Continuation entries only, in that direction."
+  stop: null
+  targets: null
+
+measurable:
+  - "expectancy of daily-aligned vs daily-opposing entries on the same signal set"
+  - "stop-out rate of counter-daily reversal entries"
+
+sources:
+  - video_id: i2HhHhWdaPQ
+    title: "New York Open Live Q&A"
+    quote: "I want to trade candles in the direction of their daily time frame"
+  - video_id: x4sRGuZIqWk
+    title: "New York Open Live Q&A"
+    quote: "I don't want to fade that daily candle, so I would be waiting"
+  - video_id: eIPM-D8RrSQ
+    title: "New York Open Live Q&A"
+    quote: "I don't personally fade the daily candle."
+
+ambiguities:
+  - "'Supports expansion' is judged from the wick size and open position but no numeric wick-to-body threshold is given in this unit (see small-wick-expansion-rule)."
+  - "He allows that the fade 'can make sense' after a new 4-hour candle opens at 10:00 a.m., so the rule is a strong preference rather than an absolute prohibition."
+  - "How to treat an inside / indecision daily candle that supports neither direction is not addressed here."
+
+python_detector: null
+related: ["small-wick-expansion-rule", "daily-ohlc-candle-shape", "continuation-over-reversal", "dont-trade-after-expansion", "daily-profile-confirmation"]
+
+contributing_units: ["live_streams_04"]
+draft_count: 1
+voice: ttrades

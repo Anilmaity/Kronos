@@ -1,0 +1,89 @@
+id: standard-deviation-projection
+name: Standard Deviation Projection Of The Manipulation Leg
+category: entry
+status: specified
+aliases:
+- projections
+- fib projections
+- max expansion
+definition: 'Targets and reaction areas produced by projecting the MANIPULATION LEG with a Fibonacci
+  retracement tool. The manipulation leg is the swing that swept liquidity before the change in the
+  state of delivery / structure shift - i.e. the leg that made the new high before the new low (bearish)
+  or the new low before the new high (bullish). The tool is anchored across that leg and projected
+  forward. Stated fib values: 1, 0, -1, -2, -2.5, -4. The -2 to -2.5 band is where a retracement
+  or reversal is expected; if price displaces and CLOSES through that band, -4 (max expansion) becomes
+  the objective; after max expansion, mark discount/premium of the leg and expect a retrace to its
+  equilibrium. Inside the indicator the projections are drawn from the BODIES of the CISD series
+  rather than the wicks.'
+timeframes:
+  htf:
+  - 1D
+  - 4H
+  - 1H
+  ltf:
+  - 15m
+  - 5m
+  - 2m
+  fractal: true
+preconditions:
+- A reversal / smart money reversal has occurred with an identifiable manipulation leg.
+detection_rules:
+- 'Identify the manipulation leg: the swing that swept liquidity immediately before the CISD.'
+- Anchor the fib across that leg (high->low for a bearish projection, low->high for bullish).
+- 'Fib settings: 1, 0, -1, -2, -2.5, -4.'
+- Treat -2 to -2.5 as the area to expect a retracement or reversal.
+- A displacement close through the -2/-2.5 band promotes -4 (max expansion) to the objective.
+- After -4 is reached, mark premium/discount of the leg and expect a retrace to its EQ.
+- 'Confluence: prefer levels where a projection coincides with a PD array (fair value gap, order
+  block mean threshold, equal highs/lows) - resting liquidity just short of -2/-2.5 is the ''low
+  hanging fruit''.'
+- 'Stacked confluence: where one projection''s -4 overlaps another''s -2/-2.5, treat as stronger.'
+- The consequent encroachment (midpoint) of the -2/-2.5 band can also be marked.
+- In the indicator the projections originate from the bodies of the CISD series; extra values can
+  be added manually (e.g. 0.5).
+invalidation: []
+execution:
+  bias: Direction of the projection.
+  entry: Not an entry model - used for targeting and for locating reaction areas.
+  stop: n/a
+  targets:
+  - -2 to -2.5 band
+  - -4 max expansion
+  - the nearest PD array inside those bands
+measurable:
+- hit rate of -1, -2/-2.5 and -4 by timeframe
+- conditional probability of reaching -4 given a close through -2.5
+- whether projection+PD-array confluence outperforms the raw projection
+sources:
+- video_id: kTWXpAo1uE8
+  title: Standard Deviation Projections - ICT Concepts
+  quote: the settings we have here are 1 0 -1 -2 -2.5 and -4
+- video_id: kTWXpAo1uE8
+  title: Standard Deviation Projections - ICT Concepts
+  quote: that manipulation leg is the swing that swept liquidity before changing the state of delivery
+- video_id: kTWXpAo1uE8
+  title: Standard Deviation Projections - ICT Concepts
+  quote: I'm looking for either a retracement or a reversal from this area
+- video_id: kTWXpAo1uE8
+  title: Standard Deviation Projections - ICT Concepts
+  quote: Mark out a discount and premium of this leg here
+- video_id: CqMIh-Vvhbg
+  title: Intro To TTrades Fractal Model [Indicator & Settings]
+  quote: these are currently drawn from the bodies
+ambiguities:
+- 'Anchor ambiguity: the video says to project the manipulation leg but anchors ''from our high to
+  our low'', which combined with the indicator drawing ''from the bodies'' gives at least two possible
+  anchor conventions (wick-to-wick vs body-to-body).'
+- '''-2 to -2.5'' is a band, and no rule is given for which edge to use for an order.'
+- The relationship between these projections and the previous-candle-extreme targets (A4NasIa371c)
+  is never stated - both are called targets and they do not generally coincide.
+related:
+- ttfm-indicator-settings
+- previous-period-high-low
+- consequent-encroachment
+- smart-money-reversal
+- cisd
+contributing_units:
+- build_a_model_intro_to_ttrades_fractal_model_01
+draft_count: 1
+voice: ttrades

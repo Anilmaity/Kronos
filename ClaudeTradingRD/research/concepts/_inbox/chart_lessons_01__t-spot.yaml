@@ -1,0 +1,69 @@
+id: t-spot
+name: "The T-Spot (overlap of two half levels)"
+aliases: ["T-spot", "the T spot", "overlapping those two"]
+category: entry
+status: underspecified
+
+definition: >
+  The narrow zone in which the next candle's wick is expected to form, defined as the
+  overlap of two 50% levels rather than as a single level. In the ES walkthrough it is
+  the overlap of 0.5 of the higher-timeframe wick with 0.5 of the change in the state of
+  delivery: he wants both respected, so the area where they overlap is where price must
+  hold. In the CAD walkthrough the same idea is built from 0.5 of the daily opposing
+  candle overlapped with the upper half of the daily candle - he wants the next candle's
+  wick to form inside that intersection. In both cases the T-spot is not itself the entry;
+  a point of interest inside it (a fair value gap or an order block) is the entry, and the
+  T-spot is the filter that decides which point of interest is the right one.
+
+timeframes:
+  htf: ["1D", "1H"]
+  ltf: ["5m", "1m"]
+  fractal: true
+
+preconditions:
+  - "A higher-timeframe wick or opposing candle with a defined range."
+  - "A change in the state of delivery, or a higher-timeframe candle, whose half level can be measured."
+
+detection_rules:
+  - "Mark 0.5 of the higher-timeframe wick being formed."
+  - "Mark 0.5 of the change in the state of delivery (or 0.5 of the daily opposing candle)."
+  - "Take the overlap of the two as the zone price must hold."
+  - "Require the next candle's wick to form inside that zone and inside the relevant half of the higher-timeframe candle."
+  - "Take the entry from a point of interest (fair value gap or order block) located inside the zone, not from the zone boundary itself."
+
+  - "The T-spot and the wick location are treated as interchangeable statements of the same requirement: either the T-spot is respected or the wick forms inside it."
+  - "Opening beyond the T-spot is called less than ideal but is not an automatic veto - the setup is then carried forward and judged on what the candle does next (whether it makes the wick first)."
+invalidation:
+  - "Price trades and holds beyond the T-spot - the shallow-wick condition for expansion has failed."
+
+execution:
+  bias: "Direction of the higher-timeframe candle 2 / CISD."
+  entry: "At the fair value gap or order block inside the T-spot."
+  stop: "Beyond the protected swing formed at the extreme of the wick."
+  targets: ["intraday highs or lows", "previous period extreme"]
+
+measurable:
+  - "proportion of continuations whose wick terminates inside the T-spot"
+  - "expansion range following T-spot-respecting vs T-spot-violating candles"
+  - "frequency with which the two half levels fail to overlap at all"
+
+sources:
+  - video_id: IzOQmcgLyA0
+    title: "TTrades Top-Down Chart Lessons #3"
+    quote: "I want to see the wick formed in this area"
+  - video_id: UBTl7za9obc
+    title: "TTrades Top-Down Chart Lessons #2"
+
+  - video_id: Nlw-PZhoViQ
+    title: "TTrades Top-Down Chart Lessons #1"
+    quote: "I want to see the T spot respected or the upper wick form"
+ambiguities:
+  - "Sourced from an ASR (whisper-small) transcript, not YouTube captions; wording may be imprecise."
+  - "In video Nlw-PZhoViQ the T-spot is named without being constructed on screen in the transcript, so this source corroborates how it is used but adds nothing to how it is built."
+  - "The two videos construct the T-spot from different pairs of levels (wick + CISD in #2; opposing candle + daily candle in #3). Whether these are the same rule expressed differently or two variants is not stated."
+  - "No rule is given for what to do when the two half levels do not overlap."
+  - "The name T-spot is used as though already known to the audience, so the canonical definition lives outside this unit."
+  - "Whether the wick must terminate inside the zone or merely trade into it is not distinguished."
+
+python_detector: null
+related: ["half-wick-respect", "small-wick-expansion-rule", "cisd", "order-block", "fractal-model-c3"]

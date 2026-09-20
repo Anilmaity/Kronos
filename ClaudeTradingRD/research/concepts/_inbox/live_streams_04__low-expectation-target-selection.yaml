@@ -1,0 +1,59 @@
+id: low-expectation-target-selection
+name: "Low-Expectation Day: Target The Failure Swing Right Of The Protected Swing"
+aliases: ["lower expectations", "harder to get to"]
+category: liquidity
+status: specified
+
+definition: >
+  A target-selection rule given live while choosing between two lows. Liquidity is not all
+  equally reachable: a high or low that itself swept out a run of previous highs or lows is
+  harder for price to reach, because the sweep already consumed what was resting there. On a
+  day where his expectation is low - the average daily range is largely spent, the open gave
+  him nothing - he does not target that swept extreme. Instead, where a protected swing exists,
+  he takes the failure swing sitting to the right of it as the target. He restates the choice
+  in the end-of-stream review as the lesson of the day.
+
+timeframes:
+  htf: ["1D", "1H"]
+  ltf: ["15m", "5m"]
+  fractal: false
+
+preconditions:
+  - "A low-expectation day: most of the average daily range is already covered, or the session open did not deliver the anticipated reaction."
+  - "A protected swing exists in the direction of trade."
+
+detection_rules:
+  - "Identify candidate target levels below (or above) price."
+  - "Mark any candidate that itself swept a series of previous lows (or highs) as hard to reach and deprioritise it."
+  - "Where a protected swing exists, take the failure swing immediately to the right of it as the target instead."
+  - "Apply only on low-expectation days; on a full-range day the deeper swept level remains a valid objective."
+
+invalidation:
+  - "Price trades through the failure swing and continues, in which case the deeper level becomes reachable again."
+
+execution:
+  bias: "Unchanged."
+  entry: null
+  stop: null
+  targets: ["failure swing to the right of the protected swing"]
+
+measurable:
+  - "hit rate of swept-extreme targets vs failure-swing targets, conditioned on remaining daily range"
+  - "average distance and time-to-target for each class"
+
+sources:
+  - video_id: x4sRGuZIqWk
+    title: "New York Open Live Q&A"
+    quote: "look at the failure swing to the right of it as a target"
+
+ambiguities:
+  - "'Lower expectations' is judged from the daily range already covered plus the quality of the open; no threshold is given."
+  - "How many previous highs / lows a swing must have swept to count as 'harder to get to' is not quantified."
+  - "The rule is stated for the case where a protected swing exists; no alternative is given when one does not."
+
+python_detector: null
+related: ["failure-swing", "protected-swing", "average-daily-range", "draw-on-liquidity", "high-vs-low-resistance-liquidity"]
+
+contributing_units: ["live_streams_04"]
+draft_count: 1
+voice: ttrades

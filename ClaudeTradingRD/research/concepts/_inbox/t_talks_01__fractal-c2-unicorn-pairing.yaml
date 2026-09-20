@@ -1,0 +1,50 @@
+id: fractal-c2-unicorn-pairing
+name: "C2 / Unicorn Timeframe Pairing"
+aliases: ["fractal pairings"]
+category: time
+status: specified
+
+definition: >
+  The explicit table mapping the timeframe on which the C2 candle is read to the timeframe on
+  which the unicorn must form inside it. The pattern is claimed to work identically at every
+  scale, which is the basis for calling the model fractal.
+
+timeframes:
+  htf: ["4H", "1H", "15m"]
+  ltf: ["15m", "5m", "1m"]
+  fractal: true
+
+preconditions:
+  - "A C2 candle is identified on one of the listed higher timeframes."
+
+detection_rules:
+  - "15-minute C2 -> look for a 1-minute unicorn inside it."
+  - "1-hour C2 -> look for a 5-minute unicorn inside it."
+  - "4-hour C2 -> look for a 15-minute unicorn inside it."
+  - "The pattern extends beyond the listed pairs ('and so on'), preserving roughly the same ratio."
+  - "The unicorn should sit inside the wick of the C2 candle."
+
+invalidation:
+  - "Not stated."
+
+execution:
+  bias: "Unchanged."
+  entry: "The unicorn on the paired lower timeframe."
+  stop: "Not stated."
+  targets: ["the nearest session level"]
+
+measurable:
+  - "expectancy by pairing - does the 4H/15m pairing behave like the 15m/1m pairing"
+  - "count of setups per pairing per month"
+
+sources:
+  - video_id: 07lOxv39LdY
+    title: "DTR | C2U - Blending The Fractal Model & Unicorn Model - No Daily Bias"
+
+ambiguities:
+  - "The ratio is roughly 12:1 to 16:1 across the three pairs but is never stated as a ratio, so the extension to unlisted timeframes is guesswork."
+  - "One worked example pairs a 4-hour 06:00 C2 with a 15-minute unicorn but is then traded around the 10:00 open, mixing the pairing rule with a separate time rule."
+  - "The 7-hour candle used for the daily profile has no stated unicorn pairing."
+
+python_detector: null
+related: ["c2-unicorn", "timeframe-alignment-ladder", "seven-hour-candle-daily-profile"]

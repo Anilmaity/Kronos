@@ -1,0 +1,170 @@
+id: daily-wick-confirmation-timeframes
+name: 'Confirming The Day''s High Or Low: Which Timeframe, By Session'
+definition: 'The most explicit session-to-timeframe map in the corpus. The single question
+  asked all day is ''has the daily candle formed its wick?''. Two instrument types answer
+  it - a change in the state of delivery, or a candle closure - and which timeframe you use
+  depends on session volatility, because Asia is slower than London which is slower than New
+  York. ASIA: hourly CISD, or a 4-hour candle closure. LONDON: 15-minute or 30-minute CISD,
+  or a 4-hour candle closure. NEW YORK: 5-minute or 15-minute CISD, or an hourly candle closure
+  (sometimes 30-minute). A higher-timeframe CISD is always acceptable if it has occurred;
+  the reason for dropping down in New York is that waiting for the hourly CISD there leaves
+  you behind the move.'
+variants:
+  definition:
+  - 'Which timeframe he uses to confirm the daily candle''s wick changes through the day,
+    and he gives the reason: reversal speed. In ASIA he will use almost exclusively the hourly
+    or 30-minute. Once in LONDON he will use the hourly, 30-minute or 15-minute. In NEW YORK
+    he will still take the hourly or 30-minute if they present themselves, but notes that
+    a New York reversal is usually very quick -- waiting for hourly confirmation often means
+    the target is already hit or he cannot get on side -- so he drops to the 5-minute.'
+  - 'Delivered as an unprompted whiteboard lesson ("let''s do a little lesson on how to confirm
+    high or low of the day"), this is the explicit mapping he otherwise leaves implicit. There
+    are two accepted confirmations of a daily wick, and the timeframe used scales with the
+    session because price moves faster later in the day. Method one is a CISD, whose timeframe
+    is session-dependent: Asia uses the 1-hour; London uses the 1-hour or 30-minute (15-minute
+    rarely, but allowed); New York generally uses the 15-minute or 5-minute. Method two is
+    a candle closure, which must be on a higher timeframe - a 4-hour closure or a 1-hour closure,
+    and he will not go below those two - and for the 1-hour it should be a candle 2 closure
+    at a relevant key level. The two methods can be stacked; in the worked example he uses
+    both.
+
+    '
+category: time
+status: contested
+aliases:
+- intraday reversal
+- has the daily candle formed its wick
+- session-dependent confirmation timeframe
+- how do you confirm the daily candle wick
+- day / daily candle wick
+preconditions:
+- A daily bias exists (C2/C3 closure); the day's extreme has not yet been confirmed.
+- A daily bias and a developing daily wick.
+- A daily candle whose extreme is a candidate for the high or low of the day.
+- The session in which that extreme formed is known.
+detection_rules:
+- 'Asia: require an hourly CISD or a 4-hour candle closure. Do not trust an hourly candle
+  closure alone this early.'
+- 'London: require a 15-minute or 30-minute CISD, or a 4-hour candle closure.'
+- 'New York: an hourly candle closure, or a 5-minute / 15-minute CISD; 30-minute closure sometimes.'
+- A higher-timeframe CISD always counts if it has already occurred; the session map is a floor,
+  not a ceiling.
+- The candle closure used must itself be a C2 or C3 closure at a point of interest, read in
+  respect of the daily equilibrium.
+- 'Typical New York shape: an opposing move at 9:30, then the 09:00-10:00 candle closes as
+  a C2, and the 10:00 candle is the tradeable C3.'
+- Pre-open entries are taken on the 15-minute rather than the 5-minute, because 5-minute pre-market
+  structure gets swept.
+- 'Confluence is preferred: an hourly CISD together with a 4-hour candle closure is the stated
+  ''both checked off'' state.'
+- The level being confirmed need not be the literal high/low of the day - it need only be
+  a high or low to trade away from.
+- 'Asia: confirm on the hourly or 30-minute only.'
+- 'London: hourly, 30-minute or 15-minute.'
+- 'New York: use the hourly / 30-minute if they present, otherwise drop to the 5-minute because
+  the reversal is fast.'
+- 'Sanity check before dropping down: if the hourly confirmation would land at the target
+  level itself, the trade has no room and the lower timeframe is required.'
+- 'Method 1 (CISD), by session of the candidate extreme: Asia -> 1-hour CISD; London -> 1-hour
+  or 30-minute CISD (15-minute permitted but rare); New York -> 15-minute or 5-minute CISD.'
+- 'Method 2 (candle closure): a 4-hour closure or a 1-hour closure only; never a timeframe
+  below 1-hour for this method.'
+- For the 1-hour closure variant, require a candle 2 closure sitting at a relevant key level.
+- Either method confirms the wick; both may be required for a stronger read (the review example
+  uses a 4-hour candle 2 closure plus a 15-minute CISD).
+invalidation:
+- The confirmed extreme is traded through.
+- 'Bias was wrong: the confirmation can be mechanically correct and the trade still fails.'
+- The daily wick is already large by the time confirmation arrives -- switch to the reduced
+  target set.
+- Price trades back through the confirmed daily extreme.
+measurable:
+- share of true daily extremes confirmed within N bars by each session's prescribed instrument
+- lateness cost of waiting for the hourly CISD in New York vs the 5-minute CISD
+- time from session open to confirmed daily wick, by session
+- share of New York reversals confirmed only on the 5-minute
+- rate at which a session-appropriate CISD correctly marks the eventual daily extreme
+- false-positive rate of the 15-minute CISD used in London (the case he says is rare)
+sources:
+- video_id: Mo9QMtotQyo
+  title: How to Confirm Daily Profile (High or Low of Day)
+  quote: Has the daily candle formed its wick?
+- video_id: Mo9QMtotQyo
+  title: How to Confirm Daily Profile (High or Low of Day)
+  quote: in Asia, I want to use an hourly change in the state of delivery
+- video_id: Mo9QMtotQyo
+  title: How to Confirm Daily Profile (High or Low of Day)
+  quote: In London, I'd want to use that M15 or M30 CISD
+- video_id: Mo9QMtotQyo
+  title: How to Confirm Daily Profile (High or Low of Day)
+  quote: price will leave you behind
+- video_id: Mo9QMtotQyo
+  title: How to Confirm Daily Profile (High or Low of Day)
+  quote: you can mechanically confirm the wick high or wick low of the day
+- video_id: -KKuZb5Z5aU
+  title: Easy Daily Bias - Mechanical Framework
+  quote: looking for this on the hourly or 30-minute charts
+- video_id: m4k_1pF5zFI
+  title: TTrades Fractal Model - Trading Candle 2
+  quote: in Asia, I'm almost specifically only going to use the hourly or 30 minute
+- video_id: qdQYhePcvGE
+  title: TTrades Fractal Model - Trading Candle 3
+- video_id: N3Ml-r0X30o
+  title: New York Open Live Q&A
+  quote: if you're in Asia, that's going to be like an H1 CSD
+ambiguities:
+- Session boundaries are never given as clock times in this unit - Asia / London / New York
+  are used without hours, and no timezone is named in these two videos.
+- '''I don''t trust an hourly closure this early'' is a judgement, applied inconsistently:
+  an hourly closure is refused in Asia and London but accepted in New York.'
+- Whether the 4-hour closure and the hourly CISD are alternatives or should both be present
+  is stated as 'either' in the framework and as 'both checked off' in the worked example.
+- Session boundaries are not given as clock times in this video.
+- The New York rule is stated as a tendency ('a lot of times'), not a threshold.
+- The Asia / London / New York boundaries themselves are not given in clock time anywhere
+  in this unit, so the session lookup is not fully decidable from the corpus.
+- '''Relevant key level'' is required for the 1-hour closure variant but is not enumerated
+  here.'
+- It is not stated whether the 4-hour closure variant also needs to be a candle 2 closure,
+  or only the 1-hour one ('more so for the H1').
+- Whether the two methods are alternatives or whether one is preferred is not stated; he says
+  'mainly change in the state delivery on the hourly' in the Asia example.
+related:
+- daily-bias-c2-c3-h1-cisd
+- cisd
+- timeframe-alignment-pairs
+- volatility-timeframe-selection
+- new-york-intraday-time-levels
+- timeframe-pairing
+- session-timeframe-model-map
+- cisd-skip-at-target
+- large-wick-target-adjustment
+- hourly-cisd-confirmation
+- one-cisd-per-day
+- fractal-model-c2
+- wick-trust-test
+- relevant-level
+timeframes:
+  htf:
+  - 1D
+  - 4H
+  - 1H
+  ltf:
+  - 30m
+  - 15m
+  - 5m
+  - 3m
+  fractal: true
+execution:
+  bias: Away from the confirmed daily wick.
+  entry: Continuation on the session-appropriate lower timeframe once the wick is confirmed.
+  stop: Beyond the confirmed extreme.
+  targets:
+  - previous day high / low
+  - the opposing side of the daily range
+contributing_units:
+- build_a_model_intro_to_ttrades_fractal_model_01
+- build_a_model_intro_to_ttrades_fractal_model_02
+- live_streams_04
+draft_count: 3
+voice: ttrades

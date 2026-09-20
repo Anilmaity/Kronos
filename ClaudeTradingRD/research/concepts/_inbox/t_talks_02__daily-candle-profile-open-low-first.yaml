@@ -1,0 +1,47 @@
+id: daily-candle-profile-open-low-first
+name: "Daily Candle Profile - Open Low First"
+aliases: ["OLHC / OHLC candle profiles", "how a bullish day forms"]
+category: model
+status: specified
+
+definition: >
+  A bullish daily candle is expected to open and trade low first, forming its low early in
+  the day and from a key level, leaving a small wick, then expand and close near its high
+  with a large body. A bearish day mirrors this: opens high first, small upper wick, closes
+  near its low. The low or high of the day must form at a relevant time - a low of day or
+  high of day formed after roughly 10:30 is not accepted, because there is no longer a
+  relevant driver time left to expand from.
+
+timeframes:
+  htf: ["1D", "1W"]
+  ltf: ["4H", "1H"]
+  fractal: true
+
+preconditions:
+  - "A directional expectation for the day exists."
+  - "Key levels for the day have been marked (previous day's levels or levels formed intraday)."
+
+detection_rules:
+  - "Bullish day: price opens and trades lower first; the low forms from a key level; the opposing wick is small; the body closes near the high."
+  - "Bearish day: price opens and trades higher first; the high forms from a key level; the body closes near the low."
+  - "The low/high of day must form before roughly 10:30; a low/high formed later is not treated as the day's extreme."
+  - "A key level for the day's extreme may come from the previous day or be formed by the current day's own price action (e.g. an Asia consolidation range swept in New York)."
+  - "If the candle opens the other way first but does not reach any relevant objective, the profile is still acceptable."
+
+invalidation:
+  - "The day's extreme forms late (after ~10:30) or away from any key level."
+
+measurable:
+  - "distribution of low-of-day / high-of-day formation time"
+  - "percentage of daily extremes that coincide with a marked key level"
+
+sources:
+  - video_id: J_EeS2_2CAM
+    title: "GxTradez | Phases of Price & Profiles For Expansion"
+
+ambiguities:
+  - "'Probably around 10:30' - the cutoff is explicitly approximate and the timezone is implied (New York) rather than stated."
+  - "The instrument class matters (indices are discussed); no equivalent cutoff is given for forex."
+
+python_detector: null
+related: ["reversal-candle-target-adjustment", "four-hour-session-if-then-chain", "driver-pairing-rule"]

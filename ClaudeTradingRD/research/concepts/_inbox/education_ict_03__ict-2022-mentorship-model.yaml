@@ -1,0 +1,77 @@
+id: ict-2022-mentorship-model
+name: The 2022 Mentorship Setup (as he taught it in the old playlist)
+definition: 'The execution model referenced by name in the earlier Education - ICT material. Having
+  mapped liquidity on the 15-minute chart and watched a pool be taken, he drops to the 1-minute chart
+  and looks for a specific four-part sequence rather than buying the sweep directly: a short-term
+  high (or low) is put in, price runs that level, displacement follows over it, and a fair value
+  gap is left behind by the displacement leg. A fibonacci is drawn across the displacement range
+  and the entry in that fair value gap must sit in a discount of that range. He explicitly contrasts
+  it with the cruder alternative - you could simply buy the sweep, but that is more risky.'
+category: entry
+status: underspecified
+aliases:
+- 2022 mentorship setup
+- 2022 model
+preconditions:
+- A liquidity pool identified on the 15-minute chart has just been taken.
+- The trader has dropped to the 1-minute chart for execution.
+detection_rules:
+- 'On the execution timeframe, mark a short-term high (bearish framing: a short-term low).'
+- Require price to run that short-term high/low.
+- Require displacement through it.
+- Require a fair value gap inside the displacement leg.
+- Draw a fibonacci across the displacement range; the fair-value-gap entry must fall in the discount
+  half.
+- The bare sweep entry without this sequence is allowed but explicitly labelled more risky.
+invalidation:
+- No displacement over the short-term high, or no fair value gap left behind - no setup.
+measurable:
+- share of 15-minute sweeps that produce a qualifying 1-minute sequence
+- outcome of the sweep-only entry versus the full four-part sequence on the same sample
+sources:
+- video_id: Njs-eRpeP9Q
+  title: What is Liquidity? - ICT Concepts
+  quote: We want to look for a 2022 mentorship setup
+- video_id: Njs-eRpeP9Q
+  title: What is Liquidity? - ICT Concepts
+  quote: get some displacement over it, and then we have a fair value gap
+- video_id: Njs-eRpeP9Q
+  title: What is Liquidity? - ICT Concepts
+  quote: drawing a fib from our displacement range, You are entering in a discount here
+- video_id: Njs-eRpeP9Q
+  title: What is Liquidity? - ICT Concepts
+  quote: Could you just buy this right here? Yes, but that's also more risky
+ambiguities:
+- '''Displacement'' carries no threshold here (as everywhere in the corpus), so the sequence is not
+  decidable without an external displacement definition.'
+- '''Short-term high'' is used without the advanced-market-structure definition given elsewhere in
+  the corpus.'
+- The fib is drawn 'from our displacement range' but the anchors (swing-to-swing, or the displacement
+  candle's own range) are not stated, nor is the level that divides discount from premium.
+- The name points at ICT's 2022 mentorship as the source; the model is named, not derived, in this
+  video. Later channel material largely drops this naming.
+- Stop placement and targets are not given.
+related:
+- buyside-sellside-liquidity
+- displacement
+- fair-value-gap
+- optimal-trade-entry
+- premium-discount
+timeframes:
+  htf:
+  - 15m
+  - 5m
+  ltf:
+  - 1m
+  fractal: true
+execution:
+  bias: Direction away from the swept pool.
+  entry: The fair value gap inside the 1-minute displacement leg, in discount of the displacement
+    range.
+  stop: Not stated in this video.
+  targets:
+  - untaken relatively equal highs / lows carried forward
+contributing_units:
+- education_ict_03
+draft_count: 1
+voice: ttrades

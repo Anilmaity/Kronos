@@ -1,0 +1,56 @@
+id: add-to-winners-timeframe-cascade
+name: Add To Winners As Each Higher Timeframe Triggers
+aliases:
+- trigger the higher time frame
+- 15 to 30 to hour cascade
+category: risk
+status: specified
+definition: 'The guest scales INTO a working position as each successively higher timeframe confirms
+  the same signal. His worked sequence: take the 15-minute 2-2, and if that 15-minute target is reached
+  it triggers the 30-minute 2-2, so add on the 30; if the hour then prints a 2-1-2 in the same direction,
+  add again on the hour. The stated reason is that each higher timeframe triggered gives the position
+  that timeframe''s worth of runway, and ''we always want to add to Winners''.'
+timeframes:
+  htf:
+  - 1D
+  - 1H
+  ltf:
+  - 30m
+  - 15m
+  - 5m
+  - 3m
+  fractal: true
+preconditions:
+- An initial entry on a lower-timeframe actionable signal, in the direction of higher-timeframe continuity.
+detection_rules:
+- Enter on the lowest-timeframe signal (e.g. a 15-minute 2-2).
+- If price reaches that signal's magnitude, it necessarily triggers the same signal on the next timeframe
+  up - add there.
+- Continue adding on each timeframe that triggers in the same direction while no reversal prints against
+  the position.
+- Stop adding and start partialling when a 2-2 prints against the position.
+invalidation:
+- An opposing 2 on the timeframe just added on.
+measurable:
+- R of the cascaded position vs the single initial entry
+- frequency of a 15m signal actually triggering the 30m and the hour
+sources:
+- video_id: 1XWyy6Q-_8Q
+  title: Live Stream With Alex's Options - TheSTRAT & Broadening Formations
+  quote: we always want to add to Winners
+- video_id: 1XWyy6Q-_8Q
+  title: Live Stream With Alex's Options - TheSTRAT & Broadening Formations
+  quote: if it doesn't reverse against you it is still going
+ambiguities:
+- Add size is never specified, and no rule moves the aggregate stop as size increases.
+- The cascade is demonstrated on one intraday example only.
+related:
+- no-reversal-means-still-going
+- timeframe-continuity
+- stop-moves-when-adding
+contributing_units:
+- live_stream_guests_02
+draft_count: 1
+voice: guest
+guest_sources:
+- Alex's Options

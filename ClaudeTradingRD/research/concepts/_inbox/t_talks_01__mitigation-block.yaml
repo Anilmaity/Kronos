@@ -1,0 +1,57 @@
+id: mitigation-block
+name: "Mitigation Block"
+aliases: ["up close candles on the sell side of the curve"]
+category: structure
+status: specified
+
+definition: >
+  An opposing-close candle projected forward in time and used as a re-accumulation (or
+  re-distribution) entry inside an ongoing move. In a bullish market maker model these are the
+  up-close candles sitting on the sell-side of the curve. Rauf adds the qualifying test - the
+  up-close candle must itself have traded into fair value - plus a handling rule for consecutive
+  candles and a volume tiebreak.
+
+timeframes:
+  htf: ["1W", "1D", "4H"]
+  ltf: ["1H", "5m", "1m"]
+  fractal: true
+
+preconditions:
+  - "A directional leg is in progress inside a market maker model."
+  - "Fair value gaps on that leg have been marked."
+
+detection_rules:
+  - "Identify up-close candles (bullish case) that traded into a fair value gap."
+  - "Where two or more consecutive up-close candles occur, merge them and treat the whole move as one block."
+  - "Where two candidates compete, prefer the candle with the larger volume."
+  - "Project the block forward in time and expect price to return into it and continue away."
+  - "Sniper's usage: up-close candles resting on the sell-side of the curve mark accumulation / re-accumulation, and PD arrays forming inside them (FVG, SMT) supply the entry."
+
+invalidation:
+  - "Not stated as a price condition for the block itself. Rauf gives only the model-level invalidation - a return to 50 percent of the dealing range kills the idea."
+
+execution:
+  bias: "With the prevailing model direction."
+  entry: "On the return into the projected mitigation block."
+  stop: "Below the low of the block for a long (stated as 'stop loss can be below this low')."
+  targets: ["the original consolidation"]
+
+measurable:
+  - "hit rate of a return into a projected mitigation block producing continuation"
+  - "whether the merged-consecutive-candle block outperforms the single-candle block"
+  - "how often the higher-volume candidate is the one respected"
+
+sources:
+  - video_id: wB-fQiT_UDo
+    title: "DayTradingRauf | ICT MMXM Models"
+  - video_id: 5aRB_ZY3474
+    title: "$niper | Internal & External Liquidity - ICT Daily Bias"
+
+ambiguities:
+  - "'Traded into fair value' is not pinned down - it is used interchangeably with entering a fair value gap and with reaching 50 percent of a leg."
+  - "The volume tiebreak is eyeballed - no threshold or ratio is given."
+  - "How far forward in time a projected block stays valid is not stated, in contrast with the ~60 days stated for old gaps."
+  - "Sniper and Rauf use the term for the same candle type but Sniper gives no qualifying test at all."
+
+python_detector: null
+related: ["old-accumulation-new-distribution", "breakaway-gap-anticipation", "mmxm-hedging-definition", "three-pd-array-confluence"]

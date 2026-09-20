@@ -1,0 +1,62 @@
+id: daily-ohlc-candle-shape
+name: "OHLC / OLHC Daily Candle Shape (and the Indecision Candle)"
+aliases: ["open high low close", "open trade lower, trade higher", "which came first, the high or the low"]
+category: structure
+status: specified
+
+definition: >
+  Used here as the tie-breaker when the daily close itself is not conclusive. A daily candle
+  that closes back inside its range tells you very little on its own, so he drops to the
+  hourly and asks a single question about the order in which the day was built: did price
+  open, trade lower, trade higher and close back in - or did it open, trade higher, trade
+  lower and close back in. The answer is the read. Because that day opened and made its high
+  first, he calls it more of a bearish candle even though the closure is bullish. The same
+  shape test is then applied prospectively to the following day: opening and creating the
+  high first is called a good indication of a bearish setup, because it is the upper wick
+  forming. The order of extremes is therefore treated as evidence independent of, and
+  sometimes opposed to, where the candle closed.
+
+timeframes:
+  htf: ["1D"]
+  ltf: ["1H"]
+  fractal: false
+
+preconditions:
+  - "A daily candle whose close does not settle the direction (it closes back inside its range)."
+  - "A lower-timeframe chart on which the intraday order of the high and the low can be read."
+
+detection_rules:
+  - "Drop to the hourly and reconstruct the day in time order from the open."
+  - "Open, low first, then high, then close back in => the bullish shape."
+  - "Open, high first, then low, then close back in => the bearish shape; read the candle as bearish regardless of the sign of the close."
+  - "Applied forward: a day that opens and makes its high first is forming the upper wick and supports a bearish setup for that day."
+  - "The shape read can be outvoted by a closure that is too strong the other way - when the shape says bearish and the close is bullish and late in the day, the setup is called less than ideal and more lower-timeframe confirmation is required."
+
+invalidation:
+  - "The reconstructed order of extremes is the opposite of the assumed one."
+  - "The following day opens and makes its low first when a bearish shape was expected."
+
+execution:
+  bias: "From the order of the extremes, cross-checked against the close."
+  entry: "Lower-timeframe continuation once the wick side has formed."
+  stop: "The protected swing formed on the wick side."
+  targets: ["previous day low or high"]
+
+measurable:
+  - "hit rate of 'high made first => the day closes in the lower half' by instrument"
+  - "how often the shape read and the close sign disagree, and which one predicts the next day better"
+  - "follow-through of days that open and make the expected extreme first"
+
+sources:
+  - video_id: Nlw-PZhoViQ
+    title: "TTrades Top-Down Chart Lessons #1"
+    quote: "it did open high, low close"
+
+ambiguities:
+  - "Sourced from an ASR (whisper-small) transcript, not YouTube captions; wording may be imprecise."
+  - "No tolerance is given for how much of a wick counts as 'trading higher first' - a one-tick excursion above the open is not distinguished from a substantial upper wick."
+  - "The shape read and the closure read are explicitly allowed to conflict, and the conflict is resolved by demanding more confirmation rather than by ranking the two."
+  - "Which lower timeframe to reconstruct the day on is not stated; the hourly is used here without comment."
+
+python_detector: null
+related: ["reversal-candle-quality", "phases-of-price", "t-spot", "cisd", "protected-swing"]

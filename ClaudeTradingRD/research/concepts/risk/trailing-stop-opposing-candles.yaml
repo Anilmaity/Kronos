@@ -1,0 +1,111 @@
+id: trailing-stop-opposing-candles
+name: Trailing By Opposing Candles
+definition: 'This unit supplies the level the library''s existing entry leaves open - where
+  exactly the stop goes relative to the opposing candle - and supplies a reason for moving
+  it that is not protection but arithmetic. Having entered on the 30-minute with the stop
+  above the swing high, the target does not give the multiple he wants, so he moves the stop
+  down to 50% of the opposing candle. The justification is a directional claim, not a risk-management
+  one: he does not anticipate price trading back above the half of that candle, so the tighter
+  stop is treated as structurally sound rather than as a compromise. The half level of the
+  opposing candle is therefore doing double duty in this unit - it is the retest filter on
+  the way in, and the stop level on the way through.
+
+  '
+variants:
+  definition:
+  - 'A mechanical trailing method demonstrated on a New York reversal: each time price closes
+    below a newly formed opposing candle, that candle''s high becomes the level that should
+    not be hit, and the stop trails to it. He walks it through live and then partly disowns
+    it - on the example shown it would have stopped him out before the target was reached.
+    He notes the trade-off explicitly: it is too tight, but it also saves you from sitting
+    through the chop.
+
+    '
+category: risk
+status: contested
+aliases:
+- move my stop there
+- 50% of this opposing candle
+- 0.5 of the opposing candle as the stop
+- trailing stop
+- trail to the new opposing candle
+preconditions:
+- An open position entered against a protected swing, with the stop at that swing.
+- An identified opposing candle between entry and the swing.
+- A fixed target that the current stop distance does not reach at the required multiple.
+- A position is open in a confirmed directional move.
+- Opposing candles are being formed and violated as price delivers.
+detection_rules:
+- Mark 0.5 of the opposing candle.
+- Move the stop to that half level rather than leaving it at the swing extreme, when the swing-extreme
+  stop does not give the required ratio to the fixed target.
+- 'The justification required is directional: price is not expected to trade back above (bearish)
+  or below (bullish) the half of that candle.'
+- Prefer moving the stop over moving the target - the target stays where the structure put
+  it.
+- After each close beyond a new opposing candle, treat that candle's extreme as the current
+  invalidation.
+- Until a new opposing candle forms, the previous one remains the operative level - do not
+  trail to intermediate highs.
+- Trail the stop to the current operative opposing candle extreme.
+invalidation:
+- Price trades back through 0.5 of the opposing candle - the directional premise that justified
+  the tighter stop has failed.
+- Price hitting the trailed level - position closed.
+measurable:
+- stop-out rate at 0.5 of the opposing candle vs at its extreme, same trades
+- how often price that violates the half level still reaches the target
+- R actually realised under each stop placement across a sample
+- how often this trail exits before the intended target
+- average R captured with this trail vs a fixed stop to the same target
+sources:
+- video_id: Nlw-PZhoViQ
+  title: 'TTrades Top-Down Chart Lessons #1'
+  quote: I don't anticipate price to trade above 50% of this opposing candle
+- video_id: u8bnmaih_hA
+  title: TTrades Sunday Session - Live Q&A
+ambiguities:
+- Sourced from an ASR (whisper-small) transcript, not YouTube captions; wording may be imprecise.
+- The R multiple this move is made to achieve is mistranscribed by the ASR (it renders as
+  'to R' / 'two R' inconsistently); the reading that he is reaching for 2R comes from context
+  and from the same target being described as 2R elsewhere in the unit, not from a clean rendering
+  here.
+- Whether the stop sits exactly at the half level or slightly beyond it is not stated.
+- Moving a stop closer to raise the ratio is the same manoeuvre this unit's rr-gated-entry-refinement
+  warns against on the target side; the asymmetry (targets are sacrosanct, stops are movable)
+  is used but never argued for.
+- Whether the half level is measured across the bodies or the wicks of the opposing-candle
+  series is not stated anywhere in this unit.
+- He describes the method and then says it is 'a little bit too tight of a trail' without
+  offering a replacement rule.
+- Elsewhere he says he only manages a position after 2R, which is a different rule; the two
+  are not reconciled.
+- Whether the stop goes exactly at the opposing candle extreme or beyond it is not stated.
+related:
+- order-block
+- protected-swing
+- rr-gated-entry-refinement
+- mean-threshold
+- stop-loss-placement
+- opposing-candle
+- risk-reward-minimum
+- new-york-reversal-profile
+timeframes:
+  htf:
+  - 1H
+  - 30m
+  ltf:
+  - 15m
+  - 3m
+  fractal: true
+execution:
+  bias: Unchanged.
+  entry: Already open.
+  stop: 0.5 of the operative opposing candle.
+  targets:
+  - the fixed structural target that motivated the move
+contributing_units:
+- chart_lessons_01
+- sunday_sessions_live_q_a_03
+draft_count: 2
+voice: ttrades

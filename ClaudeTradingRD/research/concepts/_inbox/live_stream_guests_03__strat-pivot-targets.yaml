@@ -1,0 +1,57 @@
+id: strat-pivot-targets
+name: Previous Candles' Highs And Lows As Sequential Pivot Targets (TheSTRAT)
+aliases:
+- pivot targets
+- pivot machine gun
+category: liquidity
+status: specified
+definition: 'Targets are the highs and lows of prior candles on the analysis timeframe, taken in sequence
+  rather than as a single objective. Once a consolidation (an inside bar) breaks out, the extremes
+  of the preceding candles form an ordered target list. The worked monthly example: breaking the inside
+  bar''s high puts three prior monthly highs in play; he then checks the reaction to each on the daily
+  - the first is reached and merely consolidates with no displacement either way, the second sees
+  a large fair value gap and a close above it that then holds on a retest, and the third has an unfilled
+  fair value gap sitting on it, is traded into, closes above, and then reverses on the lower timeframe
+  via an inside bar before continuing.'
+timeframes:
+  htf:
+  - 1M
+  - 1W
+  - 1D
+  ltf:
+  - 1H
+  - 15m
+  fractal: true
+preconditions:
+- A breakout of a consolidation on the analysis timeframe.
+detection_rules:
+- Mark the highs (or lows) of the previous candles on the analysis timeframe as an ordered target
+  list.
+- After a breakout, expect price to work through them in sequence.
+- 'At each pivot target, judge the reaction on a lower timeframe: a close beyond that holds means
+  strength continues; a close beyond that reverses means rejection.'
+- A pivot target that carries an unfilled fair value gap is treated as the more reactive one.
+invalidation:
+- Price closes back inside the consolidation - the target list is not in play.
+measurable:
+- hit rate of each successive pivot target after a consolidation breakout
+- difference in reaction at pivot targets with vs without a coincident fair value gap
+sources:
+- video_id: V8P6lNIisvc
+  title: Q&A Live with Alex's Options - ICT + Strat
+  quote: with the strat we use previous candles highs at our as our pivot targets
+ambiguities:
+- How many prior candles enter the target list is never stated.
+- The 'still acting strong' versus 'rejecting' test at each pivot is qualitative, judged by eye on
+  the daily.
+related:
+- previous-period-high-low
+- strat-outside-bar
+- strat-inside-bar
+- draw-on-liquidity
+contributing_units:
+- live_stream_guests_03
+draft_count: 1
+voice: guest
+guest_sources:
+- Alex's Options

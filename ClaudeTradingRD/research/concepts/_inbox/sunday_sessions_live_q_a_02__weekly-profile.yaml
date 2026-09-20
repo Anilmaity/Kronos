@@ -1,0 +1,50 @@
+id: weekly-profile
+name: "Weekly Profile Is Not Weekly Bias"
+aliases: ["weekly profile", "no weekly bias"]
+category: time
+status: specified
+
+definition: >
+  He holds no weekly directional bias. A weekly profile is the chained application of daily
+  bias: use what the previous day did to anticipate the next day, and repeat across the week,
+  which produces the named weekly shapes (e.g. Tuesday reversal, Wednesday continuation). The
+  fractal model already encodes this as the C2 to C3 to C4 sequence on the daily chart, and it
+  deliberately stops before C5.
+
+timeframes:
+  htf: ["1W", "1D"]
+  ltf: []
+  fractal: true
+
+preconditions:
+  - "A daily chart across the current week."
+
+detection_rules:
+  - "Derive a bias for each day from the previous day's close/formation."
+  - "If a day closes higher, anticipate continuation the next day; if an objective was hit, allow the sequence to turn."
+  - "Map the resulting day-by-day sequence to the daily C2/C3/C4 chain."
+  - "Do not extend the chain to C5."
+
+invalidation:
+  - "An objective is reached mid-week, allowing the sequence to reverse for the remainder."
+
+execution:
+  bias: "Per day, never per week."
+  entry: "Per the daily model."
+  stop: "Per the daily model."
+  targets: "Per the daily model."
+
+measurable:
+  - "Frequency of each weekly shape."
+  - "Accuracy of the day-after prediction given each previous-day formation."
+
+sources:
+  - video_id: aqnY1yZvfYs
+    title: "New York Open Live Q&A"
+
+ambiguities:
+  - "The named weekly profiles are alluded to but not enumerated here; a dedicated series exists elsewhere in the corpus."
+  - "The rule for when the chain turns (after an objective is hit) is stated loosely."
+
+python_detector: null
+related: ["daily-bias-candle-formation", "fractal-model-c2", "fractal-model-c4"]

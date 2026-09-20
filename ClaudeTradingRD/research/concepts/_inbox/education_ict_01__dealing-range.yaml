@@ -1,0 +1,59 @@
+id: dealing-range
+name: Dealing Range
+aliases:
+- the range price is trading in
+category: structure
+status: specified
+definition: 'The range price is currently trading inside, defined by the nearest visible high and the
+  nearest visible low at the zoom level you are working at. His stated method is deliberately naive: zoom
+  in, look at where price actually is, take that high and that low, and fib between them. The important
+  consequence he draws is that dealing ranges NEST - what is external liquidity at one zoom becomes internal
+  liquidity when you zoom out - so there is no single correct dealing range, only the one appropriate
+  to where price is trading now. A dealing range whose extremes price has already left behind is discarded
+  and a wider one taken.'
+timeframes:
+  htf:
+  - 1D
+  - 4H
+  - 1H
+  ltf:
+  - 15m
+  - 5m
+  - 1m
+  fractal: true
+preconditions:
+- A chart at the zoom level matching the timeframe you intend to trade.
+detection_rules:
+- Zoom to where price is currently trading.
+- Take the nearest high and the nearest low bounding that price action; that pair is the dealing range.
+- Fib high-to-low; the 0.5 splits premium from discount.
+- If price has moved beyond the range (e.g. trades above the high), the range is not valid - zoom out
+  and take the next high/low pair.
+- 'Expect nesting: external liquidity of the inner range is internal liquidity of the outer range.'
+invalidation:
+- Price trades outside the marked high/low - the range must be redrawn wider.
+measurable:
+- how often the naive nearest-high/nearest-low range agrees with a swing-based range
+- frequency of range redraws per session
+sources:
+- video_id: CAuN4tvLInQ
+  title: Choosing Dealing Ranges & Displacement Ranges - ICT Concepts
+  quote: here's a high here's a low that is your dealing range
+- video_id: CAuN4tvLInQ
+  title: Choosing Dealing Ranges & Displacement Ranges - ICT Concepts
+  quote: as you zoom out that external liquidity becomes internal liquidity
+ambiguities:
+- '''Zoom your screen in'' is a UI instruction, not a bar-count or swing definition - two traders at different
+  zoom levels get different ranges. Decidable only once the zoom/lookback is fixed.'
+- No rule selects among nested ranges other than 'where is price trading'.
+- Wicks vs bodies for the range extremes is not stated here.
+related:
+- displacement-range
+- premium-discount
+- internal-external-range-liquidity
+- external-range-liquidity
+- market-curve-side
+voice: ttrades
+contributing_units:
+- education_ict_01
+draft_count: 1

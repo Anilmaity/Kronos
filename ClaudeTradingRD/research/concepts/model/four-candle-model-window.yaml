@@ -1,0 +1,89 @@
+id: four-candle-model-window
+name: The Model Needs Four Candles
+definition: The numbering is fixed and anchored on the swing point, not on the clock. Candle
+  2 is always the swing low or swing high; candle 1 is always the candle before candle 2;
+  candle 3 the candle after; candle 4 the candle after that. 1-2-3 form the swing point and
+  candle 4 is the continuation. The rationale given is that price cannot reverse without forming
+  a swing point, so he labelled the candles around the swing point and asked which of those
+  swing points he could actually define -- producing exactly two definitions (the candle 2
+  closure and the candle 3 closure).
+variants:
+  definition:
+  - 'The model is scoped to a fixed window of four higher-timeframe candles, which is why
+    the indicator''s default higher-timeframe candle count is four and why he refuses a request
+    to make it fewer: the four candles are what a swing point needs. He counts them aloud
+    as candle zero or one, 2, 3, 4. C1 is not itself labelled on the chart - it exists only
+    as the liquidity that candle 2''s reversal sweeps.'
+category: model
+status: contested
+aliases:
+- candle 1 2 3 4
+- the numbering
+- my model just needs four candles
+preconditions:
+- A swing point candidate exists.
+- A higher-timeframe candle series is displayed.
+detection_rules:
+- Label the swing high / swing low candle as candle 2.
+- The candle immediately before it is candle 1; the candle after it is candle 3; the next
+  is candle 4.
+- Candles 1-2-3 constitute the swing point; candle 4 is the continuation.
+- There are only two closure definitions in the model -- candle 2 and candle 3. There is no
+  candle 4 closure.
+- Read the model across four consecutive higher-timeframe candles.
+- C1 supplies the liquidity that C2 sweeps; it carries no label of its own.
+- The C1 sweep marker can be shown on the higher-timeframe candles only, or hidden.
+- Fewer than four candles is not supported - the swing point cannot be framed.
+invalidation:
+- Candle 2 is not the extreme of the three-candle window -- the labelling is wrong and must
+  be re-anchored.
+- Not applicable - a framing rule.
+measurable:
+- distribution of swing-point windows per month per timeframe
+- share of setups whose full sequence completes inside four HTF candles
+sources:
+- video_id: TNybDCtwBnc
+  title: TTrades Playbook | Fractal Model Fundamentals (TTFM)
+  quote: Candle 2 will always be the swing low or swing high
+- video_id: 9AL41xON3hA
+  title: The Only Trading Strategy You Need For 2026
+  quote: this model is built off the fact that price cannot reverse without a swing point
+- video_id: 5fnFOh5YuM0
+  title: TTrades Fractal Model - Trading Candle 4
+  quote: the market cannot reverse without a swing high or a swing low
+- video_id: sdZkE-naNiY
+  title: TTrades Indicator Updates - Walkthrough and Q&A
+  quote: my model just needs four candles
+ambiguities:
+- The labelling is retrospective -- candle 2 is only known to be the swing point once candle
+  3 exists, which is exactly why candle 3 closures are needed. This is implied but never said
+  outright.
+- He says 'candle zero or one 2 3 4' in one breath, so whether the count starts at 0 or 1
+  is left open.
+- Whether the four-candle window is a hard invalidation (a setup that takes five candles is
+  dead) or only a display default is not stated.
+related:
+- fractal-model-c2
+- fractal-model-c3
+- fractal-model-c4
+- swing-point
+- continuation-timing
+timeframes:
+  htf:
+  - 1M
+  - 1W
+  - 1D
+  - 4H
+  - 1H
+  - 30m
+  - 15m
+  ltf:
+  - 5m
+  - 3m
+  - 1m
+  fractal: true
+contributing_units:
+- build_a_model_intro_to_ttrades_fractal_model_02
+- live_streams_05
+draft_count: 2
+voice: ttrades

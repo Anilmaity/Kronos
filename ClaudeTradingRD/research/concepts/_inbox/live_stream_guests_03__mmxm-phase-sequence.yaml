@@ -1,0 +1,87 @@
+id: mmxm-phase-sequence
+name: Building The Market Maker Model Narrative (AM Trades' procedure)
+aliases:
+- sell model
+- buy model
+- silver bullet
+category: model
+status: specified
+definition: 'A step-by-step procedure for constructing a market maker sell model on the 15-minute
+  and executing inside it. Classification comes from the higher-timeframe array price is reaching:
+  premium arrays produce sell models, discount arrays produce buy models. Points of interest are marked
+  before price arrives - the 15-minute break of structure, a clear fair value gap, the day''s high,
+  the London low - and then nothing is done until one is tagged: ''wait for the point of interest
+  and then look left''. On arrival, the left-hand side must contain the original consolidation / accumulation,
+  with equal lows left behind as the draw. A stab above the consolidation highs into the point of
+  interest is the smart money reversal; it is a valid short, valid until the swing high is broken,
+  but he calls it risky and notes it typically sits outside the kill zone. The lower-risk sequence
+  is to wait for distribution: the first fair value gap forms, price trades back up to rebalance an
+  intermediate-term high, and the fair value gap that forms at that intermediate-term swing point
+  - ''what they call the silver bullet'' - is the entry, with the stop above it, partials at the nearest
+  significant low, and the original consolidation as the completion target.'
+timeframes:
+  htf:
+  - 1D
+  - 4H
+  - 1H
+  ltf:
+  - 15m
+  - 5m
+  - 1m
+  fractal: true
+preconditions:
+- A higher-timeframe premium or discount array has been identified.
+- A named session window is in view (his example uses the 13:30 to 16:00 PM kill zone).
+detection_rules:
+- 'Classify by the array reached: premium array -> sell model; discount array -> buy model.'
+- Mark the meaningful points of interest first and wait; do no lower-timeframe analysis until one
+  is tagged.
+- On arrival, look left for the original consolidation and the liquidity (equal lows/highs) it left
+  behind.
+- The stab through the consolidation extreme into the point of interest is the smart money reversal
+  - a valid but risky entry, valid until the swing extreme is broken.
+- 'Preferred sequence: wait for distribution - first fair value gap, then a retracement that rebalances
+  an intermediate-term high, then take the fair value gap at that intermediate-term swing point.'
+- Stop above the intermediate-term high (a defended stop); take partials at the nearest significant
+  low.
+invalidation:
+- The high that the smart money reversal formed off is broken.
+execution:
+  bias: Direction of the higher-timeframe array (premium -> short).
+  entry: The fair value gap at the intermediate-term swing point on the second leg.
+  stop: Above the intermediate-term high.
+  targets:
+  - the nearest significant low (partials)
+  - the original consolidation
+measurable:
+- hit rate of the smart-money-reversal entry vs the second-leg entry on the same models
+- drawdown from entry to target on the second-leg entry
+- frequency of the model presenting per week
+sources:
+- video_id: CrUfTskOveo
+  title: Stream Q & A with AM Trades  - ICT concepts
+  quote: wait for the point of interest and then look left
+- video_id: CrUfTskOveo
+  title: Stream Q & A with AM Trades  - ICT concepts
+  quote: premium arrays higher time frames are going to make sell models
+- video_id: CrUfTskOveo
+  title: Stream Q & A with AM Trades  - ICT concepts
+  quote: old accumulation new distribution
+ambiguities:
+- '''Significant low'' is not defined.'
+- The kill zone is named (13:30 to the 16:00 equity close) but never stated as a hard filter on the
+  entry.
+- He says elsewhere in the same stream that he does not really form a daily bias, so the higher-timeframe
+  array is the only directional input in the whole procedure.
+related:
+- market-maker-model
+- smart-money-reversal
+- mmxm-second-leg-entry
+- old-accumulation-new-distribution
+- intermediate-term-swing-formation
+contributing_units:
+- live_stream_guests_03
+draft_count: 1
+voice: guest
+guest_sources:
+- AM Trades

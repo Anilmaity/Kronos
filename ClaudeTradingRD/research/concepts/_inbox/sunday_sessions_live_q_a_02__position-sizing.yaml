@@ -1,0 +1,48 @@
+id: position-sizing
+name: "Position Sizing From Drawdown Budget"
+aliases: ["risk per trade", "prop account sizing"]
+category: risk
+status: specified
+
+definition: >
+  Per-trade risk is derived from the account's maximum drawdown divided by the number of
+  consecutive losses you are prepared to survive. Worked example: a $1,500 drawdown with a
+  tolerance of 10 losing trades gives $150 risk per trade; a tolerance of 5 gives $300.
+  Separately, entries taken at the open with an uncomfortable stop are taken at reduced size
+  with the expectation of being stopped out.
+
+timeframes:
+  htf: []
+  ltf: []
+  fractal: false
+
+preconditions:
+  - "A known account drawdown limit."
+
+detection_rules:
+  - "risk_per_trade = max_drawdown / number_of_losses_tolerated"
+  - "For entries near the open where the stop must sit at the extreme, reduce size below the standard risk unit."
+
+invalidation:
+  - "n/a"
+
+execution:
+  bias: "n/a"
+  entry: "n/a"
+  stop: "Defined by structure; size is solved from the stop distance and the risk unit."
+  targets: "n/a"
+
+measurable:
+  - "Realised max consecutive losses vs the tolerance assumed."
+  - "Contribution of reduced-size open entries to total P&L."
+
+sources:
+  - video_id: Qv6Ux_Z8VrA
+    title: "New York Open Live Q&A"
+
+ambiguities:
+  - "No guidance on choosing the loss-tolerance number beyond the two examples."
+  - "The reduced-size open entry has no stated multiplier."
+
+python_detector: null
+related: ["break-even-management", "trading-window"]

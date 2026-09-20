@@ -1,0 +1,70 @@
+id: order-block
+name: "Opposing Candle / Order Block"
+aliases: ["opposing candle", "continuation order block", "series of down close candles"]
+category: structure
+status: specified
+
+definition: >
+  The consecutive series of same-direction close candles that produced a swing extreme,
+  treated as a tradeable zone once price closes back over (or under) it. In this unit the
+  speaker's working term is "opposing candle": at a low, the series of down-close candles
+  that made the low; at a high, the series of up-close candles that made the high. The
+  series becomes actionable at the moment of the close-through - that same close is the
+  change in the state of delivery - and thereafter the zone is used two ways: as the level
+  that must be respected on a retest (he marks 0.5 of the opposing candle and wants that
+  half respected), and as a "continuation order block" from which a continuation entry is
+  taken. A daily opposing candle can be projected forward and combined with the daily
+  candle's half level to build the T-spot.
+
+timeframes:
+  htf: ["1D", "1H"]
+  ltf: ["15m", "5m", "1m"]
+  fractal: true
+
+preconditions:
+  - "A swing extreme produced by a run of same-direction close candles."
+
+detection_rules:
+  - "Bullish: identify the consecutive down-close candles that made the low; the zone becomes valid once price closes back over their high."
+  - "Bearish: identify the consecutive up-close candles that made the high; the zone becomes valid once price closes back below their low."
+  - "Mark 0.5 of the opposing candle range; require that half to be respected on the retest."
+  - "A zone formed in the direction of the prevailing move and used for re-entry is a continuation order block."
+
+  - "0.5 of the opposing candle doubles as a management level, not only a retest filter: price is not expected to trade back above it, so the stop can be moved there."
+  - "A single retracement into a higher-timeframe level can produce two stacked sets of opposing candles, each protecting its own extreme."
+invalidation:
+  - "Price closes back through the opposing candle in the original direction."
+  - "The protected swing created at the extreme beneath the zone is taken out."
+
+execution:
+  bias: "Direction of the close-through."
+  entry: "On the retest of the zone, or on the open into the zone (positional case)."
+  stop: "Below the protected low beneath the zone; in one scalp, tight below the bodies."
+  targets: ["the failure swings / equal highs above", "the higher-timeframe draw"]
+
+measurable:
+  - "retest rate of opposing candles after the close-through"
+  - "proportion of retests that hold above 0.5 of the zone"
+  - "R achieved from continuation order block entries vs entries at the close-through itself"
+
+sources:
+  - video_id: w-JekHg6Ldk
+    title: "TTrades Top-Down Chart Lessons #4"
+  - video_id: IzOQmcgLyA0
+    title: "TTrades Top-Down Chart Lessons #3"
+  - video_id: UBTl7za9obc
+    title: "TTrades Top-Down Chart Lessons #2"
+
+  - video_id: Nlw-PZhoViQ
+    title: "TTrades Top-Down Chart Lessons #1"
+    quote: "creates two sets of opposing candles"
+ambiguities:
+  - "Sourced from an ASR (whisper-small) transcript, not YouTube captions; wording may be imprecise."
+  - "In video Nlw-PZhoViQ two separate levels are pointed at on screen - one that would form the opposing candle and one that would form the change in the state of delivery - which implies they are not always the same level, but the distinction is only visual and is not stated."
+  - "The speaker uses opposing candle, order block and continuation order block in the same walkthroughs without distinguishing them; they are recorded here as one concept because they are constructed identically in these transcripts, but that identity is an inference."
+  - "The zone boundaries are not stated - whether it spans the bodies or the wicks of the series is never said."
+  - "No maximum number of candles in the series is given."
+  - "Whether a fair value gap inside the zone is required, or merely common, is not stated."
+
+python_detector: null
+related: ["cisd", "protected-swing", "t-spot", "continuation-order-block", "opposing-run-entry"]

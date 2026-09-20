@@ -1,0 +1,51 @@
+id: internal-range-liquidity
+name: Internal Range Liquidity
+aliases:
+- internal liquidity
+- IRL
+category: liquidity
+status: specified
+definition: 'Internal range liquidity is a fair value gap - nothing else. The definition is given
+  flatly at the top of the IRL/ERL video and is used unchanged throughout: a bearish fair value gap
+  above price or a bullish fair value gap below it is the internal liquidity of the current range.'
+timeframes:
+  htf:
+  - 1D
+  - 4H
+  - 1H
+  ltf:
+  - 15m
+  - 5m
+  fractal: true
+preconditions:
+- An unfilled fair value gap exists inside the working range.
+detection_rules:
+- internal_range_liquidity := an unfilled fair value gap on the working timeframe.
+- After external range liquidity has been purged, the nearest unfilled fair value gap becomes the
+  draw.
+- Reaching it (and respecting it) flips the draw back to external range liquidity.
+invalidation:
+- The gap being traded through / closed through.
+measurable:
+- hit rate of the FVG being reached after external liquidity is purged
+- share of FVGs respected vs closed through
+sources:
+- video_id: TfHlNgAZ_II
+  title: Trading IRL & ERL With Order Blocks! - ICT Concepts
+  quote: internal range liquidity is just a fair value Gap
+ambiguities:
+- Which timeframe's fair value gap is 'the' internal liquidity is chosen by the timeframe pairing,
+  not by a rule; the examples mix 4H, hourly and daily gaps.
+- '''Reaching'' the gap is not defined as touching the near edge, the consequent encroachment, or
+  a full fill.'
+- When several unfilled gaps exist there is no selection rule.
+related:
+- external-range-liquidity
+- internal-external-rotation
+- fair-value-gap
+- irl-erl-flowchart-model
+python_detector: null
+contributing_units:
+- education_ict_updated_02
+draft_count: 1
+voice: ttrades

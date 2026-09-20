@@ -1,0 +1,49 @@
+id: four-hour-session-if-then-chain
+name: "4-Hour Session If-Then Chain"
+aliases: ["if 2am manipulates then 6am continues", "profiling the 4 hour chart"]
+category: time
+status: specified
+
+definition: >
+  A chained set of if-then conditions linking each 4-hour candle to the next on index
+  futures. If the 18:00-22:00 period manipulates, 14:00 should expand or continue. If the
+  2am candle manipulates, expect 6am continuation. If 6am manipulates, expect 10am
+  continuation. If 10am manipulates, expect 14:00 continuation. If 9:30 manipulates, expect
+  10am to continue. If the 4-hour candle currently being traded does not itself support
+  expansion (large opposing wick), no trade is taken inside it - the trader waits for the
+  next candle open. Within-candle attention windows are given: 2am to 5am inside the 2am
+  candle, 8am and 10am inside the 6am candle, and 10am to 12pm inside the 10am candle.
+
+timeframes:
+  htf: ["1D"]
+  ltf: ["4H", "1H", "15m"]
+  fractal: false
+
+preconditions:
+  - "Index futures (the clock and the 9:30 driver are index-specific)."
+  - "A draw on liquidity is still open."
+
+detection_rules:
+  - "Determine whether the current 4H candle manipulated (swept a prior high or low)."
+  - "If it did, the next 4H candle is expected to continue away from that manipulation."
+  - "If it did not manipulate - it consolidated or retraced - that is a continuation signature and it is not traded away from."
+  - "If the 4H candle in play has a large opposing wick, wait for the next 4H open."
+  - "Continuation from a candle requires a draw on liquidity still to be open."
+
+invalidation:
+  - "The expected continuation candle itself fails to support expansion."
+
+measurable:
+  - "continuation rate of the 6am candle conditioned on a 2am manipulation"
+  - "same for 6am -> 10am and 10am -> 14:00"
+
+sources:
+  - video_id: J_EeS2_2CAM
+    title: "GxTradez | Phases of Price & Profiles For Expansion"
+
+ambiguities:
+  - "The '1800/2200' line in the transcript is garbled and the intended session is unclear."
+  - "Times are New York by implication (9:30 open, 8:30 news) but the timezone is not stated."
+
+python_detector: null
+related: ["po3-four-hour-opening-times", "driver-pairing-rule", "aligning-expansion-candles"]

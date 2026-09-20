@@ -1,0 +1,90 @@
+id: mmxm-twitter-model
+name: The MMXM Trader's "Twitter Model"
+aliases:
+- Twitter model
+- the mxm Traders Twitter model
+category: model
+status: specified
+definition: 'A fully enumerated five-condition model that TTrades teaches on behalf of the MMXM Trader.
+  It moves from external liquidity to internal liquidity on a smaller timeframe, paired with a market
+  structure shift and an SMT. Short setup: previous day HIGH is raided; the target is a 1-hour BULLISH
+  fair value gap below; a 15-minute market structure shift plus an SMT is required; and the entry
+  may only be taken ABOVE the midnight open. Long setup is the exact mirror - previous day LOW raided,
+  a 1-hour BEARISH fair value gap above as the target, 15-minute structure shift plus SMT, and the
+  entry only BELOW the midnight open. He states the model is fractal and can be run one step up (weekly
+  / 4-hour / 1-hour) or down.'
+timeframes:
+  htf:
+  - 1W
+  - 1D
+  - 4H
+  - 1H
+  ltf:
+  - 1H
+  - 15m
+  fractal: true
+preconditions:
+- Previous day high (short) or previous day low (long) is marked and gets raided.
+- A 1-hour fair value gap exists on the opposite side to serve as the target.
+detection_rules:
+- 'Short: previous day high raided -> target a 1-hour bullish fair value gap below.'
+- 'Long: previous day low raided -> target a 1-hour bearish fair value gap above.'
+- 'Fair value gap selection shown in one example: prefer the gap that has not already been reached
+  into, and consider premium/discount - equilibrium of the range should sit inside or beyond the
+  chosen gap.'
+- On the 15-minute chart require a market structure shift AND an SMT against a correlated asset (silver,
+  ES, YM and GBPCAD are each used in an example).
+- Enter only above the midnight open for shorts, only below it for longs.
+- 'Substitution he permits: an inversion or a change in the state of delivery may be used in place
+  of the market structure shift.'
+- 'Substitution he permits: the daily open may be used in place of the midnight open.'
+- 'Fractal: the same shape runs on weekly / 4-hour / 1-hour, or lower.'
+invalidation:
+- No SMT at the raid.
+- No 15-minute structure shift / CISD after the raid.
+- Entry price on the wrong side of the midnight open.
+execution:
+  bias: Back toward the 1-hour fair value gap on the opposite side of the raid.
+  entry: On the structure shift close, on the fair value gap, or on the order block that forms after
+    it - chosen so the trade gives at least 2R.
+  stop: On the fair value gap candle's extreme, on the swing low/high, or below 0.5 of the wick -
+    selected to meet the 2R minimum.
+  targets:
+  - the 1-hour fair value gap
+  - 2R minimum (examples show 2.26R)
+measurable:
+- frequency of all five conditions co-occurring per week
+- hit rate of the hourly fair value gap target once the raid and SMT are present
+- how often the midnight-open filter would have blocked an otherwise valid entry
+sources:
+- video_id: WwmS47Gb3M0
+  title: The "Twitter Model" The MMXM Trader - ICT Concepts
+  quote: moving from external liquidity to internal liquidity on a smaller time frame
+- video_id: WwmS47Gb3M0
+  title: The "Twitter Model" The MMXM Trader - ICT Concepts
+  quote: looking to only short above midnight open and then vice versa for Longs
+- video_id: WwmS47Gb3M0
+  title: The "Twitter Model" The MMXM Trader - ICT Concepts
+  quote: although the model says a market structure shift I will also look for an inversion
+ambiguities:
+- '''Market structure shift'' is never defined in this video and is used interchangeably with change
+  in the state of delivery.'
+- Which correlated asset supplies the SMT is chosen per example with no rule (silver for gold, ES/YM
+  for NQ, GBPCAD in one case).
+- The fair-value-gap selection reasoning (premium/discount, already mitigated) is given once and
+  not stated as a rule.
+- This is a model taught on someone else's behalf - the underlying source is the MMXM Trader's Twitter,
+  not this channel's own method.
+- The transcript renders 'MMXM' as 'mxm' throughout.
+related:
+- midnight-open-directional-filter
+- internal-external-rotation
+- smt-divergence
+- draw-on-liquidity
+- cisd
+- internal-range-liquidity
+python_detector: null
+contributing_units:
+- education_ict_updated_02
+draft_count: 1
+voice: ttrades

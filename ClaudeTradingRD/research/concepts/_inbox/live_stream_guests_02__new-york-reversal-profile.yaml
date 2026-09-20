@@ -1,0 +1,69 @@
+id: new-york-reversal-profile
+name: New York Is Either A Continuation Of London Or A Reversal Of It
+aliases:
+- New York reversal
+- New York continuation
+category: model
+status: specified
+definition: 'In the Rauf episode TTrades takes over the screen to answer how to frame New York, and
+  gives the binary directly: New York either continues London''s direction or reverses it, and knowing
+  that it is only those two makes the session tractable. The reversal case: with a bullish higher-timeframe
+  read, if London sets the current high of the day and there is a discount array below, he anticipates
+  a New York reversal - London''s high must be taken, then the low forms and the day closes high, producing
+  a bullish reversal candle shape. The continuation case: still bearish, he anticipates a reach back
+  into a premium or some PD array and then continuation lower into the close, producing the classic
+  sell day profile. He anchors this on the midnight open and places it inside the daily profile framework,
+  and limits it to the New York AM session. The guest''s independent version is the same binary, which
+  is why he only trades New York.'
+timeframes:
+  htf:
+  - 1D
+  - 4H
+  ltf:
+  - 1H
+  - 15m
+  - 5m
+  fractal: false
+preconditions:
+- A higher-timeframe directional read.
+- The midnight open marked.
+- London's session high and low established.
+detection_rules:
+- Mark the midnight open and London's session high and low.
+- 'Bullish read + London set the current high of the day + a discount array sits below: anticipate a
+  New York reversal - London''s high is taken, then the day''s low forms and it closes near the high.'
+- 'Bearish read: anticipate a reach back into premium or a PD array, then continuation lower into the
+  close (classic sell day).'
+- Classify New York as exactly one of continuation-of-London or reversal-of-London; there is no third
+  case.
+- Apply within the New York AM session.
+invalidation:
+- Neither shape develops - the day is neither a continuation nor a reversal profile.
+measurable:
+- split of New York sessions between continuation and reversal, by daily bias
+- hit rate of the reversal case conditioned on London setting the day's high plus a discount array below
+sources:
+- video_id: qFtfD09Vv3E
+  title: Live with Day Trading Rauf - Preparing for a New Week
+  quote: there is a discount array down here then I'm anticipating a New York reversal
+- video_id: qFtfD09Vv3E
+  title: Live with Day Trading Rauf - Preparing for a New Week
+  quote: using our uh midnight open right here
+- video_id: qFtfD09Vv3E
+  title: Live with Day Trading Rauf - Preparing for a New Week
+  quote: it's either going to be a continuation of what London did or a reversal
+ambiguities:
+- '''Discount array'' is used without a definition of which array or how the premium/discount range
+  is anchored in this exchange.'
+- The AM session is not given clock bounds here.
+- The last quote is the guest's own statement of the same binary; the first two are the host's. They
+  agree, but the reasoning shown on the chart is the host's.
+related:
+- london-reversal-profile
+- daily-profile-framework
+- midnight-open-directional-filter
+- four-am-analysis-start
+contributing_units:
+- live_stream_guests_02
+draft_count: 1
+voice: ttrades

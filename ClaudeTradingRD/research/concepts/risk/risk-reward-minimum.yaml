@@ -1,0 +1,259 @@
+id: risk-reward-minimum
+name: Minimum Risk-To-Reward
+variants:
+  name:
+  - Minimum R and Position Management
+  - Minimum R and the Break-Even Win Rate
+  - Minimum Risk-To-Reward (2R)
+  definition:
+  - '2R is the default target across this entire unit - it appears in essentially every worked
+    trade, with the stop on the protected swing / model invalidation. Where the geometry does
+    not offer 2R, the stated fix is to MOVE THE ENTRY (down to a fair value gap, or wait for
+    a retest) or to use the BODIES rather than the wick for the stop - never to widen the
+    target or take a worse trade. Runners are the exception: once the short-term target is
+    banked, a portion is held toward the higher-timeframe objective, which is where the outsized
+    R comes from.'
+  - 'A 2R minimum on every trade, stated as a system requirement rather than a preference,
+    and for the first time in the corpus with the arithmetic attached: at 2R, a win rate above
+    34% is break-even or profitable. Everything else in the entry machinery is downstream
+    of this -- refining the entry to a lower timeframe, moving the stop to the bodies, waiting
+    for a retest instead of entering at market, and skipping a setup entirely are all presented
+    as ways to satisfy the 2R constraint. The complementary rule for getting more than 2R
+    is to combine a lower-timeframe invalidation with a higher-timeframe target.'
+  - 'Two guests give the same target doctrine from opposite directions. Trader T uses a fixed
+    2R on every trade and defends it psychologically rather than statistically: the worse
+    outcome is not missing an extension past 2R, it is watching price reach 2R and then come
+    back and take you out when you could have banked it. He pads the target to about 2.2R
+    so the spread does not stop him short of the fill. Ben refuses to go as low as 1:1 and
+    gives the arithmetic: a 1:1 system forces break-even at a 50 percent win rate, so a sub-50
+    percent trader cannot be profitable on it at all. His own comfort band is taking profit
+    around 2R to 2.5R with 3R to 3.5R as the sweet spot, and his stated method for settling
+    the question is empirical - run 20, 25 or 50 trades at 1R, 1.5R and 2R and see what your
+    own data says.
+
+    '
+  - 'A small set of stated risk constraints: a 2R minimum on entries, no management of a position
+    until 2R has been reached, and a win-rate/R relationship - a 50% win rate is not viable
+    at 1R but is viable at 1.5R and at 2R. When there is no strong higher timeframe bias he
+    takes most of the position off earlier, at 1.5R to 2R at the first failure swing, and
+    either flattens or leaves a runner at break-even.
+
+    '
+  - Asked directly what his risk to reward is, TTrades answers that it depends on the target
+    but that he thinks he does 2R minimum. This is stated as a floor, not a fixed target -
+    the target itself comes from structure.
+definition: 'He states a personal floor of 2R in two separate videos and a 1:2 minimum in
+  a third, and lets it drive both target selection and entry refinement: he rejects a 1.19R
+  entry and moves it up to about 2R, and he declines a fixed 1:1 in favour of structural targets.
+  In the internal/external model 2R is the fixed target rather than a floor. Break-even is
+  moved at 3R in the silver-bullet backtest.'
+category: risk
+status: contested
+aliases:
+- minimum R
+- at least two R
+- 2R
+- look for two R
+- 2R minimum
+- 34% break-even
+- fixed 2R
+- 2.2R for the spread
+- why not 1:1
+- manage after 2R
+- win rate vs R
+preconditions:
+- A valid model with a defined invalidation.
+- A defined stop (protected swing) and a defined target (drawn liquidity or projection).
+- A stop distance is fixed, so R is well defined before entry.
+- An entry with a defined stop, so R is computable.
+- A trade with a defined stop and a structural target.
+detection_rules:
+- Compute R to the intended structural target before entering.
+- Below ~2R, refine the entry downward (deeper into the FVG, to the consequent encroachment,
+  to the mean threshold) rather than take the trade.
+- If refinement cannot reach 2R and the target is fixed, skip.
+- Where a fixed target is used (internal/external model), it is 2R.
+- Move the stop to break-even at 3R (stated for the silver-bullet backtest).
+- Stop on the protected swing / the model's invalidation; measure R to the nearest previous
+  candle extreme.
+- If 2R is not available, adjust the ENTRY (retest, or deeper into the fair value gap) or
+  use the bodies rather than the wick for the stop.
+- If neither works, do not take the trade at that location.
+- Partial at the short-term target; hold a runner to the higher-timeframe target.
+- A target slightly beyond the nearest level may be extended 'a little' to make 2R work.
+- Compute R from the protected-swing stop to the nearest logical target. If < 2R, the setup
+  does not qualify as-is.
+- 'Remedies, in the order he uses them: refine the entry to a lower timeframe; move the stop
+  to the body extreme; wait for a retest / place a limit; raise the target to a higher-timeframe
+  objective.'
+- If none of those produce 2R, skip the trade.
+- For maximum R, pair a lower-timeframe invalidation with a higher-timeframe target (demonstrated
+  at 4R, 5.63R, 8R).
+- Do not seek entries after the objective has already been hit -- a new phase of price is
+  due.
+- 'Trader T: take profit at a fixed 2R; set the order at about 2.2R so the spread does not
+  prevent the fill.'
+- 'Trader T: if 2R is further than the structure allows, tighten the ENTRY (move the limit)
+  rather than shorten the target.'
+- 'Ben: reject 1:1 - it requires better than a 50 percent win rate merely to break even.'
+- 'Ben: take profit around 2R-2.5R, with 3R-3.5R preferred, and let part of the position run.'
+- 'Ben''s procedure for choosing your own multiple: log 20-50 trades at each of 1R, 1.5R and
+  2R and read the result off your own data rather than adopting someone else''s number.'
+- Require at least 2R to the intended target before taking the entry; if the stop is too wide
+  for 2R, do not take it (this is the pre-open case).
+- Do not manage the position until 2R is reached.
+- With no strong higher timeframe bias, take most of the position off at 1.5R-2R at the first
+  failure swing rather than holding for the deeper target.
+- A 50% win rate is insufficient at 1R and sufficient at 1.5R or 2R.
+- Risk is known from the entry price whether the entry is a limit or a market fill, so position
+  size is derivable either way.
+- Reject a setup whose structural target is less than 2R from the stop.
+- Where the target is further, take the target rather than a fixed 2R.
+invalidation:
+- Refining the entry raises R but lowers fill probability — he explicitly trades that off
+  rather than always maximising R.
+- The target is taken out before entry -- the R calculation is void.
+- Not applicable.
+measurable:
+- fill rate vs realised R at each refinement level
+- outcome of trades taken below the 2R floor
+- distribution of achievable R at model formation
+- how often the entry-adjustment rule converts a sub-2R setup into a 2R setup, and its hit
+  rate
+- 'realised average R and win rate over a large sample (his 5-trade demo: 80%, 2.79R)'
+- share of setups rejected on the R constraint alone
+- expectancy at 1R, 1.5R, 2R, 2.5R and 3R on the same entry list - exactly the experiment
+  Ben prescribes
+- how often price reaches 2R and then returns to the stop (Trader T's stated fear, made testable)
+- fill-rate difference between a 2.0R and a 2.2R target once spread is modelled
+- realised R distribution and its win rate, compared against the 1.5R breakeven threshold
+- outcome of scaling at 1.5R-2R vs holding to the deeper target on weak-bias days
+- distribution of planned R per taken setup
+- rejection rate of setups on the 2R floor
+sources:
+- video_id: 6zTz7WMdMWg
+  title: Intraday Bias Simplified
+  quote: I need at least two R personally
+- video_id: AdmnWLjf8rY
+  title: ICT Son's Model - Higher Time Frames
+  quote: I personally prefer a minimum of one to two R
+- video_id: mwmWNCTEYtY
+  title: Internal & External Liquidity Model
+  quote: a market structure shift a fair value Gap and then I will Target to R
+- video_id: q40pRwjuPYQ
+  title: ICT Son's Model - 30 Second Setup
+  quote: I personally prefer a strategy with a higher risk to reward and taking profit
+- video_id: 0xygpCMwxbQ
+  title: A+ ICT Entry Checklist
+  quote: as I move my entry closer to my stop loss my risk to reward increases
+- video_id: o0v4KQxZbpU
+  title: ICT Silver Bullet Strategy - No Daily Bias | With Backtest!
+  quote: once this hits 3r I will move my stop to break even
+- video_id: WFqLwOp2pXw
+  title: How To Trade Consolidation - Phases Of Price
+  quote: can extend it a little for 2 R
+- video_id: F0G31iLVpVg
+  title: How To Trade Retracement - Phases Of Price
+  quote: I wouldn't really trust the body here with the lack of wick
+- video_id: xMFd_kfmIqI
+  title: Positional Entries - Enter Before The Expansion
+  quote: if the risk to reward does not make sense
+- video_id: A4NasIa371c
+  title: How to Set Price Targets Using the Fractal Model
+  quote: take off a portion of your position at your short-term target
+- video_id: TNybDCtwBnc
+  title: TTrades Playbook | Fractal Model Fundamentals (TTFM)
+  quote: with a win rate over 34%, I'm going to be break even or profitable
+- video_id: q3nauvjT3q0
+  title: Stop Overcomplicating Trading (Here's the Fix)
+- video_id: JHVaSKtE1Ys
+  title: 'Stop Losses in Trading: Know When You''re Wrong'
+- video_id: eywpZT3z6GQ
+  title: TTrades Scalping Model - Simple Day Trading Strategy
+- video_id: wCtxmWe4KNc
+  title: Back Testing Live Session With Trader T
+  quote: I really like 2R I find it's just peace of mind
+- video_id: wCtxmWe4KNc
+  title: Back Testing Live Session With Trader T
+  quote: R 2.2 just to alleviate for the spread
+- video_id: yRmKkR4CojU
+  title: Fractalizing Entries -Q&A with Ben - ICT Concepts
+  quote: forcing yourself to be break even at fifty percent win rate
+- video_id: bMkRomKEunU
+  title: New York Open Live Q&A
+- video_id: r7yW6ou1LDs
+  title: TTrades Sunday Session - Live Q&A
+- video_id: wGYde-h84cs
+  title: Live Q&A with AM Trades - Weekly Profile
+  quote: I think I do two are minimum
+ambiguities:
+- 2R appears as a floor (6zTz7WMdMWg), a fixed target (mwmWNCTEYtY) and a preference (AdmnWLjf8rY)
+  — the three uses are not reconciled.
+- The Son's-model 1:1 he teaches is explicitly ICT's, and he says he personally would not
+  trade it; both are presented in the same video.
+- '''Partial then runners'' is shown repeatedly but never given a size or a rule.'
+- 2R is universal in the examples but never stated as a rule; it is a revealed default.
+- The runner size is never specified.
+- '''Manipulate your entry or your stop loss in some way'' is explicitly discretionary.'
+- Whether 2R is measured to the first target or the final one is not fixed; both are used
+  in examples.
+- The 34% figure ignores costs and partials; no commission/slippage assumption is stated.
+- Moving the stop to the bodies changes R by changing the denominator, which he acknowledges
+  as 'manipulating the risk-to-reward' without bounding how far it may go.
+- Trader T's 2R is not derived from anything - it is stated as a personal preference that
+  removes a decision.
+- Ben gives a band (2R-3.5R) rather than a rule, and does not say what selects a value inside
+  it on a given trade.
+- Neither speaker reconciles a fixed R target with an obstacle (an opposing PD array) sitting
+  between entry and target.
+- Ben's 20-50 trade sample is far too small to separate these multiples statistically, and
+  he does not say so.
+- '''Manage after 2R'' and the trailing-by-opposing-candles demonstration (which would exit
+  well before 2R) are not reconciled.'
+- '''Most of my position'' at the partial is not given as a percentage.'
+- Per-trade risk percentage is never stated in these streams.
+- '''I think'' - stated with hedging, not as a hard rule.'
+- Whether the 2R is measured to the first target or the final target is not stated.
+related:
+- silver-bullet-am-backtest-result
+- internal-external-liquidity-model
+- sons-model
+- rr-gated-entry-refinement
+- previous-period-high-low
+- protected-swing
+- partial-profit-taking
+- breakeven-after-new-protected-swing
+- stop-loss-placement
+- realistic-r-expectations
+- cancel-limit-after-target-run
+- stop-size-reduction
+- trailing-stop-opposing-candles
+- max-one-trade-per-day
+- failure-swing
+- no-size-reduction-in-drawdown
+guest_sources:
+- Back Testing Live Session With Trader T
+- Ben (Ben TT)
+- Fractalizing Entries -Q&A with Ben - ICT Concepts
+- Live Q&A with AM Trades - Weekly Profile
+- Trader T
+timeframes:
+  htf: []
+  ltf: []
+  fractal: false
+execution:
+  bias: Not applicable.
+  entry: Tightened when needed to make the R multiple reachable (Trader T).
+  stop: The R unit.
+  targets:
+  - 2R fixed (Trader T)
+  - 2R-2.5R, ideally 3R-3.5R (Ben)
+contributing_units:
+- build_a_model_intro_to_ttrades_fractal_model_01
+- build_a_model_intro_to_ttrades_fractal_model_02
+- education_ict_updated_01
+- live_stream_guests_01
+- live_stream_guests_02
+- sunday_sessions_live_q_a_03
+draft_count: 6
+voice: mixed

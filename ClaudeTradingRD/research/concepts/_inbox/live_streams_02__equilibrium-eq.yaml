@@ -1,0 +1,59 @@
+id: equilibrium-eq
+name: "Equilibrium / 50% Level (EQ, T spot)"
+aliases: ["EQ", "50% of the range", "equilibrium"]
+category: entry
+status: specified
+
+definition: >
+  A viewer asks directly how the EQ is derived — off the candle size or off the candle body —
+  and he gives the first mechanical answer to that question in the corpus: if the candle has a
+  large body (an expansion candle) you measure the EQ from its high to its very low; if the
+  candle has a larger wick you measure the wick instead. The same 50% logic is then applied at
+  range scale in the live sessions: the midpoint of a range high to range low is called "the
+  liquidity around the EQ" and used as the default target once a range edge has been swept,
+  and the previous day's EQ is used as one of the three standing levels on an inside day.
+
+timeframes:
+  htf: ["1D", "4H", "1H"]
+  ltf: ["15m", "5m"]
+  fractal: true
+
+preconditions:
+  - "A defined candle (or range) whose high and low are both formed."
+
+detection_rules:
+  - "If the candle is an expansion candle (large body), EQ = 50% of the full high-to-low range."
+  - "If the candle has the larger feature in its wick, EQ = 50% of the wick, not of the whole candle."
+  - "At range scale, EQ = 50% of range high to range low; treat the liquidity resting around it as the default target after a range extreme is swept."
+  - "Previous day EQ is one of the standing points of interest on an inside day."
+
+invalidation:
+  - "Price closes decisively through the EQ in the direction opposite the expected reaction — though he states that a close below previous day EQ is not by itself a bias invalidation."
+
+measurable:
+  - "reaction rate at candle EQ measured body-wise versus wick-wise"
+  - "hit rate of range-EQ as a target after a range extreme is swept"
+  - "frequency of previous-day-EQ respect on inside days"
+
+sources:
+  - video_id: Je7cd9HJUBE
+    title: "New York Open Live Q&A"
+    quote: "expansion candle, measure it from high to very low"
+  - video_id: TjUolMJNCMY
+    title: "New York Open Live Q&A"
+    quote: "the EQ the liquidity right around the EQ"
+  - video_id: G1IIdQ3RAkY
+    title: "New York Open Live Q&A"
+    quote: "it closes below the previous day EQ doesn't mean I'm invalidated"
+
+ambiguities:
+  - "'Large candle body' versus 'larger wick' is a visual judgement; no ratio threshold is given for choosing which measurement applies."
+  - "Whether the wick measurement means 50% of the wick's own span or 50% of the wick measured from the body is not stated."
+  - "The relationship between EQ and the T-spot is used loosely in these streams — at one point 'our EQ, our T-spot' are named as the same thing, which conflicts with the two-overlapping-half-levels construction elsewhere in the corpus."
+
+python_detector: null
+related: ["t-spot", "half-wick-respect", "premium-discount-equilibrium", "inside-day-three-levels", "range-edge-trading"]
+
+contributing_units: ["live_streams_02"]
+draft_count: 1
+voice: ttrades

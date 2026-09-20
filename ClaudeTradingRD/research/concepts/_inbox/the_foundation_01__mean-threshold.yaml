@@ -1,0 +1,55 @@
+id: mean-threshold
+name: "Mean Threshold Of An Order Block"
+aliases: ["mean threshold", "50% of the order block", "\"main threshold\" (auto-caption)"]
+category: entry
+status: specified
+
+definition: >
+  The 50% level of an order block measured from the body low to the body high of the candle or
+  series that forms the block. It is used both as a behavioural test — price respecting the
+  block should not close beyond its mean threshold — and, more often in practice, as an entry
+  refinement when the order block is large and entering at the opening price would give
+  unacceptable risk-to-reward.
+
+timeframes:
+  htf: ["1D", "4H", "1H"]
+  ltf: ["15m", "5m", "1m"]
+  fractal: true
+
+preconditions:
+  - "A validated order block (see order-block)."
+
+detection_rules:
+  - "body_high := max(open, close) across the candles of the order block series; body_low := min(open, close)."
+  - "mean_threshold := (body_high + body_low) / 2."
+  - "Respect test: no candle closes beyond the mean threshold while the block is being defended."
+  - "Use as entry when the opening-price entry yields less than the minimum acceptable R:R (examples target >= 2R)."
+
+invalidation:
+  - "A close beyond the mean threshold against the intended direction."
+
+execution:
+  bias: "Same as the parent order block."
+  entry: "Limit at the mean threshold."
+  stop: "Kept at the swing high/low — the speaker deliberately improves R:R by moving the entry, not the stop."
+  targets: ["failure swings / equal highs or lows", "at least 2R"]
+
+measurable:
+  - "fill rate of mean-threshold entries (how often price trades that deep)"
+  - "R:R uplift vs opening-price entries in the same sample (his examples: 1.3R -> 2.6R, 1.95R -> 2.6R)"
+  - "hit rate conditional on the mean threshold having been closed through earlier"
+
+sources:
+  - video_id: DMUiDBnTYc8
+    title: "Order Blocks Simplified - ICT Concepts"
+    quote: "I don't want to see any closes below the mean threshold"
+  - video_id: 1YRs4Z1lMws
+    title: "Optimal Trade Entry (OTE) - ICT Concepts"
+
+ambiguities:
+  - "Bodies are specified for the mean threshold while the order block level itself is the opening price — the two constructions are not reconciled for a single-candle block."
+  - "For a multi-candle series it is not stated whether body_high/body_low span the whole series or only the first candle."
+  - "No rule for when the mean threshold should be preferred, other than that entering off the opening price does not make sense for a large series."
+
+python_detector: null
+related: ["order-block", "consequent-encroachment", "optimal-trade-entry", "stop-loss-placement"]

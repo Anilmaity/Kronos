@@ -1,0 +1,57 @@
+id: smt-requires-framework
+name: "SMT Is a Confirmation, Not a Framework"
+aliases: ["SMT means nothing without a framework", "SMT as confluence"]
+category: liquidity
+status: specified
+
+definition: >
+  A divergence between correlated assets (SMT) is only meaningful when an existing model already
+  points in that direction and price has displaced to confirm it. An SMT observed in isolation,
+  particularly one at a level where price is merely consolidating rather than reversing, is not a
+  setup and is ignored. The stated failure mode is traders who see an SMT during a trend and short
+  it repeatedly.
+
+timeframes:
+  htf: ["1D", "4H", "1H"]
+  ltf: ["15m", "5m", "3m", "1m"]
+  fractal: true
+
+preconditions:
+  - "A directional model already exists: a daily bias plus a lower-timeframe fractal setup."
+  - "Price is at a relevant level, not mid-range."
+
+detection_rules:
+  - "One asset takes out its high or low while the correlated asset does not."
+  - "Require an existing framework pointing the same way the divergence would imply."
+  - "Require displacement away from the level (a V-shape) after the divergence before acting."
+  - "If price consolidates at the level after the divergence, read continuation rather than reversal."
+
+invalidation:
+  - "No V-shape displacement after the divergence."
+  - "The divergence occurs mid-trend with no framework, in which case it is discarded."
+
+execution:
+  bias: "The framework bias; SMT only adds confluence."
+  entry: "Per the underlying model, CISD or continuation."
+  stop: "The SMT closure level can serve as the stop reference when framing an asset that lacks its own C2 closure."
+  targets: ["Per the underlying model."]
+
+measurable:
+  - "hit rate of SMT-only entries versus SMT-plus-framework entries"
+
+sources:
+  - video_id: 0AYGNc9czYc
+    title: "New York Open Live Q&A"
+    quote: "SMT means nothing without a framework."
+  - video_id: WBwoiMDXT2c
+    title: "New York Open Live Q&A"
+    quote: "You want to use SMT as a confirmation"
+  - video_id: egV_gABTQks
+    title: "(CPI) New York Open Live Q&A"
+
+ambiguities:
+  - "He dislikes equal-high SMTs but does not define how much separation makes a divergence count."
+  - "Framework is defined circularly as needing to have a model."
+
+python_detector: null
+related: ["relevant-swing-separation", "v-shape-reversal-speed", "cross-asset-reversal-confirmation"]

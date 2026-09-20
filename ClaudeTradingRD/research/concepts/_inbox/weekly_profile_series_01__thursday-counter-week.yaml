@@ -1,0 +1,69 @@
+id: thursday-counter-week
+name: "Thursday Counter (weekly profile)"
+aliases: ["Thursday counter"]
+category: model
+status: specified
+
+definition: >
+  A week in which Monday, Tuesday and Wednesday all expand away from the weekly open
+  without creating a significant low (in an upward expansion) or high, leaving the week
+  with no meaningful internal swing point, after which Thursday prints a candle 2 closure
+  that counters the range. Because Thursday counters an unanchored three-day run its wick
+  tends to be large, which is what marks it as a reversal candle. Given an hourly change
+  in the state of delivery inside Thursday's range, Friday is traded back toward the
+  weekly open, the current week's low or high, and any resting failure swings. The speaker
+  credits AM Trades with teaching him this profile. It is the one profile in the series
+  where he states he will also trade the reversal day itself.
+
+timeframes:
+  htf: ["1W", "1D"]
+  ltf: ["1H"]
+  fractal: true
+
+preconditions:
+  - "Monday, Tuesday and Wednesday expand away from the weekly open in one direction."
+  - "No significant low (upward expansion) or high (downward expansion) is created inside the week during those three days."
+  - "A relevant level has been reached by the end of the three-day run."
+
+detection_rules:
+  - "Confirm the Mon-Wed run has no significant internal swing point; a low belonging to the prior Friday does not count as an internal low."
+  - "Thursday prints a candle 2 closure countering the range - after a close on the high this means a sweep of the previous day high or an SMT on it."
+  - "An hourly change in the state of delivery exists inside Thursday's range, confirming the daily wick."
+  - "Friday is traded as the continuation day back into the week."
+  - "Relaxations the speaker explicitly allows: Monday need not expand (a Tuesday and Wednesday expansion suffices), and Thursday need not take out Wednesday's extreme to count as countering the range."
+
+invalidation:
+  - "Price expands through the fair value gap it was supposed to respect on the continuation day, rather than reacting from it."
+  - "No hourly change in the state of delivery inside Thursday - the daily wick is unconfirmed."
+  - "Where Thursday is a candle 2 closure on both the bullish and the bearish side, only the side carrying an hourly CISD is trusted."
+
+execution:
+  bias: "Counter to the Monday-Wednesday expansion, back toward the weekly open."
+  entry: "Friday, after the hourly change in the state of delivery inside Thursday. Exception: the Thursday reversal day itself may be traded when its wick is small and it is paired with an SMT off the previous day's high or low."
+  stop: "Beyond the Thursday extreme."
+  targets: ["the weekly open", "the current week's low (or high)", "resting failure swings", "previous day's low or high"]
+
+measurable:
+  - "frequency of weeks with three unanchored expansion days followed by a Thursday counter"
+  - "hit rate of Friday reaching the weekly open, and separately the current week's extreme"
+  - "how often the weekly-open target lies beyond one average daily range on Friday's open"
+  - "performance of trading the Thursday reversal day versus waiting for Friday"
+
+sources:
+  - video_id: uPUNOi_R9fA
+    title: "Weekly Profile for Daily Bias - Thursday Counter"
+    quote: "Monday, Tuesday and Wednesday expand away without creating a significant low"
+
+notes: >
+  Attribution stated in the video: the speaker credits AM Trades with teaching him this
+  profile. No external source was checked for this entry.
+
+ambiguities:
+  - "'Significant low' is the load-bearing precondition and is never quantified. In one example a low is disqualified as 'not really... quite close to this low enough to consider a failure swing', which is a visual judgement."
+  - "'Small wick' is the gate for trading the Thursday reversal day, while a 'large wick' is what identifies Thursday as a reversal candle. Both appear in the same video with no thresholds and appear to pull in opposite directions."
+  - "No rule is given for choosing among the three Friday targets (weekly open, week's extreme, failure swings) when they conflict; only a feasibility check against average daily range is offered, and that check itself has no stated ADR calculation."
+  - "'T-spot' is used again as the area where the daily wick should form, without definition."
+  - "The correlated instrument supplying the SMT is unnamed in the first and third examples; ES and NQ are named only in the final example."
+
+python_detector: null
+related: ["weekly-profile-framework", "hourly-cisd-confirmation", "consolidation-reversal-week", "smt-swing-point-substitute", "expansion-exhaustion-avoid-price"]

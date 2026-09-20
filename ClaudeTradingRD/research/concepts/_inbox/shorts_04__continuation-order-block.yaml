@@ -1,0 +1,62 @@
+id: continuation-order-block
+name: "Continuation Order Block (Continuation Entry)"
+category: entry
+status: specified
+definition: >
+  Four Shorts give the same four-step recipe for the continuation entry inside an expansion.
+  Price retraces into an important level (generally a fair value gap), an opposing candle
+  (down-close in the bullish case) prints into that level, price closes over that opposing
+  candle, and the close creates a new protected swing which is the invalidation. The entry is
+  taken at the retest of that block, the stop on the new protected swing, and the target is 2R or
+  the liquidity the move is drawing toward. One Short adds the negative case: reaching the point
+  of interest and printing a candle closure is not enough if no continuation forms.
+
+timeframes:
+  htf: ["1D", "4H", "1H"]
+  ltf: ["15m", "5m", "1m"]
+  fractal: true
+
+detection_rules:
+  - "Require an established direction (expansion, or a confirmed candle 2 plus CISD)."
+  - "Wait for price to retrace into an important level, generally a fair value gap."
+  - "Identify the opposing candle(s) that traded into that level."
+  - "Require a close over the series of opposing candles - this creates the new protected swing."
+  - "Enter on the retest of that block; stop on the new protected swing; target 2R or the drawn liquidity."
+  - "A closure into the point of interest that does not produce a continuation is not an entry - wait for the next one."
+
+invalidation:
+  - "The new protected swing is taken out."
+  - "No close over the opposing candles occurs at the level."
+
+measurable:
+  - "hit rate of 2R on continuation order-block entries"
+  - "frequency of the reach-but-no-continuation case"
+
+sources:
+  - video_id: vBAYmH7XCks
+    title: "Using Protected Swings for Confirmation"
+    quote: "this would be the continuation or the order block formed at the low risk buy"
+  - video_id: 46VIOAlxmEE
+    title: "When to Expect Expansion & How to Interact"
+    quote: "I'm going to be looking for protected lows to form"
+  - video_id: 46VIOAlxmEE
+    title: "When to Expect Expansion & How to Interact"
+    quote: "close over the series of down closed candles, and after that occurs"
+  - video_id: iwGyMV0BDSY
+    title: "Using Continuation Order Blocks for Entries"
+    quote: "that is when I will look for a retest entry there"
+  - video_id: OFfjyo4-s6U
+    title: "Validating Swing Points Using Continuation Order Blocks"
+    quote: "I just want to be looking for a continuation order block"
+
+ambiguities:
+  - "'Important level' is enumerated only as 'generally a fair value gap' - no ranking of level types is given."
+  - "Whether the entry is a limit at the block or a market order on the retest differs between the Shorts and is never reconciled."
+  - "'Low risk buy' is used as a label for the block without a definition."
+
+python_detector: null
+related: ["order-block", "protected-swing", "opposing-candle", "expansion-signature", "cisd"]
+
+voice: ttrades
+contributing_units: [shorts_04]
+draft_count: 1

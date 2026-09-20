@@ -1,0 +1,53 @@
+id: positional-entry
+name: "Positional Entry At An Invalidation On The Open"
+category: entry
+status: specified
+definition: >
+  A Short supplies the crisp gate for entering at the higher-timeframe open rather than waiting
+  for the wick to form: it is permitted when the invalidation sits very close to that opening
+  price. The reasoning given is that if the low is already expected to hold BEFORE the new
+  higher-timeframe candle opens - because an inversion is retesting a change in the state of
+  delivery into a fair value gap and 0.5 of the level should be respected - then the trader can
+  position on the open, with the stop on that low, expecting only a very shallow wick to form
+  before price trades away.
+
+timeframes:
+  htf: ["4H", "1H"]
+  ltf: ["5m", "1m"]
+  fractal: true
+
+detection_rules:
+  - "Before the higher-timeframe candle opens, establish that the low is expected to hold (inversion retesting the CISD into a fair value gap, with 0.5 to be respected)."
+  - "Measure the distance from the opening price to that invalidation."
+  - "Very close -> enter at the open, stop on the low."
+  - "Expect only a very shallow wick below the entry."
+
+invalidation:
+  - "The low used for the stop is taken out."
+
+measurable:
+  - "distribution of open-to-invalidation distances on trades taken this way"
+  - "depth of the wick that forms after an at-open entry"
+
+sources:
+  - video_id: VtFC9SCnlYM
+    title: "Using Inversion as an Entry Within the Fractal Model"
+    quote: "when I have an invalidation very close to the opening price"
+  - video_id: VtFC9SCnlYM
+    title: "Using Inversion as an Entry Within the Fractal Model"
+    quote: "If I'm already expecting this low to hold prior to the open"
+  - video_id: VtFC9SCnlYM
+    title: "Using Inversion as an Entry Within the Fractal Model"
+    quote: "that's when I can look to get on side with the open"
+
+ambiguities:
+  - "'Very close to the opening price' is the whole gate and is not bounded in points, ticks, ATR or a fraction of the expected range."
+  - "'Very shallow wick' is likewise unquantified."
+  - "Which higher-timeframe open is meant is shown on the chart but never named."
+
+python_detector: null
+related: ["htf-opening-price-entry", "positional-entry-before-open", "inversion-fair-value-gap", "ltf-inversion-entry-in-tspot", "half-wick-respect"]
+
+voice: ttrades
+contributing_units: [shorts_04]
+draft_count: 1

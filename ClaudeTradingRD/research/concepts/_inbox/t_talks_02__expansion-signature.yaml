@@ -1,0 +1,45 @@
+id: expansion-signature
+name: "Expansion Signature"
+aliases: ["trading within an expansion candle"]
+category: structure
+status: specified
+
+definition: >
+  The set of observable characteristics that identify price as being inside an expansion
+  phase, and therefore tradeable. The candle carries a small wick; its body is made up of
+  lower-timeframe expansion; opposing candles support price toward the internal or external
+  range liquidity objective; lows are rejected and highs are displaced through; and the
+  retracements on the way to the objective are shallow.
+
+timeframes:
+  htf: ["1D", "4H"]
+  ltf: ["1H", "15m", "5m"]
+  fractal: true
+
+preconditions:
+  - "An objective (internal or external range liquidity) has been identified."
+
+detection_rules:
+  - "Working candle has a small wick relative to its body."
+  - "Lower-timeframe delivery inside the candle is itself expansion, forming the body."
+  - "Opposing candles hold and support continuation toward the objective."
+  - "Prior lows are rejected; prior highs are displaced through (bullish case)."
+  - "Retracements toward the objective are shallow, not deep."
+
+invalidation:
+  - "A deep retracement occurs on the way to the objective."
+  - "The candle prints a large opposing wick."
+
+measurable:
+  - "wick-to-body ratio distribution of candles classified as expansion"
+  - "maximum adverse retracement depth within expansion legs"
+
+sources:
+  - video_id: J_EeS2_2CAM
+    title: "GxTradez | Phases of Price & Profiles For Expansion"
+
+ambiguities:
+  - "'Small wick' and 'shallow retracement' are never given numeric thresholds; the upper-half-EQ rule is the only partial mechanisation offered."
+
+python_detector: null
+related: ["small-wick-supports-expansion", "upper-half-eq-expansion-filter", "phases-of-price-transitions"]

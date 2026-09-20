@@ -1,0 +1,86 @@
+id: external-range-liquidity
+name: External Range Liquidity
+definition: 'A swing high or swing low, in the form of buyside or sellside liquidity, marking
+  the outer boundary of the current range. It is the counterpart to internal range liquidity
+  (a fair value gap): the market is said to do only two things — reach for old highs and lows
+  (external), or rebalance a fair value gap (internal).
+
+  '
+variants:
+  definition:
+  - 'External range liquidity is a swing high or a swing low. Stated as flatly as the internal
+    definition, and used in the examples as the outer target of the range: a 4-hour swing
+    high, a previous week high, or a pair of equal highs all serve as external range liquidity.'
+category: liquidity
+status: contested
+aliases:
+- external liquidity
+- ERL
+preconditions:
+- A confirmed swing high or swing low that has not yet been traded through.
+- A confirmed swing high or swing low bounding the working range.
+detection_rules:
+- external_range_liquidity := price of the nearest untaken confirmed swing high (upside) or
+  swing low (downside) bounding the current range.
+- It becomes the active draw immediately after internal range liquidity (an FVG) has been
+  reached and respected.
+- Once taken, it ceases to be a target and the draw rotates back to internal.
+- external_range_liquidity := the nearest untaken swing high (upside) or swing low (downside).
+- Previous week / previous day extremes are used as external liquidity alongside intraday
+  swings.
+- Equal highs or equal lows count as external range liquidity.
+- It becomes the draw once internal range liquidity has been reached and respected.
+invalidation:
+- Price trades through the swing (the pool is consumed).
+- Price trading through the swing consumes it.
+measurable:
+- hit rate of external liquidity being reached after an FVG is respected
+- average excursion from the FVG to the external target in R terms
+- distance in R from the FVG reaction to the external target
+sources:
+- video_id: 3OivsP1j_UE
+  title: Internal & External Liquidity (Daily Bias) - ICT Concepts
+  quote: external range liquidity is a swing high or a swing low
+- video_id: U8xH2dEgH5A
+  title: 'Liquidity: Buyside & Sellside - ICT Concepts'
+- video_id: TfHlNgAZ_II
+  title: Trading IRL & ERL With Order Blocks! - ICT Concepts
+  quote: external range liquidity is just a swing high or a swing low
+ambiguities:
+- Which swing bounds 'the range' is judged visually; no algorithm selects it among nested
+  swings.
+- The swing definition inherits the unresolved filtering problem noted under swing-point.
+- No statement on whether external liquidity must be on the same timeframe as the internal
+  FVG.
+- Which swing bounds 'the range' is judged visually; nested swings are not filtered.
+- No rule ties the timeframe of the external swing to the timeframe of the internal gap -
+  one example pairs a 4H gap with a previous-week high.
+related:
+- swing-point
+- buyside-sellside-liquidity
+- internal-range-liquidity
+- internal-external-rotation
+- previous-period-high-low
+timeframes:
+  htf:
+  - 1W
+  - 1D
+  - 4H
+  - 1H
+  ltf:
+  - 15m
+  - 5m
+  - 1m
+  fractal: true
+execution:
+  bias: After internal liquidity is reached and respected, bias is toward external liquidity
+    in the direction of the respect.
+  entry: n/a — target/bias role only.
+  stop: n/a
+  targets:
+  - the swing high / swing low itself
+contributing_units:
+- education_ict_updated_02
+- the_foundation_01
+draft_count: 2
+voice: ttrades

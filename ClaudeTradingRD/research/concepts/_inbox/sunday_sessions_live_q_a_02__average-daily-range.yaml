@@ -1,0 +1,51 @@
+id: average-daily-range
+name: "Average Daily Range (eyeballed) as target filter"
+aliases: ["daily range", "ADR"]
+category: risk
+status: underspecified
+
+definition: >
+  A rough expected daily range obtained by eye from recent expansion candles on the daily
+  chart (his worked example: roughly 700 points on YM). Its use is as a target filter: an
+  intended objective is only realistic if it sits inside that expected range measured from
+  the day's open/extreme. High-volatility scheduled events (e.g. FOMC) permit a larger range.
+
+timeframes:
+  htf: ["1D"]
+  ltf: []
+  fractal: false
+
+preconditions:
+  - "A daily chart with several recent expansion candles."
+
+detection_rules:
+  - "Scan the recent daily expansion candles and take their typical high-to-low range."
+  - "Measure the distance from the current price/extreme to the intended target."
+  - "If the target lies inside the expected range, keep it; if materially beyond, downgrade or drop it."
+  - "Allow a larger range on scheduled high-volatility days."
+
+invalidation:
+  - "n/a - a filter."
+
+execution:
+  bias: "n/a"
+  entry: "n/a"
+  stop: "n/a"
+  targets: ["only objectives inside the expected daily range"]
+
+measurable:
+  - "Hit rate of targets inside vs outside the eyeballed range."
+  - "Comparison of the eyeballed figure against a computed ATR(n) to see which better predicts target attainment."
+
+sources:
+  - video_id: yud7TpE2AMs
+    title: "New York Open Live Q&A"
+  - video_id: 00iZXPAdR5A
+    title: "New York Open Live Q&A"
+
+ambiguities:
+  - "No lookback length, no averaging method, and no rule for whether the range is measured from the day open, the day extreme, or the current price."
+  - "The event-day uplift is acknowledged but unquantified."
+
+python_detector: null
+related: ["draw-on-liquidity", "relevant-swings-separation", "htf-opening-price-entry"]

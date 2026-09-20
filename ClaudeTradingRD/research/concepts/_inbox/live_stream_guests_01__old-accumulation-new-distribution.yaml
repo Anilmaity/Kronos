@@ -1,0 +1,63 @@
+id: old-accumulation-new-distribution
+name: "Old Accumulation Becomes New Distribution"
+aliases: ["left side of the curve, right side of the curve", "offsetting old positions"]
+category: liquidity
+status: specified
+voice: guest
+guest_sources:
+- "Finessee_Fx"
+
+definition: >
+  Finessee_Fx's mirrored-curve claim, demonstrated candle by candle on a daily NASDAQ swing. He
+  splits a completed swing with a vertical line at its reversal: the left side is the buy side of
+  the curve, where bullish PD arrays are respected; the right side is the sell side, where bearish
+  PD arrays are respected. His specific finding is that the SAME price zone that held as a bullish
+  order block on the left side of the curve reappears as a BEARISH order block on the right side -
+  because the positions accumulated there have to be offset on the way back down. He extends each
+  left-side block forward in time and shows price creating an opposite-polarity block inside the
+  same band on the return leg.
+
+timeframes:
+  htf: ["1D", "4H"]
+  ltf: ["1H", "15m"]
+  fractal: true
+
+preconditions:
+- "A completed swing with an identifiable reversal point (which itself sits at a higher-timeframe PD array)."
+
+detection_rules:
+- "Draw a vertical divider at the swing's reversal; label left = buy side of the curve, right = sell side."
+- "On the left side, mark every bullish order block that was respected (wick-to-body) and extend it forward in time."
+- "On the right side, look for a bearish order block forming inside the SAME extended band - typically one or two up-close candles immediately before the aggressive decline."
+- "Blend the right-side bearish block with the imbalance created by that decline (from the up-candle's high to the block's low) and with the left-side band."
+- "Expect the price to be rejected there on the way down as it was supported there on the way up."
+
+invalidation:
+- "Not stated as a price condition; he only says the reversal itself must have occurred at a higher-timeframe PD array for the curve to be valid."
+
+execution:
+  bias: "Short on the right side of the curve (mirror for a buy model)."
+  entry: "The re-polarised block in the old zone, wick-to-body."
+  stop: "Beyond the zone."
+  targets: ["the low-resistance liquidity run below - a series of successive lows / a trendline"]
+
+measurable:
+- "how often a left-curve bullish order block band produces an opposite-polarity block on the return leg"
+- "reaction rate at re-polarised bands versus fresh same-side blocks"
+
+sources:
+- video_id: eK_6wgNpNh0
+  title: "Advanced ICT Directional Bias Teachings with Finessee_Fx"
+  quote: "so they have to offset their old positions on the right side of the curve"
+
+ambiguities:
+- "How wide the 'same zone' tolerance is - the new block only has to be inside the extended band, with no overlap fraction stated."
+- "The offsetting explanation is a narrative; nothing in the rule set tests it."
+- "He shows this on one daily NASDAQ swing and asserts it generalises to a 15-minute chart, with no second example."
+- "No rule for what to do when the right side of the curve produces no block inside the old band."
+
+python_detector: null
+related: ["market-maker-model", "mitigation-block", "wick-to-body-order-block-zone", "smart-money-reversal"]
+contributing_units:
+- live_stream_guests_01
+draft_count: 1

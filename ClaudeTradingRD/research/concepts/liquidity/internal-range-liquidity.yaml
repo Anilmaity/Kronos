@@ -1,0 +1,93 @@
+id: internal-range-liquidity
+name: Internal Range Liquidity
+definition: 'A fair value gap. In this channel''s usage (credited to MMXM Trader) internal
+  range liquidity is defined exactly and only as an unfilled fair value gap inside the current
+  range — the thing price seeks in order to "rebalance" — as opposed to external range liquidity,
+  which is a swing high or low. If no fair value gap exists yet, there is no internal liquidity
+  and no internal target, and the speaker explicitly waits for one to form.
+
+  '
+variants:
+  definition:
+  - 'Internal range liquidity is a fair value gap - nothing else. The definition is given
+    flatly at the top of the IRL/ERL video and is used unchanged throughout: a bearish fair
+    value gap above price or a bullish fair value gap below it is the internal liquidity of
+    the current range.'
+category: liquidity
+status: contested
+aliases:
+- internal liquidity
+- IRL
+preconditions:
+- A three-candle fair value gap exists and is not yet filled.
+- An unfilled fair value gap exists inside the working range.
+detection_rules:
+- internal_range_liquidity := any unfilled fair value gap between the current price and the
+  relevant range extreme (see fair-value-gap for the 3-candle test).
+- It becomes the active draw immediately after external range liquidity has been taken.
+- If no FVG exists after external liquidity is taken, wait — there is no internal target until
+  one forms.
+- Reaching internal range liquidity is the trigger to switch the draw back to external.
+- internal_range_liquidity := an unfilled fair value gap on the working timeframe.
+- After external range liquidity has been purged, the nearest unfilled fair value gap becomes
+  the draw.
+- Reaching it (and respecting it) flips the draw back to external range liquidity.
+invalidation:
+- The gap being filled (price trading through it) consumes it.
+- A close through the gap converts it into an inversion and flips the directional read.
+- The gap being traded through / closed through.
+measurable:
+- hit rate of an FVG being reached after the opposing external liquidity is swept
+- share of FVGs respected vs closed through (inversion rate)
+- hit rate of the FVG being reached after external liquidity is purged
+- share of FVGs respected vs closed through
+sources:
+- video_id: 3OivsP1j_UE
+  title: Internal & External Liquidity (Daily Bias) - ICT Concepts
+  quote: internal range liquidity is just a fair value Gap
+- video_id: uDJI2AbyyCs
+  title: Inversion Fair Value Gaps (IFVG) - ICT Concepts
+- video_id: TfHlNgAZ_II
+  title: Trading IRL & ERL With Order Blocks! - ICT Concepts
+  quote: internal range liquidity is just a fair value Gap
+ambiguities:
+- Which timeframe's FVG counts as 'the' internal liquidity is not specified; one example uses
+  a weekly FVG while working the 4H external swings.
+- When several unfilled FVGs exist, no selection rule is given (nearest? largest? most recent?).
+- '''Reaching'' internal liquidity is not defined as touching the near edge, the CE, or full
+  fill — examples show all three.'
+- Which timeframe's fair value gap is 'the' internal liquidity is chosen by the timeframe
+  pairing, not by a rule; the examples mix 4H, hourly and daily gaps.
+- '''Reaching'' the gap is not defined as touching the near edge, the consequent encroachment,
+  or a full fill.'
+- When several unfilled gaps exist there is no selection rule.
+related:
+- fair-value-gap
+- external-range-liquidity
+- internal-external-rotation
+- consequent-encroachment
+- inversion-fair-value-gap
+- irl-erl-flowchart-model
+timeframes:
+  htf:
+  - 1W
+  - 1D
+  - 4H
+  - 1H
+  ltf:
+  - 15m
+  - 5m
+  - 1m
+  fractal: true
+execution:
+  bias: After external is taken, bias is toward the internal FVG.
+  entry: n/a — used for bias/target selection, with entries taken from order block / CISD
+    models.
+  stop: n/a
+  targets:
+  - the fair value gap, commonly its consequent encroachment (50%)
+contributing_units:
+- education_ict_updated_02
+- the_foundation_01
+draft_count: 2
+voice: ttrades

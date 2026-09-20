@@ -1,0 +1,80 @@
+id: strat-candle-taxonomy
+name: TheSTRAT Candle Taxonomy (1 / 2 / 3)
+aliases:
+- ones twos and threes
+- inside bar
+- two up / two down
+- outside bar
+category: structure
+status: specified
+definition: 'TheSTRAT (Rob Smith''s method, presented here by the guest) classifies every candle by
+  what it did to the PREVIOUS candle''s high and low, and asserts there are exactly three possibilities.
+  A 1 is an inside bar: it took neither the previous high nor the previous low, and is by definition
+  a consolidation. A 2 takes exactly one side - a 2-up takes the previous high only, a 2-down takes
+  the previous low only - and is by definition directional/trending. A 3 is an outside bar: it takes
+  BOTH the previous high and the previous low; the guest describes it as ''a candle that went 2 and
+  failed'', typically failing near the beginning of the candle, which he maps onto ICT manipulation.'
+timeframes:
+  htf:
+  - 1Y
+  - 1Q
+  - 1M
+  - 1W
+  - 1D
+  ltf:
+  - 1H
+  - 30m
+  - 15m
+  - 5m
+  - 3m
+  - 1m
+  fractal: true
+preconditions:
+- A completed previous candle on the same timeframe, with a defined high and low.
+detection_rules:
+- '1 (inside bar): high <= prev.high AND low >= prev.low.'
+- '2-up: high > prev.high AND low >= prev.low.'
+- '2-down: low < prev.low AND high <= prev.high.'
+- '3 (outside bar): high > prev.high AND low < prev.low.'
+- A 2 frequently opens as a 1 and then 'triggers' to a 2 intrabar; a gap can open it directly as a 2.
+- From a 2, the only further state change available within the same candle is a 3.
+invalidation:
+- The classification is fixed once the candle closes; it is never re-labelled.
+measurable:
+- frequency of 1 / 2 / 3 per timeframe per month
+- forward return of a 2 vs a 1 on the same timeframe
+- how often a 3 forms its failure in the first third of the candle (the guest's 'near the beginning'
+  claim)
+sources:
+- video_id: 1XWyy6Q-_8Q
+  title: Live Stream With Alex's Options - TheSTRAT & Broadening Formations
+  quote: one is a candle that did not take the previous candles high
+- video_id: 1XWyy6Q-_8Q
+  title: Live Stream With Alex's Options - TheSTRAT & Broadening Formations
+  quote: is going to be any candle that takes previous high or low
+- video_id: 1XWyy6Q-_8Q
+  title: Live Stream With Alex's Options - TheSTRAT & Broadening Formations
+  quote: what the three is is a candle that went to and failed
+- video_id: 1XWyy6Q-_8Q
+  title: Live Stream With Alex's Options - TheSTRAT & Broadening Formations
+  quote: when we see a 2 we know that is trending
+- video_id: 1XWyy6Q-_8Q
+  title: Live Stream With Alex's Options - TheSTRAT & Broadening Formations
+  quote: the only thing that can happen from a two is a three
+ambiguities:
+- 'Equal highs / equal lows are never addressed: whether high == prev.high counts as taking it is not
+  stated.'
+- '''Near the beginning of that candle'' (where a 3 does its failing) is given as a tendency, never
+  as a threshold.'
+- The guest maps a 3 onto ICT 'manipulation' in passing; he does not claim they are the same object.
+related:
+- strat-actionable-signals
+- timeframe-continuity
+- broadening-formation
+- three-candle-outcomes
+contributing_units:
+- live_stream_guests_02
+draft_count: 1
+voice: guest
+guest_sources:
+- Alex's Options

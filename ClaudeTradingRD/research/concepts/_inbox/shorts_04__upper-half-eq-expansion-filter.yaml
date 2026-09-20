@@ -1,0 +1,52 @@
+id: upper-half-eq-expansion-filter
+name: "Upper-Half EQ Rule For Expansion"
+category: structure
+status: specified
+definition: >
+  A Short applies the half rule to a candle 3 rather than to a wick, which makes the construction
+  explicit. After a candle 3 closure forms at a point of interest, mark the ENTIRE range of that
+  candle 3 and take its equilibrium. For a bullish continuation, price in the following candle is
+  expected to trade higher from the upper half of that range - the EQ is respected and the move
+  continues. The Short pairs this with the continuation confirmation that the following candle
+  closes over the previous candle's high.
+
+timeframes:
+  htf: ["1D", "4H"]
+  ltf: ["1H", "15m"]
+  fractal: true
+
+detection_rules:
+  - "Mark the entire range (high to low) of the candle 3 closure."
+  - "Compute its equilibrium (50%)."
+  - "Bullish: expect the following candle to trade higher out of the upper half; the EQ should be respected."
+  - "A close over the previous candle's high in the following candle signals further continuation."
+  - "Mirror for the bearish case using the lower half."
+
+invalidation:
+  - "The following candle trades and holds below the EQ of the marked range."
+
+measurable:
+  - "share of following candles whose wick stays in the marked half"
+  - "continuation rate conditional on the EQ being respected"
+
+sources:
+  - video_id: Nbs0gsth2jw
+    title: "With No C2 Closure At A POI, Wait For A C3 Closure To Form Within The Next Candle"
+    quote: "I'm going to mark out the entire range of this candle three."
+  - video_id: Nbs0gsth2jw
+    title: "With No C2 Closure At A POI, Wait For A C3 Closure To Form Within The Next Candle"
+    quote: "I'll be looking for this upper half for price to trade higher"
+  - video_id: Nbs0gsth2jw
+    title: "With No C2 Closure At A POI, Wait For A C3 Closure To Form Within The Next Candle"
+    quote: "there you can see we respect the EQ and we go and trade higher"
+
+ambiguities:
+  - "The Short marks the range of candle 3, whereas the library's other readings mark the reversal wick - which reference is canonical is not resolved here."
+  - "'Respect the EQ' is not given as body-close or wick-touch."
+
+python_detector: null
+related: ["equilibrium-eq", "half-wick-respect", "t-spot", "fractal-model-c3", "consequent-encroachment"]
+
+voice: ttrades
+contributing_units: [shorts_04]
+draft_count: 1

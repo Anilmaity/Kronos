@@ -1,0 +1,53 @@
+id: breakeven-after-new-protected-swing
+name: "Move the Stop Only After a New Protected Swing Forms"
+aliases: ["break even too early", "trailing the stop"]
+category: risk
+status: specified
+
+definition: >
+  Stops are only moved once price has created a new protected swing in the trade direction; the
+  stop can then be moved to that swing or to break-even, because price should not return through
+  it. Moving to break-even earlier than that is identified as the common error that gets traders
+  retested out of trades that then work. As price approaches the target he trails tightly (for
+  example to the prior one-minute bar) rather than giving back a large open profit for a small
+  extra move.
+
+timeframes:
+  htf: ["4H", "1H"]
+  ltf: ["15m", "5m", "3m", "1m"]
+  fractal: true
+
+preconditions:
+  - "A position is open with the original stop beyond the entry protected swing."
+
+detection_rules:
+  - "Wait until a new protected swing forms in the trade direction."
+  - "Move the stop to that new swing or to break-even, not before."
+  - "As the target level approaches, trail to the prior lower-timeframe bar."
+  - "If the reversal being traded returns to the reversal point, treat it as invalid and go to break-even."
+
+invalidation:
+  - "Price returns through the new protected swing."
+
+execution:
+  bias: "Unchanged."
+  entry: "Not specified by this concept."
+  stop: "Original swing, then the new protected swing, then a tight trail near the target."
+  targets: ["Previous day high or low; the primary drawn liquidity"]
+
+measurable:
+  - "difference in realised R between moving to break-even at 1R and moving only after a new protected swing"
+  - "frequency of break-even stop-outs followed by the target being reached"
+
+sources:
+  - video_id: egV_gABTQks
+    title: "(CPI) New York Open Live Q&A"
+  - video_id: WBwoiMDXT2c
+    title: "New York Open Live Q&A"
+
+ambiguities:
+  - "How tight the near-target trail should be is given only as an example (the one-minute bar)."
+  - "He says whether to break even depends on the framework of the trade without enumerating frameworks."
+
+python_detector: null
+related: ["continuation-order-block", "three-entry-quality-criteria", "realistic-r-expectations"]

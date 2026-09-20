@@ -1,0 +1,57 @@
+id: daily-orderflow-confirms-draw
+name: Daily Order Flow Must Confirm The Draw
+definition: 'Bias is built from exactly two inputs. First, a liquidity objective drawn only
+  from two pool types: old highs and lows (external range liquidity) and higher-timeframe
+  fair value gaps (internal range liquidity). Second, daily order flow that confirms that
+  draw - bullish order flow to take longs toward a buy-side objective. Order flow itself is
+  defined by reaction to PD arrays: bullish order flow means bullish PD arrays are respected
+  while bearish arrays to the left are disrespected and turned into bullish inversion levels.
+  Once the objective is reached, bias returns to neutral until price shows its intention again.
+
+  '
+category: model
+status: specified
+aliases:
+- orderflow confirming the draw on liquidity
+preconditions:
+- Weekly and daily charts are marked with old highs/lows and HTF fair value gaps.
+detection_rules:
+- 'Identify the liquidity objective: an old high/low, or a HTF fair value gap. No other pool
+  types are used.'
+- 'Confirm daily order flow: bullish PD arrays respected, opposing arrays disrespected and
+  inverted (or the mirror for bearish).'
+- Trade only when the confirmed order flow points at the objective.
+- Once the objective is reached, set bias to neutral and stand down.
+invalidation:
+- A daily close disrespects the PD array that defined the prevailing order flow.
+measurable:
+- hit rate of the marked objective being reached once order flow confirms
+- P&L of trades taken while bias was neutral vs confirmed
+sources:
+- video_id: JABOO4LYNjQ
+  title: Jokerszn | Daily Orderflow - ICT Daily Bias
+ambiguities:
+- Which old highs/lows qualify as objectives (all of them, or only weekly-relevant ones) is
+  shown by example only.
+- '''Disrespected'' is later mechanised as a daily close through the array, but this is stated
+  separately.'
+related:
+- three-daily-profiles
+- daily-close-only-bias
+- no-draw-no-trade
+- pd-array-mean-threshold-test
+timeframes:
+  htf:
+  - 1W
+  - 1D
+  ltf:
+  - 1H
+  - 15m
+  - 5m
+  fractal: true
+contributing_units:
+- t_talks_02
+draft_count: 1
+voice: guest
+guest_sources:
+- Jokerszn | Daily Orderflow - ICT Daily Bias

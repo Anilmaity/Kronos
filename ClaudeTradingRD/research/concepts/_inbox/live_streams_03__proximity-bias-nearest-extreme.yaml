@@ -1,0 +1,64 @@
+id: proximity-bias-nearest-extreme
+name: Bias From Proximity To The Previous Period's Extremes
+aliases:
+- closer to previous month's low or previous month's high
+- gold bias
+category: model
+status: specified
+
+definition: >
+  A directional bias taken purely from distance: mark the previous period's high and low,
+  measure how far current price sits from each, and the nearer extreme is the draw. Worked
+  live on gold from a tweet dated June 3rd using the previous month's high and low, with the
+  low far nearer, so the bias is to the previous month's low. He states that this bias can be
+  carried for the whole month until that level is taken, after which the reaction at the level
+  is what is watched next.
+
+timeframes:
+  htf:
+  - 1M
+  ltf: []
+  fractal: false
+
+preconditions:
+- The previous period's high and low are both marked and neither has been taken yet.
+
+detection_rules:
+- Mark the previous period's high and the previous period's low (demonstrated on the monthly).
+- Measure the distance from current price to each of the two levels.
+- The nearer level is the objective; the bias points at it.
+- Hold that bias until the level is taken; then watch the reaction at it rather than extending
+  the bias.
+
+invalidation:
+- The nearer extreme is taken, at which point the bias is spent and the reaction is re-read.
+
+measurable:
+- hit rate of the nearer previous-month extreme being reached before the far one
+- median days from the proximity read to the nearer extreme being tagged
+
+sources:
+- video_id: X4XSsv5CNqg
+  title: New York Open Live Q&A
+  quote: Are we closer to previous month's low or previous month's high?
+- video_id: X4XSsv5CNqg
+  title: New York Open Live Q&A
+  quote: That's your bias, which you can have for the whole month
+
+ambiguities:
+- Only demonstrated on the monthly candle. Whether the same proximity test is used for the
+  previous day or previous week is not stated in this unit.
+- No tie-break rule when the two distances are similar; the worked example was visually lopsided.
+- Nothing is said about what happens when this proximity bias conflicts with a daily C2/C3
+  plus H1 CISD bias in the other direction.
+- Distance is judged visually with a measuring tool, not normalised by ATR or range.
+
+related:
+- previous-period-high-low
+- draw-on-liquidity
+- daily-bias-c2-c3-h1-cisd
+
+contributing_units:
+- live_streams_03
+draft_count: 1
+voice: ttrades

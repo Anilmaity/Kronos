@@ -1,0 +1,80 @@
+id: internal-external-range-liquidity
+name: Internal & External Range Liquidity
+definition: 'A two-state classification of every price objective. External range liquidity
+  is old highs and old lows. Internal range liquidity is fair value gaps. The market is held
+  to do only these two things - draw to old highs/lows, or rebalance an imbalance - and the
+  two alternate: once one type has been tagged, the other type becomes the next draw. The
+  same read is applied on monthly, weekly, daily and 4H to produce a directional bias.
+
+  '
+category: liquidity
+status: specified
+aliases:
+- IRL/ERL
+- internal range liquidity
+- external range liquidity
+preconditions:
+- A chart with identifiable prior swing highs/lows and at least one unfilled fair value gap.
+detection_rules:
+- Mark old swing highs and old swing lows on the timeframe in question - these are external
+  range liquidity.
+- Mark unfilled fair value gaps on the same timeframe - these are internal range liquidity.
+- If price has just traded into an internal range fair value gap, the next draw is the nearest
+  opposing external range high or low.
+- If price has just run an external range high or low, the next draw is the nearest opposing
+  internal range fair value gap.
+- 'Ash Trades'' variant, stated for the daily only: if price is located at a daily bearish
+  FVG the draw is the daily swing low; if at a daily bullish FVG the draw is the daily swing
+  high.'
+invalidation:
+- Not stated. Neither speaker gives a condition under which the alternation is abandoned.
+measurable:
+- hit rate of the alternation - after an FVG is tagged, how often the nearest opposing old
+  high/low is reached before the FVG side is revisited
+- average excursion from the tag to the opposing pool, per timeframe
+- how often a daily FVG touch precedes a run on the daily swing on the opposite side
+sources:
+- video_id: 5aRB_ZY3474
+  title: $niper | Internal & External Liquidity - ICT Daily Bias
+  quote: external range liquidity is just old highs and lows
+- video_id: zXtJSSkiNmo
+  title: Ash Trades | The Journey To Profitability & The Unicorn Model
+ambiguities:
+- The auto-caption of the alternation rule in 5aRB_ZY3474 is corrupt - it says 'internal'
+  twice where the second occurrence should read 'external'. The rule above is reconstructed
+  from the six worked examples in that video, not from that sentence.
+- No rule for choosing WHICH fair value gap counts when several unfilled gaps exist on the
+  same timeframe.
+- No rule for the case where price sits at neither an FVG nor a swing extreme.
+- Whether a gap must be fully filled or merely tagged to count as taken is not stated.
+related:
+- timeframe-alignment-ladder
+- htf-reaction-mss-retrace-entry
+- unicorn-model
+- daily-bias-requirement
+timeframes:
+  htf:
+  - 1M
+  - 1W
+  - 1D
+  - 4H
+  ltf:
+  - 1H
+  - 15m
+  - 5m
+  - 1m
+  fractal: true
+execution:
+  bias: Toward whichever of the two liquidity types was not most recently tagged.
+  entry: Not from this concept alone - see htf-reaction-mss-retrace-entry or unicorn-model.
+  stop: Not specified at this level.
+  targets:
+  - the opposing internal range fair value gap
+  - the opposing external range high or low
+contributing_units:
+- t_talks_01
+draft_count: 1
+voice: guest
+guest_sources:
+- $niper | Internal & External Liquidity - ICT Daily Bias
+- Ash Trades | The Journey To Profitability & The Unicorn Model

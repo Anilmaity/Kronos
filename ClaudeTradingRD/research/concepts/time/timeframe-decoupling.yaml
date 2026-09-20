@@ -1,0 +1,59 @@
+id: timeframe-decoupling
+name: Timeframe Decoupling At The Session Open
+definition: 'At the moment the day opens, the hourly candle, the 30, the 15, the 5 and the
+  day all share the same opening price, so no lower-timeframe participant group has expressed
+  anything yet - the only information available is what the DAILY participants are doing.
+  As time passes each lower timeframe closes and reopens at a different price, and they ''decouple'':
+  the second 5-minute candle of the day is the first one with its own open, then the 15, then
+  the 30, then the 60. The guest uses this to explain why the first minutes of the session
+  are informationally thin and why lower-timeframe signals only become meaningful after decoupling.'
+category: time
+status: specified
+aliases:
+- decoupling
+- first fiver of the day
+preconditions:
+- A session open (regular trading hours).
+detection_rules:
+- At the session open, day / hour / 30 / 15 / 5 opens are identical - only the daily read
+  applies.
+- The second candle of each lower timeframe is the first with an independent open; from then
+  on that timeframe votes.
+- Do not read lower-timeframe continuity as independent information until that timeframe has
+  decoupled.
+measurable:
+- signal quality of the first vs second 5-minute candle of the session
+- time-of-day distribution of profitable lower-timeframe signals
+sources:
+- video_id: 1XWyy6Q-_8Q
+  title: Live Stream With Alex's Options - TheSTRAT & Broadening Formations
+  quote: the first hour of the day the hour and day open are the same
+- video_id: 1XWyy6Q-_8Q
+  title: Live Stream With Alex's Options - TheSTRAT & Broadening Formations
+  quote: every hour is like a new day when you're trading these gappers
+ambiguities:
+- He also uses 'decouple' a second time to mean price on correlated names diverging, and says
+  he may not get to that concept - the two senses are never disentangled.
+- No rule states how long after the open you should wait before trading.
+related:
+- new-period-open-new-participants
+- timeframe-continuity
+- session-open-volume-nyse
+guest_sources:
+- Alex's Options
+- Live Stream With Alex's Options - TheSTRAT & Broadening Formations
+timeframes:
+  htf:
+  - 1D
+  - 1H
+  ltf:
+  - 30m
+  - 15m
+  - 5m
+  - 3m
+  - 1m
+  fractal: false
+contributing_units:
+- live_stream_guests_02
+draft_count: 1
+voice: guest

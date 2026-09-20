@@ -1,0 +1,87 @@
+id: next-day-model
+name: Next Day Model (next candle model)
+aliases:
+- next candle model
+- the next day model
+category: model
+status: specified
+definition: 'Use the previous candle to anticipate the next. Two outcomes are defined. REVERSAL: price
+  takes out the previous candle''s high or low and CLOSES BACK INSIDE that range — this makes him anticipate
+  a continuation in the opposite direction on the following candle. CONTINUATION: price takes out the
+  previous candle''s high or low and CLOSES OUTSIDE — he anticipates the move simply continuing on the
+  following candle. He calls it the foundation of his bias and credits the next-candle framing to the
+  mmxm trader; it is explicitly fractal and he demonstrates it on daily, hourly and 5-minute charts.'
+timeframes:
+  htf:
+  - 1D
+  - 4H
+  - 1H
+  ltf:
+  - 1H
+  - 15m
+  - 5m
+  fractal: true
+detection_rules:
+- 'Reversal: candle takes out the previous candle''s high (or low) AND closes back inside the previous
+  candle''s range -> anticipate the opposite direction on the next candle.'
+- 'Continuation: candle takes out the previous candle''s high (or low) AND closes outside it -> anticipate
+  the same direction on the next candle.'
+- A swing point may be substituted for the previous candle's extreme (failure to displace out of a swing
+  point frames the same reversal).
+- A candle that respects a PD array also frames the next candle in the direction away from that array.
+- 'Inside bar: no information; wait for another candle or default to trend continuation.'
+- 'Conflict case (previous candle says one thing, the swing point on the left says the other): wait
+  for another candle.'
+- 'Blend with phases of price: after ~3 expansion candles, expect a new phase rather than another continuation.'
+invalidation:
+- 'He states plainly that it fails: ''nothing always works 100% of the time''; a failed read is followed
+  by re-reading the next close, not by doubling down.'
+execution:
+  bias: Direction anticipated for the following candle.
+  entry: On the lower timeframe, at the CISD marking the move that made the previous candle's extreme,
+    or at the resulting propulsion block; alternatively simply at the candle open once the open-high
+    (bearish) has formed.
+  stop: On the invalidation — the extreme of the higher-timeframe candle just formed.
+  targets:
+  - 2R
+  - The failure swings / previous day's low
+measurable:
+- base rate of the reversal read (close back inside -> opposite direction next candle) by timeframe
+- base rate of the continuation read (close outside -> same direction next candle)
+- how much the phases-of-price filter improves either base rate
+sources:
+- video_id: caaS6_Q7O78
+  title: Next Day Model - Fractal Way To Get Bias For Trading
+  quote: I focus on price taking out its previous candle high or low and then closing
+- video_id: caaS6_Q7O78
+  title: Next Day Model - Fractal Way To Get Bias For Trading
+  quote: This allows me to anticipate the following candle to have a continuation
+- video_id: caaS6_Q7O78
+  title: Next Day Model - Fractal Way To Get Bias For Trading
+  quote: this is a fractal concept so it can be used on all time frames
+- video_id: caaS6_Q7O78
+  title: Next Day Model - Fractal Way To Get Bias For Trading
+  quote: nothing always works 100% of the time
+- video_id: caaS6_Q7O78
+  title: Next Day Model - Fractal Way To Get Bias For Trading
+  quote: I prefer to blend it with the phases of price delivery to make more sense
+- video_id: 6zTz7WMdMWg
+  title: Intraday Bias Simplified
+  quote: here we have an inside bar so no direction
+ambiguities:
+- '''Closes back into the range'' — whether the close must be inside the previous candle''s BODY or
+  its full high-low range is never stated; the examples read as full range.'
+- The conflict rule ('if I had to choose I would be bullish because of this strong closure') is judgement,
+  not a rule.
+- He runs the mechanical read and then overrides it with phases of price several times in the same example;
+  the override has no trigger condition.
+related:
+- daily-bias-framework
+- phases-of-price
+- cisd
+- propulsion-block
+- failure-to-displace
+voice: ttrades
+contributing_units:
+- education_ict_updated_01
+draft_count: 1

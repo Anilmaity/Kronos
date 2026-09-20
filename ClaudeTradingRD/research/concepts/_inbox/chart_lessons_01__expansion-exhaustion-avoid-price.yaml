@@ -1,0 +1,60 @@
+id: expansion-exhaustion-avoid-price
+name: "Avoid Price (expansion exhaustion)"
+aliases: ["avoid price", "conflicting ideas", "an area where I will avoid price"]
+category: risk
+status: specified
+
+definition: >
+  A second, distinct trigger for the same stand-aside action, and the one this unit actually
+  demonstrates. It is not exhaustion but self-contradiction: price arrives somewhere that two
+  of his own conditions point in opposite directions. Inside a consolidation he wants the
+  range high taken out before price runs the lows, so the manipulation is required. But that
+  same high is a swing he does not want taken if the day is to continue lower. Both
+  conditions attach to one price, so he states plainly that this is an area where he will
+  avoid price because he has conflicting ideas, and he sits out until the conflict resolves
+  itself - which it does, by price breaking down out of the range without ever taking the
+  high. The rule generalises cleanly: the trigger to stand aside is not a count of days or
+  legs but the detection that two active requirements target the same level in opposite
+  senses.
+
+timeframes:
+  htf: ["1H", "30m"]
+  ltf: ["15m", "3m"]
+  fractal: true
+
+preconditions:
+  - "Two active conditions from the working read that both reference the same price level."
+
+detection_rules:
+  - "Enumerate the conditions currently attached to the level - what you want to see happen there, and what you do not want to see happen there."
+  - "If a required manipulation and a swing that must hold are the same level, declare the ideas conflicting."
+  - "Avoid price for as long as the conflict stands - take no entry in that area in either direction."
+  - "Resume only when price resolves the conflict on its own (here, by leaving the range without touching the contested level)."
+
+invalidation:
+  - "The conflict resolves - one of the two conditions is settled by price - and normal handling resumes."
+
+execution:
+  bias: "Held, but not acted on."
+  entry: "None while the conflict stands; the next continuation after it resolves."
+  stop: "n/a"
+  targets: ["n/a"]
+
+measurable:
+  - "frequency of conflicting-level situations per session"
+  - "outcome of trades taken into a contested level vs those deferred until it resolved"
+  - "how often the conflict resolves by price avoiding the level entirely"
+
+sources:
+  - video_id: Nlw-PZhoViQ
+    title: "TTrades Top-Down Chart Lessons #1"
+    quote: "an area where I will avoid price because I have conflicting ideas"
+
+ambiguities:
+  - "Sourced from an ASR (whisper-small) transcript, not YouTube captions; wording may be imprecise."
+  - "This is a different trigger from the expansion-day / leg counting readings recorded elsewhere under this id; the shared element is only the phrase 'avoid price' and the stand-aside action. Whether the speaker regards them as one rule is not stated."
+  - "No rule tells you how wide the avoided area is, only that it is around the contested level."
+  - "There is no stated cost side - nothing about how often standing aside on a conflict forfeits a good trade."
+
+python_detector: null
+related: ["consolidation-sweep-entry", "consolidation-range-no-trade", "phases-of-price", "idea-vs-executable-setup"]

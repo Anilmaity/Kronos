@@ -1,0 +1,59 @@
+id: fractal-model-c3
+name: "Candle 3 Continuation (and why C3 exists at all)"
+aliases: ["candle three closure", "C3"]
+category: model
+status: specified
+
+definition: >
+  Asked to explain candle 1, 2, 3, he gives the derivation of the model rather than the usual
+  description, and it produces a clean discriminator. The starting premise is that price can
+  only reverse if it makes a swing point, so he went through the swing points asking which
+  ones he could actually define. Candle 2 closure was the first: price sweeps a level and
+  closes back. Then he noticed that not all of them sweep - some engulf instead - and that
+  case became the candle 3 closure. Those two are the only definitions he arrived at, and the
+  continuation is traded after them. Candle 2 is therefore always a swing point.
+
+timeframes:
+  htf: ["1D", "4H", "1H"]
+  ltf: ["15m", "5m"]
+  fractal: true
+
+preconditions:
+  - "A prior candle (candle 1) whose extreme is the reference."
+
+detection_rules:
+  - "Candle 2 closure: price trades beyond the reference level (a sweep) and closes back inside."
+  - "Candle 3 closure: no sweep occurs - the candle engulfs instead - and closes through."
+  - "These two are the only defined swing-point closures; there is no candle 4 closure."
+  - "Candle 2 is always a swing point."
+  - "Trade the continuation after the closure, not the closure itself."
+
+invalidation:
+  - "Price fails to hold the closure and trades back beyond the swing."
+
+execution:
+  bias: "Away from the swept or engulfed side."
+  entry: "The continuation following the closure."
+  stop: "Beyond the candle 2 / candle 3 extreme."
+  targets: null
+
+measurable:
+  - "relative frequency of sweep-type (C2) vs engulf-type (C3) closures"
+  - "expectancy of continuations after each type"
+
+sources:
+  - video_id: i2HhHhWdaPQ
+    title: "New York Open Live Q&A"
+    quote: "not all of them sweep and then close some engulf"
+
+ambiguities:
+  - "'Engulf' is not defined - whether the candle must engulf the prior candle's body or its full range is not stated."
+  - "Whether the two are mutually exclusive on a given candle, or whether a sweep-and-engulf counts as both, is not addressed."
+  - "The transcript renders 'candle 2' as 'candle to' in places; it is read as candle 2 throughout."
+
+python_detector: null
+related: ["fractal-model-c2", "fractal-model-c4", "swing-point", "clean-day-criteria", "protected-swing"]
+
+contributing_units: ["live_streams_04"]
+draft_count: 1
+voice: ttrades

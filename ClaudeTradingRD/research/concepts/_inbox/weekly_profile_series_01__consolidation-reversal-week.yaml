@@ -1,0 +1,65 @@
+id: consolidation-reversal-week
+name: "Consolidation Reversal (weekly profile)"
+aliases: ["consolidation reversal"]
+category: model
+status: specified
+
+definition: >
+  The residual profile for a week that produced neither a classic expansion nor a midweek
+  reversal. Monday, Tuesday and Wednesday consolidate - no expansion through Wednesday -
+  and are marked as a consolidation range. Thursday then manipulates that range: in the
+  bearish case it takes out Monday's high and the previous day's high and closes back
+  below both, which the speaker reads as a candle 2 closure on Thursday; the bullish case
+  is the mirror. Given an hourly change in the state of delivery inside Thursday's range,
+  Friday is the continuation / expansion day and is the day he prefers to trade, though
+  the Thursday reversal itself may be traded as a small wick.
+
+timeframes:
+  htf: ["1W", "1D"]
+  ltf: ["1H"]
+  fractal: true
+
+preconditions:
+  - "No expansion through Wednesday, so a classic expansion week is ruled out."
+  - "Because the week consolidated, a midweek reversal is also ruled out."
+  - "A directional bias exists for the week."
+
+detection_rules:
+  - "Monday, Tuesday and Wednesday form a consolidation; a retracement or a small opposing run also counts, including a doji day that takes both sides of the range."
+  - "Mark the consolidation range across those three days."
+  - "Thursday takes out Monday's high (bearish) or Monday's low (bullish) AND the previous day's high or low, and closes back inside the range."
+  - "That Thursday close-back-inside is the candle 2 closure."
+  - "An hourly change in the state of delivery exists inside Thursday's range: find the extreme, find the series of candles that made it, require a close through."
+  - "Friday is then traded as the continuation / expansion day."
+
+invalidation:
+  - "The candidate day closes as an opposing expansion candle - do not call the reversal, let another day play out."
+  - "No hourly close-through inside Thursday - not confirmed."
+  - "After the new continuation forms, price takes out the low (bullish case) that the continuation was built from."
+
+execution:
+  bias: "Toward the opposite side of the consolidation range, away from the Thursday manipulation."
+  entry: "Friday (preferred), after the hourly change in the state of delivery inside Thursday. The Thursday reversal day itself is tradeable but is explicitly the less-preferred option."
+  stop: "Beyond the Thursday extreme; the ideal Thursday candle 2 closure also forms a protected swing, which supplies the invalidation."
+  targets: ["the other side of the consolidation range / range high", "previous highs or lows outside the range", "higher-timeframe key level", "average daily range"]
+
+measurable:
+  - "frequency of weeks where Mon-Wed consolidate and Thursday sweeps the range"
+  - "hit rate of Friday expanding to the opposite side of the range after a confirmed Thursday candle 2 closure"
+  - "how often Thursday takes out both Monday's extreme and the previous day's extreme, versus only one of them"
+  - "size of the Friday range relative to the Mon-Wed consolidation range"
+
+sources:
+  - video_id: McJflkKuvrI
+    title: "Weekly Profile for Daily Bias - Consolidation Reversal"
+    quote: "consolidation Monday, Tuesday and Wednesday and then we're looking for a manipulation"
+
+ambiguities:
+  - "No bound is given on how much movement disqualifies Mon/Tue/Wed from being a 'consolidation'; the examples span a tight range, a doji day and a retracement described as 'large range to small range'."
+  - "The take-out requirement is stated two ways in the same video: 'Monday's high' in the explanatory section, but 'the consolidation low' and 'the swing low' in the first worked example. Whether Monday's extreme specifically must be swept is unresolved."
+  - "'T-spot' is shown as the indicator-marked area where price should react on the continuation day, but is never defined or derived."
+  - "The preference for Friday over trading Thursday is stated as personal preference, not a rule, so both are permitted."
+  - "One example shows price dipping below the invalidation low with an SMT before still expanding; how far below is tolerable is not stated."
+
+python_detector: null
+related: ["weekly-profile-framework", "hourly-cisd-confirmation", "midweek-reversal-week", "thursday-counter-week"]

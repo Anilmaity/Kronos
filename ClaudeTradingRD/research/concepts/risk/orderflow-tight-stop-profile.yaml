@@ -1,0 +1,59 @@
+id: orderflow-tight-stop-profile
+name: 'Order-Flow Entry Profile: 40% Win Rate, 2.5-Point Stop, 8-Point Target'
+definition: HolyAngelBruv's stated live numbers on index futures. Win rate averaging around
+  40%. Stop loss two and a half points. Target eight points, then he leaves runners. He frames
+  this as deliberately different from a standard ICT profile - he is not going for as big
+  a move, but he is using much tighter stops, which he attributes to trading like the order
+  flow crowd rather than the ICT crowd. He and the host both stress in the same exchange that
+  a win rate is meaningless without the risk-to-reward and the position sizing beside it -
+  the host offers his own case of an 86% win rate at 1R as the illustration.
+category: risk
+status: specified
+aliases:
+- tight stop wide target
+- 40 percent win rate
+preconditions:
+- An order-flow-confirmed entry at an ICT point of interest.
+detection_rules:
+- 'Stop: 2.5 points from entry (index futures).'
+- 'First target: 8 points (approximately 3.2R).'
+- Leave runners beyond the first target.
+- Expect roughly a 40% win rate on this profile.
+- Never evaluate the win rate without the risk-to-reward and position size.
+measurable:
+- realised R distribution at a 2.5-point stop and 8-point target
+- contribution of runners to total P&L
+- break-even win rate implied by the stated R (about 24%)
+sources:
+- video_id: 8Z2AbZLjunU
+  title: ICT + Orderflow - Q&A with HolyAngelBruv
+  quote: my win rate's probably around it's averaging probably around like 40 percent
+- video_id: 8Z2AbZLjunU
+  title: ICT + Orderflow - Q&A with HolyAngelBruv
+  quote: two and a half point stop loss and then i go for eight points
+ambiguities:
+- The instrument is not named at the point the numbers are given; the surrounding discussion
+  is ES and NQ, which have different tick values, so '2.5 points' is not portable as stated.
+- The runner policy has no exit rule.
+- No sample size or period supports the 40% figure.
+- A tight fixed stop sits in tension with the same guest's use of structural levels; he does
+  not reconcile the two.
+related:
+- orderflow-narrows-ict-entry
+- realistic-r-expectations
+- risk-reward-minimum
+- no-size-reduction-in-drawdown
+guest_sources:
+- HolyAngelBruv
+- ICT + Orderflow - Q&A with HolyAngelBruv
+timeframes:
+  htf: []
+  ltf:
+  - 5m
+  - 1m
+  - 15s
+  fractal: false
+contributing_units:
+- live_stream_guests_02
+draft_count: 1
+voice: guest

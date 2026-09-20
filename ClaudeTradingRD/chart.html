@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>FVG ICT Strategy — XAUUSD</title>
+<script src="https://unpkg.com/lightweight-charts@4.2.3/dist/lightweight-charts.standalone.production.js"></script>
+<script src="chart_data.js"></script>
+<style>
+  body { margin: 0; background: #131722; color: #d1d4dc; font-family: -apple-system, sans-serif; }
+  #header { padding: 10px 16px; font-size: 14px; display: flex; gap: 24px; align-items: center; }
+  #header b { color: #f0b90b; }
+  .legend { display: flex; gap: 14px; font-size: 12px; }
+  .sw { display: inline-block; width: 10px; height: 10px; margin-right: 4px; border-radius: 2px; }
+  #chart { position: absolute; top: 42px; bottom: 0; left: 0; right: 0; }
+</style>
+</head>
+<body>
+<div id="header">
+  <b id="title"></b>
+  <div class="legend">
+    <span><span class="sw" style="background:rgba(76,175,80,.35)"></span>bullish FVG</span>
+    <span><span class="sw" style="background:rgba(244,67,54,.35)"></span>bearish FVG</span>
+    <span><span class="sw" style="background:#2196F3"></span>entry</span>
+    <span><span class="sw" style="background:#4CAF50"></span>TP</span>
+    <span><span class="sw" style="background:#F44336"></span>SL</span>
+  </div>
+</div>
+<div id="chart"></div>
+<script>
+document.getElementById('title').textContent =
+  `FVG ICT — ${CHART_DATA.symbol} ${CHART_DATA.interval} · ${CHART_DATA.fvgs.length} FVGs · ${CHART_DATA.markers.length / 2 | 0} trades`;
+
+const chart = LightweightCharts.createChart(document.getElementById('chart'), {
+  layout: { background: { color: '#131722' }, textColor: '#d1d4dc' },
+  grid: { vertLines: { color: '#1e222d' }, horzLines: { color: '#1e222d' } },
+  timeScale: { timeVisible: true, secondsVisible: false },
+  crosshair: { mode: LightweightCharts.CrosshairMode.Normal },
+});
+const series = chart.addCandlestickSeries({
+  upColor: '#26a69a', downColor: '#ef5350',
+  wickUpColor: '#26a69a', wickDownColor: '#ef5350', borderVisible: false,
+});
+series.setData(CHART_DATA.candles);
+series.setMarkers(CHART_DATA.markers);
+
+// FVG boxes as a series primitive (rectangles in price/time space)
+class FvgBoxes {
+  constructor(zones) { this.zones = zones; }
+  attached(p) { this.series = p.series; this.chart = p.chart; this.requestUpdate = p.requestUpdate; }
+  updateAllViews() {}
+  paneViews() {
+    const s = this.series, ts = this.chart.timeScale(), zones = this.zones;
+    return [{
+      renderer: () => ({
+        draw(target) {
+          target.useBitmapCoordinateSpace(scope => {
+            const ctx = scope.context, hr = scope.horizontalPixelRatio, vr = scope.verticalPixelRatio;
+            for (const z of zones) {
+              const x1 = ts.timeToCoordinate(z.from), x2 = ts.timeToCoordinate(z.to);
+              const y1 = s.priceToCoordinate(z.high), y2 = s.priceToCoordinate(z.low);
+              if (x1 === null || x2 === null || y1 === null || y2 === null) continue;
+              ctx.fillStyle = z.type === 'bullish' ? 'rgba(76,175,80,0.18)' : 'rgba(244,67,54,0.18)';
+              ctx.fillRect(x1 * hr, y1 * vr, (x2 - x1) * hr, (y2 - y1) * vr);
+              if (z.traded) {
+                ctx.strokeStyle = z.type === 'bullish' ? 'rgba(76,175,80,0.9)' : 'rgba(244,67,54,0.9)';
+                ctx.lineWidth = 1;
+                ctx.strokeRect(x1 * hr, y1 * vr, (x2 - x1) * hr, (y2 - y1) * vr);
+              }
+            }
+          });
+        }
+      })
+    }];
+  }
+}
+series.attachPrimitive(new FvgBoxes(CHART_DATA.fvgs));
+
+chart.timeScale().setVisibleLogicalRange({
+  from: CHART_DATA.candles.length - 250, to: CHART_DATA.candles.length + 5,
+});
+window.addEventListener('resize', () => chart.applyOptions({}));
+</script>
+</body>
+</html>

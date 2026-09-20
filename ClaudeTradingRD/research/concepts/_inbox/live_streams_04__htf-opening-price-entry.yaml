@@ -1,0 +1,62 @@
+id: htf-opening-price-entry
+name: "Enter Around The Higher-Timeframe Opening Price"
+aliases: ["around the opening price", "below the yearly open"]
+category: entry
+status: specified
+
+definition: >
+  The positioning rule stated at both ends of the timeframe ladder in the same unit. Intraday:
+  the entry belongs around the opening price, early in the candle - asked where he would buy a
+  bullish gold day he says around the opening price and refuses to buy at the highs. For
+  long-term positions he applies the identical logic to the yearly candle: buying below the
+  yearly open is a better buy than above it, because it is just a candle, and buying inside the
+  wick below the yearly open is where he wants to accumulate. He describes doing exactly that -
+  dollar-cost averaging daily but adding size on dips into higher-timeframe gaps, with the stop
+  and target framed off the same structure.
+
+timeframes:
+  htf: ["1Y", "1M", "1D", "4H"]
+  ltf: ["1H", "15m"]
+  fractal: true
+
+preconditions:
+  - "The opening price of the governing higher-timeframe candle is marked."
+
+detection_rules:
+  - "Enter around the opening price of the governing higher-timeframe candle, early in that candle."
+  - "Do not enter at the extreme already reached (the highs on a long, the lows on a short)."
+  - "Long-term: price below the yearly open is a better buy than price above it; buying the wick below the yearly open is the preferred accumulation zone."
+  - "Combine with a higher-timeframe gap for the stop-and-target framing."
+
+invalidation:
+  - "Price closes beyond the higher-timeframe open in the opposing direction."
+
+execution:
+  bias: "Direction of the governing higher-timeframe candle."
+  entry: "At or near its opening price."
+  stop: "Below the structure that produced the reaction (e.g. the daily low)."
+  targets: ["the higher-timeframe objective"]
+
+measurable:
+  - "expectancy by distance of entry from the higher-timeframe open"
+  - "forward return of positions initiated below vs above the yearly open"
+
+sources:
+  - video_id: i2HhHhWdaPQ
+    title: "New York Open Live Q&A"
+    quote: "Around the opening price early in the candle."
+  - video_id: N3Ml-r0X30o
+    title: "New York Open Live Q&A"
+    quote: "below the yearly open, it's a better buy than above the yearly open"
+
+ambiguities:
+  - "No tolerance band around the open is given at any timeframe."
+  - "The yearly-open rule is given as his personal approach to long-term investing, explicitly 'to each their own', and is not part of the trading model."
+  - "Which higher-timeframe open governs when several conflict is not addressed."
+
+python_detector: null
+related: ["continuation-timing", "no-shorting-below-lows", "premium-discount-equilibrium", "entry-time-window"]
+
+contributing_units: ["live_streams_04"]
+draft_count: 1
+voice: ttrades

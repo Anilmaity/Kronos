@@ -1,0 +1,53 @@
+id: trail-market-structure-swings
+name: Trail The Stop Along Market Structure Swings
+aliases:
+- trail market structure
+category: risk
+status: specified
+definition: 'The host''s own trade management, given alongside AM Trades'' stricter rule in the same
+  stream and differing from it. His default first move is the same - take a first partial at the nearest
+  opposing lows and move the stop to break even - but he then offers a second method: trail the stop
+  along market structure on a low timeframe, using a one- or two-minute chart. Concretely for a long:
+  put the stop under the low, wait for a new high to be made and a higher low to be put in, move the
+  stop to that higher low, and repeat on each new high; mirror for shorts. He is explicit about the
+  failure mode and the guard - moving the stop too fast gets you taken out before the real move, so
+  you wait for displacement over the highs and for the higher low to actually form before each move.'
+timeframes:
+  htf: []
+  ltf:
+  - 2m
+  - 1m
+  fractal: false
+preconditions:
+- An open position that has produced at least one new extreme in its favour.
+detection_rules:
+- Take a first partial at the nearest opposing liquidity and move the stop to break even.
+- Thereafter require BOTH a new high AND a completed higher low before moving the stop; place it at
+  that higher low. Mirror for shorts.
+- Do the trailing on a one- or two-minute chart.
+- Require displacement over the prior high before each stop move.
+invalidation:
+- The trailed higher low is taken out.
+measurable:
+- expectancy of trailing by structure vs holding a fixed target on the same trades
+- share of trailed exits that occurred before the original target was reached
+sources:
+- video_id: CrUfTskOveo
+  title: Stream Q & A with AM Trades  - ICT concepts
+  quote: i'll trail that higher low make a new high
+ambiguities:
+- No rule states when to trail versus when to hold to a fixed target - he offers both methods without
+  ranking them.
+- Directly opposite to AM Trades' rule in the same recording (never touch the stop before the first
+  target); that is two traders' methods, not one speaker contradicting himself.
+- The one- or two-minute trailing timeframe is not scaled to the entry timeframe.
+related:
+- no-stop-change-before-first-target
+- breakeven-after-new-protected-swing
+- trailing-stop-opposing-candles
+- t1-t2-partial-system
+- break-even-management
+contributing_units:
+- live_stream_guests_03
+draft_count: 1
+voice: ttrades

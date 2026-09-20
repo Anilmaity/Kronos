@@ -1,0 +1,68 @@
+id: order-block
+name: "Order Block"
+aliases: ["OB", "bullish order block", "bearish order block", "the opening price"]
+category: entry
+status: specified
+
+definition: >
+  The single or series of opposing-close candles that traded into an important level immediately
+  before price displaced and closed through their opening price. A bearish order block is the
+  up-close candle(s) into an important level whose opening price is subsequently closed below;
+  a bullish order block is the down-close candle(s) whose opening price is subsequently closed
+  over. The level is marked at the OPENING PRICE of the (first) candle in the series, not the
+  candle's extreme. The validating close is the change in state of delivery. A sweep of
+  liquidity before the close is preferred and the speaker always waits for one, but is stated
+  not to be strictly required. The presence of an important level IS required — the same candle
+  pattern at a random location is explicitly not an order block.
+
+timeframes:
+  htf: ["1D", "4H", "1H"]
+  ltf: ["15m", "5m", "2m", "1m"]
+  fractal: true
+
+preconditions:
+  - "Price has reached an important level / higher timeframe PD array (see important-level)."
+  - "Preferred: buyside or sellside liquidity has been swept at that level."
+
+detection_rules:
+  - "Bearish: find the last contiguous run of up-close candles (close > open) that traded into the important level and made the local high."
+  - "ob_level := open of the FIRST candle of that run."
+  - "Validation: a subsequent candle closes below ob_level (with displacement)."
+  - "Bullish: mirror — last run of down-close candles into the level; ob_level := open of the first; validation is a close above ob_level."
+  - "Zone refinement: mean_threshold := midpoint of (body_low, body_high) of the run."
+  - "Rejection rule: if the candle run never traded into an important level, it is NOT an order block even if its opening price is later closed through."
+  - "Continuation variant: the important level may be (a) a previous order block, (b) a fair value gap, or (c) a swept swing low/high."
+
+invalidation:
+  - "Closes beyond the mean threshold are undesirable ('I don't want to see any closes below the mean threshold')."
+  - "Absence of an important level invalidates the formation entirely."
+
+execution:
+  bias: "Direction of the validating close."
+  entry: "Limit at the opening price; or at the mean threshold when the series is large and the opening-price entry gives insufficient R:R (his example: 1.3R -> ~2.6R)."
+  stop: "Preferred: the swing high/low. Alternative: the far end of the order block (tighter, but wick-out risk while the trade is still valid)."
+  targets: ["failure swings / equal highs or lows", "buyside or sellside liquidity", "minimum 2R", "standard deviation projections"]
+
+measurable:
+  - "hit rate of a 2R trade on the first retest of ob_level, split by whether an important level was present"
+  - "how often price returns to ob_level at all after validation"
+  - "fill rate and hit rate of mean-threshold entries vs opening-price entries"
+  - "frequency of closes beyond the mean threshold in trades that ultimately worked"
+
+sources:
+  - video_id: DMUiDBnTYc8
+    title: "Order Blocks Simplified - ICT Concepts"
+  - video_id: CHIK5oBRKiw
+    title: "Change In State Of Delivery [CISD] - Orderblock Formation - ICT Concepts"
+  - video_id: 3OivsP1j_UE
+    title: "Internal & External Liquidity (Daily Bias) - ICT Concepts"
+
+ambiguities:
+  - "'Displacement' accompanying the validating close is required by wording but never quantified."
+  - "Whether the candle series must be strictly contiguous (does one opposite-close candle break it?) is not stated."
+  - "The order block's ZONE boundaries are undefined — only the opening price (a line) and the mean threshold (bodies) are given; whether the wick extreme belongs to the block is only addressed by contrast with breaker blocks, which DO include wicks."
+  - "'Important level' is enumerated for continuation entries but left open ('higher timeframe PD array') for reversal entries."
+  - "No expiry rule: how many touches an order block survives, or when it is dead, is not stated."
+
+python_detector: null
+related: ["cisd", "important-level", "mean-threshold", "breaker-block", "fair-value-gap", "stop-loss-placement"]

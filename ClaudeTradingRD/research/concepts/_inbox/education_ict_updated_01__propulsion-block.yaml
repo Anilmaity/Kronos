@@ -1,0 +1,50 @@
+id: propulsion-block
+name: Propulsion Block
+aliases:
+- propulsion block off an order block
+category: structure
+status: underspecified
+definition: 'A block formed when a series of opposing-close candles trades INTO an existing order block
+  and is then closed through. He names the resulting structure a propulsion block and states one behavioural
+  requirement: price should not trade or close below its mean threshold — ''half of the bodies'' — and
+  ideally trades into its opening price and then away.'
+timeframes:
+  htf:
+  - 1D
+  ltf:
+  - 1H
+  - 5m
+  fractal: true
+preconditions:
+- A validated order block already exists at the level.
+detection_rules:
+- A series of down-close candles (bullish case) reaches into the existing order block.
+- Price then closes over that series — the propulsion block is formed.
+- Mark its mean threshold (half of the bodies) and its opening price.
+- Expect price to trade into the opening price and away; the upper half should be respected.
+invalidation:
+- Price trades or closes below the mean threshold of the propulsion block.
+measurable:
+- frequency of mean-threshold violation before the target is reached
+sources:
+- video_id: hKCMqh0ZsY0
+  title: How To Use The Economic Calendar For Trading
+  quote: ideally I wouldn't like to see price trade or close below the mean threshold
+- video_id: caaS6_Q7O78
+  title: Next Day Model - Fractal Way To Get Bias For Trading
+  quote: I focus on price taking out its previous candle high or low and then closing
+ambiguities:
+- '''Half of the bodies'' is his gloss on mean threshold, but whether the midpoint is taken across the
+  whole series of bodies or the single validating candle is not stated.'
+- In caaS6_Q7O78 he identifies propulsion blocks in passing without restating the definition; the only
+  explicit rule in this unit is the mean-threshold one from hKCMqh0ZsY0.
+- No rule distinguishes a propulsion block from an ordinary nested order block beyond 'it sits inside
+  an existing one'.
+related:
+- order-block
+- mean-threshold
+- cisd
+voice: ttrades
+contributing_units:
+- education_ict_updated_01
+draft_count: 1

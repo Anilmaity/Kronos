@@ -1,0 +1,50 @@
+id: psp-precision-swing-point
+name: PSP (opposite candle closes across correlated assets)
+aliases:
+- PSP
+category: structure
+status: underspecified
+definition: A PSP exists when the same higher-timeframe candle closes bearish on one asset and bullish
+  on its correlated partner. He states this is all it means and explicitly separates it from SMT,
+  which he defines as a divergence between the assets. In the indicator it is drawn only in combination
+  - a candle 2 that also has a PSP - and it can be looked for on candle 1, candle 2 or both; the PSP
+  itself is only legible on the higher-timeframe candles because on the chart it clutters.
+timeframes:
+  htf:
+  - 1D
+  - 4H
+  - 1H
+  ltf:
+  - 15m
+  - 5m
+  fractal: true
+preconditions:
+- A correlated pair or triplet of assets (ES/NQ/YM in his examples).
+detection_rules:
+- Take the same higher-timeframe candle on both assets.
+- PSP is present when one closes bearish and the other closes bullish.
+- It is surfaced only as 'C2 plus a PSP', not as a standalone signal.
+- It can be evaluated on candle 1, candle 2, or both.
+invalidation:
+- Both assets close the same direction - no PSP.
+measurable:
+- frequency of C2-with-PSP vs C2-without-PSP
+- outcome difference between the two
+sources:
+- video_id: sdZkE-naNiY
+  title: TTrades Indicator Updates - Walkthrough and Q&A
+  quote: close bearish on one and then on Y it closed bullish
+ambiguities:
+- What a PSP adds to a C2 - whether it is a filter, a confluence or a requirement - is never stated;
+  he defers it to a promised standalone video.
+- Whether the two candles must be the same period on both assets when sessions differ is not addressed.
+- Whether a doji close counts for either side is not stated.
+related:
+- smt-divergence
+- fractal-model-c2
+- smt-reversal-continuation-double
+- relative-strength-weakness
+contributing_units:
+- live_streams_05
+draft_count: 1
+voice: ttrades

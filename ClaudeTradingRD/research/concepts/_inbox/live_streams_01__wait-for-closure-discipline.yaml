@@ -1,0 +1,35 @@
+id: wait-for-closure-discipline
+name: Backtest-to-Live Gap Comes From Acting Before the Candle Closes
+definition: 'His stated single most common diagnosis for a trader who backtests well and loses live:
+  in the backtest every candle is already closed, so the rules are applied to closed candles; live,
+  the trader acts on a still-forming candle and anticipates a closure that never happens. The corrective
+  is to wait for the actual closure in live trading, exactly as the backtest did.'
+category: psychology
+status: specified
+detection_rules:
+- Every rule in the model is evaluated on a closed candle of the relevant timeframe.
+- A still-forming candle produces no signal, however it currently looks.
+- The same closure discipline must hold in backtest and live, or the two are not measuring the same
+  system.
+measurable:
+- difference in signal count and expectancy between a closed-bar detector and one allowed to fire
+  intrabar
+sources:
+- video_id: xraklBJHW5k
+  title: New York Open Live Q&A
+  quote: you wait for closures in back testing
+ambiguities:
+- The intracandle CISD (ic-cisd) is an explicit exception in his own model - it fires inside a higher-timeframe
+  candle - so 'wait for the closure' means the closure of the timeframe the rule is written on, not
+  of every timeframe.
+- He also says elsewhere to reverse engineer before ever backtesting, but does not define what reverse
+  engineering means procedurally.
+related:
+- ic-cisd
+- wick-trust-test
+- time-based-exit-htf-close
+- pattern-trading-error
+contributing_units:
+- live_streams_01
+draft_count: 1
+voice: ttrades

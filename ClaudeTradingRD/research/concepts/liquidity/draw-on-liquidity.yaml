@@ -1,0 +1,217 @@
+id: draw-on-liquidity
+name: Draw On Liquidity (DOL)
+variants:
+  name:
+  - Draw On Liquidity (previous day high / low as objective)
+  - Draw On Liquidity
+  definition:
+  - 'The channel''s default and, in his words, easiest draw: unless price is going to stay
+    in a consolidation where it fails to take either side of the range, it is going to reach
+    for previous day high, previous day low, or both. The daily-chart question he asks himself
+    is therefore binary - is price more likely to reach previous day high or previous day
+    low - and answering it yields both a bias and a target, after which he drops to a lower
+    timeframe to frame an entry. He credits the MMXM Trader for the teaching.'
+  - 'The standing objective price is expected to reach, taken in practice from the daily chart:
+    previous day high and previous day low first, then relevant separated daily swing highs
+    and lows, then equal highs/lows. Its main operational use in these streams is as a gate
+    on late-day trading: if the day has already expanded, the only reason to still take a
+    setup is that an objective remains open, and such a trade is taken with lowered expectations.
+
+    '
+  - 'The specific price level price is currently expected to travel to. It is always an identified
+    liquidity pool or PD array — previous day/week/month high or low, a session extreme, a
+    swing point, relatively equal highs/lows, or a fair value gap — never a vague direction.
+    In this corpus the draw is what a bias resolves to, and a bias is held "until we reach
+    our draw on liquidity".
+
+    '
+definition: 'EARLIER RECORDING (old ''Education - ICT'' playlist; later re-recorded as FXJBFbZQbck,
+  which reduces the whole thing to previous day high / previous day low). This earlier version
+  is a broader SEARCH LIST rather than a binary. He looks for external liquidity (old highs
+  and lows, equal highs and lows), then internal liquidity (fair value gaps, order blocks,
+  and occasionally volume imbalances or gaps in price), and then adds two behavioural reads
+  on top: where price FAILS TO DISPLACE over a low or high, and where price IS displacing
+  to - following the displacement is ''generally right''. The draw is established each morning
+  and then used as the target that keeps him in a lower-timeframe position when the noise
+  argues against it.'
+category: liquidity
+status: contested
+aliases:
+- DOL
+- where price is likely to draw to
+- the easiest draw on liquidity
+- previous day high and low
+- open draw on liquidity
+- the draw
+- drawn liquidity
+- objective
+preconditions:
+- The execution timeframe is fixed first - the draw timeframes are chosen relative to it.
+- Previous day high and low are marked; price is not inside a consolidation that fails to
+  take either side.
+- A daily chart with marked previous day high/low and separated swing levels.
+- At least one untaken liquidity level or unfilled fair value gap exists in the direction
+  under consideration.
+detection_rules:
+- 'Choose the draw timeframes relative to the entry timeframe: entering on 5-minute and lower
+  -> daily, 4-hour and 1-hour supply the draw.'
+- Entering on the 1-hour -> look up to the weekly and monthly instead.
+- 'External candidates: old highs, old lows, equal highs, equal lows.'
+- 'Internal candidates: fair value gaps, order blocks, occasionally volume imbalances / gaps
+  in price.'
+- 'Behavioural read 1: failure to displace over a low or high argues for the opposite side
+  as the draw.'
+- 'Behavioural read 2: follow the displacement - the side price is displacing toward is generally
+  the draw.'
+- Once the draw is set, use it to hold through lower-timeframe noise rather than to time the
+  entry.
+- Mark previous day high and previous day low.
+- Ask which is more likely to be reached; that answer is the draw and the target.
+- If price is trending up, anticipate previous day high being taken; if trending down, previous
+  day low.
+- Stay out of consolidations - the rule is stated as conditional on price not remaining range-bound.
+- When actually watching price, extensions beyond previous day high and below previous day
+  low are also used as targets, not just the levels themselves.
+- If the target is already taken (e.g. the Asia session took previous day high), the day is
+  not traded in the later session.
+- Mark previous day high and previous day low; these are the easiest and default objectives.
+- Mark relevant separated daily swing highs/lows and equal highs/lows as secondary objectives.
+- Filter every objective against the eyeballed average daily range.
+- If the day already expanded and no objective remains open, do not trade.
+- If an objective remains open, the setup may be taken on a lower timeframe with reduced expectations.
+- Candidate draws := {untaken previous day/week/month high & low, untaken session highs &
+  lows, untaken swing points, relatively equal highs/lows, unfilled fair value gaps}.
+- 'Selection heuristics stated: prefer the previous-period level on the current timeframe
+  first; when those are consumed, look left to swing points; trend biases which side.'
+- 'The draw alternates by construction under the internal/external rotation: after external
+  is taken, the draw becomes the internal FVG, and vice versa.'
+- 'Confluence rule stated repeatedly: prefer a draw that coincides with a standard-deviation
+  projection level of the manipulation leg.'
+invalidation:
+- Price displaces through the level that was the draw - the next PD array becomes the draw.
+- Price remaining in a consolidation that takes neither side of the range.
+- The draw already having been reached earlier in the day.
+- The objective is reached - subsequent setups toward it are invalid (see continuation-failure-short-term-target).
+- The draw is consumed when price trades to it; a new draw must then be selected.
+- A failure to displace at an intermediate level flips the draw to the opposite side.
+measurable:
+- hit rate of the nominated draw being reached the same day
+- relative accuracy of the failure-to-displace read vs the follow-the-displacement read
+- how often the draw sequence chains (one PD array reached, next one nominated)
+- share of days that take previous day high, previous day low, both, or neither
+- how often the draw is already taken before the New York session opens
+- accuracy of the trend-based choice (see trend-by-previous-day-extremes)
+- Rate at which previous day high/low is reached, by day type.
+- Expectancy of late-day setups toward a still-open objective vs the same setups earlier.
+- hit rate of the selected draw being reached before the opposite candidate level
+- median time (bars/sessions) from selection to reaching the draw
+sources:
+- video_id: MmvC4rsmmcM
+  title: Draw on Liquidity (DOL) - ICT Concepts
+  quote: this is dependent on the time frames I'm entering on
+- video_id: MmvC4rsmmcM
+  title: Draw on Liquidity (DOL) - ICT Concepts
+  quote: I search for external liquidity such as old highs and old lows
+- video_id: MmvC4rsmmcM
+  title: Draw on Liquidity (DOL) - ICT Concepts
+  quote: internal liquidity such as fair value gaps and Order blocks
+- video_id: MmvC4rsmmcM
+  title: Draw on Liquidity (DOL) - ICT Concepts
+  quote: where price fails to displace over lows and highs
+- video_id: MmvC4rsmmcM
+  title: Draw on Liquidity (DOL) - ICT Concepts
+  quote: if I follow the displacement it is generally right
+- video_id: Ovotm9l99QQ
+  title: Draw on Liquidity Example (1/18/23) - ICT Concepts
+  quote: the next PD array that draws my eyes is this BPR down here
+- video_id: FXJBFbZQbck
+  title: The Easiest Draw On Liquidity (DOL) - Daily Bias - ICT
+  quote: it is going to reach for previous day high or previous day low or both
+- video_id: FXJBFbZQbck
+  title: The Easiest Draw On Liquidity (DOL) - Daily Bias - ICT
+  quote: the Asia session already took out previous day high
+- video_id: FXJBFbZQbck
+  title: The Easiest Draw On Liquidity (DOL) - Daily Bias - ICT
+  quote: it's not always possible to get an entry
+- video_id: aqnY1yZvfYs
+  title: New York Open Live Q&A
+- video_id: yud7TpE2AMs
+  title: New York Open Live Q&A
+- video_id: 00iZXPAdR5A
+  title: New York Open Live Q&A
+- video_id: YESqIoA7Wyg
+  title: Important Liquidity Levels - Draw On Liquidity - ICT
+  quote: these levels are used to frame a draw in liquidity or a reversal
+- video_id: g3oDYq4P9ZE
+  title: ICT Daily Bias - The Only Video You Will Ever Need!
+- video_id: 3OivsP1j_UE
+  title: Internal & External Liquidity (Daily Bias) - ICT Concepts
+ambiguities:
+- 'EVOLUTION, NOT CONTRADICTION: the later FXJBFbZQbck collapses the draw to a binary between
+  previous day high and previous day low; this earlier recording keeps an open list of PD
+  arrays with no ranking. Both readings preserved; the later one is canon for the simplified
+  form.'
+- No precedence rule among the candidate levels - 'the next PD array that draws my eyes'.
+- '''Displacing'' / ''fails to displace'' are used without a threshold.'
+- '''The occasional volume imbalance'' is admitted as a discretionary extra.'
+- '''Consolidation'' is the single exception to the whole rule and is never defined or bounded
+  here.'
+- Where both previous day high and low are taken in the same day, no rule orders them.
+- '''Extensions beyond'' previous day high/low are used as targets with no projection method
+  given.'
+- Having a bias on nearly every day is explicitly not the same as having a trade - he says
+  an entry is not always available.
+- '''Lowered expectations'' for the late setup is not quantified in target or size.'
+- Which of several open objectives takes precedence is chosen by eye plus the range filter.
+- He flags the case where BOTH previous day high and low are taken before New York as an unsolved
+  question he intends to make a video about.
+- Selection among multiple candidate draws is discretionary; no ranking rule is given beyond
+  timeframe order and trend.
+- No time limit on how long a draw stays valid.
+- The same level is used both as a draw and as a reversal point; nothing in the videos decides
+  in advance which role it will play — only the reaction (displacement vs rejection) tells
+  you, after the fact.
+related:
+- timeframe-pairing
+- previous-period-high-low
+- failure-to-displace
+- point-of-interest
+- volume-imbalance
+- internal-external-range-liquidity
+- trend-by-previous-day-extremes
+- previous-day-lookback-three-days
+- daily-bias-framework
+- continuation-failure-short-term-target
+- average-daily-range
+- relevant-swings-separation
+- session-high-low
+- internal-external-rotation
+- standard-deviation-projection
+timeframes:
+  htf:
+  - 1M
+  - 1W
+  - 1D
+  - 4H
+  - 1H
+  ltf:
+  - 15m
+  - 5m
+  - 1m
+  fractal: true
+execution:
+  bias: Toward previous day high or previous day low.
+  entry: Framed on a lower timeframe once the draw is chosen (fair value gap / box setup examples
+    shown).
+  stop: Beyond the manipulation low/high of the session.
+  targets:
+  - previous day high
+  - previous day low
+  - extensions beyond them
+contributing_units:
+- education_ict_01
+- education_ict_updated_02
+- sunday_sessions_live_q_a_02
+- the_foundation_01
+draft_count: 4
+voice: ttrades

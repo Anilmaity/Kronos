@@ -1,0 +1,66 @@
+id: htf-wick-formation
+name: "Higher-Timeframe Wick Built From Two Aggressive Legs"
+aliases: ["V-shaped reversal", "aggressive move lower met with an aggressive move higher", "forming this higher time frame wick"]
+category: structure
+status: specified
+
+definition: >
+  The mechanic that links the lower timeframe to the higher one. An aggressive move in one
+  direction immediately met with an aggressive move in the other is, on the timeframe above,
+  a single candle with a long wick - and on the timeframe above that, a reversal candle.
+  The speaker uses it in both directions: on the daily he shows an aggressive move lower
+  followed by an aggressive move higher (evidenced by fair value gaps on both sides) and
+  then moves up to the weekly to show the same thing as one reversal candle; and on the
+  1-minute he waits for "expansion down met with expansion up" specifically because that is
+  what forms the higher-timeframe wick he needs. Once formed, the wick supplies the levels
+  the model uses next - its 0.5 becomes one half of the T-spot, and the extreme becomes the
+  protected swing.
+
+timeframes:
+  htf: ["1W", "1D", "1H"]
+  ltf: ["5m", "1m"]
+  fractal: true
+
+preconditions:
+  - "A directional leg into a level."
+
+detection_rules:
+  - "Identify an aggressive move into a level, evidenced by a fair value gap."
+  - "Require an aggressive move back out of it, also evidenced by a fair value gap - fair value gaps on both sides of the market."
+  - "That combination is a V-shaped reversal on the working timeframe and a wick on the timeframe above."
+  - "Read the bodies to confirm the V shape where the wicks are noisy."
+  - "Mark 0.5 of the resulting wick as a level to be respected."
+
+  - "Used prospectively as well as descriptively: standing at a high after expansion into it, the reversal is anticipated by asking which of consolidation, retracement or expansion-out arrives, and only expansion-out forms the higher-timeframe wick."
+invalidation:
+  - "The move out is not aggressive - price drifts back rather than expanding - so no wick forms and the reversal is not confirmed."
+
+execution:
+  bias: "Away from the wick's extreme."
+  entry: "Inside the T-spot built from 0.5 of the wick."
+  stop: "Beyond the wick extreme / the protected swing."
+  targets: ["the higher-timeframe draw"]
+
+measurable:
+  - "wick-to-body ratio of the resulting higher-timeframe candle"
+  - "frequency of two-sided fair value gaps at reversal points"
+  - "hold rate of 0.5 of the formed wick on the subsequent retracement"
+
+sources:
+  - video_id: UBTl7za9obc
+    title: "TTrades Top-Down Chart Lessons #2"
+  - video_id: IzOQmcgLyA0
+    title: "TTrades Top-Down Chart Lessons #3"
+
+  - video_id: Nlw-PZhoViQ
+    title: "TTrades Top-Down Chart Lessons #1"
+    quote: "expansion met with expansion to form a wick on the higher timeframe"
+ambiguities:
+  - "Sourced from an ASR (whisper-small) transcript, not YouTube captions; wording may be imprecise."
+  - "In video Nlw-PZhoViQ the two-sided-fair-value-gap evidence for aggressive is absent - the legs are classified as expansion purely by eye - so aggressiveness is even less constrained here than in the other walkthroughs."
+  - "Aggressive is defined only by the presence of a fair value gap, which is a weak proxy - no size or velocity threshold is given."
+  - "How immediately the second leg must follow the first is not stated."
+  - "The relationship between this and the shallow-wick expansion condition is not addressed: a large wick here is desirable for the reversal, while a small wick is desirable on the continuation candle."
+
+python_detector: null
+related: ["phases-of-price", "t-spot", "half-wick-respect", "small-wick-expansion-rule", "fractal-model-c2"]

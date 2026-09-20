@@ -1,0 +1,83 @@
+id: point-of-interest
+name: Point Of Interest (POI)
+category: entry
+status: specified
+aliases:
+- POI
+- the only three points of interest
+definition: 'A dedicated lesson states the list is CLOSED and gives exactly three members, in a strict
+  priority order: (1) fair value gaps, (2) swing highs and lows, (3) the change-in-the-state-of-delivery
+  level (an order block). The third is explicitly a last resort -- he says he ''rarely'' uses it and
+  only when neither a fair value gap nor a swing high/low exists in the range. The search domain is
+  also fixed: measure from the POINT OF REVERSAL (the protected swing being traded away from) to the
+  far edge of the range price has since created, and look only inside that. Where both a fair value
+  gap and a swing point exist, he wants BOTH tagged before trading away, to avoid being stopped at the
+  shallower one.'
+timeframes:
+  htf:
+  - 1D
+  - 4H
+  - 1H
+  ltf:
+  - 15m
+  - 5m
+  - 3m
+  - 1m
+  fractal: true
+preconditions:
+- A point of reversal / protected swing has been established.
+- A range has been created between that reversal and current price.
+detection_rules:
+- 'Define the search range: from the point of reversal to the extreme price has since made.'
+- '1st: is there a fair value gap in that range? If yes, that is the point of interest.'
+- '2nd: if no fair value gap, is there a swing high (bearish) or swing low (bullish) to be taken out?
+  If yes, that is the point of interest.'
+- '3rd: only if NEITHER exists, use the CISD level, and additionally require 50% of the bodies of that
+  opposing-candle series to hold.'
+- If both a fair value gap and a swing point are present, require both to be tagged before trading away.
+- A candidate opposing candle that never reaches a point of interest is rejected as a protected swing,
+  however clean it looks.
+- 'In a consolidation, repeat the process at the range edges: sweep, then confirm with a change in the
+  state of delivery.'
+invalidation:
+- Price closes beyond 50% of the bodies of the level being used -- the level is no longer respected.
+execution:
+  bias: Away from the point of reversal.
+  entry: After price reaches the point of interest and closes through the opposing-candle series there.
+  stop: The resulting protected swing.
+  targets:
+  - drawn liquidity
+  - 2R
+measurable:
+- distribution of POI type used (FVG / swing / CISD level)
+- hit rate by POI type
+- how often both an FVG and a swing exist in the same range
+sources:
+- video_id: NqSbvqDKML0
+  title: The Only Points of Interest That Actually Matter For Trading
+  quote: the only three points of interest that I use
+- video_id: 9AL41xON3hA
+  title: The Only Trading Strategy You Need For 2026
+  quote: points of interest are always going to be either a fair value gap
+- video_id: IJcfC6wAPZU
+  title: Trade Continuations Using Order Blocks
+- video_id: q3nauvjT3q0
+  title: Stop Overcomplicating Trading (Here's the Fix)
+ambiguities:
+- The channel elsewhere is quoted as saying 'all I know are highs, lows, and fair value' -- a two-member
+  list. This lesson agrees on the first two and their primacy but adds a conditional third (the CISD
+  level), so the live-stream claim is close but not exact.
+- He allows the CISD retest to count even when price does not reach the level exactly, 'when I have
+  the context' -- an undefined discretionary override.
+- Where several fair value gaps are stacked, the selection rule is only 'we don't want a deep retracement',
+  which does not always single one out.
+related:
+- cisd
+- fair-value-gap
+- protected-swing
+- continuation-order-block
+- poi-density-by-timeframe
+contributing_units:
+- build_a_model_intro_to_ttrades_fractal_model_02
+draft_count: 1
+voice: ttrades

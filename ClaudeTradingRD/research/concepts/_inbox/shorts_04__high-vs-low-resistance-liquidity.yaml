@@ -1,0 +1,53 @@
+id: high-vs-low-resistance-liquidity
+name: "High Resistance vs Low Resistance Liquidity"
+category: liquidity
+status: specified
+definition: >
+  A 32-second Short gives the mechanical definition the library previously lacked, in terms of
+  swings rather than market conditions. Low resistance liquidity IS a failure swing: as price
+  trades away from a level it generates new highs and lows, and the liquidity resting above and
+  below those untouched swings is low resistance. High resistance liquidity is the opposite case
+  - the swing was first swept and only then reversed, which wipes out the liquidity that was
+  resting at that swing and relocates it to the new, further extreme. The distinction is
+  therefore decidable from whether the swing in the path has already been run.
+
+timeframes:
+  htf: ["1D", "4H"]
+  ltf: ["1H", "15m"]
+  fractal: true
+
+detection_rules:
+  - "For each swing high/low in the intended path, ask whether it has already been swept."
+  - "Never swept (a failure swing left behind by the move) -> low resistance liquidity."
+  - "Swept before the reversal that created it -> high resistance liquidity; the resting liquidity has moved to the new extreme."
+  - "Prefer paths whose intervening swings are failure swings."
+
+invalidation:
+  - "The swing is swept, converting it from low resistance to high resistance."
+
+measurable:
+  - "follow-through when targeting untouched failure swings vs already-swept swings"
+  - "share of daily objectives that sit behind low-resistance liquidity"
+
+sources:
+  - video_id: L9Gd5p14uBE
+    title: "What Creates High & Low Resistance Liquidity?"
+    quote: "Low resistance liquidity is just a failure swing."
+  - video_id: L9Gd5p14uBE
+    title: "What Creates High & Low Resistance Liquidity?"
+    quote: "It is where we first sweep that liquidity before the reversal."
+  - video_id: L9Gd5p14uBE
+    title: "What Creates High & Low Resistance Liquidity?"
+    quote: "as we trade away, we then generate more highs and lows and thus more liquidity"
+
+ambiguities:
+  - "The Short defines the two terms as swing properties and never links them to the market-conditions reading (daily set up to expand, news) held elsewhere in the library."
+  - "No timeframe is named for the swings being classified."
+  - "How many swings deep the classification is carried is not stated."
+
+python_detector: null
+related: ["failure-swing", "liquidity-sweep", "buyside-sellside-liquidity", "low-expectation-target-selection"]
+
+voice: ttrades
+contributing_units: [shorts_04]
+draft_count: 1

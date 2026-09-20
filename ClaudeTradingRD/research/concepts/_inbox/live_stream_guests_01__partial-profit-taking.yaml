@@ -1,0 +1,66 @@
+id: partial-profit-taking
+name: "Partial Profit Taking"
+aliases: ["first partial at 2:1", "leave 20 percent on the table"]
+category: risk
+status: specified
+voice: guest
+guest_sources:
+- "$niper (Matt)"
+
+definition: >
+  $niper's fixed scale-out policy inside the market maker model. He states flatly that you should
+  always be taking partials. The first take-profit is at approximately 2:1, placed at the nearest
+  structural low to the left on the buy side of the curve; the stop is then moved to break even,
+  and roughly 20 percent of the position is left on for the final target. In the sell model the
+  stop is pulled down to sit where the second-distribution-leg entry is, so that a second entry
+  taken there is already covered by a locked-in first position. His worked example is a 3.36:1
+  trade.
+
+timeframes:
+  htf: ["1D", "4H"]
+  ltf: ["15m", "5m", "1m"]
+  fractal: true
+
+preconditions:
+- "A position is open from the post-structure-break entry with a defined 1R distance."
+- "A structural low (buy side of the curve) exists that coincides with roughly 2:1."
+
+detection_rules:
+- "Place the first partial at the nearest low to the left on the buy side of the curve, chosen so it lines up with about 2:1."
+- "After that partial is filled, move the stop to break even."
+- "In the sell model, pull the stop down to the price of the second-distribution-leg entry rather than to entry."
+- "Leave about 20 percent of the position running for the final take-profit at the opposing liquidity."
+
+invalidation:
+- "Price returns to entry after the partial - the runner is closed at break even."
+
+execution:
+  bias: "With the model."
+  entry: "Not set by this rule."
+  stop: "Break even after the first partial; in the sell model, at the second entry."
+  targets: ["about 2:1 at the nearest opposing structural level", "the final sell-side / buy-side objective with the residual 20 percent"]
+
+measurable:
+- "expectancy of the scale-out policy versus a flat exit at the same first target"
+- "how often the residual 20 percent reaches the final objective after the 2:1 partial"
+- "how often the break-even stop is hit before the final objective"
+
+sources:
+- video_id: UmLWRlXd_V8
+  title: "8/14/22  MMXM Live with $niper  - ICT concepts"
+  quote: "you should always be taking partials"
+- video_id: UmLWRlXd_V8
+  title: "8/14/22  MMXM Live with $niper  - ICT concepts"
+  quote: "I take ITP at like a two to one R"
+
+ambiguities:
+- "The partial size taken at 2:1 is not given - only the residual ('leave like 20 on the table') is quantified."
+- "The 2:1 level and 'the low to the left' are treated as the same place in the worked example, with no rule for what to do when they do not coincide."
+- "Whether the break-even stop moves again after the second entry is not stated."
+- "This is the opposite of the never-break-even, never-trail doctrine other guests in the corpus hold - two different traders, not channel self-inconsistency."
+
+python_detector: null
+related: ["mmxm-phase-sequence", "break-even-management", "risk-reward-minimum", "mechanical-trade-management"]
+contributing_units:
+- live_stream_guests_01
+draft_count: 1

@@ -1,0 +1,73 @@
+id: propulsion-block
+name: Propulsion Block
+category: structure
+status: specified
+definition: 'Given its cleanest definition in the corpus: a propulsion block is an ORDER BLOCK OFF OF
+  ANOTHER ORDER BLOCK. The build is stated stepwise: a down-close candle into an important level is
+  closed over, validating an order block; price later retraces back into that order block; the down-close
+  candle (or series) that went into it is then closed over, and that second structure is the propulsion
+  block. Its distinguishing property is sensitivity of the OPENING PRICE: he does not want price to
+  break the mean threshold of a propulsion block. Traded live, he enters on the opening price with the
+  stop either on the low or on the body (he is fine with the body on a propulsion block; the safe alternative
+  is the intermediate-term low), targeting 2R.'
+timeframes:
+  htf:
+  - 1H
+  ltf:
+  - 15m
+  - 5m
+  fractal: true
+preconditions:
+- A validated order block already exists (a candle into an important level, closed through).
+detection_rules:
+- Order block := a single or series of up-close candles into an important level, after which price displaces
+  and closes BELOW the opening price of that single or series (mirror for bullish).
+- Propulsion block := an order block formed off of another order block.
+- 'Build: price retraces into the existing order block; the down-close candle or series that traded
+  into it is then closed over; that is the propulsion block.'
+- Treat the propulsion block's OPENING PRICE as very sensitive.
+- Do not accept a closure or break below the MEAN THRESHOLD of the propulsion block.
+- Entry on the opening price; stop on the low or on the body (the body is acceptable here; the conservative
+  choice is the intermediate-term low); target 2R.
+- Respect the lower half of the propulsion block (bullish case).
+invalidation:
+- Price breaks / closes below the mean threshold of the propulsion block.
+measurable:
+- hit rate of 2R entries at the propulsion block opening price
+- how often the mean threshold is violated before target
+sources:
+- video_id: W2ZilDoBnWU
+  title: 'Propulsion Blocks: What They Are & How to Use Them'
+  quote: A propulsion block is an order block off of another order block
+- video_id: W2ZilDoBnWU
+  title: 'Propulsion Blocks: What They Are & How to Use Them'
+  quote: I do not want to see price break the mean threshold of a propulsion
+- video_id: QqvT4HoQ_ds
+  title: Propulsion Block Setup →Clean Entry, Strong Expansion.
+  quote: I'd look to enter on the opening price with my stop
+- video_id: wfkLTu96Dh8
+  title: 'Next Day Model: Clear Bias Makes Clean Entry'
+  quote: I would like to see price respect the lower half of this
+ambiguities:
+- 'Two different invalidation levels are used across the Shorts for the same object: "the mean threshold"
+  and "the lower half of this". They may be the same level (50% of the block) but that equivalence is
+  never stated.'
+- '"Break" versus "close through" the mean threshold is not distinguished.'
+- The first Short's transcript is truncated mid-sentence at "the mean threshold of a propulsion", so
+  anything he added after that is lost.
+- The stop choice (low vs body vs intermediate-term low) is left to preference with no rule.
+execution:
+  bias: The direction the propulsion block propels.
+  entry: The opening price of the propulsion block.
+  stop: The low, the body, or the intermediate-term low.
+  targets:
+  - 2R
+related:
+- order-block
+- mean-threshold
+- continuation-order-block
+- breaker-block
+voice: ttrades
+contributing_units:
+- shorts_02
+draft_count: 1

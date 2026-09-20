@@ -1,0 +1,108 @@
+id: risk-limits-and-trade-frequency
+name: Hard Risk And Frequency Caps
+definition: 'Two guests in this unit independently state the same hard daily loss cap: two
+  losses in a session or day and you stop. $niper frames it as a -2R ceiling for the day and
+  aims for one trade per session (he says he currently prefers the AM session to the PM).
+  Trader T frames it as a diagnosis - two back-to-back losses means he is reading the market
+  wrong that day, so he shuts it down. Trader T applies the cap to live trading only, explicitly
+  not to his backtesting sessions.
+
+  '
+variants:
+  definition:
+  - 'A set of hard numeric caps applied regardless of outcome. Risk is under 1 percent of
+    the account per trade, aiming for 1 to 2 R. A maximum of one trade is taken per day and
+    a maximum of two per week, whether those trades won or lost. The stated purpose is to
+    bound both over-trading and over-sizing, the two ways an impulsive trader over-risks.
+
+    '
+category: risk
+status: contested
+aliases:
+- two loss rule
+- daily loss stop
+- one trade per session
+- one trade a day
+- two trades a week
+- under 1 percent
+preconditions:
+- Live trading (Trader T excludes simulated backtesting from the cap).
+- None. The caps are unconditional.
+detection_rules:
+- Count losing trades within the session / day.
+- On the second loss, stop trading for the day. $niper states the same cap as a -2R daily
+  floor.
+- $niper's target frequency is one trade per session (one in the AM or one in the PM), not
+  one per day.
+- The cap is on losses, not on total trades - a day of winners is not capped by this rule.
+- Risk less than 1 percent of the account on any single trade.
+- Take at most one trade per day. After it closes, stop for the day regardless of result.
+- Take at most two trades per week. After the second, stop for the week regardless of result.
+- Aim for 1 to 2 R (the model's target is 2R).
+- After the trade is closed, disengage - the 'I have a cushion to work with' impulse is named
+  as the thing that gives back the day.
+invalidation:
+- Not applicable - this is a policy, not a setup.
+- Not applicable.
+measurable:
+- P&L of trades that would have been taken after the second daily loss (the cost or saving
+  of the cap)
+- distribution of losses per day to see how often the cap binds
+- realised risk per trade as a percentage of account
+- trades per day and per week versus the caps
+- P&L of the trades that would have been taken beyond the caps
+- with a 1:2 payoff, the stated break-even win rate is about 34 percent - measure the actual
+  win rate against it
+sources:
+- video_id: UmLWRlXd_V8
+  title: 8/14/22  MMXM Live with $niper  - ICT concepts
+  quote: I don't exceed like let's say two losses in uh a session
+- video_id: UmLWRlXd_V8
+  title: 8/14/22  MMXM Live with $niper  - ICT concepts
+  quote: I'm liking the am session a lot more
+- video_id: wCtxmWe4KNc
+  title: Back Testing Live Session With Trader T
+  quote: I take two losses in a day then I shut it down for the day
+- video_id: zXtJSSkiNmo
+  title: Ash Trades | The Journey To Profitability & The Unicorn Model
+ambiguities:
+- $niper says 'a session or a day I guess' - whether the counter resets between the AM and
+  PM sessions is left open.
+- Neither speaker says whether a break-even trade counts toward the cap.
+- $niper attributes his AM preference partly to the month being August, so it is a conditional
+  preference rather than a rule.
+- Trader T states the cap in the psychological register ('obviously I'm just reading the market
+  wrong'), not as a tested threshold.
+- '''Under 1 percent'' is not reconciled with prop-firm drawdown limits even though he trades
+  prop accounts.'
+- It is not stated whether the weekly cap resets on Sunday or on the first trading day.
+- The 34 percent break-even figure is stated for a 1:2 payoff and ignores costs.
+related:
+- max-one-trade-per-day
+- trade-frequency-baseline
+- tilt-stop-rule
+- position-sizing-fixed-risk
+- mechanical-trade-management
+- fund-trading-from-external-income
+- model-persistence-through-drawdown
+guest_sources:
+- $niper (Matt)
+- 8/14/22  MMXM Live with $niper  - ICT concepts
+- Ash Trades | The Journey To Profitability & The Unicorn Model
+- Back Testing Live Session With Trader T
+- Trader T
+timeframes:
+  htf:
+  - 1D
+  ltf: []
+  fractal: false
+execution:
+  bias: Not applicable.
+  entry: Not applicable.
+  stop: Not applicable.
+  targets: []
+contributing_units:
+- live_stream_guests_01
+- t_talks_01
+draft_count: 2
+voice: guest

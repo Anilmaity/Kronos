@@ -1,0 +1,43 @@
+# Scratch / ad-hoc read-only helper scripts — not part of the deployed system.
+# Already-tracked files here (place_test_order.py, dummy_trade_m90_fade.py)
+# stay tracked; this just stops new ad-hoc helpers from being committed.
+strategies/_scratch/
+_scratch/
+
+# OANDA S5 candle cache written by the live collector / backfill_ltp.py.
+# Can grow to GBs over a multi-month backfill — the already-tracked XAU sample
+# stays tracked; all new cache files are ignored.
+tick_data_collector/Tick_Data_Generator/cache_data/
+
+# Secrets — NEVER commit. AWS keys, OANDA tokens, broker creds, DB passwords.
+.env
+.env.*
+.env_aws
+**/.env
+*.pem
+# MetaAPI account credential drops (id + JWT token).
+account2.txt
+account*.txt
+
+# Compiled Python bytecode (never track; a review-fix commit once swept these in)
+__pycache__/
+*.pyc
+
+# ── Local market-data caches (2026-08-13) ────────────────────────────────────
+# 1-second tick archive (2.5 GB) and the OHLC/S5 parquet caches (21 MB+ and
+# growing with every backfill). Regenerate with backtest.s5_backfill,
+# backtest.backfill_history_cache, or backtest.tick_s5 from the tick archive.
+.history_data/
+strategies/backtest/results/bars_cache/
+strategies/backtest/results/bars_cache_2y/*.parquet
+strategies/backtest/results/bars_tail_*/
+
+# Backtest run artifacts: logs and per-bar regime dumps. The 2026-07 manager-sim
+# regime dumps alone are 36 MB; summaries and trade CSVs stay tracked.
+*.log
+*.err
+*_regime.jsonl
+
+# IDE / tooling scratch
+.idea/
+.playwright-mcp/

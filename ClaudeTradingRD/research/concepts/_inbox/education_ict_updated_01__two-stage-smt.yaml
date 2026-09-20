@@ -1,0 +1,74 @@
+id: two-stage-smt
+name: Two-Stage SMT
+aliases:
+- two-stage SMT sequence
+- two-stage PSP
+category: liquidity
+status: specified
+voice: guest
+guest_sources:
+- GxTradez
+definition: 'GxTradez''s confirmation stack: one stage of SMT immediately followed and confirmed by
+  a second. The stages may be SMT at the key level itself, SMT between candle 1 and candle 2, SMT between
+  candle 2 and candle 3, or a PSP. He names the highest-probability arrangement explicitly: first-stage
+  SMT with the key level (e.g. internal range liquidity / a fair value gap), then a PSP, then a ''kraken
+  correlation'' with a swing point — i.e. an SMT with a key level followed by a two-stage PSP.'
+timeframes:
+  htf:
+  - 4H
+  - 1H
+  ltf:
+  - 30m
+  - 15m
+  - 3m
+  - 1m
+  fractal: true
+preconditions:
+- A key level (fair value gap, range high/low, swing) has been reached.
+- A correlated triad is being watched.
+detection_rules:
+- 'Stage 1 candidates: SMT with the key level itself (one asset trades into the gap / takes the low,
+  the other does not); OR SMT between candle 1 and candle 2; OR a PSP.'
+- 'Stage 2 must follow IMMEDIATELY and confirm stage 1: an SMT between candle 2 and candle 3, or a PSP,
+  or a failure swing on the correlate.'
+- 'Highest-probability form: SMT at the key level -> PSP -> SMT with a swing point.'
+- Only after both stages does he treat the reversal as confirmed and trade the following candle as continuation
+  toward the opposing side of the range.
+invalidation:
+- Only one stage prints — treated as a potential, not a confirmed, reversal.
+execution:
+  bias: Away from the key level, toward the opposing side of the range.
+  entry: CISD / order block / fair value gap on a low timeframe (3-minute and 1-minute in his own trades).
+  targets:
+  - The opposing side of the range
+  - The higher-timeframe draw on liquidity (2.8R in one worked trade)
+measurable:
+- reversal rate of one-stage vs two-stage SMT at the same key levels
+sources:
+- video_id: 3eVxTV_7L2U
+  title: A Complete Trading Framework (Universal Models, SMT, Swing Points) | GXT
+  quote: a two-stage SMT is where we have one stage of SMT and immediately following
+- video_id: 3eVxTV_7L2U
+  title: A Complete Trading Framework (Universal Models, SMT, Swing Points) | GXT
+  quote: this is the highest probable reversal confirmation
+- video_id: 3eVxTV_7L2U
+  title: A Complete Trading Framework (Universal Models, SMT, Swing Points) | GXT
+  quote: the market can also not reverse without SMT
+- video_id: 3eVxTV_7L2U
+  title: A Complete Trading Framework (Universal Models, SMT, Swing Points) | GXT
+  quote: the market cannot reverse without a swing formation
+ambiguities:
+- '''Immediately following'' is not bounded in candles.'
+- '''Kraken correlation'' (rendered ''cracking correlation'' by the captioner) is used as a synonym
+  for SMT at a swing point but is never defined in this lecture.'
+- The two axioms — no reversal without a swing formation, no reversal without SMT — are asserted, not
+  evidenced.
+related:
+- smt-divergence
+- psp-precision-swing-point
+- continuation-psp
+- universal-models
+- correlated-triads
+contributing_units:
+- education_ict_updated_01
+draft_count: 1

@@ -1,0 +1,55 @@
+id: midnight-open-directional-filter
+name: Only Short Above The Midnight Open, Only Long Below It
+aliases:
+- midnight open
+- above midnight open
+- daily open filter
+category: time
+status: underspecified
+definition: 'A hard directional gate on entry price used inside the Twitter model: shorts may only
+  be taken above the midnight open, longs only below it. The level is drawn automatically by the
+  ICT Killzones & Pivots indicator with everything switched off except the midnight opening price.
+  In the final example he substitutes the DAILY open for the midnight open and takes a short above
+  that instead, without giving a rule for when the substitution applies.'
+timeframes:
+  htf:
+  - 1D
+  ltf:
+  - 15m
+  - 5m
+  fractal: false
+preconditions:
+- The midnight (00:00) opening price is marked on the chart.
+detection_rules:
+- Compute midnight_open := the opening price of the 00:00 candle.
+- Short entries are permitted only at prices above midnight_open.
+- Long entries are permitted only at prices below midnight_open.
+- A stated variant substitutes the daily open for the midnight open.
+invalidation:
+- Price never offering an entry on the permitted side of the level - the setup is skipped.
+measurable:
+- share of otherwise valid signals filtered out by the midnight-open condition
+- expectancy of filtered vs unfiltered signals on the same sample
+- difference in outcome between the midnight-open and daily-open variants
+sources:
+- video_id: WwmS47Gb3M0
+  title: The "Twitter Model" The MMXM Trader - ICT Concepts
+  quote: looking to only short above midnight open and then vice versa for Longs
+- video_id: WwmS47Gb3M0
+  title: The "Twitter Model" The MMXM Trader - ICT Concepts
+  quote: instead of using midnight open I use the daily open
+ambiguities:
+- The time zone of 'midnight' is not stated in this video (the rest of the corpus uses New York time).
+- No rule distinguishes when to use the midnight open and when to use the daily open - both are shown,
+  the swap is unexplained.
+- Whether the filter applies to the entry price only or also to the stop and target is not addressed.
+related:
+- mmxm-twitter-model
+- daily-open-eighteen-hundred
+- htf-opening-price-entry
+- est-timezone-anchor
+python_detector: null
+contributing_units:
+- education_ict_updated_02
+draft_count: 1
+voice: ttrades

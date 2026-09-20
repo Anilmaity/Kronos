@@ -1,0 +1,52 @@
+id: max-expansion-deviation-no-trade
+name: Do Not Trade Once The Max Expansion Deviation Is Already Reached
+aliases:
+- weekly range already capped
+- no Friday trade after Thursday max expansion
+category: risk
+status: specified
+definition: 'AM Trades states this as part of his rule set, not as an observation: once the 4 / 4.5
+  deviation (his max expansion) has been reached, the weekly range is spent and he does not take further
+  trades in that direction for the rest of the week. His worked case is a week whose profile called
+  for Thursday and Friday downside expansion, but Thursday already reached max expansion - so Friday
+  was skipped, and he shows that Friday''s attempt to extend was choppy rather than low resistance.'
+timeframes:
+  htf:
+  - 1W
+  - 1D
+  ltf:
+  - 1H
+  fractal: false
+preconditions:
+- A standard deviation projection anchored on the week's manipulation leg.
+detection_rules:
+- Compute the 4 / 4.5 deviation projection of the manipulation leg for the week.
+- If price has already traded to that level, do not take further continuation trades in that direction
+  that week.
+- Expect price action beyond max expansion to be high-resistance / choppy rather than expansive.
+invalidation:
+- A new manipulation leg forms, resetting the projection.
+measurable:
+- range travelled after the 4/4.5 deviation is tagged, per week
+- win rate of continuation trades taken before vs after max expansion is reached
+sources:
+- video_id: wGYde-h84cs
+  title: Live Q&A with AM Trades - Weekly Profile
+  quote: on Thursday we already reached the max expansion deviation
+- video_id: wGYde-h84cs
+  title: Live Q&A with AM Trades - Weekly Profile
+  quote: not trading Friday because I'm not expecting much more downside expansion
+ambiguities:
+- It is not stated whether reaching 4 or 4.5 is the trigger - he names both as 'max expansion'.
+- Whether the rule bars trades in the OPPOSITE direction as well is not addressed.
+- One worked example only.
+related:
+- standard-deviation-projection
+- average-daily-range-targeting
+- expansion-exhaustion-avoid-price
+contributing_units:
+- live_stream_guests_02
+draft_count: 1
+voice: guest
+guest_sources:
+- AM Trades

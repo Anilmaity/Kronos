@@ -1,0 +1,65 @@
+id: dollar-gate-for-fx
+name: "The Dollar Gate For Forex (and when to pair currencies against each other)"
+aliases: ["if the dollar's clean", "frame exotics when dollar is consolidating"]
+category: model
+status: specified
+
+definition: >
+  His whole forex filter, stated when asked how he scans a watchlist. He looks at the dollar
+  first; only if the dollar has a clean framework does he look at any dollar pair. If the
+  dollar is consolidating - sitting in the middle of a range with no framework - dollar pairs
+  are dropped entirely and he pairs currencies against each other instead, which is when he
+  says exotics (his example: yen crosses such as GBP/JPY) may be framed. With a clean dollar
+  the direction inverts onto the pairs: a bearish dollar means he is bullish the dollar pairs,
+  and the pair chosen is the one whose own candle closure is most opposed to the dollar's.
+
+timeframes:
+  htf: ["1D"]
+  ltf: ["4H", "1H", "15m"]
+  fractal: false
+
+preconditions:
+  - "A dollar index chart (he uses DXY as 'the dollar')."
+
+detection_rules:
+  - "Read the dollar first. If it has a clean daily framework, proceed to dollar pairs; otherwise stop."
+  - "Dollar bearish -> favour longs in the dollar pairs; dollar bullish -> favour shorts."
+  - "If the dollar is consolidating (mid-range, no framework), do not frame dollar pairs at all."
+  - "In that case pair currencies against each other - only frame exotics / crosses while the dollar is consolidating."
+  - "Among candidates, pick the pair whose own daily candle 2 closure and continuation are cleanest, not the one that has already expanded."
+
+invalidation:
+  - "The dollar resolves out of its range, restoring dollar pairs and removing the reason to trade crosses."
+
+execution:
+  bias: "Inverse of the dollar for dollar pairs; strongest-vs-weakest currency for crosses."
+  entry: null
+  stop: null
+  targets: null
+
+measurable:
+  - "expectancy of cross trades taken while the dollar is ranging vs trending"
+  - "how often the dollar index framework and the pair framework agree"
+
+sources:
+  - video_id: i2HhHhWdaPQ
+    title: "New York Open Live Q&A"
+    quote: "you only look to frame exotics when dollar is consolidating"
+  - video_id: x4sRGuZIqWk
+    title: "New York Open Live Q&A"
+    quote: "all I look for is a dollar. If the dollar's clean"
+  - video_id: N3Ml-r0X30o
+    title: "New York Open Live Q&A"
+    quote: "you want to pair currencies to find the actual expansion"
+
+ambiguities:
+  - "'Clean' is never defined for the dollar beyond 'not in the middle of this range' and 'daily framework is not really there'."
+  - "He also says he does not use DXY for correlation with the indices, so the gate is forex-only; the two statements sit next to each other without reconciliation."
+  - "No list of which crosses count as 'exotics' is given; the worked examples are GBP/JPY, USD/JPY and NZD/USD, which are not exotics in the usual sense."
+
+python_detector: null
+related: ["currency-pairing-opposition", "relative-strength-asset-selection", "consolidation-range-no-trade", "top-down-analysis-procedure"]
+
+contributing_units: ["live_streams_04"]
+draft_count: 1
+voice: ttrades

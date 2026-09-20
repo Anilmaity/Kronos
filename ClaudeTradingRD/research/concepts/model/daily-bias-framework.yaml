@@ -1,0 +1,320 @@
+id: daily-bias-framework
+name: Previous Candle High / Low Bias (intraday and daily)
+variants:
+  name:
+  - Daily Bias From The Daily Closure
+  - Daily Bias Framework
+  - Daily Bias (Previous Day High/Low Framework)
+  definition:
+  - 'The one-sided daily bias is read off a single daily closure against the previous day''s
+    range, and it is a hard gate -- without it he does not drop to the hourly chart. Two cases.
+    CONTINUATION CLOSURE: price closes beyond the previous day''s extreme (below the previous
+    day low -> expect continuation lower; above the previous day high -> expect continuation
+    higher). REVERSAL CLOSURE: price sweeps the previous day''s extreme and closes back inside
+    it (sweeps the previous day low and closes back above -> expect a continuation higher
+    next day; sweeps the previous day high and closes back below -> expect a continuation
+    lower). Both cases produce a directional expectation for the NEXT day, which is the day
+    traded.'
+  - 'EARLIEST RECORDING OF THE BIAS PROCEDURE IN THE CORPUS, and structurally different from
+    the later previous-candle / displacement engine. It is a five-item ordered read: (1) previous
+    liquidity taken - because liquidity accumulated at a low must be distributed higher and
+    vice versa; (2) swing highs and lows, short-term highs and lows, and relatively equal
+    highs and lows, marked because that is where stops rest; (3) market structure shifts and
+    imbalances, read as the change in trend; (4) whether price is at equilibrium, premium
+    or discount; (5) the plain lower-high/lower-low sequence to see which way price is turning.
+    He then cleans the chart down to the closest imbalances and liquidity and states the bias
+    as a path, not a direction.'
+  - 'Asked to justify a bias on air he reduces it to two steps and calls it not very complex.
+    Step one: read yesterday''s daily closure - a bearish closure means bearish. Step two:
+    ask which is more likely to be reached today, the previous day high or the previous day
+    low; the answer names the bias. He adds the mechanical shortcut he actually uses: the
+    daily and hourly model on his own indicator prints a box, and he takes the direction of
+    that box as the bias (grey bearish, green bullish) - whenever the model appears, that
+    is the bias for the day. The supporting expectation is that a new day is more likely to
+    reach a previous day extreme, and that on a bearish day price opens, makes its high, closes
+    below it, and that high holds.
+
+    '
+  - 'The channel''s default procedure for producing a directional expectation for the coming
+    day. Unless the day consolidates, it will take previous day high, previous day low, or
+    both; the bias is simply the answer to which is more likely. That answer is produced by
+    a short ordered checklist: trend, whether the previous day closed beyond a level or merely
+    reached it, failure to displace at swing points, and the next day model. The bias is maintained
+    until the draw on liquidity is reached, then re-derived.
+
+    '
+  - The compressed version of his daily bias procedure as given inside the draw-on-liquidity
+    lesson. Beyond the overall trend, what he focuses on is displacement, or the lack of it,
+    over previous day high and below previous day low. Failure to displace over previous day
+    high gives a downward bias with previous day low as the draw; failure to displace below
+    previous day low gives a bias back into the range; a candle that DOES displace below a
+    low implies continuation and the next day is expected to reach for that previous day low.
+    A day that closes over the previous day puts previous day high back as the draw.
+definition: The same previous-candle test applied continuously as a draw-on-liquidity engine
+  rather than as a single call. Unless price consolidates forever it must reach for the previous
+  candle's high or the previous candle's low; direction of travel picks which. If price reaches
+  one side and cannot displace/close outside, a reversal is framed and the OTHER side becomes
+  the next draw. He runs this candle-by-candle on the 4-hour, and says the same procedure
+  works on 1-hour, 30-minute and 15-minute but gets noisier the lower you go. When the read
+  becomes range-bound he marks the range high and low and waits for one of those instead.
+category: model
+status: contested
+aliases:
+- intraday bias
+- previous candle's high and low
+- daily closure bias
+- continuation closure
+- reversal closure
+- how to get my bias
+- why is the S&P bearish
+- grey box bearish
+- daily bias
+- framing a narrative
+- displacement over previous day high
+preconditions:
+- The daily candle has closed.
+- A daily chart plus the intermediate timeframes (1H, 15m) for confirmation.
+- The previous daily candle has closed.
+- Previous day high and low are marked.
+- Previous day (and ideally previous week) high and low are marked.
+- Relevant swing points and PD arrays are marked.
+- The previous daily candle has closed; previous day high and low are marked.
+detection_rules:
+- Mark the previous candle's high and low on the working timeframe.
+- Direction of travel picks the more likely side to be taken first.
+- Side taken + close OUTSIDE -> continue; expect the same side of the next candle to be taken.
+- Side taken + close back INSIDE -> reversal; the opposite side becomes the draw.
+- Both sides taken in one candle -> no bias; let another candle print.
+- Inside bar -> no information; default to trend continuation.
+- 'Range-bound stretches: mark the range high/low and wait for price to reach one of them.'
+- Confirm the resulting draw on lower timeframes before executing.
+- 'Continuation closure: daily close beyond the previous day''s high or low -> bias in that
+  direction for the next day.'
+- 'Reversal closure: daily trades beyond the previous day''s extreme and closes back inside
+  the previous day''s range -> bias away from the swept side for the next day.'
+- If neither, there is no one-sided bias and the hourly chart is not consulted.
+- Confirm the bias by requiring a change in the state of delivery on the hourly inside the
+  candle 2 (the reversal candle) before entries are valid.
+- 'The same closure logic is applied fractally: monthly closure gives a bias for the daily;
+  weekly closure gives a bias for the week.'
+- 1. Mark what liquidity has just been taken; expect distribution toward the opposite side.
+- 2. Mark swing highs/lows, short-term highs/lows and relatively equal highs/lows as the stop
+  pools.
+- 3. Mark market structure shifts and the imbalances (fair value gaps) they leave - these
+  signal the change in trend.
+- 4. Determine whether price is in premium, discount or at equilibrium of the operative range.
+- 5. Read the simple lower-high/lower-low (or higher-high/higher-low) sequence.
+- Reduce to the CLOSEST imbalance and the closest liquidity; state the expected path through
+  them.
+- The bias is a path, not a single direction - e.g. down to take the resting liquidity first,
+  then up to the target.
+- 'Read the previous daily closure: bearish close -> bearish bias; bullish close -> bullish
+  bias.'
+- Ask which of previous day high or previous day low is more likely to be reached; that is
+  the draw.
+- 'Equivalently: take the direction of the daily + hourly model when it prints.'
+- Confirm with the daily candle 2 closure plus an hourly CISD (and an SMT if present) from
+  the prior day.
+- 'Expect the bearish-day shape: open, make the high, close below it, that high holds.'
+- 1. If the previous day closed ABOVE previous day high -> bullish; the draw is the next previous
+  day high.
+- 2. If price reached above previous day high but closed back inside the range -> bearish;
+  the draw becomes previous day low.
+- 3. Mirror rules for the low side.
+- 4. Apply the same two tests on previous week high/low for the weekly frame.
+- 5. If previous-period levels are consumed, look left and use the nearest untaken swing point
+  as the draw.
+- 6. Failure to displace under a swing low -> bias up; over a swing high -> bias down.
+- 7. If the day is an inside/indecision candle, declare no bias, mark both extremes, and wait
+  for one to be taken.
+- 8. Hold the bias until the draw is reached.
+- Fail to displace over previous day high -> bearish bias, draw = previous day low.
+- Fail to displace below previous day low -> bias back into the range.
+- Displace below a low -> continuation expected; next day's draw is the new previous day low.
+- Close over the previous day -> draw = previous day high.
+- Where structure is bearish but a day closes back inside after sweeping lows, he wants to
+  see the next day close BELOW the up-close candle, which validates it as an order block and
+  keeps the bearish read.
+invalidation:
+- He shows it being wrong twice inside one worked example and simply re-reads the next close.
+- An opposing candle 2 forms off the previous day extreme on the traded day.
+- Price closes beyond the EQ of the previous candle on the aligned timeframe.
+- The nominated liquidity is taken and price does not distribute the expected way.
+- Price trades and closes beyond the extreme the bias says should hold, at which point the
+  day becomes an invalidation trade rather than a bias trade.
+- A close beyond the level in the opposite direction to the bias.
+- Reaching the draw (the bias is then spent, not wrong).
+- A daily close beyond the level whose failure produced the bias.
+measurable:
+- accuracy of the previous-candle draw by timeframe (4H vs 1H vs 15m) — he asserts degradation
+  but gives no numbers
+- frequency of both-sides-taken (no-bias) candles
+- next-day directional hit rate after a continuation closure vs a reversal closure
+- proportion of days with no qualifying closure (no-trade days)
+- hit rate of the nominated path (liquidity grab first, then target) vs the direct move
+- how often the closest-imbalance simplification changes the call
+- hit rate of previous day high / low given the prior day's closure direction
+- hold rate of the anticipated daily extreme
+- daily frequency of consolidation / one-sided / both-sides outcomes
+- hit rate of rule 1 and rule 2 separately
+- R-multiple distribution of the London and New York entry patterns shown
+- next-day accuracy of each of the four displacement cases
+- how often the order-block-validation confirmation follows a sweep-and-close-back-inside
+  day
+sources:
+- video_id: 6zTz7WMdMWg
+  title: Intraday Bias Simplified
+  quote: the previous candles high and low this can be used to frame a draw
+- video_id: 6zTz7WMdMWg
+  title: Intraday Bias Simplified
+  quote: price cannot displace out of this range or above previous candles high
+- video_id: 6zTz7WMdMWg
+  title: Intraday Bias Simplified
+  quote: it just becomes a little bit more noisy as you go lower
+- video_id: 6zTz7WMdMWg
+  title: Intraday Bias Simplified
+  quote: I am just trying to find something that will give me a reliable draw
+- video_id: 6zTz7WMdMWg
+  title: Intraday Bias Simplified
+  quote: these concepts are fractal
+- video_id: 6zTz7WMdMWg
+  title: Intraday Bias Simplified
+  quote: I need at least two R personally
+- video_id: TNybDCtwBnc
+  title: TTrades Playbook | Fractal Model Fundamentals (TTFM)
+  quote: if price closes below its previous day low, I'm expecting a continuation lower
+- video_id: 9AL41xON3hA
+  title: The Only Trading Strategy You Need For 2026
+  quote: If price has a closure outside the range
+- video_id: 8BWkRGhuj1k
+  title: 'The Phases of Price Action: A Blueprint for Market Movement'
+  quote: I'm waiting for the daily closure to also align
+- video_id: q3nauvjT3q0
+  title: Stop Overcomplicating Trading (Here's the Fix)
+- video_id: jKuXaC84Qx4
+  title: Trading the Invalidation of Daily Bias
+- video_id: tZMgGsTqqVM
+  title: ICT Daily Bias
+  quote: the first thing i look at is previous liquidity taken
+- video_id: tZMgGsTqqVM
+  title: ICT Daily Bias
+  quote: next thing i look at is swing highs swing lows
+- video_id: tZMgGsTqqVM
+  title: ICT Daily Bias
+  quote: after that i look for market structure shifts and imbalances
+- video_id: tZMgGsTqqVM
+  title: ICT Daily Bias
+  quote: just are we at equilibrium premium or discount
+- video_id: Gu7FjYYcKhI
+  title: Discount & Premium - ICT Concepts
+  quote: this is how you kind of get your overall bias for the day
+- video_id: N3Ml-r0X30o
+  title: New York Open Live Q&A
+  quote: The only reason I'm bearish today is we had a bearish closure yesterday.
+- video_id: x4sRGuZIqWk
+  title: New York Open Live Q&A
+  quote: you just use the daily and hourly model when it appears that's your bias
+- video_id: eIPM-D8RrSQ
+  title: New York Open Live Q&A
+  quote: I like to have a bias. Makes trading easier.
+- video_id: g3oDYq4P9ZE
+  title: ICT Daily Bias - The Only Video You Will Ever Need!
+  quote: price more likely to take previous day high or previous state low
+- video_id: YESqIoA7Wyg
+  title: Important Liquidity Levels - Draw On Liquidity - ICT
+- video_id: 3OivsP1j_UE
+  title: Internal & External Liquidity (Daily Bias) - ICT Concepts
+- video_id: FXJBFbZQbck
+  title: The Easiest Draw On Liquidity (DOL) - Daily Bias - ICT
+  quote: we fail to displace over previous day's high that gives me a downwards bias
+- video_id: wy3OSPxu5U0
+  title: Top Down Analysis | Daily Bias To Entries - ICT Concepts
+ambiguities:
+- '''Displace out of this range'' vs ''close outside'' are used interchangeably; the operative
+  test in every example is the CLOSE.'
+- The noise claim as timeframes drop is stated but never quantified or bounded (he still uses
+  the 1-minute for execution).
+- When both a previous-candle level and a left-hand swing point conflict, no precedence is
+  given — he lists both and waits.
+- '''Closes below its previous day low'' does not say whether the reference is the previous
+  day''s wick low or body low.'
+- The daily open used is not stated in this unit (18:00 vs midnight); the closure test is
+  applied to whatever the charting default produces.
+- A day that closes inside the previous day's range without sweeping it is not covered by
+  either case; by elimination it produces no bias, but this is never said.
+- 'EVOLUTION, NOT CONTRADICTION: this is the earliest bias recording. The later canon (caaS6_Q7O78,
+  FXJBFbZQbck) replaces this five-item read with the previous-candle take-and-close test plus
+  displacement over previous day high/low. This version is superseded but is the origin of
+  the ''liquidity accumulated must be distributed'' rationale. Both preserved.'
+- No weighting or precedence among the five items.
+- '''The closest imbalances and liquidity'' has no distance rule.'
+- The video is explicitly rushed ('made it really quickly before i go on a trip').
+- The indicator shortcut is not reproducible without the indicator; he does not give the box's
+  derivation, only that it is the daily + hourly model.
+- He also says a bias is optional - on a day with none he waits for reactions at points of
+  interest instead - so the framework is a preference, not a gate.
+- What makes one previous day extreme 'more likely' than the other is left to the closure
+  direction alone in this unit.
+- Trend, used to break ties, is never defined in this unit (no moving average, no structural
+  definition).
+- The rules are presented as a narrative, not as a precedence-ordered algorithm; when two
+  rules disagree (e.g. weekly bullish, daily bearish) no resolution is given.
+- '''Consolidation'' (the no-bias case) has no threshold.'
+- The daily candle's session/timezone boundary is not stated in this video.
+- '''Displacement'' is never quantified anywhere in this unit - no candle-size, gap or close-beyond
+  test is given.'
+- This is explicitly a summary; the full procedure is deferred to his dedicated daily bias
+  video.
+- The order-block-validation confirmation is applied when 'the structure is bearish', with
+  structure itself undefined here.
+related:
+- next-day-model
+- failure-to-displace
+- phases-of-price
+- timeframe-pairing
+- daily-bias-c2-c3-h1-cisd
+- fractal-model-c2
+- fractal-model-c3
+- invalidation-trade
+- bias-split-across-timeframes
+- draw-on-liquidity
+- premium-discount
+- market-structure-shift
+- relatively-equal-highs-lows
+- previous-period-high-low
+- daily-profile-confirmation
+- no-fading-the-daily-candle
+- internal-external-rotation
+- three-candle-outcomes
+- trend-by-previous-day-extremes
+- displacement
+- order-block
+- top-down-analysis-procedure
+timeframes:
+  htf:
+  - 1D
+  - 4H
+  ltf:
+  - 1H
+  - 30m
+  - 15m
+  - 1m
+  fractal: true
+execution:
+  bias: The previous candle's untaken side.
+  entry: 'Down one or two timeframes: an open-low-high-close shape for a bullish higher-timeframe
+    candle, then an order block / fair value gap at the low.'
+  stop: Below the mean threshold of the order block being used (so price can revisit the block
+    without stopping you out).
+  targets:
+  - The previous higher-timeframe candle's high/low
+  - Minimum 2R
+contributing_units:
+- build_a_model_intro_to_ttrades_fractal_model_02
+- education_ict_01
+- education_ict_updated_01
+- education_ict_updated_02
+- live_streams_04
+- the_foundation_01
+draft_count: 6
+voice: ttrades

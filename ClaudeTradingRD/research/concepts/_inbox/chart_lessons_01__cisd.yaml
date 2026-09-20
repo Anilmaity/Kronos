@@ -1,0 +1,73 @@
+id: cisd
+name: "Change In The State Of Delivery (CISD)"
+aliases: ["change in the state of delivery", "closure through that level", "CISD"]
+category: entry
+status: specified
+
+definition: >
+  The confirmation event that converts a candidate reversal into a tradeable one. Locate
+  the extreme that the reversal turned on, identify the consecutive series of same-direction
+  close candles that produced that extreme (down-close candles at a low, up-close candles
+  at a high), and require price to close back through that series. That close-through is
+  the change in the state of delivery. In these walkthroughs it is applied at every scale
+  - on the hourly to confirm a daily candle 2, on the 5-minute and 1-minute to confirm an
+  intraday reversal, and on the 15-minute inside a scalp - and it is what permits the next
+  candle to be traded as a continuation. The same close-through simultaneously creates a
+  protected swing at the extreme beneath it, and the series it closes through becomes the
+  opposing candle / order block that can be retested for entry.
+
+timeframes:
+  htf: ["1D", "1H", "15m"]
+  ltf: ["5m", "3m", "1m"]
+  fractal: true
+
+preconditions:
+  - "A candidate reversal - typically a candle 2 closure - on the timeframe above."
+  - "A visible extreme inside that candle with a series of same-direction close candles leading into it."
+
+detection_rules:
+  - "Find the reversal point (the low for a bullish case, the high for a bearish case)."
+  - "Identify the consecutive series of down-close candles that made the low (or up-close candles that made the high)."
+  - "Require a close through that series: above the series' high for a bullish CISD, below the series' low for a bearish CISD."
+  - "Read the confirmation on the candle bodies where the wicks are noisy; the speaker states this for the hourly confirmation of a daily candle 2."
+  - "After the close-through, anticipate the next candle to trade in the CISD direction."
+
+  - "0.5 of the change in the state of delivery is marked as a level the higher-timeframe candle should close beyond: closing back over it (bearish case) is called a conflict, and it is weighed against the other evidence rather than being an automatic veto."
+  - "The change in the state of delivery is also what differentiates a retracement from a reversal - when a leg is ambiguous, wait for the opposing-direction CISD to print or fail to print, and read the leg from that."
+invalidation:
+  - "No close-through has occurred - the reversal is unconfirmed and no trade is taken."
+  - "The extreme that the CISD protected is subsequently taken out."
+
+execution:
+  bias: "Direction of the close-through."
+  entry: "On the retest of the series that was closed through (the opposing candle), or on the following continuation."
+  stop: "Below the protected low / above the protected high created by the close-through."
+  targets: ["the draw established by the higher-timeframe candle 2"]
+
+measurable:
+  - "elapsed candles from the extreme to the confirming close-through"
+  - "hit rate of the following candle expanding in the CISD direction"
+  - "frequency of CISD at each scale (1H, 15m, 5m, 1m) per session"
+
+sources:
+  - video_id: UBTl7za9obc
+    title: "TTrades Top-Down Chart Lessons #2"
+  - video_id: IzOQmcgLyA0
+    title: "TTrades Top-Down Chart Lessons #3"
+  - video_id: w-JekHg6Ldk
+    title: "TTrades Top-Down Chart Lessons #4"
+
+  - video_id: Nlw-PZhoViQ
+    title: "TTrades Top-Down Chart Lessons #1"
+    quote: "We're closing over point five of this change in the state of delivery"
+ambiguities:
+  - "Sourced from an ASR (whisper-small) transcript, not YouTube captions; wording may be imprecise."
+  - "The conflict case (open supports the bias but the close is over 0.5 of the CISD) is resolved by requiring more lower-timeframe confirmation, not by a stated rule about which signal wins."
+  - "In video Nlw-PZhoViQ the CISD levels are read off the on-screen indicator (he selects it and sets the bias) rather than constructed by hand, so the exact construction is not observable in the transcript."
+  - "Whether the close-through must be a body close is never stated explicitly, though the speaker does once say to focus on the bodies."
+  - "The series of same-direction candles is unbounded - no maximum count, and no rule for what terminates a series."
+  - "In several passages the CISD is read directly off the speaker's on-screen indicator rather than constructed manually; the indicator's rule set is not given in these transcripts."
+  - "The relationship between CISD and the opposing candle is shown by example but never stated as an identity."
+
+python_detector: null
+related: ["hourly-cisd-confirmation", "protected-swing", "order-block", "fractal-model-c2", "t-spot"]

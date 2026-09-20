@@ -1,0 +1,50 @@
+id: macros-are-htf-opens
+name: Macros Are Just Higher-Timeframe Candle Opens
+definition: The derivation of his intraday clock, given in full on stream. Entering around 9:31 leaves
+  you inside a 15-minute, 30-minute, hourly and 4-hour candle that are all still forming. 9:45 matters
+  because a new 15-minute candle opens there. 10:00 matters because a new 30-minute, a new hourly
+  and a new 4-hour candle all open simultaneously - which is why 10:00 is the point at which direction
+  can change, with 9:45 the lesser alternative. He will not enter at 9:50, near the end of a 15-minute
+  candle; he waits for the next candle open.
+category: time
+status: specified
+timeframes:
+  htf:
+  - 4H
+  - 1H
+  - 30m
+  ltf:
+  - 15m
+  - 5m
+  - 1m
+  fractal: true
+detection_rules:
+- 9:45 = a new 15-minute candle opens.
+- 10:00 = a new 30-minute, hourly and 4-hour candle all open together.
+- Treat these as the points at which price can change direction, 10:00 being the stronger of the two.
+- Do not enter late inside a forming candle; wait for the next candle open.
+- All times are New York time (see est-timezone-anchor).
+measurable:
+- frequency of intraday direction change at 9:45 and 10:00 vs other quarter-hours
+sources:
+- video_id: yNgx9OAefuI
+  title: New York Open Live Q&A
+  quote: 10 is where we get a new 4hour candle
+- video_id: m0wTBdUe7gs
+  title: New York Open Live Q&A
+  quote: when becomes the time where something can adjust, usually 10
+ambiguities:
+- The 4-hour candle opening at 10:00 implies a 4-hour series anchored at 02:00/06:00/10:00/14:00/18:00/22:00
+  New York time; he never states the anchor explicitly.
+- 8:30 is mentioned as one of the times price expands with volatility but is not derived from a candle
+  open in the way 9:45 and 10:00 are.
+related:
+- est-timezone-anchor
+- macros-not-used
+- new-york-intraday-time-levels
+- time-based-exit-htf-close
+- session-open-volume-nyse
+contributing_units:
+- live_streams_01
+draft_count: 1
+voice: ttrades

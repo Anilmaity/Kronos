@@ -1,0 +1,55 @@
+id: daily-range-budget
+name: Daily Range Budget (Eyeballed, Not ADR)
+definition: 'Before taking an entry he estimates the expected daily range by looking at the
+  last several daily candles (his example on NQ: 658, 740 and 540 points, so roughly 500 to
+  600 expected) and asks how much of that budget the current day has already produced. Once
+  the bulk of the expected range has been produced, further entries in that direction become
+  unappealing even if the idea is otherwise valid. He explicitly declines to use an average-daily-range
+  indicator.
+
+  '
+category: risk
+status: underspecified
+aliases:
+- daily range created
+- how much range is left
+preconditions:
+- The current day has a measurable high-to-low range so far.
+detection_rules:
+- Measure the high-to-low range of the last several daily candles.
+- Treat the typical value as the expected range for today.
+- Measure today's range so far and compute the remainder.
+- Near the top of the expected range, reject new entries in the same direction.
+invalidation:
+- An unusually large day where the range materially exceeds the recent norm.
+measurable:
+- trade outcome bucketed by percentage of expected daily range already consumed at entry
+sources:
+- video_id: 0AYGNc9czYc
+  title: New York Open Live Q&A
+- video_id: egV_gABTQks
+  title: (CPI) New York Open Live Q&A
+ambiguities:
+- No lookback length or statistic (mean, median, percentile) is specified.
+- The bulk of the range is not defined as a percentage.
+related:
+- three-entry-quality-criteria
+- dont-trade-after-expansion
+- time-based-exit-htf-close
+timeframes:
+  htf:
+  - 1D
+  ltf:
+  - 1H
+  - 15m
+  fractal: false
+execution:
+  bias: Unchanged.
+  entry: Only while meaningful range remains.
+  stop: Not specified by this concept.
+  targets:
+  - Constrained by the remaining expected range
+contributing_units:
+- sunday_sessions_live_q_a_01
+draft_count: 1
+voice: ttrades

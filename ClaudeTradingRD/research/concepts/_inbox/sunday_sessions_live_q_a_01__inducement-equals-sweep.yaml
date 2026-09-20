@@ -1,0 +1,47 @@
+id: inducement-equals-sweep
+name: "Inducement Is the Same Thing as a Liquidity Sweep"
+aliases: ["inducement", "liquidity sweep"]
+category: liquidity
+status: specified
+
+definition: >
+  Asked to distinguish inducement from a liquidity sweep, he states they are effectively the same
+  and that the vocabulary around them is unnecessary. Inducement is simply price running out a low
+  before trading higher (or a high before trading lower). His preferred form of it is a sweep of a
+  short-term high or low followed by a fair value gap.
+
+timeframes:
+  htf: ["1D", "4H", "1H"]
+  ltf: ["15m", "5m", "3m"]
+  fractal: true
+
+preconditions:
+  - "A prior reversal has occurred and price has begun trading away from a low or high."
+
+detection_rules:
+  - "Price returns and trades through a short-term low (or high) formed after the reversal."
+  - "Price then continues in the original reversal direction."
+  - "Preferred variant: the sweep is accompanied by a fair value gap in the continuation direction."
+
+invalidation:
+  - "Price closes beyond the swept level and continues, making it an expansion rather than a sweep."
+
+execution:
+  bias: "Direction of the original reversal."
+  entry: "After the sweep, preferably from the associated fair value gap."
+  stop: "Beyond the sweep extreme."
+  targets: ["Drawn liquidity in the continuation direction"]
+
+measurable:
+  - "frequency of a short-term-low sweep preceding continuation legs"
+
+sources:
+  - video_id: egV_gABTQks
+    title: "(CPI) New York Open Live Q&A"
+
+ambiguities:
+  - "He does not distinguish inducement from the continuation order block, though the described mechanics overlap."
+  - "Short-term is not defined in candles or timeframe."
+
+python_detector: null
+related: ["continuation-order-block", "liquidity-sweep-vs-consolidation"]

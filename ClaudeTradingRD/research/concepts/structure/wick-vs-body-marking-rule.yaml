@@ -1,0 +1,86 @@
+id: wick-vs-body-marking-rule
+name: Wick-vs-Body Rule For Marking A Block's Level
+definition: 'The channel''s only stated PROCEDURE for what counts as a small versus a large
+  wick, and the only place where the answer changes something mechanical. It is a within-candle
+  comparison, not an absolute threshold: if the candle is full-bodied with little wick, the
+  block level is the whole BODY and the half-level used is the mean threshold (50% of the
+  body). If the candle has a large wick and a smaller body, the block level is instead the
+  CLOSE-to-extreme span (close to the low for a bearish block, close to the high for a bullish
+  one) and the half-level used is the 0.5 of that WICK. A third, coarser branch is given for
+  mitigation blocks in a fast trend: a very small body -> use the wicks; price clustered together
+  -> use the opening price.'
+category: structure
+status: specified
+aliases:
+- which part of the candle I use
+- close to the low
+- 0.5 of the wick
+preconditions:
+- A block (breaker, order block or mitigation block) has already been validated structurally.
+detection_rules:
+- Compare the candle's body span |close - open| with its wick span on the relevant side.
+- Body dominant (full body, little wick) -> zone := open..close; half-level := mean threshold
+  = 50% of the body.
+- Wick dominant (large wick, smaller body) -> zone := close..extreme (close-to-low bearish,
+  close-to-high bullish); half-level := 0.5 of that wick span.
+- Bodies must respect the chosen level; wicks are allowed to trade into it.
+- 'Mitigation-block variant in a fast trend: very small body -> use the wicks; candles clustered
+  together -> use the opening price.'
+invalidation:
+- A body closes beyond the chosen half-level.
+measurable:
+- reaction rate at the body mean threshold vs the 0.5-of-wick level, bucketed by wick/body
+  ratio
+- the wick/body ratio at which the two markings stop agreeing, measured over a sample of blocks
+- how often the wick-marked level would have been hit when the body-marked level was not
+sources:
+- video_id: dcIdzqD3kMU
+  title: Breaker Blocks Simplified - ICT Concepts
+  quote: I will focus on the entire body of the candle
+- video_id: dcIdzqD3kMU
+  title: Breaker Blocks Simplified - ICT Concepts
+  quote: the mean threshold or 50 of the body
+- video_id: dcIdzqD3kMU
+  title: Breaker Blocks Simplified - ICT Concepts
+  quote: a large Wick and smaller body I normally focus on the wick
+- video_id: dcIdzqD3kMU
+  title: Breaker Blocks Simplified - ICT Concepts
+  quote: with the low as well as a 0.5 level of this Wick
+- video_id: NgFIza9qsGQ
+  title: Finding Entries Into Trend - ICT Concepts
+  quote: very small body, and I'll use the wicks
+- video_id: NgFIza9qsGQ
+  title: Finding Entries Into Trend - ICT Concepts
+  quote: When price is more clustered together here, I will use the opening price.
+ambiguities:
+- HIGHEST-VALUE PARTIAL ANSWER TO THE LIBRARY'S 'WICK SIZE' GAP, BUT STILL NOT A NUMBER. He
+  gives a comparison ('large Wick and smaller body') and a procedure, never a ratio or percentage.
+  A detector must pick its own cut - wick_span > body_span is the reading the words support.
+- Which wick is measured when the candle has wicks on both sides is not stated.
+- The mitigation-block branch uses a third criterion ('clustered together') that is about
+  the neighbourhood of candles, not the candle itself, and is not defined.
+- This rule governs WHICH LEVEL to mark. It is silent on the separate question - which the
+  corpus also never answers - of whether a wick is small enough for the candle to count as
+  an expansion candle.
+related:
+- breaker-block
+- mitigation-block
+- mean-threshold
+- half-wick-respect
+- small-wick-supports-expansion
+- large-wick-target-adjustment
+- wick-trust-test
+timeframes:
+  htf:
+  - 1D
+  - 4H
+  - 1H
+  ltf:
+  - 15m
+  - 5m
+  - 1m
+  fractal: true
+contributing_units:
+- education_ict_01
+draft_count: 1
+voice: ttrades

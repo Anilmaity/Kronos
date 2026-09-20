@@ -1,0 +1,67 @@
+id: timeframe-pairing
+name: "Timeframe Pairing (context / swing point / entry)"
+aliases: ["15-minute and one-minute fractal model", "time frame parents for scalping"]
+category: time
+status: specified
+
+definition: >
+  A three-slot timeframe triad in which each slot has a fixed job: one timeframe supplies
+  context and bias via a candle that supports expansion; the next supplies the swing point
+  (the candle 2 / candle 3 structure); the lowest supplies the entry. For scalping the
+  stated triad is hourly for context, 15-minute for the swing point, 1-minute for entry,
+  which he calls the 15-minute and 1-minute fractal model. He then states its fractal
+  equivalence explicitly: this is the same structure as using a daily for bias, a 4-hour
+  candle closure, and a 15-minute entry. The triad is what makes the rest of the model
+  scale-free - the same candle 2 / CISD / protected swing logic is run at whichever three
+  levels are selected.
+
+timeframes:
+  htf: ["1D", "1H"]
+  ltf: ["4H", "15m", "1m"]
+  fractal: true
+
+preconditions:
+  - "A chosen scalping or swing horizon, which fixes which triad is used."
+
+detection_rules:
+  - "Scalp triad: 1H for context/bias, 15m for the swing point, 1m for entry."
+  - "Swing triad (stated as equivalent): 1D for bias, 4H candle closure, 15m for entry."
+  - "The context candle must support expansion - in the scalp example, an hourly candle with a small wick reversing off the previous hour."
+  - "The middle timeframe carries the candle 2 closure and candle 3 continuation."
+  - "The lowest timeframe supplies only the fill and the stop, never the bias."
+
+  - "A third pairing is named: 30-minute swing point with 3-minute entry, called the fractal 30 minute and three minute setup."
+  - "The pairing is chosen by whether the current timeframe can still supply a swing point - if the higher timeframe is already forming its wick and no swing formation is expected there, drop one timeframe."
+invalidation:
+  - "The context candle does not support expansion (large wick, no reversal off the prior candle) - the triad is not in play."
+
+execution:
+  bias: "From the context timeframe."
+  entry: "On the lowest timeframe of the triad."
+  stop: "At the protected swing available on the entry timeframe."
+  targets: ["structure visible on the middle and context timeframes"]
+
+measurable:
+  - "performance of the 1H/15m/1m triad vs the 1D/4H/15m triad on the same instrument"
+  - "how often the context candle qualifies as expansion-supporting per session"
+  - "average R by triad"
+
+sources:
+  - video_id: w-JekHg6Ldk
+    title: "TTrades Top-Down Chart Lessons #4"
+    quote: "using the 15-minute as a swing point and one-minute as entry"
+  - video_id: UBTl7za9obc
+    title: "TTrades Top-Down Chart Lessons #2"
+
+  - video_id: Nlw-PZhoViQ
+    title: "TTrades Top-Down Chart Lessons #1"
+    quote: "trade the fractal 30 minute and three minute setup"
+ambiguities:
+  - "Sourced from an ASR (whisper-small) transcript, not YouTube captions; wording may be imprecise."
+  - "Video Nlw-PZhoViQ works daily to hourly to 30m to 15m to 3m and treats 30m/3m, 30m alone and 15m alone as alternative ways to take the same idea, so the triad is a family of pairings rather than a fixed set."
+  - "Only two triads are named. Whether intermediate pairings are permitted, and by what ratio the three slots should relate, is not stated."
+  - "In video UBTl7za9obc the entry work runs daily/weekly to hourly to 5m to 3m to 1m, which does not map cleanly onto a three-slot triad; the pairing is a scalping statement and the top-down procedure is looser in practice."
+  - "Small wick on the context candle is not quantified."
+
+python_detector: null
+related: ["top-down-analysis-procedure", "rr-gated-entry-refinement", "fractal-model-c2", "small-wick-expansion-rule", "timeframe-alignment-pairs"]

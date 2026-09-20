@@ -1,0 +1,73 @@
+id: propulsion-block
+name: Propulsion Block
+aliases:
+- propulsion block
+category: structure
+status: specified
+definition: 'An order block that forms off another order block. Sequence: a first order block is
+  validated (candles into an important level, then a close beyond their opening price); price retraces
+  and reaches back into that first block; the opposing-close candle or series that reacted inside
+  the first block is then itself closed through, and that second block is the propulsion block. Its
+  opening price is expected to be very sensitive, and the defining behavioural requirement is that
+  price must not break or close beyond the mean threshold of the propulsion block.'
+timeframes:
+  htf:
+  - 1D
+  - 1H
+  ltf:
+  - 1H
+  - 15m
+  - 5m
+  fractal: true
+preconditions:
+- A validated order block already exists at an important level.
+- Price has retraced back into that order block.
+detection_rules:
+- Identify order block OB1 (see order-block).
+- Require price to trade back into OB1.
+- Identify the single or series of opposing-close candles that reacted inside OB1 - candidate OB2.
+- Require a close beyond the opening price of OB2 in the intended direction; OB2 is now the propulsion
+  block.
+- Treat the propulsion block's opening price as the level and require it to be respected.
+- Require that price does not break or close beyond the propulsion block's mean threshold.
+invalidation:
+- Price closing beyond (or, as also stated, breaking) the mean threshold of the propulsion block.
+execution:
+  bias: Direction of the closure that validated the propulsion block.
+  entry: At the opening price of the propulsion block.
+  stop: On the other side of the BODY (explicitly acceptable for propulsion blocks), or on the adjacent
+    swing / intermediate-term extreme for a safer stop.
+  targets:
+  - 2R
+  - buy-side or sell-side liquidity resting beyond
+  - the swing high/low behind the move
+measurable:
+- hit rate of a 2R trade from the propulsion-block opening price
+- how often the mean threshold is respected once a propulsion block is validated
+- frequency of propulsion blocks per instrument per month by timeframe
+sources:
+- video_id: 9PKJ0U1gl4g
+  title: Propulsion Blocks Simplified - ICT Concepts
+  quote: a propulsion block is an order block off of another order block
+- video_id: 9PKJ0U1gl4g
+  title: Propulsion Blocks Simplified - ICT Concepts
+  quote: with a propulsion block I'm fine with the body
+- video_id: TfHlNgAZ_II
+  title: Trading IRL & ERL With Order Blocks! - ICT Concepts
+ambiguities:
+- Whether OB2's candles must sit strictly inside OB1's range, or merely react at it, is not stated.
+- '''Break'' vs ''close beyond'' the mean threshold is used both ways in the same video - wick-through
+  is not resolved.'
+- No statement on how long a propulsion block stays valid, or whether it can be re-used after a first
+  touch.
+- Whether a propulsion block can chain (a third block off the propulsion block) is not addressed.
+related:
+- order-block
+- mean-threshold
+- cisd
+- breaker-block
+python_detector: null
+contributing_units:
+- education_ict_updated_02
+draft_count: 1
+voice: ttrades

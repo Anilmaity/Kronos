@@ -1,0 +1,90 @@
+id: ttfm-indicator-settings
+name: TTFM Indicator - Settings, Defaults and Colour Semantics
+category: model
+status: specified
+aliases:
+- fractal model indicator
+- TTFM indicator
+definition: 'The published TradingView indicator that plots the fractal model, built with ''two degrees''.
+  What it draws: the higher-timeframe power-of-three candles offset to the right of the chart, the
+  C2/C3/C4 labels, the candle-1 sweep level, the change in the state of delivery, the higher-timeframe
+  candle EQ, the T-spot box where the higher-timeframe wick is expected to form, standard-deviation
+  projections drawn from the BODIES of the CISD series, the higher-timeframe open, open/close vertical
+  separators, per-hour high/low lines (off by default for him), the formation liquidity line, and
+  a status table (timeframe, asset, active model, time until the HTF candle closes, bias, active
+  time filters).'
+timeframes:
+  htf:
+  - 1D
+  - 4H
+  - 1H
+  ltf:
+  - 30m
+  - 15m
+  - 5m
+  - 1m
+  fractal: true
+preconditions:
+- TradingView; the indicator applied at a chart timeframe at or below the model's lower timeframe.
+detection_rules:
+- 'History setting: number of past setups shown, 0 (current only) up to 40.'
+- 'C2 / C3 / C4 toggles: each closure type can be shown or hidden; he keeps all on.'
+- 'C2 COLOUR SEMANTICS: grey = the setup remained valid throughout candle 4; red = the setup failed
+  within the first candle after; orange = the setup failed on the second candle after.'
+- 'Bias selector: bullish / bearish / neutral - filters which setups are drawn.'
+- 'Time filter (kill zones): up to three windows. IMPORTANT MECHANIC - the filter selects the WHOLE
+  hour''s candle, so to include the full 08:00 candle in an 08:00-11:30 window you must enter 07:00.'
+- A 'choose below period' setting restricts the time filter to timeframes at or below a chosen one,
+  otherwise the setup will not print on higher timeframes.
+- 'Higher-timeframe candles: hide/show, size small/medium/large, and an OFFSET (default about 5;
+  he uses 10 for more space, 15 for a daily power-of-three overlay, 32 for a three-layer layout with
+  the fractal model at 17).'
+- 'Projections: drawn from the bodies of the CISD series; the default set can be extended by typing
+  extra values (e.g. adding .5) comma-separated.'
+- 'Formation liquidity: a dotted line marking the previous candle''s / previous day''s extreme that
+  has NOT yet been taken, in the bias direction.'
+- 'Warning/error messages: on, so that being on a chart timeframe above the model''s lower timeframe
+  is flagged.'
+- Automatic mode pairs the chart timeframe with its higher timeframe (daily+hourly when set to automatic
+  on the daily; 4-hour+15-minute; hourly+5-minute).
+- Two copies of the indicator can be run at different pairings to overlap a higher-timeframe T-spot
+  with a lower-timeframe one.
+invalidation: []
+measurable:
+- agreement between the indicator's C2 print and a hand-coded C2 detector
+- distribution of grey vs red vs orange C2 outcomes (a direct read on the model's failure rate)
+sources:
+- video_id: CqMIh-Vvhbg
+  title: Intro To TTrades Fractal Model [Indicator & Settings]
+  quote: a red C2 is when that setup fails within the first candle
+- video_id: CqMIh-Vvhbg
+  title: Intro To TTrades Fractal Model [Indicator & Settings]
+  quote: it's going to choose the whole hours candle
+- video_id: CqMIh-Vvhbg
+  title: Intro To TTrades Fractal Model [Indicator & Settings]
+  quote: these are currently drawn from the bodies
+- video_id: CqMIh-Vvhbg
+  title: Intro To TTrades Fractal Model [Indicator & Settings]
+  quote: I go over all the requirements for these within my course and mentorship
+- video_id: Kf4c41_qO1s
+  title: Higher Timeframe Analysis For Trading - Aligning Expansion Candles
+  quote: I do mine at 32
+ambiguities:
+- The actual C2/C3/C4 requirements encoded in the indicator are explicitly withheld and sold in the
+  course/mentorship - so the indicator cannot be reproduced from the free material.
+- The default projection values are shown on screen but never spoken; only the ability to add 0.5
+  manually is stated. The standard-deviation video gives 1, 0, -1, -2, -2.5, -4 as HIS fib settings,
+  which is the best available proxy.
+- The T-spot's derivation is not given here; it is described only as 'the area I look for higher
+  timeframe wicks to be formed'.
+- No timezone is stated for the kill-zone filter in this video.
+related:
+- indicator-print-conditions
+- t-spot
+- standard-deviation-projection
+- fractal-model-c2
+- fractal-model-c4
+contributing_units:
+- build_a_model_intro_to_ttrades_fractal_model_01
+draft_count: 1
+voice: ttrades

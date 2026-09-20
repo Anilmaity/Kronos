@@ -1,0 +1,60 @@
+id: internal-external-rotation
+name: Premium To Discount And Back, Via A Gap Or A Liquidity Run
+aliases:
+- premium to discount
+category: model
+status: specified
+definition: 'Trade For Opportunity states the rotation as his whole mental model of how price moves:
+  price runs from a premium to a discount, then back to a premium, then back to a discount, and the
+  way it gets there is one of exactly two things - it reaches a fair value gap, or it runs liquidity.
+  He couples it to the liquidity-identification heuristic he gives immediately before it: find where
+  traders would have placed their stops, which is behind the obvious swing highs and lows, and weight
+  higher-timeframe extremes above lower-timeframe ones. The host gives the same shape from the range
+  side in the same stream - do not take trades in the middle of a range where you get chopped up;
+  use the optimal trade entry zones at the top of the range for shorts and the bottom for longs.'
+timeframes:
+  htf:
+  - 1H
+  - 15m
+  ltf:
+  - 5m
+  - 1m
+  fractal: true
+preconditions:
+- A range or displacement leg from which premium and discount can be measured.
+detection_rules:
+- 'Alternate the expectation: premium -> discount -> premium.'
+- The mechanism of each leg is either a fair value gap being reached or a liquidity pool being run.
+- Identify liquidity pools by asking where a trader in the opposite position would put a stop - behind
+  the obvious swing highs and lows.
+- Weight higher-timeframe highs and lows above lower-timeframe ones.
+- Do not take trades in the middle of the range; take them at the premium and discount edges.
+invalidation:
+- Price expands away without rotating - the range that defined premium and discount no longer applies.
+measurable:
+- share of legs that terminate at a fair value gap vs at a liquidity pool
+- expectancy of trades taken at range edges vs mid-range
+sources:
+- video_id: 0bH_kkG2q6s
+  title: Stream Q & A with Trade For Opportunity  - ICT concepts
+  quote: you're gonna run from premium to a discount and then back to a premium
+- video_id: 0bH_kkG2q6s
+  title: Stream Q & A with Trade For Opportunity  - ICT concepts
+  quote: you either go to fair value gaps or you run liquidity
+ambiguities:
+- The range that fixes premium and discount is not fixed by rule - he marks it from 'displacement
+  ranges on the higher time frames' using wicks or bodies, and says he is still experimenting with
+  which.
+- No rule states which of the two mechanisms to expect on the next leg.
+related:
+- premium-discount-equilibrium
+- range-edge-trading
+- internal-external-range-liquidity
+- optimal-trade-entry
+- target-consolidation-lows-not-fvgs
+contributing_units:
+- live_stream_guests_03
+draft_count: 1
+voice: guest
+guest_sources:
+- Trade For Opportunity

@@ -1,0 +1,55 @@
+id: relatively-equal-highs-lows
+name: "Relatively Equal Highs / Lows"
+aliases: ["equal highs", "equal lows", "relatively equal highs", "failure swings"]
+category: liquidity
+status: underspecified
+
+definition: >
+  Two or more swing points at approximately the same price, treated as a single, heavier
+  liquidity pool. The speaker forms them in two ways: when a new low fails to trade below the
+  previous low, the two lows become 'relatively equal' and are treated together; and when
+  several highs cluster at the same price. He also calls repeated highs that fail to make a
+  new extreme 'failure swings', and states these are precisely what he targets.
+
+timeframes:
+  htf: ["1D", "4H", "1H"]
+  ltf: ["15m", "5m", "1m"]
+  fractal: true
+
+preconditions:
+  - "At least two swing points of the same type exist within a small price distance."
+
+detection_rules:
+  - "Given consecutive swing lows L1, L2 with |L1 - L2| <= TOL, treat min(L1,L2) as a single sellside pool. Mirror for highs."
+  - "Alternative formation stated: a new swing low that does NOT trade below the previous swing low creates the equal-lows pair."
+  - "A cluster of 3+ highs at similar price is 'relatively equal highs'."
+  - "TOL is NOT specified by the source — must be chosen externally (points / pips / ATR fraction)."
+
+invalidation:
+  - "The pool is consumed when price trades through the cluster."
+
+execution:
+  bias: "Equal highs/lows are preferred draw-on-liquidity targets; the speaker repeatedly sets take-profit on them."
+  entry: "n/a"
+  stop: "n/a"
+  targets: ["the equal-highs / equal-lows cluster price"]
+
+measurable:
+  - "hit rate of an equal-lows cluster being traded through within N bars vs a single swing low"
+  - "sensitivity of detected cluster count to the tolerance parameter"
+
+sources:
+  - video_id: U8xH2dEgH5A
+    title: "Liquidity: Buyside & Sellside - ICT Concepts"
+  - video_id: bbWPoajy2MY
+    title: "Mitigation Blocks Simplified - ICT Concepts"
+  - video_id: 1YRs4Z1lMws
+    title: "Optimal Trade Entry (OTE) - ICT Concepts"
+
+ambiguities:
+  - "'Relatively equal' has no numeric tolerance anywhere in the unit — this is the blocking gap for detection."
+  - "Whether 'failure swing' and 'relatively equal high' are the same thing is never stated; they are used interchangeably in the mitigation-block video."
+  - "No rule for how many swings make a cluster, or a maximum bar distance between them."
+
+python_detector: null
+related: ["swing-point", "buyside-sellside-liquidity", "mitigation-block", "draw-on-liquidity"]

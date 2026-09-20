@@ -1,0 +1,62 @@
+id: trading-window
+name: Trading Window and Session Time Decay
+definition: 'His personal execution window is approximately 08:00 to 10:30 ET. The preferred
+  decision times are 09:30 (New York open) and 10:00, with 08:30 also acceptable. Interest
+  declines monotonically through the session: a daily candle that spends the morning ranging
+  has less remaining time to trend, so late setups are downgraded regardless of their shape.
+  He states he no longer uses killzones.
+
+  '
+category: time
+status: specified
+aliases:
+- 8 to 10:30
+- 9:30 and 10am
+- time decay of opportunity
+preconditions:
+- Trading US index futures (his primary instruments).
+detection_rules:
+- Prefer setups resolving at 08:30, 09:30 or 10:00 ET; 09:30 is his stated first preference.
+- After roughly 10:30 ET, stop initiating.
+- If the morning was spent ranging, downgrade or skip the remainder of the day.
+invalidation:
+- n/a - a filter.
+measurable:
+- Expectancy by entry hour.
+- Expectancy conditioned on whether the 09:30-10:00 block was ranging.
+sources:
+- video_id: aqnY1yZvfYs
+  title: New York Open Live Q&A
+- video_id: Qv6Ux_Z8VrA
+  title: New York Open Live Q&A
+- video_id: 00iZXPAdR5A
+  title: New York Open Live Q&A
+ambiguities:
+- The window is stated as a personal constraint (when he is awake) as much as an edge; he
+  does not trade London because he is asleep, and declines to say whether London is better
+  for currency futures.
+- '''Less interesting'' after 10:00 is qualitative - no decay function or cut-off is quantified
+  beyond his own stop time.'
+related:
+- time-based-exit
+- session-cascade
+- london-reversal-ny-continuation
+timeframes:
+  htf:
+  - 1D
+  - 4H
+  ltf:
+  - 15m
+  - 5m
+  - 3m
+  - 1m
+  fractal: false
+execution:
+  bias: n/a
+  entry: Within the window only.
+  stop: n/a
+  targets: n/a
+contributing_units:
+- sunday_sessions_live_q_a_02
+draft_count: 1
+voice: ttrades

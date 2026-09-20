@@ -1,0 +1,58 @@
+id: positional-entry-before-open
+name: "Positional Entry Before The Equity Open"
+aliases: ["pre-open entry", "selling above the daily open", "positioning in the wick"]
+category: entry
+status: specified
+
+definition: >
+  A pre-09:30 entry taken to position inside the wick of the developing higher timeframe
+  candle. It requires a protected swing already formed before the open, all timeframes
+  aligned, and a stop wide enough to survive the open. Bearish variant: sell at or above
+  the daily open with the stop above, invalidated if price trades above 50% of the
+  opposing candle range. He is explicit that if the risk-reward does not work with a
+  stop that wide, the correct action is to wait until after the open instead.
+
+timeframes:
+  htf: ["1D", "4H", "1H", "30m"]
+  ltf: ["15m", "5m"]
+  fractal: false
+
+preconditions:
+  - "A protected swing has already formed before 09:30."
+  - "All timeframes green (daily, 4-hour, hourly supporting the same direction)."
+  - "A clear target exists (previous day high/low in the worked example)."
+  - "Framing is on a 30-minute or higher timeframe."
+
+detection_rules:
+  - "Confirm the protected swing: price reached into the level, took the low, and closed back over into the fair value gaps."
+  - "The stop must give the fair value gap room - cover the gap and its 50% - because the open will move price."
+  - "Bearish positional variant: sell at or above the daily open; stop above; invalidation at 50% of the opposing candle range, because above that he expects the highs to be taken instead."
+  - "If 2R is not achievable with that stop, do not take the pre-open entry - wait for after the open."
+
+invalidation:
+  - "Price trading above 50% of the opposing candle range (bearish case)."
+  - "Price trading beyond the protected swing."
+
+execution:
+  bias: "The aligned higher timeframe direction."
+  entry: "Stop-entry at the protected swing extreme, or a market entry, before 09:30."
+  stop: "Above/below the protected extreme, covering the fair value gap plus its 50%."
+  targets: ["2R", "previous day high/low"]
+
+measurable:
+  - "adverse excursion through the 09:30 open on pre-open entries"
+  - "2R hit rate of pre-open vs post-open entries on the same setups"
+
+sources:
+  - video_id: wM1s7UivQ08
+    title: "New York Open Live Q&A"
+  - video_id: r7yW6ou1LDs
+    title: "TTrades Sunday Session - Live Q&A"
+
+ambiguities:
+  - "The 30-minute-or-higher framing is mentioned in passing and not stated as a firm requirement."
+  - "How far above the daily open selling remains acceptable is bounded only by the 50% rule."
+  - "Whether the entry is a resting stop order at the swing or a market entry is shown both ways."
+
+python_detector: null
+related: ["protected-swing", "timeframe-alignment", "daily-ohlc-candle-shape", "half-wick-respect"]

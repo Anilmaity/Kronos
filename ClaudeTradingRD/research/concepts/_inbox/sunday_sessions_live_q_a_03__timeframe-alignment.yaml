@@ -1,0 +1,54 @@
+id: timeframe-alignment
+name: "Timeframe Alignment (all timeframes green)"
+aliases: ["all timeframes green", "aligning higher timeframe candles", "expansion alignment"]
+category: structure
+status: specified
+
+definition: >
+  True expansion occurs only when the stacked higher timeframe candles all support the
+  same direction at the same time - daily, 4-hour and hourly together. He runs the
+  timeframes side by side on one screen for exactly this check. If one of them does not
+  support expansion (typically the 4-hour, via its wick), the trade is still possible
+  but is being taken against that candle and is materially harder and less clean; the
+  mechanical expectation becomes a trade back to the non-supporting candle's open.
+
+timeframes:
+  htf: ["1D", "4H", "1H"]
+  ltf: ["15m", "5m"]
+  fractal: true
+
+preconditions:
+  - "Daily, 4-hour and hourly charts all visible and assessed for the same direction."
+
+detection_rules:
+  - "Assess each of daily, 4-hour and hourly for whether its wick geometry supports expansion in the intended direction."
+  - "All three supporting = aligned; take the setup."
+  - "Any one not supporting = wait, typically for the next higher timeframe candle open (10:00 a.m. brings a fresh 4-hour candle)."
+  - "For a pre-open positional entry, alignment across all timeframes is required, not optional."
+
+invalidation:
+  - "A higher timeframe candle in the stack closing against the direction."
+
+execution:
+  bias: "Only trade the direction all the stacked candles support."
+  entry: "After alignment; if the 4-hour is the blocker, wait for the new 4-hour candle open."
+  stop: null
+  targets: ["the non-supporting candle's opening price, if trading the counter case instead"]
+
+measurable:
+  - "outcome of setups taken with full alignment vs setups taken against one timeframe"
+  - "frequency of full three-timeframe alignment per week"
+
+sources:
+  - video_id: wM1s7UivQ08
+    title: "New York Open Live Q&A"
+  - video_id: bMkRomKEunU
+    title: "New York Open Live Q&A"
+
+ambiguities:
+  - "'Green' is read off his own indicator; the underlying colouring rule is not restated in these streams beyond the wick geometry."
+  - "Whether the weekly or monthly must also align is not addressed - he says a day trader does not need the monthly."
+  - "The exact 4-hour candle boundaries beyond the 10:00 a.m. one are not enumerated here."
+
+python_detector: null
+related: ["small-wick-expansion-rule", "half-wick-respect", "positional-entry-before-open", "phases-of-price"]

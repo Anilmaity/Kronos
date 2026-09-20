@@ -1,0 +1,90 @@
+id: advanced-market-structure-labeling
+name: Short-Term / Intermediate-Term / Long-Term Highs and Lows
+aliases:
+- advanced market structure
+- STH/STL
+- ITH/ITL
+- LTH/LTL
+category: structure
+status: specified
+definition: A three-tier swing labelling scheme, credited by him to 'the mxm trader'. A short-term low
+  is a swing low (a low with a higher low on each side); a short-term high is a high with a lower high
+  on each side. An intermediate-term low is a short-term low with a HIGHER short-term low on both its
+  left and its right; an intermediate-term high is a short-term high with a short-term high on each
+  side. There is a second kind of intermediate-term point — the 'rebalanced' one — created when price
+  rebalances a fair value gap and trades away. A long-term low is the low formed off the reaction to
+  a higher-timeframe level, validated once a short-term low prints on its right side (mirrored for highs).
+timeframes:
+  htf:
+  - 1D
+  - 4H
+  ltf:
+  - 1H
+  - 5m
+  - 1m
+  fractal: true
+preconditions:
+- A higher-timeframe level / PD array is identified for the long-term point.
+detection_rules:
+- Short-term low = a low with a higher low immediately either side. Short-term high = a high with a
+  lower high either side.
+- Intermediate-term low = a short-term low that has a higher short-term low on both its left and its
+  right side.
+- 'Intermediate-term high = a short-term high with a short-term high on both sides (in practice: a short-term
+  high is swept, then another short-term high forms to its right).'
+- Rebalanced intermediate-term point = price trades into a fair value gap, rebalances it, and trades
+  away; that turn is an intermediate-term point regardless of the short-term pattern.
+- Long-term low/high = the extreme formed off the reaction to a higher-timeframe level, confirmed once
+  a short-term point forms on its right side and price trades away.
+- Once an intermediate-term point is confirmed, he does not expect it to be violated while the directional
+  idea holds.
+invalidation:
+- A confirmed intermediate-term low being violated invalidates the bullish read (mirrored for highs).
+execution:
+  bias: Direction away from the confirmed long-term point.
+  entry: A short-term high/low used as the entry reference when the chart is choppy and no clean fair
+    value gaps exist.
+  stop: Beyond the intermediate-term point that should not be violated.
+  targets:
+  - The drawn liquidity that produced the higher-timeframe reaction
+measurable:
+- survival rate of confirmed intermediate-term lows (not violated) within N bars
+- count of ITL/ITH per session by timeframe
+sources:
+- video_id: umyCqr_0NsI
+  title: ICT Advanced Market Structure Simplified
+  quote: a short-term low is when we form a swing low
+- video_id: umyCqr_0NsI
+  title: ICT Advanced Market Structure Simplified
+  quote: a short-term high is a high with a lower high on each side
+- video_id: umyCqr_0NsI
+  title: ICT Advanced Market Structure Simplified
+  quote: a short-term low with a higher short-term low on the right and left
+- video_id: umyCqr_0NsI
+  title: ICT Advanced Market Structure Simplified
+  quote: the low that is formed off the reaction of the higher time frame level
+- video_id: umyCqr_0NsI
+  title: ICT Advanced Market Structure Simplified
+  quote: that is when price rebalance is a fair value Gap
+- video_id: umyCqr_0NsI
+  title: ICT Advanced Market Structure Simplified
+  quote: shout out to the mxm trader for his teachings on Advanced Market structure
+ambiguities:
+- The PDF definition of an intermediate-term point ('a short-term low with a higher short-term low on
+  the right and left') and the chart procedure he actually narrates ('a short-term low is swept, then
+  a short-term low forms on the other side') are not obviously the same test — the chart version adds
+  a sweep.
+- The rebalanced intermediate-term point has no rule for how deep into the FVG price must trade.
+- He says he 'often' prefers an intermediate-term high to be taken to call a structure shift, rather
+  than any short-term high; this is stated as a habit, not a rule.
+- 'This video is his own (voice: ttrades) but the library entry for this id was first built from a guest
+  — the merged entry will span both.'
+related:
+- swing-point
+- market-structure-shift
+- fair-value-gap
+- protected-swing
+voice: ttrades
+contributing_units:
+- education_ict_updated_01
+draft_count: 1

@@ -1,0 +1,49 @@
+id: prop-firm-drawdown-sizing
+name: "Prop Firm Sizing Off The Drawdown"
+aliases: ["drawdown-based sizing", "evaluation risk"]
+category: risk
+status: specified
+
+definition: >
+  On a funded/evaluation account the nominal account size is not the capital at risk — the
+  drawdown allowance is. Sizing off the headline number therefore massively understates real
+  risk (1% of a $25,000 account is roughly 1.7% of a $1,500 drawdown). The rule given is to
+  compute risk as a percentage of the DRAWDOWN amount, targeting 7-10% per trade, which leaves
+  roughly 10-15 consecutive losses of runway. Once funded, risk is reduced further to build a
+  cushion. The same logic with different numbers applies to forex prop firms.
+
+timeframes:
+  htf: []
+  ltf: []
+  fractal: false
+
+preconditions:
+  - "A prop account with a stated maximum drawdown."
+
+detection_rules:
+  - "effective_capital := max_drawdown (NOT the nominal account size)."
+  - "risk_per_trade := 7% to 10% of effective_capital during an evaluation."
+  - "Sanity check: consecutive_losses_to_failure = effective_capital / risk_per_trade, target 10-15."
+  - "Worked example: a $25k account with $1,500 drawdown; risking 1% of $25,000 = ~1.7% of the drawdown, and six or seven losses blow it."
+  - "After funding, reduce risk below the evaluation level."
+
+invalidation:
+  - "Any sizing derived from the nominal account balance rather than the drawdown."
+
+measurable:
+  - "simulated probability of hitting the drawdown limit at 7% vs 10% vs 1%-of-nominal, given a strategy's win rate and R"
+  - "expected number of trades to pass an evaluation at each risk level"
+
+sources:
+  - video_id: 0OjlQ91TZiU
+    title: "Position Sizing For Trading - Futures & Forex"
+    quote: "I'm not looking to risk 1% of the overall account size"
+
+ambiguities:
+  - "The post-funding risk reduction is not quantified."
+  - "Trailing versus static drawdown (a major difference between prop firms) is not addressed."
+  - "Daily loss limits, which usually bind before the total drawdown, are not mentioned."
+  - "The 7-10% band is asserted from the losses-in-a-row arithmetic only; no expectancy or ruin-probability calculation is shown."
+
+python_detector: null
+related: ["position-sizing-fixed-risk"]

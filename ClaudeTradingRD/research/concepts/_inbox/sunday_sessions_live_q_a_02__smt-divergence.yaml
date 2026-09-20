@@ -1,0 +1,57 @@
+id: smt-divergence
+name: "SMT Divergence (as confluence only)"
+aliases: ["SMT", "smart money divergence"]
+category: liquidity
+status: specified
+
+definition: >
+  A divergence between correlated assets at a shared level: one asset takes the level and
+  the other does not. In these streams SMT is used strictly as a confirmation of an
+  already-formed higher-timeframe bias and as an input to the relative-strength ranking. It
+  is explicitly not a trade trigger, and a failed SMT against the standing bias is treated
+  as irrelevant rather than as a signal.
+
+timeframes:
+  htf: ["1D", "4H", "1H"]
+  ltf: ["30m", "15m", "5m", "3m", "1m"]
+  fractal: true
+
+preconditions:
+  - "Two or more correlated assets (ES/NQ/YM, or DXY vs a currency future) with a shared reference level."
+  - "A higher-timeframe directional bias already established."
+
+detection_rules:
+  - "At a shared level, one asset trades beyond it and the correlated asset does not."
+  - "The asset that failed to take the level is the stronger one on that side."
+  - "SMT printed prior to the decision candle counts; it does not have to print on the decision candle itself (yud7TpE2AMs)."
+
+invalidation:
+  - "SMT taken in isolation, without a higher-timeframe bias, is treated as invalid reasoning rather than a failed pattern."
+  - "SMT occurring away from a relevant level does not create a framework."
+
+execution:
+  bias: "Confirms the existing bias only."
+  entry: "Not an entry by itself; combine with a CISD / continuation closure."
+  stop: "Per the entry model."
+  targets: "Per the entry model."
+
+measurable:
+  - "Expectancy of SMT-confirmed setups vs SMT-absent setups, holding the bias constant."
+  - "Frequency of SMT that 'fails' (both assets subsequently take the level)."
+
+sources:
+  - video_id: aqnY1yZvfYs
+    title: "New York Open Live Q&A"
+  - video_id: Qv6Ux_Z8VrA
+    title: "New York Open Live Q&A"
+  - video_id: yud7TpE2AMs
+    title: "New York Open Live Q&A"
+  - video_id: 00iZXPAdR5A
+    title: "New York Open Live Q&A"
+
+ambiguities:
+  - "How far back an SMT can have printed and still count for the current decision candle is not bounded."
+  - "He says a bearish SMT that failed 'is nothing' because he was bullish - so SMT is asymmetric relative to bias, but no rule states when a contrary SMT should change the bias."
+
+python_detector: null
+related: ["relative-strength-weakness", "liquidity-sweep", "cisd"]

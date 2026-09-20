@@ -1,0 +1,54 @@
+id: timeframe-alignment-pairs
+name: "Timeframe Pairing and Alignment"
+aliases: ["what timeframes do you use", "H4 M15, H1 M5, M30 M3"]
+category: model
+status: specified
+
+definition: >
+  Bias comes from the daily and hourly charts. Beyond that the exact pairing does not matter: H4
+  with M15, H1 with M5, or M30 with M3 are all acceptable, because the goal is only that all the
+  timeframes point the same direction. The entry timeframe follows the swing timeframe being
+  traded (a 4-hour swing is normally entered on the 15-minute). 15-minute is the minimum for
+  London; lower timeframes are only used after the New York open when volatility supports them.
+  He prefers the 3-minute over the 1-minute because the 1-minute is too noisy.
+
+timeframes:
+  htf: ["1D", "4H", "1H", "30m"]
+  ltf: ["15m", "5m", "3m", "1m"]
+  fractal: true
+
+preconditions:
+  - "A daily bias has been established."
+
+detection_rules:
+  - "Take direction from the daily plus hourly."
+  - "Pick a HTF/LTF pair one or two steps down: H4/M15, H1/M5, or M30/M3."
+  - "Verify each selected timeframe is pointing the same direction before entering."
+  - "For London, do not execute below the 15-minute; below that only after the New York open."
+
+invalidation:
+  - "A selected timeframe opposes the others, in which case it does not confirm the bias."
+
+execution:
+  bias: "Daily plus hourly."
+  entry: "On the lower timeframe of the chosen pair."
+  stop: "At the higher-timeframe swing of the chosen pair."
+  targets: ["Drawn liquidity on the bias timeframe"]
+
+measurable:
+  - "outcome difference between execution on 15m/5m and on 3m/1m for the same signal"
+
+sources:
+  - video_id: uzPGXVYpVGc
+    title: "Candle 2 Confirmations - Live Lesson, Q&A"
+  - video_id: egV_gABTQks
+    title: "(CPI) New York Open Live Q&A"
+  - video_id: 0AYGNc9czYc
+    title: "New York Open Live Q&A"
+
+ambiguities:
+  - "He says the exact alignment does not matter, which conflicts with the indicator autobias feature that enforces one or two timeframes up."
+  - "No rule decides which pair to choose on a given day beyond preference and session."
+
+python_detector: null
+related: ["invalidation-first-timeframe-selection", "daily-bias-c2-c3-h1-cisd"]

@@ -1,0 +1,63 @@
+id: reversal-candle-quality
+name: "Candle 2 Closure Quality (reversal candle vs expansion candle)"
+aliases: ["a lot weaker of a close", "less than ideal setup", "close into the lows"]
+category: structure
+status: specified
+
+definition: >
+  The quality grade this unit applies to a higher-timeframe closure, and - unusually - what
+  is done with a failing grade. The ideal bearish daily candle closes weakly, into its lows;
+  he draws what the candle would have had to look like and says that had it closed there, two
+  opposing candles would have been in place, a shallow retracement could be anticipated and a
+  protected high would exist. The actual candle closes bullishly and late in the day, and he
+  names the consequence rather than abandoning the idea: the setup is now less than ideal for
+  a bearish continuation the next day, so if the bearish view is kept, more confirmation is
+  required on the lower timeframes before getting short. Quality here is therefore a dial on
+  the confirmation requirement, not a binary gate. A second quality input in the same
+  walkthrough runs the other way - the candle opened and made its high first, which supports
+  the bearish read - so the grade is assembled from several partly conflicting signals.
+
+timeframes:
+  htf: ["1D"]
+  ltf: ["1H", "30m", "15m"]
+  fractal: true
+
+preconditions:
+  - "A completed higher-timeframe candle that is a candidate closure for the intended direction."
+  - "A stated directional bias for the following period."
+
+detection_rules:
+  - "Bearish ideal: the candle closes into its lows. Grade the closure by where in the range it sits, not only by its sign."
+  - "A weak close in the intended direction additionally places opposing candles and a protected extreme, so a shallow retracement can be anticipated on the next candle."
+  - "A close that fails the grade does not cancel the bias - it raises the lower-timeframe confirmation requirement before any entry."
+  - "A close late in the session against the intended direction is called out specifically as degrading the next day's continuation."
+  - "If the candle fails to close beyond the level entirely, treat it as a consolidation instead and switch to waiting for the range extreme to be taken."
+
+invalidation:
+  - "The protected extreme implied by an ideal closure is taken out."
+  - "The additional lower-timeframe confirmation demanded by a degraded closure never appears - no trade."
+
+execution:
+  bias: "From the closure, weighted by its grade."
+  entry: "Ideal closure - the next candle's continuation directly. Degraded closure - only after extra lower-timeframe confirmation."
+  stop: "The protected extreme created by the closure, where one exists."
+  targets: ["previous day low or high"]
+
+measurable:
+  - "next-period follow-through split by where in the range the closure sits (deciles)"
+  - "win rate of entries after an ideal closure vs after a degraded closure with extra confirmation"
+  - "how often a degraded closure produces the extra confirmation at all"
+
+sources:
+  - video_id: Nlw-PZhoViQ
+    title: "TTrades Top-Down Chart Lessons #1"
+    quote: "we would have wanted to see a lot weaker of a close"
+
+ambiguities:
+  - "Sourced from an ASR (whisper-small) transcript, not YouTube captions; wording may be imprecise."
+  - "'Weaker' and 'into the lows' are not quantified - no fraction of the range is given for what counts as a weak close."
+  - "'More confirmation on the lower time frames' is the operative consequence of a degraded grade and is never specified: no list of what would satisfy it, and no timeframe."
+  - "The grade combines a closure signal and a candle-shape signal that point opposite ways in this example, with no stated weighting."
+
+python_detector: null
+related: ["daily-ohlc-candle-shape", "protected-swing", "cisd", "phases-of-price", "consolidation-vs-retracement-test"]

@@ -1,0 +1,75 @@
+id: htf-reaction-mss-retrace-entry
+name: "HTF Level Reaction -> LTF Structure Shift -> Retracement Entry"
+aliases: ["entry checklist", "one hour sweep with a five minute break of structure"]
+category: entry
+status: specified
+voice: guest
+guest_sources:
+- "$niper (Matt)"
+- "Trader T"
+
+definition: >
+  The same three-stage entry pattern stated independently by two guests in this unit - a
+  higher-timeframe level is reached, a lower timeframe then shifts structure, and the entry is a
+  retracement back into the array left by that shift. $niper states it as an explicit checklist
+  (liquidity taken or a premium array tapped, then drop to the 15-minute or hourly, require a
+  market structure break, then retrace into an OTE fair value gap or order block). Trader T states
+  the same shape with fixed timeframes - an hourly sweep of a high or low, a break of structure on
+  the 5-minute measured against the relative (fractal) low that existed PRIOR to the sweep, and a
+  limit order back into the block.
+
+timeframes:
+  htf: ["1D", "4H", "1H"]
+  ltf: ["15m", "5m", "1m"]
+  fractal: true
+
+preconditions:
+- "$niper: liquidity has been taken (previous daily high, previous weekly high) or price has tapped a higher-timeframe premium fair value gap."
+- "Trader T: an hourly swing high or low has been swept, and the pre-sweep relative high/low is marked."
+- "$niper: clear session lows / relatively equal lows / trendline liquidity must exist on the far side to be targeted."
+
+detection_rules:
+- "Only after the higher-timeframe level is reached do you drop timeframes ($niper: to the 15-minute or the hourly; Trader T: to the 5-minute or 1-minute)."
+- "Require a market structure break on the lower timeframe. If price simply continues without breaking the opposing swing, there is no setup - it is a continuation of the current side of the curve."
+- "Trader T defines the structure reference as the relative / fractal low that existed prior to the sweep, not the low made by the sweep itself."
+- "Entry is a retracement into the array left by the shift - $niper prefers a fair value gap, then an order block; Trader T places a sell limit on the block."
+- "$niper adds a location gate: the entry must be in premium for a short (see discount-requirement-before-entry)."
+- "$niper requires an identified liquidity objective to exist before the trade is taken."
+
+invalidation:
+- "$niper: the setup is invalidated if the protected high (long: low) formed at the shift is taken - shown in his 15-second example, where he was stopped out when the high he expected to hold was traded through."
+- "Trader T: fixed stop beyond the block; he also abandons the trade before entry if price runs to the target before filling the limit."
+
+execution:
+  bias: "Direction of the lower-timeframe structure break."
+  entry: "Retracement into the fair value gap / order block left by the break."
+  stop: "Beyond the swing that produced the break."
+  targets: ["previous daily low or high", "session lows or highs", "relatively equal lows or highs", "Trader T: a fixed 2R"]
+
+measurable:
+- "hit rate of the retracement entry, split by whether the lower-timeframe break created a fair value gap or not"
+- "difference in outcome between using the pre-sweep relative low and the sweep low as the structure reference"
+- "how often price returns to the array at all after the break (fill rate of the limit)"
+
+sources:
+- video_id: UmLWRlXd_V8
+  title: "8/14/22  MMXM Live with $niper  - ICT concepts"
+  quote: "I need a market structure break for a shift"
+- video_id: wCtxmWe4KNc
+  title: "Back Testing Live Session With Trader T"
+  quote: "I use the relative low prior to the sweep"
+- video_id: wCtxmWe4KNc
+  title: "Back Testing Live Session With Trader T"
+  quote: "I just wait for a break and structure on the five minutes"
+
+ambiguities:
+- "Neither speaker quantifies the size of the structure break; $niper requires displacement with a fair value gap, Trader T requires only a break."
+- "$niper gives two candidate execution timeframes (15-minute or hourly) with no rule for choosing."
+- "Trader T's 'block' is not defined in this video - it is used interchangeably for an order block and a fair-value-gap zone."
+- "No time limit is placed on how long after the higher-timeframe level is tagged the shift may occur."
+
+python_detector: null
+related: ["mmxm-phase-sequence", "market-structure-shift", "displacement", "discount-requirement-before-entry", "cancel-limit-after-target-run"]
+contributing_units:
+- live_stream_guests_01
+draft_count: 1

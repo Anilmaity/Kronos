@@ -1,0 +1,66 @@
+id: point-of-interest
+name: Point Of Interest (POI)
+aliases:
+- points of interest overlapping
+- opposing candles or order blocks
+category: entry
+status: contested
+definition: The top-down video enumerates points of interest much more widely than the live streams
+  do. On the entry timeframe he instructs the viewer to use the structure-timeframe point of interest
+  and there look for opposing candles or order blocks; he counts a swept high sitting on an opposing
+  candle as two points of interest overlapping and treats the overlap as better; and when a leg contains
+  no fair value gap or point of interest at all, he falls back on a sweep of a previous low as the
+  point of interest. That set - opposing candles, order blocks, sweeps - conflicts with the closed
+  live-stream enumeration recorded in the library, which is fair value gaps, highs and lows and explicitly
+  nothing else.
+timeframes:
+  htf:
+  - 1D
+  - 4H
+  - 1H
+  ltf:
+  - 15m
+  - 5m
+  fractal: true
+preconditions:
+- A structure timeframe has been read and a direction fixed.
+detection_rules:
+- On the entry timeframe, the point of interest is an opposing candle or an order block.
+- Two objects at the same price (a swept high plus an opposing candle) counts as two points of interest
+  overlapping and is preferred.
+- 'Fallback when a leg contains no fair value gap or point of interest: use a sweep of the previous
+  low as the point of interest.'
+- Fair value gaps are used as points of interest throughout, including a retrace 'right into this
+  fair value Gap' before the entry closure.
+invalidation:
+- Price passes through the point of interest without the confirming closure.
+measurable:
+- reaction rate by point-of-interest type (opposing candle, order block, FVG, sweep)
+- outcome of single vs overlapping points of interest
+sources:
+- video_id: iEaMbuFZb24
+  title: Trade Like TTrades - Top Down Analysis
+  quote: two points of interest overlapping
+- video_id: iEaMbuFZb24
+  title: Trade Like TTrades - Top Down Analysis
+  quote: look for opposing candles or order blocks
+- video_id: iEaMbuFZb24
+  title: Trade Like TTrades - Top Down Analysis
+  quote: a sweep of this previous low right here
+ambiguities:
+- This enumeration includes order blocks and opposing candles, which the live-stream enumeration
+  in the library explicitly excludes ('gaps, highs and lows - that's it'). The two are not reconcilable
+  as stated.
+- No ranking rule when several points of interest are available at different prices.
+- '''Overlapping'' is not given a tolerance.'
+python_detector: null
+related:
+- top-down-analysis-procedure
+- order-block
+- opposing-candle
+- fair-value-gap
+- liquidity-sweep
+contributing_units:
+- the_foundation_02
+draft_count: 1
+voice: ttrades

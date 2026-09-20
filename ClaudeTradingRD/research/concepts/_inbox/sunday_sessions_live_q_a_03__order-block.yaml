@@ -1,0 +1,61 @@
+id: order-block
+name: "Order Block"
+aliases: ["OB", "order block", "opposing candle block"]
+category: structure
+status: specified
+
+definition: >
+  The only PD array he says he actually trades from. An order block is formed by the
+  series of opposing candles that price validated before delivering away, and its
+  timeframe is derived from the higher timeframe level being worked - a daily level
+  produces an hourly order block. He does not rest limit orders inside blocks; he
+  waits for price to react and validate a new block, then enters at market on the
+  confirming close.
+
+timeframes:
+  htf: ["1D", "4H"]
+  ltf: ["1H", "15m", "5m"]
+  fractal: true
+
+preconditions:
+  - "A higher timeframe level or narrative is already in place - he will not go looking for order blocks without one."
+  - "The candles forming the block satisfy the opposing-candle validity test (they must have a wick / make a relevant extreme)."
+
+detection_rules:
+  - "Choose the order block timeframe one step below the higher timeframe level in use: a daily level means an hourly order block."
+  - "Use the whole series of opposing candles, not a single candle."
+  - "A block that has already been mitigated (tapped once) remains valid as long as the drawn liquidity / objective being traded toward has NOT yet been taken."
+  - "Once the objective has been reached, a re-tap of the same block is no longer a valid entry - this is the specific mistake he names as where people get stopped out."
+  - "For continuation entries, wait for price to react at the level and validate a NEW order block; enter on the close of that candle at market."
+
+invalidation:
+  - "The drawn liquidity / objective has already been taken - the block is spent."
+  - "Price closes through the block against the intended direction."
+  - "The candles do not have open-high-low-close shape (wickless, no relevant extreme) - not an order block at all."
+
+execution:
+  bias: "From the higher timeframe narrative, not from the block."
+  entry: "Market entry on the close of the confirming candle rather than a resting limit inside the block - the retest frequently never comes and the improved fill is not worth the missed trade."
+  stop: "Beyond the block; risk is known from the entry price regardless of exact fill, and position size is derived from it."
+  targets: ["the drawn objective / liquidity that made the block valid", "2R"]
+
+measurable:
+  - "fill rate of limit orders inside order blocks vs the close-of-candle market entry"
+  - "hit rate of re-tapped blocks before vs after the objective was reached"
+  - "performance by order-block timeframe relative to the HTF level timeframe"
+
+sources:
+  - video_id: r7yW6ou1LDs
+    title: "TTrades Sunday Session - Live Q&A"
+  - video_id: u8bnmaih_hA
+    title: "TTrades Sunday Session - Live Q&A"
+  - video_id: bMkRomKEunU
+    title: "New York Open Live Q&A"
+
+ambiguities:
+  - "'Drawn liquidity' / 'objective' is the pivot of the mitigation rule but is never defined mechanically - it is whatever he had marked at the time."
+  - "The one-step-down timeframe relationship is given for daily-to-hourly only; the mapping for 4H, weekly or intraday levels is not enumerated."
+  - "How many times a block may be tapped before the objective is reached is not stated."
+
+python_detector: null
+related: ["opposing-candle", "cisd", "mitigated-order-block-reuse", "relevant-level"]

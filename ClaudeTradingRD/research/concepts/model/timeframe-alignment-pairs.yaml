@@ -1,0 +1,223 @@
+id: timeframe-alignment-pairs
+name: Timeframe Pairing and Alignment
+definition: 'Every model is a pair: a higher timeframe supplying the candle closure and an
+  aligned lower timeframe supplying the change in the state of delivery. The pairs actually
+  named in this unit are DAILY -> HOURLY, 4-HOUR -> 15-MINUTE, HOURLY -> 5-MINUTE, and (used
+  once, when the 15-minute was unclean) HOURLY -> 3-MINUTE. The full model stack for an intraday
+  trade is daily bias -> 4-hour swing point -> 15-minute execution. Targets are always read
+  from the HIGHER timeframe of the pair. The indicator''s ''automatic'' mode applies these
+  pairings by itself.'
+variants:
+  definition:
+  - 'Pairs used explicitly in this unit, with the alignment condition attached. The model
+    runs on a pair - hourly with 5-minute, daily with hourly, 15-minute with 1-minute, 30-minute
+    with 3-minute - and a third, lower timeframe is used only to refine the entry (1-minute
+    under the hourly/5-minute pair, 15-minute under the daily/hourly pair). Alignment is not
+    assumed: after the higher-timeframe sweep and closure he waits until BOTH timeframes are
+    directional the same way, which happens when the lower timeframe closes through the series
+    of opposing candles that made the extreme. Until that close, the pair is not aligned and
+    the setup is not live.'
+  - 'A Short recites the pairing table in full and adds the row the corpus was missing at
+    the top: WEEKLY pairs with the 4-HOUR. The stated list is weekly-4H, daily-1H, 4H-15m,
+    1H-5m, 30m-3m and 15m-1m. He also gives the selection PROCEDURE for a three-timeframe
+    stack, which runs bottom-up: decide the entry timeframe first, look up its partner, then
+    look up that partner''s partner. Worked example: entry on the 5-minute -> the hourly ->
+    the daily. A separate Short shows the escape hatch used live: when the execution timeframe
+    is messy, step UP one timeframe (15-minute to 30-minute) to get a clear series of opposing
+    candles for the change in the state of delivery.'
+  - 'Bias comes from the daily and hourly charts. Beyond that the exact pairing does not matter:
+    H4 with M15, H1 with M5, or M30 with M3 are all acceptable, because the goal is only that
+    all the timeframes point the same direction. The entry timeframe follows the swing timeframe
+    being traded (a 4-hour swing is normally entered on the 15-minute). 15-minute is the minimum
+    for London; lower timeframes are only used after the New York open when volatility supports
+    them. He prefers the 3-minute over the 1-minute because the 1-minute is too noisy.
+
+    '
+  - 'The pairs named in these streams. For pre-open and London: H4 with M15, or daily with
+    H1 - and for London specifically he prefers H4/M15. For positional and swing work: daily
+    with hourly, explicitly not weekly with 4-hour. A 1-hour/5-minute pairing is referenced
+    as his scalping model. To confirm a 4-hour high or low, use a 15-minute change in the
+    state of delivery. He uses every timeframe below the daily as nested inside it and refines
+    downward - 4-hour tells him whether there is anything to frame, then the hourly, then
+    the 15-minute.'
+  category:
+  - time
+category: model
+status: contested
+aliases:
+- aligned time frames
+- fractal pairing
+- time frame alignment
+- locked to the hourly and 5 minutes
+- what timeframes do you use
+- H4 M15, H1 M5, M30 M3
+preconditions:
+- A chosen higher timeframe for the closure.
+- A directional higher-timeframe candle event (sweep and closure back inside).
+- A higher-timeframe closure that needs a lower-timeframe confirmation.
+- A daily bias has been established.
+detection_rules:
+- Daily closure -> confirm on the hourly.
+- 4-hour closure -> confirm on the 15-minute.
+- Hourly closure -> confirm on the 5-minute.
+- If the paired lower timeframe's structure is unclean, refine down one step (5m -> 3m) or
+  step up (15m -> 30m) rather than abandoning the setup.
+- Targets come from the higher timeframe of the pair - its previous candles' unswept extremes.
+- 'Full intraday stack: daily bias, then a 4-hour swing point inside the daily candle, then
+  a 15-minute continuation entry.'
+- 'Fractal upward too: monthly -> daily -> hourly is walked in one example.'
+- 'Select the pair: 1D-1H, 1H-5m, 30m-3m, or 15m-1m.'
+- Alignment := the lower timeframe has closed through the series of opposing candles that
+  made the swept extreme, in the same direction as the higher timeframe.
+- If that close has not happened, wait - 'we have to wait through a close through that level'.
+- Once aligned, a third and lower timeframe may be used purely for entry refinement.
+- Lock the indicator/model to the pair's two timeframes so the levels persist when dropping
+  lower.
+- 'Pairs: weekly-4H, daily-1H, 4H-15m, 1H-5m, 30m-3m, 15m-1m.'
+- 'Three-timeframe stack procedure: choose the ENTRY timeframe first, take its paired higher
+  timeframe, then take that timeframe''s paired higher timeframe.'
+- 'Worked example of the procedure: 5-minute entry -> hourly -> daily.'
+- If the paired execution timeframe is messy, step up one timeframe to find a clear series
+  of opposing candles for the change in the state of delivery (15-minute -> 30-minute in the
+  worked case).
+- Take direction from the daily plus hourly.
+- 'Pick a HTF/LTF pair one or two steps down: H4/M15, H1/M5, or M30/M3.'
+- Verify each selected timeframe is pointing the same direction before entering.
+- For London, do not execute below the 15-minute; below that only after the New York open.
+- 'Pre-open / London: H4 analysis with M15 execution, or daily analysis with H1 execution.'
+- 'Positional / swing: daily analysis with hourly execution.'
+- 'Scalping: H1 with M5.'
+- Confirm a 4-hour extreme with a 15-minute change in the state of delivery.
+- 'Refine top-down: daily, then 4-hour, then hourly, then 15-minute.'
+invalidation:
+- The lower timeframe making a new extreme before closing through - alignment is not achieved.
+- Not applicable - a pairing convention.
+- A selected timeframe opposes the others, in which case it does not confirm the bias.
+measurable:
+- how often the paired lower timeframe produces a CISD within the HTF candle
+- outcome difference between refining down vs stepping up when structure is unclean
+- lag in bars between the higher-timeframe closure and lower-timeframe alignment
+- share of higher-timeframe closures that never achieve alignment
+- outcome difference between entries taken before and after alignment
+- CISD confirmation rate by pair
+- how often the step-up-one-timeframe fallback is needed
+- outcome difference between execution on 15m/5m and on 3m/1m for the same signal
+- confirmation rate of 4-hour extremes by an M15 CISD
+- stop-out rate per pairing
+sources:
+- video_id: tyoxl1l-6iI
+  title: 'Candle 2 Closure: The Foundation of TTrades Fractal Model'
+  quote: I'm going to use the hourly for a change in the state of delivery
+- video_id: tyoxl1l-6iI
+  title: 'Candle 2 Closure: The Foundation of TTrades Fractal Model'
+  quote: If I'm on the hourly, I will use the 5minute
+- video_id: v1X8UMWgWmI
+  title: Best Trading Strategy for 2026 - TTFM
+  quote: with the four-hour and 15-minute fractal model
+- video_id: Mo9QMtotQyo
+  title: How to Confirm Daily Profile (High or Low of Day)
+  quote: maybe I will go to the 5-minute, see if that cleans up the structure
+- video_id: A4NasIa371c
+  title: How to Set Price Targets Using the Fractal Model
+  quote: whatever the higher time frame reference is, those are going to be your targets
+- video_id: 4jU547ocod4
+  title: TTrades Fractal Model + Inversion (Intraday Strategy)
+  quote: I will wait until those time frames are aligned in the same direction
+- video_id: r_UF8U-hsL8
+  title: Why You're Failing with ICT Concepts
+  quote: we are on the 30 minute and that is my time frame alignment
+- video_id: xP-o11jRCyg
+  title: Trade Continuations Using Breaker Blocks
+- video_id: WwmS47Gb3M0
+  title: The "Twitter Model" The MMXM Trader - ICT Concepts
+- video_id: nwbHvFCh0bo
+  title: Pairing Time Frames Using Time Frame Alignment
+  quote: Time frame alignment is how I pair my time frames together
+- video_id: nwbHvFCh0bo
+  title: Pairing Time Frames Using Time Frame Alignment
+  quote: if I'm starting with the weekly, that will line up with the 4 hour
+- video_id: nwbHvFCh0bo
+  title: Pairing Time Frames Using Time Frame Alignment
+  quote: the daily with the 1 hour
+- video_id: cS8942LZ5Uw
+  title: London Forms Reversal➜ New York Continuation Off That Reversal
+  quote: since this is a little bit messy, I will go up one time frame
+- video_id: uzPGXVYpVGc
+  title: Candle 2 Confirmations - Live Lesson, Q&A
+- video_id: egV_gABTQks
+  title: (CPI) New York Open Live Q&A
+- video_id: 0AYGNc9czYc
+  title: New York Open Live Q&A
+- video_id: xraklBJHW5k
+  title: New York Open Live Q&A
+  quote: H4 M15 or daily H1
+- video_id: yNgx9OAefuI
+  title: New York Open Live Q&A
+  quote: Use a 15-minute change in the stage delivery
+ambiguities:
+- The pairing is stated as a fixed table but is also allowed to flex by one step for cleanliness
+  - no rule says when flexing is permitted.
+- The 4-hour -> 15-minute pairing skips the hourly, while the daily -> hourly pairing skips
+  the 4-hour; the ratio between pairs is therefore not constant.
+- The pairing rule itself (why 1H goes with 5m) is deferred to his timeframe alignment video
+  and not derived here.
+- The 30m-3m pair is stated once in passing and the 1H-1m pairing used in one breaker example
+  is not reconciled with it.
+- Whether the third refinement timeframe is fixed by the pair or chosen freely is not stated.
+- The auto-captions mangle every minute timeframe ("15-minut", "5minut", "3inut", "30-inut");
+  the values are unambiguous from the sequence but no timestamped text confirms them individually.
+- The 30-minute row breaks the otherwise consistent 4-to-6x ratio pattern (30m pairs with
+  3m, not 5m) and no reason is given.
+- The Short does not say whether the middle timeframe of a three-timeframe stack carries the
+  structure, the bias, or both.
+- '"Messy" is the only stated trigger for stepping up a timeframe and is not defined.'
+- He says the exact alignment does not matter, which conflicts with the indicator autobias
+  feature that enforces one or two timeframes up.
+- No rule decides which pair to choose on a given day beyond preference and session.
+- The auto-captioner writes 'change in the stage delivery' for 'change in the state of delivery'.
+- Whether the H1/M5 scalping pair is still in use is unclear - he says he trades higher timeframes
+  as he has traded up, and elsewhere says he does not scalp.
+- For intraday work he says he does not care about anything above the daily; for swings he
+  goes monthly, three-month and sometimes yearly.
+related:
+- indicator-print-conditions
+- aligning-expansion-candles
+- daily-wick-confirmation-timeframes
+- automatic-fractal-pairing
+- ltf-inversion-entry-in-tspot
+- fractal-model-c2
+- timeframe-pairing
+- entry-timeframe-elevation
+- ttfm-favorite-daily-4h-15m
+- top-down-analysis-procedure
+- invalidation-first-timeframe-selection
+- daily-bias-c2-c3-h1-cisd
+- weekly-chart-not-used
+timeframes:
+  htf:
+  - 1M
+  - 1W
+  - 1D
+  - 4H
+  - 1H
+  ltf:
+  - 1H
+  - 15m
+  - 5m
+  - 3m
+  - 1m
+  fractal: true
+execution:
+  bias: Daily plus hourly.
+  entry: On the lower timeframe of the chosen pair.
+  stop: At the higher-timeframe swing of the chosen pair.
+  targets:
+  - Drawn liquidity on the bias timeframe
+contributing_units:
+- build_a_model_intro_to_ttrades_fractal_model_01
+- education_ict_updated_02
+- live_streams_01
+- shorts_02
+- sunday_sessions_live_q_a_01
+draft_count: 5
+voice: ttrades

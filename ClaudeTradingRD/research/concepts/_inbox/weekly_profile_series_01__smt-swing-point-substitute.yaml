@@ -1,0 +1,61 @@
+id: smt-swing-point-substitute
+name: "SMT As A Swing Point Substitute"
+aliases: ["SMT", "SMT on the low", "SMT off the previous day high"]
+category: structure
+status: underspecified
+
+definition: >
+  Within this series SMT (a divergence against a correlated instrument) is used not as a
+  standalone setup but as a licence to treat a day as a swing point when the daily candle
+  alone does not earn it. Two distinct uses appear. First, substitution: a day that takes
+  out the previous day's low and closes above it, with an SMT present, may be treated as a
+  candle 2 closure or a swing point even though it is not sitting at a point of interest -
+  explicitly relaxing the usual point-of-interest requirement. Second, escalation: in the
+  Thursday Counter profile, an SMT off the previous day's high or low is what upgrades the
+  reversal day from wait-for-the-continuation to tradeable on the day itself, provided the
+  wick is small. SMT is also cited simply as added confluence at a confirmed weekly
+  extreme.
+
+timeframes:
+  htf: ["1D"]
+  ltf: ["1H"]
+  fractal: true
+
+preconditions:
+  - "A correlated instrument is being watched alongside the traded instrument."
+  - "A candidate swing point or reversal day exists on the traded instrument."
+
+detection_rules:
+  - "At the candidate extreme, compare the traded instrument against the correlated instrument at the same time."
+  - "SMT is present when one makes the new extreme (or reaches the point of interest) and the other does not."
+  - "With SMT present, a day that sweeps the previous day's extreme and closes back may be treated as a candle 2 closure / swing point even if it is not at a point of interest."
+  - "In a Thursday Counter, an SMT off the previous day's high or low, combined with a small wick, permits trading the reversal day itself rather than waiting for the Friday continuation."
+
+invalidation:
+  - "Not stated. The videos give no condition under which an observed SMT is discarded; in one Consolidation Reversal example an SMT appears on a low that is briefly taken out, and the trade still works, so SMT is not used as an invalidation signal."
+
+measurable:
+  - "frequency of SMT at confirmed weekly extremes versus at failed candidates"
+  - "outcome of reversal-day entries taken with SMT versus continuation-day entries taken without"
+  - "how often the SMT-substituted swing point (not at a point of interest) holds"
+
+sources:
+  - video_id: FvOUvQ7odiw
+    title: "Weekly Profile for Daily Bias - Intraweek Reversal"
+  - video_id: uPUNOi_R9fA
+    title: "Weekly Profile for Daily Bias - Thursday Counter"
+  - video_id: -gyDd_E_qD4
+    title: "Weekly Profile for Daily Bias - Midweek Reversal"
+  - video_id: McJflkKuvrI
+    title: "Weekly Profile for Daily Bias - Consolidation Reversal"
+
+ambiguities:
+  - "SMT is never defined in this unit; it is assumed knowledge from other playlists in the corpus."
+  - "The correlated instrument is unnamed in almost every use. The Intraweek Reversal video refers to it only as 'RB', which the transcript never expands and which is not verifiable without the chart, so it is left unidentified here rather than guessed. ES and NQ are named once, in the final Thursday Counter example."
+  - "No rule is given for how to choose the correlated instrument for a given traded instrument."
+  - "Whether the divergence must be on the same timeframe as the candidate candle is not stated."
+  - "The interaction between the SMT substitution and the usual hourly-CISD requirement is not spelled out - in the Thursday Counter reversal-day case it is unclear whether the CISD is still required or whether SMT plus a small wick replaces it."
+  - "Status is underspecified because the divergence test itself is never stated in this unit."
+
+python_detector: null
+related: ["reversal-candle-quality", "thursday-counter-week", "intraweek-reversal-week", "hourly-cisd-confirmation"]

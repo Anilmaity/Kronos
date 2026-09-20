@@ -1,0 +1,79 @@
+id: daily-bias-framework
+name: Daily Bias From The Daily Closure
+category: model
+status: specified
+aliases:
+- daily closure bias
+- continuation closure
+- reversal closure
+definition: 'The one-sided daily bias is read off a single daily closure against the previous day''s
+  range, and it is a hard gate -- without it he does not drop to the hourly chart. Two cases. CONTINUATION
+  CLOSURE: price closes beyond the previous day''s extreme (below the previous day low -> expect continuation
+  lower; above the previous day high -> expect continuation higher). REVERSAL CLOSURE: price sweeps
+  the previous day''s extreme and closes back inside it (sweeps the previous day low and closes back
+  above -> expect a continuation higher next day; sweeps the previous day high and closes back below
+  -> expect a continuation lower). Both cases produce a directional expectation for the NEXT day, which
+  is the day traded.'
+timeframes:
+  htf:
+  - 1D
+  ltf:
+  - 1H
+  - 4H
+  fractal: true
+preconditions:
+- The daily candle has closed.
+detection_rules:
+- 'Continuation closure: daily close beyond the previous day''s high or low -> bias in that direction
+  for the next day.'
+- 'Reversal closure: daily trades beyond the previous day''s extreme and closes back inside the previous
+  day''s range -> bias away from the swept side for the next day.'
+- If neither, there is no one-sided bias and the hourly chart is not consulted.
+- Confirm the bias by requiring a change in the state of delivery on the hourly inside the candle 2
+  (the reversal candle) before entries are valid.
+- 'The same closure logic is applied fractally: monthly closure gives a bias for the daily; weekly closure
+  gives a bias for the week.'
+invalidation:
+- An opposing candle 2 forms off the previous day extreme on the traded day.
+- Price closes beyond the EQ of the previous candle on the aligned timeframe.
+execution:
+  bias: Direction implied by the daily closure.
+  entry: Deferred to the paired lower timeframes.
+  stop: Protected swing on the entry timeframe.
+  targets:
+  - previous day high/low
+  - daily fair value gaps
+measurable:
+- next-day directional hit rate after a continuation closure vs a reversal closure
+- proportion of days with no qualifying closure (no-trade days)
+sources:
+- video_id: TNybDCtwBnc
+  title: TTrades Playbook | Fractal Model Fundamentals (TTFM)
+  quote: if price closes below its previous day low, I'm expecting a continuation lower
+- video_id: 9AL41xON3hA
+  title: The Only Trading Strategy You Need For 2026
+  quote: If price has a closure outside the range
+- video_id: 8BWkRGhuj1k
+  title: 'The Phases of Price Action: A Blueprint for Market Movement'
+  quote: I'm waiting for the daily closure to also align
+- video_id: q3nauvjT3q0
+  title: Stop Overcomplicating Trading (Here's the Fix)
+- video_id: jKuXaC84Qx4
+  title: Trading the Invalidation of Daily Bias
+ambiguities:
+- '''Closes below its previous day low'' does not say whether the reference is the previous day''s wick
+  low or body low.'
+- The daily open used is not stated in this unit (18:00 vs midnight); the closure test is applied to
+  whatever the charting default produces.
+- A day that closes inside the previous day's range without sweeping it is not covered by either case;
+  by elimination it produces no bias, but this is never said.
+related:
+- daily-bias-c2-c3-h1-cisd
+- fractal-model-c2
+- fractal-model-c3
+- invalidation-trade
+- phases-of-price
+contributing_units:
+- build_a_model_intro_to_ttrades_fractal_model_02
+draft_count: 1
+voice: ttrades

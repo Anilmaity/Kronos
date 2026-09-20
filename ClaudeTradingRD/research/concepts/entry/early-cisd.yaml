@@ -1,0 +1,54 @@
+id: early-cisd
+name: Early CISD (unconfirmed, before the candle closes)
+definition: 'A change in the state of delivery that has formed inside a higher-timeframe candle
+  that has not yet closed. By default his indicator will not mark it: nothing prints until
+  the closure. With the early-CISD setting on it is drawn in a dotted style, and any continuations
+  that form are drawn dotted too; on the candle closure the model confirms and everything
+  turns solid. He leaves it off by default specifically so that people learning the model
+  do not trade candle 2, which he calls more complex, and he personally prefers the actual
+  continuation - he will take an early CISD only when his bias is strong enough.'
+category: entry
+status: specified
+aliases:
+- early C2
+- early CSD
+preconditions:
+- A higher-timeframe candle is in progress and has not closed.
+detection_rules:
+- A CISD forms inside the still-open higher-timeframe candle -> early CISD (dotted / unconfirmed).
+- Continuations forming while the candle is open are likewise unconfirmed.
+- On the higher-timeframe closure the model confirms and the markings become solid.
+- Trade it only on a strong bias; the default posture is to wait for the actual continuation.
+invalidation:
+- The higher-timeframe candle closes without satisfying the model - the early CISD never confirms.
+measurable:
+- share of early CISDs that confirm on the closure
+- R difference between early-CISD entries and post-closure continuation entries
+sources:
+- video_id: sdZkE-naNiY
+  title: TTrades Indicator Updates - Walkthrough and Q&A
+  quote: it will show you the CISD prior to the open
+ambiguities:
+- '''Bias is that strong'' is the only gate given for taking an early CISD and is not quantified.'
+- The relationship to IC-CISD (intracandle CISD) is not stated; they may be the same object
+  under two names.
+related:
+- ic-cisd
+- cisd
+- fractal-model-c2
+- indicator-print-conditions
+- continuation-timing
+timeframes:
+  htf:
+  - 1D
+  - 4H
+  - 1H
+  ltf:
+  - 15m
+  - 5m
+  - 1m
+  fractal: true
+contributing_units:
+- live_streams_05
+draft_count: 1
+voice: ttrades

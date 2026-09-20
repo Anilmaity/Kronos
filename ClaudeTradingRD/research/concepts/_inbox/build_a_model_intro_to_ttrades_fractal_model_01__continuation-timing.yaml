@@ -1,0 +1,61 @@
+id: continuation-timing
+name: Continuations Must Form Early in a New Higher-Timeframe Candle
+category: entry
+status: specified
+aliases:
+- early into the candle
+- new range
+definition: Timing rule for continuation entries inside a higher-timeframe candle. The intracandle
+  CISD that marks the wick as formed is IDEAL when it happens early in the candle, because the candle
+  then has both time and range left to expand. If it forms late in the candle - most of the candle's
+  time and range already spent - the entry is still valid but should be taken on the NEXT candle,
+  which brings new range. A continuation that spends too long consolidating instead of closing through
+  can fail outright.
+timeframes:
+  htf:
+  - 1D
+  - 4H
+  - 1H
+  ltf:
+  - 15m
+  - 5m
+  - 1m
+  fractal: true
+preconditions:
+- A higher-timeframe continuation candle is open and a point of interest has been engaged inside
+  it.
+detection_rules:
+- Measure where in the candle's duration the IC-CISD closure occurs.
+- Early -> take the entry inside this candle.
+- Late, but still valid -> wait for the next candle open and trade there (new range).
+- Ideally the closure comes on the candle immediately after the point of interest is engaged; prolonged
+  consolidation before it means the continuation may fail.
+- 'The same logic gates positional entries: a protected swing formed before the open is the earliest
+  possible case.'
+invalidation:
+- Prolonged consolidation without the closure.
+measurable:
+- expansion after IC-CISD bucketed by fraction-of-candle elapsed
+- failure rate of continuations by number of bars spent consolidating before the closure
+sources:
+- video_id: Vo2n47RjjMo
+  title: Intracandle CISD (IC-CISD) - Improve Your Entries
+  quote: it is ideal to have this form in the beginning of the candle
+- video_id: Vo2n47RjjMo
+  title: Intracandle CISD (IC-CISD) - Improve Your Entries
+  quote: Because we get a new candle with new range
+- video_id: Vo2n47RjjMo
+  title: Intracandle CISD (IC-CISD) - Improve Your Entries
+  quote: if it spends too long consolidating, then it could fail
+ambiguities:
+- '''Beginning of the candle'' and ''towards the end'' are never given as fractions of the period.'
+- '''Too long consolidating'' is deferred to a separate video not in this unit.'
+related:
+- ic-cisd
+- positional-entry
+- fractal-model-c3
+- time-based-exit-htf-close
+contributing_units:
+- build_a_model_intro_to_ttrades_fractal_model_01
+draft_count: 1
+voice: ttrades

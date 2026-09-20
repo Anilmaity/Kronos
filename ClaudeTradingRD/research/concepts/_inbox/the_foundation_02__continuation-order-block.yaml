@@ -1,0 +1,59 @@
+id: continuation-order-block
+name: Continuation Order Block (Continuation Entry)
+aliases:
+- continuation entries
+- a new order block
+category: entry
+status: specified
+definition: 'Stated in the top-down video as a personal preference over the first available entry:
+  after the initial change in the state of delivery he prefers continuation entries, so instead of
+  entering on the first closure he waits for price to trade back into a point of interest - typically
+  a sweep of a low - and then to close over the down-close candles that formed that low. That closure
+  creates the new order block (or propulsion block), and the low behind it is now protected and becomes
+  the stop.'
+timeframes:
+  htf:
+  - 1H
+  ltf:
+  - 15m
+  - 5m
+  - 1m
+  fractal: true
+preconditions:
+- A change in the state of delivery has already established the direction on this timeframe.
+detection_rules:
+- Wait for price to trade back into a point of interest - in the worked case a sweep of a previous
+  low.
+- Require a close over the series of down-close candles that formed that low (mirrored for shorts).
+- That closure validates a new order block; the low behind it is protected and becomes the stop.
+- Enter at the market price on the closure; the stated minimum objective is 2R.
+- He states a preference for this over the first entry at the original CISD.
+invalidation:
+- Price trades back below the newly protected low.
+measurable:
+- R and hit rate of first-CISD entries vs continuation entries on the same move
+- how often a continuation order block forms at all after a valid CISD
+sources:
+- video_id: iEaMbuFZb24
+  title: Trade Like TTrades - Top Down Analysis
+  quote: I prefer continuation entries
+- video_id: iEaMbuFZb24
+  title: Trade Like TTrades - Top Down Analysis
+  quote: close over the down close candles that form that low
+ambiguities:
+- 'No maximum wait: if no continuation forms, whether the original entry should have been taken is
+  not addressed.'
+- The point of interest for the continuation is a sweep of a low in this example; whether a fair
+  value gap retrace is equally acceptable is stated elsewhere in the corpus but not here.
+- When the resulting block is a plain order block and when it is a propulsion block is never distinguished.
+python_detector: null
+related:
+- propulsion-block
+- protected-swing
+- order-block
+- hourly-cisd-confirmation
+- point-of-interest
+contributing_units:
+- the_foundation_02
+draft_count: 1
+voice: ttrades

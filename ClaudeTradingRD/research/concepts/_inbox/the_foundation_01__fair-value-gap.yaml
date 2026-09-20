@@ -1,0 +1,61 @@
+id: fair-value-gap
+name: "Fair Value Gap (FVG)"
+aliases: ["FVG", "inefficiency", "BISI (\"bissy\")", "SIBI (\"civy/CBI\")", "imbalance"]
+category: structure
+status: specified
+
+definition: >
+  A three-candlestick pattern in which the first candle's low does not overlap the third
+  candle's high (bearish case), or the first candle's high does not overlap the third candle's
+  low (bullish case). The unfilled space between those two prices is the gap. This is the only
+  explicit FVG definition given anywhere in the available transcripts of this unit; every other
+  video uses the term as already known.
+
+timeframes:
+  htf: ["1M", "1W", "1D", "4H", "1H"]
+  ltf: ["15m", "5m", "1m", "30s"]
+  fractal: true
+
+preconditions:
+  - "Three consecutive candles on the working timeframe."
+
+detection_rules:
+  - "bullish_fvg (BISI) at i: low[i+1] > high[i-1]. Gap zone = [high[i-1], low[i+1]]."
+  - "bearish_fvg (SIBI) at i: high[i+1] < low[i-1]. Gap zone = [high[i+1], low[i-1]]."
+  - "Consequent encroachment (CE) = the midpoint of the gap zone."
+  - "Respect: price trades into the zone and reacts away without closing through it — the order-block video describes bodies holding the gap while wicks penetrate it."
+  - "Violation: a candle closes beyond the far edge of the gap -> the gap becomes an inversion."
+
+invalidation:
+  - "A close through the entire gap converts it into an inversion fair value gap of the opposite polarity."
+  - "Full fill without a close through leaves it consumed as a target but the direction unchanged."
+
+execution:
+  bias: "Unfilled FVGs are the internal-range-liquidity draw; a respected FVG supports continuation in the direction of the impulse that made it."
+  entry: "Limit entry at the near edge of the gap, or at the consequent encroachment for better R:R."
+  stop: "Beyond the swing extreme that produced the gap, or beyond the opposing candle."
+  targets: ["external range liquidity", "fixed 2R"]
+
+measurable:
+  - "fill rate of FVGs by timeframe and by distance from price"
+  - "share of FVGs respected on first touch vs closed through"
+  - "R-multiple of near-edge entries vs CE entries"
+
+sources:
+  - video_id: uDJI2AbyyCs
+    title: "Inversion Fair Value Gaps (IFVG) - ICT Concepts"
+    quote: "a fair value Gap is a three Candlestick pattern"
+  - video_id: 3OivsP1j_UE
+    title: "Internal & External Liquidity (Daily Bias) - ICT Concepts"
+  - video_id: DMUiDBnTYc8
+    title: "Order Blocks Simplified - ICT Concepts"
+
+ambiguities:
+  - "'Does not overlap' — whether exactly equal prices (touching) count as a gap is not stated."
+  - "Wicks vs bodies for the overlap test are not specified; the standard reading (and the chart examples) use wicks."
+  - "No minimum gap size, so on low-volatility instruments the detector will produce many trivial gaps."
+  - "No expiry rule: how long an unfilled FVG stays a valid target is never stated (examples use gaps from prior days and weeks)."
+  - "The dedicated fair value gap video is referenced ('click the link in the top right') but is not part of this unit."
+
+python_detector: null
+related: ["consequent-encroachment", "inversion-fair-value-gap", "internal-range-liquidity", "order-block", "unicorn-model"]

@@ -1,0 +1,83 @@
+id: fractal-model-c2
+name: Candle 2 Closure (the reversal candle)
+aliases:
+- sweep and closure back in
+- candle to closure (auto-caption)
+- C2
+category: model
+status: specified
+definition: 'The primary-source statement of the model''s trigger, given as the opening premise of
+  the intraday strategy video: the whole goal is to anticipate one candle''s open-high-low-close
+  or open-low-high-close. The trigger that licenses that anticipation is the previous candle sweeping
+  a level and closing back inside; with that sweep and closure back in, the NEXT candle is anticipated
+  to expand away from the sweep. The direction is therefore supplied by the swept side - a swept
+  high implies a bearish expansion candle, a swept low a bullish one - and is then cross-checked
+  by lower-timeframe alignment and by the draw the trade is travelling toward.'
+timeframes:
+  htf:
+  - 1D
+  - 4H
+  - 1H
+  ltf:
+  - 15m
+  - 5m
+  - 1m
+  fractal: true
+preconditions:
+- A prior candle (C1) with a defined extreme to be swept.
+detection_rules:
+- C2 trades beyond the prior candle's extreme (the sweep) and closes back inside it.
+- Direction of the anticipated expansion := away from the swept side.
+- Then require the paired lower timeframe to align in that same direction, via a closure through
+  the series of opposing candles (see cisd and timeframe-alignment-pairs).
+- Where the higher-timeframe read is conflicted (e.g. bullish structure but a previous day high just
+  taken), fall back on the daily profile to resolve it.
+- The anticipated shape of the expansion candle is open-high-low-close (bearish) or open-low-high-close
+  (bullish).
+invalidation:
+- The lower timeframe failing to close through the series of opposing candles - alignment is absent
+  and the setup is not live.
+- The higher-timeframe wick failing to form in the t-spot / price returning beyond the wick extreme.
+execution:
+  bias: Away from the swept side of C1.
+  entry: Lower-timeframe inversion or CISD inside the t-spot of the expansion candle.
+  stop: On the swing low/high that forms the higher-timeframe wick.
+  targets:
+  - 2R
+  - failure swings to the left
+  - the higher timeframe objective
+measurable:
+- share of sweep-and-close-back-inside candles followed by an expansion candle in the anticipated
+  direction
+- how often the paired lower timeframe confirms alignment before the expansion is over
+- hit rate of 2R entries taken only after alignment vs immediately on the closure
+sources:
+- video_id: 4jU547ocod4
+  title: TTrades Fractal Model + Inversion (Intraday Strategy)
+  quote: to anticipate one candle's open high low close or open low high close
+- video_id: 4jU547ocod4
+  title: TTrades Fractal Model + Inversion (Intraday Strategy)
+  quote: with the sweep of this first candle and the closure back in
+- video_id: 4jU547ocod4
+  title: TTrades Fractal Model + Inversion (Intraday Strategy)
+  quote: with a conflicted bias we can go ahead and use the daily profile
+ambiguities:
+- The numbering 'candle 1 / candle 2 / candle 3' is never spoken in this video; the sequence is described
+  as 'this first candle' and 'this candle', so the mapping to C1/C2/C3 is inferred from the rest
+  of the corpus, not stated here.
+- Which level C1's sweep must be of (its own extreme, a swing, a session level) is not specified.
+- Whether the closure back inside must be a body close is not stated.
+- The 'conflicted bias -> use the daily profile' escape hatch is named but the daily profile procedure
+  is not restated.
+related:
+- fractal-model-c3
+- ltf-inversion-entry-in-tspot
+- t-spot
+- cisd
+- timeframe-alignment-pairs
+- daily-profile-framework
+python_detector: null
+contributing_units:
+- education_ict_updated_02
+draft_count: 1
+voice: ttrades

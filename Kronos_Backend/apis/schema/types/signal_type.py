@@ -1,0 +1,32 @@
+#####################################################################   LIBRARIES   ########################################################################
+import graphene
+from graphene_django import DjangoObjectType
+
+from apis.models import (Action, Signal)
+
+##############################################################################################################################################################
+
+class SignalType(DjangoObjectType):
+    x = graphene.Time()
+    y = graphene.String()
+    symbol = graphene.String()
+
+    def resolve_symbol(self, info, ):
+        return (self.strategy.currencypair.symbol)
+    class Meta:
+        model = Signal
+        exclude = ("strategy",)
+
+    def resolve_y(
+        self,
+        info,
+    ):
+        return self.price
+
+    def resolve_x(
+        self,
+        info,
+    ):
+        # Same value/serialization as the old strftime->strptime roundtrip,
+        # which truncated microseconds to zero.
+        return self.created_at.time().replace(microsecond=0)

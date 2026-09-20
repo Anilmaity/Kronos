@@ -1,0 +1,53 @@
+id: cross-asset-reversal-confirmation
+name: "The Strongest Asset Must Reverse for the Weakest to Expand"
+aliases: ["pair the reversal", "confirm with the other index"]
+category: structure
+status: specified
+
+definition: >
+  A short idea in the weakest correlated asset is only actionable if the strongest correlated
+  asset reverses at its own level at the same time. If the strongest asset keeps pushing higher,
+  the weakest asset is unlikely to expand lower and the idea should be treated as wrong. The
+  mirror case holds too: the weakest asset must sweep its low and reverse before the strongest can
+  be framed higher.
+
+timeframes:
+  htf: ["1D", "1H"]
+  ltf: ["15m", "5m", "3m", "1m"]
+  fractal: true
+
+preconditions:
+  - "A weakest/strongest asset pair has been identified."
+  - "The strongest asset is trading at a relevant level such as a session high or previous day high."
+
+detection_rules:
+  - "For a short on the weakest asset: require the strongest asset to reverse off its high and trade back into its range."
+  - "For a long on the strongest asset: require the weakest asset to sweep a low and form a reversal there."
+  - "Absence of the paired reversal within the next few candles means the idea is not confirmed."
+
+invalidation:
+  - "The strongest asset continues to make new highs while the weakest fails to displace lower."
+
+execution:
+  bias: "From the daily chart, applied to the selected asset."
+  entry: "Only after the paired asset reverses."
+  stop: "Per the entry model used."
+  targets: ["Previous day low or previous day high on the traded asset"]
+
+measurable:
+  - "hit rate of weakest-asset shorts with and without a simultaneous strongest-asset reversal"
+
+sources:
+  - video_id: egV_gABTQks
+    title: "(CPI) New York Open Live Q&A"
+  - video_id: 0AYGNc9czYc
+    title: "New York Open Live Q&A"
+  - video_id: WBwoiMDXT2c
+    title: "New York Open Live Q&A"
+
+ambiguities:
+  - "Reverses is defined only by V-shape displacement and closure back into the range, with no candle count."
+  - "How long to wait for the paired reversal is given only as the next couple of candles in one instance."
+
+python_detector: null
+related: ["relative-strength-asset-selection", "v-shape-reversal-speed", "smt-requires-framework"]

@@ -1,0 +1,45 @@
+id: position-sizing
+name: Position Sizing From Drawdown Budget
+definition: 'Risk per trade is computed from the account''s drawdown allowance, never from its nominal
+  size: a ''50K funded account'' with a $2,500 drawdown is treated as a $2,500 account. The formula
+  is drawdown divided by the number of consecutive losses you are willing to survive. He gives 10
+  to 15 as the conservative divisor (2,500/12 rounded down to $200) and, on the aggressive end of
+  his time-versus-money curve, 7 (2,500/7 = ~$350). The divisor is the trader''s aggressiveness dial:
+  roughly 1-3 for someone ripping accounts, 5-7 in the middle, 15-20 for someone with one account
+  and no appetite to replace it. A prop firm''s daily loss limit does not bind if sizing is done this
+  way.'
+category: risk
+status: specified
+detection_rules:
+- risk_per_trade = drawdown_allowance / N, where N is the chosen number of consecutive losses to survive.
+- N = 10-15 conservative, ~7 aggressive-but-not-reckless, 1-3 for deliberately disposable accounts,
+  15-20 for a single irreplaceable account.
+- Use the drawdown allowance, not the headline account size.
+- Round the result to a convenient figure ($200 rather than $210).
+- Keep position size constant; do not vary it trade to trade.
+measurable:
+- maximum consecutive losses observed in a backtest vs the chosen N
+- probability of hitting the drawdown limit given the model's loss-streak distribution
+sources:
+- video_id: NESSCPMzWR0
+  title: New York Open Live Q&A
+  quote: Take your drawdown divided by maybe 10 to 15
+- video_id: yNgx9OAefuI
+  title: New York Open Live Q&A
+  quote: 2500 divided by seven
+ambiguities:
+- The two divisors given (10-15 and 7) are not reconciled; he presents the choice as a personal aggressiveness
+  setting rather than a rule.
+- He estimates a realistic worst case at 'maybe five, seven losses' in a row for a 56%-win-rate 2R
+  system, but does not derive N from a loss-streak calculation.
+- Nothing is said about scaling risk up after a run of winners.
+related:
+- prop-firm-drawdown-sizing
+- position-sizing-fixed-risk
+- realistic-r-expectations
+- max-one-trade-per-day
+- trade-frequency-baseline
+contributing_units:
+- live_streams_01
+draft_count: 1
+voice: ttrades

@@ -1,0 +1,74 @@
+id: power-of-three-amd
+name: Power Of Three (Accumulation, Manipulation, Distribution)
+category: model
+status: specified
+aliases:
+- AMD
+- 4-hour power of three
+- OHLC / OLHC
+definition: 'He explicitly rejects the classic AMD diagram as ''not very mechanical'' and redefines
+  it onto the candle numbering: candle 1 is ALWAYS accumulation; candle 2 is manipulation; candle 3
+  is distribution. The one branch is the wick size of candle 2. If candle 2 has a large opposing run
+  it is manipulation only, and distribution happens in candle 3 (a separate higher-timeframe candle).
+  If candle 2 has a small, shallow opposing run, then manipulation AND distribution both occur inside
+  candle 2 -- the same higher-timeframe candle. The instruction he wants internalised is: let the wick
+  form, then trade the body.'
+timeframes:
+  htf:
+  - 1W
+  - 1D
+  - 4H
+  - 1H
+  ltf:
+  - 30m
+  - 15m
+  - 5m
+  - 3m
+  fractal: true
+preconditions:
+- A daily (or higher) bias.
+- A candle 1 whose extreme is the reference.
+detection_rules:
+- Candle 1 = accumulation, always.
+- Candle 2 with a LARGE opposing run below candle 1's low (bullish case) = manipulation only. Let it
+  close; trade candle 3 as distribution.
+- Candle 2 with a SMALL, shallow opposing run below candle 1's low = manipulation and distribution in
+  the same candle. Tradeable inside candle 2.
+- In either case the distribution candle is confirmed on the lower timeframe by a change in the state
+  of delivery that creates a protected swing -- that is what says the wick has formed.
+- Trade the body of the distribution candle; never try to catch the wick.
+invalidation:
+- The protected swing formed by the lower-timeframe CISD is taken out.
+- Price opens and moves in the intended direction FIRST -- 'when price goes up first, that usually means
+  it's going to come down' -- so the shallow-opposing-run case is off.
+execution:
+  bias: Set by the higher-timeframe candle read (daily / weekly).
+  entry: After the distribution candle's wick is confirmed by an LTF protected swing; positional entry
+    at the open of the new higher-timeframe candle is allowed when the protected swing formed before
+    the open.
+  stop: The protected swing, or 50% of the CISD / opposing candle.
+  targets:
+  - previous day high/low
+  - negative one standard deviation
+  - 2R
+measurable:
+- split of C2 into manipulation-only vs manipulation+distribution, by timeframe
+- expansion of C3 following a manipulation-only C2
+sources:
+- video_id: FAKWJ-1NlLE
+  title: Trading The 4 Hour Power Of Three - OHLC / OLHC
+  quote: The first candle will always be accumulation
+ambiguities:
+- The large/small opposing-run branch is the whole decision and is never given a threshold.
+- '''Early into the higher time frame candle'' is offered as when a shallow opposing run should appear,
+  with no minute count.'
+related:
+- fractal-model-c2
+- fractal-model-c3
+- small-wick-expansion-rule
+- po3-four-hour-opening-times
+- wick-trust-test
+contributing_units:
+- build_a_model_intro_to_ttrades_fractal_model_02
+draft_count: 1
+voice: ttrades

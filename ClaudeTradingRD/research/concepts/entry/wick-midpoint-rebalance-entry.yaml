@@ -1,0 +1,65 @@
+id: wick-midpoint-rebalance-entry
+name: Extreme Wick 50 Percent Rebalance Entry
+definition: 'A confirmation entry used when an extreme wick prints at a key level. The wick
+  itself is measured as a range; price is expected to return to rebalance its 50 percent,
+  and a stop-buy is placed above the candle to play the continuation. The reasoning given
+  is that on a lower timeframe there is a balanced price range inside the wick that price
+  returns to fill.
+
+  '
+category: entry
+status: specified
+aliases:
+- measure the wick
+- 50 percent of the wick
+preconditions:
+- An extreme wick has printed, ideally at a GB level or another marked point of interest.
+detection_rules:
+- Measure the wick from the candle body to the wick extreme and mark its 50 percent.
+- Wait for price to return and rebalance that 50 percent.
+- Place a buy stop above the wick candle (mirror for shorts) and play the continuation.
+- The setup is strengthened when the wick coincides with a GB level, a new hour, or a swept
+  prior-session low.
+invalidation:
+- Price trades beyond the wick extreme - the stop sits below the low.
+measurable:
+- how often the 50 percent of an extreme wick is rebalanced before continuation
+- hit rate of the stop-entry continuation versus a blind limit at the level
+- R achieved with the stop below the wick low
+sources:
+- video_id: gjoRPszj-Qk
+  title: AP | Use Market Structure & Fibonacci Levels for Sniper Entries
+ambiguities:
+- '''Extreme wick'' is not quantified - no wick-to-body ratio or percentile is given.'
+- The lower-timeframe balanced price range said to explain the rebalance is asserted, not
+  demonstrated.
+- Whether the 50 percent is measured from the body close or the body open is not stated.
+related:
+- body-close-confirmation
+- gb-levels
+- gb-retracement-entry
+timeframes:
+  htf:
+  - 4H
+  - 1H
+  - 15m
+  ltf:
+  - 5m
+  - 1m
+  - 30s
+  - 15s
+  fractal: true
+execution:
+  bias: Continuation away from the wick.
+  entry: Buy stop above the wick candle after the 50 percent is rebalanced.
+  stop: Below the wick low (long); above the wick high (short).
+  targets:
+  - the next unmitigated area
+  - the 0.41
+  - a marked volume node
+contributing_units:
+- t_talks_01
+draft_count: 1
+voice: guest
+guest_sources:
+- AP | Use Market Structure & Fibonacci Levels for Sniper Entries

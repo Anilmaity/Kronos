@@ -1,0 +1,47 @@
+id: po3-four-hour-opening-times
+name: "4-Hour Power of Three Openings"
+aliases: ["four hour candle openings", "the 2am 6am 10am 2pm candles"]
+category: time
+status: specified
+
+definition: >
+  The intraday working unit is the 4-hour candle, each of which is treated as a complete
+  Power of Three (open = accumulation, wick = manipulation, body = distribution, close =
+  opposite wick). Index futures produce four 4H candles per day, opening at 02:00, 06:00,
+  10:00 and 14:00 New York time. Forex produces only three usable 4H candles, opening at
+  01:00, 05:00 and 09:00 New York time, because the PM period is the London close and
+  delivers only small moves.
+
+timeframes:
+  htf: ["1D"]
+  ltf: ["4H", "15m", "5m"]
+  fractal: true
+
+preconditions:
+  - "Instrument class is known (index futures vs forex), because the opening clock differs."
+
+detection_rules:
+  - "Index futures: a new 4H PO3 begins at 02:00, 06:00, 10:00, 14:00 New York."
+  - "Forex: a new 4H PO3 begins at 01:00, 05:00, 09:00 New York."
+  - "All stated times are New York time."
+
+invalidation:
+  - "Not applicable - this is a clock definition, not a setup."
+
+measurable:
+  - "distribution of high-of-day / low-of-day formation across the four 4H opens"
+  - "average range of the 14:00 forex candle vs the other three (tests the 'forex has only three' claim)"
+
+sources:
+  - video_id: wWIHS_dxbEY
+    title: "DexterLab | Putting All The ICT Pieces Together - Master PO3"
+  - video_id: J_EeS2_2CAM
+    title: "GxTradez | Phases of Price & Profiles For Expansion"
+
+ambiguities:
+  - "Whether these are exchange-session-adjusted opens or fixed wall-clock opens is not stated."
+  - "Daylight-saving handling is never mentioned."
+  - "GxTradez lists only 2am/6am/10am for futures and does not discuss forex; the 14:00 candle and the forex clock come from DexterLab alone."
+
+python_detector: null
+related: ["opening-location-vs-previous-range", "four-hour-session-if-then-chain", "internal-dynamics-sequence"]

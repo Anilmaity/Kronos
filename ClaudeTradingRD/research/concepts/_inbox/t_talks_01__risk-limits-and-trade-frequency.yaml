@@ -1,0 +1,53 @@
+id: risk-limits-and-trade-frequency
+name: "Hard Risk And Frequency Caps"
+aliases: ["one trade a day", "two trades a week", "under 1 percent"]
+category: risk
+status: specified
+
+definition: >
+  A set of hard numeric caps applied regardless of outcome. Risk is under 1 percent of the account
+  per trade, aiming for 1 to 2 R. A maximum of one trade is taken per day and a maximum of two per
+  week, whether those trades won or lost. The stated purpose is to bound both over-trading and
+  over-sizing, the two ways an impulsive trader over-risks.
+
+timeframes:
+  htf: []
+  ltf: []
+  fractal: false
+
+preconditions:
+  - "None. The caps are unconditional."
+
+detection_rules:
+  - "Risk less than 1 percent of the account on any single trade."
+  - "Take at most one trade per day. After it closes, stop for the day regardless of result."
+  - "Take at most two trades per week. After the second, stop for the week regardless of result."
+  - "Aim for 1 to 2 R (the model's target is 2R)."
+  - "After the trade is closed, disengage - the 'I have a cushion to work with' impulse is named as the thing that gives back the day."
+
+invalidation:
+  - "Not applicable."
+
+execution:
+  bias: "Unchanged."
+  entry: "Only if the daily and weekly caps are not already spent."
+  stop: "Sized so that the stop distance equals under 1 percent of account."
+  targets: ["2R"]
+
+measurable:
+  - "realised risk per trade as a percentage of account"
+  - "trades per day and per week versus the caps"
+  - "P&L of the trades that would have been taken beyond the caps"
+  - "with a 1:2 payoff, the stated break-even win rate is about 34 percent - measure the actual win rate against it"
+
+sources:
+  - video_id: zXtJSSkiNmo
+    title: "Ash Trades | The Journey To Profitability & The Unicorn Model"
+
+ambiguities:
+  - "'Under 1 percent' is not reconciled with prop-firm drawdown limits even though he trades prop accounts."
+  - "It is not stated whether the weekly cap resets on Sunday or on the first trading day."
+  - "The 34 percent break-even figure is stated for a 1:2 payoff and ignores costs."
+
+python_detector: null
+related: ["mechanical-trade-management", "fund-trading-from-external-income", "model-persistence-through-drawdown"]

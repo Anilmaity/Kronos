@@ -1,0 +1,107 @@
+id: stop-size-reduction
+name: How To Reduce A Stop That Feels Too Big
+definition: 'The same viewer question - "how do you reduce the stop loss size?" - gets two
+  different answers in two streams of this unit. In W7Fu3Rx5iMs the answer is to move the
+  entry closer to the invalidation, which shrinks the stop distance. In X4XSsv5CNqg the answer
+  is the opposite instruction: keep the stop where it is and change the position size instead.
+  In the second stream he also refuses the premise, pointing out that "big" is a comparison
+  word with no content - a big stop is fifteen points to one trader and two hundred to another
+  - and asks to see the trades before diagnosing, noting that a 200-point stop on a 5-minute
+  NQ entry is roughly half the day''s move and should not be happening.
+
+  '
+variants:
+  definition:
+  - 'Trader T applies a hard pip ceiling to the stop and fixes an over-sized stop by moving
+    the ENTRY, never by moving the stop closer to the entry. On EURUSD his stated ceiling
+    is about 12 pips - 12 is fine, anything over about 13 is not - and when a setup would
+    need more he raises the sell limit (lowers the buy limit) further into the block so the
+    same structural stop becomes a smaller number of pips. He does the same when the 2R target
+    is unreachably far: tighten the limit rather than shorten the target.
+
+    '
+category: risk
+status: contested
+aliases:
+- how to reduce the stop loss size
+- 12 pips on Euro
+- move the limit, not the stop
+preconditions:
+- A structurally-placed stop is felt to be too large.
+- A structural stop level has been chosen (beyond the block / swing).
+detection_rules:
+- 'Reading A (W7Fu3Rx5iMs): reduce the distance by entering closer to the invalidation level.'
+- 'Reading B (X4XSsv5CNqg): leave the stop at structure and solve the dollar risk with position
+  size.'
+- 'Both streams: before either fix, check the stop against the instrument''s daily move -
+  a stop worth half the day''s range on a 5-minute entry indicates the entry, not the stop.'
+- Measure the stop in pips before placing the order.
+- On EURUSD, accept about 12 pips; reject much beyond 13.
+- If the stop is too large, move the limit deeper into the block so the distance to the same
+  structural stop shrinks - do not move the stop in.
+- Apply the same adjustment when the fixed R target would otherwise sit too far away.
+invalidation:
+- n/a
+- Not applicable.
+measurable:
+- stop distance as a fraction of that day's realised range, split by outcome
+- win rate of entries taken closer to invalidation versus at the original trigger
+- fill rate of the tightened limit versus the original (the cost of the adjustment)
+- distribution of stop sizes in pips by instrument, to see how often the ceiling binds
+- expectancy of trades taken at 12 pips or less versus those above it
+sources:
+- video_id: W7Fu3Rx5iMs
+  title: New York Open Live Q&A
+  quote: you enter closer to your invalidation
+- video_id: X4XSsv5CNqg
+  title: New York Open Live Q&A
+  quote: you just change your position size. You keep your stop loss
+- video_id: X4XSsv5CNqg
+  title: New York Open Live Q&A
+  quote: To some people big stop loss could be 15 points
+- video_id: wCtxmWe4KNc
+  title: Back Testing Live Session With Trader T
+  quote: 12 Pips on Euro not too bad anything over your boat 13
+ambiguities:
+- The two answers may be replies to two different questions - point distance versus dollar
+  risk - but neither transcript disambiguates, and the question as typed by the viewer is
+  worded the same way both times.
+- 'Reading A has an unstated cost: entering closer to invalidation raises the chance of being
+  stopped, which he never mentions here.'
+- No numeric guidance in either stream on what stop distance is acceptable for a given timeframe
+  or instrument.
+- The 12-pip figure is stated only for EURUSD; no equivalent is given for gold or the indices
+  he also tests.
+- The auto-captioner renders his phrase as 'anything over your boat 13' - the intended words
+  are almost certainly 'anything over, you're about 13', so the ceiling is approximate as
+  spoken.
+- He does not say how much the limit may be moved before the setup stops being the same setup.
+- No account-size or volatility conditioning is attached to the pip ceiling.
+related:
+- position-sizing
+- stop-loss-placement
+- entry-timeframe-elevation
+- rr-gated-entry-refinement
+- risk-reward-minimum
+- position-sizing-fixed-risk
+- cancel-limit-after-target-run
+guest_sources:
+- Back Testing Live Session With Trader T
+- Trader T
+timeframes:
+  htf: []
+  ltf:
+  - 15m
+  - 5m
+  fractal: false
+execution:
+  bias: Unchanged.
+  entry: Moved deeper into the block.
+  stop: Kept at the structural level.
+  targets:
+  - unchanged R multiple, now closer in price
+contributing_units:
+- live_stream_guests_01
+- live_streams_03
+draft_count: 2
+voice: mixed

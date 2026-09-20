@@ -1,0 +1,56 @@
+id: retracement-phase
+name: "Retracement (Phase Of Price)"
+category: structure
+status: specified
+definition: >
+  Two Shorts supply a one-line definition: a retracement is a slow, shallow move opposing the
+  higher-timeframe trend. The operational contrast is explicit - if the counter-move is an
+  expansion instead, that is a reversal, not a retracement. The destination is normally a PD
+  array, usually a fair value gap. The instruction for participating is to wait until the
+  retracement phase is over, drop to the lower timeframe for a change in the state of delivery,
+  and get on side during or just before the expansion that follows.
+
+timeframes:
+  htf: ["1D", "4H"]
+  ltf: ["1H", "15m", "5m"]
+  fractal: true
+
+detection_rules:
+  - "A counter-trend move that is slow and shallow = retracement."
+  - "A counter-trend move that is an expansion = reversal, not retracement."
+  - "The retracement normally terminates in a PD array, usually a fair value gap."
+  - "Do not enter during the retracement; wait until it is over."
+  - "Confirm with a lower-timeframe change in the state of delivery, then enter for the following expansion."
+
+invalidation:
+  - "The counter-move expands rather than drifting (reclassify as reversal)."
+
+measurable:
+  - "speed and depth of counter-moves later classified retracement vs reversal"
+  - "share of retracements terminating inside a fair value gap"
+
+sources:
+  - video_id: RdQdorNCezI
+    title: "What Does a Retracement Look Like?"
+    quote: "A retracement is a slow shallow move opposing the higher time frame trend."
+  - video_id: RdQdorNCezI
+    title: "What Does a Retracement Look Like?"
+    quote: "I want to wait until that retracement phase is over"
+  - video_id: eKbZYMn3_bU
+    title: "You Want a Slow and Shallow Move During a Retracement"
+    quote: "We want to see a slow shallow move."
+  - video_id: eKbZYMn3_bU
+    title: "You Want a Slow and Shallow Move During a Retracement"
+    quote: "Do we want to see expansion back lower? No, that is a reversal."
+
+ambiguities:
+  - "'Slow' and 'shallow' are the two operative words and neither is given a bar count or a percentage."
+  - "One Short concedes the retracement 'digs a bit deeper' while still qualifying, on the ground that the bodies respect the level - so the test is on bodies, but no depth limit is given."
+  - "No rule distinguishes a retracement from a consolidation at the same location."
+
+python_detector: null
+related: ["shallow-retracement", "expansion-signature", "phases-of-price", "consolidation-vs-retracement-test", "expansion-sequence-quality"]
+
+voice: ttrades
+contributing_units: [shorts_04]
+draft_count: 1

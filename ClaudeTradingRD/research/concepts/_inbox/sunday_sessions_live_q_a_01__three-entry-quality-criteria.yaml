@@ -1,0 +1,55 @@
+id: three-entry-quality-criteria
+name: "Three Entry-Quality Criteria (Targets, Daily Range, Daily Open)"
+aliases: ["the three things", "enter before targets hit", "chasing filter"]
+category: entry
+status: underspecified
+
+definition: >
+  A day- and entry-quality filter improvised on stream and then applied repeatedly: enter before
+  the targets have been hit, enter before the daily range has been created, and enter around the
+  daily (or higher-timeframe candle) open. The number of criteria satisfied is used as a
+  probability grade: three of three is good, two of three acceptable, one of three poor, zero of
+  three a low-probability day.
+
+timeframes:
+  htf: ["1D", "4H"]
+  ltf: ["15m", "5m"]
+  fractal: false
+
+preconditions:
+  - "A directional idea already exists for the session."
+
+detection_rules:
+  - "Criterion 1: the correlated-asset targets (e.g. previous day high or low) have not yet been taken."
+  - "Criterion 2: the bulk of the expected daily range has not yet been produced, where expected range is eyeballed from the last several daily candles."
+  - "Criterion 3: the prospective entry sits near the daily open or a higher-timeframe candle open."
+  - "Grade the setup 3/3, 2/3, 1/3 or 0/3 and scale interest accordingly."
+
+invalidation:
+  - "Targets already hit and most of the daily range spent: further entries in that direction are chasing."
+
+execution:
+  bias: "Unchanged; this is a filter, not a direction."
+  entry: "Preferably near the daily or higher-timeframe candle open, before targets and before range exhaustion."
+  stop: "Not specified by this concept."
+  targets: ["Not specified by this concept."]
+
+measurable:
+  - "expectancy of trades bucketed by number of criteria met (0-3)"
+  - "share of expected daily range remaining at entry versus trade outcome"
+
+sources:
+  - video_id: 0AYGNc9czYc
+    title: "New York Open Live Q&A"
+    quote: "Enter before targets hit. Enter before daily range created. Enter around daily open."
+  - video_id: WBwoiMDXT2c
+    title: "New York Open Live Q&A"
+
+ambiguities:
+  - "He states outright that he has not figured out how to define these mechanically."
+  - "Around the daily open has no distance tolerance."
+  - "Expected daily range is estimated by eye from recent candles; no lookback length or statistic is given."
+  - "The 3/2/1/0 probability grading has no stated hit-rate evidence behind it."
+
+python_detector: null
+related: ["daily-range-budget", "dont-trade-after-expansion", "daily-profile-confirmation"]

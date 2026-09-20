@@ -1,0 +1,62 @@
+id: daily-wick-confirmation-timeframes
+name: "Confirming The Day's High Or Low: Which Timeframe, By Session"
+aliases: ["how do you confirm the daily candle wick", "day / daily candle wick"]
+category: time
+status: specified
+
+definition: >
+  Delivered as an unprompted whiteboard lesson ("let's do a little lesson on how to confirm
+  high or low of the day"), this is the explicit mapping he otherwise leaves implicit. There
+  are two accepted confirmations of a daily wick, and the timeframe used scales with the
+  session because price moves faster later in the day. Method one is a CISD, whose timeframe
+  is session-dependent: Asia uses the 1-hour; London uses the 1-hour or 30-minute (15-minute
+  rarely, but allowed); New York generally uses the 15-minute or 5-minute. Method two is a
+  candle closure, which must be on a higher timeframe - a 4-hour closure or a 1-hour closure,
+  and he will not go below those two - and for the 1-hour it should be a candle 2 closure at
+  a relevant key level. The two methods can be stacked; in the worked example he uses both.
+
+timeframes:
+  htf: ["1D", "4H", "1H"]
+  ltf: ["30m", "15m", "5m"]
+  fractal: false
+
+preconditions:
+  - "A daily candle whose extreme is a candidate for the high or low of the day."
+  - "The session in which that extreme formed is known."
+
+detection_rules:
+  - "Method 1 (CISD), by session of the candidate extreme: Asia -> 1-hour CISD; London -> 1-hour or 30-minute CISD (15-minute permitted but rare); New York -> 15-minute or 5-minute CISD."
+  - "Method 2 (candle closure): a 4-hour closure or a 1-hour closure only; never a timeframe below 1-hour for this method."
+  - "For the 1-hour closure variant, require a candle 2 closure sitting at a relevant key level."
+  - "Either method confirms the wick; both may be required for a stronger read (the review example uses a 4-hour candle 2 closure plus a 15-minute CISD)."
+
+invalidation:
+  - "Price trades back through the confirmed daily extreme."
+
+execution:
+  bias: "Away from the confirmed daily wick."
+  entry: "Continuation on the session-appropriate lower timeframe once the wick is confirmed."
+  stop: "Beyond the confirmed extreme."
+  targets: ["previous day high / low", "the opposing side of the daily range"]
+
+measurable:
+  - "rate at which a session-appropriate CISD correctly marks the eventual daily extreme"
+  - "false-positive rate of the 15-minute CISD used in London (the case he says is rare)"
+
+sources:
+  - video_id: N3Ml-r0X30o
+    title: "New York Open Live Q&A"
+    quote: "if you're in Asia, that's going to be like an H1 CSD"
+
+ambiguities:
+  - "The Asia / London / New York boundaries themselves are not given in clock time anywhere in this unit, so the session lookup is not fully decidable from the corpus."
+  - "'Relevant key level' is required for the 1-hour closure variant but is not enumerated here."
+  - "It is not stated whether the 4-hour closure variant also needs to be a candle 2 closure, or only the 1-hour one ('more so for the H1')."
+  - "Whether the two methods are alternatives or whether one is preferred is not stated; he says 'mainly change in the state delivery on the hourly' in the Asia example."
+
+python_detector: null
+related: ["hourly-cisd-confirmation", "one-cisd-per-day", "cisd", "fractal-model-c2", "wick-trust-test", "relevant-level"]
+
+contributing_units: ["live_streams_04"]
+draft_count: 1
+voice: ttrades

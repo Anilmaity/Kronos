@@ -1,0 +1,51 @@
+id: indicator-print-conditions
+name: "What Counts As A Valid Model (closure plus CISD)"
+category: model
+status: specified
+definition: >
+  The Shorts give the two-part validity test in its most compressed form: the fractal model
+  requires BOTH the higher-timeframe candle closure AND the swing-point confirmation (the change
+  in the state of delivery), and the indicator only prints when both are present. The stated
+  payoff is negative rather than positive - waiting for the second part is what prevents the
+  losses that come from acting on a closure alone. The confirming closure is looked for on a
+  lower timeframe than the closure being confirmed.
+
+timeframes:
+  htf: ["1D", "4H", "1H"]
+  ltf: ["15m", "5m", "1m"]
+  fractal: true
+
+detection_rules:
+  - "Part 1: a valid higher-timeframe candle 2 / candle 3 closure."
+  - "Part 2: on a lower timeframe, locate the extreme and the series of candles that made it, and require a close through that series."
+  - "Both parts present -> the model is valid and the indicator plots it."
+  - "Part 1 present, part 2 absent -> no trade; in the worked example the swing is then taken out."
+
+invalidation:
+  - "The lower-timeframe close through the series never occurs before the level is taken out."
+
+measurable:
+  - "loss rate of closure-only entries vs closure-plus-CISD entries"
+  - "how often the lower-timeframe confirmation fails to arrive after a valid HTF closure"
+
+sources:
+  - video_id: I8_O-4ZifrM
+    title: "Validate Swing Points with Candle Closures and Confirmation"
+    quote: "having both parts of the fractal model, the candle closure and the swing point confirmation"
+  - video_id: La4MlftJc14
+    title: "Validating Swing Points for Continuation"
+    quote: "it does mark that out on the indicator because it is a valid model"
+  - video_id: 0st2qhpQ5QE
+    title: "Using Lower Timeframes to Confirm Higher Timeframe Closures"
+    quote: "you just want to confirm that on the lower time frame"
+
+ambiguities:
+  - "Which lower timeframe is used for confirmation is not stated in these Shorts - only 'the lower timeframe'."
+  - "No deadline is given for how long the confirmation may take to arrive."
+
+python_detector: null
+related: ["cisd", "fractal-model-c2", "hourly-cisd-confirmation", "single-cisd-at-swing-point"]
+
+voice: ttrades
+contributing_units: [shorts_04]
+draft_count: 1

@@ -1,0 +1,58 @@
+id: fair-value-gap-not-an-entry
+name: "Fair Value Gaps Are Not Entries"
+aliases: ["FVG", "imbalance", "no limits in the gap"]
+category: entry
+status: specified
+
+definition: >
+  He uses fair value gaps to define and validate order blocks and as retracement
+  territory, but not as entry objects. The reason given is that a resting limit inside
+  a gap frequently gets ripped straight through, leaving the trader wrong with no
+  structure to lean on. The prescribed alternative is to wait for price to react inside
+  the gap and validate a new order block, which produces a usable stop, and then enter
+  on the close of that candle - or at market.
+
+timeframes:
+  htf: ["1D", "4H"]
+  ltf: ["1H", "15m", "5m"]
+  fractal: true
+
+preconditions:
+  - "A fair value gap / imbalance exists in the direction price is retracing."
+
+detection_rules:
+  - "Do not place a resting limit inside the gap with a stop beyond it."
+  - "Wait for a reaction inside the gap that validates a new order block."
+  - "Enter on the close of the validating candle, or at market, with the stop derived from that structure."
+  - "In a bullish read, a reaction at the gap followed by a close BELOW it is an invalidation, not a deeper entry - it means the move is continuation lower rather than a retracement inside a reversal."
+  - "The gap is also used as the retracement destination in the protected-swing entry sequence: sweep, close below, retrace into the gap, close below again."
+  - "First-presented fair value gap is not used at all; the 9:30 open is suggested instead."
+
+invalidation:
+  - "A close through the gap against the intended direction."
+
+execution:
+  bias: "Unchanged - the gap does not set bias."
+  entry: "The order block validated inside the gap, not the gap itself."
+  stop: "Beyond the validated order block; for pre-open entries, covering the gap plus its 50%."
+  targets: ["2R"]
+
+measurable:
+  - "fill-then-fail rate of limits placed inside fair value gaps"
+  - "win rate of gap-limit entries vs validated-order-block entries at the same gap"
+
+sources:
+  - video_id: u8bnmaih_hA
+    title: "TTrades Sunday Session - Live Q&A"
+  - video_id: r7yW6ou1LDs
+    title: "TTrades Sunday Session - Live Q&A"
+  - video_id: wM1s7UivQ08
+    title: "New York Open Live Q&A"
+
+ambiguities:
+  - "He says in two streams that he does not really use fair value gaps, yet the gold entry in bMkRomKEunU explicitly retraces into a small fair value gap before the entry close. The reconciliation - gaps define blocks and act as retracement targets but are not entry objects - is implied rather than stated."
+  - "No rule is given for how deep into the gap the reaction must occur."
+  - "'Validate a new order block' is not given a candle-count or closure test here."
+
+python_detector: null
+related: ["order-block", "protected-swing", "cisd", "positional-entry-before-open"]

@@ -1,0 +1,61 @@
+id: tgif-setup
+name: "TGIF Setup"
+aliases: ["TGIF", "Friday back into the weekly range"]
+category: model
+status: specified
+
+definition: >
+  A Friday trade of the weekly candle's wick back into the weekly range. Three
+  conditions are required together: the weekly extreme formed Monday or Tuesday,
+  expansion ran through Thursday, and a weekly objective was actually reached. The
+  third condition is the one that most often fails and it is treated as absolute -
+  a week with the correct Tuesday-high / Wednesday-Thursday-expansion shape but no
+  objective hit produces no TGIF trade.
+
+timeframes:
+  htf: ["1W", "1D"]
+  ltf: ["4H", "1H"]
+  fractal: false
+
+preconditions:
+  - "Weekly high (bearish TGIF) or low (bullish TGIF) formed on Monday or Tuesday."
+  - "Expansion through Wednesday and Thursday."
+  - "A weekly objective has been met - in the oil example, the higher timeframe lows plus an imbalance."
+  - "Ideally SMT against the correlated asset at the Friday origin (gasoline vs oil in the worked example), which is what validated the opposing candles as an order block."
+
+detection_rules:
+  - "Verify all three preconditions. If the objective was not hit, do not take the trade - he names this as the reason he passed on an otherwise textbook week."
+  - "Mark the objective: previously marked highs/lows, and 20-30% of the weekly range measured from the weekly high to the weekly low."
+  - "As price closes over each successive level, a new invalidation point is established behind it."
+
+invalidation:
+  - "No weekly objective reached - the setup does not exist."
+  - "Price fails to validate a new order block at the origin, so the low/high is not yet valid."
+  - "Price closes back through the most recent invalidation point."
+
+execution:
+  bias: "Counter to the week's expansion, back into the weekly range."
+  entry: "On Friday, from the opposing candle series validated as an order block (SMT helps validate it)."
+  stop: "Beyond the current invalidation point, which rolls forward with each new closure."
+  targets: ["marked highs/lows inside the range", "20-30% of the weekly range measured high to low"]
+
+measurable:
+  - "frequency of weeks meeting all three conditions vs structure-only weeks"
+  - "hit rate of the 20-30% band on qualifying weeks"
+  - "performance of structure-only weeks (no objective hit) as a control"
+
+sources:
+  - video_id: r7yW6ou1LDs
+    title: "TTrades Sunday Session - Live Q&A"
+  - video_id: u8bnmaih_hA
+    title: "TTrades Sunday Session - Live Q&A"
+  - video_id: bMkRomKEunU
+    title: "New York Open Live Q&A"
+
+ambiguities:
+  - "Whether the 20-30% is measured from the weekly high or the weekly low is shown once but never stated as a rule."
+  - "Whether SMT is required or merely helpful at the Friday origin is not settled - elsewhere he says SMT is confluence only."
+  - "'Weekly objective' inherits the underspecification of relevant-level."
+
+python_detector: null
+related: ["relevant-level", "weekly-profile-framework", "order-block", "smt-as-confirmation-not-signal"]

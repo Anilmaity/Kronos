@@ -1,0 +1,56 @@
+id: relevant-htf-pd-array-test
+name: "Relevant Higher-Timeframe PD Array Test (London Reversal vs New York Reversal)"
+aliases: ["relevant PD array", "higher time frame key level", "fake change in the state of delivery"]
+category: structure
+status: underspecified
+
+definition: >
+  The discriminator that decides which daily profile is in play once London has run counter to
+  the intended daily direction. If the London run reached a relevant higher-timeframe PD array,
+  the reversal is allowed to stand and the day is a London Reversal. If it did not, any
+  structure shift printed in London is treated as a fake change in the state of delivery: the
+  liquidity built there is expected to be run again, and the genuine reversal is deferred to the
+  New York a.m. session where the level is finally reached.
+
+timeframes:
+  htf: ["1D", "4H", "1H"]
+  ltf: ["30m", "15m", "5m"]
+  fractal: false
+
+preconditions:
+  - "A counter-directional run has occurred in the London window."
+  - "Higher-timeframe levels are marked on the chart before the session."
+
+detection_rules:
+  - "Identify whether the extreme of the London run touched a marked higher-timeframe PD array. Levels used as 'relevant' in the worked examples: previous day high or low, the consequent encroachment (midpoint) of a wick, a measured gap between a high and a low (higher-timeframe imbalance), a daily fair value gap, and external liquidity/range extremes."
+  - "If it did: the London change in the state of delivery is taken as genuine and the day is traded as a London Reversal."
+  - "If it did not - and looking left shows only equal highs/lows, i.e. newly manufactured liquidity, rather than a level - the structure shift is a fake change in the state of delivery."
+  - "After a fake CISD, expect the swept liquidity to be run again, ideally around the New York opening times."
+
+invalidation:
+  - "Price reaches the higher-timeframe PD array intraday: from that point a reversal from the level is valid regardless of what London did (the final example is a London Reversal that becomes a New York Reversal once the objective is hit)."
+
+measurable:
+  - "hit rate of the fake-CISD claim: given a London structure shift with no HTF level at its extreme, how often is that extreme taken out again the same day"
+  - "how often a London CISD at a marked HTF level holds as the day's extreme"
+  - "how often the re-run of the faked level occurs within 08:30-10:00"
+
+sources:
+  - video_id: xdzyejskSKE
+    title: "ICT Daily Profile - New York Reversal"
+    quote: "this is going to be a fake change in the state of delivery"
+  - video_id: IeXtmeKqjnQ
+    title: "ICT Daily Profile - New York Manipulation"
+    quote: "London did not reach an important level it just Consolidated"
+  - video_id: y6SnEdASVLY
+    title: "ICT Daily Profile - London Reversal / New York Continuation"
+
+ambiguities:
+  - "'Relevant' is never defined. The list of level types above is inferred from what he actually marked in the examples, not from a stated rule."
+  - "No rule for which timeframe counts as 'higher' relative to the execution timeframe."
+  - "No tolerance is given for 'reached' - whether a wick touch is enough, or whether the level must be traded into by a body."
+  - "The fake-CISD test ('look left, is there anything relevant?') is a judgement call and is not mechanically decidable as taught."
+  - "This test is the hinge of the entire London-vs-New-York-Reversal distinction, so its underspecification propagates to both profile concepts."
+
+python_detector: null
+related: ["london-reversal-profile", "new-york-reversal-profile", "new-york-manipulation-profile", "daily-profile-framework"]

@@ -1,0 +1,56 @@
+id: midnight-open-directional-filter
+name: Only Short Above The Midnight Open, Only Long Below It
+category: time
+status: specified
+definition: 'A Short works the filter inside a three-timeframe stack and makes the target explicit.
+  Daily: price has reached above the previous day high. Hourly: identify a bullish fair value gap below.
+  15-minute: look to SHORT ABOVE THE MIDNIGHT OPEN, targeting that hourly fair value gap. The trigger
+  shown is an SMT plus a market structure shift, after which any retracement is sold above the midnight
+  open. He closes by stating the stack is fractal: the same daily / hourly / 15-minute triple can be
+  shifted up to weekly / 4-hour / hourly, or down.'
+timeframes:
+  htf:
+  - 1D
+  - 1H
+  ltf:
+  - 15m
+  fractal: true
+preconditions:
+- Price has reached above the previous day high (bearish case).
+- An opposing higher-timeframe fair value gap exists as the target.
+detection_rules:
+- 'Daily: price reaches above the previous day high.'
+- 'Hourly: identify the bullish fair value gap that will be the target.'
+- '15-minute: sell only ABOVE the midnight open.'
+- 'Trigger: an SMT plus a market structure shift; then sell any retracement above the midnight open.'
+- 'Target: the hourly fair value gap.'
+- The whole triple is fractal - shift it up to weekly / 4-hour / hourly or down to lower timeframes.
+invalidation:
+- Price holds above and trades away from the midnight open without reaching the fair value gap.
+measurable:
+- fill rate of the opposing hourly FVG after a PDH run
+- hit rate of shorts taken above versus below the midnight open on the same signal
+sources:
+- video_id: MewB_Ero8vo
+  title: Price Targets FVG After Running PDH
+  quote: we're looking to short above midnight open to that hourly fair value gap
+- video_id: MewB_Ero8vo
+  title: Price Targets FVG After Running PDH
+  quote: any sort of retracement I'm looking to sell above midnight open
+ambiguities:
+- The Short shows the short-above-midnight side only; the long-below mirror is not stated here.
+- No stop is given anywhere in the clip.
+- The transcript renders "reached above previous day high" as "wretched above previous day high" - an
+  auto-caption artifact, not a term.
+- It is not said whether the midnight-open filter is a hard gate or a preference.
+related:
+- important-time-levels
+- htf-opening-price-entry
+- premium-discount
+- smt-divergence
+- market-structure-shift
+- timeframe-alignment-pairs
+voice: ttrades
+contributing_units:
+- shorts_02
+draft_count: 1

@@ -1,0 +1,55 @@
+id: consolidation-range-no-trade
+name: "No Interest While Consolidating"
+aliases: ["stand aside in a range", "wait for one side of the range"]
+category: risk
+status: specified
+
+definition: >
+  Once an instrument is classified as consolidating, he stops looking at it entirely
+  until one side of the range is taken - explicitly for as long as that takes, up to
+  months. The reason given is that the energy spent trading inside the range is the
+  same energy that gets people chopped up and then absent for the eventual move. This
+  applies at the instrument level, not to individual setups.
+
+timeframes:
+  htf: ["1D", "1W"]
+  ltf: []
+  fractal: true
+
+preconditions:
+  - "The phase after an expansion has been classified as consolidation (price failed to close over the series of opposing candles and fell back inside the range)."
+
+detection_rules:
+  - "Mark the range high and low. Those are the only levels that matter."
+  - "Take no position, and form no opinion on direction, until one side is taken."
+  - "The same applies when the daily chart is simply not obvious - a non-obvious daily generally means consolidation, and dropping to a lower timeframe makes it worse."
+  - "Bitcoin and gold are both used as worked examples of instruments he simply stopped watching."
+
+invalidation:
+  - "One side of the range is taken - the instrument becomes tradeable again."
+
+execution:
+  bias: "None."
+  entry: "None."
+  stop: null
+  targets: null
+
+measurable:
+  - "proportion of calendar days per instrument classified as consolidation"
+  - "P&L of trades taken inside consolidation ranges vs outside them"
+  - "duration distribution of consolidation ranges"
+
+sources:
+  - video_id: r7yW6ou1LDs
+    title: "TTrades Sunday Session - Live Q&A"
+  - video_id: bMkRomKEunU
+    title: "New York Open Live Q&A"
+  - video_id: wM1s7UivQ08
+    title: "New York Open Live Q&A"
+
+ambiguities:
+  - "Sits in tension with range-edge-trading, where he does describe trading range edges back into the range. He does not state when a range is worth trading the edges of and when it should simply be ignored."
+  - "'One side of the range is taken' - whether a wick counts or a close is required is not stated."
+
+python_detector: null
+related: ["range-edge-trading", "phases-of-price", "high-vs-low-resistance-liquidity"]

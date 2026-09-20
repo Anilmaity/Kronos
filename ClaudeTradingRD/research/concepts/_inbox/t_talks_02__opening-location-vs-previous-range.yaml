@@ -1,0 +1,55 @@
+id: opening-location-vs-previous-range
+name: "Opening Location In Function Of The Previous Range"
+aliases: ["framework number one", "framework number two", "the opening in function for the previous range"]
+category: model
+status: specified
+
+definition: >
+  Classify the candle currently in development by where its opening price sits inside the
+  standard-deviation projection taken from the previous candle's manipulation leg. If it
+  opens at the 1 or 1.5 deviation, the previous range has "unfinished business" and
+  continuation to the 2 / 2.5 deviation is the high-probability path (framework one). If it
+  opens at the 2 or 2.5 deviation, the projection is already satisfied and the expectation
+  is a retracement to equilibrium/discount of the previous range - or a reversal if the
+  higher timeframe supports one (framework two).
+
+timeframes:
+  htf: ["1D", "4H"]
+  ltf: ["15m", "5m"]
+  fractal: true
+
+preconditions:
+  - "The previous candle on the working timeframe has closed."
+  - "Its manipulation leg (the high-to-low move that printed the wick) has been measured and projected in standard deviations."
+
+detection_rules:
+  - "Measure the previous candle's manipulation leg and project 1, 1.5, 2, 2.5 (and 4) deviations."
+  - "Read the opening price of the new candle against that projection."
+  - "Open at 1 / 1.5 dev -> anticipate continuation to 2 / 2.5 dev (framework one)."
+  - "Open at 2 / 2.5 dev -> anticipate retracement to equilibrium or discount of the previous range, or a reversal (framework two)."
+  - "In framework one the retracement inside the candle targets internal liquidity (an FVG or OTE zone) before continuing."
+
+invalidation:
+  - "Price closes a body beyond the projection in the opposite sense to the classification."
+
+execution:
+  bias: "Continuation direction of the previous range when opening at 1 / 1.5 dev; counter when opening at 2 / 2.5 dev with HTF support."
+  entry: "The retracement zone inside the new candle - FVG / OTE / silver bullet zone at 1 to 1.5 deviation."
+  stop: "Not stated."
+  targets: ["2 deviation", "2.5 deviation", "the opposing same-or-higher timeframe PD array"]
+
+measurable:
+  - "hit rate of reaching 2 / 2.5 dev when the candle opens at 1 / 1.5 dev"
+  - "frequency of retracement to previous-range EQ when the candle opens at 2 / 2.5 dev"
+
+sources:
+  - video_id: wWIHS_dxbEY
+    title: "DexterLab | Putting All The ICT Pieces Together - Master PO3"
+
+ambiguities:
+  - "The anchor of the deviation projection is 'the manipulation leg high and the low' - whether wick or body endpoints are used is not stated."
+  - "'Higher timeframe supports a reversal' is not given a test."
+  - "Which deviation set (1/1.5/2/2.5/4) is canonical vs illustrative is not stated."
+
+python_detector: null
+related: ["deviation-close-continuation", "po3-four-hour-opening-times", "internal-dynamics-sequence"]

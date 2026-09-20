@@ -1,0 +1,61 @@
+id: relevant-level
+name: "Relevant Level (key level / drawn liquidity)"
+aliases: ["relevant level", "key level", "higher time frame objective", "the drawn liquidity"]
+category: liquidity
+status: underspecified
+
+definition: >
+  The higher-timeframe destination that price must actually reach before a return into the
+  range is expected. In the TGIF video it is the gating condition of the whole setup: if
+  the key level has not been hit, it does not make sense to look back into the range,
+  because a continuation into that level should be expected instead. Two decay rules are
+  given. First, a level that price has already traded through stops being relevant.
+  Second, reaching a level is not sufficient - you must read the phases of price around it
+  and see whether price actually reversed off it (a V-shape reversal) rather than merely
+  retracing or consolidating and continuing through.
+
+timeframes:
+  htf: ["1W", "1D"]
+  ltf: ["1H"]
+  fractal: true
+
+preconditions:
+  - "A directional expansion is in progress with an identifiable destination ahead of it."
+
+detection_rules:
+  - "Identify candidate levels on the daily chart ahead of price: prior swing highs or lows, equal highs or equal lows, fair value gaps, failure swings."
+  - "Discard any candidate that price has already traded through - it is no longer relevant."
+  - "Treat the level as hit only when price reaches it."
+  - "After the level is hit, classify the reaction: a V-shape reversal means the level produced the turn; a small retracement followed by continuation means it did not."
+  - "Only a level that both was hit and produced a reversal supports looking for a move back into the range."
+
+invalidation:
+  - "Price takes the level and continues through it after only a small retracement - treat the move as a continuation, not a reversal, and trade toward the next higher-timeframe objective."
+  - "The level was already traded through on an earlier leg."
+
+measurable:
+  - "how often a weekly expansion actually reaches its nearest untouched daily level before Friday"
+  - "conditional probability of a Friday return into the range given the level was hit versus not hit"
+  - "reaction classification frequencies at hit levels: V-shape reversal versus retracement-and-continue"
+
+sources:
+  - video_id: _CSO5Mf7CM8
+    title: "Weekly Profile - TGIF Setup"
+    quote: "we have traded through both of those. So, I wouldn't consider them relevant anymore"
+  - video_id: Qt7Ek4keMzs
+    title: "Weekly Profile for Daily Bias - Classic Expansion"
+  - video_id: -gyDd_E_qD4
+    title: "Weekly Profile for Daily Bias - Midweek Reversal"
+  - video_id: uPUNOi_R9fA
+    title: "Weekly Profile for Daily Bias - Thursday Counter"
+
+ambiguities:
+  - "'Key level', 'relevant level', 'higher time frame objective' and 'the drawn liquidity' are used interchangeably across the series with no single definition."
+  - "No selection or ranking rule is given when several candidate levels exist ahead of price; in one example two swing highs are both marked simply because they have 'decent separation'."
+  - "'Hit' is not defined as touch versus close through versus wick into - one TGIF example counts merely reaching into a fair value gap, another counts taking out a high."
+  - "The V-shape reversal test that distinguishes a real turn from a retracement is entirely visual and is not reduced to any candle or structure condition."
+  - "The Thursday Counter video adds an average-daily-range feasibility check on a target, but gives no ADR calculation."
+  - "Status is underspecified because the hit test and the reversal test are both stated qualitatively only."
+
+python_detector: null
+related: ["tgif-setup", "classic-expansion-week", "expansion-exhaustion-avoid-price", "weekly-profile-framework"]

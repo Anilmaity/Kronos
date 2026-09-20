@@ -1,0 +1,88 @@
+id: consolidation-phase
+name: Consolidation (Phase Of Price)
+category: structure
+status: specified
+aliases:
+- remaining internal to a high and a low
+- range
+definition: 'A consolidation is price remaining internal to a marked high and a marked low - not
+  taking out the high, not taking out the low - for a period of time. It is expected after a large
+  range or when price hits a higher-timeframe level. The trading instruction is explicitly negative:
+  do not trade inside the range, because that is guessing the breakout direction. Wait for one side
+  of the range to be manipulated (bullish: the low is run out; bearish: the high is run out), then
+  trade away from it - accumulation, manipulation, distribution. A consolidation resolves either
+  as a continuation (no HTF level hit, an objective is still open) or as a reversal (a higher-timeframe
+  level has been hit).'
+timeframes:
+  htf:
+  - 1D
+  - 4H
+  - 1H
+  ltf:
+  - 15m
+  - 5m
+  - 1m
+  fractal: true
+preconditions:
+- A high and a low can be marked that price has not closed outside of.
+detection_rules:
+- Mark a high and a low; price remains internal to them - it does not take out the high and does
+  not take out the low.
+- If price pokes outside but fails to trade out of it, re-adjust the range high and low and the label
+  still holds.
+- 'Entry condition: one side of the range must be run out (manipulation) before any trade is sought.'
+- 'The manipulated side is chosen by bias: bullish requires the range low to be run out; bearish
+  requires the range high to be run out.'
+- 'Exception: if the correlated asset runs out that side and this one does not, the SMT substitutes
+  for the sweep.'
+- After the manipulation, either enter on the reversal or wait for the closure through the series
+  of opposing candles (the protected swing) and trade the continuation.
+- 'Continuation vs reversal resolution: if no higher-timeframe level has been reached and an objective
+  is open, expect continuation; if a higher-timeframe level has been hit, expect a reversal.'
+invalidation:
+- A close outside the range that is not a manipulation - i.e. a breakout signature, price closing
+  over the previous high and continuing.
+execution:
+  bias: Away from the manipulated side of the range.
+  entry: After the sweep, either the reversal itself or the closure through the series of opposing
+    candles into the point of interest (new protected swing).
+  stop: Beyond the manipulated extreme / the protected swing.
+  targets:
+  - the opposite side of the range
+  - previous highs/lows outside the range
+  - the equilibrium of the range if price deviates from it
+measurable:
+- share of consolidations that resolve by sweep-then-reverse vs breakout
+- expectancy of the post-sweep continuation entry vs entering inside the range
+- how often the EQ of the range is returned to after a deviation
+sources:
+- video_id: WFqLwOp2pXw
+  title: How To Trade Consolidation - Phases Of Price
+  quote: A consolidation is when price remains internal to a high and a low
+- video_id: WFqLwOp2pXw
+  title: How To Trade Consolidation - Phases Of Price
+  quote: consolidation, wait for the manipulation, trade the expansion
+- video_id: 4Gm8p6O7Ebs
+  title: How To Trade Expansion - Phases Of Price
+  quote: there's no reason for me to be looking to get long
+- video_id: F0G31iLVpVg
+  title: How To Trade Retracement - Phases Of Price
+  quote: we're going to get a shallow move into a fair value gap
+ambiguities:
+- '''For a period of time'' is never bounded - no minimum bar count is given, and the examples range
+  from 3 bars to an 18-hour range.'
+- The rule allows the range high/low to be re-drawn when price pokes out but 'fails to trade out
+  of it'; how far a poke can go before the consolidation label is abandoned is not stated.
+- Which of the several possible highs/lows to mark as the range boundary is done by eye.
+python_detector: null
+related:
+- phases-of-price
+- expansion-signature
+- liquidity-sweep-vs-consolidation
+- consolidation-avoidance
+- equilibrium-eq
+- protected-swing
+contributing_units:
+- build_a_model_intro_to_ttrades_fractal_model_01
+draft_count: 1
+voice: ttrades

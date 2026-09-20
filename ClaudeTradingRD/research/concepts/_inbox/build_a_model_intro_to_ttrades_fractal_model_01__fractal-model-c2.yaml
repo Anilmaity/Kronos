@@ -1,0 +1,98 @@
+id: fractal-model-c2
+name: Candle 2 Closure (the reversal candle)
+category: model
+status: specified
+aliases:
+- C2
+- reversal closure
+- candle to closure
+definition: 'PRIMARY-SOURCE DEFINITION (this is the channel''s own dedicated lesson). The model has
+  exactly two closure types, candle 2 and candle 3, and they are distinguished by where the candle
+  CLOSES relative to the previous candle''s extreme. A REVERSAL closure (= candle 2) sweeps the previous
+  candle''s high or low and then closes back INSIDE the previous candle''s range. A CONTINUATION
+  closure closes BEYOND the previous candle''s extreme. A candle 2 closure alone is not a signal:
+  it must occur at a higher-timeframe key level / point of interest (a fair value gap, or a high
+  or low being swept), and it must be confirmed by a change in the state of delivery on the aligned
+  lower timeframe before candle 3 is traded.'
+timeframes:
+  htf:
+  - 1M
+  - 1W
+  - 1D
+  - 4H
+  - 1H
+  ltf:
+  - 15m
+  - 5m
+  - 1m
+  fractal: true
+preconditions:
+- A previous candle (candle 1) with a defined high and low.
+- A higher-timeframe point of interest at the extreme.
+detection_rules:
+- 'Bullish C2: the candle trades below candle 1''s low AND closes back above candle 1''s low.'
+- 'Bearish C2: the candle trades above candle 1''s high AND closes back below candle 1''s high.'
+- If the candle closes BEYOND candle 1's extreme instead, it is a continuation closure, not a C2.
+- 'Validity gate: the sweep must occur at a point of interest - a fair value gap, or a high/low being
+  taken out. Without one, it is not a valid C2 (''I need a point of interest to frame a candle closure'').'
+- 'Confirmation gate: a change in the state of delivery must form inside candle 2 on the aligned
+  lower timeframe before candle 3 is traded.'
+- 'Quality: C2 should itself be a reversal (open-low-high-close for a bullish C2). A C2 with a shallow
+  wick that already expanded is valid but does not set up candle 3 well.'
+- 'If C2 has a large wick, watch the upper (bullish) / lower (bearish) half of that wick: candle
+  3''s wick must respect 0.5 of it or the swing point is unlikely to form.'
+invalidation:
+- Candle 3 fails to respect 0.5 of candle 2's wick.
+- No point of interest at the sweep.
+- No lower-timeframe CISD inside candle 2.
+execution:
+  bias: Opposite the swept side.
+  entry: Aligned-lower-timeframe CISD inside C2, then candle 3; or the C2 reversal itself if the
+    wick is small.
+  stop: Beyond the C2 extreme.
+  targets:
+  - previous candles' unswept highs/lows on the reference higher timeframe
+measurable:
+- base rate of C2 closures per month by timeframe
+- expansion in candle 3 conditional on C2 having / not having a point of interest
+- expansion in candle 3 conditional on the lower-timeframe CISD being present
+sources:
+- video_id: tyoxl1l-6iI
+  title: 'Candle 2 Closure: The Foundation of TTrades Fractal Model'
+  quote: When price closes below the previous candle's low, I can anticipate a continuation lower
+- video_id: tyoxl1l-6iI
+  title: 'Candle 2 Closure: The Foundation of TTrades Fractal Model'
+  quote: we sweep out the previous candle's low, but we don't close below it
+- video_id: tyoxl1l-6iI
+  title: 'Candle 2 Closure: The Foundation of TTrades Fractal Model'
+  quote: we want this to occur at a higher time frame key level
+- video_id: tyoxl1l-6iI
+  title: 'Candle 2 Closure: The Foundation of TTrades Fractal Model'
+  quote: I need a point of interest to frame a candle closure
+- video_id: tyoxl1l-6iI
+  title: 'Candle 2 Closure: The Foundation of TTrades Fractal Model'
+  quote: If it doesn't respect the 0.5, then it's likely to fail
+- video_id: v1X8UMWgWmI
+  title: Best Trading Strategy for 2026 - TTFM
+  quote: we do need a change in the state of delivery inside that candle two
+ambiguities:
+- '''Closes back inside the previous candle''s range'' is stated as closing back above/below candle
+  1''s LOW/HIGH specifically - so a close inside candle 1''s body is not required. This is more permissive
+  than some Q&A-derived readings in the library.'
+- Whether the sweep must be a wick-through or can be a full trade-through is not stated.
+- '''Point of interest'' is enumerated (fair value gap, high, low) but not ranked; the video also
+  allows opposing candles to serve as one, calling that ''more advanced''.'
+- The exact requirements for C2/C3/C4 in the indicator are explicitly deferred to the paid course
+  ('I go over all the requirements for these within my course and mentorship').
+related:
+- fractal-model-c3
+- fractal-model-c4
+- cisd
+- point-of-interest
+- half-wick-respect
+- reversal-signature
+- small-wick-expansion-rule
+contributing_units:
+- build_a_model_intro_to_ttrades_fractal_model_01
+draft_count: 1
+voice: ttrades

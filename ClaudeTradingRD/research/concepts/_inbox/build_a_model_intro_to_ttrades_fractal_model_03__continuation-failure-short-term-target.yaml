@@ -1,0 +1,71 @@
+id: continuation-failure-short-term-target
+name: Short-Term Target Already Taken (continuation invalidator)
+aliases:
+- taking out short-term highs
+- reason number two
+category: model
+status: specified
+definition: 'The second of three named reasons continuations fail, and the one he gives most airtime.
+  A structurally clean continuation that fires at the same moment price is taking out a short-term
+  high (or low) or a range extreme is not tradeable as-is: that is exactly where an opposing change
+  in the state of delivery forms and where the higher-timeframe wick is made, so the stop is run.
+  The scope is wider than the adjacent candle - he says he means an actual high, and especially buy-side
+  or sell-side liquidity. The remedy is to demand a further continuation off that level before entering,
+  and to accept the missed move when none comes. A secondary reason to wait is risk-to-reward: entering
+  after the short-term high is taken puts the protected swing too far away.'
+timeframes:
+  htf:
+  - 4H
+  - 1H
+  ltf:
+  - 15m
+  - 5m
+  - 1m
+  fractal: true
+preconditions:
+- A mechanically valid continuation has formed.
+detection_rules:
+- Check whether the closure that forms the continuation also takes out a short-term high (bullish
+  case) or low, or a range extreme.
+- '''Short-term high'' includes any actual prior high, not only the adjacent candle; buy-side and
+  sell-side liquidity are the strongest cases.'
+- If so, do not enter on that closure. Wait for a further continuation to form off the level.
+- If a new continuation forms respecting the fair value gap or opposing candles, trade it.
+- If instead price comes back across the range, the level becomes the new point of interest for the
+  opposite direction.
+- 'Secondary check: if the protected swing is now too far away for acceptable risk-to-reward, that
+  alone is a reason to wait.'
+invalidation:
+- Price comes back across the range aggressively - the continuation reading is dead and the opposite
+  side becomes the trade.
+measurable:
+- win rate of continuations that coincide with a short-term liquidity take vs those that do not
+- share of such setups in which the second continuation does subsequently form
+sources:
+- video_id: PQiRV0JMhIQ
+  title: Why Your Continuations Fail (Order Blocks + CISD Explained)
+  quote: the continuation forms at the same time that we are taking out highs
+- video_id: PQiRV0JMhIQ
+  title: Why Your Continuations Fail (Order Blocks + CISD Explained)
+  quote: I need to see a continuation or a new swing point form off
+- video_id: PQiRV0JMhIQ
+  title: Why Your Continuations Fail (Order Blocks + CISD Explained)
+  quote: That's where I'm looking for the continuation
+ambiguities:
+- '''Short-term high'' is not bounded - he widens it from the adjacent candle to ''an actual high''
+  and to buy-side liquidity without a rule for which highs qualify.'
+- How many candles to wait for the second continuation is given as 'another candle or two' and 'a
+  couple candles' without a fixed count.
+- He allows the aggressive trader to take the first closure anyway ('if you have enough trust'), so
+  the rule is a preference layered on a discretionary scale.
+related:
+- continuation-failure-consolidation
+- dont-trade-after-expansion
+- cisd
+- second-continuation-confirmation
+- htf-wick-formation
+- failure-swing
+contributing_units:
+- build_a_model_intro_to_ttrades_fractal_model_03
+draft_count: 1
+voice: ttrades

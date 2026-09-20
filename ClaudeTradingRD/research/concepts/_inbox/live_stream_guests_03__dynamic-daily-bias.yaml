@@ -1,0 +1,65 @@
+id: dynamic-daily-bias
+name: Daily Bias Must Be Dynamic, Not Set In Stone
+aliases:
+- dynamic bias
+- let price tell you
+category: model
+status: specified
+definition: 'Rather than fixing a direction before the open and defending it, the guest marks only
+  the liquidity - the relatively equal highs and the relatively equal lows - and lets price choose.
+  The bias is then allowed to change as the session develops. He names the failure mode precisely:
+  deciding pre-open that price must come down to a specific area and offer an optimal trade entry,
+  and refusing everything that is not that. He ties the rule to trade frequency - a trader intending
+  to trade every day cannot hold a rigid bias, and he notes ICT does not advise trading every day
+  - and he attributes the idea to TheSTRAT. The rule has a stated limit in the other direction: a
+  single green candle out of a fair value gap is not a bias flip while lower highs and lower lows
+  persist; the gap is a target, not support.'
+timeframes:
+  htf:
+  - 1D
+  - 15m
+  ltf:
+  - 5m
+  - 1m
+  - 15s
+  fractal: false
+preconditions:
+- A session about to open, with the prior range visible.
+detection_rules:
+- Before the open, mark relatively equal highs and relatively equal lows - the liquidity, not a direction.
+- On a scheduled-news week (non-farm payroll is the example) expect both sides of the range to be
+  taken.
+- Take direction from an aggressive shift in structure with closes beyond prior highs/lows and a fair
+  value gap on the leg that did it.
+- Allow the bias to change as the day develops.
+- Do not flip on one reaction out of a fair value gap while the lower-high / lower-low sequence is
+  intact - treat the gap as a take-profit level instead.
+invalidation:
+- A structural break in the opposite direction with displacement and closes; until then the prior
+  read stands.
+measurable:
+- expectancy of trades taken on the pre-open bias vs trades taken on the intraday-updated bias
+- frequency with which both sides of the pre-open range are taken, split by news day
+sources:
+- video_id: V8P6lNIisvc
+  title: Q&A Live with Alex's Options - ICT + Strat
+  quote: your bias doesn't have to be set in stone in the morning
+- video_id: V8P6lNIisvc
+  title: Q&A Live with Alex's Options - ICT + Strat
+  quote: You have to let it change as price tells you more and more information
+ambiguities:
+- No test distinguishes a legitimate intraday bias update from chasing.
+- The threshold for a genuine trend change ('a high way up in here') is eyeballed and unstated.
+- Sits against the channel's own daily-bias-first workflow; that is a guest-versus-host difference,
+  not a channel inconsistency.
+related:
+- daily-bias-requirement
+- daily-bias-framework
+- relatively-equal-highs-lows
+- no-draw-no-trade
+contributing_units:
+- live_stream_guests_03
+draft_count: 1
+voice: guest
+guest_sources:
+- Alex's Options

@@ -1,0 +1,71 @@
+id: protected-swing
+name: "Protected Swing (the invalidation level)"
+aliases: ["protected low", "protected high", "invalidation", "new protected swing"]
+category: structure
+status: specified
+
+definition: >
+  A swing extreme that has been validated by a subsequent close and can therefore be
+  used as the invalidation for a position. It is created when price reaches into a fair
+  value gap (or trades to a low) and then closes back over it - the closure through
+  protects the low beneath, which is then expected to hold while price travels toward
+  the draw. Protected swings serve three distinct jobs in these walkthroughs: they are
+  the stop-loss reference at entry; they are the qualifier that makes a candle 2 closure
+  "ideal"; and they are the trailing reference during management, where each new swept
+  low that is closed back over becomes a new protected swing and the stop is moved to it.
+  The absence of a usable protected swing is an explicit reason to refuse a trade - if
+  the only protected low sits too far away for the target, the trade is not taken and a
+  new low is awaited.
+
+timeframes:
+  htf: ["1D", "1H"]
+  ltf: ["15m", "5m", "1m"]
+  fractal: true
+
+preconditions:
+  - "A swing low (or high) formed by price reaching into a fair value gap or sweeping a level."
+
+detection_rules:
+  - "Bullish: price trades into a fair value gap or sweeps a low, then closes back over that level - the low beneath is now protected."
+  - "Bearish: price trades into a fair value gap or sweeps a high, then closes back below - the high above is now protected."
+  - "Each subsequent qualifying event creates a new, tighter protected swing that supersedes the previous one for trailing purposes."
+  - "A candle 2 closure that also forms a protected swing is called ideal."
+
+  - "The test is applied negatively as well: zoom in on the candidate level and ask whether price actually closed through it - if it did not, the level is not a protected swing and there is no invalidation available."
+  - "With no protected swing available there are exactly two ways one can form: price retraces up into the higher-timeframe level (a fair value gap) and trades back through, creating opposing candles and protecting the highs in place; or price first runs out the highs and forms a new protected high there."
+  - "One retracement into a level can create two sets of opposing candles and therefore two protected extremes at once."
+  - "When a newly formed protected swing is taken out and price stops respecting the opposing candles, the trend is over."
+invalidation:
+  - "Price trades back through the protected swing - the invalidation is hit and the idea is dead."
+
+execution:
+  bias: "Away from the protected swing."
+  entry: "At or near the protected swing when price opens against it, or on the continuation above it."
+  stop: "Just beyond the protected swing; in one scalp, tight below the bodies rather than the wick."
+  targets: ["the higher-timeframe draw"]
+
+measurable:
+  - "hold rate of protected swings until the draw is reached"
+  - "distance in R from entry to the protected swing across a sample"
+  - "frequency with which trailing to each new protected swing exits before the final objective"
+
+sources:
+  - video_id: IzOQmcgLyA0
+    title: "TTrades Top-Down Chart Lessons #3"
+  - video_id: w-JekHg6Ldk
+    title: "TTrades Top-Down Chart Lessons #4"
+  - video_id: UBTl7za9obc
+    title: "TTrades Top-Down Chart Lessons #2"
+
+  - video_id: Nlw-PZhoViQ
+    title: "TTrades Top-Down Chart Lessons #1"
+    quote: "So this level does not form a protected swing"
+ambiguities:
+  - "Sourced from an ASR (whisper-small) transcript, not YouTube captions; wording may be imprecise."
+  - "In video Nlw-PZhoViQ the two ways a protected swing can form are enumerated as the operator's only two options for keeping a bias alive, but no preference or probability is attached to either branch."
+  - "Whether the close over the fair value gap must be a full body close, and whether the gap must be fully or partially filled first, is not stated."
+  - "Stops are placed below the bodies in one scalp and below the swing low elsewhere; no rule distinguishes the two cases."
+  - "Trailing to every new protected swing stopped the scalp out on a move that subsequently resolved in his favour, and no rule is given for when not to trail."
+
+python_detector: null
+related: ["cisd", "order-block", "fractal-model-c2", "positional-entry", "swing-point"]

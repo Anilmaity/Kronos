@@ -1,0 +1,90 @@
+id: chart-futures-execute-elsewhere
+name: Chart The Futures, Execute The Option - Because Of Overnight Structure
+variants:
+  name:
+  - Chart on the Futures, Execute on the Other Vehicle
+  definition:
+  - All analysis is done on the futures contract, because the futures carry overnight data
+    that the cash-session vehicles do not. If the instrument actually traded is an ETF (SPY,
+    QQQ), an index option or an ETF option, the chart and the model still live on the futures
+    (ES, NQ) and only the order goes to the other vehicle. The same reasoning is given for
+    preferring the minis over the micros - all charting is done on the minis no matter what
+    - and for using a futures chart rather than a CFD chart for gold, to get the exact data.
+definition: Both speakers in the Trade For Opportunity stream reach the same conclusion for
+  the same reason. The host would use SPX and SPY options while reading the ES chart, and
+  NQ for the Nasdaq products, specifically because the futures chart carries the overnight
+  structure that a cash-session ETF chart does not. The guest gives the same reason from the
+  negative side - he does not apply ICT to individual equities precisely because of the price
+  gaps and the missing overnight continuation, which make price harder to make sense of than
+  in futures and forex. Both add that if equity options are traded at all, large caps are
+  preferable to thinly traded small caps with wider spreads.
+category: risk
+status: contested
+aliases:
+- ES chart SPX options
+preconditions:
+- An instrument pair where one vehicle trades overnight and the other does not.
+detection_rules:
+- Read structure on the continuous futures chart - ES for S&P products, NQ for Nasdaq products.
+- Execute the option on SPX/SPY (or QQQ) rather than framing the setup on the ETF chart.
+- Avoid framing ICT setups on individual equity charts because of gaps and missing overnight
+  structure.
+- If equity options are traded, prefer large caps over thinly traded names.
+- Build the analysis on the futures chart (ES / NQ / YM / GC), which includes the overnight
+  session.
+- 'Do not analyse on SPY / QQQ: their history starts at the 9:30 cash open and omits the overnight
+  data the model uses.'
+- Chart on the minis, not the micros, even though the micros track them.
+- Place the order on whatever vehicle is being traded; the signal is unchanged.
+invalidation:
+- Not applicable - a vehicle-selection rule.
+measurable:
+- difference in identified levels between the futures chart and the ETF chart on the same
+  day
+- fill quality and spread cost by vehicle
+- difference in signal set between an overnight-inclusive futures series and a cash-session-only
+  series
+sources:
+- video_id: 0bH_kkG2q6s
+  title: Stream Q & A with Trade For Opportunity  - ICT concepts
+  quote: i would use spx and spy options and just use the es chart
+- video_id: 0bH_kkG2q6s
+  title: Stream Q & A with Trade For Opportunity  - ICT concepts
+  quote: i don't tend to use ict with stocks
+- video_id: xraklBJHW5k
+  title: New York Open Live Q&A
+  quote: I use overnight data a lot in my strategy
+- video_id: m0wTBdUe7gs
+  title: New York Open Live Q&A
+  quote: I do all my charting on the minis no matter what
+ambiguities:
+- No adjustment is described for the price offset between ES and SPX, or between NQ and QQQ.
+- '''Large caps'' is not bounded by market cap, volume or spread.'
+- Minis and micros are described as genuinely different traded assets that 'track' but do
+  not always share the same price or structure; no rule is given for what to do when their
+  structures disagree.
+- Which contract-roll / continuation convention the futures series uses is only addressed
+  by the separate chart-data-settings note (settlement off, back-adjust on).
+related:
+- options-proxy-execution
+- zero-dte-strike-selection
+- chart-data-settings
+- relative-strength-asset-selection
+- session-open-volume-nyse
+guest_sources:
+- Stream Q & A with Trade For Opportunity  - ICT concepts
+- Trade For Opportunity
+timeframes:
+  htf:
+  - 1D
+  - 1H
+  ltf:
+  - 15m
+  - 5m
+  - 1m
+  fractal: false
+contributing_units:
+- live_stream_guests_03
+- live_streams_01
+draft_count: 2
+voice: mixed

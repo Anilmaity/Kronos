@@ -1,0 +1,47 @@
+id: fractal-model-c4
+name: "Candle 4 (second continuation candle)"
+aliases: ["C4", "candle four"]
+category: model
+status: specified
+
+definition: >
+  C4 is the candle after C3, tradeable as a further continuation of the same sequence. The
+  model explicitly stops at C4 and does not trade C5.
+
+timeframes:
+  htf: ["1D", "4H", "1H"]
+  ltf: ["15m", "5m"]
+  fractal: true
+
+preconditions:
+  - "A completed C2 closure and a C3 candle exist."
+
+detection_rules:
+  - "Trade C4 as a continuation only if a fresh setup (swing point / continuation closure) forms inside it."
+
+invalidation:
+  - "Both C2 and C3 already expanded - avoid C4 entirely."
+  - "The sequence has reached C5 - the model does not trade it."
+
+execution:
+  bias: "Same as C2/C3."
+  entry: "New continuation setup inside C4."
+  stop: "Beyond the new protected swing."
+  targets: ["remaining open objectives from the C2 sequence"]
+
+measurable:
+  - "Expectancy of C4 continuations split by whether C2 and C3 both expanded."
+
+sources:
+  - video_id: aqnY1yZvfYs
+    title: "New York Open Live Q&A"
+  - video_id: yud7TpE2AMs
+    title: "New York Open Live Q&A"
+  - video_id: 00iZXPAdR5A
+    title: "New York Open Live Q&A"
+
+ambiguities:
+  - "'Both expanded' has no quantitative definition (range vs average range is implied but not stated)."
+
+python_detector: null
+related: ["fractal-model-c2", "fractal-model-c3"]

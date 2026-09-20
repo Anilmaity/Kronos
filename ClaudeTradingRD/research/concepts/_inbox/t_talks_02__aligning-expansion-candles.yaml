@@ -1,0 +1,55 @@
+id: aligning-expansion-candles
+name: "Aligning Expansion Candles (The Model)"
+aliases: ["three expansion candles toward the same draw"]
+category: model
+status: specified
+
+definition: >
+  The stated purpose of the whole model: trade a daily expansion candle away from a 1-hour
+  or 4-hour key level, trade a 4-hour expansion candle away from that same model inside the
+  daily expansion candle, and execute on a 1-hour / 30-minute / 15-minute expansion candle
+  inside the 4-hour one. Three nested expansion candles are aligned away from the same
+  manipulation and toward the same objective. Each layer must independently satisfy the
+  expansion filter (small wick), otherwise the trader waits for the next candle open at that
+  layer.
+
+timeframes:
+  htf: ["1W", "1D"]
+  ltf: ["4H", "1H", "30m", "15m"]
+  fractal: true
+
+preconditions:
+  - "A key level and a draw on liquidity have been identified."
+  - "The daily candle profile supports the direction (open low first for a bullish day)."
+
+detection_rules:
+  - "Daily candle supports expansion (small wick, opens in the correct direction, extreme formed at a key level)."
+  - "The 4-hour candle being traded within also supports expansion."
+  - "The 1-hour (or lower) candle used for execution also supports expansion."
+  - "All three are directed away from the same manipulation and toward the same objective."
+  - "If any layer fails the expansion filter, wait for that layer's next candle open."
+
+invalidation:
+  - "Any layer prints a large opposing wick or fails to expand away from the level."
+
+execution:
+  bias: "Direction of the aligned expansion candles."
+  entry: "CISD on the execution timeframe inside the aligned structure."
+  stop: "Beyond the opposing candle / order block that produced the reversal."
+  targets: ["daily swing points", "weekly fair value gaps", "the identified draw on liquidity"]
+
+measurable:
+  - "R multiple of trades with 3-layer alignment vs 2-layer"
+  - "frequency of full 3-layer alignment occurring per month"
+
+sources:
+  - video_id: J_EeS2_2CAM
+    title: "GxTradez | Phases of Price & Profiles For Expansion"
+    quote: "the whole goal of my model is to align expansion candles"
+
+ambiguities:
+  - "The mechanical definition of the reversal low ('we can mechanically define with GXT') is deliberately withheld by the speaker."
+  - "Position sizing and risk are never mentioned."
+
+python_detector: null
+related: ["expansion-signature", "small-wick-supports-expansion", "four-hour-session-if-then-chain", "intermediate-timeframe-bridge"]

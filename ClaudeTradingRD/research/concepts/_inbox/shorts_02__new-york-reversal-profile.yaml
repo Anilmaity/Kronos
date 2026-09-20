@@ -1,0 +1,65 @@
+id: new-york-reversal-profile
+name: New York Reversal
+category: model
+status: specified
+definition: 'Defined negatively, in one sentence: a New York reversal daily profile is when LONDON DOES
+  NOT FORM A REVERSAL - London either retraces or fails to reach an important level - and then in New
+  York price reaches that important level, has the change in the state of delivery, and expands away.
+  Because the reversal happens later in the day, this creates a LARGER WICK on the higher timeframe,
+  but he states there is still enough body to trade. Worked live: London reached lower and moved higher
+  without reaching a relevant higher-timeframe level; New York reached it; the first attempt FAILED
+  to change the state of delivery, which he reads as the instruction that price will make a new low
+  (or at least trade down into the wick) before the real reversal, and the down-close series at that
+  new low - coinciding with the New York open - becomes the level.'
+timeframes:
+  htf:
+  - 1D
+  ltf:
+  - 1H
+  - 15m
+  fractal: false
+preconditions:
+- A relevant higher-timeframe level (e.g. the previous day low as sellside liquidity) is marked.
+detection_rules:
+- Require that London did NOT form a reversal - it retraced, or failed to reach the important level.
+- Require price to reach the important level during New York.
+- Require a change in the state of delivery there, then expansion away.
+- A failure to change the state of delivery on the first touch means expect a new low (or a trade down
+  into the wick) first.
+- After the new low, use the new series of down-close candles as the level - here it coincided with
+  the New York open.
+- Enter after the close over that series; stop at the bottom of the order block.
+- Expect a larger higher-timeframe wick than the London-reversal profile, but still enough body to trade.
+invalidation:
+- London forms the reversal instead - the day is a London reversal profile, not this one.
+measurable:
+- wick-to-body ratio of NY-reversal days versus London-reversal days
+- hit rate after a first failed CISD followed by a new low
+sources:
+- video_id: RZsgWeMBWGI
+  title: 'NY Reversal: Understanding the Daily Profile'
+  quote: A New York reversal daily profile is when London doesn't form a reversal
+- video_id: RZsgWeMBWGI
+  title: 'NY Reversal: Understanding the Daily Profile'
+  quote: This creates a larger wick on the higher time frame
+- video_id: j65mUdS9npQ
+  title: 'NY Reversal Profile: Taking Sell-Side Liquidity for a Bullish Move'
+  quote: We fail to change the state of delivery here
+ambiguities:
+- '"Enough body to trade" is asserted, not quantified - which is the same gap the wick-size question
+  has everywhere else in the corpus.'
+- No session clock is given for London or New York in either Short.
+- '"Relevant higher time frame level" is used as a gate but not defined in these clips.'
+- The first Short's transcript ends mid-sentence, so anything after "still enough body to trade" is
+  lost.
+related:
+- london-reversal-profile
+- new-york-manipulation-profile
+- failure-to-displace
+- relevant-htf-pd-array-test
+- daily-profile-framework
+- candle-type-wick-to-body
+voice: ttrades
+contributing_units:
+- shorts_02
+draft_count: 1

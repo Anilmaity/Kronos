@@ -1,0 +1,58 @@
+id: ic-cisd
+name: Intracandle CISD (IC-CISD)
+definition: 'Defined on stream as a CISD or continuation - a protected swing - that forms the wick
+  of the higher-timeframe candle, taken in candle 3. It is described as his mechanical way of forcing
+  the trader to let the wick form: the higher-timeframe candle opens, a continuation forms inside
+  it and that continuation is what builds the wick; once that continuation closes, the trade is taken
+  in the candle''s direction with the stop on that wick.'
+category: entry
+status: specified
+timeframes:
+  htf:
+  - 4H
+  - 1H
+  ltf:
+  - 15m
+  - 5m
+  - 3m
+  fractal: true
+preconditions:
+- A higher-timeframe candle 3 (continuation) is in play after a candle 2 closure.
+detection_rules:
+- Wait for the higher-timeframe candle to open.
+- Inside it, wait for a continuation / protected swing to form - this is what builds the candle's
+  wick.
+- Wait for that lower-timeframe continuation to close.
+- Enter in the higher-timeframe candle's direction on that close.
+- Place the stop on the wick the continuation formed.
+invalidation:
+- Price trades back through the wick the continuation formed.
+execution:
+  bias: Direction of the higher-timeframe candle 3.
+  entry: Close of the intracandle continuation that formed the wick.
+  stop: On that wick.
+  targets:
+  - daily highs and lows
+measurable:
+- win rate of IC-CISD entries vs entries taken at the higher-timeframe candle open
+- average stop distance (wick depth) as a fraction of the higher-timeframe candle range
+sources:
+- video_id: xraklBJHW5k
+  title: New York Open Live Q&A
+  quote: a protected swing that forms the wick of the higher time frame candle
+ambiguities:
+- Which lower timeframe the continuation is read on is not fixed here; the example was walked on a
+  3-minute chart inside an Asia-session move.
+- He notes the live example was not ideal ('it doesn't actually' reach), so the acceptable geometry
+  of the wick is not pinned down.
+- The transcript spells it 'ICCD' / 'ICCISD' / 'IC'.
+related:
+- cisd
+- c3-with-ic-highest-winrate
+- fractal-model-c3
+- protected-swing
+- wick-trust-test
+contributing_units:
+- live_streams_01
+draft_count: 1
+voice: ttrades

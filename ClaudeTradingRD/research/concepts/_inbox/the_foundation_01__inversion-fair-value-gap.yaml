@@ -1,0 +1,60 @@
+id: inversion-fair-value-gap
+name: "Inversion Fair Value Gap (IFVG)"
+aliases: ["inversion", "inverted fair value gap", "old fair value gap"]
+category: structure
+status: specified
+
+definition: >
+  A fair value gap that price has closed through — "disrespected" — and which therefore flips
+  polarity: a bearish gap closed above becomes support, a bullish gap closed below becomes
+  resistance. After the inversion, price is expected either to retrace into the old gap and
+  respect it (the tradeable case) or to continue directly without a retest. The channel treats
+  inversions as one of its primary entry zones, and specifically as the way to join an existing
+  trend: the opposing PD arrays that fail are the trend's entry points.
+
+timeframes:
+  htf: ["1D", "4H", "1H"]
+  ltf: ["15m", "5m", "2m", "1m"]
+  fractal: true
+
+preconditions:
+  - "A previously formed fair value gap of the opposite polarity to the intended direction."
+
+detection_rules:
+  - "Given a bearish FVG with zone [z_low, z_high]: inversion occurs on the first candle whose close > z_high. Mirror for a bullish FVG (close < z_low)."
+  - "A close beyond the CE only is explicitly NOT sufficient ('gives us a hint'); the close must be beyond the gap."
+  - "After inversion, the same zone is used as support (bullish inversion) or resistance (bearish inversion) on retest."
+  - "Entry refinement: if the retest entry at the zone edge gives insufficient R:R, use the CE of the old gap instead."
+  - "Trend usage: in an uptrend, each failed bearish gap that is closed over marks a candidate higher-low entry (and mirrored in a downtrend)."
+
+invalidation:
+  - "Price closing back through the inverted zone in the original direction."
+
+execution:
+  bias: "Direction of the close that caused the inversion."
+  entry: "Retest of the inverted zone, or its consequent encroachment."
+  stop: "Beyond the swing low/high that preceded the inversion."
+  targets: ["the opposite side of the range", "external range liquidity", "at least 2R"]
+
+measurable:
+  - "retest rate: share of inversions that see price return to the zone"
+  - "hit rate of a fixed-2R trade taken on the first retest"
+  - "share of inversions that immediately fail (close back through)"
+
+sources:
+  - video_id: uDJI2AbyyCs
+    title: "Inversion Fair Value Gaps (IFVG) - ICT Concepts"
+    quote: "those opposing PD arrays that fail are actually opportunities to get into that Trend"
+  - video_id: 3OivsP1j_UE
+    title: "Internal & External Liquidity (Daily Bias) - ICT Concepts"
+  - video_id: TCFvsZeYvV8
+    title: "ICT Power Of 3 - AMD"
+
+ambiguities:
+  - "Body close vs wick is implied by the word 'close' but never stated."
+  - "Whether the close must be beyond the far edge of the gap or merely outside the near edge is ambiguous in the phrasing 'closed over'."
+  - "No expiry: how long an inverted gap remains valid, or how many retests it survives, is not given."
+  - "The relationship between an inversion and an order block at the same location is not disambiguated — several examples label the same candles both ways."
+
+python_detector: null
+related: ["fair-value-gap", "consequent-encroachment", "internal-external-rotation", "order-block", "old-fvg-across-the-curve"]

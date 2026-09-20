@@ -1,0 +1,56 @@
+id: autobias-filter
+name: Autobias (higher-timeframe direction filter)
+definition: A directional filter that aligns the model being traded with a fractal one or
+  two timeframes above it and then suppresses everything that opposes it. Autobias 1 aligns
+  with the fractal one timeframe up - on a 5-minute chart it only permits setups when the
+  4-hour model agrees. Autobias 2 goes two timeframes up instead, so from a 5-minute chart
+  the daily/hourly model sets the direction. In his worked example the daily/hourly model
+  is bearish, so with autobias 2 on, no bullish setup prints anywhere inside that day even
+  though one forms mechanically.
+category: model
+status: specified
+aliases:
+- autobias one
+- autobias 2
+preconditions:
+- A higher-timeframe fractal model exists and has a direction.
+detection_rules:
+- 'Autobias 1: take the direction of the fractal one timeframe above the one being traded;
+  permit only setups in that direction.'
+- 'Autobias 2: take the direction of the fractal two timeframes above instead.'
+- The filter holds for the whole higher-timeframe period - in the example, bearish for the
+  entire day.
+- Neutral shows both bullish and bearish models; bullish/bearish force one side manually.
+invalidation:
+- The governing higher-timeframe model changes direction.
+measurable:
+- setup count and win rate with autobias 1 vs autobias 2 vs neutral
+- share of counter-bias setups suppressed per day
+sources:
+- video_id: sdZkE-naNiY
+  title: TTrades Indicator Updates - Walkthrough and Q&A
+  quote: Autobias means it's aligning a higher time frame with a lower time frame
+ambiguities:
+- How the governing higher-timeframe direction is computed (last closure? last CISD?) is not
+  stated.
+- 'Corpus conflict: elsewhere he says the exact timeframe alignment does not matter as long
+  as all timeframes point the same way, while autobias enforces a fixed one- or two-step relationship
+  (see timeframe-alignment-pairs).'
+related:
+- timeframe-alignment-pairs
+- automatic-fractal-pairing
+- timeframe-alignment
+- daily-bias-c2-c3-h1-cisd
+timeframes:
+  htf:
+  - 1D
+  - 4H
+  - 1H
+  ltf:
+  - 15m
+  - 5m
+  fractal: true
+contributing_units:
+- live_streams_05
+draft_count: 1
+voice: ttrades

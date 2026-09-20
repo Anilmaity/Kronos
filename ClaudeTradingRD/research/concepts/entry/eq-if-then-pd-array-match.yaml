@@ -1,0 +1,87 @@
+id: eq-if-then-pd-array-match
+name: EQ If-Then With PD Array Matching
+definition: 'The procedure that turns the EQ from a level into a trade plan, stated as his
+  daily routine. Before the next candle opens he writes an explicit if/then pair off the previous
+  candle''s EQ: if the EQ is respected then price trades to one side; if it is not, he anticipates
+  the other. He then searches ONLY the half consistent with the bias for a PD array to react
+  at - a fair value gap, an opposing candle / order block, or a protected swing - and takes
+  the protected swing in that half as the day''s invalidation. He states his main preparation
+  for each day is finding the invalidation and the PD arrays in the correct half. A PD array
+  that is tagged and not respected is simply ignored and he moves to the next one. The reaction
+  is then confirmed with a CISD or an order block formation before entry.'
+category: entry
+status: specified
+aliases:
+- if then scenario
+- match PD arrays in that range
+preconditions:
+- The previous higher-timeframe candle has closed and its EQ can be marked.
+- A directional read exists (or both branches are written out).
+detection_rules:
+- Mark the previous higher-timeframe candle's EQ (0.5, wick high to wick low).
+- 'Write both branches before the candle opens: EQ respected -> target the far side; EQ not
+  respected -> flip and target the opposite extreme.'
+- 'Search only the half consistent with the bias for a PD array: fair value gap, opposing
+  candle / order block, or protected swing.'
+- Take the protected low/high inside that half as the day's invalidation.
+- If a PD array is tagged and not respected, ignore it and continue to the next one within
+  the half.
+- Confirm with a change in the state of delivery or an order block formation before entry.
+- If the range has already expanded before the plan can be used (e.g. price gapped through),
+  do not force it - wait for the next higher-timeframe closure.
+- After roughly three candles of expansion in the same direction, stop and wait for new closures
+  - a new phase of price is due.
+invalidation:
+- The protected swing inside the working half is taken out.
+- Price closes through the EQ against the branch being traded.
+measurable:
+- hit rate of each branch of the if/then
+- share of days on which a PD array actually exists inside the correct half
+sources:
+- video_id: IPZjNI1B5a0
+  title: You Are Using Discount and Premium Wrong! - EQ For Expansions
+  quote: I give myself an if then scenario
+- video_id: IPZjNI1B5a0
+  title: You Are Using Discount and Premium Wrong! - EQ For Expansions
+  quote: if the EQ is respected then we can trade lower through previous day low
+- video_id: IPZjNI1B5a0
+  title: You Are Using Discount and Premium Wrong! - EQ For Expansions
+  quote: match PD arrays in that range
+- video_id: IPZjNI1B5a0
+  title: You Are Using Discount and Premium Wrong! - EQ For Expansions
+  quote: I mainly focused on finding an invalidation for that day
+ambiguities:
+- He concedes the half sometimes contains no PD array at all ('this is where it's not always
+  perfect'), and in that case allows price to trade further than usual on the basis of hourly
+  structure - the allowance is not bounded.
+- No precedence rule is given when several PD arrays sit in the correct half.
+- '''Three days of expansion'' as the stop-condition is stated once by example, not as a rule.'
+- Whether the if/then is written on the daily only, or on whichever timeframe is in use, is
+  not stated; the examples are daily and 4-hour.
+related:
+- equilibrium-eq
+- upper-half-eq-expansion-filter
+- cisd
+- order-block
+- protected-swing
+- dont-trade-after-expansion
+timeframes:
+  htf:
+  - 1D
+  - 4H
+  ltf:
+  - 1H
+  - 15m
+  fractal: true
+execution:
+  bias: Set by which side of the EQ price holds.
+  entry: At the PD array inside the correct half, on a CISD or an order block formation.
+  stop: Beyond the protected swing inside that half.
+  targets:
+  - previous day high/low
+  - the opposite extreme of the range
+  - resting failure swings
+contributing_units:
+- build_a_model_intro_to_ttrades_fractal_model_03
+draft_count: 1
+voice: ttrades

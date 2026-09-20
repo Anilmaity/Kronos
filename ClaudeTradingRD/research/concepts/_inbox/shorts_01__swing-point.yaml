@@ -1,0 +1,51 @@
+id: swing-point
+name: Swing High / Swing Low
+category: structure
+status: specified
+definition: SHORTS EVIDENCE for the three-candle definition AND for the confirmation delay it implies.
+  A swing high is a high with a LOWER HIGH ON EACH SIDE; a swing low is a low with a higher low on each
+  side. Because the right-hand candle must exist, a swing point cannot be confirmed at the moment the
+  extreme prints - he narrates checking a low, finding no candle on the right, and deliberately letting
+  ONE DAY PASS before treating it as a confirmed swing low.
+preconditions:
+- Three consecutive candles on the timeframe in question.
+detection_rules:
+- Swing high := high[i] > high[i-1] AND high[i] > high[i+1].
+- Swing low := low[i] < low[i-1] AND low[i] < low[i+1].
+- The right-hand candle must have completed - a swing point is only confirmed one candle later.
+- If the confirming candle does not yet exist, let one more candle pass before acting on it.
+measurable:
+- count of confirmed swing points per timeframe per month
+- cost in R of the one-candle confirmation delay
+sources:
+- video_id: EupbcX1JOsE
+  title: 4th Day of Swing Forming Continuation Lower
+  quote: I have a high with a lower high on each side
+- video_id: N9Wfch7_h5A
+  title: Aggressive Out → Aggressive Back In
+  quote: Do we have a low on each side? We do not
+- video_id: N9Wfch7_h5A
+  title: Aggressive Out → Aggressive Back In
+  quote: let one day pass, and now we have that confirmed swing low
+ambiguities:
+- Whether the neighbouring candles are compared on wicks or bodies is not stated.
+- No separation or 'relevance' requirement is applied in these Shorts (other library entries add one).
+related:
+- swing-point-stop-hunt
+- protected-swing
+- relevant-swings-separation
+- advanced-market-structure-labeling
+- failure-swing
+timeframes:
+  htf:
+  - 1D
+  - 4H
+  ltf:
+  - 1H
+  - 15m
+  - 5m
+  fractal: true
+voice: ttrades
+contributing_units:
+- shorts_01
+draft_count: 1

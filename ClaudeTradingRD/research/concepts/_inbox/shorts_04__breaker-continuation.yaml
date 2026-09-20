@@ -1,0 +1,57 @@
+id: breaker-continuation
+name: "Breaker Block In A Continuation (not at the reversal)"
+category: entry
+status: specified
+definition: >
+  The Shorts version of the breaker continuation, with the market-structure justification made
+  explicit. The procedure is: find a swing low, wait for that swing low to be run out, let the
+  breaker form, then look for the entry. What that is actually doing, in his own words, is taking
+  a short-term low, a sweep of it, and then anticipating another short-term low - which is what
+  forms an intermediate-term low. Where the wicks are messy he marks the breaker on the bodies.
+  The stop goes either on the low or on the other side of the breaker, and the target is the
+  other side of the range.
+
+timeframes:
+  htf: ["1D", "1H"]
+  ltf: ["15m", "5m", "1m"]
+  fractal: true
+
+detection_rules:
+  - "Establish direction on the higher timeframe (range swept low, bullish structure, drawing to the range high)."
+  - "Find a swing low inside that structure and wait for it to be run out."
+  - "Let the breaker form after the sweep, then look for the entry at the start of it."
+  - "Where wicks are messy, define the breaker on the bodies."
+  - "Stop on the low or on the far side of the breaker; target the other side of the range."
+
+invalidation:
+  - "Price trades through the far side of the breaker."
+
+measurable:
+  - "how often the swept short-term low is followed by a higher short-term low (the intermediate-term low)"
+  - "R outcome of body-defined vs wick-defined breaker zones"
+
+sources:
+  - video_id: 8FtjVWZcZN8
+    title: "What Makes a Valid Breaker Continuation"
+    quote: "wait for the swing low to be ran out, then let a breaker form"
+  - video_id: 8FtjVWZcZN8
+    title: "What Makes a Valid Breaker Continuation"
+    quote: "anticipating another short-term low, which forms an intermediate-term low"
+  - video_id: 8FtjVWZcZN8
+    title: "What Makes a Valid Breaker Continuation"
+    quote: "with these wicks kind of everywhere, I will focus on the bodies"
+  - video_id: 8FtjVWZcZN8
+    title: "What Makes a Valid Breaker Continuation"
+    quote: "My stop either on the low or the other side of the breaker."
+
+ambiguities:
+  - "'Wicks kind of everywhere' is the stated trigger for switching to bodies; no test for messiness is given."
+  - "The choice between the two stop placements is offered without a rule."
+  - "No bar-count limit between the sweep and the breaker forming."
+
+python_detector: null
+related: ["breaker-block", "advanced-market-structure-labeling", "intermediate-term-swing-formation", "continuation-order-block"]
+
+voice: ttrades
+contributing_units: [shorts_04]
+draft_count: 1

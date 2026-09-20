@@ -1,0 +1,72 @@
+id: smt-two-chart-layout
+name: The Two-Pane Layout For Spotting SMT
+definition: 'A concrete, reproducible procedure for reading SMT divergence between two correlated
+  instruments, given as chart-layout mechanics. Open a two-pane layout and set the sync options deliberately:
+  SYMBOL sync OFF (each pane holds a different instrument), INTERVAL synced (both panes on the same
+  timeframe, otherwise the comparison is meaningless), CROSSHAIR synced ON so that hovering a high
+  or low in one pane shows exactly which candle it corresponds to in the other, TIME synced so the
+  x-axes stay aligned when either pane is dragged, and DATA RANGE off. Save that configuration as
+  a named layout so it reloads identically. The alternative, single-pane version of the same test
+  uses the watch list: stay full-screen on a low, then press the arrow keys to flip the symbol and
+  see whether the correlated instrument took the same low.'
+category: liquidity
+status: specified
+aliases:
+- SMT layout
+- synced crosshair
+- watchlist arrow keys
+preconditions:
+- Two correlated instruments (ES and NQ in the examples).
+detection_rules:
+- Two-pane layout; symbol sync OFF so the panes hold different instruments.
+- Interval synced - both panes on the same timeframe before any comparison is made.
+- Crosshair synced ON - hovering an extreme in one pane identifies the matching candle in the other.
+- Time synced ON so the x-axes stay aligned when either chart is dragged.
+- Data range sync OFF (it forces mismatched timeframes into one range).
+- Save the configuration as a named layout and reload it rather than rebuilding it.
+- 'Single-pane alternative: full-screen on the extreme, then use the watch-list arrow keys to flip
+  symbols and check whether the other instrument took the same high or low.'
+- 'SMT is read as: one instrument took the extreme, the other did not, on the same candle.'
+invalidation:
+- Panes on different intervals, or unsynced time - the candle-for-candle comparison is invalid.
+measurable:
+- count of SMT instances per session detectable at each timeframe on an aligned ES/NQ series
+- how often a visually-spotted SMT survives a strict same-timestamp check
+sources:
+- video_id: JPVhmPZiLKY
+  title: TradingView Tutorial For Beginners [Full Guide]
+  quote: it just allows me to see which high and low is matching up
+- video_id: JPVhmPZiLKY
+  title: TradingView Tutorial For Beginners [Full Guide]
+  quote: we have an smt right on this low
+- video_id: JPVhmPZiLKY
+  title: TradingView Tutorial For Beginners [Full Guide]
+  quote: I have the interval Crosshair and time matched up
+- video_id: JPVhmPZiLKY
+  title: TradingView Tutorial For Beginners [Full Guide]
+  quote: I know es didn't take this low can use my down arrow key
+ambiguities:
+- The layout makes SMT visible; it does not define SMT. No rule is given here for how far short of
+  the extreme the non-confirming instrument must stop.
+- Which pair of instruments constitutes a valid SMT pair is not addressed in this video (ES/NQ is
+  simply what is on screen).
+- Whether the comparison uses wicks or bodies is not stated.
+related:
+- smt-divergence
+- correlated-triads
+- es-nq-ratio-chart
+- tradingview-chart-workspace
+- relative-strength-asset-selection
+timeframes:
+  htf:
+  - 1D
+  - 1H
+  ltf:
+  - 15m
+  - 5m
+  - 1m
+  fractal: true
+contributing_units:
+- resources_01
+draft_count: 1
+voice: ttrades

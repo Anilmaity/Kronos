@@ -1,0 +1,58 @@
+id: previous-period-high-low
+name: "Previous Day / Week / Month High & Low"
+aliases: ["previous day high", "previous day low", "previous week high/low", "previous month high/low", "PDH/PDL"]
+category: liquidity
+status: specified
+
+definition: >
+  The high and low of the previous completed daily, weekly or monthly candle, extended
+  horizontally over the current period. They serve exactly two functions in this corpus: as a
+  draw on liquidity (the target price is expected to reach) and as a level off which a reversal
+  is framed (price reaches the level, fails to displace/close beyond it, and turns). These are
+  the levels the speaker says he always has marked.
+
+timeframes:
+  htf: ["1M", "1W", "1D"]
+  ltf: ["1H", "15m", "5m"]
+  fractal: true
+
+preconditions:
+  - "The previous period's candle has closed."
+
+detection_rules:
+  - "PDH := high of the previous daily candle; PDL := low of the previous daily candle. Same construction for week and month."
+  - "Draw case: if the current period is not consolidating inside the previous range, expect price to trade to PDH, PDL, or both."
+  - "Reversal case: price trades beyond the level but the period closes back inside the previous range -> expect the opposite level to become the draw."
+  - "Continuation case: the period closes beyond the level -> expect the next period's same-side level to become the draw."
+  - "Trend supplies the default choice of side when both are untaken (uptrend -> previous high)."
+
+invalidation:
+  - "A close outside the previous range in the direction of the level converts the reversal read into a continuation read."
+
+execution:
+  bias: "Directional, set by which side is expected to be reached."
+  entry: "Not an entry — requires a lower timeframe model (order block / FVG / CISD / OTE) at the level."
+  stop: "Beyond the level being defended."
+  targets: ["the opposite previous-period level", "swing points beyond it once the level is consumed"]
+
+measurable:
+  - "frequency with which a day takes PDH, PDL, both, or neither"
+  - "hit rate of the reversal read (reach-without-close-outside -> opposite level reached next period)"
+  - "same statistics on weekly and monthly candles"
+
+sources:
+  - video_id: g3oDYq4P9ZE
+    title: "ICT Daily Bias - The Only Video You Will Ever Need!"
+  - video_id: YESqIoA7Wyg
+    title: "Important Liquidity Levels - Draw On Liquidity - ICT"
+  - video_id: U8xH2dEgH5A
+    title: "Liquidity: Buyside & Sellside - ICT Concepts"
+
+ambiguities:
+  - "The distinction that carries all the weight — 'reach' vs 'close outside' — is used consistently in examples but the speaker also says 'displace', without defining it."
+  - "No threshold defines 'consolidation' (the no-bias case); on an inside bar he simply marks both levels and waits."
+  - "Session/timezone definition of the daily candle is not stated here (the killzone video implies a New York-time day with a midnight true-day-open)."
+  - "The outside-day case (both sides taken) is not given a decision rule."
+
+python_detector: null
+related: ["three-candle-outcomes", "draw-on-liquidity", "daily-bias-framework", "failure-to-displace", "next-day-model", "session-high-low"]

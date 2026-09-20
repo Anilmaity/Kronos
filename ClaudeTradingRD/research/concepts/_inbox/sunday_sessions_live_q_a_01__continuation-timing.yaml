@@ -1,0 +1,57 @@
+id: continuation-timing
+name: "Continuations Must Form Early in a New Higher-Timeframe Candle"
+aliases: ["why does my continuation stop me out", "continuation must be quick"]
+category: entry
+status: specified
+
+definition: >
+  The stated reason continuation entries repeatedly stop traders out is timing: they enter near
+  the end of a higher-timeframe candle, using an internal high or low that has no higher-timeframe
+  significance, which the next candle then takes out. The continuation should instead be entered
+  after the new higher-timeframe candle has opened and formed its wick, so the stop sits at a
+  higher-timeframe extreme. A continuation should also form quickly; if price hangs around for
+  roughly two or more candles without expanding, it is a consolidation and the prior extreme is
+  likely to be run again.
+
+timeframes:
+  htf: ["4H", "1H", "30m", "15m"]
+  ltf: ["5m", "3m", "1m"]
+  fractal: true
+
+preconditions:
+  - "A reversal and CISD already exist in the trade direction."
+
+detection_rules:
+  - "Wait for the new higher-timeframe candle to open."
+  - "Allow that candle to form its wick (the retracement) early in its life."
+  - "Enter the continuation with the stop beyond that higher-timeframe wick."
+  - "If price spends roughly two or more candles building sideways structure instead of expanding, classify it as consolidation and stand aside."
+
+invalidation:
+  - "The continuation forms late in the higher-timeframe candle."
+  - "Sideways structure builds failure swings instead of expanding."
+
+execution:
+  bias: "Direction of the confirmed trend."
+  entry: "Early in the new higher-timeframe candle."
+  stop: "Beyond the higher-timeframe wick, not an internal lower-timeframe swing."
+  targets: ["Drawn liquidity in the trend direction"]
+
+measurable:
+  - "stop-out rate of continuations entered late in a HTF candle versus early in the next one"
+  - "expansion rate after consolidations exceeding two candles at the level"
+
+sources:
+  - video_id: uzPGXVYpVGc
+    title: "Candle 2 Confirmations - Live Lesson, Q&A"
+  - video_id: egV_gABTQks
+    title: "(CPI) New York Open Live Q&A"
+  - video_id: WBwoiMDXT2c
+    title: "New York Open Live Q&A"
+
+ambiguities:
+  - "Roughly two candles is stated as a soft threshold, not a rule."
+  - "Early in the candle is not quantified."
+
+python_detector: null
+related: ["continuation-order-block", "v-shape-reversal-speed", "wick-trust-test"]

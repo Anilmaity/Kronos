@@ -1,0 +1,68 @@
+id: relevant-swing-lookback
+name: Relevant Swing Look-Back Period (three higher-timeframe candles)
+definition: 'The rule that bounds how far into the past a swing high or low stays relevant.
+  Instead of a fixed bar count he counts higher-timeframe candles: the current higher-timeframe
+  candle plus the two before it - three higher-timeframe candles including the current one
+  - and only highs and lows inside that window are the ones he focuses on. He states it is
+  fractal and gives two worked pairings: on the daily chart the higher timeframe is monthly
+  so the window is three months; on the hourly chart it is three days. Older levels can still
+  be looked at but generally do not give the best reactions.'
+category: structure
+status: specified
+aliases:
+- look back period
+- three higher time frame candles
+- that three-month look back
+preconditions:
+- A higher timeframe has been paired to the working chart timeframe.
+detection_rules:
+- Determine the higher timeframe paired with the chart in use (daily chart -> monthly; hourly
+  chart -> daily).
+- window := the current higher-timeframe candle and the two preceding ones (three HTF candles,
+  current inclusive).
+- Only swing highs and lows inside that window are treated as relevant.
+- Levels older than the window may still be observed but are not the focus.
+- 'Preference within the window: relevant swings that are ALSO a higher-timeframe high or
+  low (a relevant swing low that is also the monthly low) are the ones he trades.'
+- The same count of three is used at every scale - the rule is fractal.
+invalidation:
+- The higher-timeframe candle rolls forward, dropping the oldest candle out of the window.
+measurable:
+- reaction rate at relevant swings inside vs outside the 3-HTF-candle window
+- share of traded setups whose level was also a higher-timeframe extreme
+sources:
+- video_id: HbOeD_JVens
+  title: Which Swing Highs and Lows Matter in Trading? (Relevant Swings)
+  quote: look in our current higher time frame and then back two candles
+- video_id: HbOeD_JVens
+  title: Which Swing Highs and Lows Matter in Trading? (Relevant Swings)
+  quote: that same look back period of three higher time frame candles
+- video_id: HbOeD_JVens
+  title: Which Swing Highs and Lows Matter in Trading? (Relevant Swings)
+  quote: I'm going to look back 3 days because that is my look back
+ambiguities:
+- The higher-timeframe pairing itself is deferred to his separate timeframe-alignment material;
+  only daily->monthly and hourly->daily are given here.
+- Whether a swing that formed outside the window but is still untouched is excluded, or whether
+  only its formation date matters, is not stated.
+- He allows looking at older levels ('yes, we can look at these even though they are further
+  back'), so the window is a strong preference rather than a hard filter.
+- How the window interacts with the separation test when the outer, more-separated extreme
+  falls outside the three-candle window is not addressed.
+related:
+- relevant-swings-separation
+- relevant-level
+- timeframe-pairing
+- swing-point
+timeframes:
+  htf:
+  - 1M
+  - 1W
+  - 1D
+  ltf:
+  - 1H
+  fractal: true
+contributing_units:
+- build_a_model_intro_to_ttrades_fractal_model_03
+draft_count: 1
+voice: ttrades

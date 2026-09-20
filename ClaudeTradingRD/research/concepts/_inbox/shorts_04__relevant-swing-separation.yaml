@@ -1,0 +1,58 @@
+id: relevant-swing-separation
+name: "Relevant Swings Require Separation"
+category: structure
+status: specified
+definition: >
+  Two Shorts run the separation test as a live filter and add a dynamic that the library did not
+  carry: relevance MIGRATES. A swing whose neighbour sits too close is rejected on the stated
+  ground that he could not trust himself to trade away from it; only the outer, well-separated
+  swing is the relevant one. But once price reaches a swing he had considered relevant and fails
+  to reverse off it, that swing loses its status and the next one out becomes the relevant high
+  or low. The same test is used in a third Short as the discretionary step that removes a
+  mechanically valid but too-close swing point from the chart.
+
+timeframes:
+  htf: ["1D", "4H"]
+  ltf: ["1H", "15m", "5m"]
+  fractal: true
+
+detection_rules:
+  - "For each candidate swing, compare it with the nearest same-side swing."
+  - "Too close together -> not relevant; do not plan to trade away from it."
+  - "Well separated -> relevant; this is the level to trade away from or into."
+  - "If price reaches a relevant swing and does NOT reverse off it, promote the next swing out to relevant."
+  - "Track relevant highs and lows forward as new ones form."
+  - "Remove mechanically valid swing points that sit too close to an adjacent swing."
+
+invalidation:
+  - "Price trades through the relevant swing without reacting, which reassigns relevance outward."
+
+measurable:
+  - "reaction rate at swings classified relevant vs rejected as too close"
+  - "how often relevance migrates outward within the same session"
+
+sources:
+  - video_id: yMUyTAmD1NE
+    title: "What Makes a Swing Actually Relevant?"
+    quote: "this is actually a high I would consider relevant because it has pretty good separation"
+  - video_id: yMUyTAmD1NE
+    title: "What Makes a Swing Actually Relevant?"
+    quote: "price doesn't reverse off of this, that is when this becomes the relevant high"
+  - video_id: 28_luJwwVbw
+    title: "Why Price Reacts at Relevant Highs & Lows"
+    quote: "so close to this one that I could not trust myself to trade away"
+  - video_id: 28_luJwwVbw
+    title: "Why Price Reacts at Relevant Highs & Lows"
+    quote: "We have good separation between the previous high."
+
+ambiguities:
+  - "Separation remains judged visually - neither Short gives a distance, an ATR fraction, or a bar count."
+  - "'Doesn't reverse off of this' has no tolerance: how much reaction counts as a reversal before relevance migrates is not said."
+  - "The test is applied on whatever timeframe is on screen, which is never named."
+
+python_detector: null
+related: ["relevant-level", "relevant-swings-separation", "failure-swing", "swing-point", "relatively-equal-highs-lows"]
+
+voice: ttrades
+contributing_units: [shorts_04]
+draft_count: 1

@@ -1,0 +1,67 @@
+id: daily-bias-framework
+name: "Daily Bias (Previous Day High/Low Framework)"
+aliases: ["why is the S&P bearish", "grey box bearish"]
+category: model
+status: specified
+
+definition: >
+  Asked to justify a bias on air he reduces it to two steps and calls it not very complex.
+  Step one: read yesterday's daily closure - a bearish closure means bearish. Step two: ask
+  which is more likely to be reached today, the previous day high or the previous day low; the
+  answer names the bias. He adds the mechanical shortcut he actually uses: the daily and hourly
+  model on his own indicator prints a box, and he takes the direction of that box as the bias
+  (grey bearish, green bullish) - whenever the model appears, that is the bias for the day. The
+  supporting expectation is that a new day is more likely to reach a previous day extreme, and
+  that on a bearish day price opens, makes its high, closes below it, and that high holds.
+
+timeframes:
+  htf: ["1D", "1H"]
+  ltf: []
+  fractal: false
+
+preconditions:
+  - "The previous daily candle has closed."
+  - "Previous day high and low are marked."
+
+detection_rules:
+  - "Read the previous daily closure: bearish close -> bearish bias; bullish close -> bullish bias."
+  - "Ask which of previous day high or previous day low is more likely to be reached; that is the draw."
+  - "Equivalently: take the direction of the daily + hourly model when it prints."
+  - "Confirm with the daily candle 2 closure plus an hourly CISD (and an SMT if present) from the prior day."
+  - "Expect the bearish-day shape: open, make the high, close below it, that high holds."
+
+invalidation:
+  - "Price trades and closes beyond the extreme the bias says should hold, at which point the day becomes an invalidation trade rather than a bias trade."
+
+execution:
+  bias: "Toward the previous day extreme identified as the draw."
+  entry: null
+  stop: null
+  targets: ["previous day low", "previous day high"]
+
+measurable:
+  - "hit rate of previous day high / low given the prior day's closure direction"
+  - "hold rate of the anticipated daily extreme"
+
+sources:
+  - video_id: N3Ml-r0X30o
+    title: "New York Open Live Q&A"
+    quote: "The only reason I'm bearish today is we had a bearish closure yesterday."
+  - video_id: x4sRGuZIqWk
+    title: "New York Open Live Q&A"
+    quote: "you just use the daily and hourly model when it appears that's your bias"
+  - video_id: eIPM-D8RrSQ
+    title: "New York Open Live Q&A"
+    quote: "I like to have a bias. Makes trading easier."
+
+ambiguities:
+  - "The indicator shortcut is not reproducible without the indicator; he does not give the box's derivation, only that it is the daily + hourly model."
+  - "He also says a bias is optional - on a day with none he waits for reactions at points of interest instead - so the framework is a preference, not a gate."
+  - "What makes one previous day extreme 'more likely' than the other is left to the closure direction alone in this unit."
+
+python_detector: null
+related: ["daily-bias-c2-c3-h1-cisd", "previous-period-high-low", "draw-on-liquidity", "daily-profile-confirmation", "no-fading-the-daily-candle"]
+
+contributing_units: ["live_streams_04"]
+draft_count: 1
+voice: ttrades

@@ -1,0 +1,51 @@
+id: fair-value-gap
+name: Fair Value Gap (FVG)
+aliases:
+- imbalance
+- internal liquidity
+- inefficiency
+category: structure
+status: specified
+definition: 'A three-candlestick pattern in which the first candle''s wick and the third candle''s wick
+  do not overlap. Bearish: candle 1''s low does not overlap candle 3''s high. Bullish: candle 1''s high
+  does not overlap candle 3''s low. He equates the fair value gap with internal range liquidity.'
+timeframes:
+  htf:
+  - 1W
+  - 1D
+  - 4H
+  ltf:
+  - 1H
+  - 15m
+  - 5m
+  - 1m
+  - 30s
+  fractal: true
+detection_rules:
+- Take three consecutive candles.
+- 'Bearish FVG: candle 1 low > candle 3 high (no overlap).'
+- 'Bullish FVG: candle 1 high < candle 3 low (no overlap).'
+- The unfilled span between them is the gap; its midpoint is the consequent encroachment.
+invalidation:
+- A close through the gap on the opposing side inverts it (see inversion-fair-value-gap).
+measurable:
+- count of FVGs per session by timeframe
+- fill rate and time-to-fill
+sources:
+- video_id: rXMVPUZPw4A
+  title: Breaker Block & FVG Entry Model
+  quote: the first candlestick's low will not overlap with the third candlesticks high
+- video_id: mwmWNCTEYtY
+  title: Internal & External Liquidity Model
+  quote: internal liquidity is just a fair value Gap
+ambiguities:
+- rXMVPUZPw4A words the test on the candle low/high; mwmWNCTEYtY words it on the WICKS of candle 1 and
+  3. These are the same in practice but he never states whether bodies could ever be used.
+related:
+- internal-external-rotation
+- inversion-fair-value-gap
+- consequent-encroachment
+voice: ttrades
+contributing_units:
+- education_ict_updated_01
+draft_count: 1

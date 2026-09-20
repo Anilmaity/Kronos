@@ -1,0 +1,59 @@
+id: new-york-reversal-profile
+name: "New York Reversal Profile"
+aliases: ["New York reversal", "NY reversal"]
+category: model
+status: specified
+
+definition: >
+  A daily profile in which price consolidates or trends into the New York session and
+  New York itself forms the reversal, after which everything from about 10:00 a.m.
+  should be continuation in the new direction. It is walked through on a messy live
+  example: an 8:30 opposing run against the intended bias, a series of up-close candles
+  forming the high, then a closure below that series which says the high should not be
+  taken out, and delivery lower into consolidation lows, London lows and previous day lows.
+
+timeframes:
+  htf: ["1D", "1H"]
+  ltf: ["15m", "5m"]
+  fractal: false
+
+preconditions:
+  - "A directional bias for the day (bearish in the worked example)."
+  - "Price consolidates into or trends into New York rather than having already delivered."
+
+detection_rules:
+  - "8:30 makes an opposing run against the bias (higher, if bearish)."
+  - "Identify the series of up-close candles that formed that high."
+  - "A closure below that series is the confirmation - until that close he says he has no opinion."
+  - "After the closure, the high should not be taken out; as new opposing candles form, each new one supplies the next level that should not be hit."
+  - "Anything from about 10:00 a.m. onward should be continuation lower, not further reversal."
+  - "Target ladder: consolidation lows first, then London lows, then previous day lows - roughly three targets."
+
+invalidation:
+  - "Price trading back above the most recent opposing candle high after the closure."
+  - "Price trading above the pre-reversal high while still on the bearish read."
+
+execution:
+  bias: "Opposite the pre-New-York direction."
+  entry: "The closure below the series of opposing candles that formed the high."
+  stop: "Above the operative opposing candle extreme."
+  targets: ["consolidation lows", "London lows", "previous day lows"]
+
+measurable:
+  - "frequency of New York reversal days per instrument"
+  - "hit rate of each rung of the three-target ladder"
+  - "how often the 10:00 a.m. continuation expectation holds"
+
+sources:
+  - video_id: u8bnmaih_hA
+    title: "TTrades Sunday Session - Live Q&A"
+  - video_id: r7yW6ou1LDs
+    title: "TTrades Sunday Session - Live Q&A"
+
+ambiguities:
+  - "The worked example is explicitly described as messy and lethargic; he does not show a clean instance."
+  - "In r7yW6ou1LDs he says he does not trade reversal days at all and only takes the continuation off them - so the profile is used for anticipation rather than as a reversal entry."
+  - "The 10:00 a.m. boundary is stated once and not defended."
+
+python_detector: null
+related: ["opposing-candle", "continuation-over-reversal", "trailing-stop-opposing-candles", "entry-time-window"]

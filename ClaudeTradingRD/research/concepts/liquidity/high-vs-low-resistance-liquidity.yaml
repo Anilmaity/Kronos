@@ -1,0 +1,323 @@
+id: high-vs-low-resistance-liquidity
+name: High Resistance vs Low Resistance Liquidity
+variants:
+  name:
+  - High vs Low Resistance Liquidity
+  definition:
+  - 'A dedicated Short gives the cleanest structural definition in the corpus plus the operational
+    assignment the library was missing. HIGH RESISTANCE liquidity: a swing high or low with
+    liquidity resting on it that is then SWEPT as price reverses, leaving liquidity resting
+    on the new high or low. LOW RESISTANCE liquidity: the same swing high or low with liquidity
+    resting on it, except price FAILS to reach up and sweep it, so liquidity builds up there
+    - these are the failure swings. The assignment: low resistance liquidity (the failure
+    swings) is what you TARGET; high resistance liquidity (the sweeps) is where you put your
+    STOP LOSS. A companion Short shows the manufacturing step - inside a consolidation he
+    waits for a purge of the low specifically in order to CREATE high resistance liquidity
+    to sit behind, and then expects expansion through the low resistance liquidity above.
+
+    '
+  - 'A dedicated Short answers the operational question the long-form corpus left open: how
+    the two kinds of liquidity are used TOGETHER. He targets low resistance liquidity and
+    keeps high resistance liquidity behind him - on his side of the curve, where the stop
+    goes. Low resistance liquidity is identified structurally as a high with a lower high
+    next to it (mirrored for lows); a level that has just been swept and traded away from
+    is the high resistance side.'
+  - 'A 32-second Short gives the mechanical definition the library previously lacked, in terms
+    of swings rather than market conditions. Low resistance liquidity IS a failure swing:
+    as price trades away from a level it generates new highs and lows, and the liquidity resting
+    above and below those untouched swings is low resistance. High resistance liquidity is
+    the opposite case - the swing was first swept and only then reversed, which wipes out
+    the liquidity that was resting at that swing and relocates it to the new, further extreme.
+    The distinction is therefore decidable from whether the swing in the path has already
+    been run.
+
+    '
+  - 'EARLIER RECORDING, applied in a live trade rather than taught. A sequence of LOWER highs
+    (a failure swing) constitutes LOW RESISTANCE liquidity - price can reach it easily. The
+    directional rule he states is a pairing: when trading lower he wants HIGH resistance liquidity
+    above (highs that are hard to reach, so the upside is protected) and LOW resistance liquidity
+    below as the target. The consequence in the trade is that he refuses to short into the
+    failure-swing highs and instead waits for an actual SWEEP before entering.'
+  - 'Whether price will slice through levels or stall is decided on the daily chart, not intraday.
+    When the daily setup calls for expansion, conditions are low resistance and he expects
+    price to cut through everything in the way. Where a very large range has already printed,
+    or ahead of very high impact news, conditions are high resistance and he expects consolidation
+    instead. Within the daily profile he refuses to trade into high resistance liquidity -
+    he wants the failure swings on the side he is heading toward.
+
+    '
+  - 'The top-down video uses the phrase as a property of a specific swing, not as a market-wide
+    condition: a swing low that has already been swept is creating high resistance liquidity.
+    The consequence he draws is operational - a high-resistance low is not expected to hold
+    on its own, so instead of using the low he marks 0.5 of its wick as the area that should
+    support price. This is a different sense of the phrase from the one recorded in the library
+    from the live streams, where high vs low resistance describes conditions set by the daily
+    setup and by news, deciding whether price will slice through levels or stall.'
+definition: 'THE DEDICATED PRIMARY-SOURCE LESSON for this pair, and it gives a fully decidable
+  definition that the library previously only had in circular / regime form. Low resistance
+  liquidity is a high or a low that carries a FAILURE SWING - price approached it, turned
+  before reaching it, and so the resting liquidity above/below it was never taken. High resistance
+  liquidity is the opposite: price swept that level before reversing, so the stops there are
+  already gone and what remains is the liquidity at the next extreme. The operational consequence
+  is a target filter: before the session he marks the low-resistance side and uses it as the
+  objective, because price is much more likely to expand through an area whose liquidity has
+  not yet been taken.'
+category: liquidity
+status: contested
+aliases:
+- low resistance liquidity run
+- LRLR
+- HRLR
+- low resistance liquidity
+- failure swing
+- high resistance liquidity
+- HRL
+- LRL
+preconditions:
+- A prior high or low has been marked.
+- A subsequent price leg toward it has completed.
+- Identified swing highs and lows with liquidity resting on them.
+- A marked-up range with identifiable swing highs and lows on both sides of price.
+- At least two prior highs (or lows) to compare.
+- The daily chart has been assessed for whether it is set up to expand.
+- An identified swing low or swing high on the working timeframe.
+detection_rules:
+- 'For a marked level L and the most recent price leg toward it: if the leg reversed WITHOUT
+  trading through L, L is low resistance liquidity (a failure swing sits in front of it).'
+- If the leg traded THROUGH L and then reversed, L is high resistance liquidity; the liquidity
+  has moved out to the next untaken extreme.
+- 'Daily scan for a low-resistance region: find runs of consecutive daily candles in which
+  no previous day high was ever taken out (mirrored for lows). Every one of those previous
+  day highs is unswept, so the whole band is low resistance liquidity.'
+- Once price starts to break through such a band, expect it to continue through and expand
+  in that direction.
+- 'Targeting rule: prior to the session, mark the low-resistance side and set it as the draw.'
+- Do not target the extreme of a high-resistance level directly - see high-resistance-target-adjustment.
+- 'Asset-selection use: when two correlated assets are candidates, prefer the one that has
+  low resistance liquidity in the trade''s direction.'
+- 'Classify each swing: was its liquidity swept as price reversed (HIGH resistance), or did
+  price fail to reach it, leaving a buildup (LOW resistance / failure swing)?'
+- 'Target selection: use low resistance liquidity - the failure swings - as targets.'
+- 'Stop placement: use high resistance liquidity - the sweeps - as the stop-loss location.'
+- 'Manufacturing step in a consolidation: wait for a purge of the low to create high resistance
+  liquidity, then take the bullish candle closure and expect expansion through the low resistance
+  liquidity above.'
+- 'Sequence read: expansion, consolidation, manipulation, expansion - the manipulation is
+  the step that creates the high resistance side.'
+- 'Precondition before targeting the failure swings: wait for price to shift bullish (the
+  change in the state of delivery), do not front-run it.'
+- 'Low resistance liquidity := a high with a lower high next to it (mirror: a low with a higher
+  low next to it).'
+- Target low resistance liquidity.
+- Keep high resistance liquidity on the stop-loss side / on your side of the curve.
+- A low that has just been swept, followed by a market structure shift away from it, is high
+  resistance liquidity and is therefore stop territory, not target territory.
+- After the structure shift, enter on the fair value gap or the order block created by it.
+- 'A leg can chain: failing to make a new high after a low leaves more low resistance liquidity
+  ahead, and the move finishes into it.'
+- For each swing high/low in the intended path, ask whether it has already been swept.
+- Never swept (a failure swing left behind by the move) -> low resistance liquidity.
+- Swept before the reversal that created it -> high resistance liquidity; the resting liquidity
+  has moved to the new extreme.
+- Prefer paths whose intervening swings are failure swings.
+- A high lower than the previous high = a failure swing = low resistance liquidity in that
+  direction.
+- When positioning short, require high resistance liquidity above (equal or higher highs,
+  hard to run) and target low resistance liquidity below.
+- Do not take a short entry at failure-swing highs; wait for a sweep of a genuine high first.
+- Daily set up for expansion (within his model) = low resistance liquidity conditions; expect
+  price to slice through levels.
+- Extremely large range already printed with nothing further set up = high resistance / consolidation
+  conditions.
+- Immediately prior to very high impact news = high resistance conditions.
+- Identify which side of the daily chart carries the failure swings - that is the low-resistance
+  side and the side he expects to be run first.
+- Do not take a trade whose path runs into high resistance liquidity within the daily profile;
+  the USDJPY example is a long that would have had to trade up through highs already taken
+  overnight.
+- A swing low that has already been swept is high resistance liquidity (top-down video sense).
+- 'Consequence: do not use that low itself as the level; mark 0.5 of its wick and use that
+  as the support area.'
+- A high-resistance low may still be traded from once price sweeps it AND closes back inside
+  the range on the same candle.
+invalidation:
+- The level is swept; it ceases to be low resistance liquidity from that moment.
+- Not stated as such; the classification changes when the untouched level is finally swept,
+  which converts low resistance into high resistance.
+- Price trades back through the high resistance side that was supposed to hold - the stop.
+- The swing is swept, converting it from low resistance to high resistance.
+- The low-resistance side is consumed - it stops being a target.
+- The daily read changing (a new phase of price).
+- Price closes below 0.5 of the wick of the high-resistance low.
+measurable:
+- expansion-through rate of low-resistance vs high-resistance targets
+- count of consecutive days with no previous-day-high taken, and the subsequent expansion
+  size
+- hit rate of failure-swing targets vs already-swept-level targets
+- stop-out rate for stops placed beyond swept extremes vs beyond unswept ones
+- how often a consolidation purges one side before expanding through the other
+- hit rate of low-resistance-liquidity targets versus high-resistance ones
+- stop-out rate when the stop sits behind swept (high resistance) liquidity
+- follow-through when targeting untouched failure swings vs already-swept swings
+- share of daily objectives that sit behind low-resistance liquidity
+- hit rate of low-resistance targets vs high-resistance targets on the same day
+- how often a failure-swing high is later swept anyway
+- range delivered on days classified low vs high resistance
+- how often the failure-swing side is run first
+- range compression on the day following a very large range day
+- hold rate of already-swept lows vs never-swept lows
+- how often 0.5 of the wick holds where the low itself does not
+sources:
+- video_id: 2lIaRUtJqpU
+  title: Low Resistance Liquidity Run - ICT Concepts
+  quote: low resistance liquidity is just a high or low with a failure swing
+- video_id: 2lIaRUtJqpU
+  title: Low Resistance Liquidity Run - ICT Concepts
+  quote: high resistance liquidity does not have a failure swing
+- video_id: 2lIaRUtJqpU
+  title: Low Resistance Liquidity Run - ICT Concepts
+  quote: prior to the session that I am trading I will look for low resistance liquidity
+- video_id: 2lIaRUtJqpU
+  title: Low Resistance Liquidity Run - ICT Concepts
+  quote: consecutive candles where no high is broken and I will Mark that out
+- video_id: q1NmxUTm4n4
+  title: SMT Divergence - ICT Concepts
+  quote: I would personally look to trade Nasdaq as it has low resistance liquidity above
+- video_id: EuW3h0gKZKw
+  title: The Importance of High vs Low Resistance Liquidity
+  quote: I want to use low resistance liquidity or these failure swings as a target
+- video_id: EuW3h0gKZKw
+  title: The Importance of High vs Low Resistance Liquidity
+  quote: use high resistance liquidity or these sweeps as a spot for my stop-loss
+- video_id: EuW3h0gKZKw
+  title: The Importance of High vs Low Resistance Liquidity
+  quote: price fails to reach up and sweep out that liquidity
+- video_id: kWKo5Mu0ANQ
+  title: Trading the Buyside of the Curve
+  quote: I want to wait for a purge of the low to create high resistance liquidity
+- video_id: kWKo5Mu0ANQ
+  title: Trading the Buyside of the Curve
+  quote: we first want to wait for price to shift to bullish
+- video_id: go3ae4yzKDY
+  title: How to Use High & Low Resistance Liquidity Together
+  quote: I want to be targeting low resistance liquidity
+- video_id: go3ae4yzKDY
+  title: How to Use High & Low Resistance Liquidity Together
+  quote: having high resistance liquidity for my stop loss
+- video_id: go3ae4yzKDY
+  title: How to Use High & Low Resistance Liquidity Together
+  quote: a high with a lower high next to it
+- video_id: L9Gd5p14uBE
+  title: What Creates High & Low Resistance Liquidity?
+  quote: Low resistance liquidity is just a failure swing.
+- video_id: L9Gd5p14uBE
+  title: What Creates High & Low Resistance Liquidity?
+  quote: It is where we first sweep that liquidity before the reversal.
+- video_id: L9Gd5p14uBE
+  title: What Creates High & Low Resistance Liquidity?
+  quote: as we trade away, we then generate more highs and lows and thus more liquidity
+- video_id: 0R61Y6Pn74Q
+  title: CPI Gold Trade Review | ICT Market Maker Sell Model [MMXM]
+  quote: this creates a failure swing or low resistance liquidity
+- video_id: 0R61Y6Pn74Q
+  title: CPI Gold Trade Review | ICT Market Maker Sell Model [MMXM]
+  quote: I want to have high resistance liquidity on the highs and Target low resistance liquidity
+- video_id: r7yW6ou1LDs
+  title: TTrades Sunday Session - Live Q&A
+- video_id: u8bnmaih_hA
+  title: TTrades Sunday Session - Live Q&A
+- video_id: iEaMbuFZb24
+  title: Trade Like TTrades - Top Down Analysis
+  quote: it has been swept so this is creating High Resistance liquidity
+ambiguities:
+- '''A high or low with a failure swing'' is decidable only relative to a chosen lookback:
+  which price leg counts as ''the leg toward it'' is not bounded in candles or time.'
+- Whether a wick through the level (rather than a close) is enough to convert low resistance
+  into high resistance is not stated.
+- The consecutive-days scan is given as 'consecutive candles where no high is broken' with
+  no minimum count.
+- This unit's sense (a property of a specific swept/unswept level) is not the same as the
+  sunday_sessions_live_q_a_03 / the_foundation_02 sense (a whole-day regime classification).
+  Both are preserved; this is the dedicated lesson.
+- This is the SWING-LEVEL sense of the terms. The library also carries a market-condition
+  sense from the live streams (daily set up to expand = low resistance conditions). These
+  Shorts use only the swing-level sense and never mention the conditions sense; the two are
+  still unreconciled.
+- '''Fails to reach up and sweep out that liquidity'' has no time bound - how long a level
+  must stand unswept before it counts as low resistance is not stated.'
+- No rule is given for choosing among several failure swings when more than one is available
+  as a target.
+- Whether the stop goes at the swept extreme or some distance beyond it is not stated.
+- The corpus's auto-captions render 'reach' as 'wretch' elsewhere; here the word survives
+  intact in the cited quote.
+- The Short teaches from a schematic diagram, not a live chart, so no instrument, timeframe
+  or session is attached to the rule.
+- '"On my side of the curve" is used interchangeably with "for my stop loss"; the curve reference
+  is not developed here.'
+- How far the lower high must be below the high for the pair to count as low resistance liquidity
+  is not given - it is read visually.
+- This does not reconcile the corpus's other sense of the same phrase (a market-wide expansion
+  versus consolidation condition read off the daily); the Short only teaches the structural
+  sense.
+- The Short defines the two terms as swing properties and never links them to the market-conditions
+  reading (daily set up to expand, news) held elsewhere in the library.
+- No timeframe is named for the swings being classified.
+- How many swings deep the classification is carried is not stated.
+- EARLIER RECORDING. High resistance liquidity is defined only by contrast; no positive test
+  is given here.
+- How many lower highs are needed to call a failure swing is not stated (two in the example).
+- Auto-caption renders 'liquidity' cleanly here but 'sell side' as 'cells side' elsewhere
+  in the same video.
+- '''Set up to have an expansion within my model'' is circular here - the daily classification
+  depends on his model rather than on a stated test.'
+- '''Very high impact news'' is not enumerated.'
+- '''Extremely large range'' has no threshold, though elsewhere he uses average expansion
+  size (700-800 points on YM) as a reference.'
+- Two different senses of the same phrase now exist in the corpus - a property of a swept
+  swing (here) and a market-wide condition (live streams). Neither video reconciles them.
+- The low-resistance mirror is not given in this unit.
+- The dedicated 'High Resistance vs Low Resistance Liquidity' video is listed in the_foundation_01
+  as having no transcript on disk, so the definitive statement is still missing from the corpus.
+related:
+- failure-swing
+- high-resistance-target-adjustment
+- draw-on-liquidity
+- liquidity-sweep
+- relative-strength-asset-selection
+- buyside-sellside-liquidity
+- low-expectation-target-selection
+- stop-loss-placement
+- consolidation-phase
+- phases-of-price
+- relatively-equal-highs-lows
+- market-structure-shift
+- advanced-market-structure-labeling
+- average-daily-range-targeting
+- relevant-level
+- half-wick-respect
+- protected-swing
+timeframes:
+  htf:
+  - 1D
+  - 4H
+  - 15m
+  ltf:
+  - 5m
+  - 1m
+  fractal: true
+execution:
+  bias: Toward the low resistance side.
+  entry: On the bullish candle closure / change in the state of delivery after the purge.
+  stop: Beyond the high resistance liquidity (the swept extreme).
+  targets:
+  - the failure swings (low resistance liquidity)
+contributing_units:
+- education_ict_01
+- education_ict_02
+- shorts_02
+- shorts_03
+- shorts_04
+- sunday_sessions_live_q_a_03
+- the_foundation_02
+draft_count: 7
+voice: ttrades

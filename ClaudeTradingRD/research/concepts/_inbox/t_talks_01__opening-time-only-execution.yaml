@@ -1,0 +1,56 @@
+id: opening-time-only-execution
+name: "Execute Only At / After A Session Open"
+aliases: ["opening times", "post 9:30 rule", "AM session only"]
+category: time
+status: contested
+
+definition: >
+  A hard time filter restricting when a setup may be executed. Every speaker in this unit who
+  states one restricts execution to a session open or the session immediately after it, but they
+  do not agree on which window.
+
+timeframes:
+  htf: ["1D"]
+  ltf: ["15m", "5m", "1m"]
+  fractal: false
+
+preconditions:
+  - "The setup itself is otherwise valid."
+
+detection_rules:
+  - "Ash Trades: the only trade taken is at an opening time - London open 02:00 EST or New York open 09:30 - and the entry function must form there."
+  - "Sniper: no execution on indices before the 09:30 equities open. A setup maturing pre-open is not traded; the pre-open PD array becomes a reference level and he drops one timeframe further after the open."
+  - "AM Trades: only New York AM-session setups count (he points at the 09:00-10:00 candle); a run on an external level occurring in the PM session is explicitly ignored and he waits for the next day."
+  - "DTR: trades both London and New York, and states that in London the trade will more than likely be the reversal."
+
+invalidation:
+  - "The setup completes outside the permitted window - the trade is passed, not taken late."
+
+execution:
+  bias: "Unchanged by this rule."
+  entry: "Only within the speaker's stated window."
+  stop: "Unchanged."
+  targets: []
+
+measurable:
+  - "performance of otherwise-identical setups inside versus outside each stated window"
+  - "count of setups discarded per month purely by the time filter"
+
+sources:
+  - video_id: zXtJSSkiNmo
+    title: "Ash Trades | The Journey To Profitability & The Unicorn Model"
+  - video_id: 5aRB_ZY3474
+    title: "$niper | Internal & External Liquidity - ICT Daily Bias"
+  - video_id: QmGJFxfSHxM
+    title: "AM Trades | Blending The Economic Calendar, Daily Chart, & Weekly Profiles"
+  - video_id: 07lOxv39LdY
+    title: "DTR | C2U - Blending The Fractal Model & Unicorn Model - No Daily Bias"
+
+ambiguities:
+  - "The windows conflict: Ash permits London 02:00, Sniper forbids anything before 09:30, AM forbids the PM session but never gives the AM session's exact clock bounds."
+  - "None of the speakers gives a closing time for the window - only how late is too late is implied."
+  - "Ash's rule requires the entry function to form at the open but sets no maximum delay after it."
+  - "Sniper's rule is stated as personal ('consistent to my rules') and is applied to indices only."
+
+python_detector: null
+related: ["no-monday-rule", "unicorn-model", "htf-reaction-mss-retrace-entry", "seven-hour-candle-daily-profile"]

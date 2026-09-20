@@ -1,0 +1,88 @@
+id: breaker-block
+name: Breaker Block
+aliases:
+- breaker
+- bullish breaker
+- bearish breaker
+category: entry
+status: specified
+definition: 'A four-point swing sequence plus a candle-selection rule, stated here as a candlestick
+  pattern. Bearish: high, low, higher high, lower low - the zone is the DOWN-close candles marked
+  from that high to that low, and it is expected to resist price on a return. Bullish: low, high,
+  lower low, higher high - the zone is the UP-close candles before the move that made the lower low,
+  and it is expected to support price. When wicks are untidy he marks the zone off the BODIES. This
+  lesson matches, word for word, the sequence the host used on air to correct a guest who had called
+  a low-high-higher-high-lower-low structure a breaker.'
+timeframes:
+  htf:
+  - 1D
+  - 1H
+  ltf:
+  - 15m
+  - 5m
+  - 1m
+  fractal: true
+preconditions:
+- Four confirmed swing points in the required order.
+detection_rules:
+- 'Bullish: confirm the sequence low, high, lower low, higher high. The pattern does not exist until
+  the higher high prints.'
+- Bullish zone := the up-close candles before the move that produced the lower low.
+- 'Bearish: confirm the sequence high, low, higher high, lower low.'
+- Bearish zone := the down-close candles marked from that high to that low.
+- Where wicks are scattered, mark the zone from the bodies rather than the extremes.
+invalidation:
+- The fourth swing point never forming.
+- Price trading through the far side of the breaker zone after the retest.
+execution:
+  bias: Direction of the fourth leg.
+  entry: On the close through, or on the retest of the zone.
+  stop: On the other side of the breaker, or on the swing low/high - he states he uses the other
+    side of the breaker in these examples.
+  targets:
+  - 2R
+  - the opposite side of the range
+  - prior highs/lows to the left
+measurable:
+- frequency of the four-point sequence per instrument and timeframe
+- hit rate of a fixed 2R trade on first retest of the zone
+- difference between wick-marked and body-marked zones on the same sample
+sources:
+- video_id: xP-o11jRCyg
+  title: Trade Continuations Using Breaker Blocks
+  quote: in which we have a high low higher high and lower Low
+- video_id: xP-o11jRCyg
+  title: Trade Continuations Using Breaker Blocks
+  quote: bullish breaker block we have a low a high lower low higher high
+- video_id: xP-o11jRCyg
+  title: Trade Continuations Using Breaker Blocks
+  quote: with these Wicks kind of everywhere I will focus on the bodies
+- video_id: wy3OSPxu5U0
+  title: Top Down Analysis | Daily Bias To Entries - ICT Concepts
+  quote: So I'm going to mark out this candle here as a breaker block
+- video_id: xP-o11jRCyg
+  title: Trade Continuations Using Breaker Blocks
+  quote: I prefer to just use order blocks as I find them more simple and easy
+ambiguities:
+- For the bearish case the PDF says the zone runs 'from this high to the low', but a later example
+  marks 'those down close candles on the move down' - whether the anchor is the FIRST high or the
+  higher high is stated both ways in the same video.
+- Whether the zone spans all same-direction closes between the two points or only the contiguous
+  run adjacent to the extreme is not stated.
+- Wick vs body bounding is explicitly discretionary ('with these wicks kind of everywhere I will
+  focus on the bodies').
+- He closes by saying he prefers plain order blocks because they are simpler, so the breaker material
+  is offered as an alternative, not as his own model.
+- Swing confirmation lag (how many bars must pass before a swing point counts) is never given.
+related:
+- breaker-continuation
+- order-block
+- swing-point
+- smt-swing-point-substitute
+- intermediate-term-swing-formation
+- order-of-reversal
+python_detector: null
+contributing_units:
+- education_ict_updated_02
+draft_count: 1
+voice: ttrades

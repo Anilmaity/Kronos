@@ -1,0 +1,55 @@
+id: delta-divergence-recency-limit
+name: Delta Divergence Is Only Usable While It Is Recent
+definition: 'Asked how to use market delta, HolyAngelBruv gives one usable form and one hard
+  restriction. The usable form is divergence, treated the way one would treat an oscillator
+  such as RSI. The restriction is recency: you do not want to use a divergence that is too
+  far away in TIME - his example of a disqualifying gap is a divergence that occurred four
+  hours ago. He adds that he does not personally use delta much; for reversals he looks at
+  the speed of the tape instead, and treats delta mainly as an indication of who is trapped.'
+category: liquidity
+status: underspecified
+aliases:
+- delta like RSI
+- stale divergence
+preconditions:
+- Footprint or delta data on the instrument.
+detection_rules:
+- Look for divergence between delta and price at a swing, as with an oscillator.
+- Reject the divergence if the two legs are separated by too much time - four hours is given
+  as an example of too far.
+- Prefer the speed of the tape over delta for reversal reads.
+- Delta can be used to infer which side is trapped.
+invalidation:
+- The divergence is stale.
+measurable:
+- forward return after delta divergence, bucketed by the time gap between legs
+sources:
+- video_id: 8Z2AbZLjunU
+  title: ICT + Orderflow - Q&A with HolyAngelBruv
+  quote: you don't want to use it if the divergence is like too far
+- video_id: 8Z2AbZLjunU
+  title: ICT + Orderflow - Q&A with HolyAngelBruv
+  quote: i mostly will look at the speed of the tape
+ambiguities:
+- '''Too far'' is given only by the four-hour counter-example; the actual cut-off is not stated.'
+- Whether the constraint is time or bar count is not distinguished.
+- He explicitly downgrades the whole tool ('i don't really use it'), so this is recorded as
+  his stated caution rather than as part of his working method.
+related:
+- orderflow-narrows-ict-entry
+- level-two-orders-can-be-pulled
+- smt-divergence
+guest_sources:
+- HolyAngelBruv
+- ICT + Orderflow - Q&A with HolyAngelBruv
+timeframes:
+  htf: []
+  ltf:
+  - 15m
+  - 5m
+  - 1m
+  fractal: false
+contributing_units:
+- live_stream_guests_02
+draft_count: 1
+voice: guest

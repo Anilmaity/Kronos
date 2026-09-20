@@ -1,0 +1,186 @@
+id: smt-swing-point-substitute
+name: SMT As A Swing Point Substitute
+definition: 'Where the model requires a liquidity sweep to validate a swing point or a protected
+  swing, an SMT can stand in for it. If this asset did not run out the high/low but a correlated
+  asset did, the level is treated as if it had been swept: the opposing candles that made
+  the failure swing are used as the series to close through, and the resulting extreme is
+  treated as protected. This is stated for consolidations (the manipulation requirement),
+  for protected swings, and for targets (a target counts as hit if the correlated asset took
+  it).'
+variants:
+  definition:
+  - 'SMT against a correlated asset is allowed to REPLACE the sweep requirement in two places
+    in this unit, which is a stronger claim than ''SMT is confluence''. (1) For a continuation
+    order block: normally price must sweep a low or reach a fair value gap before an opposing
+    candle counts -- but if the correlated asset swept and this one did not, the opposing
+    candle is accepted anyway. (2) At a swing point: when a low is expected to hold and price
+    does not reach it, an SMT with the correlated asset means the low no longer needs to be
+    taken, and the closure through the opposing candles is accepted as confirmation.'
+  - 'Within this series SMT (a divergence against a correlated instrument) is used not as
+    a standalone setup but as a licence to treat a day as a swing point when the daily candle
+    alone does not earn it. Two distinct uses appear. First, substitution: a day that takes
+    out the previous day''s low and closes above it, with an SMT present, may be treated as
+    a candle 2 closure or a swing point even though it is not sitting at a point of interest
+    - explicitly relaxing the usual point-of-interest requirement. Second, escalation: in
+    the Thursday Counter profile, an SMT off the previous day''s high or low is what upgrades
+    the reversal day from wait-for-the-continuation to tradeable on the day itself, provided
+    the wick is small. SMT is also cited simply as added confluence at a confirmed weekly
+    extreme.
+
+    '
+  - The one sanctioned exception to the requirement that a low must actually be swept before
+    a continuation structure counts. Asked directly whether the low always has to be taken
+    out, he answers yes - unless it is paired with an SMT. When the correlated asset HAS formed
+    the structure and this one has not, the unswept low is treated as protected and the setup
+    is traded as if the breaker had formed, with the stop on that low. He flags the substitution
+    as more discretionary than the rest, because what forms is not a true breaker.
+category: structure
+status: contested
+aliases:
+- SMT in place of the sweep
+- SMT instead of the sweep
+- SMT
+- SMT on the low
+- SMT off the previous day high
+- paired with smt
+- consider this low protected
+preconditions:
+- A named correlated asset is being watched (ES/NQ/YM; gold vs gold-euro/gold-pound; EU/GU
+  vs DXY).
+- A correlated asset is being charted alongside.
+- An existing directional model.
+- A correlated instrument is being watched alongside the traded instrument.
+- A candidate swing point or reversal day exists on the traded instrument.
+- A correlated asset is being watched alongside the traded one.
+detection_rules:
+- This asset fails to take out the relevant high/low; the correlated asset does take it out.
+- 'Treat the level as manipulated: use the opposing candles that made the failure swing as
+  the series to close through.'
+- Once closed over, the extreme is protected exactly as if the sweep had occurred here.
+- 'Target variant: a target is treated as reached when the correlated asset takes it out.'
+- Identify the level one asset takes and the other does not -- that divergence is the SMT.
+- 'Continuation case: accept an opposing candle / order block as valid without its own sweep
+  or fair value gap tag, provided SMT is present.'
+- 'Swing-point case: when the anticipated low is not reached but SMT forms, stop requiring
+  the low to be taken and look for the close through the opposing candles instead.'
+- Still require the closure through the series -- SMT waives the sweep, not the confirmation.
+- At the candidate extreme, compare the traded instrument against the correlated instrument
+  at the same time.
+- SMT is present when one makes the new extreme (or reaches the point of interest) and the
+  other does not.
+- With SMT present, a day that sweeps the previous day's extreme and closes back may be treated
+  as a candle 2 closure / swing point even if it is not at a point of interest.
+- In a Thursday Counter, an SMT off the previous day's high or low, combined with a small
+  wick, permits trading the reversal day itself rather than waiting for the Friday continuation.
+- 'Default: the low (or high) must be swept for the continuation structure to be valid.'
+- 'Exception: if an SMT exists at that low - the correlated asset made the corresponding structure
+  and this one did not - treat the low as protected.'
+- Under the exception, mark the up-close candles as the breaker once price closes through
+  them and place the stop on the unswept low.
+invalidation:
+- The correlated asset that swept fails to reverse.
+- Both assets take the level -- there is no divergence and the ordinary sweep requirement
+  applies.
+- Not stated. The videos give no condition under which an observed SMT is discarded; in one
+  Consolidation Reversal example an SMT appears on a low that is briefly taken out, and the
+  trade still works, so SMT is not used as an invalidation signal.
+- Price trading below the low that was treated as protected.
+measurable:
+- hit rate of SMT-substituted protected swings vs swept ones
+- how often the SMT-hit-target rule would have closed a trade early
+- share of continuation entries admitted only via the SMT waiver
+- hit rate of SMT-waived entries vs ordinary swept entries
+- frequency of SMT at confirmed weekly extremes versus at failed candidates
+- outcome of reversal-day entries taken with SMT versus continuation-day entries taken without
+- how often the SMT-substituted swing point (not at a point of interest) holds
+- outcome of SMT-substituted continuations vs genuinely swept ones
+- frequency of the substitution being available per session
+sources:
+- video_id: WFqLwOp2pXw
+  title: How To Trade Consolidation - Phases Of Price
+  quote: we don't need price to run out the high or the low
+- video_id: -wr4xATE37g
+  title: Protected Swings - Understanding Trend and Invalidations
+  quote: I'll use the series of downclosed candles that made the failure swing
+- video_id: A4NasIa371c
+  title: How to Set Price Targets Using the Fractal Model
+  quote: when there's SMT or a correlated asset takes out this low
+- video_id: F0G31iLVpVg
+  title: How To Trade Retracement - Phases Of Price
+  quote: ES has taken out that low. So, we can consider that an SMT
+- video_id: IJcfC6wAPZU
+  title: Trade Continuations Using Order Blocks
+  quote: the only time price does not need to sweep out a low
+- video_id: 5fnFOh5YuM0
+  title: TTrades Fractal Model - Trading Candle 4
+- video_id: JHVaSKtE1Ys
+  title: 'Stop Losses in Trading: Know When You''re Wrong'
+- video_id: jKuXaC84Qx4
+  title: Trading the Invalidation of Daily Bias
+- video_id: FvOUvQ7odiw
+  title: Weekly Profile for Daily Bias - Intraweek Reversal
+- video_id: uPUNOi_R9fA
+  title: Weekly Profile for Daily Bias - Thursday Counter
+- video_id: -gyDd_E_qD4
+  title: Weekly Profile for Daily Bias - Midweek Reversal
+- video_id: McJflkKuvrI
+  title: Weekly Profile for Daily Bias - Consolidation Reversal
+- video_id: xP-o11jRCyg
+  title: Trade Continuations Using Breaker Blocks
+  quote: yes it does unless it is paired with smt
+- video_id: WwmS47Gb3M0
+  title: The "Twitter Model" The MMXM Trader - ICT Concepts
+ambiguities:
+- No rule for which correlated asset is authoritative when two disagree.
+- How close the failure swing must be to the correlated asset's swept level is not stated.
+- Which correlated asset is authoritative is not specified in this unit beyond ES/NQ/YM and
+  CL/RB examples.
+- Whether the SMT must be on the exact same candle as the would-be sweep is not stated.
+- SMT is never defined in this unit; it is assumed knowledge from other playlists in the corpus.
+- The correlated instrument is unnamed in almost every use. The Intraweek Reversal video refers
+  to it only as 'RB', which the transcript never expands and which is not verifiable without
+  the chart, so it is left unidentified here rather than guessed. ES and NQ are named once,
+  in the final Thursday Counter example.
+- No rule is given for how to choose the correlated instrument for a given traded instrument.
+- Whether the divergence must be on the same timeframe as the candidate candle is not stated.
+- The interaction between the SMT substitution and the usual hourly-CISD requirement is not
+  spelled out - in the Thursday Counter reversal-day case it is unclear whether the CISD is
+  still required or whether SMT plus a small wick replaces it.
+- Status is underspecified because the divergence test itself is never stated in this unit.
+- The correlated asset is unnamed in the breaker examples; only the Twitter-model video names
+  specific pairs.
+- No tolerance is given for how closely the two assets' structures must correspond for an
+  SMT to count.
+- He calls the substitution 'a little bit more discretionary', so it is not mechanically decidable
+  as stated.
+related:
+- smt-divergence
+- smt-requires-framework
+- protected-swing
+- consolidation-phase
+- failure-swing
+- psp-precision-swing-point
+- continuation-order-block
+- reversal-candle-quality
+- thursday-counter-week
+- intraweek-reversal-week
+- hourly-cisd-confirmation
+- breaker-continuation
+- smt-as-confirmation-not-signal
+- relative-strength-weakness
+timeframes:
+  htf:
+  - 1D
+  - 4H
+  ltf:
+  - 1H
+  - 15m
+  - 5m
+  fractal: true
+contributing_units:
+- build_a_model_intro_to_ttrades_fractal_model_01
+- build_a_model_intro_to_ttrades_fractal_model_02
+- education_ict_updated_02
+- weekly_profile_series_01
+draft_count: 4
+voice: ttrades

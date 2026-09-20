@@ -1,0 +1,74 @@
+id: phases-of-price
+name: "Phases Of Price (expansion, retracement, consolidation, reversal)"
+aliases: ["phases of price", "new phase of price", "market cycles"]
+category: structure
+status: underspecified
+
+definition: >
+  The classification layer applied before any level is drawn. Every leg of price is
+  labelled as one of four phases and the label determines what is looked for next.
+  Expansion is a directional move that generates fair value gaps. A retracement is a
+  counter-move that then continues the prior direction - it is a retracement rather than
+  a new phase precisely because price does not expand back to make a higher low and then
+  a higher high (bearish case inverted). A consolidation is a two-sided range whose high
+  and low are marked and traded from. A reversal is expansion into a level met with
+  expansion out of it - an aggressive move one way immediately followed by an aggressive
+  move the other, which on the timeframe above is a single reversal candle. The phase
+  sequence is what he trades: after expansion he wants a retracement into a point of
+  interest and then a new expansion; after a consolidation whose extreme is taken, a new
+  phase can begin.
+
+timeframes:
+  htf: ["1M", "1W", "1D", "1H"]
+  ltf: ["30m", "15m", "5m", "1m"]
+  fractal: true
+
+preconditions:
+  - "A visible swing structure on the timeframe being classified."
+
+detection_rules:
+  - "Expansion - a directional leg that generates fair value gaps."
+  - "Reversal - expansion into a level met with expansion out of it; aggressive move down followed immediately by aggressive move up (or the inverse)."
+  - "Retracement - a counter-move after which price continues in the prior direction; specifically, price does not expand back to make a higher low and then a higher high."
+  - "Consolidation - a two-sided range; mark the range high and the range low."
+  - "After a consolidation whose extreme is swept, expect a new phase of price."
+  - "Three candles of expansion is given once as a cue that a new phase of price may be starting."
+
+  - "After an expansion leg, the next phase is one of exactly three: a retracement that continues the direction, a consolidation, or expansion back the other way."
+  - "Test the three options in order against each new candle as it closes - does it look like a retracement, does it look like a consolidation - and if neither, it is expansion the other way."
+  - "Expansion met with expansion is a reversal (stated flatly, and applied both at a low and at a high)."
+  - "If price cannot produce the closure needed to continue expanding, the leg is a consolidation - mark the high and low of the range and watch only those."
+invalidation:
+  - "A leg labelled retracement that instead makes a higher low and a higher high was a new expansion phase, not a retracement."
+  - "A consolidation whose extreme is taken and holds transitions to a different phase."
+
+execution:
+  bias: "Continuation of the expansion direction after a retracement; away from a reversal."
+  entry: "In the retracement, at a point of interest inside it."
+  stop: "Beyond the extreme of the retracement / the protected swing."
+  targets: ["the next expansion objective", "the opposite extreme of the consolidation"]
+
+measurable:
+  - "frequency of each phase label per instrument per timeframe"
+  - "probability that a leg labelled retracement is followed by a new expansion in the same direction"
+  - "probability that a consolidation sweep is followed by a phase change within N candles"
+
+sources:
+  - video_id: UBTl7za9obc
+    title: "TTrades Top-Down Chart Lessons #2"
+  - video_id: IzOQmcgLyA0
+    title: "TTrades Top-Down Chart Lessons #3"
+
+  - video_id: Nlw-PZhoViQ
+    title: "TTrades Top-Down Chart Lessons #1"
+    quote: "So we get a retracement to continue lower, a consolidation, or expansion back higher"
+ambiguities:
+  - "Sourced from an ASR (whisper-small) transcript, not YouTube captions; wording may be imprecise."
+  - "In video Nlw-PZhoViQ the classification is run candle-by-candle as a live decision tree, which makes the sequence decidable, but the primitive judgements (does this leg look like a retracement) are still made by eye."
+  - "Consolidation versus retracement is the pivotal call and is made by stated distrust of the move rather than by rule; in video UBTl7za9obc the speaker raises the retracement label, rejects it in favour of consolidation, and gives no criterion."
+  - "Aggressive is never quantified; the only evidence offered is that a fair value gap was generated."
+  - "Three candles of expansion as a phase-change cue is stated once in passing and may be a description of that instance rather than a threshold."
+  - "A separate market-cycle ordering is given by a guest in t_talks_03 (expansion, consolidation, retracement, consolidation, expansion) which does not match this four-phase scheme; not reconciled."
+
+python_detector: null
+related: ["htf-wick-formation", "consolidation-sweep-entry", "fractal-model-c2", "top-down-analysis-procedure", "range-market-avoidance"]

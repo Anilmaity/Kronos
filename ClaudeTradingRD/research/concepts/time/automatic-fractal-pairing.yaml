@@ -1,0 +1,62 @@
+id: automatic-fractal-pairing
+name: Automatic Fractal Pairing (chart timeframe to higher timeframe)
+definition: 'The fixed map from the chart timeframe to the higher-timeframe candle the model
+  is read on, as coded into his indicator''s ''automatic'' fractal setting: an hourly chart
+  uses the daily, a 15-minute chart uses the 4-hour, a 5-minute chart uses the hourly. The
+  pair can instead be locked (always daily and hourly) or set custom. The same map governs
+  alert placement: to be alerted on daily closures you sit on the hourly chart, and for 4-hour
+  closures you sit on the 15-minute. Custom pairs he demonstrates or endorses are 10-minute
+  with 30-second, 5-minute with 15-second and 7-hour with 15-minute; asked about 3-minute
+  with 30-second he says he would not use it.'
+category: time
+status: specified
+aliases:
+- the fractal
+- automatic
+- custom fractal
+preconditions:
+- A chart timeframe has been chosen.
+detection_rules:
+- 1H chart -> daily higher-timeframe candles.
+- 15m chart -> 4-hour higher-timeframe candles.
+- 5m chart -> hourly higher-timeframe candles.
+- 'Alerts follow the same map: sit on the hourly for daily closures, on the 15-minute for
+  4-hour closures.'
+- Two pairs can be run at once by duplicating the indicator, locking one to a fixed higher
+  timeframe and offsetting it (he uses an offset of 17 bars) so the two sets of higher-timeframe
+  candles sit side by side.
+invalidation:
+- Not applicable - a mapping, not a signal.
+measurable:
+- difference in setup count between automatic pairing and a locked daily/hourly pair
+- performance by fractal pair
+sources:
+- video_id: sdZkE-naNiY
+  title: TTrades Indicator Updates - Walkthrough and Q&A
+  quote: if I'm right here on the hourly, it's going to use the daily
+ambiguities:
+- Only three rungs of the automatic map are demonstrated (1H/1D, 15m/4H, 5m/1H); the rule
+  that generates the map is not stated, so the pair for e.g. a 3-minute chart is not decidable
+  from this transcript.
+- The offset of 17 is a drawing convenience for side-by-side display, not an analytical parameter.
+related:
+- timeframe-pairing
+- timeframe-alignment-pairs
+- autobias-filter
+- four-candle-model-window
+timeframes:
+  htf:
+  - 1D
+  - 4H
+  - 1H
+  ltf:
+  - 1H
+  - 15m
+  - 5m
+  - 1m
+  - 30s
+  fractal: true
+contributing_units:
+- live_streams_05
+draft_count: 1
+voice: ttrades

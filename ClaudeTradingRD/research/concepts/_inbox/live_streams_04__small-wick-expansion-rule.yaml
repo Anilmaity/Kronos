@@ -1,0 +1,56 @@
+id: small-wick-expansion-rule
+name: "Small Wick Supports Expansion; the C2 He Will Trade Needs One"
+aliases: ["I need a small wick", "supports expansion"]
+category: model
+status: specified
+
+definition: >
+  Declining a viewer's reversal idea he states the wick condition on the candle 2 itself: when
+  he trades a candle 2, he needs a small wick, and he says he does not trade a reversal day
+  with a large wick back to the open - the times he does are very specific. The same test is
+  applied to the daily candle as the direction filter: a candle that opens, leaves a small wick
+  and expands is what supports expansion in that direction, and it is what makes a day worth
+  trading short or long. On the intraday side the corresponding test is sequencing - if 09:30
+  expands you want 09:45 to expand too; a 4-hour candle that closes without that shape is
+  called out on air as "not as nice for a continuation".
+
+timeframes:
+  htf: ["1D", "4H"]
+  ltf: ["1H", "15m"]
+  fractal: true
+
+preconditions:
+  - "A closed or closing candle whose direction is being assessed."
+
+detection_rules:
+  - "A candle that opens, leaves a small wick on the open side, and expands away supports expansion in that direction."
+  - "To trade a candle 2 reversal, require a small wick on that candle 2."
+  - "Do not trade a large-wick reversal day back toward the open (he reserves this for very specific cases)."
+  - "Intraday sequencing: an expansion at 09:30 should be followed by expansion at 09:45; if not, the continuation is downgraded."
+
+invalidation:
+  - "A large opposing wick prints, or the following candle fails to expand."
+
+measurable:
+  - "wick-to-range ratio distribution of candles that did vs did not expand"
+  - "expectancy of C2 entries split by wick-to-range ratio"
+
+sources:
+  - video_id: x4sRGuZIqWk
+    title: "New York Open Live Q&A"
+    quote: "how I trade candle two, I need a small wick"
+  - video_id: i2HhHhWdaPQ
+    title: "New York Open Live Q&A"
+    quote: "if this daily candle has a small wick and it's trading higher"
+
+ambiguities:
+  - "'Small' is never quantified anywhere in this unit - no wick-to-body or wick-to-range ratio is given."
+  - "The 'very specific' cases in which he will trade a large-wick reversal day are not enumerated here."
+  - "This sits in tension with the large-wick reversal candle the Thursday Counter profile is built on; neither statement acknowledges the other."
+
+python_detector: null
+related: ["reversal-candle-quality", "daily-ohlc-candle-shape", "expansion-sequence-quality", "no-fading-the-daily-candle", "fractal-model-c2"]
+
+contributing_units: ["live_streams_04"]
+draft_count: 1
+voice: ttrades

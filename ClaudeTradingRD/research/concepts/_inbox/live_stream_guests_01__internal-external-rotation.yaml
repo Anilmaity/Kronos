@@ -1,0 +1,70 @@
+id: internal-external-rotation
+name: "Internal <-> External Range Liquidity Rotation"
+aliases: ["ping pong", "external to internal oscillation"]
+category: model
+status: specified
+voice: guest
+guest_sources:
+- "Finessee_Fx"
+- "Ben (Ben TT)"
+
+definition: >
+  Two guests give the same oscillation model in different vocabulary. Finessee_Fx calls it ping
+  pong: price hits a PD array in premium at the top, then goes lower to search for an OPPOSING
+  discount PD array - possibly on a lower timeframe - and once it hits that it wants to come back
+  up to the opposing array again, engineering liquidity the whole way. Ben states it as a law -
+  price will always oscillate from external to internal liquidity - and adds the mechanical test
+  that makes it useful: measure the impulse leg with a fib, and if price has NOT come back to
+  equilibrium of that leg, the leg has not been balanced and the run beyond it is a stop hunt
+  rather than a real directional swing.
+
+timeframes:
+  htf: ["1M", "1W", "1D"]
+  ltf: ["4H", "1H", "15m", "5m", "1m"]
+  fractal: true
+
+preconditions:
+- "A dealing range can be defined - Ben requires buy-side and sell-side to have been taken so the range has both ends."
+
+detection_rules:
+- "After price reaches a PD array on one side, the next objective is the opposing PD array, not a continuation."
+- "The opposing array may be on a lower timeframe than the one just hit (Finessee_Fx)."
+- "Ben's balance test: fib the impulse leg; if price has not traded back to equilibrium of that leg, treat the extension beyond it as a stop hunt, not a swing."
+- "Ben: after external liquidity is taken, the draw becomes internal (an unmitigated fair value gap / OTE inside the range); after internal is delivered to, the draw becomes external again."
+- "Ben: this runs on all timeframes simultaneously - a 5-minute trade is also inside the 15-minute, hourly, daily and weekly rotation."
+
+invalidation:
+- "Not stated; neither speaker gives a condition that stops the rotation."
+
+execution:
+  bias: "Toward whichever pool has not been delivered to."
+  entry: "At the opposing PD array (Finessee_Fx) or at the internal array once external has been taken (Ben)."
+  stop: "Beyond the array."
+  targets: ["the opposing pool"]
+
+measurable:
+- "hit rate of the opposing-array target after an array on the other side is tagged"
+- "outcome of legs that never returned to equilibrium (Ben's stop-hunt classification) versus those that did"
+
+sources:
+- video_id: eK_6wgNpNh0
+  title: "Advanced ICT Directional Bias Teachings with Finessee_Fx"
+  quote: "search for an opposing discount lower time frame PD array down low"
+- video_id: yRmKkR4CojU
+  title: "Fractalizing Entries -Q&A with Ben - ICT Concepts"
+  quote: "price will always oscillate from external to internal liquidity"
+- video_id: yRmKkR4CojU
+  title: "Fractalizing Entries -Q&A with Ben - ICT Concepts"
+  quote: "this impulse never came back to equilibrium so for me this is a stop hunt"
+
+ambiguities:
+- "Neither speaker says WHICH opposing array is the destination when several exist at different timeframes."
+- "Ben's equilibrium test depends entirely on choosing the correct dealing range; he says identifying dealing ranges accurately is the prerequisite and that getting it wrong will hinder performance, but gives no selection rule."
+- "Ben warns explicitly that the equilibrium reaction is not deterministic - price may leave from 50 percent, or may return to fill unmitigated gaps in the OTE first - so the test grades likelihood, not certainty."
+- "'Engineering liquidity the whole time' is narrative, with no observable attached."
+
+python_detector: null
+related: ["internal-external-range-liquidity", "premium-discount-equilibrium", "pd-array-matrix-ladder", "market-structure-shift"]
+contributing_units:
+- live_stream_guests_01
+draft_count: 1

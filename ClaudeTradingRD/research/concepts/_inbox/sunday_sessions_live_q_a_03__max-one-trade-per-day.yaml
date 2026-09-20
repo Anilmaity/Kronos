@@ -1,0 +1,52 @@
+id: max-one-trade-per-day
+name: "One Trade Per Day Cap"
+aliases: ["max one trade a day", "tilt control", "trade frequency cap"]
+category: risk
+status: specified
+
+definition: >
+  His standard prescription when a trader reports good weeks ruined by one bad week.
+  His diagnosis is that the problem is almost always a single tilt day rather than a
+  bad week, and a hard cap of one trade per day bounds both. The arithmetic he gives:
+  one trade a day means at most five losses in a week, which two and a half 2R winners
+  cover. His own normal frequency is separately stated as zero to four trades a week.
+
+timeframes:
+  htf: []
+  ltf: []
+  fractal: false
+
+preconditions:
+  - "A trader with a recurring blow-up pattern, or simply as a default discipline."
+
+detection_rules:
+  - "Cap at one trade per trading day."
+  - "Expected weekly worst case: five losses."
+  - "At 2R per winner, two and a half winners recover a five-loss week."
+  - "His own baseline frequency: zero to four trades per week."
+  - "Related process fix for over-trading on the lower timeframe: do not open the lower timeframe until an HTF reason exists."
+
+invalidation: []
+
+execution:
+  bias: null
+  entry: null
+  stop: null
+  targets: null
+
+measurable:
+  - "loss-day clustering: proportion of monthly drawdown attributable to single days with more than one trade"
+  - "expectancy per trade at 1 trade/day vs unrestricted"
+
+sources:
+  - video_id: bMkRomKEunU
+    title: "New York Open Live Q&A"
+  - video_id: r7yW6ou1LDs
+    title: "TTrades Sunday Session - Live Q&A"
+
+ambiguities:
+  - "The cap is offered as advice to viewers; he does not state that he personally applies a one-per-day cap, only that his frequency is 0-4 per week."
+  - "Whether scaling out or re-entering the same idea counts as a second trade is not addressed."
+
+python_detector: null
+related: ["risk-reward-minimum", "pattern-trading-error", "continuation-over-reversal"]

@@ -1,0 +1,51 @@
+id: gap-open-adr-budget
+name: A Gap Open Spends the Daily Range Budget
+definition: 'The daily range an instrument can cover is treated as a fixed budget for the session.
+  If price gaps at the open, the gap consumes part of that budget, so the far target is no longer
+  reachable in one day and the target must be pulled in to the nearest structural level instead. Worked
+  live on gold (an assumed ~80-point average daily range) and on silver (~2.4): without a gap the
+  previous month''s low is reachable; with the gap up the realistic target becomes the previous day''s
+  low.'
+category: risk
+status: specified
+timeframes:
+  htf:
+  - 1D
+  ltf:
+  - 1H
+  fractal: false
+preconditions:
+- An eyeballed average daily range for the instrument exists.
+- A directional bias toward a level further away than that range.
+detection_rules:
+- Measure the distance from the session open to the intended target.
+- If that distance exceeds the eyeballed average daily range, the target is rejected for today.
+- Replace it with the nearest structural level inside the remaining budget - in the worked example,
+  the previous day's low.
+- The directional bias to the far level is retained; only the day's target changes.
+invalidation:
+- No gap at the open - the normal target set applies.
+measurable:
+- hit rate of the far target on gap-open days vs non-gap days
+- distribution of (open-to-target distance / average daily range) for winning days
+sources:
+- video_id: NESSCPMzWR0
+  title: New York Open Live Q&A
+  quote: our 80 points become a lot harder to reach
+ambiguities:
+- The average daily range is eyeballed off the last few daily candles, not computed; no lookback and
+  no ATR (see average-daily-range).
+- No threshold is given for how large a gap has to be before the budget is considered spent - the
+  example gap was large enough to be obvious.
+- Whether the budget is measured from the session open or from the previous close is not stated; the
+  worked example measures from the open.
+related:
+- average-daily-range
+- average-daily-range-targeting
+- daily-range-budget
+- previous-period-high-low
+- no-shorting-below-lows
+contributing_units:
+- live_streams_01
+draft_count: 1
+voice: ttrades

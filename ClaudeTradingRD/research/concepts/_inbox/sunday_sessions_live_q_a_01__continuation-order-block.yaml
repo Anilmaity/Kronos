@@ -1,0 +1,55 @@
+id: continuation-order-block
+name: "Continuation Order Block (Continuation Entry)"
+aliases: ["continuation entry", "protected swing entry", "higher low or lower high"]
+category: entry
+status: specified
+
+definition: >
+  The entry object he uses in place of a reversal entry. After a reversal and a change in state of
+  delivery, price either retraces into a fair value gap and closes back over it, or sweeps a
+  lower-timeframe low (for longs) and closes back over it; that closure creates the continuation
+  order block and the protected swing that anchors the stop. He states that at its basic level
+  this is simply waiting for a higher low or a lower high and trading away from it.
+
+timeframes:
+  htf: ["4H", "1H", "30m"]
+  ltf: ["15m", "5m", "3m", "1m"]
+  fractal: true
+
+preconditions:
+  - "A reversal has occurred and been confirmed by a change in state of delivery."
+  - "A higher-timeframe directional bias points the same way."
+
+detection_rules:
+  - "Price retraces into a fair value gap in the direction of the trend, OR sweeps a lower-timeframe swing against the trend."
+  - "Price then closes back over (or under) that level."
+  - "The extreme of that retracement becomes a protected swing and the invalidation."
+
+invalidation:
+  - "Price fails to close back through the level and instead consolidates there."
+  - "The protected swing is taken out."
+
+execution:
+  bias: "Direction of the confirmed reversal / higher-timeframe bias."
+  entry: "On the closure through, or at the level with the stop beyond the protected swing."
+  stop: "Beyond the protected swing formed by the retracement."
+  targets: ["Drawn liquidity; 2R described as the normal expectation"]
+
+measurable:
+  - "hit rate and average R of continuation entries taken after a CISD"
+  - "how often the protected swing is violated before the target"
+
+sources:
+  - video_id: WBwoiMDXT2c
+    title: "New York Open Live Q&A"
+  - video_id: 0AYGNc9czYc
+    title: "New York Open Live Q&A"
+  - video_id: uzPGXVYpVGc
+    title: "Candle 2 Confirmations - Live Lesson, Q&A"
+
+ambiguities:
+  - "He sometimes enters at the level without waiting for a retest and sometimes waits for the closure; the choice is described as depending on confidence."
+  - "Which lower-timeframe low counts as sweepable is not defined."
+
+python_detector: null
+related: ["continuation-timing", "half-wick-respect", "c2-confirmation-scaling"]

@@ -1,0 +1,58 @@
+id: continuation-over-reversal
+name: "Continuation-Only Doctrine"
+aliases: ["always seeking a continuation", "I don't trade reversals"]
+category: model
+status: specified
+
+definition: >
+  The whole model is expressed as: never enter on the reversal itself, always enter on the
+  continuation that follows it. In its simplest form this means waiting for a lower high in
+  a bearish sequence and a higher low in a bullish sequence. Reversal patterns are used only
+  to define where a continuation may begin. The stated reason is that a reversal entry with a
+  stop at the extreme carries no confirmation that price will actually go.
+
+timeframes:
+  htf: ["1D", "4H", "1H"]
+  ltf: ["15m", "5m", "3m", "1m"]
+  fractal: true
+
+preconditions:
+  - "A reversal (V-shape, C2 closure, or sweep-and-close) has already formed."
+
+detection_rules:
+  - "Bearish: after the reversal, wait for a lower high to form, then enter the continuation."
+  - "Bullish: after the reversal, wait for a higher low to form, then enter the continuation."
+  - "The continuation must produce its own closure through a level; without the closure there is no setup."
+
+invalidation:
+  - "The continuation closure never prints - no trade is taken, even if the directional idea later proves correct."
+  - "Price expands into the target before a continuation forms - the move is missed and should not be chased."
+
+execution:
+  bias: "Direction of the reversal."
+  entry: "The continuation closure after the lower high / higher low."
+  stop: "Behind the resulting protected swing."
+  targets: ["the objective the reversal was aiming at"]
+
+measurable:
+  - "Win-rate delta: reversal entry vs continuation entry on the same signal set."
+  - "Proportion of correct directional ideas that never produce a tradeable continuation."
+
+sources:
+  - video_id: aqnY1yZvfYs
+    title: "New York Open Live Q&A"
+    quote: "You don't want to trade after the expansion."
+  - video_id: Qv6Ux_Z8VrA
+    title: "New York Open Live Q&A"
+    quote: "waiting for a lower high if bearish and a higher low if bullish"
+  - video_id: yud7TpE2AMs
+    title: "New York Open Live Q&A"
+  - video_id: 00iZXPAdR5A
+    title: "New York Open Live Q&A"
+
+ambiguities:
+  - "He concedes continuation entry means a later, worse price in exchange for a higher win rate, but gives no numbers."
+  - "The only stated countertrend exception is 'trading the invalidation of my bias', which he defers to a future video."
+
+python_detector: null
+related: ["protected-swing", "continuation-failure-short-term-target", "shallow-retracement", "fractal-model-c3"]

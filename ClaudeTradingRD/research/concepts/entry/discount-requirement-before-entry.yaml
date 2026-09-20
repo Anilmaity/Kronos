@@ -1,0 +1,95 @@
+id: discount-requirement-before-entry
+name: Discount / Premium Requirement Before Entry
+definition: 'A hard location gate $niper states twice: he does not take a short unless price
+  is above equilibrium of the retracement leg. The fib is drawn from the high to the low of
+  the leg that produced the market structure break; above 50 percent is premium, below is
+  discount. Only an entry array (fair value gap or order block) sitting in premium is taken
+  for a short, and the mirror for a long. The array he wants is an OTE fair value gap - a
+  fair value gap that is itself inside the OTE zone of that fib.
+
+  '
+variants:
+  definition:
+  - 'Before buying, price must trade below 50% of the range (a discount); before selling,
+    above 50% (a premium). The justification given is that institutions negotiate fair value
+    and a retail trader must adopt the same constraint, which converts patience from a virtue
+    into a mechanical filter: no entry is permitted on the wrong side of equilibrium regardless
+    of how strong the directional narrative is.
+
+    '
+category: entry
+status: contested
+aliases:
+- above equilibrium to sell
+- OTE fair value gap
+- optimal trade entry
+- fair valuation
+preconditions:
+- A market structure break has occurred and the leg that produced it can be fibbed high-to-low.
+- A directional bias aligned with daily order flow exists.
+- A range with a defined high and low has been chosen.
+detection_rules:
+- Draw the fib from the high to the low of the retracement leg.
+- Classify above 50 percent as premium, below 50 percent as discount.
+- Reject any short entry that is not above equilibrium; reject any long entry that is not
+  below it.
+- Prefer an entry array that is simultaneously a fair value gap and inside the OTE zone.
+- Compute the 50% level of the chosen range.
+- 'Bullish: no entry until price trades below the 50% level.'
+- 'Bearish: no entry until price trades above the 50% level.'
+invalidation:
+- The array sits outside the required half of the range - no trade.
+- Price expands to the objective without returning through equilibrium - the trade is missed,
+  not taken late.
+measurable:
+- hit rate of entries taken above versus below equilibrium on the same structure break
+- how often the post-break array happens to fall in the required half at all
+- R multiple of entries taken below EQ vs above EQ for the same directional call
+- percentage of directional calls that offer a sub-EQ entry at all
+sources:
+- video_id: UmLWRlXd_V8
+  title: 8/14/22  MMXM Live with $niper  - ICT concepts
+  quote: I don't take a short unless price is above equilibrium
+- video_id: nncJGt6j19Q
+  title: Gene | Align Yourself For High Probability Trades
+ambiguities:
+- The exact OTE band (0.62-0.79 in common ICT usage) is never spoken - only 'above equilibrium'
+  and 'OTE' are said.
+- Which high and which low anchor the fib when several candidates exist is not stated.
+- Whether the wick or the body must be above equilibrium is not stated.
+- The range whose 50% is measured is never specified (weekly, daily, or the current leg).
+- 'Marked underspecified for this reason: without the range definition the rule is not decidable
+  on a chart.'
+related:
+- optimal-trade-entry
+- premium-discount-equilibrium
+- htf-reaction-mss-retrace-entry
+- mmxm-phase-sequence
+- weak-longs-weak-shorts
+- upper-half-eq-expansion-filter
+- intermediate-timeframe-bridge
+guest_sources:
+- $niper (Matt)
+- 8/14/22  MMXM Live with $niper  - ICT concepts
+- Gene | Align Yourself For High Probability Trades
+timeframes:
+  htf:
+  - 1D
+  - 4H
+  - 1H
+  ltf:
+  - 15m
+  - 5m
+  - 1m
+  fractal: true
+execution:
+  bias: Set by the structure break, not by this rule.
+  entry: The OTE fair value gap (or order block) inside the correct half of the range.
+  stop: Not stated by this rule.
+  targets:
+  - the opposing liquidity pool
+contributing_units:
+- live_stream_guests_01
+- t_talks_02
+draft_count: 2
+voice: guest

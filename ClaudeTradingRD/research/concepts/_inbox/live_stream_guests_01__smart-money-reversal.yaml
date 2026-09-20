@@ -1,0 +1,61 @@
+id: smart-money-reversal
+name: "Smart Money Reversal"
+aliases: ["SMR", "the reversal of the market maker model"]
+category: model
+status: specified
+voice: guest
+guest_sources:
+- "Finessee_Fx"
+
+definition: >
+  Finessee_Fx states one rule about the smart money reversal and repeats it three times in the
+  session, unprompted and then again in answer to a direct question: the smart money reversal in a
+  market maker buy or sell model ALWAYS happens at a higher-timeframe PD array. It is not located
+  by structure, by session or by time - it is located by asking which higher-timeframe array price
+  has arrived at. In his two worked examples the array is a monthly bearish order block blended
+  with a monthly bearish breaker, and a sell-side imbalance visible to the left.
+
+timeframes:
+  htf: ["1M", "1W", "1D"]
+  ltf: ["4H", "1H"]
+  fractal: true
+
+preconditions:
+- "A market maker model (buy or sell) is in progress with its original consolidation and distribution legs identifiable."
+- "Higher-timeframe PD arrays have been mapped and extended forward in time."
+
+detection_rules:
+- "Locate candidate reversal points only where price has reached a higher-timeframe PD array - an order block, a breaker, or an imbalance."
+- "The higher the timeframe of the array, the wider the reversal zone; a monthly array gives a wide zone."
+- "In his examples the strongest form is two higher-timeframe arrays blended at the same price (monthly order block + monthly breaker)."
+- "The reversal is confirmed when price breaks below the array's defending candle and the level then holds as resistance."
+
+invalidation:
+- "Price closes back above the higher-timeframe array - the order flow is no longer being respected."
+
+execution:
+  bias: "Opposite the leg that arrived at the array."
+  entry: "In the wick-to-body band of the higher-timeframe array."
+  stop: "Beyond the array."
+  targets: ["old lows / old highs on the opposite side of the model, then the next opposing PD array"]
+
+measurable:
+- "proportion of completed market maker models whose reversal point coincides with a higher-timeframe PD array"
+- "reversal rate at monthly versus weekly versus daily arrays"
+
+sources:
+- video_id: eK_6wgNpNh0
+  title: "Advanced ICT Directional Bias Teachings with Finessee_Fx"
+  quote: "the smart money reversal is always going to happen on a higher time frame"
+
+ambiguities:
+- "'Higher timeframe' is relative to the model's own timeframe and is never fixed - the 4-hour model reverses at a monthly array in one example, which is five steps up."
+- "'Always' is asserted with no counter-example and no sample."
+- "No rule says how close to the array price must come, or whether a wick touch suffices."
+- "The rule locates the reversal but supplies no timing - it says where, never when."
+
+python_detector: null
+related: ["mmxm-phase-sequence", "market-maker-model", "wick-to-body-order-block-zone", "smart-money-reversal-breaker-confirmation"]
+contributing_units:
+- live_stream_guests_01
+draft_count: 1

@@ -1,0 +1,296 @@
+id: fair-value-gap
+name: Fair Value Gap (FVG)
+definition: 'Two guests supply the two halves a detector needs: how the gap is measured and
+  how it is invalidated. Finessee_Fx measures it from the pre-move candle''s extreme to the
+  post-move candle''s opposing extreme - but with a merge rule: where two consecutive same-direction
+  candles form the block, BOTH are treated as the block and the gap is spanned across them,
+  so a retrace that only reaches the inner candle does not count as balanced. He treats fair
+  value gap, imbalance, liquidity void and buy-side / sell-side imbalance as one thing, and
+  counts a gap as efficient only once it is fully closed. Ben supplies invalidation by candle
+  close: he marks the defending edge of the gap and requires no candle CLOSE beyond it, and
+  notes from his own study that fair value gaps are somewhat less sensitive than other PD
+  arrays, so a gap can be revisited - especially one that was never completely filled.
+
+  '
+variants:
+  definition:
+  - 'A three-candlestick pattern in which the first candle''s low does not overlap the third
+    candle''s high (bearish case), or the first candle''s high does not overlap the third
+    candle''s low (bullish case). The unfilled space between those two prices is the gap.
+    This is the only explicit FVG definition given anywhere in the available transcripts of
+    this unit; every other video uses the term as already known.
+
+    '
+  - 'The channel''s dedicated definition video, and therefore the canonical statement: a fair
+    value gap is a three-candlestick pattern where the first candle''s LOW does not overlap
+    with the third candle''s HIGH, or where the first candle''s HIGH does not overlap with
+    the third candle''s LOW. The construction is demonstrated by dragging the first candle''s
+    low and the third candle''s high across and checking for overlap, and three negative examples
+    are worked where the two lines do overlap and there is therefore no gap. The economics
+    are named: SIBI is sell side imbalance buy side inefficiency - sell side was offered but
+    buy side was not - which is simply a bearish fair value gap; BISI is the mirror and is
+    simply a bullish fair value gap.'
+  - A three-candlestick pattern in which the wick of candle one and the wick of candle three
+    do not overlap, leaving a gap. In this unit the fair value gap is used almost exclusively
+    as a POINT OF INTEREST - the place a retracement is expected to terminate and where a
+    protected swing is then allowed to form - rather than as an entry in itself. Where several
+    fair value gaps stack, they are treated as one large fair value gap and the closure must
+    clear all of them.
+  - 'Corroborating primary-source statement from the earliest recordings: a fair value gap
+    is a break in price delivery, read off three candles, where the wick of the first candle
+    and the wick of the third candle do not overlap. He contrasts it directly with the normal
+    case where the wicks DO overlap (''price was delivered well there''). It is the signature
+    of price moving quickly through an area, which is why it doubles as the detection aid
+    for displacement.'
+  - 'A three-candlestick pattern in which the first candle''s wick and the third candle''s
+    wick do not overlap. Bearish: candle 1''s low does not overlap candle 3''s high. Bullish:
+    candle 1''s high does not overlap candle 3''s low. He equates the fair value gap with
+    internal range liquidity.'
+  - Defined mechanically and then given its purpose in one clause. A fair value gap is a three-candle
+    pattern in which the wick of the FIRST candle and the wick of the THIRD candle do not
+    overlap - and the reason it matters is that the non-overlap SHOWS AGGRESSIVE PRICE ACTION
+    through that area. That last clause is the closest thing in the corpus so far to an operational
+    test for the word "aggressive", which is used as a gate in several other concepts without
+    definition.
+category: structure
+status: contested
+aliases:
+- imbalance
+- liquidity void
+- inefficient price action
+- FVG
+- inefficiency
+- BISI ("bissy")
+- SIBI ("civy/CBI")
+- SIBI ("city")
+- BISI ("busy")
+- gap
+- internal liquidity
+preconditions:
+- Three consecutive candles where candle 1 and candle 3 do not overlap.
+- Three consecutive candles on the working timeframe.
+- Three consecutive candles.
+- Three consecutive candles on any timeframe.
+detection_rules:
+- Measure the gap from the pre-move candle's extreme to the post-move candle's opposing extreme.
+- 'Finessee_Fx''s merge rule: if two consecutive same-direction candles form the block, use
+  both; the span is then measured across the pair, and the gap is balanced only when that
+  entire span has been traded through.'
+- A partial tap does not count as filled - a gap that price never completely closed remains
+  live and may be revisited.
+- 'Ben''s invalidation: mark the defending edge (the top of a bearish gap, the bottom of a
+  bullish one) and require no candle CLOSE beyond it; wicks through it do not invalidate.'
+- 'Ben: fair value gaps are treated as less sensitive than other PD arrays, so he prefers
+  to stack one with a breaker or an order block rather than trade it alone.'
+- 'Finessee_Fx: a large imbalance can be dissected on a lower timeframe to find a nested gap
+  or order block that becomes the precise destination.'
+- 'bullish_fvg (BISI) at i: low[i+1] > high[i-1]. Gap zone = [high[i-1], low[i+1]].'
+- 'bearish_fvg (SIBI) at i: high[i+1] < low[i-1]. Gap zone = [high[i+1], low[i-1]].'
+- Consequent encroachment (CE) = the midpoint of the gap zone.
+- 'Respect: price trades into the zone and reacts away without closing through it — the order-block
+  video describes bodies holding the gap while wicks penetrate it.'
+- 'Violation: a candle closes beyond the far edge of the gap -> the gap becomes an inversion.'
+- 'bullish_fvg (BISI) at i: low[i+1] > high[i-1]. Zone = [high[i-1], low[i+1]].'
+- 'bearish_fvg (SIBI) at i: high[i+1] < low[i-1]. Zone = [high[i+1], low[i-1]].'
+- The overlap test is stated in terms of the candles' HIGH and LOW, and demonstrated by dragging
+  those extremes across - so the test is on wicks, not bodies. This resolves an open question
+  left by the_foundation_01.
+- 'Negative test he works three times: extend the first candle''s high and the third candle''s
+  low; if they overlap there is no fair value gap.'
+- SIBI = a bearish fair value gap; BISI = a bullish fair value gap. The imbalance/inefficiency
+  wording is an economic gloss on the same object, not an extra condition.
+- Take candles 1, 2, 3. If wick of candle 1 and wick of candle 3 do not overlap, the space
+  between them is a fair value gap.
+- 'Bullish gap: candle 1 high below candle 3 low. Bearish gap: candle 1 low above candle 3
+  high.'
+- Multiple adjacent gaps are treated as a single large gap; a closure must clear the whole
+  series to count.
+- A gap already traded through is no longer treated as a relevant level.
+- Take three consecutive candles 1, 2, 3.
+- 'Bullish: candle 1''s high does not overlap candle 3''s low. Bearish: candle 1''s low does
+  not overlap candle 3''s high.'
+- The unfilled space between those two wicks is the gap zone.
+- Overlapping wicks across the three candles = price delivered normally = no gap.
+- A fair value gap left by a structure break is the entry for that break.
+- Take three consecutive candles.
+- 'Bearish FVG: candle 1 low > candle 3 high (no overlap).'
+- 'Bullish FVG: candle 1 high < candle 3 low (no overlap).'
+- The unfilled span between them is the gap; its midpoint is the consequent encroachment.
+- FVG := a three-candlestick pattern in which the wick of candle 1 and the wick of candle
+  3 do not overlap.
+- The gap is measured on the WICKS, not the bodies, in this statement.
+- 'Interpretation: the non-overlap is evidence of aggressive price action through that area.'
+- A fair value gap is the corpus's "internal liquidity".
+invalidation:
+- A candle closes beyond the defending edge of the gap (Ben).
+- The gap is fully closed - it is then efficient and no longer a target (Finessee_Fx).
+- A close through the entire gap converts it into an inversion fair value gap of the opposite
+  polarity.
+- Full fill without a close through leaves it consumed as a target but the direction unchanged.
+- A close over the consequent encroachment or outside the gap - he uses the word 'invalidate'
+  for this; see consequent-encroachment, where the threshold is contested.
+- A swift close through the gap inverts it (see inversion-fair-value-gap).
+- A close through the gap on the opposing side inverts it (see inversion-fair-value-gap).
+- The first and third candle wicks overlap - no gap.
+measurable:
+- difference in fill statistics between the single-candle and merged-candle measurement
+- forward return after a partial tap versus a complete fill
+- reaction rate of fair value gaps alone versus gaps stacked with a breaker (Ben's sensitivity
+  claim)
+- fill rate of FVGs by timeframe and by distance from price
+- share of FVGs respected on first touch vs closed through
+- R-multiple of near-edge entries vs CE entries
+- count of FVGs per timeframe per instrument with a wick-based test
+- fill rate by distance from price and by timeframe
+- reaction rate at the near edge vs the CE vs on full fill
+- frequency of FVG formation by timeframe
+- reaction rate at single vs stacked fair value gaps
+- count of fair value gaps per session by timeframe
+- fill rate of gaps left by a structure break
+- count of FVGs per session by timeframe
+- fill rate and time-to-fill
+- count of FVGs per session per timeframe under the wick-based definition
+- rebalance rate of wick-defined FVGs versus body-defined ones
+sources:
+- video_id: eK_6wgNpNh0
+  title: Advanced ICT Directional Bias Teachings with Finessee_Fx
+  quote: my fair value Gap is this candle's low and this candle is high
+- video_id: eK_6wgNpNh0
+  title: Advanced ICT Directional Bias Teachings with Finessee_Fx
+  quote: if there's two consecutive bullish candles that creates the water blocks
+- video_id: yRmKkR4CojU
+  title: Fractalizing Entries -Q&A with Ben - ICT Concepts
+  quote: i'm looking for no candle closures above that
+- video_id: yRmKkR4CojU
+  title: Fractalizing Entries -Q&A with Ben - ICT Concepts
+  quote: them to be a little less sensitive than other pd arrays
+- video_id: uDJI2AbyyCs
+  title: Inversion Fair Value Gaps (IFVG) - ICT Concepts
+  quote: a fair value Gap is a three Candlestick pattern
+- video_id: 3OivsP1j_UE
+  title: Internal & External Liquidity (Daily Bias) - ICT Concepts
+- video_id: DMUiDBnTYc8
+  title: Order Blocks Simplified - ICT Concepts
+- video_id: ZVUDpCyvxfQ
+  title: Understanding Fair Value Gaps (FVG) - ICT Concepts
+  quote: the first candle low does not overlap with the third candle's high
+- video_id: ZVUDpCyvxfQ
+  title: Understanding Fair Value Gaps (FVG) - ICT Concepts
+  quote: a city is a sell side imbalance thy side inefficiency
+- video_id: ZVUDpCyvxfQ
+  title: Understanding Fair Value Gaps (FVG) - ICT Concepts
+  quote: a busy is a buy side inbounds sell side inefficiency
+- video_id: FKTBkTzsmUA
+  title: How To Actually Trade Inversion Fair Value Gaps (IFVG)
+  quote: the wick of candle one and the wick of candle three do not overlap
+- video_id: FKTBkTzsmUA
+  title: How To Actually Trade Inversion Fair Value Gaps (IFVG)
+  quote: I want to use all of those fair value gaps and treat it like one
+- video_id: PePk1V0Q4QQ
+  title: Intro to Market Structure Shifts, Fair Value Gaps, and Displacement - ICT Concepts
+  quote: fair value gap is just a break in price delivery
+- video_id: PePk1V0Q4QQ
+  title: Intro to Market Structure Shifts, Fair Value Gaps, and Displacement - ICT Concepts
+  quote: for displacement to occur you want to see a fair value gap created
+- video_id: rXMVPUZPw4A
+  title: Breaker Block & FVG Entry Model
+  quote: the first candlestick's low will not overlap with the third candlesticks high
+- video_id: mwmWNCTEYtY
+  title: Internal & External Liquidity Model
+  quote: internal liquidity is just a fair value Gap
+- video_id: Ix8l6yDRpp8
+  title: Relationship between External and Internal Liquidity
+  quote: It is just a three candlestick pattern in which the wick of the first candle
+- video_id: Ix8l6yDRpp8
+  title: Relationship between External and Internal Liquidity
+  quote: showing aggressive price action through this area
+ambiguities:
+- Asked directly at what point a gap counts as efficient, Finessee_Fx calls it a grey area
+  that depends on context, then answers with the merge rule rather than a fill percentage
+  - which sits awkwardly beside his 'fully closed' rule.
+- Whether 'fully closed' is measured by wick or by body is not stated.
+- '''Less sensitive than other PD arrays'' is Ben''s personal-study impression with no measurement.'
+- The Finessee_Fx transcript renders 'order block' as 'water block' and 'fair value gap' as
+  'for Value Gap'; the Ben transcript renders FVG as 'feg', 'fpg' and 'fiji'. All are auto-caption
+  artifacts.
+- '''Does not overlap'' — whether exactly equal prices (touching) count as a gap is not stated.'
+- Wicks vs bodies for the overlap test are not specified; the standard reading (and the chart
+  examples) use wicks.
+- No minimum gap size, so on low-volatility instruments the detector will produce many trivial
+  gaps.
+- 'No expiry rule: how long an unfilled FVG stays a valid target is never stated (examples
+  use gaps from prior days and weeks).'
+- The dedicated fair value gap video is referenced ('click the link in the top right') but
+  is not part of this unit.
+- Whether exactly equal prices (touching, not overlapping) count as a gap is still not stated.
+- No minimum gap size, so low-volatility instruments produce many trivial gaps.
+- No expiry rule for an unfilled gap.
+- The auto-captioner renders SIBI as 'city'/'sibi' and BISI as 'busy'/'bissy', and 'buy side
+  imbalance' as 'buy side inbounds' - the quotes above are reproduced exactly as transcribed.
+- Whether the gap is measured wick-to-wick or body-to-body is stated as wick-to-wick here,
+  but the retracement video judges respect by the BODIES ('you can see how the bodies respect').
+- No minimum gap size is given.
+- The test is stated on the WICKS in this recording, consistent with the later canon's high/low
+  formulation.
+- No minimum gap size is given anywhere.
+- rXMVPUZPw4A words the test on the candle low/high; mwmWNCTEYtY words it on the WICKS of
+  candle 1 and 3. These are the same in practice but he never states whether bodies could
+  ever be used.
+- 'The "aggressive" clause is descriptive, not a threshold: it says a non-overlap SHOWS aggression,
+  not how much aggression, and it does not license reading "aggressive" elsewhere in the corpus
+  as "there is an FVG". Treat it as the nearest available proxy, not a definition.'
+- The clip does not say whether the middle candle must displace, or in which direction.
+- It conflicts in emphasis with library entries that measure the gap between bodies; this
+  Short says wicks explicitly.
+related:
+- balanced-price-range-revisit
+- displacement
+- wick-to-body-order-block-zone
+- five-concept-entry-toolkit
+- inversion-fair-value-gap
+- consequent-encroachment
+- internal-range-liquidity
+- order-block
+- unicorn-model
+- fvg-three-levels
+- volume-imbalance
+- point-of-interest
+- retracement-phase
+- protected-swing
+- fair-value-gap-not-an-entry
+- market-structure-shift
+- nested-fvg-entry-refinement
+- internal-external-rotation
+guest_sources:
+- Advanced ICT Directional Bias Teachings with Finessee_Fx
+- Ben (Ben TT)
+- Finessee_Fx
+- Fractalizing Entries -Q&A with Ben - ICT Concepts
+timeframes:
+  htf:
+  - 1M
+  - 1W
+  - 1D
+  - 4H
+  ltf:
+  - 1H
+  - 15m
+  - 5m
+  - 1m
+  fractal: true
+execution:
+  bias: Toward the unfilled gap when it is the draw; away from it when it is the entry array.
+  entry: Into the gap, ideally stacked with a breaker or order block.
+  stop: Beyond the gap's far edge.
+  targets:
+  - the opposing array
+contributing_units:
+- build_a_model_intro_to_ttrades_fractal_model_01
+- education_ict_02
+- education_ict_updated_01
+- live_stream_guests_01
+- shorts_02
+- the_foundation_01
+- the_foundation_02
+draft_count: 7
+voice: mixed

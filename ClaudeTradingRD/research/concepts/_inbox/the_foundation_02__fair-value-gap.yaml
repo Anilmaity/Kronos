@@ -1,0 +1,76 @@
+id: fair-value-gap
+name: Fair Value Gap (FVG)
+aliases:
+- FVG
+- SIBI ("city")
+- BISI ("busy")
+- inefficiency
+- imbalance
+category: structure
+status: specified
+definition: 'The channel''s dedicated definition video, and therefore the canonical statement: a
+  fair value gap is a three-candlestick pattern where the first candle''s LOW does not overlap with
+  the third candle''s HIGH, or where the first candle''s HIGH does not overlap with the third candle''s
+  LOW. The construction is demonstrated by dragging the first candle''s low and the third candle''s
+  high across and checking for overlap, and three negative examples are worked where the two lines
+  do overlap and there is therefore no gap. The economics are named: SIBI is sell side imbalance
+  buy side inefficiency - sell side was offered but buy side was not - which is simply a bearish
+  fair value gap; BISI is the mirror and is simply a bullish fair value gap.'
+timeframes:
+  htf:
+  - 1M
+  - 1W
+  - 1D
+  - 4H
+  - 1H
+  ltf:
+  - 15m
+  - 5m
+  - 1m
+  fractal: true
+preconditions:
+- Three consecutive candles on the working timeframe.
+detection_rules:
+- 'bullish_fvg (BISI) at i: low[i+1] > high[i-1]. Zone = [high[i-1], low[i+1]].'
+- 'bearish_fvg (SIBI) at i: high[i+1] < low[i-1]. Zone = [high[i+1], low[i-1]].'
+- The overlap test is stated in terms of the candles' HIGH and LOW, and demonstrated by dragging
+  those extremes across - so the test is on wicks, not bodies. This resolves an open question left
+  by the_foundation_01.
+- 'Negative test he works three times: extend the first candle''s high and the third candle''s low;
+  if they overlap there is no fair value gap.'
+- SIBI = a bearish fair value gap; BISI = a bullish fair value gap. The imbalance/inefficiency wording
+  is an economic gloss on the same object, not an extra condition.
+invalidation:
+- A close over the consequent encroachment or outside the gap - he uses the word 'invalidate' for
+  this; see consequent-encroachment, where the threshold is contested.
+measurable:
+- count of FVGs per timeframe per instrument with a wick-based test
+- fill rate by distance from price and by timeframe
+- reaction rate at the near edge vs the CE vs on full fill
+sources:
+- video_id: ZVUDpCyvxfQ
+  title: Understanding Fair Value Gaps (FVG) - ICT Concepts
+  quote: the first candle low does not overlap with the third candle's high
+- video_id: ZVUDpCyvxfQ
+  title: Understanding Fair Value Gaps (FVG) - ICT Concepts
+  quote: a city is a sell side imbalance thy side inefficiency
+- video_id: ZVUDpCyvxfQ
+  title: Understanding Fair Value Gaps (FVG) - ICT Concepts
+  quote: a busy is a buy side inbounds sell side inefficiency
+ambiguities:
+- Whether exactly equal prices (touching, not overlapping) count as a gap is still not stated.
+- No minimum gap size, so low-volatility instruments produce many trivial gaps.
+- No expiry rule for an unfilled gap.
+- The auto-captioner renders SIBI as 'city'/'sibi' and BISI as 'busy'/'bissy', and 'buy side imbalance'
+  as 'buy side inbounds' - the quotes above are reproduced exactly as transcribed.
+python_detector: null
+related:
+- consequent-encroachment
+- fvg-three-levels
+- inversion-fair-value-gap
+- volume-imbalance
+- internal-range-liquidity
+contributing_units:
+- the_foundation_02
+draft_count: 1
+voice: ttrades

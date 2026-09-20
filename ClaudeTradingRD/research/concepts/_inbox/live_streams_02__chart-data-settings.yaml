@@ -1,0 +1,56 @@
+id: chart-data-settings
+name: "Chart Data Settings (back-adjust on, settlement off)"
+aliases: ["ETH not RTH", "back adjust", "minis not micros"]
+category: risk
+status: specified
+
+definition: >
+  Three data-feed decisions are stated in this unit, all of which change what a detector sees.
+  First, he does not use the RTH (regular-trading-hours) chart: his analysis is built on what the
+  overnight session does, so RTH-only data would remove a core component of the strategy — the
+  full 24-hour session chart is the working chart. Second, back-adjustment on contract rollover
+  is explained in his own words: when one contract rolls to the next the two prices differ, and
+  back-adjust shifts the earlier series so there is no gap at the roll. Third, when the micros
+  and the minis disagree he trades and reads the minis; he notes the divergence between MES/MNQ
+  and ES/NQ highs can produce a different idea, and says he focuses on the minis.
+
+timeframes:
+  htf: []
+  ltf: []
+  fractal: false
+
+preconditions:
+  - "A futures chart with a choice of session template, roll adjustment and contract size."
+
+detection_rules:
+  - "Use the full-session (ETH) series, not RTH — overnight price action is an input to the model."
+  - "Back-adjust on contract rollover so the roll leaves no artificial gap."
+  - "When micro and mini contracts disagree on a level (e.g. a high taken on MES but not ES), read the mini."
+
+invalidation:
+  - "Not applicable — this is a data configuration."
+
+measurable:
+  - "difference in detected sweeps and gaps between RTH and ETH series"
+  - "count of level disagreements between micro and mini series per month"
+  - "effect of back-adjustment on levels that survive a roll"
+
+sources:
+  - video_id: m8xcjkOuBHU
+    title: "New York Open Live Q&A"
+    quote: "using the RTH data, I'm just missing a core component of my strategy"
+  - video_id: TjUolMJNCMY
+    title: "New York Open Live Q&A"
+    quote: "it takes this and just moves it down there and adjusts it"
+
+ambiguities:
+  - "Settlement-price display is not mentioned in this unit; that half of the concept comes from elsewhere in the corpus."
+  - "He says he does not remember or care about roll dates, so no roll-date rule is given for a backtest."
+  - "The micros-versus-minis preference is stated as personal focus, not as a rule, and no guidance is given for a trader whose account size forces micros."
+
+python_detector: null
+related: ["relative-strength-asset-selection", "session-high-low", "previous-period-high-low"]
+
+contributing_units: ["live_streams_02"]
+draft_count: 1
+voice: ttrades

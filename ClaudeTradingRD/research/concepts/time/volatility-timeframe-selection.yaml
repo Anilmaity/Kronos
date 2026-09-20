@@ -1,0 +1,61 @@
+id: volatility-timeframe-selection
+name: Volatility Selects The Execution Timeframe
+definition: 'The rule that decides which execution timeframe is allowed at a given moment:
+  the execution timeframe is inversely related to current volatility. He drew it as an axis
+  on screen - low volatility means use a higher timeframe, high volatility permits a smaller
+  one. He then applied it live twice: he dropped from the 15-minute to the 5-minute and 3-minute
+  because the expected move would complete inside a single 15-minute candle, and because the
+  3-minute looked sloppy he went back up a timeframe to the 5-minute for the closure.
+
+  '
+category: time
+status: underspecified
+aliases:
+- as volatility goes up you can use smaller time frames
+preconditions:
+- A setup exists and only the execution timeframe is in question.
+detection_rules:
+- If volatility is low, use a higher execution timeframe.
+- If volatility is high, a lower execution timeframe is permitted.
+- If waiting for the higher timeframe's close would mean missing the move (the move completes
+  inside that one candle), drop a timeframe to see the structure.
+- If the lower timeframe looks sloppy, go back up one timeframe and take the closure there.
+invalidation:
+- n/a - a selection heuristic.
+measurable:
+- realised range per candle at entry time versus the execution timeframe chosen
+- R difference between taking the closure one timeframe up versus down on the same signal
+sources:
+- video_id: W7Fu3Rx5iMs
+  title: New York Open Live Q&A
+  quote: as volatility goes up, right? You can use smaller time frames
+- video_id: W7Fu3Rx5iMs
+  title: New York Open Live Q&A
+  quote: if the volatility is really low, use a higher time frame
+- video_id: X4XSsv5CNqg
+  title: New York Open Live Q&A
+  quote: I have to use the lower time frame just cuz the volatility is higher
+ambiguities:
+- Volatility is never quantified - no ATR, no range threshold, no lookback. The whole rule
+  rests on an unmeasured word.
+- '"Sloppy" as the reason to step back up a timeframe is purely visual.'
+- No mapping from a volatility value to a specific timeframe; only the direction of the relationship
+  is given.
+related:
+- session-timeframe-model-map
+- timeframe-pairing
+- average-daily-range
+timeframes:
+  htf:
+  - 4H
+  - 1H
+  ltf:
+  - 15m
+  - 5m
+  - 3m
+  - 1m
+  fractal: true
+contributing_units:
+- live_streams_03
+draft_count: 1
+voice: ttrades

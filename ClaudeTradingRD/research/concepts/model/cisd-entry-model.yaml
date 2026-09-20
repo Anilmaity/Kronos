@@ -1,0 +1,91 @@
+id: cisd-entry-model
+name: Manipulation → CISD → Projection Entry Model
+definition: 'The channel''s explicit assembly of the primitives into a repeatable trade. Step
+  1: manipulation — a sweep of an old high or low out of a range, ideally an aggressive move
+  out and back inside. Step 2: a change in state of delivery in the opposite direction. Step
+  3: project the manipulation leg to standard deviations and check what liquidity already
+  rests at those levels, giving targets and confluence. Step 4: enter at the CISD level /
+  order block / fair value gap, stop on the manipulation extreme. Missed first entries are
+  replaced by the successive order blocks that form as the move develops.
+
+  '
+category: model
+status: specified
+aliases:
+- the entry model
+- manipulation then change in state of delivery
+preconditions:
+- A range with identifiable highs and lows.
+- An important level / higher timeframe PD array giving context and a draw.
+detection_rules:
+- '1. Manipulation: price trades beyond the range extreme (sweeping buyside or sellside liquidity)
+  and returns inside.'
+- '2. CISD: a close through the opening price of the opposing candle series that made that
+  extreme (see cisd).'
+- '3. Projection: measure the manipulation leg and mark -2 to -2.5 and -4 to -4.5 standard
+  deviations; prefer targets where existing liquidity (equal highs/lows, old highs/lows, prior-session
+  extremes) coincides.'
+- '4. Entry: at the CISD level (order block) or an overlapping fair value gap; when short,
+  restrict entries to the premium of the dealing range.'
+- '5. Stop: on the manipulation extreme.'
+- 6. If the first entry is missed, use the next order block created by the next CISD in the
+  same direction.
+- 'Minimum acceptable R:R is 2; if the nearest structural target gives less (his example:
+  1.66R), use the -2 deviation instead.'
+invalidation:
+- Price trading back through the manipulation extreme.
+- No CISD forming after the sweep (he simply does not trade — shown twice).
+measurable:
+- hit rate of the -2/-2.5 target and, separately, the -4/-4.5 target
+- frequency of the full sequence (sweep -> CISD) per session
+- how often the second/third order block entry outperforms the first
+- effect of the premium/discount filter on hit rate
+sources:
+- video_id: CHIK5oBRKiw
+  title: Change In State Of Delivery [CISD] - Orderblock Formation - ICT Concepts
+  quote: what I focus on is a manipulation then a change in state of delivery
+- video_id: TCFvsZeYvV8
+  title: ICT Power Of 3 - AMD
+- video_id: MPeeE55rNOw
+  title: ICT Killzones & Indicator Settings
+ambiguities:
+- The required aggressive move out of and back into the range is qualitative.
+- The projection anchor points are demonstrated on charts but never stated verbally as a general
+  rule.
+- The premium/discount filter is stated for the short example only; whether the mirror (discount
+  only for longs) is enforced is not said.
+- No rule for how long after the CISD an entry remains valid.
+- No session/time filter is stated in this video, although the examples cluster around the
+  09:30 and New York opens.
+related:
+- cisd
+- order-block
+- standard-deviation-projection
+- power-of-three-amd
+- premium-discount-equilibrium
+- box-setup
+timeframes:
+  htf:
+  - 1D
+  - 4H
+  - 1H
+  ltf:
+  - 15m
+  - 5m
+  - 2m
+  - 1m
+  fractal: true
+execution:
+  bias: Opposite the swept side.
+  entry: CISD level / order block / fair value gap, in the premium (for shorts) of the dealing
+    range.
+  stop: Beyond the manipulation extreme.
+  targets:
+  - -2 to -2.5 standard deviations
+  - -4 to -4.5 standard deviations
+  - prior-session or equal highs/lows at those deviations
+  - minimum 2R
+contributing_units:
+- the_foundation_01
+draft_count: 1
+voice: ttrades

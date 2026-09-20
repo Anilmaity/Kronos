@@ -1,0 +1,59 @@
+id: daily-bias-framework
+name: Daily Bias (Previous Day High/Low Framework)
+aliases:
+- daily bias
+- displacement over previous day high
+category: model
+status: specified
+definition: The compressed version of his daily bias procedure as given inside the draw-on-liquidity
+  lesson. Beyond the overall trend, what he focuses on is displacement, or the lack of it, over previous
+  day high and below previous day low. Failure to displace over previous day high gives a downward
+  bias with previous day low as the draw; failure to displace below previous day low gives a bias
+  back into the range; a candle that DOES displace below a low implies continuation and the next
+  day is expected to reach for that previous day low. A day that closes over the previous day puts
+  previous day high back as the draw.
+timeframes:
+  htf:
+  - 1D
+  ltf:
+  - 1H
+  - 5m
+  fractal: false
+preconditions:
+- The previous daily candle has closed; previous day high and low are marked.
+detection_rules:
+- Fail to displace over previous day high -> bearish bias, draw = previous day low.
+- Fail to displace below previous day low -> bias back into the range.
+- Displace below a low -> continuation expected; next day's draw is the new previous day low.
+- Close over the previous day -> draw = previous day high.
+- Where structure is bearish but a day closes back inside after sweeping lows, he wants to see the
+  next day close BELOW the up-close candle, which validates it as an order block and keeps the bearish
+  read.
+invalidation:
+- A daily close beyond the level whose failure produced the bias.
+measurable:
+- next-day accuracy of each of the four displacement cases
+- how often the order-block-validation confirmation follows a sweep-and-close-back-inside day
+sources:
+- video_id: FXJBFbZQbck
+  title: The Easiest Draw On Liquidity (DOL) - Daily Bias - ICT
+  quote: we fail to displace over previous day's high that gives me a downwards bias
+- video_id: wy3OSPxu5U0
+  title: Top Down Analysis | Daily Bias To Entries - ICT Concepts
+ambiguities:
+- '''Displacement'' is never quantified anywhere in this unit - no candle-size, gap or close-beyond
+  test is given.'
+- This is explicitly a summary; the full procedure is deferred to his dedicated daily bias video.
+- The order-block-validation confirmation is applied when 'the structure is bearish', with structure
+  itself undefined here.
+related:
+- draw-on-liquidity
+- trend-by-previous-day-extremes
+- displacement
+- order-block
+- top-down-analysis-procedure
+python_detector: null
+contributing_units:
+- education_ict_updated_02
+draft_count: 1
+voice: ttrades

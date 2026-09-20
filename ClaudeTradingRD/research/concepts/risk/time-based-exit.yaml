@@ -1,0 +1,56 @@
+id: time-based-exit
+name: Time-Based Exit (expansion candle close)
+definition: 'When a position is riding a higher-timeframe expansion candle, the close of that
+  candle is a valid exit point, because expansion candles close at or near their extreme.
+  On the daily scale the same logic gives a session cut-off: the further into New York, the
+  less time the daily candle has left to trend.
+
+  '
+category: risk
+status: specified
+aliases:
+- time-based exit
+- hold to the 4-hour close
+preconditions:
+- The position is inside a higher-timeframe candle classified as an expansion candle.
+detection_rules:
+- Identify the governing HTF candle (typically 4H) and its close time.
+- If the candle is expanding in the trade direction, hold to its close and exit there.
+invalidation:
+- The candle stops expanding / builds a large counter wick before the close - the expansion-candle
+  assumption fails.
+measurable:
+- Distribution of expansion-candle close relative to the candle's extreme.
+- Realised R of holding to the HTF close vs exiting at the structural target.
+sources:
+- video_id: 00iZXPAdR5A
+  title: New York Open Live Q&A
+- video_id: aqnY1yZvfYs
+  title: New York Open Live Q&A
+ambiguities:
+- '''Expansion candle'' is classified by eye during the candle''s life, so the exit rule depends
+  on a real-time judgement.'
+- Precedence between the time-based exit and a structural target hit earlier is not stated.
+related:
+- trading-window
+- fractal-model-c3
+- htf-opening-price-entry
+timeframes:
+  htf:
+  - 1D
+  - 4H
+  ltf:
+  - 15m
+  - 5m
+  fractal: true
+execution:
+  bias: n/a - exit management.
+  entry: n/a
+  stop: Trail behind the protected swing until the time-based exit.
+  targets:
+  - the HTF expansion candle close
+  - or the structural target, whichever comes first
+contributing_units:
+- sunday_sessions_live_q_a_02
+draft_count: 1
+voice: ttrades

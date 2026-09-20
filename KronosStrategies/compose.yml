@@ -1,0 +1,316 @@
+name: kronos
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Shared env block — keeps repeated keys DRY.
+# Services override or add to these via env_file / environment:.
+# ─────────────────────────────────────────────────────────────────────────────
+x-common-env: &common-env
+  env_file:
+    - .env
+
+services:
+
+  # ───────────────────────────────────────────────────────────────────────────
+  # Infrastructure
+  # Note: both the TimescaleDB tick store (TIGERDATA_URL) and the Django
+  # backend database (HOST/PORT/NAME/USER/PASSWORD) live on TigerData Cloud.
+  # The local `tsdb` and `db` containers were retired once data was migrated;
+  # the stack now points exclusively at TigerData.
+  # ───────────────────────────────────────────────────────────────────────────
+  # ───────────────────────────────────────────────────────────────────────────
+  # Tick Data Collector — polls OANDA S5 candles → writes to TimescaleDB
+  # ───────────────────────────────────────────────────────────────────────────
+  tick_data_collector:
+    build: ./tick_data_collector
+    restart: always
+    mem_limit: 256m
+    # opt15: no live-path reader of ltp - collectors moved behind the
+    # data-archive profile; start explicitly with --profile data-archive
+    # if the archive is wanted
+    profiles: ["data-archive"]
+    env_file: .env
+    environment:
+      TSDB_TARGET:      ${TSDB_TARGET:-tigerdata}
+      TIGERDATA_URL:    ${TIGERDATA_URL:-}
+      OANDA_INSTRUMENT: XAU_USD
+
+  # Same image, second instance polling XAG_USD (silver). Writes to the same
+  # ltp hypertable, distinguished by the `symbol` column.
+  tick_data_collector_xagusd:
+    build: ./tick_data_collector
+    restart: always
+    mem_limit: 256m
+    # opt15: no live-path reader of ltp - collectors moved behind the
+    # data-archive profile; start explicitly with --profile data-archive
+    # if the archive is wanted
+    profiles: ["data-archive"]
+    env_file: .env
+    environment:
+      TSDB_TARGET:      ${TSDB_TARGET:-tigerdata}
+      TIGERDATA_URL:    ${TIGERDATA_URL:-}
+      OANDA_INSTRUMENT: XAG_USD
+
+  # Same image, third instance polling BTC_USD (bitcoin). OANDA serves BTC_USD
+  # as a forex-hours CFD on the same practice account, so the shared
+  # is_market_closed_utc() gate applies unchanged. Writes to the same ltp
+  # hypertable, distinguished by the `symbol` column. Deep history is loaded
+  # separately via tick_data_collector/backfill_ltp.py.
+  tick_data_collector_btcusd:
+    build: ./tick_data_collector
+    restart: always
+    mem_limit: 256m
+    # opt15: no live-path reader of ltp - collectors moved behind the
+    # data-archive profile; start explicitly with --profile data-archive
+    # if the archive is wanted
+    profiles: ["data-archive"]
+    env_file: .env
+    environment:
+      TSDB_TARGET:      ${TSDB_TARGET:-tigerdata}
+      TIGERDATA_URL:    ${TIGERDATA_URL:-}
+      OANDA_INSTRUMENT: BTC_USD
+
+  # ───────────────────────────────────────────────────────────────────────────
+  # Position manager — evaluates open positions every second, closes on TP/SL
+  # ───────────────────────────────────────────────────────────────────────────
+  position_manager:
+    build: ./position_manager
+    restart: always
+    mem_limit: 384m
+    # opt15: mem cap only. Heartbeat-file touch not yet wired in this loop
+    # (Task 7 instrumented research_runner.py only) -> no healthcheck here yet.
+    env_file: .env
+    environment:
+      TSDB_TARGET:   ${TSDB_TARGET:-tigerdata}
+      TIGERDATA_URL: ${TIGERDATA_URL:-}
+
+  # ───────────────────────────────────────────────────────────────────────────
+  # Strategy services REMOVED 2026-06-24 (operator decision). The four heavy
+  # live strategies — kronos_combined_v2, research_m90_bias, research_ob_mit_bias
+  # and concept_c03_fvg_fill — were decommissioned and their DB rows deleted via
+  # strategies/db/delete_heavy_strategies.py. Recreatable from git history +
+  # deploy_combined_v2.py if ever needed again.
+  # ───────────────────────────────────────────────────────────────────────────
+
+  # ───────────────────────────────────────────────────────────────────────────
+  # CHALLENGE_XAU REMOVED 2026-07-16 (operator decision). The H4 Donchian
+  # trend-follow never traded live: the box ran RESEARCH_DAYS_15M=15 (~996
+  # 15m bars / 67 closed H4) below the strategy's 1152-bar / 72-H4 minimum,
+  # so get_signal returned None on every tick. UserStrategy rows archived
+  # (not deleted). Recreatable from git history + db/deploy_challenge_xau.py;
+  # strategy module kept at backtest_strategies/kronos_challenge_xau.py.
+  # ───────────────────────────────────────────────────────────────────────────
+
+  # ───────────────────────────────────────────────────────────────────────────
+  # Strategy Manager — regime-aware meta-controller (60s loop). Computes the
+  # market regime (D1/H4 bias, vol & trend regime, session), persists
+  # RegimeSnapshot rows, and — when ManagerConfig.master_mode=ON — gates the
+  # ARMED child strategies by flipping UserStrategy.is_active per policy.
+  # Ships with master_mode=OFF (auto-created row) AND DRY_RUN=true: fully
+  # observable, flips nothing. Remove DRY_RUN only after on-box verification.
+  # ───────────────────────────────────────────────────────────────────────────
+  strategy_manager:
+    build: ./strategy_manager
+    restart: always
+    mem_limit: 384m
+    # opt15: mem cap only. Heartbeat-file touch not yet wired in this loop
+    # (Task 7 instrumented research_runner.py only) -> no healthcheck here yet.
+    env_file: .env
+    environment:
+      TSDB_TARGET:      ${TSDB_TARGET:-tigerdata}
+      TIGERDATA_URL:    ${TIGERDATA_URL:-}
+      SYMBOL:           XAU_USD
+      MANAGER_LOOP_SEC: "60"
+      # opt15 Task 11: bump the candle cache TTL past the 60s loop so the
+      # 4 regime frames actually hit cache (default 20s < 60s never did).
+      OANDA_CANDLE_TTL_SEC: "90"
+      DRY_RUN:          "true"     # safe first deploy: log intended flips only
+
+  # ───────────────────────────────────────────────────────────────────────────
+  # Strategy Manager v1 child strategies (design spec 2026-07-02 §4).
+  # Each is a research_runner service over backtest_strategies/s9N_*.py.
+  # DB rows first:  python -m db.deploy_manager --commit   (from strategies/)
+  # BOTH ship with DRY_RUN=true (PAPER): full pipeline — DB rows, audit —
+  # but NO broker orders. Additionally their UserStrategy rows are seeded
+  # is_active=False, so nothing fires until the user arms them in the manager
+  # tab AND DRY_RUN is lifted after a positive held-out backtest.
+  # The scalper slot is empty: S97 was retired 2026-07-03 and its intended
+  # replacement S98 failed train validation (spec 2026-07-03) — no service.
+  # ───────────────────────────────────────────────────────────────────────────
+
+  # S95 — session ORB, delegate of kronos_session_breakout (rewritten 2026-07-06:
+  # 30-min OR, sessions [1,7,12,13,14], SL 2.0xOR / TP 0.8xOR). The EMA240+48
+  # bias needs >= 290 CLOSED M5 bars, so WIN/DAYS_5M are pinned well past the
+  # 80-bar runner default (otherwise get_signal stays silent — classic gotcha).
+  # s95_session_breakout retired 2026-07-23 (operator decision): UserStrategy
+  # rows archived, ManagedStrategy rows removed, container stopped on the box.
+  # Module and tests stay in-tree; redeploy via db/deploy_manager.py if revived.
+
+  # S100 — M3 combo scalper (spec v3, 2026-07-23): FVG+OB+RSI3-momentum with
+  # EMA20/200 gate, TP 2.5R. LIVE since 2026-07-23 12:21Z (operator order:
+  # armed LIVE in the manager + DRY_RUN=false). WIN_1M 700 = EMA200 on M3 +
+  # warmup; DAYS_1M 3 covers Monday mornings (module only consumes w1m).
+  s100_m3_combo:
+    build: ./strategies
+    restart: always
+    command: python research_runner.py
+    mem_limit: 384m
+    healthcheck:
+      # research_runner.py touches /tmp/hb every loop iteration (opt15 Task 7)
+      test: ["CMD-SHELL", "find /tmp/hb -mmin -5 | grep -q hb"]
+      interval: 60s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    env_file: .env
+    environment:
+      TSDB_TARGET: ${TSDB_TARGET:-tigerdata}
+      TIGERDATA_URL: ${TIGERDATA_URL:-}
+      RESEARCH_STRATEGY: s100_m3_combo
+      RISK_PER_TRADE_USD: "38"
+      MAX_LOT: "0.10"
+      RESEARCH_WIN_1M: "700"
+      RESEARCH_DAYS_1M: "3"
+      RESEARCH_DAYS_15M: "5"       # unused by the module; keeps the weekend
+                                   # window-coverage guard satisfied
+      DRY_RUN: "false"             # LIVE 2026-07-23 (operator order)
+
+  # Fill reconciler — trues-up Position entry fills + realized P&L against
+  # MetaAPI history-deals (broker truth incl. spread/slippage/commission),
+  # so the dashboard AND the manager's daily brakes see real dollars.
+  # Built 2026-07-07 after live trade #1 showed DB -$38 vs broker -$67.4.
+  fill_reconciler:
+    build: ./strategies
+    restart: always
+    command: python fill_reconciler.py
+    mem_limit: 384m
+    # opt15: mem cap only. Heartbeat-file touch not yet wired in this loop
+    # (Task 7 instrumented research_runner.py only) -> no healthcheck here yet.
+    env_file: .env
+    environment:
+      TSDB_TARGET: ${TSDB_TARGET:-tigerdata}
+      TIGERDATA_URL: ${TIGERDATA_URL:-}
+      RECON_LOOP_SEC: "300"
+      RECON_LOOKBACK_H: "48"
+
+  # S93 — FVG continuation scalp (M5, killzones), the SCALPING category
+  # (2026-07-06): first scalp to pass validation after five failed campaigns.
+  s93_fvg_scalp:
+    build: ./strategies
+    restart: always
+    command: python research_runner.py
+    mem_limit: 384m
+    healthcheck:
+      # research_runner.py touches /tmp/hb every loop iteration (opt15 Task 7)
+      test: ["CMD-SHELL", "find /tmp/hb -mmin -5 | grep -q hb"]
+      interval: 60s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    env_file: .env
+    environment:
+      TSDB_TARGET: ${TSDB_TARGET:-tigerdata}
+      TIGERDATA_URL: ${TIGERDATA_URL:-}
+      RESEARCH_STRATEGY: s93_fvg_scalp
+      RISK_PER_TRADE_USD: "38"  # halved 2026-07-07 (operator)
+      MAX_LOT: "0.10"  # Phase-1 risk-normalized sizing
+      RESEARCH_WIN_5M: "160"
+      RESEARCH_DAYS_5M: "5"        # 2 gave ~96 M5 bars Monday morning (< 120 module
+                                   # minimum) -> dark until midday; 2026-07-23 audit
+      RESEARCH_DAYS_15M: "5"       # WIN_15M=100 needs >3 calendar days over a weekend
+      DRY_RUN: "true"              # PAPER until live fills match the backtest
+
+  # S99 — ICT MSS+FVG reversal (M5), the REVERSAL category (2026-07-06).
+  # Liquidity sweep -> structure shift -> FVG retrace entry on the 1m touch.
+  # Needs >= ~60 closed M5 bars; WIN_5M default 80 suffices but pinned higher.
+  s99_mss_fvg:
+    build: ./strategies
+    restart: always
+    command: python research_runner.py
+    mem_limit: 384m
+    healthcheck:
+      # research_runner.py touches /tmp/hb every loop iteration (opt15 Task 7)
+      test: ["CMD-SHELL", "find /tmp/hb -mmin -5 | grep -q hb"]
+      interval: 60s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    env_file: .env
+    environment:
+      TSDB_TARGET: ${TSDB_TARGET:-tigerdata}
+      TIGERDATA_URL: ${TIGERDATA_URL:-}
+      RESEARCH_STRATEGY: s99_mss_fvg
+      RISK_PER_TRADE_USD: "38"  # halved 2026-07-07 (operator)
+      MAX_LOT: "0.10"  # Phase-1 risk-normalized sizing
+      RESEARCH_WIN_5M: "160"
+      RESEARCH_DAYS_5M: "5"        # 2 gave ~96 M5 bars Monday morning (< 120 module
+                                   # minimum) -> dark until midday; 2026-07-23 audit
+      RESEARCH_DAYS_15M: "5"       # WIN_15M=100 needs >3 calendar days over a weekend
+      DRY_RUN: "true"              # PAPER until live fills match the backtest
+
+  # S94 — liquidity-sweep reversal (M5), TREND category (2026-07-07).
+  # Sweep of PD/session/swing level closing back within 15 bars, HTF15 wick
+  # validity, retest entry on the 1m touch, TP 2x break-bar leg. Swing levels
+  # live _LEVEL_TTL=1440 M5 bars (~5 days) -> WIN_5M 1500 / DAYS_5M 8 so the
+  # window actually spans the level lifetime across weekends.
+  s94_sweep_reversal:
+    build: ./strategies
+    restart: always
+    command: python research_runner.py
+    mem_limit: 384m
+    healthcheck:
+      # research_runner.py touches /tmp/hb every loop iteration (opt15 Task 7)
+      test: ["CMD-SHELL", "find /tmp/hb -mmin -5 | grep -q hb"]
+      interval: 60s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    env_file: .env
+    environment:
+      TSDB_TARGET: ${TSDB_TARGET:-tigerdata}
+      TIGERDATA_URL: ${TIGERDATA_URL:-}
+      RESEARCH_STRATEGY: s94_sweep_reversal
+      RISK_PER_TRADE_USD: "38"  # Phase-1 parity with S93/S99
+      MAX_LOT: "0.10"
+      RESEARCH_WIN_5M: "1500"
+      RESEARCH_DAYS_5M: "11"       # 8 gave ~1470 M5 bars post-weekend (< 1500 window,
+                                   # zero holiday margin); 2026-07-23 capture audit
+      RESEARCH_DAYS_15M: "5"       # WIN_15M=100 needs >3 calendar days over a weekend
+      DRY_RUN: "true"              # PAPER until live fills match the backtest
+      # 2026-09-18 knobs, shipped at their historical defaults (both unset == pre-flag
+      # behaviour). Lab evidence for SIDES=BUY + SD_MULT 2.5-3.0:
+      # strategies/lab/REPORT_s94_regime_2026-09-18.md. Operator decision; set on the
+      # box .env, never here (box compose is merged additively, never overwritten).
+      S94_SIDES: ${S94_SIDES:-BUY,SELL}
+      S94_SD_MULT: ${S94_SD_MULT:-2.0}
+
+  # S96 retired from the roster 2026-07-06 (operator decision) — service removed.
+
+  # Manager Backtest worker (2026-07-31 plan) — claims ManagerBacktestRun rows
+  # queued by the dashboard's Manager Backtest tab and replays the manager
+  # audit sim (M1 baseline + S5 ambiguity resolution). CPU/mem-capped so a
+  # running audit can never starve the live loops. audit_worker has no
+  # MetaAPI import on its path: this service cannot place orders.
+  # NOTE: repo-root build context (NOT ./strategies) — the worker also needs
+  # the strategy_manager package (policies/regime) baked into the image.
+  backtest_worker:
+    build:
+      context: .
+      dockerfile: backtest_worker/Dockerfile
+    restart: unless-stopped
+    command: python -m audit_worker.worker
+    cpus: 0.5
+    mem_limit: 700m
+    volumes:
+      - ./audit_cache:/app/audit_cache
+    healthcheck:
+      # worker touches /tmp/hb in the poll loop AND on every progress write
+      test: ["CMD-SHELL", "find /tmp/hb -mmin -5 | grep -q hb"]
+      interval: 60s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    env_file: .env
+    environment:
+      TSDB_TARGET: ${TSDB_TARGET:-tigerdata}
+      TIGERDATA_URL: ${TIGERDATA_URL:-}
+      AUDIT_CACHE_DIR: /app/audit_cache

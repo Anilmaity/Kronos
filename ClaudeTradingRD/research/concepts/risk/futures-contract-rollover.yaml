@@ -1,0 +1,64 @@
+id: futures-contract-rollover
+name: Choosing And Rolling The Quarterly Contract
+definition: The roll procedure the rest of the corpus leaves unstated. ES and NQ trade on
+  quarterly contracts, each with a month letter appended to the root plus the year - March
+  is H and June is M, so the June 2024 S&P contract is ESM2024. To decide when to switch between
+  quarterly contracts he goes to barchart.com, looks at open interest and volume, sees which
+  contract has the most, and switches to that one. For charting he uses the continuous contract
+  (e.g. NQ1!) as a stated personal preference, which is why the back-adjust setting matters.
+category: risk
+status: specified
+aliases:
+- contract rollover
+- quarterly contracts
+- front month
+- continuous contract
+preconditions:
+- Trading a quarterly-cycle futures contract (ES / NQ).
+detection_rules:
+- Contract symbol = root + month letter + year (March = H, June = M); e.g. ESM2024 is the
+  June 2024 e-mini S&P.
+- 'Roll rule: compare open interest and volume across the candidate contracts on barchart.com
+  and hold whichever has the most.'
+- Chart on the continuous contract (NQ1!, 6E1!), not on the individual quarterly, as a personal
+  preference.
+- Because the continuous series is used, back-adjustment for contract changes must be on (see
+  chart-data-settings).
+invalidation:
+- Not applicable - a data / instrument selection procedure.
+measurable:
+- roll dates produced by the open-interest-and-volume rule versus exchange roll dates, per
+  quarter
+- difference in detected levels between rolling on this rule and rolling on a fixed calendar
+  date
+sources:
+- video_id: dtsrR8dX2Ro
+  title: Intro To Futures Trading & Prop Firms
+  quote: look at the open interest and volume and see which contract has the most
+- video_id: dtsrR8dX2Ro
+  title: Intro To Futures Trading & Prop Firms
+  quote: I chart on the continuous contracts because that is my personal preference
+- video_id: dtsrR8dX2Ro
+  title: Intro To Futures Trading & Prop Firms
+  quote: if I'm looking at the March contract it's going to be H
+ambiguities:
+- Only the March (H) and June (M) letters are spoken; September and December are named as
+  months but their letters are NOT said in the transcript, so they are not recorded here.
+- No threshold is given for 'has the most' - whether open interest or volume wins when they
+  disagree is unstated.
+- No check frequency is given (daily? weekly? only near expiry?).
+- This resolves an ambiguity recorded elsewhere in the corpus, where he says he does not remember
+  or care about roll dates and no roll rule was available.
+related:
+- chart-data-settings
+- futures-contract-specs
+- chart-futures-execute-elsewhere
+timeframes:
+  htf:
+  - 1D
+  ltf: []
+  fractal: false
+contributing_units:
+- resources_01
+draft_count: 1
+voice: ttrades

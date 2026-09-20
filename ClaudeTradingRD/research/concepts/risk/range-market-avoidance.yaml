@@ -1,0 +1,68 @@
+id: range-market-avoidance
+name: Do Not Trade Range-Bound Markets (regime filter)
+definition: 'A regime filter stated as a hard preference. The guest says his model is completely
+  unprofitable in range-bound markets because it buys a low and sells into 50% of the leg;
+  inside a range that produces repeated stop-outs at break-even as price rotates between the
+  range extremes. What he wants instead is a "consolidating expansive" market - one that expands,
+  retraces into 50% of the leg, and then expands again - and he trades the retracements within
+  that cycle. He frames the underlying structure as a market cycle: expansion, then consolidation,
+  then retracement, then consolidation, then expansion again. Once he identifies that a range
+  has formed, he either trades the range itself if it is large enough, or does not trade at
+  all.
+
+  '
+category: risk
+status: underspecified
+aliases:
+- rangebound markets
+- consolidating expansive market
+preconditions:
+- A model whose edge depends on expansion following a retracement.
+detection_rules:
+- Classify the current condition as expansion, consolidation, retracement or range.
+- If price is rotating between a fixed high and low without producing new expansion, classify
+  it as range-bound.
+- 'If range-bound: either trade the range extremes (only if the range is large enough) or
+  stand aside.'
+- 'If expansive-consolidating: trade the retracement into 50% of the prior leg and hold for
+  the next expansion.'
+invalidation:
+- Repeated break-even stop-outs after buying the low and targeting 50% of the range are the
+  symptom he uses to conclude the regime has changed.
+measurable:
+- model expectancy partitioned by regime classification (range vs expansive-consolidating)
+- count of break-even stop-outs per regime
+- range width distribution above which range-trading was permitted
+sources:
+- video_id: 1wKfc2gN4xg
+  title: Trader Kane | The Mind Behind a Multi-Million Dollar Day Trader
+ambiguities:
+- No threshold is given for a big enough range, so the trade-the-range branch is not decidable.
+- No mechanical classifier for range vs retracement is given; the guest identifies it by feel
+  and by the pattern of his own losses.
+- He says he dislikes trading Mondays and Fridays but immediately says he has been trading
+  them because the expansive moves happen on those days - the day filter is stated and then
+  withdrawn.
+- The market-cycle sequence he gives (expansion, consolidation, retracement, consolidation,
+  expansion) is worded loosely and is not the same ordering as the four phases taught in the
+  Chart Lessons unit.
+related:
+- phases-of-price
+- four-hour-wick-positioning
+- probabilistic-acceptance
+timeframes:
+  htf: []
+  ltf: []
+  fractal: false
+execution:
+  bias: Direction of the prevailing expansion.
+  entry: Retracement into 50% of the prior expansion leg.
+  stop: Not stated.
+  targets:
+  - the next expansion leg
+contributing_units:
+- t_talks_03
+draft_count: 1
+voice: guest
+guest_sources:
+- Trader Kane | The Mind Behind a Multi-Million Dollar Day Trader

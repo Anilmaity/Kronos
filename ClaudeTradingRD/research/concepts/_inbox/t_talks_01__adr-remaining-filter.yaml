@@ -1,0 +1,53 @@
+id: adr-remaining-filter
+name: "Average Daily Range Remaining Filter"
+aliases: ["ADR filter", "ADR percentage"]
+category: risk
+status: specified
+
+definition: >
+  A feasibility check applied to the target before the trade is taken. Measure how much of the
+  average daily range the day has already travelled and how far the intended target is; take the
+  trade only if reaching the target keeps the day inside, or reasonably beyond, the ADR. A day
+  that has already exceeded its ADR is read as a reversal candidate rather than a continuation.
+
+timeframes:
+  htf: ["1D", "7H"]
+  ltf: ["5m"]
+  fractal: false
+
+preconditions:
+  - "An ADR value for the instrument over a stated lookback (one example uses the last 6 months on NQ)."
+  - "A candidate target has been identified."
+
+detection_rules:
+  - "Compute range travelled so far today and subtract from the ADR to get the remaining range."
+  - "Measure the distance from current price to the intended target."
+  - "If that distance fits inside (or only modestly exceeds) the remaining range, the target is reasonable."
+  - "If the day has already travelled beyond the full ADR, expect a reversal rather than continuation."
+  - "An ADR indicator displaying percentage of ADR travelled is used to label volatility as medium (around 54 percent) or high (around 158 percent)."
+
+invalidation:
+  - "The distance to target far exceeds the remaining ADR - pass the trade or choose a nearer target."
+
+execution:
+  bias: "Continuation while inside the ADR; reversal once beyond it."
+  entry: "Unchanged - this filter only gates the target."
+  stop: "Not stated."
+  targets: ["a target reachable within the remaining ADR"]
+
+measurable:
+  - "hit rate of targets that fit within remaining ADR versus those that do not"
+  - "frequency of reversal after the ADR is exceeded"
+  - "distribution of daily range as a percentage of ADR, by instrument"
+
+sources:
+  - video_id: 07lOxv39LdY
+    title: "DTR | C2U - Blending The Fractal Model & Unicorn Model - No Daily Bias"
+
+ambiguities:
+  - "The lookback is mentioned once (6 months on NQ) but never given as a rule, and the gold and ES examples do not state theirs."
+  - "'A little further than' the ADR is accepted in one example ($22 target against $17 remaining) with no tolerance stated."
+  - "The volatility labels come from a third-party free indicator and their thresholds are not given."
+
+python_detector: null
+related: ["c2-unicorn", "low-hanging-fruit-target", "seven-hour-candle-daily-profile"]

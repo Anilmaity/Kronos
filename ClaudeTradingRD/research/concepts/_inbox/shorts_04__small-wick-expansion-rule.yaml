@@ -1,0 +1,54 @@
+id: small-wick-expansion-rule
+name: "Small Wick Supports Expansion; Large Wick Waits for Candle 3"
+category: model
+status: underspecified
+definition: >
+  A Short titled for the wick-size requirement asks the exact question the library needs - 'I
+  need a small wick. What does that look like?' - and answers it with a PROCEDURE rather than a
+  ratio. The small wick is not measured; it is confirmed. Price sweeps the low of candle 1,
+  displaces back into the range, and closes over the series of down-closed candles; that
+  lower-timeframe change in the state of delivery is what licenses the claim that the
+  higher-timeframe wick has finished forming and the low will hold. The entry is on that close,
+  the stop on the low, the target 2R. No ratio, percentage or fraction of the candle is given
+  anywhere in this unit.
+
+timeframes:
+  htf: ["1D", "4H", "1H"]
+  ltf: ["15m", "5m", "1m"]
+  fractal: true
+
+detection_rules:
+  - "Require the candle 2 sweep of candle 1's extreme followed by displacement back into the range."
+  - "On the lower timeframe, require a close over the series of down-closed candles that made the low."
+  - "Treat that close as confirmation that the higher-timeframe wick has formed (i.e. that it will stay small)."
+  - "Enter on the close, stop on the low, target 2R."
+
+invalidation:
+  - "The low is taken out after the confirming closure."
+
+measurable:
+  - "realised wick-to-body ratio of candles that passed this confirmation, to derive the missing threshold"
+  - "hit rate of 2R on entries taken on the confirming close"
+
+sources:
+  - video_id: U1NJUh1RqMw
+    title: "Why You Need a Small Wick to Confirm a C2 Reversal"
+    quote: "looking to trade a reversal in candle 2, I need a small wick"
+  - video_id: U1NJUh1RqMw
+    title: "Why You Need a Small Wick to Confirm a C2 Reversal"
+    quote: "This allows me to anticipate that this higher time frame wick has formed"
+  - video_id: VtFC9SCnlYM
+    title: "Using Inversion as an Entry Within the Fractal Model"
+    quote: "expecting this to make a very shallow wick to then trade higher"
+
+ambiguities:
+  - "THE KEY GAP REMAINS OPEN: the Short poses 'what does that look like' and answers with a confirmation procedure, not a ratio. No number for wick size appears in any of the 49 Shorts in this unit."
+  - "Because the wick is confirmed rather than measured, the rule as taught is circular for a detector: you know the wick was small only after the LTF closure that you were going to trade anyway."
+  - "'Very shallow wick' (second source) is likewise qualitative."
+
+python_detector: null
+related: ["half-wick-respect", "upper-half-eq-expansion-filter", "large-wick-target-adjustment", "cisd", "expansion-signature"]
+
+voice: ttrades
+contributing_units: [shorts_04]
+draft_count: 1

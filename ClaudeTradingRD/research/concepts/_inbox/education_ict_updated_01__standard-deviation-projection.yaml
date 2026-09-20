@@ -1,0 +1,81 @@
+id: standard-deviation-projection
+name: Standard Deviation Projection Of The Manipulation Leg
+aliases:
+- projections
+- standard deviations
+category: entry
+status: specified
+definition: 'Targets are produced by projecting the manipulation leg of an AMD sequence. The leg to
+  project is defined precisely: the leg that made the low before the high (bearish case) — i.e. the
+  swing that terminates the manipulation — measured from the manipulation high to that low and extended
+  forward. The first objective is the -2 to -2.5 standard deviation band, treated as a retracement/reversal
+  area, then the 4th standard deviation. -1 is also used when it coincides with a fair value gap.'
+timeframes:
+  htf:
+  - 1W
+  - 1D
+  - 4H
+  ltf:
+  - 1H
+  - 15m
+  - 5m
+  fractal: true
+preconditions:
+- An accumulation-manipulation sequence has completed and distribution is anticipated.
+detection_rules:
+- Identify the manipulation (the false move / fake breakout out of the accumulation).
+- 'Bearish: find the low that made the manipulation high — the terminal swing of the manipulation leg
+  — and measure from that high to that low.'
+- Project that measured leg forward from the same anchor to generate -1, -2, -2.5 and -4 (and -4.5)
+  levels.
+- 'First target: the -2 to -2.5 band, expected to produce a retracement or reversal.'
+- 'Second target: the 4th standard deviation, taken only if price respects an order block at the -2/-2.5
+  reaction.'
+- When the manipulation leg does not make sense in context (e.g. a weekly profile), substitute a failure
+  swing as the anchor.
+invalidation:
+- Price fails to respect the order block at the -2/-2.5 reaction — the 4th deviation is not sought.
+execution:
+  bias: Direction of the distribution, away from the manipulation.
+  entry: CISD / order block / fair value gap at the top of the manipulation.
+  stop: On the manipulation high.
+  targets:
+  - -2 to -2.5 standard deviations
+  - -4 (and -4.5) standard deviations
+  - -1 when it coincides with an FVG
+measurable:
+- hit rate of the -2 to -2.5 band and the -4 band per instrument/timeframe
+- how often the -2/-2.5 band coincides with an independent PD array
+sources:
+- video_id: Pcbyc9TdNsU
+  title: AMD & Standard Deviations
+  quote: we want to see the leg that made the low before the high
+- video_id: Pcbyc9TdNsU
+  title: AMD & Standard Deviations
+  quote: from here we'll take the high to the low and project it out
+- video_id: Pcbyc9TdNsU
+  title: AMD & Standard Deviations
+  quote: I want to look for is the -2 to 2.5 standard deviations
+- video_id: hKCMqh0ZsY0
+  title: How To Use The Economic Calendar For Trading
+  quote: ideally I wouldn't like to see price trade or close below the mean threshold
+- video_id: 7p9MBFk8EEM
+  title: My Favorite Reversal Pattern | Orderblocks
+  quote: This is my favorite reversal pattern
+ambiguities:
+- The anchor is described twice in different words ('the leg that made the low before the high', 'the
+  breaker formation as well'); which endpoint the projection is anchored FROM (the high or the low)
+  is shown on charts but never stated in words.
+- Sign convention flips between examples (-1/-2/-4 for downside, 4/4.5 for upside in hKCMqh0ZsY0); the
+  magnitude is what matters.
+- Substituting a failure swing for the manipulation leg is done 'in this case', with no rule for when.
+- No rule orders the -2/-2.5 band against a competing structural target.
+related:
+- power-of-three-amd
+- box-setup
+- order-block
+- cisd
+voice: ttrades
+contributing_units:
+- education_ict_updated_01
+draft_count: 1

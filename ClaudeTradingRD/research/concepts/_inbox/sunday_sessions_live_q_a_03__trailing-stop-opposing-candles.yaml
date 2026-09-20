@@ -1,0 +1,52 @@
+id: trailing-stop-opposing-candles
+name: "Trailing By Opposing Candles"
+aliases: ["trailing stop", "trail to the new opposing candle"]
+category: risk
+status: underspecified
+
+definition: >
+  A mechanical trailing method demonstrated on a New York reversal: each time price
+  closes below a newly formed opposing candle, that candle's high becomes the level
+  that should not be hit, and the stop trails to it. He walks it through live and then
+  partly disowns it - on the example shown it would have stopped him out before the
+  target was reached. He notes the trade-off explicitly: it is too tight, but it also
+  saves you from sitting through the chop.
+
+timeframes:
+  htf: ["1H"]
+  ltf: ["5m", "3m"]
+  fractal: true
+
+preconditions:
+  - "A position is open in a confirmed directional move."
+  - "Opposing candles are being formed and violated as price delivers."
+
+detection_rules:
+  - "After each close beyond a new opposing candle, treat that candle's extreme as the current invalidation."
+  - "Until a new opposing candle forms, the previous one remains the operative level - do not trail to intermediate highs."
+  - "Trail the stop to the current operative opposing candle extreme."
+
+invalidation:
+  - "Price hitting the trailed level - position closed."
+
+execution:
+  bias: null
+  entry: null
+  stop: "The extreme of the most recently violated opposing candle."
+  targets: ["previous day low/high (which this trail may not survive to reach)"]
+
+measurable:
+  - "how often this trail exits before the intended target"
+  - "average R captured with this trail vs a fixed stop to the same target"
+
+sources:
+  - video_id: u8bnmaih_hA
+    title: "TTrades Sunday Session - Live Q&A"
+
+ambiguities:
+  - "He describes the method and then says it is 'a little bit too tight of a trail' without offering a replacement rule."
+  - "Elsewhere he says he only manages a position after 2R, which is a different rule; the two are not reconciled."
+  - "Whether the stop goes exactly at the opposing candle extreme or beyond it is not stated."
+
+python_detector: null
+related: ["opposing-candle", "risk-reward-minimum", "new-york-reversal-profile"]

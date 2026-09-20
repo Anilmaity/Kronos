@@ -1,0 +1,54 @@
+id: protected-swing
+name: "Protected Swing"
+aliases: ["protected low", "protected high"]
+category: structure
+status: specified
+
+definition: >
+  A swing point that a subsequent continuation closure has confirmed. Once a protected
+  swing exists the stop is moved behind it, and the expectation is that it will not be
+  traded through before the target is reached. After the target is reached, the first
+  protected swing is frequently run out, and that run-out is a preferred re-entry location.
+
+timeframes:
+  htf: ["1D", "4H", "1H"]
+  ltf: ["15m", "5m", "1m"]
+  fractal: true
+
+preconditions:
+  - "A swing point formed by a sweep of a genuine (not failure) swing."
+  - "A continuation closure printed after it."
+
+detection_rules:
+  - "Identify the swing that price swept before the continuation closure."
+  - "After the closure, mark that swing as protected and move the stop behind it."
+  - "A protected swing should hold until the target is reached."
+
+invalidation:
+  - "Price trades back through the protected swing before the target is reached - the sequence is broken."
+  - "The swing being used is a failure swing (a minor high/low that did not sweep liquidity) - it does not qualify as protected."
+
+execution:
+  bias: "Direction of the continuation."
+  entry: "Initial: the continuation closure. Re-entry: the run-out of the first protected swing AFTER the target has been hit."
+  stop: "Behind the protected swing."
+  targets: ["the objective that defined the sequence"]
+
+measurable:
+  - "Rate at which protected swings hold until target."
+  - "Frequency and expectancy of the post-target protected-swing run-out re-entry."
+
+sources:
+  - video_id: yud7TpE2AMs
+    title: "New York Open Live Q&A"
+  - video_id: 00iZXPAdR5A
+    title: "New York Open Live Q&A"
+  - video_id: Qv6Ux_Z8VrA
+    title: "New York Open Live Q&A"
+
+ambiguities:
+  - "The post-target run-out re-entry is described as frequent but given no frequency, timeframe or invalidation; he says he deliberately avoids teaching it live."
+  - "Whether a protected swing survives across timeframes (e.g. an M1 break of an M15 protected swing) is not stated."
+
+python_detector: null
+related: ["failure-swing", "cisd", "continuation-over-reversal", "fractal-model-c3"]

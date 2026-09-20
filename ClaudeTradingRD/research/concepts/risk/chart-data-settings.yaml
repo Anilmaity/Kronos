@@ -1,0 +1,184 @@
+id: chart-data-settings
+name: Chart Data Settings (back-adjust on, settlement off)
+definition: 'The same two futures data settings, demonstrated on screen in this unit with
+  the reason for each. Back-adjust (adjusting for contract changes) is ON: with it off, the
+  rollover shows as a visible break where the two contracts are simply stitched together;
+  with it on the series is combined and made more fluid. Settlement is OFF: he shows the daily
+  candles changing materially when it is toggled and points to specific days that would have
+  changed his bias, and says it gives him cleaner candles. The TradingView tutorial in the
+  same unit repeats the trio as a settings checklist - electronic trading on, adjust for contract
+  changes on, settlement off - and adds that the chart is always in New York local time, with
+  a solid background, no grid lines, and a real-time data subscription (without which the
+  feed is delayed about 15 minutes).'
+variants:
+  definition:
+  - 'Two futures data settings he insists on, both of which change the candles the model reads.
+    Back-adjustment is ON, which removes the contract-rollover gap by aligning the new contract
+    to the previous day''s close. Settlement is OFF, because he wants the actual close rather
+    than the settlement close - he notes daily candles look materially different with settlement
+    on. He also warns that quoted price levels will differ between traders who have these
+    settings configured differently.
+
+    '
+  - 'Three data-feed decisions are stated in this unit, all of which change what a detector
+    sees. First, he does not use the RTH (regular-trading-hours) chart: his analysis is built
+    on what the overnight session does, so RTH-only data would remove a core component of
+    the strategy — the full 24-hour session chart is the working chart. Second, back-adjustment
+    on contract rollover is explained in his own words: when one contract rolls to the next
+    the two prices differ, and back-adjust shifts the earlier series so there is no gap at
+    the roll. Third, when the micros and the minis disagree he trades and reads the minis;
+    he notes the divergence between MES/MNQ and ES/NQ highs can produce a different idea,
+    and says he focuses on the minis.
+
+    '
+  - 'Confirmed again in live Q&A: settlement is turned off, and back-adjust is turned on.
+    Data comes from CME via Ninja Trader, at a cost he puts at roughly $4 a month for the
+    CME feed. All charting is done on the mini contracts rather than the micros, and on futures
+    rather than CFDs, so that the price series is the exact exchange data.'
+  - This unit supplies the reason for back-adjusting, not just the setting. Without back-adjustment
+    the futures contract can show a prior high as already taken while the index and the ETF
+    have not taken it - he checks QQQ and NDX on screen to show both still below. He wants
+    the futures chart to agree with the index and the ETF, so he always turns back-adjustment
+    on. Separately in the indicator stream he declines to support a platform on the grounds
+    that its settlement price has not been fixed.
+category: risk
+status: contested
+aliases:
+- back adjust
+- B adjust
+- settlement
+- electronic trading
+- contract changes
+- contract rollover
+- ETH not RTH
+- minis not micros
+- back adjusted
+preconditions:
+- A continuous futures chart with a contract roll in the visible history.
+- Trading continuous futures contracts.
+- A futures chart with a choice of session template, roll adjustment and contract size.
+detection_rules:
+- 'Back-adjust / adjust for contract changes: ON.'
+- 'Settlement: OFF.'
+- 'Electronic trading (full session): ON.'
+- 'Chart timezone: New York local time.'
+- With back-adjust off, rollovers appear as stitched-together segments with visible breaks.
+- Toggling settlement changes daily candles enough to change the daily bias on some days.
+- Real-time data requires a paid feed subscription; without it the series is delayed about
+  15 minutes.
+- 'Back-adjust: ON.'
+- A large unexplained daily gap indicates back-adjustment is off and a contract rollover occurred.
+- Use the full-session (ETH) series, not RTH — overnight price action is an input to the model.
+- Back-adjust on contract rollover so the roll leaves no artificial gap.
+- When micro and mini contracts disagree on a level (e.g. a high taken on MES but not ES),
+  read the mini.
+- 'Data source: CME feed (via Ninja Trader); charts on the mini contracts.'
+- Turn back-adjustment on for continuous futures charts.
+- Cross-check a disputed high or low against the cash index and the tracking ETF; the futures
+  chart should not show a level taken that the index and ETF have not taken.
+- Settlement-price handling on the platform must be correct or its charts are not used.
+invalidation:
+- Not applicable - data configuration.
+- n/a
+- Not applicable — this is a data configuration.
+- Not applicable - a data setting.
+measurable:
+- count of daily candles whose classification changes between settlement on and off over a
+  year
+- count of level breaks that disagree between adjusted and unadjusted series
+- Difference in detected C2 closures and level hits between back-adjusted and raw continuous
+  series.
+- Difference in daily close classification with settlement on vs off.
+- difference in detected sweeps and gaps between RTH and ETH series
+- count of level disagreements between micro and mini series per month
+- effect of back-adjustment on levels that survive a roll
+- level differences between a settlement-on and settlement-off series at the daily open
+- count of level breaks that disagree between adjusted and unadjusted futures series
+sources:
+- video_id: dtsrR8dX2Ro
+  title: Intro To Futures Trading & Prop Firms
+  quote: the other setting down here is settlement and I personally have that turned off
+- video_id: dtsrR8dX2Ro
+  title: Intro To Futures Trading & Prop Firms
+  quote: it just gives me cleaner candles
+- video_id: dtsrR8dX2Ro
+  title: Intro To Futures Trading & Prop Firms
+  quote: it will just combine those together
+- video_id: JPVhmPZiLKY
+  title: TradingView Tutorial For Beginners [Full Guide]
+  quote: I have electronic trading turned on I adjust for contract changes
+- video_id: JPVhmPZiLKY
+  title: TradingView Tutorial For Beginners [Full Guide]
+  quote: I'm always in New York local time
+- video_id: aqnY1yZvfYs
+  title: New York Open Live Q&A
+- video_id: Qv6Ux_Z8VrA
+  title: New York Open Live Q&A
+- video_id: 00iZXPAdR5A
+  title: New York Open Live Q&A
+- video_id: m8xcjkOuBHU
+  title: New York Open Live Q&A
+  quote: using the RTH data, I'm just missing a core component of my strategy
+- video_id: TjUolMJNCMY
+  title: New York Open Live Q&A
+  quote: it takes this and just moves it down there and adjusts it
+- video_id: xraklBJHW5k
+  title: New York Open Live Q&A
+  quote: I have settlement turned off
+- video_id: tDiwwMRWF2k
+  title: New York Open Live Q&A with NickDoesFutures
+  quote: I want it to be in comparison to the index in the ETF
+ambiguities:
+- One sentence in the futures video reads 'I have found that settlement works best for my
+  strategy' immediately after he says he has settlement turned OFF; the on-screen demonstration
+  and the TradingView video both show it off, so the sentence is treated as a misspeak or
+  caption error rather than a second reading.
+- The back-adjustment method (difference vs ratio) is still not stated - only that it combines
+  the contracts without a gap.
+- The exact data-feed product and price are shown on screen but not spoken, so they are not
+  recorded.
+- The specific back-adjustment method (difference vs ratio) is not stated beyond 'aligns with
+  the previous day's close'.
+- Settlement-price display is not mentioned in this unit; that half of the concept comes from
+  elsewhere in the corpus.
+- He says he does not remember or care about roll dates, so no roll-date rule is given for
+  a backtest.
+- The micros-versus-minis preference is stated as personal focus, not as a rule, and no guidance
+  is given for a trader whose account size forces micros.
+- The auto-captioner renders back-adjust as 'Bjust' ('I personally have Bjust turned on');
+  it is read here as back-adjust, matching the same setting recorded elsewhere in the corpus.
+- The roll rule that back-adjustment is applied to is not stated.
+- The auto-transcript's speaker markers are unreliable across this passage; the reasoning
+  is attributed to the host because he is the one navigating to QQQ and NDX on the shared
+  screen.
+- '''B adjust'' is the auto-caption rendering of back-adjust.'
+related:
+- futures-contract-rollover
+- futures-contract-specs
+- tradingview-chart-workspace
+- est-timezone-anchor
+- daily-bias-candle-formation
+- average-daily-range
+- relative-strength-asset-selection
+- session-high-low
+- previous-period-high-low
+- chart-futures-execute-elsewhere
+- options-proxy-execution
+timeframes:
+  htf:
+  - 1D
+  ltf: []
+  fractal: false
+execution:
+  bias: n/a
+  entry: n/a
+  stop: n/a
+  targets: n/a
+contributing_units:
+- live_streams_01
+- live_streams_02
+- live_streams_05
+- resources_01
+- sunday_sessions_live_q_a_02
+draft_count: 5
+voice: ttrades

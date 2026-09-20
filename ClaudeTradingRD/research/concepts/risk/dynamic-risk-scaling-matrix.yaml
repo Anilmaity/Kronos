@@ -1,0 +1,65 @@
+id: dynamic-risk-scaling-matrix
+name: Scaling Matrix (risk sized off the last outcome)
+definition: 'A per-trade risk percentage that is not fixed but is stepped up after a winning
+  trade and stepped down after a losing trade. The guest states the exact ladder for his prop-firm
+  accounts: a base of 1%, moving half a percent in each direction per outcome, capped at a
+  maximum of 2% and floored at a minimum of 0.25%. The stated purpose is to minimise the damage
+  of losing streaks and maximise the payoff of winning streaks, on the argument that the shape
+  of the equity curve is determined by streak behaviour rather than by average trade.
+
+  '
+category: risk
+status: specified
+aliases:
+- scaling matrix
+- dynamic risk
+- scale up on winners, down on losers
+preconditions:
+- A model with an established live track record; the guest describes it as a prop-firm risk
+  framework.
+- A defined account drawdown that the sizing must survive.
+detection_rules:
+- Start at 1% risk per trade.
+- After a winning trade, increase the next trade's risk by 0.5%.
+- After a losing trade, decrease the next trade's risk by 0.5%.
+- Cap the risk at 2% maximum.
+- Floor the risk at 0.25% minimum.
+invalidation:
+- Not applicable - this is a sizing rule, not a setup.
+measurable:
+- equity-curve variance of the scaling matrix vs flat 1% risk on the same trade sequence
+- maximum drawdown under the matrix vs flat sizing
+- distribution of realised streak lengths (needed to know whether the matrix helps at all)
+sources:
+- video_id: 1wKfc2gN4xg
+  title: Trader Kane | The Mind Behind a Multi-Million Dollar Day Trader
+  quote: I risk 1%, if I'm on a win streak, I risk more
+ambiguities:
+- Whether the step is applied per trade or per day is not stated; the wording is per-outcome,
+  keyed to each successive winner or loser.
+- Whether a break-even/scratch trade steps the ladder in either direction is not addressed.
+- The matrix is described explicitly for prop accounts. He describes his personal account
+  as very risk on and does not say whether the same ladder applies there.
+- No reset condition is given (e.g. does the ladder reset at the start of a new day, week,
+  or account cycle).
+- Steps of 0.5% between a 0.25% floor and a 1% base do not divide evenly, so the exact rungs
+  below 1% are not fully determined by the transcript.
+related:
+- size-down-on-fear
+- prop-account-scaling-plan
+- probabilistic-acceptance
+timeframes:
+  htf: []
+  ltf: []
+  fractal: false
+execution:
+  bias: n/a
+  entry: n/a
+  stop: n/a
+  targets: []
+contributing_units:
+- t_talks_03
+draft_count: 1
+voice: guest
+guest_sources:
+- Trader Kane | The Mind Behind a Multi-Million Dollar Day Trader

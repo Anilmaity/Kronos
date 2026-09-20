@@ -1,0 +1,274 @@
+id: internal-external-rotation
+name: Internal <-> External Range Liquidity Rotation
+variants:
+  name:
+  - Premium To Discount And Back, Via A Gap Or A Liquidity Run
+  - Internal ↔ External Range Liquidity Rotation
+  definition:
+  - 'Two guests give the same oscillation model in different vocabulary. Finessee_Fx calls
+    it ping pong: price hits a PD array in premium at the top, then goes lower to search for
+    an OPPOSING discount PD array - possibly on a lower timeframe - and once it hits that
+    it wants to come back up to the opposing array again, engineering liquidity the whole
+    way. Ben states it as a law - price will always oscillate from external to internal liquidity
+    - and adds the mechanical test that makes it useful: measure the impulse leg with a fib,
+    and if price has NOT come back to equilibrium of that leg, the leg has not been balanced
+    and the run beyond it is a stop hunt rather than a real directional swing.
+
+    '
+  - 'A Short states both terms and the rotation between them in about forty words. INTERNAL
+    liquidity is just a fair value gap. EXTERNAL liquidity is simply highs and lows - a high
+    with a lower high on each side, a low with a higher low on each side. The rotation: because
+    price swept and could NOT displace through the external liquidity, it is likely to reach
+    back for internal liquidity; once price reaches the internal liquidity and respects the
+    fair value gap (evidenced by the closure there), the expectation flips back to external
+    liquidity.'
+  - 'Trade For Opportunity states the rotation as his whole mental model of how price moves:
+    price runs from a premium to a discount, then back to a premium, then back to a discount,
+    and the way it gets there is one of exactly two things - it reaches a fair value gap,
+    or it runs liquidity. He couples it to the liquidity-identification heuristic he gives
+    immediately before it: find where traders would have placed their stops, which is behind
+    the obvious swing highs and lows, and weight higher-timeframe extremes above lower-timeframe
+    ones. The host gives the same shape from the range side in the same stream - do not take
+    trades in the middle of a range where you get chopped up; use the optimal trade entry
+    zones at the top of the range for shorts and the bottom for longs.'
+  - 'The bias engine of this corpus: after price takes external range liquidity (a swing high
+    or low) it seeks internal range liquidity (a fair value gap); after it reaches internal
+    range liquidity it seeks external range liquidity again. The alternation is claimed to
+    hold on any timeframe, so a weekly read produces a week-long directional bias. What makes
+    it tradeable rather than circular is the conditional: whether the fair value gap is respected
+    or violated decides which external target becomes the draw.
+
+    '
+  - 'The alternation that drives the whole IRL/ERL model: price is expected to move from internal
+    range liquidity to external and from external back to internal, oscillating until a trend
+    shift or some other move breaks the cycle, at which point it restarts. In a bullish trend
+    the same rotation is re-described as higher low -> higher high -> higher low, where each
+    higher low is a reaction in internal range liquidity and each higher high is external
+    range liquidity taken.'
+definition: 'Internal liquidity is a fair value gap; external liquidity is simply highs and
+  lows (swing highs/lows, i.e. buyside and sellside liquidity). The rotation: when price sweeps
+  external liquidity and CANNOT displace through it, it is likely to reach back for internal
+  liquidity; once it respects that fair value gap and closes away, the expectation is a move
+  back to external liquidity. Price moves from external to internal and back to external.'
+category: model
+status: contested
+aliases:
+- internal liquidity
+- external liquidity
+- external to internal
+- ping pong
+- external to internal oscillation
+- premium to discount
+- internal to external
+- the market only does two things
+preconditions:
+- A dealing range can be defined - Ben requires buy-side and sell-side to have been taken
+  so the range has both ends.
+- A marked range with a swing high and a swing low, and at least one fair value gap inside
+  it.
+- A range or displacement leg from which premium and discount can be measured.
+- A range with identifiable swing extremes.
+- At least one unfilled fair value gap, or the willingness to wait until one forms.
+- A range with identifiable swing extremes and at least one fair value gap.
+detection_rules:
+- 'Mark external liquidity: swing highs (high with a lower high each side) and swing lows.'
+- 'Mark internal liquidity: unmitigated fair value gaps inside the range.'
+- 'External -> internal: price sweeps a swing extreme and fails to displace through it; the
+  nearest unmitigated FVG becomes the draw.'
+- 'Internal -> external: price reaches the FVG, respects it and closes away; the opposing
+  swing extreme becomes the draw.'
+- A mitigated fair value gap is no longer counted as the internal draw.
+- After price reaches a PD array on one side, the next objective is the opposing PD array,
+  not a continuation.
+- The opposing array may be on a lower timeframe than the one just hit (Finessee_Fx).
+- 'Ben''s balance test: fib the impulse leg; if price has not traded back to equilibrium of
+  that leg, treat the extension beyond it as a stop hunt, not a swing.'
+- 'Ben: after external liquidity is taken, the draw becomes internal (an unmitigated fair
+  value gap / OTE inside the range); after internal is delivered to, the draw becomes external
+  again.'
+- 'Ben: this runs on all timeframes simultaneously - a 5-minute trade is also inside the 15-minute,
+  hourly, daily and weekly rotation.'
+- Internal range liquidity := a fair value gap.
+- External range liquidity := swing highs and swing lows (high with a lower high each side;
+  low with a higher low each side).
+- 'Trigger: price sweeps external liquidity but FAILS TO DISPLACE through it -> expect a rotation
+  back to internal liquidity.'
+- On arrival, require price to respect the fair value gap - evidenced by a closure there.
+- Once respected, the expectation flips to the opposite external liquidity.
+- 'Alternate the expectation: premium -> discount -> premium.'
+- The mechanism of each leg is either a fair value gap being reached or a liquidity pool being
+  run.
+- Identify liquidity pools by asking where a trader in the opposite position would put a stop
+  - behind the obvious swing highs and lows.
+- Weight higher-timeframe highs and lows above lower-timeframe ones.
+- Do not take trades in the middle of the range; take them at the premium and discount edges.
+- 'State A (external just taken): set the draw to the nearest unfilled FVG on the working
+  timeframe. If none exists, hold and wait for one to form.'
+- 'State B (internal reached): evaluate respect. If price reacts away from the FVG without
+  closing through it, set the draw to the external liquidity in the direction of that reaction.'
+- 'State B-violation: if price closes through the FVG (an inversion), flip the directional
+  read and set the draw to the external liquidity on the other side.'
+- Repeat. Each completed leg re-enters state A.
+- 'Model switch: to go from a sell model to a buy model, additionally require a change in
+  state of delivery / structure shift over the relevant swing high.'
+- After external liquidity is purged, set the draw to the nearest unfilled fair value gap.
+- After internal liquidity is reached and respected, set the draw to the external swing in
+  the direction of the reaction.
+- Repeat; a trend shift or an unusual move resets the cycle.
+- 'Trend form: in an uptrend expect higher low (internal) then higher high (external), alternating.'
+invalidation:
+- Displacement through the external extreme — no rotation back inside.
+- Not stated; neither speaker gives a condition that stops the rotation.
+- Price displaces through the external liquidity instead of failing at it - no rotation is
+  expected.
+- Price expands away without rotating - the range that defined premium and discount no longer
+  applies.
+- The speaker explicitly concedes the sequence can skip a step — a retracement may simply
+  not happen.
+- A trend shift, or a move that breaks the oscillation - he allows explicitly that something
+  can break it and 'then it restarts'.
+- In the worked example, external liquidity taken WITHOUT a strong narrative means the next
+  leg may go to internal liquidity or to the other side of the range instead - the rotation
+  stops being tradeable.
+measurable:
+- completion rate of each rotation leg by timeframe
+- hit rate of the opposing-array target after an array on the other side is tagged
+- outcome of legs that never returned to equilibrium (Ben's stop-hunt classification) versus
+  those that did
+- rotation completion rate from failed external sweep to the internal fair value gap
+- follow-through rate from a respected internal FVG to the opposite external extreme
+- share of legs that terminate at a fair value gap vs at a liquidity pool
+- expectancy of trades taken at range edges vs mid-range
+- completion rate of the external->internal->external sequence per timeframe
+- frequency of skipped legs (external to external with no FVG visit)
+- conditional hit rate of the external target given the FVG was respected vs violated
+- completion rate of the external -> internal -> external sequence by timeframe
+- frequency of skipped legs
+sources:
+- video_id: mwmWNCTEYtY
+  title: Internal & External Liquidity Model
+  quote: internal liquidity is just a fair value Gap
+- video_id: mwmWNCTEYtY
+  title: Internal & External Liquidity Model
+  quote: external liquidity is simply highs and lows
+- video_id: mwmWNCTEYtY
+  title: Internal & External Liquidity Model
+  quote: price moves from external to internal and back to external
+- video_id: q40pRwjuPYQ
+  title: ICT Son's Model - 30 Second Setup
+  quote: an old high or old low on a hour or 15-minute chart
+- video_id: eK_6wgNpNh0
+  title: Advanced ICT Directional Bias Teachings with Finessee_Fx
+  quote: search for an opposing discount lower time frame PD array down low
+- video_id: yRmKkR4CojU
+  title: Fractalizing Entries -Q&A with Ben - ICT Concepts
+  quote: price will always oscillate from external to internal liquidity
+- video_id: yRmKkR4CojU
+  title: Fractalizing Entries -Q&A with Ben - ICT Concepts
+  quote: this impulse never came back to equilibrium so for me this is a stop hunt
+- video_id: Ix8l6yDRpp8
+  title: Relationship between External and Internal Liquidity
+  quote: Internal liquidity is just a fair value gap
+- video_id: Ix8l6yDRpp8
+  title: Relationship between External and Internal Liquidity
+  quote: External liquidity is simply highs and lows
+- video_id: Ix8l6yDRpp8
+  title: Relationship between External and Internal Liquidity
+  quote: price swept and could not displace through this external liquidity
+- video_id: 0bH_kkG2q6s
+  title: Stream Q & A with Trade For Opportunity  - ICT concepts
+  quote: you're gonna run from premium to a discount and then back to a premium
+- video_id: 0bH_kkG2q6s
+  title: Stream Q & A with Trade For Opportunity  - ICT concepts
+  quote: you either go to fair value gaps or you run liquidity
+- video_id: 3OivsP1j_UE
+  title: Internal & External Liquidity (Daily Bias) - ICT Concepts
+- video_id: uDJI2AbyyCs
+  title: Inversion Fair Value Gaps (IFVG) - ICT Concepts
+- video_id: TfHlNgAZ_II
+  title: Trading IRL & ERL With Order Blocks! - ICT Concepts
+  quote: we expect price to move from internal to external and external to internal
+ambiguities:
+- When several unmitigated FVGs sit inside the range, no rule selects which is the draw —
+  he uses proximity and premium/discount informally.
+- '''Cannot displace through'' is the usual unquantified judgement.'
+- Neither speaker says WHICH opposing array is the destination when several exist at different
+  timeframes.
+- Ben's equilibrium test depends entirely on choosing the correct dealing range; he says identifying
+  dealing ranges accurately is the prerequisite and that getting it wrong will hinder performance,
+  but gives no selection rule.
+- Ben warns explicitly that the equilibrium reaction is not deterministic - price may leave
+  from 50 percent, or may return to fill unmitigated gaps in the OTE first - so the test grades
+  likelihood, not certainty.
+- '''Engineering liquidity the whole time'' is narrative, with no observable attached.'
+- '"Could not displace" is the trigger and is not defined in this clip - no candle-count,
+  no closure requirement, no time limit.'
+- When several fair value gaps sit inside the range, no rule selects which one is "the" internal
+  liquidity.
+- No timeframe is named; the clip is taught on a generic diagram.
+- The range that fixes premium and discount is not fixed by rule - he marks it from 'displacement
+  ranges on the higher time frames' using wicks or bodies, and says he is still experimenting
+  with which.
+- No rule states which of the two mechanisms to expect on the next leg.
+- '''Respect'' of the FVG is judged visually in this video; the IFVG video supplies the only
+  hard test (a close through the gap = inversion).'
+- 'No timeframe-consistency rule: examples mix a weekly FVG with 4H swing targets.'
+- No timing expectation — a leg may take many bars or be skipped entirely.
+- The claim 'the market only does two things' is asserted, never tested.
+- '''Respect'' of the fair value gap is judged visually here; no close-through test is stated
+  in this video.'
+- The condition that breaks the rotation ('or have some other movement which breaks this')
+  is not specified.
+related:
+- internal-external-liquidity-model
+- fair-value-gap
+- failure-to-displace
+- universal-models
+- internal-external-range-liquidity
+- premium-discount-equilibrium
+- pd-array-matrix-ladder
+- market-structure-shift
+- internal-range-liquidity
+- external-range-liquidity
+- irl-erl-flowchart-model
+- liquidity-sweep
+- range-edge-trading
+- optimal-trade-entry
+- target-consolidation-lows-not-fvgs
+- inversion-fair-value-gap
+- cisd
+- market-maker-model
+- draw-on-liquidity
+guest_sources:
+- Advanced ICT Directional Bias Teachings with Finessee_Fx
+- Ben (Ben TT)
+- Finessee_Fx
+- Fractalizing Entries -Q&A with Ben - ICT Concepts
+- Stream Q & A with Trade For Opportunity  - ICT concepts
+- Trade For Opportunity
+timeframes:
+  htf:
+  - 1W
+  - 1D
+  - 4H
+  ltf:
+  - 1H
+  - 15m
+  - 5m
+  fractal: true
+execution:
+  bias: Toward whichever pool has not been delivered to.
+  entry: At the opposing PD array (Finessee_Fx) or at the internal array once external has
+    been taken (Ben).
+  stop: Beyond the array.
+  targets:
+  - the opposing pool
+contributing_units:
+- education_ict_updated_01
+- education_ict_updated_02
+- live_stream_guests_01
+- live_stream_guests_03
+- shorts_02
+- the_foundation_01
+draft_count: 6
+voice: mixed

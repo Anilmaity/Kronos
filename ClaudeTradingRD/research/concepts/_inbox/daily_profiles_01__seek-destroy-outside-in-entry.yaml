@@ -1,0 +1,57 @@
+id: seek-destroy-outside-in-entry
+name: "Outside-In Range Rebalance (Seek & Destroy handling)"
+aliases: ["trading back into the range", "from the outside of the range back in", "range magnet"]
+category: entry
+status: underspecified
+
+definition: >
+  The only trade handling offered for a Seek & Destroy day, and offered reluctantly. Instead of
+  trading breakouts out of the range (inside-out), the trader waits for price to deviate OUTSIDE
+  the reference range and trades back INTO it, targeting the range equilibrium first and the
+  opposite extreme second. Any interior reference - the Asia range, the London range, the daily
+  open - is described as a magnet that price returns to rebalance after each excursion. The
+  premium/discount is re-drawn on each new leg as the day extends.
+
+timeframes:
+  htf: ["1D"]
+  ltf: ["15m"]
+  fractal: false
+
+preconditions:
+  - "The day has been classified as Seek & Destroy (see seek-and-destroy-profile)."
+  - "A reference range with a marked high and low: London's range in the PDF illustration; the Asia range and the daily open are used the same way in the worked examples."
+
+detection_rules:
+  - "Mark the reference range high and low, and its equilibrium (the 0.5 / premium-discount midpoint)."
+  - "Price deviates outside the range and fails to displace or break out."
+  - "Enter against the deviation, i.e. back toward the range."
+  - "First target: equilibrium of the range. Second target: the opposite extreme."
+  - "When price makes a new extreme, re-draw premium/discount on the new leg and repeat, still targeting equilibrium and the initial range."
+
+invalidation:
+  - "A genuine displacement / breakout out of the range - which the video does not define, and which is the acknowledged risk of this approach."
+
+execution:
+  bias: "Mean-reverting, non-directional."
+  entry: "From outside the range, on the failure to hold beyond it."
+  stop: "Not stated."
+  targets: ["equilibrium (0.5) of the marked range", "the opposite extreme of the range", "the daily open", "the initial range that price left"]
+
+measurable:
+  - "how often price returns to range equilibrium after an unheld excursion outside the Asia/London range on an indecision day"
+  - "how often the daily open is revisited after a deviation"
+  - "expectancy of outside-in entries on classified Seek & Destroy days versus the cost of the days misclassified as such"
+
+sources:
+  - video_id: 4WCiIyCiBrQ
+    title: "ICT Daily Profile - Seek & Destroy"
+    quote: "this is a profile I wish to avoid"
+
+ambiguities:
+  - "No stop placement is ever given, which makes the method unbacktestable as stated."
+  - "No definition of the 'failure to displace' that authorises the entry, so the trigger is not decidable."
+  - "The illustration uses the London range but the two chart examples use the Asia range and the daily open; no rule for which range to mark."
+  - "The speaker's own advice is to avoid the profile entirely, so this entry is presented as a contingency rather than an endorsed setup."
+
+python_detector: null
+related: ["seek-and-destroy-profile", "daily-profile-framework"]

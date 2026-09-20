@@ -1,0 +1,93 @@
+id: ny-morning-routine
+name: New York Morning Preparation Routine
+definition: 'The fixed, ordered pre-session checklist he runs before the New York morning
+  session, given as a routine rather than a setup. Order: (1) daily and weekly charts to establish
+  where price is likely to draw to; (2) 1-hour and 4-hour for fair value gaps, liquidity and
+  points of interest; (3) the economic calendar (ForexFactory) to find high-impact news, and
+  mark 8:30 on the chart; (4) mark the obvious highs and lows on the 15-minute chart; (5)
+  mark the midnight opening price; (6) then watch the lower timeframes for the entry after
+  8:30. The output is a written expectation - a specific sequence such as ''move lower to
+  sweep this liquidity, then move higher'' - prepared BEFORE the session so that positions
+  can be taken as it unfolds.'
+category: model
+status: specified
+aliases:
+- my morning routine
+- everything i do prior to new york morning session
+preconditions:
+- Charts set up for the instrument being traded; access to an economic calendar.
+detection_rules:
+- 'Step 1: daily/weekly - identify the draw; note untaken equal lows/highs as targets and
+  any displacement range that has not yet been retraced into.'
+- 'Step 2: 4-hour and 1-hour - fair value gaps, liquidity, points of interest.'
+- 'Step 3: economic calendar - locate the high-impact release (8:30 in the example) and mark
+  that time on the chart.'
+- 'Step 4: 15-minute - mark the obvious highs and lows, keeping the external ones and clearing
+  internal range liquidity from the chart.'
+- 'Step 5: mark the midnight opening price; a move BELOW it is the precondition for looking
+  long (the classic buy day).'
+- 'Step 6: state the expected sequence before the session, then take the entry after 8:30
+  with the stop at the swept low.'
+- If the primary entry is missed, drop to the 5-minute, fib its displacement range and take
+  the ~0.62 retracement instead.
+invalidation:
+- The expected sequence does not occur before the session ends.
+measurable:
+- how often the pre-stated sequence occurs as written
+- hit rate of the primary entry vs the missed-entry 0.62 fallback
+- share of days on which the 8:30 release is the manipulation leg
+sources:
+- video_id: Zm2oKad3Tb8
+  title: How I Prepare For NY Session (Morning Routine) - ICT Concepts
+  quote: the first thing i'm going to do is look at the higher time frame
+- video_id: Zm2oKad3Tb8
+  title: How I Prepare For NY Session (Morning Routine) - ICT Concepts
+  quote: go to an economic calendar such as forex factory.com
+- video_id: Zm2oKad3Tb8
+  title: How I Prepare For NY Session (Morning Routine) - ICT Concepts
+  quote: you can see we have high impact news at 8 30
+- video_id: Zm2oKad3Tb8
+  title: How I Prepare For NY Session (Morning Routine) - ICT Concepts
+  quote: i mark out all the obvious highs and lows on the 15 minute chart
+- video_id: Zm2oKad3Tb8
+  title: How I Prepare For NY Session (Morning Routine) - ICT Concepts
+  quote: you can also mark out the midnight opening price
+- video_id: Zm2oKad3Tb8
+  title: How I Prepare For NY Session (Morning Routine) - ICT Concepts
+  quote: we want to see a move below that in order to get long
+ambiguities:
+- '''Obvious'' highs and lows is the selection criterion for step 4 and is not defined.'
+- No timezone is stated for 8:30 or for the midnight open in this video.
+- The 0.62 fallback level is used but not stated as a rule (he says '0.625' reading it off
+  the fib).
+- No rule says what to do when the calendar has no high-impact release.
+related:
+- economic-calendar-filter
+- midnight-open-directional-filter
+- draw-on-liquidity
+- point-of-interest
+- displacement-range
+- killzones
+timeframes:
+  htf:
+  - 1W
+  - 1D
+  - 4H
+  - 1H
+  ltf:
+  - 15m
+  - 5m
+  - 1m
+  fractal: false
+execution:
+  bias: From the daily/weekly draw.
+  entry: After 8:30, at the swept low / the 5-minute 0.62 retracement if missed.
+  stop: At the swept low.
+  targets:
+  - First partial at the marked high
+  - second and third partials at successive highs
+  - hold to close
+contributing_units:
+- education_ict_01
+draft_count: 1
+voice: ttrades

@@ -1,0 +1,51 @@
+id: daily-ohlc-candle-shape
+name: OHLC / OLHC Daily Candle Shape (and the Indecision Candle)
+aliases:
+- dogee candle
+- doji
+category: structure
+status: underspecified
+definition: 'This unit adds the no-information case, worked live on gold. A daily doji closure means
+  he does not have much bias going into the next day, because the day can do whatever it wants; he
+  says outright that this is not a good closure and shows what a good one would have looked like.
+  The positional test he applies is symmetric: with a protected swing on each side and price sitting
+  in the middle, the day has to be let to form - does it open and respect one side of the wick and
+  trade higher, respect the other side and trade lower, or sweep the previous day high? Until that
+  resolves he watches what Asia and London do and defers the decision to New York.'
+timeframes:
+  htf:
+  - 1D
+  ltf:
+  - 4H
+  - 1H
+  - 15m
+  fractal: false
+preconditions:
+- A completed daily candle.
+detection_rules:
+- A doji daily closure yields no bias for the following day.
+- Protected swings on both sides with price in the middle is likewise a no-bias state.
+- 'In that state, let the day form: watch which side of the wick is respected on the open, or whether
+  the previous day extreme is swept.'
+- Defer the decision to the New York session rather than pre-framing it.
+invalidation:
+- A directional closure replaces the no-bias state.
+measurable:
+- next-day range and directional outcome following doji daily closes
+- share of no-bias days that resolve in the New York session
+sources:
+- video_id: sdZkE-naNiY
+  title: TTrades Indicator Updates - Walkthrough and Q&A
+  quote: usually that means I don't really have much bias going into the day
+ambiguities:
+- '''Doji'' is never quantified - no body-to-range ratio is given.'
+- '''In the middle'' between the two protected swings is not bounded.'
+related:
+- daily-bias-candle-formation
+- daily-profile-framework
+- wick-trust-test
+- consolidation-range-no-trade
+contributing_units:
+- live_streams_05
+draft_count: 1
+voice: ttrades

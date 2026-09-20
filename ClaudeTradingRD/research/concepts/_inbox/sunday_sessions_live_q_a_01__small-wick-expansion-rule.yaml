@@ -1,0 +1,52 @@
+id: small-wick-expansion-rule
+name: "Small Wick Supports Expansion; Large Wick Waits for Candle 3"
+aliases: ["small wick", "large wick candle", "opposing run"]
+category: model
+status: specified
+
+definition: >
+  A candle-2 reversal is only tradeable inside its own candle if the opposing run that formed its
+  wick was small. A large opposing run produces a large wick, meaning the candle has already
+  consumed range, so expansion within that same candle should not be expected; the trader waits
+  for the next candle (candle 3), and for the large-wick candle itself expects a move back toward
+  its own open or the liquidity around it rather than expansion.
+
+timeframes:
+  htf: ["1D", "4H", "1H"]
+  ltf: ["15m", "5m"]
+  fractal: true
+
+preconditions:
+  - "A higher-timeframe candle has swept the prior candle extreme and reversed."
+
+detection_rules:
+  - "Measure the wick (opposing run) of the reversal candle relative to that candle body and to recent candles."
+  - "Small wick: expansion is expected within the same candle; look for entries inside it."
+  - "Large wick: do not expect expansion in this candle; expect a move back toward the candle open or nearby liquidity, and shift the setup to candle 3."
+
+invalidation:
+  - "Price trades beyond 50% of a large wick, putting the continuation idea in danger."
+
+execution:
+  bias: "Direction of the anticipated body expansion."
+  entry: "Within the candle for a small wick; on the next candle open for a large wick."
+  stop: "Beyond the wick extreme."
+  targets: ["The candle own open / surrounding liquidity for large-wick candles", "Drawn liquidity for small-wick candles"]
+
+measurable:
+  - "expansion rate (close in the extreme third) of small-wick vs large-wick reversal candles"
+
+sources:
+  - video_id: uzPGXVYpVGc
+    title: "Candle 2 Confirmations - Live Lesson, Q&A"
+  - video_id: WBwoiMDXT2c
+    title: "New York Open Live Q&A"
+  - video_id: egV_gABTQks
+    title: "(CPI) New York Open Live Q&A"
+
+ambiguities:
+  - "No numeric threshold separates a small wick from a large wick; it is judged visually."
+  - "It is not stated whether the comparison is against the same candle body, prior candles, or average volatility."
+
+python_detector: null
+related: ["wick-trust-test", "half-wick-respect", "c2-confirmation-scaling"]

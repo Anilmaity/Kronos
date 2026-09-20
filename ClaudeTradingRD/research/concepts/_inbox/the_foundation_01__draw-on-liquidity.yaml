@@ -1,0 +1,57 @@
+id: draw-on-liquidity
+name: "Draw On Liquidity"
+aliases: ["the draw", "drawn liquidity", "objective"]
+category: liquidity
+status: specified
+
+definition: >
+  The specific price level price is currently expected to travel to. It is always an identified
+  liquidity pool or PD array — previous day/week/month high or low, a session extreme, a swing
+  point, relatively equal highs/lows, or a fair value gap — never a vague direction. In this
+  corpus the draw is what a bias resolves to, and a bias is held "until we reach our draw on
+  liquidity".
+
+timeframes:
+  htf: ["1M", "1W", "1D", "4H", "1H"]
+  ltf: ["15m", "5m", "1m"]
+  fractal: true
+
+preconditions:
+  - "At least one untaken liquidity level or unfilled fair value gap exists in the direction under consideration."
+
+detection_rules:
+  - "Candidate draws := {untaken previous day/week/month high & low, untaken session highs & lows, untaken swing points, relatively equal highs/lows, unfilled fair value gaps}."
+  - "Selection heuristics stated: prefer the previous-period level on the current timeframe first; when those are consumed, look left to swing points; trend biases which side."
+  - "The draw alternates by construction under the internal/external rotation: after external is taken, the draw becomes the internal FVG, and vice versa."
+  - "Confluence rule stated repeatedly: prefer a draw that coincides with a standard-deviation projection level of the manipulation leg."
+
+invalidation:
+  - "The draw is consumed when price trades to it; a new draw must then be selected."
+  - "A failure to displace at an intermediate level flips the draw to the opposite side."
+
+execution:
+  bias: "Toward the selected draw."
+  entry: "n/a — entry models are separate."
+  stop: "n/a"
+  targets: ["the draw itself"]
+
+measurable:
+  - "hit rate of the selected draw being reached before the opposite candidate level"
+  - "median time (bars/sessions) from selection to reaching the draw"
+
+sources:
+  - video_id: YESqIoA7Wyg
+    title: "Important Liquidity Levels - Draw On Liquidity - ICT"
+    quote: "these levels are used to frame a draw in liquidity or a reversal"
+  - video_id: g3oDYq4P9ZE
+    title: "ICT Daily Bias - The Only Video You Will Ever Need!"
+  - video_id: 3OivsP1j_UE
+    title: "Internal & External Liquidity (Daily Bias) - ICT Concepts"
+
+ambiguities:
+  - "Selection among multiple candidate draws is discretionary; no ranking rule is given beyond timeframe order and trend."
+  - "No time limit on how long a draw stays valid."
+  - "The same level is used both as a draw and as a reversal point; nothing in the videos decides in advance which role it will play — only the reaction (displacement vs rejection) tells you, after the fact."
+
+python_detector: null
+related: ["previous-period-high-low", "session-high-low", "internal-external-rotation", "daily-bias-framework", "standard-deviation-projection"]

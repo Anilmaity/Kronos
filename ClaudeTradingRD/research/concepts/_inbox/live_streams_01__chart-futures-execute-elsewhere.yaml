@@ -1,0 +1,38 @@
+id: chart-futures-execute-elsewhere
+name: Chart on the Futures, Execute on the Other Vehicle
+definition: All analysis is done on the futures contract, because the futures carry overnight data
+  that the cash-session vehicles do not. If the instrument actually traded is an ETF (SPY, QQQ), an
+  index option or an ETF option, the chart and the model still live on the futures (ES, NQ) and only
+  the order goes to the other vehicle. The same reasoning is given for preferring the minis over the
+  micros - all charting is done on the minis no matter what - and for using a futures chart rather
+  than a CFD chart for gold, to get the exact data.
+category: risk
+status: specified
+detection_rules:
+- Build the analysis on the futures chart (ES / NQ / YM / GC), which includes the overnight session.
+- 'Do not analyse on SPY / QQQ: their history starts at the 9:30 cash open and omits the overnight
+  data the model uses.'
+- Chart on the minis, not the micros, even though the micros track them.
+- Place the order on whatever vehicle is being traded; the signal is unchanged.
+measurable:
+- difference in signal set between an overnight-inclusive futures series and a cash-session-only series
+sources:
+- video_id: xraklBJHW5k
+  title: New York Open Live Q&A
+  quote: I use overnight data a lot in my strategy
+- video_id: m0wTBdUe7gs
+  title: New York Open Live Q&A
+  quote: I do all my charting on the minis no matter what
+ambiguities:
+- Minis and micros are described as genuinely different traded assets that 'track' but do not always
+  share the same price or structure; no rule is given for what to do when their structures disagree.
+- Which contract-roll / continuation convention the futures series uses is only addressed by the separate
+  chart-data-settings note (settlement off, back-adjust on).
+related:
+- chart-data-settings
+- relative-strength-asset-selection
+- session-open-volume-nyse
+contributing_units:
+- live_streams_01
+draft_count: 1
+voice: ttrades

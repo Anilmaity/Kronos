@@ -1,0 +1,53 @@
+id: body-close-confirmation
+name: "Body Close Confirmation (bodies tell the story, wicks do the damage)"
+aliases: ["true body close", "the body is telling us the story"]
+category: structure
+status: specified
+
+definition: >
+  A level is treated as holding while candle bodies fail to close through it, however deeply wicks
+  pierce it. AP sharpens this into an executable test - once a wick has pierced a level he requires
+  a subsequent body close beyond that WICK'S extreme, not merely beyond the level, before he will
+  accept the level as broken.
+
+timeframes:
+  htf: ["1D", "4H", "1H"]
+  ltf: ["15m", "5m", "1m", "5s"]
+  fractal: true
+
+preconditions:
+  - "A defined level - a fib level, a swing point, or a PD array boundary."
+
+detection_rules:
+  - "If a candle wicks through the level but closes back on the original side, treat the level as defended."
+  - "Record the extreme of that wick."
+  - "Accept the level as broken only when a later candle closes its body beyond that recorded wick extreme."
+  - "Sniper's daily-chart application: while the daily bodies are not closing below the level the level is holding, even though wicks are trading through it."
+
+invalidation:
+  - "A body close beyond the recorded wick extreme."
+
+execution:
+  bias: "Continue to favour the side the bodies are defending until the body close beyond the wick occurs."
+  entry: "AP pairs the body close beyond the 0.41 with a demand for displacement away before engaging."
+  stop: "Not specified by this concept alone."
+  targets: []
+
+measurable:
+  - "how often a wick-only piercing of a level is followed by continuation in the defended direction versus by a body close through"
+  - "difference in outcome between entering on the level break versus on the body close beyond the wick"
+
+sources:
+  - video_id: gjoRPszj-Qk
+    title: "AP | Use Market Structure & Fibonacci Levels for Sniper Entries"
+  - video_id: 5aRB_ZY3474
+    title: "$niper | Internal & External Liquidity - ICT Daily Bias"
+    quote: "the wick is just doing the damage"
+
+ambiguities:
+  - "AP calls the rule specific to himself and gives no timeframe on which it should be evaluated."
+  - "No rule for how many wicks accumulate before the reference extreme is updated."
+  - "No body-size or ratio requirement - any body close counts."
+
+python_detector: null
+related: ["valid-structure-flip", "gb-range-return-entry", "wick-midpoint-rebalance-entry"]

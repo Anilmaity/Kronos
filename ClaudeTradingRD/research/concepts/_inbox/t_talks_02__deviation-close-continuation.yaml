@@ -1,0 +1,43 @@
+id: deviation-close-continuation
+name: "Body Close Beyond 2.5 Deviation Extends To The 4th"
+aliases: ["second silver bullet zone"]
+category: model
+status: specified
+
+definition: >
+  Presented as a rule of standard-deviation theory: when price closes a candle body beyond
+  the 2.5 deviation of the projected manipulation leg, continuation to the 4th deviation
+  becomes high probability. The retracement that follows that body close is named the
+  "second silver bullet zone" and is where the continuation is entered.
+
+timeframes:
+  htf: ["4H", "1D"]
+  ltf: ["15m", "5m"]
+  fractal: true
+
+preconditions:
+  - "A standard-deviation projection exists from the previous candle's manipulation leg."
+  - "Price has traded through the 2 and 2.5 deviations."
+
+detection_rules:
+  - "A candle closes with its body beyond the 2.5 deviation."
+  - "The next retracement against that close is the entry zone (second silver bullet zone)."
+  - "Target is the 4th deviation, which frequently coincides with a higher-timeframe PD array such as a previous daily high or low."
+
+invalidation:
+  - "Price closes back inside the 2 / 2.5 deviation band after the body close."
+
+measurable:
+  - "hit rate of reaching the 4th deviation after a body close beyond 2.5"
+  - "how often the 4th deviation coincides with a previous daily high or low"
+
+sources:
+  - video_id: wWIHS_dxbEY
+    title: "DexterLab | Putting All The ICT Pieces Together - Master PO3"
+
+ambiguities:
+  - "The timeframe of the 'body close' is not specified - the executing candle or the 4H candle."
+  - "Whether the 4th deviation target requires a coincident HTF PD array or is valid alone is unclear; the example had one."
+
+python_detector: null
+related: ["opening-location-vs-previous-range", "internal-dynamics-sequence"]

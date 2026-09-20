@@ -1,0 +1,74 @@
+id: dollar-gate-for-fx
+name: "The Dollar Gate For Forex"
+aliases: ["dollar as barometer", "risk on risk off", "DXY confirmation"]
+category: model
+status: specified
+voice: guest
+guest_sources:
+- "Ben (Ben TT)"
+- "Finessee_Fx"
+
+definition: >
+  Both guests gate every trade on the Dollar Index, and Ben states it as an absolute veto: if the
+  dollar does not agree with his position he is not interested in it, no matter how good the setup
+  looks, and he would rather miss the move. He calls the dollar the barometer for everything he
+  does and applies it to equities as well as majors - anything standardised against the dollar. His
+  reasoning chain is macro and explicit: the DXY is a derivative of a basket of other currencies, so
+  when other central banks raise rates and the differential narrows, those currencies strengthen
+  and the dollar should come down, which gives equities and crypto room to push higher. Finessee_Fx
+  runs the same gate in the opposite direction - the Dollar Index had been bullish all year, so
+  foreign pairs were expected lower and he only looked for shorts on them.
+
+timeframes:
+  htf: ["1M", "1W", "1D"]
+  ltf: ["4H", "1H"]
+  fractal: false
+
+preconditions:
+- "The Dollar Index is charted alongside the instrument being traded."
+
+detection_rules:
+- "Form the analysis on the Dollar Index first: where is it in its own PD arrays, and which way is it delivering?"
+- "Take a long in a dollar-denominated instrument only when the dollar analysis is bearish, and a short only when it is bullish; the mirror for the dollar itself."
+- "Ben's veto: if the dollar analysis disagrees with the instrument's analysis, do not take the trade - wait."
+- "Ben applies the gate to indices (SPY, NAS) and crypto as well as to the majors (AUDUSD, EURUSD, GBPUSD), because all are standardised against the dollar."
+- "Finessee_Fx's application: with DXY bullish and heading for an unfilled monthly fair value gap, he stayed bullish dollar and bearish foreign pairs until those monthly levels were reached."
+- "Ben's macro input is the interest-rate differential between the Fed and other central banks, not price alone."
+
+invalidation:
+- "The dollar reaches the higher-timeframe array it was drawn to (Finessee_Fx explicitly held the view only until those monthly levels were hit)."
+
+execution:
+  bias: "Set by the dollar, then applied to the instrument."
+  entry: "Not set by this rule."
+  stop: "Not set by this rule."
+  targets: []
+
+measurable:
+- "expectancy of setups taken with and without dollar agreement"
+- "how often the dollar-agreement filter removes a winning trade (the cost of Ben's veto)"
+- "correlation stability of DXY against each traded instrument over the test period"
+
+sources:
+- video_id: yRmKkR4CojU
+  title: "Fractalizing Entries -Q&A with Ben - ICT Concepts"
+  quote: "if the dollar doesn't agree with my position i am not interested in it"
+- video_id: yRmKkR4CojU
+  title: "Fractalizing Entries -Q&A with Ben - ICT Concepts"
+  quote: "the dollar is the barometer to everything i do"
+- video_id: eK_6wgNpNh0
+  title: "Advanced ICT Directional Bias Teachings with Finessee_Fx"
+  quote: "when Dollar moves higher we're expecting the foreign pairs to move what lower"
+
+ambiguities:
+- "'Agree' is never mechanised - it is whether the dollar's own PD-array read points the opposite way, judged by eye."
+- "Neither speaker says on which timeframe the dollar read must agree, and no rule covers a dollar that is ranging rather than directional."
+- "Ben also keeps EURGBP on his layout purely 'as a reference' and never says what it is referenced for."
+- "Applying the dollar veto to NAS and SPY is asserted from the risk-on / risk-off framing rather than demonstrated."
+- "The macro chain (rate differentials to DXY direction) is stated as reasoning, not as a rule with a threshold or a data source."
+
+python_detector: null
+related: ["smt-divergence-confluence", "currency-pairing-opposition", "eurgbp-relative-strength-cross", "intermarket-correlation-not-used"]
+contributing_units:
+- live_stream_guests_01
+draft_count: 1

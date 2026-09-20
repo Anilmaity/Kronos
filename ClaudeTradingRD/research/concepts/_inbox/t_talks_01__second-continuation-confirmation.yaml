@@ -1,0 +1,50 @@
+id: second-continuation-confirmation
+name: "Wait For The Second Continuation Break"
+aliases: ["second new high established", "fake flips"]
+category: structure
+status: underspecified
+
+definition: >
+  When framing a reversal, the first structure flip is treated as unreliable - price generates
+  fake flips and fake moves, particularly when not at a higher-timeframe key area. Focus shifts
+  to price only on the second continuation confirmation, meaning the second new high (or low)
+  established in the new direction.
+
+timeframes:
+  htf: ["4H", "1H"]
+  ltf: ["15m", "5m", "1m"]
+  fractal: true
+
+preconditions:
+  - "A reversal is being framed rather than a continuation."
+
+detection_rules:
+  - "Do not commit on the first flip or first market structure shift."
+  - "Wait for a second continuation break - a second new high (bullish) or new low (bearish) in the new direction."
+  - "The reliability of the first flip is explicitly conditioned on whether it occurs at a higher-timeframe key area; away from one, expect fakes."
+  - "Anchor the working range from the point where that second break is confirmed."
+
+invalidation:
+  - "Not stated."
+
+execution:
+  bias: "The reversal direction, once the second break confirms."
+  entry: "Via the GB levels anchored on the confirmed range."
+  stop: "Beyond the anchor extreme."
+  targets: ["the weak extreme"]
+
+measurable:
+  - "failure rate of first flips versus second continuation breaks, split by whether the flip occurred at a marked HTF level"
+  - "give-up in R from waiting for the second break rather than the first"
+
+sources:
+  - video_id: gjoRPszj-Qk
+    title: "AP | Use Market Structure & Fibonacci Levels for Sniper Entries"
+
+ambiguities:
+  - "What counts as a higher-timeframe key area is deliberately left open - the speaker declines to specify because different traders use different POIs, so the rule cannot be evaluated without importing an external definition."
+  - "No rule states what resets the count back to first."
+  - "Marked underspecified for those two reasons."
+
+python_detector: null
+related: ["valid-structure-flip", "gb-levels", "three-pd-array-confluence"]

@@ -1,0 +1,239 @@
+id: swing-point
+name: Swing High / Swing Low
+definition: 'The foundational premise of the whole model, stated identically in three videos
+  in this unit: price cannot reverse without forming a swing point -- bearish to bullish requires
+  a swing low, bullish to bearish requires a swing high. Mechanically a swing low is a low
+  with a HIGHER LOW on each side (three candles), and a swing high a high with a lower high
+  on each side. The swing candle is candle 2 of the model. Because the third candle is needed
+  to confirm it, a swing point is only complete one candle late, which is why the candle 2
+  closure and candle 3 closure definitions exist at all.'
+variants:
+  definition:
+  - 'Answering whether the fractal model will stop working now that many people use it, he
+    restates what the model is anchored to: it is based off swing points, and a market cannot
+    reverse without forming one - he challenges the chat to find a reversal that formed without
+    a swing point and offers to delete his channel if anyone can. Because the model keys on
+    something price must do to change direction, he is not concerned about crowding. He gives
+    the same account of how he built the model in the first place: he learned swing points,
+    decided which swing points he would focus on (a candle 2 or candle 3 closure), then worked
+    out how to confirm them on a lower timeframe and how to build a mechanical entry around
+    them.
+
+    '
+  - SHORTS EVIDENCE for the three-candle definition AND for the confirmation delay it implies.
+    A swing high is a high with a LOWER HIGH ON EACH SIDE; a swing low is a low with a higher
+    low on each side. Because the right-hand candle must exist, a swing point cannot be confirmed
+    at the moment the extreme prints - he narrates checking a low, finding no candle on the
+    right, and deliberately letting ONE DAY PASS before treating it as a confirmed swing low.
+  - 'A swing low is a low that has a higher low immediately to its left and a higher low immediately
+    to its right; a swing high is a high that has a lower high immediately to its left and
+    a lower high immediately to its right. The swing is only readable once the right-hand
+    bar exists, so identification always lags by at least one bar. Swing points are the anchors
+    for every other primitive in this corpus: liquidity pools sit beyond them, ranges are
+    drawn between them, and fib/OTE tools are anchored to them.
+
+    '
+  - 'Restated at the opening of the relevant-swings video in its plainest form, and it matches
+    the three-bar definition recorded elsewhere in the corpus: a bullish swing point is a
+    candle with a low that has a higher low on its right and on its left; a bearish swing
+    point is a candle with a high that has a lower high on its left and right. Everything
+    downstream in this unit - relevant swings, candle 2 / candle 3 closures, the fractal model
+    itself - is filtered from this set.'
+  - 'The market structure video treats swing formation as a timing problem rather than a definition
+    problem: it names the liquidity video as the prerequisite for the swing definition itself,
+    and then spends the walkthrough on when a swing may be USED. Two statements matter. First,
+    a higher high can be recorded as soon as price trades above the prior high, even if the
+    swing high containing it has not formed yet - he says so explicitly and then narrates
+    ''let''s see if a swing forms'' bar by bar. Second, he filters: highs and lows made inside
+    a leg that get swept before price continues are not counted, and the comparison is made
+    against the prominent prior extreme.'
+category: structure
+status: contested
+aliases:
+- three candle swing point
+- the swing point
+- the model is based off of swing points
+- swing point
+- swing high
+- swing low
+- old high
+- old low
+- bullish swing point
+- bearish swing point
+- let's see if a swing forms
+preconditions:
+- Three consecutive candles.
+- Price has turned.
+- Three consecutive candles on the timeframe in question.
+- At least three consecutive bars exist.
+- Three consecutive candles are complete.
+- The 3-bar swing definition from the liquidity video is assumed known.
+detection_rules:
+- 'Swing low: the middle candle''s low is lower than the low of the candle on each side.'
+- 'Swing high: the middle candle''s high is higher than the high of the candle on each side.'
+- The swing candle is labelled candle 2; the continuation after a confirmed swing is candle
+  4.
+- Within the fractal model only swing points are traded -- where no new swing has formed for
+  several candles, only continuation of the existing direction is favoured.
+- SMT against a correlated asset, or a daily change in the state of delivery, may substitute
+  for the swing point's sweep.
+- Any reversal necessarily prints a swing point; there is no reversal without one.
+- Of all swing points, only those qualifying as a candle 2 or candle 3 closure are traded.
+- Confirm the chosen swing point on the lower timeframe before building the entry.
+- Swing high := high[i] > high[i-1] AND high[i] > high[i+1].
+- Swing low := low[i] < low[i-1] AND low[i] < low[i+1].
+- The right-hand candle must have completed - a swing point is only confirmed one candle later.
+- If the confirming candle does not yet exist, let one more candle pass before acting on it.
+- swing_low(i) := low[i] < low[i-1] AND low[i] < low[i+1].
+- swing_high(i) := high[i] > high[i-1] AND high[i] > high[i+1].
+- A swing at index i may only be used from bar i+1 onward (the right-hand bar must have closed).
+- If a subsequent low fails to trade below the prior swing low, treat the two as one pool
+  (see relatively-equal-highs-lows).
+- The right-hand candle must have printed, so a swing at index i is usable only from i+1.
+- Swing points are then filtered by separation (relevant vs failure swing) before use.
+- A higher high / lower low may be registered on the trade beyond the prior extreme; the SWING
+  itself is only usable once the right-hand bar has formed.
+- Interior highs and lows that are swept before price continues are not counted as structure.
+- Comparison is always made against the prominent prior extreme, not the nearest one.
+- A candidate structure break is rejected when there is no swing to break, even where a higher
+  high exists.
+invalidation:
+- The swing point's extreme is taken out.
+- n/a - a structural primitive.
+- The swing low is 'taken' / 'swept' once price trades below it; the speaker then stops tracking
+  it and moves attention to the next swing in that direction.
+- Not applicable - this is a primitive definition.
+- Not applicable - this is a primitive.
+measurable:
+- swing points per month per timeframe
+- how often a 3-candle swing point is later violated
+- share of reversals in a sample that qualify as C2 or C3 closures rather than plain swings
+- count of confirmed swing points per timeframe per month
+- cost in R of the one-candle confirmation delay
+- count of raw 3-bar swings per session vs count the speaker actually annotates (measures
+  the size of the discretionary filter)
+- median bars between a swing forming and being swept
+- count of three-bar swing points per HTF window, split into relevant vs failure
+- count of 3-bar fractal swings vs the count he actually marks on the same chart window
+- effect on structure-shift counts of requiring the right-hand bar before use
+sources:
+- video_id: 5fnFOh5YuM0
+  title: TTrades Fractal Model - Trading Candle 4
+  quote: a low with a higher low on each side which is a swing low
+- video_id: 9AL41xON3hA
+  title: The Only Trading Strategy You Need For 2026
+  quote: this model is built off the fact that price cannot reverse without a swing point
+- video_id: m4k_1pF5zFI
+  title: TTrades Fractal Model - Trading Candle 2
+  quote: with my fractal model, I'm only looking to trade swing points
+- video_id: TNybDCtwBnc
+  title: TTrades Playbook | Fractal Model Fundamentals (TTFM)
+- video_id: X4XSsv5CNqg
+  title: New York Open Live Q&A
+  quote: The fractal model is based off of swing points
+- video_id: X4XSsv5CNqg
+  title: New York Open Live Q&A
+  quote: a time the market reverses without forming a swing point
+- video_id: U4j-fZD-FJk
+  title: New York Open Live Q&A
+  quote: I learned swing points
+- video_id: EupbcX1JOsE
+  title: 4th Day of Swing Forming Continuation Lower
+  quote: I have a high with a lower high on each side
+- video_id: N9Wfch7_h5A
+  title: Aggressive Out → Aggressive Back In
+  quote: Do we have a low on each side? We do not
+- video_id: N9Wfch7_h5A
+  title: Aggressive Out → Aggressive Back In
+  quote: let one day pass, and now we have that confirmed swing low
+- video_id: U8xH2dEgH5A
+  title: 'Liquidity: Buyside & Sellside - ICT Concepts'
+  quote: we have a low right here with a higher low to the left
+- video_id: 1YRs4Z1lMws
+  title: Optimal Trade Entry (OTE) - ICT Concepts
+- video_id: 75S4vwD4P1U
+  title: Breaker Blocks Simplified - ICT Concepts
+- video_id: HbOeD_JVens
+  title: Which Swing Highs and Lows Matter in Trading? (Relevant Swings)
+  quote: a candle that has a low and then a higher low to its right
+- video_id: HbOeD_JVens
+  title: Which Swing Highs and Lows Matter in Trading? (Relevant Swings)
+  quote: a high and then a lower high to its left and right
+- video_id: sgAnVR6RSDg
+  title: Understanding Market Structure For Trading
+  quote: a higher high even if we have not formed a swing High yet
+- video_id: sgAnVR6RSDg
+  title: Understanding Market Structure For Trading
+  quote: those get swept out before we go
+ambiguities:
+- The three-candle test uses lows/highs, not bodies, but the same speaker elsewhere in this
+  unit measures things body-to-body without saying which governs here.
+- Nothing says how far apart two swing points must be to both count as relevant (the separation
+  question is raised in q3nauvjT3q0 only in relation to equal highs/lows).
+- The candle-count definition of a swing point (how many candles either side) is not restated
+  in this unit.
+- The claim that a reversal must form a swing point is tautological at the bar level and does
+  not by itself establish that the model has an edge - he treats it as if it does.
+- Whether the neighbouring candles are compared on wicks or bodies is not stated.
+- No separation or 'relevance' requirement is applied in these Shorts (other library entries
+  add one).
+- The 3-bar fractal definition is stated, but in practice the speaker filters heavily, attending
+  only to the obvious highs and lows on the outside of the range. No filter criterion (bar
+  count, range size, ATR, lookback) is given, so a literal 3-bar detector will produce many
+  more swings than he uses. This is the largest automation gap in the unit.
+- Wick-based vs body-based highs/lows is never stated; all chart examples appear to use wicks.
+- Strict vs non-strict inequality (equal lows on either side) is not addressed.
+- The breaker video says a swing must be 'confirmed' before counting but does not restate
+  how many bars confirmation takes.
+- Whether wicks or bodies define the high/low is not stated here; the examples are read off
+  wicks.
+- Equal highs/lows (a low exactly equal to its neighbour) are not covered by the strict inequality
+  he gives, yet he marks 'basically exactly equal' lows on the chart.
+- The gap between the unfiltered 3-bar fractal and the swings he actually uses is restated
+  but still not closed - no separation, range or lookback filter is given.
+- He both registers a higher high before a swing confirms and rejects a shift because 'we
+  don't have a swing we break' - the two are used in the same walkthrough without a rule reconciling
+  them.
+- Wicks vs bodies for swing detection is not stated (the chart work uses wicks).
+related:
+- fractal-model-c2
+- four-candle-model-window
+- protected-swing
+- smt-swing-point-substitute
+- relevant-swing-separation
+- fractal-model-c3
+- swing-point-stop-hunt
+- relevant-swings-separation
+- advanced-market-structure-labeling
+- failure-swing
+- buyside-sellside-liquidity
+- relatively-equal-highs-lows
+- external-range-liquidity
+- premium-discount-equilibrium
+- optimal-trade-entry
+- relevant-swing-lookback
+- basic-trend-structure
+- market-structure-shift
+timeframes:
+  htf:
+  - 1M
+  - 1W
+  - 1D
+  - 4H
+  - 1H
+  - 30m
+  - 15m
+  ltf:
+  - 5m
+  - 3m
+  - 1m
+  fractal: true
+contributing_units:
+- build_a_model_intro_to_ttrades_fractal_model_02
+- build_a_model_intro_to_ttrades_fractal_model_03
+- live_streams_03
+- shorts_01
+- the_foundation_01
+- the_foundation_02
+draft_count: 6
+voice: ttrades

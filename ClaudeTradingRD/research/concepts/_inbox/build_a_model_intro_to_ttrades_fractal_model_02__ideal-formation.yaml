@@ -1,0 +1,78 @@
+id: ideal-formation
+name: Ideal Formation (closure and protected swing in the same bar)
+category: model
+status: specified
+aliases:
+- ideal candle two closure
+- ideal candle three closure
+- TTrades ideal formation
+definition: 'An ideal formation is a candle 2 or candle 3 closure that SIMULTANEOUSLY creates a protected
+  swing -- i.e. the same closure that sweeps candle 1 and closes back inside also closes through the
+  series of opposing candles that reached the point of interest. He teaches it explicitly as a correction:
+  most people call a candle 2 ideal because it closes over candle 1''s body, and that is wrong. The
+  payoff is that the next candle can be traded immediately, without waiting for a separate lower-timeframe
+  confirmation, and it comes with two levels to mark: the opening price of the series of opposing candles,
+  and the EQ of the closure candle.'
+timeframes:
+  htf:
+  - 1D
+  - 4H
+  - 1H
+  - 30m
+  ltf:
+  - 15m
+  - 5m
+  - 3m
+  fractal: true
+preconditions:
+- A point of interest is present at the extreme (fair value gap, or a high/low to be swept).
+- A candle 2 or candle 3 closure has formed.
+detection_rules:
+- Identify the extreme of the closure candle and the SERIES of opposing candles that made that extreme
+  (a single candle if there is only one).
+- Ideal iff the closure candle's close is beyond the opening price of that series, in the same bar as
+  the candle 2 / candle 3 closure.
+- Not ideal if the candle merely closes over candle 1's body without closing through that series.
+- 'The formation may complete late: a non-ideal candle 2 followed by a candle 3 that closes through
+  the series is an ideal formation for trading candle 4.'
+- 'Mark two levels for the next candle: the opening price of the series of opposing candles, and the
+  EQ of the closure candle. The next candle''s wick should form there and be shallow.'
+- An ideal formation is still not a trade on its own -- a point of interest is still required; it cannot
+  be pattern-traded.
+invalidation:
+- The next candle's wick trades beyond the marked opposing-candle opening price / EQ band.
+- The closure did not reach a point of interest.
+execution:
+  bias: Direction of the closure.
+  entry: On the next candle, at the opposing-candle opening price / EQ band, after a shallow wick forms
+    there.
+  stop: Beyond the protected swing created by the ideal closure.
+  targets:
+  - equal highs/lows beyond
+  - previous period extreme
+measurable:
+- frequency of ideal vs non-ideal C2 closures
+- expansion of the following candle, ideal vs non-ideal
+- hit rate of the marked opposing-candle-open / EQ band containing the next candle's wick
+sources:
+- video_id: SF61vCsBl1A
+  title: TTrades Ideal Formation - High Probability Swing Points
+  quote: An ideal formation is when we have a candle two or a candle three closure
+ambiguities:
+- '''Series of opposing candles'' is not bounded -- in the stop-loss video he says he will ignore small
+  candles and take ''this whole move up'' when the structure is messy, but no candle count or range
+  test is given.'
+- Whether the closure must be a body close through the series, or a wick through, is not stated (all
+  worked examples are body closes).
+- '''Shallow wick'' in the following candle is unquantified.'
+related:
+- fractal-model-c2
+- fractal-model-c3
+- fractal-model-c4
+- protected-swing
+- cisd
+- point-of-interest
+contributing_units:
+- build_a_model_intro_to_ttrades_fractal_model_02
+draft_count: 1
+voice: ttrades

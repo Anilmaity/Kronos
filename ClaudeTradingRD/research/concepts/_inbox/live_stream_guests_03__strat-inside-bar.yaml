@@ -1,0 +1,62 @@
+id: strat-inside-bar
+name: Inside Bar Is A Consolidation (TheSTRAT)
+aliases:
+- inside bar
+- inside day
+category: structure
+status: specified
+definition: In TheSTRAT vocabulary as this guest uses it, an inside bar is a candle whose high and
+  low both sit inside the previous candle's high and low, and it is by definition a consolidation
+  - 'it's inside of that previous time frame's highs and lows, which is the definition of a consolidation'.
+  An inside bar is read as doing nothing, and he refuses to short against a month that is an inside
+  bar of the prior month. The trigger that ends the consolidation is a break of the inside bar's extreme,
+  which puts the preceding candles' extremes in play as sequential targets. He also uses composite
+  descriptions - an inside bar that closes as a shooter (shooting star) on the quarterly is named
+  as a bearish continuation signature, conditional on the prior low not being taken.
+timeframes:
+  htf:
+  - 1Y
+  - 1Q
+  - 1M
+  - 1W
+  - 1D
+  ltf:
+  - 1H
+  - 15m
+  - 5m
+  - 1m
+  fractal: true
+preconditions:
+- Two consecutive candles on the analysis timeframe.
+detection_rules:
+- inside_bar := candle.high <= prev.high AND candle.low >= prev.low.
+- Classify an inside bar as a consolidation; do not take a directional position against the candle
+  it is inside of.
+- A break of the inside bar's high or low ends the consolidation and puts prior candles' extremes
+  in play.
+- The construction is applied on every timeframe up to the quarterly and yearly.
+invalidation:
+- The bar's range exceeds the previous candle's range on either side - it is no longer inside.
+measurable:
+- directional follow-through rate after an inside-bar breakout, by timeframe
+- share of inside bars that resolve as outside bars instead
+sources:
+- video_id: V8P6lNIisvc
+  title: Q&A Live with Alex's Options - ICT + Strat
+  quote: it's inside of that previous time frame's highs and lows
+ambiguities:
+- Whether the containment test uses wicks or bodies is never stated.
+- '''Shooter'' and ''hammer'' are used as classifications without definition anywhere in this unit.'
+- The STRAT numeric candle labels (1 / 2 / 3) are never explained on air, so the inside bar is only
+  identifiable descriptively.
+related:
+- consolidation
+- strat-outside-bar
+- strat-timeframe-continuity
+- inside-day-three-levels
+contributing_units:
+- live_stream_guests_03
+draft_count: 1
+voice: guest
+guest_sources:
+- Alex's Options

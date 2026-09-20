@@ -1,0 +1,56 @@
+id: draw-on-liquidity
+name: "Draw On Liquidity (previous day high / low as objective)"
+aliases: ["DOL", "open draw on liquidity", "previous day high and low"]
+category: liquidity
+status: specified
+
+definition: >
+  The standing objective price is expected to reach, taken in practice from the daily chart:
+  previous day high and previous day low first, then relevant separated daily swing highs and
+  lows, then equal highs/lows. Its main operational use in these streams is as a gate on
+  late-day trading: if the day has already expanded, the only reason to still take a setup is
+  that an objective remains open, and such a trade is taken with lowered expectations.
+
+timeframes:
+  htf: ["1D", "4H"]
+  ltf: ["15m", "5m", "1m"]
+  fractal: true
+
+preconditions:
+  - "A daily chart with marked previous day high/low and separated swing levels."
+
+detection_rules:
+  - "Mark previous day high and previous day low; these are the easiest and default objectives."
+  - "Mark relevant separated daily swing highs/lows and equal highs/lows as secondary objectives."
+  - "Filter every objective against the eyeballed average daily range."
+  - "If the day already expanded and no objective remains open, do not trade."
+  - "If an objective remains open, the setup may be taken on a lower timeframe with reduced expectations."
+
+invalidation:
+  - "The objective is reached - subsequent setups toward it are invalid (see continuation-failure-short-term-target)."
+
+execution:
+  bias: "Toward the open objective."
+  entry: "Per the C2/C3 or CISD model."
+  stop: "Per the entry model."
+  targets: ["previous day high or low", "separated daily swing levels", "equal highs or lows"]
+
+measurable:
+  - "Rate at which previous day high/low is reached, by day type."
+  - "Expectancy of late-day setups toward a still-open objective vs the same setups earlier."
+
+sources:
+  - video_id: aqnY1yZvfYs
+    title: "New York Open Live Q&A"
+  - video_id: yud7TpE2AMs
+    title: "New York Open Live Q&A"
+  - video_id: 00iZXPAdR5A
+    title: "New York Open Live Q&A"
+
+ambiguities:
+  - "'Lowered expectations' for the late setup is not quantified in target or size."
+  - "Which of several open objectives takes precedence is chosen by eye plus the range filter."
+  - "He flags the case where BOTH previous day high and low are taken before New York as an unsolved question he intends to make a video about."
+
+python_detector: null
+related: ["average-daily-range", "relevant-swings-separation", "continuation-failure-short-term-target"]

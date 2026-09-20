@@ -1,0 +1,71 @@
+id: liquidity-sweep
+name: Sweep Of A Relevant Swing
+definition: 'A reversal is only available after a relevant swing has actually been run. Drift
+  toward a level, or price simply trading higher without having swept anything, is treated
+  as inducement rather than as the beginning of a turn. He explicitly prefers a sweep to originating
+  a trade from an area of relatively equal highs or lows, and he will wait, doing nothing,
+  until the sweep occurs even when the rest of his bias is in place.
+
+  '
+category: liquidity
+status: specified
+aliases:
+- run of lows
+- sweep the low
+- running out a relevant swing
+preconditions:
+- A relevant swing high or low exists (relevance judged against the drawn objectives, not
+  simply any local extreme).
+detection_rules:
+- Price must trade beyond the relevant swing extreme.
+- Only after that run is a reversal available; before it, upward drift into highs is read
+  as drawing participants in before running them out.
+- The sweep should occur on the weakest correlated asset when routing a long (and vice versa),
+  ideally leaving SMT against the stronger asset.
+- The reversal off the sweep must be aggressive (V shape); a slow reaction is continuation.
+invalidation:
+- The reversal low forms at equal lows with the swept level - no separation, nothing to trade
+  away from, no trade even though the sweep occurred.
+- No aggressive move out of the swept level.
+- The swept level was not relevant (no drawn objective there).
+measurable:
+- frequency of reversals that occur without a prior sweep of a relevant swing
+- outcome split by whether the post-sweep low had separation from the swept level
+- reaction quality (V shape vs slow) as a predictor of follow-through
+sources:
+- video_id: wM1s7UivQ08
+  title: New York Open Live Q&A
+  quote: I'm not trading away from those equal lows
+- video_id: u8bnmaih_hA
+  title: TTrades Sunday Session - Live Q&A
+ambiguities:
+- '''Relevant'' is judged against drawn objectives with no mechanical definition.'
+- '''Separation'' after the sweep is not quantified - this is the rule that made him refuse
+  an otherwise complete live setup.'
+- Whether a wick-only sweep counts the same as a body close beyond the level is not stated.
+related:
+- relevant-level
+- protected-swing
+- smt-as-confirmation-not-signal
+- failure-swing
+timeframes:
+  htf:
+  - 1D
+  - 4H
+  - 1H
+  ltf:
+  - 15m
+  - 5m
+  fractal: true
+execution:
+  bias: Opposite the swept side, but only after confirmation.
+  entry: Confirmation via CISD / order block formation after the sweep - never on the sweep
+    itself.
+  stop: Beyond the sweep extreme.
+  targets:
+  - the level on the correlated stronger asset
+  - previous day high/low
+contributing_units:
+- sunday_sessions_live_q_a_03
+draft_count: 1
+voice: ttrades

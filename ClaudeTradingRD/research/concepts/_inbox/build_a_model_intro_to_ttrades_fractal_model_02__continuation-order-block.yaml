@@ -1,0 +1,83 @@
+id: continuation-order-block
+name: Continuation Order Block (Continuation Entry)
+category: entry
+status: specified
+aliases:
+- continuation entry
+- propulsion block
+definition: 'His preferred entry, taken AFTER the reversal is already confirmed rather than at it. He
+  names exactly two qualifying trigger conditions and one waiver. The two: (a) price retraces into a
+  FAIR VALUE GAP, or (b) price SWEEPS A LOW (or high); then in either case the close through the series
+  of opposing candles that went into that level creates a new invalidation to position from. The waiver:
+  with correlated assets showing SMT, an opposing candle is accepted without its own sweep or gap tag.
+  He is explicit that if neither trigger occurs, mechanically there is no entry and the move is simply
+  missed.'
+timeframes:
+  htf:
+  - 1D
+  - 4H
+  - 1H
+  ltf:
+  - 30m
+  - 15m
+  - 5m
+  - 3m
+  - 1m
+  fractal: true
+preconditions:
+- A confirmed reversal (candle 2/3 closure plus change in the state of delivery) with an invalidation
+  already established.
+detection_rules:
+- Wait for price to either retrace into a fair value gap, or sweep a low/high.
+- Identify the series of opposing candles that went into that level.
+- Require a close through that series -> a new protected swing / order block.
+- Enter on that close, or on a retest of the level when the displacement was aggressive and the market
+  entry would not give the required R.
+- 'SMT waiver: without a sweep or gap tag, an opposing candle still counts if the correlated asset diverged.'
+- If neither trigger forms, take no trade -- 'mechanically speaking there is nothing here for me'.
+- Repeat the process for each subsequent continuation, tracking the trend upward/downward through successive
+  protected swings.
+invalidation:
+- The new protected swing is taken out.
+- The short-term target has already been taken before entry -- he then prefers to wait for a new phase
+  of price.
+execution:
+  bias: The confirmed reversal direction.
+  entry: Close through the opposing-candle series at the point of interest, or the retest of it.
+  stop: The protected swing (or body extreme).
+  targets:
+  - 2R minimum
+  - previous day/week extreme
+  - standard deviation projections
+measurable:
+- continuation entries available per confirmed reversal
+- hit rate of first vs later continuations
+- share of confirmed reversals that offer NO mechanical continuation
+sources:
+- video_id: IJcfC6wAPZU
+  title: Trade Continuations Using Order Blocks
+  quote: a reaction out of a fair value gap or a sweep of a low
+- video_id: 9AL41xON3hA
+  title: The Only Trading Strategy You Need For 2026
+- video_id: qdQYhePcvGE
+  title: TTrades Fractal Model - Trading Candle 3
+- video_id: JHVaSKtE1Ys
+  title: 'Stop Losses in Trading: Know When You''re Wrong'
+- video_id: FgP2lc9nneM
+  title: The Best Timeframe for TTrades Fractal Model (Simple)
+ambiguities:
+- He states a preference for the first continuation over later ones ('I feel like I'm chasing') without
+  a rule for how many are acceptable.
+- Whether a fair value gap must be fully tagged or merely touched is left as 'that's fine if it digs
+  a little bit deeper'.
+- Volume imbalances are mentioned once as an additional acceptable important level, with no definition.
+related:
+- protected-swing
+- point-of-interest
+- cisd
+- fractal-model-c3
+- smt-swing-point-substitute
+contributing_units:
+- build_a_model_intro_to_ttrades_fractal_model_02
+draft_count: 1
+voice: ttrades

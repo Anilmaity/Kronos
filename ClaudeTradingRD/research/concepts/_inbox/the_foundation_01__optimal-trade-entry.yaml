@@ -1,0 +1,64 @@
+id: optimal-trade-entry
+name: "Optimal Trade Entry (OTE)"
+aliases: ["OTE", "\"OT\" (auto-caption)", "the 62 to 79 zone"]
+category: entry
+status: specified
+
+definition: >
+  A fibonacci retracement zone between the 0.62 and 0.79 levels of a swing-high-to-swing-low
+  (or low-to-high) leg, with 0.705 as its midpoint and the speaker's preferred entry price.
+  The fib is configured with exactly the levels 0.5, 0.62, 0.705, 0.79 and 1, where 0.5 doubles
+  as the premium/discount divide. The zone is treated as an entry location, strengthened by any
+  PD array that happens to sit inside it.
+
+timeframes:
+  htf: ["1D", "4H", "1H"]
+  ltf: ["15m", "5m", "1m"]
+  fractal: true
+
+preconditions:
+  - "A confirmed swing high and swing low (or a displacement range) to anchor the retracement."
+
+detection_rules:
+  - "Anchor the retracement from the swing high to the swing low (bearish framing) or swing low to swing high (bullish)."
+  - "While the extreme is still extending, re-anchor each new extreme until a swing point is confirmed."
+  - "ote_zone := the price band between the 0.62 and 0.79 retracement levels; ote_mid := 0.705."
+  - "Entry preference: 0.705 ideally; 0.62 when he wants to be in the position."
+  - "Confluence: look left for a PD array inside the zone (fair value gap, order block, breaker, volume imbalance)."
+  - "If an order block's opening price falls outside the zone, substitute its mean threshold (50% of the body) so the entry sits inside the OTE."
+  - "Time filter used in the examples: ignore OTE taps that occur outside a killzone."
+  - "Nesting: once price leaves an OTE and forms a new swing, mark the new range and its OTE; lower timeframes contain their own OTEs inside a higher timeframe one."
+
+invalidation:
+  - "Not stated. Stops in the examples sit at the swing extreme (i.e. beyond the 1.0), not at a specific fib level."
+
+execution:
+  bias: "Continuation in the direction of the impulse leg that the retracement is correcting."
+  entry: "0.705 preferred, 0.62 acceptable; or a PD array / order block mean threshold inside the zone."
+  stop: "Beyond the swing extreme that anchors the fib."
+  targets: ["liquidity beyond the impulse (failure swings, equal highs/lows, session lows)", "a higher timeframe fair value gap", "3R+ in the worked examples"]
+
+measurable:
+  - "fill rate of 0.62 vs 0.705 vs 0.79 taps"
+  - "hit rate of a fixed-target trade entered at 0.705, with and without a PD array in the zone"
+  - "R:R improvement over an equilibrium (0.5) entry — the video claims 3.43R vs 1.6R in one case"
+  - "effect of the killzone filter on hit rate"
+
+sources:
+  - video_id: 1YRs4Z1lMws
+    title: "Optimal Trade Entry (OTE) - ICT Concepts"
+    quote: "That's this zone from the 62 to the 79 including the midpoint of 705."
+  - video_id: MlMsG7li9zY
+    title: "Discount & Premium - ICT Concepts"
+  - video_id: MPeeE55rNOw
+    title: "ICT Killzones & Indicator Settings"
+
+ambiguities:
+  - "Which swing pair to anchor is discretionary; 'the displacement range' is used in several examples without a formal definition."
+  - "Wick-to-wick vs body-to-body anchoring is not stated."
+  - "No invalidation level for the OTE itself (a close beyond 0.79? beyond 1.0?)."
+  - "Whether a tap of 0.62 alone counts as an OTE fill is not stated."
+  - "The killzone filter is demonstrated but never stated as a rule."
+
+python_detector: null
+related: ["premium-discount-equilibrium", "swing-point", "mean-threshold", "order-block", "fair-value-gap", "killzones"]

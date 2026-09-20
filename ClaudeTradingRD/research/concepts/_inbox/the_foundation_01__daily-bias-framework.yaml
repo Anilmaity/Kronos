@@ -1,0 +1,65 @@
+id: daily-bias-framework
+name: "Daily Bias (Previous Day High/Low Framework)"
+aliases: ["daily bias", "framing a narrative"]
+category: model
+status: specified
+
+definition: >
+  The channel's default procedure for producing a directional expectation for the coming day.
+  Unless the day consolidates, it will take previous day high, previous day low, or both; the
+  bias is simply the answer to which is more likely. That answer is produced by a short ordered
+  checklist: trend, whether the previous day closed beyond a level or merely reached it,
+  failure to displace at swing points, and the next day model. The bias is maintained until the
+  draw on liquidity is reached, then re-derived.
+
+timeframes:
+  htf: ["1D", "1W"]
+  ltf: ["1H", "15m", "5m"]
+  fractal: true
+
+preconditions:
+  - "Previous day (and ideally previous week) high and low are marked."
+  - "Relevant swing points and PD arrays are marked."
+
+detection_rules:
+  - "1. If the previous day closed ABOVE previous day high -> bullish; the draw is the next previous day high."
+  - "2. If price reached above previous day high but closed back inside the range -> bearish; the draw becomes previous day low."
+  - "3. Mirror rules for the low side."
+  - "4. Apply the same two tests on previous week high/low for the weekly frame."
+  - "5. If previous-period levels are consumed, look left and use the nearest untaken swing point as the draw."
+  - "6. Failure to displace under a swing low -> bias up; over a swing high -> bias down."
+  - "7. If the day is an inside/indecision candle, declare no bias, mark both extremes, and wait for one to be taken."
+  - "8. Hold the bias until the draw is reached."
+
+invalidation:
+  - "A close beyond the level in the opposite direction to the bias."
+  - "Reaching the draw (the bias is then spent, not wrong)."
+
+execution:
+  bias: "Directional toward the chosen previous-period level or swing point."
+  entry: "Drop to 1H to locate the killzone stop-hunt / PD array, then to 5m or lower for an FVG, order block or OTE entry."
+  stop: "Beyond the session extreme that formed against the bias."
+  targets: ["previous day low/high", "a swing point beyond it", "fixed 2R"]
+
+measurable:
+  - "daily frequency of consolidation / one-sided / both-sides outcomes"
+  - "hit rate of rule 1 and rule 2 separately"
+  - "R-multiple distribution of the London and New York entry patterns shown"
+
+sources:
+  - video_id: g3oDYq4P9ZE
+    title: "ICT Daily Bias - The Only Video You Will Ever Need!"
+    quote: "price more likely to take previous day high or previous state low"
+  - video_id: YESqIoA7Wyg
+    title: "Important Liquidity Levels - Draw On Liquidity - ICT"
+  - video_id: 3OivsP1j_UE
+    title: "Internal & External Liquidity (Daily Bias) - ICT Concepts"
+
+ambiguities:
+  - "Trend, used to break ties, is never defined in this unit (no moving average, no structural definition)."
+  - "The rules are presented as a narrative, not as a precedence-ordered algorithm; when two rules disagree (e.g. weekly bullish, daily bearish) no resolution is given."
+  - "'Consolidation' (the no-bias case) has no threshold."
+  - "The daily candle's session/timezone boundary is not stated in this video."
+
+python_detector: null
+related: ["previous-period-high-low", "failure-to-displace", "next-day-model", "draw-on-liquidity", "internal-external-rotation", "three-candle-outcomes"]

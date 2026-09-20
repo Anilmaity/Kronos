@@ -1,0 +1,54 @@
+id: htf-opening-price-entry
+name: "Enter Around The Higher-Timeframe Opening Price"
+aliases: ["stop chasing trades", "am I entering near the higher time frame open"]
+category: entry
+status: specified
+
+definition: >
+  His stated one-line cure for chasing: enter around — or near, or beyond in the direction of
+  the trade — the opening price of the higher-timeframe candle, never after that candle has
+  already made its range. He gives it both as a filter question to ask before clicking ("Am I
+  entering near the higher timeframe open?") and as a diagnosis of other traders' losses, which
+  he says cluster at the far end of an expansion candle rather than at its open. The corollary
+  is procedural: if the candle has already expanded, wait for the next candle open, because the
+  continuation entry is precisely the trade that puts you back at an opening price.
+
+timeframes:
+  htf: ["1D", "4H", "1H"]
+  ltf: ["15m", "5m", "3m"]
+  fractal: true
+
+preconditions:
+  - "A higher-timeframe candle whose open is identifiable on the chart."
+
+detection_rules:
+  - "Before entering, test whether the fill is near the open of the governing higher-timeframe candle."
+  - "Reject entries located near the far extreme of an already-expanded candle."
+  - "If the candle has already expanded, wait for the next candle open and take the continuation there."
+  - "For a bullish entry, at or below the opening price is acceptable; the rejected case is entering after the range is made."
+
+invalidation:
+  - "Not applicable — this is an entry-location filter."
+
+measurable:
+  - "R by distance of fill from the higher-timeframe open"
+  - "share of losing trades entered in the last third of an expansion candle"
+
+sources:
+  - video_id: m8xcjkOuBHU
+    title: "New York Open Live Q&A"
+    quote: "enter around the opening price of the higher time frame candles"
+  - video_id: Je7cd9HJUBE
+    title: "New York Open Live Q&A"
+    quote: "Am I entering near the higher time frame open?"
+
+ambiguities:
+  - "'Around' and 'near' are not bounded — no percentage of candle range or number of ticks is given."
+  - "Which timeframe's open governs when several are stacked is not stated, though the examples use the one being traded within."
+
+python_detector: null
+related: ["continuation-timing", "dont-trade-after-expansion", "positional-entry-before-open", "ten-am-candle-alignment", "missed-move-no-chase"]
+
+contributing_units: ["live_streams_02"]
+draft_count: 1
+voice: ttrades

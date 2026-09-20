@@ -1,0 +1,53 @@
+id: daily-wick-confirmation-timeframes
+name: 'Confirming The Day''s High Or Low: Which Timeframe, By Session'
+category: time
+status: specified
+aliases:
+- session-dependent confirmation timeframe
+definition: 'Which timeframe he uses to confirm the daily candle''s wick changes through the day, and
+  he gives the reason: reversal speed. In ASIA he will use almost exclusively the hourly or 30-minute.
+  Once in LONDON he will use the hourly, 30-minute or 15-minute. In NEW YORK he will still take the
+  hourly or 30-minute if they present themselves, but notes that a New York reversal is usually very
+  quick -- waiting for hourly confirmation often means the target is already hit or he cannot get on
+  side -- so he drops to the 5-minute.'
+timeframes:
+  htf:
+  - 1D
+  ltf:
+  - 1H
+  - 30m
+  - 15m
+  - 5m
+  fractal: false
+preconditions:
+- A daily bias and a developing daily wick.
+detection_rules:
+- 'Asia: confirm on the hourly or 30-minute only.'
+- 'London: hourly, 30-minute or 15-minute.'
+- 'New York: use the hourly / 30-minute if they present, otherwise drop to the 5-minute because the
+  reversal is fast.'
+- 'Sanity check before dropping down: if the hourly confirmation would land at the target level itself,
+  the trade has no room and the lower timeframe is required.'
+invalidation:
+- The daily wick is already large by the time confirmation arrives -- switch to the reduced target set.
+measurable:
+- time from session open to confirmed daily wick, by session
+- share of New York reversals confirmed only on the 5-minute
+sources:
+- video_id: m4k_1pF5zFI
+  title: TTrades Fractal Model - Trading Candle 2
+  quote: in Asia, I'm almost specifically only going to use the hourly or 30 minute
+- video_id: qdQYhePcvGE
+  title: TTrades Fractal Model - Trading Candle 3
+ambiguities:
+- Session boundaries are not given as clock times in this video.
+- The New York rule is stated as a tendency ('a lot of times'), not a threshold.
+related:
+- timeframe-pairing
+- session-timeframe-model-map
+- cisd-skip-at-target
+- large-wick-target-adjustment
+contributing_units:
+- build_a_model_intro_to_ttrades_fractal_model_02
+draft_count: 1
+voice: ttrades

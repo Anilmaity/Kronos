@@ -1,0 +1,55 @@
+id: htf-reaction-mss-retrace-entry
+name: "HTF Level Reaction -> LTF Structure Shift -> Retracement Entry"
+aliases: ["market maker buy model entry", "Sniper's entry model"]
+category: entry
+status: specified
+
+definition: >
+  The entry sequence built on top of internal/external range liquidity and timeframe alignment.
+  Price reaches a higher-timeframe internal or external range level; on the paired lower timeframe
+  a candle closes through a swing point in the anticipated direction; the entry is taken on the
+  retracement into the fair value gap or breaker block created by that displacement; the stop
+  rests at the extreme that tagged the higher-timeframe level.
+
+timeframes:
+  htf: ["1M", "1W", "1D", "4H", "1H"]
+  ltf: ["1D", "4H", "1H", "15m", "5m", "1m"]
+  fractal: true
+
+preconditions:
+  - "A higher-timeframe internal or external range liquidity level has been reached."
+  - "SMT divergence at that level is checked as an optional confluence booster."
+  - "For indices, the 09:30 equities open has passed."
+
+detection_rules:
+  - "On the paired lower timeframe, wait for a candle to close above a swing high (bullish) or below a swing low (bearish)."
+  - "Mark the fair value gap left by that displacement, and/or the breaker block formed by the swing that was violated."
+  - "Enter on the retracement into that fair value gap or breaker block; if both coincide, treat it as high probability."
+  - "The same structure repeats one degree down - the LTF swing high just run is itself external range liquidity, so expect a retrace into the internal LTF gap before continuation."
+
+invalidation:
+  - "Price trades through the extreme that tagged the higher-timeframe level (the stop)."
+
+execution:
+  bias: "Toward the opposing internal/external pool."
+  entry: "Retracement into the LTF fair value gap or breaker block after the close through the swing."
+  stop: "At the low (long) or high (short) that tagged the internal or external range level."
+  targets: ["the opposing internal or external range pool", "2 to 2.5 standard deviation projections of the entry swing - one worked example gave roughly 1:2 to 1:2.5"]
+
+measurable:
+  - "hit rate of the FVG-only entry versus the FVG-plus-breaker overlap entry"
+  - "realised R distribution using the stated stop and the opposing-pool target"
+  - "how often the retracement into the FVG occurs at all after the close through the swing"
+
+sources:
+  - video_id: 5aRB_ZY3474
+    title: "$niper | Internal & External Liquidity - ICT Daily Bias"
+
+ambiguities:
+  - "Whether the closure above the swing high must be a body close is never stated; one example accepts a very minor swing high."
+  - "No maximum time or candle count between the HTF level tag and the LTF confirmation."
+  - "No rule for choosing between the FVG entry and the more-confirmed order-block entry - both are offered as two means of entry."
+  - "The standard-deviation target method is referenced but not taught in this video."
+
+python_detector: null
+related: ["internal-external-range-liquidity", "timeframe-alignment-ladder", "advanced-market-structure-labeling", "smt-divergence-confluence", "opening-time-only-execution"]

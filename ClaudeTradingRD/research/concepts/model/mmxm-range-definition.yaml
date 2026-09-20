@@ -1,0 +1,62 @@
+id: mmxm-range-definition
+name: An MMXM Is A LTF Range Paired With A HTF Key Level
+definition: 'A market maker buy or sell model is defined as nothing more than a range traded
+  from range low to range high (or high to low) - equivalently, sell stops to buy stops. Lower-timeframe
+  ranges become market maker models only when paired with a higher-timeframe key level, and
+  a level only counts as a key level if it is in discount for a buy model (or premium for
+  a sell model) relative to the prevailing higher-timeframe institutional order flow. The
+  range itself is chosen as the most obvious price swing whose high and low connect to each
+  other.
+
+  '
+category: model
+status: underspecified
+aliases:
+- market maker buy model
+- market maker sell model
+preconditions:
+- A higher-timeframe key level exists and sits in discount (buy model) or premium (sell model).
+detection_rules:
+- Identify the higher-timeframe key level and confirm it is in discount/premium.
+- On the paired lower timeframe, identify the most obvious price swing whose high and low
+  connect.
+- That range is the market maker model; mark its low (buy model) as the split of the curve.
+- Everything left of the lowest low is the sell side of the curve; everything right is the
+  buy side.
+invalidation:
+- Not stated.
+measurable:
+- agreement rate between independent operators selecting 'the most obvious' range on the same
+  chart
+sources:
+- video_id: Ibw4saRtYMk
+  title: The MMXM Trader | Advanced ICT MMXM Lesson (Everything You Need To Know)
+ambiguities:
+- '''The most obvious price swing where the high and low connect'' is the entire range-selection
+  rule and is purely visual; this is why the entry is marked underspecified.'
+- How institutional order flow direction is established (to judge discount/premium) is deferred
+  to other material.
+related:
+- mmxm-phase-sequence
+- mmxm-timeframe-alignment
+- mmxm-hedging-program
+timeframes:
+  htf:
+  - 1M
+  - 1W
+  - 1D
+  - 4H
+  ltf:
+  - 1D
+  - 4H
+  - 1H
+  - 15m
+  - 5m
+  - 1m
+  fractal: true
+contributing_units:
+- t_talks_02
+draft_count: 1
+voice: guest
+guest_sources:
+- The MMXM Trader | Advanced ICT MMXM Lesson (Everything You Need To Know)

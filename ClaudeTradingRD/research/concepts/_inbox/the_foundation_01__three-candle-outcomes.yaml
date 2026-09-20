@@ -1,0 +1,48 @@
+id: three-candle-outcomes
+name: "The Three Things A Candlestick Can Do"
+aliases: ["consolidation / one-sided / both sides", "the Strat framing"]
+category: structure
+status: specified
+
+definition: >
+  Relative to the previous candle of the same timeframe, a candle can only do one of three
+  things: consolidate (fail to take out both the previous candle's high and its low), take one
+  side (trade beyond the previous high OR the previous low but not both), or take both sides.
+  The speaker credits this framing to "the Strat" and uses it as the logical justification for
+  marking previous-period highs and lows: unless the period consolidates, it must reach for one
+  or both sides, so those two levels are the candidate draws.
+
+timeframes:
+  htf: ["1M", "1W", "1D"]
+  ltf: ["4H", "1H", "15m", "5m"]
+  fractal: true
+
+preconditions:
+  - "A completed previous candle with a defined high and low on the timeframe in question."
+
+detection_rules:
+  - "Let PH = previous candle high, PL = previous candle low."
+  - "consolidation := high[i] <= PH AND low[i] >= PL."
+  - "one_sided_up := high[i] > PH AND low[i] >= PL."
+  - "one_sided_down := low[i] < PL AND high[i] <= PH."
+  - "both_sides := high[i] > PH AND low[i] < PL (outside bar)."
+
+invalidation:
+  - "Not applicable — the classification is exhaustive by construction."
+
+measurable:
+  - "empirical frequency of each of the three outcomes per timeframe (daily, weekly, monthly)"
+  - "conditional probability of the next candle's class given the current one"
+
+sources:
+  - video_id: YESqIoA7Wyg
+    title: "Important Liquidity Levels - Draw On Liquidity - ICT"
+    quote: "there are three ways a Candlestick can form"
+
+ambiguities:
+  - "Whether 'take out' means trading through the level by any amount (wick) or closing beyond it is not stated in this framing; other videos in the unit treat reach-vs-close-outside as materially different."
+  - "No probability is attached to the three classes — the framework is used as a taxonomy only."
+  - "The 'both sides' case gives no rule for deciding which side is taken first."
+
+python_detector: null
+related: ["previous-period-high-low", "draw-on-liquidity", "daily-bias-framework"]

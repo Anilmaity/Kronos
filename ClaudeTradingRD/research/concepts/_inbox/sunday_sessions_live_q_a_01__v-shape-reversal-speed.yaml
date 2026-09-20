@@ -1,0 +1,53 @@
+id: v-shape-reversal-speed
+name: "A Real Reversal Is a Fast V-Shape"
+aliases: ["V-shape reversal", "the longer it takes the less interested I become"]
+category: structure
+status: specified
+
+definition: >
+  A reversal at a level must displace away immediately, forming a V-shape. Price that reaches a
+  level and then lingers is building failure swings and is more likely to run the level again;
+  each additional period without displacement reduces the validity of the reversal idea. A
+  consolidation at a relevant level is read as a signal for continuation, not reversal.
+
+timeframes:
+  htf: ["4H", "1H", "30m"]
+  ltf: ["15m", "5m", "3m", "1m"]
+  fractal: true
+
+preconditions:
+  - "Price has reached a relevant level where a reversal is anticipated."
+
+detection_rules:
+  - "Require displacement away from the level within the first few candles after the level is reached."
+  - "Require a close back through the level and through the lower-timeframe swing that formed on the approach."
+  - "If instead price consolidates and builds equal highs or lows near the level, discard the reversal and expect continuation."
+
+invalidation:
+  - "Price fails to close back through the level quickly."
+  - "New failure swings form at the level."
+
+execution:
+  bias: "Opposite the level, only if the V-shape occurs."
+  entry: "On the continuation after the V-shape."
+  stop: "Beyond the reversal extreme."
+  targets: ["Opposing drawn liquidity"]
+
+measurable:
+  - "follow-through rate of reversals that displace within N candles versus those that consolidate"
+
+sources:
+  - video_id: WBwoiMDXT2c
+    title: "New York Open Live Q&A"
+    quote: "The longer it takes to reverse price, the less interested I become."
+  - video_id: 0AYGNc9czYc
+    title: "New York Open Live Q&A"
+  - video_id: egV_gABTQks
+    title: "(CPI) New York Open Live Q&A"
+
+ambiguities:
+  - "No candle count or time limit defines how quickly the displacement must occur."
+  - "V-shape is a visual description with no measurable slope or retracement criterion."
+
+python_detector: null
+related: ["liquidity-sweep-vs-consolidation", "continuation-timing", "cross-asset-reversal-confirmation"]

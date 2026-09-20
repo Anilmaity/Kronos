@@ -1,0 +1,56 @@
+id: entry-timeframe-elevation
+name: "Entry Timeframe Elevation (root-cause fix for stop-outs)"
+aliases: ["move up a time frame or two"]
+category: psychology
+status: specified
+
+definition: >
+  The single fix he gives twice in one stream, and quizzes the chat on: if you are repeatedly
+  stopped out and the market then does exactly what you expected, the problem is the entry
+  timeframe, not the read. Traders sit on the 1-minute or 3-minute, get stopped by structure
+  that is invisible there, and would have placed the stop correctly one or two timeframes up.
+  The illustration he gives is a continuation entry taken inside what is actually a
+  higher-timeframe fair value gap — from the higher timeframe it is obvious you should wait for
+  price to reach the gap and put the stop below it. He couples this with the observation that
+  he does not go below the 15-minute pre-open for exactly this reason.
+
+timeframes:
+  htf: ["15m", "5m"]
+  ltf: ["3m", "1m"]
+  fractal: true
+
+preconditions:
+  - "A repeated pattern of being stopped out on trades whose direction was correct."
+
+detection_rules:
+  - "Diagnose: the stop is taken and the target is then reached without you."
+  - "Raise the execution timeframe by one or two steps (1m/3m → 3m/5m → 15m)."
+  - "Check whether the entry sits inside a higher-timeframe array (e.g. an unfilled higher-timeframe fair value gap); if so, wait for price to reach that array and place the stop beyond it."
+  - "Keep the bias timeframes unchanged — only the execution pair moves."
+
+invalidation:
+  - "Not applicable — this is a corrective procedure."
+
+measurable:
+  - "stop-out rate of the same signal executed at 1m/3m versus 5m/15m"
+  - "share of stop-outs whose stop sat inside a higher-timeframe array"
+
+sources:
+  - video_id: m8xcjkOuBHU
+    title: "New York Open Live Q&A"
+    quote: "move up a time frame or two"
+  - video_id: TjUolMJNCMY
+    title: "New York Open Live Q&A"
+    quote: "use the 30 minute and 3 minute"
+
+ambiguities:
+  - "How far up to move is 'one or two' with no rule for choosing."
+  - "The trade-off against risk-to-reward (a higher timeframe means a wider stop) is not discussed."
+  - "It is not stated whether this is a permanent change or a temporary correction."
+
+python_detector: null
+related: ["timeframe-pairing", "root-cause-diagnosis", "stop-loss-placement", "invalidation-first-timeframe-selection"]
+
+contributing_units: ["live_streams_02"]
+draft_count: 1
+voice: ttrades

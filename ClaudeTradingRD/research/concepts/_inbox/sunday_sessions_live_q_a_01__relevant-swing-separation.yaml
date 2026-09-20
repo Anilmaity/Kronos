@@ -1,0 +1,49 @@
+id: relevant-swing-separation
+name: "Relevant Swings Require Separation"
+aliases: ["no separation between highs", "relevant level"]
+category: structure
+status: underspecified
+
+definition: >
+  A swing high or low is only a relevant level to trade away from if it is meaningfully separated
+  from neighbouring swings. When two highs (or two lows) sit close together with no separation,
+  there is nothing relevant to trade away from and he loses interest in the setup. Equal or
+  near-equal highs left without being swept are read as consolidation rather than as a level.
+
+timeframes:
+  htf: ["1D", "4H", "1H"]
+  ltf: ["15m", "5m", "3m"]
+  fractal: true
+
+preconditions:
+  - "Candidate swing highs or lows have been identified."
+
+detection_rules:
+  - "Compare the candidate swing to the nearest same-side swing."
+  - "If the two are close together with no separation, the level is not relevant."
+  - "If the level was reached but not swept (equal highs or lows left), read consolidation and require a sweep before framing."
+
+invalidation:
+  - "A sweep of the cluster creates a single relevant swing."
+
+execution:
+  bias: "Unchanged."
+  entry: "Only away from a relevant, separated swing."
+  stop: "Beyond that swing."
+  targets: ["The opposing relevant swing"]
+
+measurable:
+  - "distance between adjacent same-side swings versus subsequent follow-through when traded away from"
+
+sources:
+  - video_id: 0AYGNc9czYc
+    title: "New York Open Live Q&A"
+  - video_id: egV_gABTQks
+    title: "(CPI) New York Open Live Q&A"
+
+ambiguities:
+  - "Separation is judged purely visually; no minimum distance in points, ATR or candles is given."
+  - "He says a dedicated video on relevant highs and lows is scheduled, implying the definition is incomplete in this unit."
+
+python_detector: null
+related: ["level-to-trade-away-from", "smt-requires-framework"]

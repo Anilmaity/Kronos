@@ -1,0 +1,44 @@
+id: session-open-volume-nyse
+name: 9:30 Belongs To Indices Because The NYSE Opens; Forex Uses 8:30 News Instead
+aliases:
+- 9:30 is not a forex level
+category: time
+status: specified
+definition: 'Asked whether 08:30 or 09:30 should be used for forex, TTrades answers no to 09:30: it
+  matters because that is when the New York Stock Exchange opens and equities start trading, which makes
+  it specific to the index asset class. 08:30 can be used in forex when there is news at that time,
+  because a release is currency-relevant in a way that an equity cash open is not.'
+timeframes:
+  htf:
+  - 1D
+  ltf:
+  - 1H
+  - 15m
+  - 5m
+  fractal: false
+preconditions:
+- Instrument class identified (index vs FX).
+detection_rules:
+- 'For indices: 09:30 EST is a valid time level (cash equity open).'
+- 'For forex: do not use 09:30 as a structural time level.'
+- 'For forex: 08:30 is usable when a release lands at that time.'
+invalidation: []
+measurable:
+- realised volatility at 09:30 in index futures vs major FX pairs
+- FX volatility at 08:30 on news vs no-news days
+sources:
+- video_id: wGYde-h84cs
+  title: Live Q&A with AM Trades - Weekly Profile
+  quote: that's when the stock New York Stock Exchange opens
+ambiguities:
+- Whether other equity-driven levels (10:00, 16:00) inherit the same asset-class restriction is not
+  addressed.
+related:
+- important-time-levels
+- new-york-intraday-time-levels
+- killzones
+- est-timezone-anchor
+contributing_units:
+- live_stream_guests_02
+draft_count: 1
+voice: ttrades

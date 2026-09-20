@@ -1,0 +1,68 @@
+id: inversion-fair-value-gap
+name: Inversion Fair Value Gap (IFVG)
+aliases:
+- fair value Gap inversion
+- old city
+- old busy
+category: structure
+status: specified
+definition: 'When a fair value gap fails, or price closes through it, that gap can then be used as
+  support or resistance in the opposite direction. The canonical video adds one detail that materially
+  changes any detector built from it: the inversion and its retest do not need to occur back to back,
+  the gaps do not have to overlap, and the return can come after an intervening period of consolidation.
+  The worked failure sequence is three-staged - a close below the consequent encroachment as the
+  first clue, an inability to displace back out, then a close below the whole fair value gap - after
+  which the old bullish gap is used as resistance on return.'
+timeframes:
+  htf:
+  - 1D
+  - 4H
+  - 1H
+  ltf:
+  - 15m
+  - 5m
+  - 1m
+  fractal: true
+preconditions:
+- An existing fair value gap that price has closed through.
+detection_rules:
+- 'Inversion trigger: the fair value gap fails, or price closes through it; the zone then flips polarity.'
+- After inversion the old zone is used as support (was bearish) or resistance (was bullish) on the
+  next return.
+- 'The retest need not be immediate: extend the zone forward in time and wait; it may be reached
+  after a period of consolidation, and the two gaps need not overlap.'
+- 'Observed failure sequence before the inversion: close beyond the CE (first clue), failure to displace
+  back out, then a close beyond the whole gap.'
+- 'Worked mirror: an old bearish gap whose CE is then used as support, with price returning to the
+  same old gap a second time and displacing away from it.'
+invalidation:
+- Price closes back through the inverted zone in the original direction - not stated as a rule, only
+  implied by the polarity logic.
+measurable:
+- distribution of bars between the inverting close and the first retest
+- reaction rate on the first retest vs the second and third
+sources:
+- video_id: ZVUDpCyvxfQ
+  title: Understanding Fair Value Gaps (FVG) - ICT Concepts
+  quote: fair value Gap fails or Price closes through it
+- video_id: ZVUDpCyvxfQ
+  title: Understanding Fair Value Gaps (FVG) - ICT Concepts
+  quote: this doesn't need to occur back to back
+- video_id: ZVUDpCyvxfQ
+  title: Understanding Fair Value Gaps (FVG) - ICT Concepts
+  quote: this close below the consequent encroachment we cannot displace back out
+ambiguities:
+- '''Closes through it'' is not pinned to the far edge versus merely outside the near edge, and the
+  CE contradiction (see consequent-encroachment) sits directly underneath this.'
+- 'No expiry: because the retest may come much later, a detector needs a horizon that he never supplies.'
+- How many times an inverted gap can be reused is not stated, though he shows one being used twice.
+python_detector: null
+related:
+- fair-value-gap
+- consequent-encroachment
+- fvg-three-levels
+- failure-to-displace
+contributing_units:
+- the_foundation_02
+draft_count: 1
+voice: ttrades

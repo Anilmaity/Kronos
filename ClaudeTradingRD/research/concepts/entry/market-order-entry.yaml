@@ -1,0 +1,56 @@
+id: market-order-entry
+name: Enter At Market, Not With Stop Orders
+definition: 'His order type at entry. He does not use stop orders to enter; once the trigger
+  has printed he market-orders in. On options he will sometimes work the mid but usually takes
+  the market, with the caveat that entering into a fast drop lets volatility work against
+  the fill. He notes TradingView''s execution lags slightly and says that does not matter
+  when trading a 15-minute timeframe. Resting limit orders are mentioned only as a hypothetical
+  for pre-positioning into a level he wants, never as the standard entry.
+
+  '
+category: entry
+status: specified
+aliases:
+- I always just market order
+preconditions:
+- The entry trigger (closure / CISD) has already printed.
+detection_rules:
+- Enter at market after the trigger prints; do not place stop orders to enter.
+- On options, buy the market unless price is dropping fast, in which case the mid is preferred.
+- Accept small platform execution lag when the execution timeframe is 15-minute or higher.
+invalidation:
+- n/a
+measurable:
+- slippage between the trigger candle's close and the fill
+- fill-quality difference between market and mid orders on fast moves
+sources:
+- video_id: X4XSsv5CNqg
+  title: New York Open Live Q&A
+  quote: I don't really use stop orders to enter
+- video_id: X4XSsv5CNqg
+  title: New York Open Live Q&A
+  quote: I always just market order
+- video_id: c7nk7ypJHN4
+  title: New York Open Live Q&A
+  quote: Yeah, it does slightly, but if you're trading on like a 15 minute
+ambiguities:
+- No slippage tolerance is given, and no rule for when a fill is bad enough to abandon the
+  trade.
+- '"Fast drop" as the condition for working the mid is not quantified.'
+- He floats a limit entry in the same streams ("unless I can get up into here with a limit"),
+  so the market-only statement is a default rather than an absolute.
+related:
+- cisd-entry-model
+- positional-entry-before-open
+- rr-gated-entry-refinement
+timeframes:
+  htf: []
+  ltf:
+  - 15m
+  - 5m
+  - 3m
+  fractal: false
+contributing_units:
+- live_streams_03
+draft_count: 1
+voice: ttrades

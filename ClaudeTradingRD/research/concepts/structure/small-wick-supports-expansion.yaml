@@ -1,0 +1,52 @@
+id: small-wick-supports-expansion
+name: Small Wick Supports Expansion
+definition: 'Wick size is used as the primary filter for whether a candle is tradeable. A
+  candle whose opposing wick is small - price did not trade far from its open before expanding
+  - supports expansion and can be traded. A candle with a large opposing wick does not support
+  expansion. The distinction produces two named candle types: a "reversal into expansion candle"
+  (small wick, tradeable) and a "reversal candle" (large wick, not tradeable on the 4-hour;
+  on the daily it is traded only with reduced targets).
+
+  '
+category: structure
+status: underspecified
+aliases:
+- wick size matters
+- reversal into expansion candle vs reversal candle
+preconditions:
+- A candle has closed at or from a key level.
+detection_rules:
+- Measure the opposing wick relative to the candle body / range.
+- Small opposing wick -> the candle supports expansion and may be traded.
+- Large opposing wick -> the candle does not support expansion; on the 4-hour, wait for the
+  next candle open instead.
+- On the daily only, a large-wick reversal candle may still be traded with adjusted targets.
+invalidation:
+- Not applicable - this is a classification filter.
+measurable:
+- forward expansion distance conditioned on wick-to-range ratio buckets
+- win rate of entries inside small-wick vs large-wick candles
+sources:
+- video_id: J_EeS2_2CAM
+  title: GxTradez | Phases of Price & Profiles For Expansion
+ambiguities:
+- No numeric threshold separates 'small' from 'large'; marked underspecified for that reason.
+- The upper-half-EQ rule is offered as the mechanical proxy but only applies to the following
+  candle, not to the candle being classified.
+related:
+- upper-half-eq-expansion-filter
+- expansion-signature
+- reversal-candle-target-adjustment
+timeframes:
+  htf:
+  - 1D
+  - 4H
+  ltf:
+  - 1H
+  fractal: true
+contributing_units:
+- t_talks_02
+draft_count: 1
+voice: guest
+guest_sources:
+- GxTradez | Phases of Price & Profiles For Expansion

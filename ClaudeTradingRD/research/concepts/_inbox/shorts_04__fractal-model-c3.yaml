@@ -1,0 +1,59 @@
+id: fractal-model-c3
+name: "Candle 3 Continuation (the easier trade)"
+category: model
+status: specified
+definition: >
+  The Shorts state the candle 3 branch as an explicit decision procedure at a point of interest.
+  If the candle that reached the point of interest did NOT close back inside its previous candle,
+  there is no candle 2 and the correct action is to let one more candle print and check for a
+  candle 3 closure - defined here as closing over the BODY of candle 2. If neither a candle 2 nor
+  a candle 3 closure appears, the model does not align and the setup is skipped even where
+  direction can be anticipated. Once a candle 3 closes outside candle 2's range, candle 4 becomes
+  tradeable as a further continuation.
+
+timeframes:
+  htf: ["1D", "4H"]
+  ltf: ["1H", "15m", "5m"]
+  fractal: true
+
+detection_rules:
+  - "At the point of interest, test for a candle 2 closure (sweep plus close back inside the previous candle)."
+  - "If absent, let the next candle print and test for a candle 3 closure: a close over the body of candle 2."
+  - "If neither closure forms, the model does not align - take no trade even if direction is anticipated."
+  - "A candle 3 that closes outside candle 2's range licenses a continuation entry in candle 4."
+  - "After a confirmed candle 2 plus a change in the state of delivery, continuations are valid to look for in candle 3."
+
+invalidation:
+  - "Neither a candle 2 nor a candle 3 closure prints at the point of interest."
+
+measurable:
+  - "frequency of the C2-absent / C3-present branch"
+  - "win rate of candle 4 entries following a C3 that closed outside C2's range"
+
+sources:
+  - video_id: Nbs0gsth2jw
+    title: "With No C2 Closure At A POI, Wait For A C3 Closure To Form Within The Next Candle"
+    quote: "we do not have a candle two closure, we need to let another candle print"
+  - video_id: Nbs0gsth2jw
+    title: "With No C2 Closure At A POI, Wait For A C3 Closure To Form Within The Next Candle"
+    quote: "we do go and close over the body of candle two"
+  - video_id: Oio_QeRPVQQ
+    title: "Using Context, POIs & Candle Closures to Get Alongside Moves"
+    quote: "my model would not align with it as I do not have a candle two"
+  - video_id: yZVevl-tMHA
+    title: "Why Trading Continuations Is Easier Than Reversals"
+    quote: "That means it's valid to look for continuations in candle three."
+  - video_id: Hi8faa5u2uw
+    title: "Using the T-Spot to Find Entries Within the Fractal Model"
+    quote: "since candle 3 closed outside candle 2's range, I can look for a continuation"
+
+ambiguities:
+  - "Only ONE extra candle is allowed to print in the worked example; the Shorts never say whether a candle 4 closure would also be accepted if candle 3 fails."
+  - "'Close over the body of candle two' is stated, but which body edge (open or close) is the reference is not."
+
+python_detector: null
+related: ["fractal-model-c2", "fractal-model-c4", "continuation-timing", "upper-half-eq-expansion-filter"]
+
+voice: ttrades
+contributing_units: [shorts_04]
+draft_count: 1

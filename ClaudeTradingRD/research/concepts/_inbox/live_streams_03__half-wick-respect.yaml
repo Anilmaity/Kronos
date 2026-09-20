@@ -1,0 +1,77 @@
+id: half-wick-respect
+name: 0.5 of the Wick Must Be Respected
+aliases:
+- upper 50% of the wick
+- use 0.5 of that
+category: structure
+status: specified
+
+definition: >
+  Applied live as the level a continuation must hold. After price tags a fair value gap and
+  reacts, he says you want to see it respect 50% of that wick, and quickly - the next candle
+  should form its low in the upper half of the wick, then close over and continue. He uses the
+  same construction when refining an entry down through timeframes (take the lower-timeframe
+  swing that the 15-minute gap sits on and use 0.5 of it as the level price should not trade
+  below) and again when marking a level around a small lower-timeframe protected swing, using
+  around half of it.
+
+timeframes:
+  htf:
+  - 4H
+  - 1H
+  ltf:
+  - 15m
+  - 5m
+  - 3m
+  - 1m
+  fractal: true
+
+preconditions:
+- A wick or opposing candle exists whose 50% level can be marked.
+
+detection_rules:
+- Mark 50% of the relevant wick.
+- For a continuation, require the next candle to form its low (or high) in the half nearer
+  the direction of travel, then close over.
+- Require the reaction to happen quickly rather than grinding at the level.
+- When refining an entry, use 0.5 of the lower-timeframe swing as the line price must not
+  trade beyond.
+
+invalidation:
+- Price trades beyond 50% of the wick, or takes out the lower-timeframe swing that the level
+  was drawn from.
+
+measurable:
+- hit rate of continuations that hold 0.5 of the wick versus those that breach it
+- time-to-reaction at the 50% level, split by outcome
+
+sources:
+- video_id: c7nk7ypJHN4
+  title: New York Open Live Q&A
+  quote: you're going to want to see it respect 50% of this wick
+- video_id: c7nk7ypJHN4
+  title: New York Open Live Q&A
+  quote: the upper 50% of the wick, you want to see the next candle
+- video_id: W7Fu3Rx5iMs
+  title: New York Open Live Q&A
+  quote: Use 0.5 of that
+- video_id: U4j-fZD-FJk
+  title: New York Open Live Q&A
+  quote: Using around half of that
+
+ambiguities:
+- '"Rather quickly" is never given a candle count or a time limit.'
+- Whether the 50% is measured on the wick alone or on the whole candle varies by example - he
+  uses "0.5 of that" on a swing, on a wick, and on a body cluster in different passages.
+- Wick touch versus body close through the level is not distinguished.
+
+related:
+- equilibrium-eq
+- consequent-encroachment
+- wick-midpoint-rebalance-entry
+- harder-target-behind-protected-swing
+
+contributing_units:
+- live_streams_03
+draft_count: 1
+voice: ttrades

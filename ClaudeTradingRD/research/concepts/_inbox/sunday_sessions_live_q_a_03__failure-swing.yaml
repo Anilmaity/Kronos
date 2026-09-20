@@ -1,0 +1,54 @@
+id: failure-swing
+name: "Failure Swing"
+aliases: ["failure swings", "failed swing"]
+category: liquidity
+status: underspecified
+
+definition: >
+  The small swings left behind after a protected high or low forms - the shallow
+  highs and lows that did not get taken during the move away. He uses them two ways:
+  as a non-greedy target (price returning to sweep failure swings before continuing),
+  and as the side of the market with low resistance, since a side carrying failure
+  swings is the side he expects price to run first. Failure swings can be read from
+  the higher timeframe, where previous day lows serve as failure swings.
+
+timeframes:
+  htf: ["1D", "4H"]
+  ltf: ["1H", "15m", "5m"]
+  fractal: true
+
+preconditions:
+  - "A protected swing has formed and price has delivered away from it."
+
+detection_rules:
+  - "Identify the shallow swings left behind between the protected extreme and the current price."
+  - "When price reacts and comes back, it will often take out those failure swings before resuming - use the first failure swing as a target when there is no strong higher timeframe bias."
+  - "On the daily chart, the side carrying failure swings is the low-resistance side; do not look for trades in the other direction until they are taken."
+  - "Previous day lows can be treated as failure swings when read from the higher timeframe."
+
+invalidation:
+  - "Price trading through the protected extreme itself rather than merely the failure swings."
+
+execution:
+  bias: "Toward the side holding failure swings."
+  entry: null
+  stop: null
+  targets: ["the first failure swing beyond the entry (used for 1.5R-2R partials)"]
+
+measurable:
+  - "hit rate of the first failure swing as a target"
+  - "how often the failure-swing side of the daily chart is run first"
+
+sources:
+  - video_id: bMkRomKEunU
+    title: "New York Open Live Q&A"
+  - video_id: u8bnmaih_hA
+    title: "TTrades Sunday Session - Live Q&A"
+
+ambiguities:
+  - "No mechanical definition is given - failure swings are pointed at on the chart rather than defined by a rule."
+  - "The relationship between 'failure swing' and 'relatively equal lows' is not clarified; he refuses to trade away from equal lows but targets failure swings, and the two look similar on a chart."
+  - "How many failure swings must exist for a side to count as low resistance is not stated."
+
+python_detector: null
+related: ["protected-swing", "high-vs-low-resistance-liquidity", "liquidity-sweep"]

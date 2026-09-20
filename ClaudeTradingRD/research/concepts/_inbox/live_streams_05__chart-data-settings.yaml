@@ -1,0 +1,46 @@
+id: chart-data-settings
+name: Chart Data Settings (back-adjust on, settlement off)
+aliases:
+- B adjust
+- back adjusted
+category: risk
+status: specified
+definition: This unit supplies the reason for back-adjusting, not just the setting. Without back-adjustment
+  the futures contract can show a prior high as already taken while the index and the ETF have not
+  taken it - he checks QQQ and NDX on screen to show both still below. He wants the futures chart
+  to agree with the index and the ETF, so he always turns back-adjustment on. Separately in the indicator
+  stream he declines to support a platform on the grounds that its settlement price has not been fixed.
+timeframes:
+  htf:
+  - 1D
+  - 1W
+  ltf:
+  - 1H
+  - 15m
+  fractal: false
+preconditions:
+- A continuous futures chart with a contract roll in the visible history.
+detection_rules:
+- Turn back-adjustment on for continuous futures charts.
+- Cross-check a disputed high or low against the cash index and the tracking ETF; the futures chart
+  should not show a level taken that the index and ETF have not taken.
+- Settlement-price handling on the platform must be correct or its charts are not used.
+invalidation:
+- Not applicable - a data setting.
+measurable:
+- count of level breaks that disagree between adjusted and unadjusted futures series
+sources:
+- video_id: tDiwwMRWF2k
+  title: New York Open Live Q&A with NickDoesFutures
+  quote: I want it to be in comparison to the index in the ETF
+ambiguities:
+- The auto-transcript's speaker markers are unreliable across this passage; the reasoning is attributed
+  to the host because he is the one navigating to QQQ and NDX on the shared screen.
+- '''B adjust'' is the auto-caption rendering of back-adjust.'
+related:
+- relative-strength-asset-selection
+- options-proxy-execution
+contributing_units:
+- live_streams_05
+draft_count: 1
+voice: ttrades

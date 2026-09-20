@@ -1,0 +1,55 @@
+id: smart-money-reversal-breaker-confirmation
+name: "Confirming The Smart Money Reversal With A Breaker, Not An Order Block"
+aliases: ["smart money reversal", "how to know the model will reverse"]
+category: model
+status: specified
+
+definition: >
+  The test for whether a market maker model is actually turning at its midpoint. The instruction is
+  explicitly to STOP looking for an order block at the reversal. Instead require a breaker - and
+  require price to trade through it into an area of fair value. Breaker plus fair value together
+  are described as one of the strongest algorithmic entry patterns; their combination is what makes
+  the reversal trustworthy.
+
+timeframes:
+  htf: ["1W", "1D"]
+  ltf: ["1H"]
+  fractal: true
+
+preconditions:
+  - "A market maker model structure is identifiable, split into a buy-side and a sell-side of the curve."
+  - "Price is at or near the midpoint of that structure."
+
+detection_rules:
+  - "Do not use an order block as the reversal signature."
+  - "Identify the breaker - for a bullish breaker, a low, then a high, then a lower low; the up-close candles at that structure are the block."
+  - "Project those up-close candles forward in time."
+  - "Require a body close above them (bullish case)."
+  - "Require price to return into an area of fair value (a fair value gap, or 50 percent of the identified leg) coinciding with the breaker."
+  - "Only when both the breaker is traded through and fair value is present is the reversal trusted."
+
+invalidation:
+  - "Not stated for the reversal test itself; the model-level invalidation is a return to 50 percent of the dealing range."
+
+execution:
+  bias: "Reverse to the opposite side of the curve."
+  entry: "At the breaker, where it coincides with the area of fair value."
+  stop: "Not stated."
+  targets: ["the original consolidation"]
+
+measurable:
+  - "hit rate of reversals confirmed by breaker-plus-fair-value versus by order block alone"
+  - "how often a body close above the projected breaker precedes the actual reversal"
+
+sources:
+  - video_id: wB-fQiT_UDo
+    title: "DayTradingRauf | ICT MMXM Models"
+
+ambiguities:
+  - "'Area of fair value' is used alongside 'fair value gap' and at one point means 50 percent of a leg; whether these are the same thing is never resolved."
+  - "No timeframe is given for the confirming body close."
+  - "The midpoint of the model is located by eye ('split this in half') with no rule."
+  - "'One of the strongest algorithmic entry patterns' is a claim relayed from ICT, not evidenced here."
+
+python_detector: null
+related: ["breaker-block", "mmxm-hedging-definition", "silver-bullet-breaker-requirement", "dealing-range-fib-grading"]

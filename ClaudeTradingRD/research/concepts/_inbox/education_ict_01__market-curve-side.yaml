@@ -1,0 +1,69 @@
+id: market-curve-side
+name: Buy Side vs Sell Side Of The Curve
+aliases:
+- buy side of the curve
+- cell side of the curve
+- sell side of the curve
+category: structure
+status: underspecified
+definition: A positional filter he uses to decide whether a level is likely to hold or to be run through.
+  Price is treated as sitting on one side of a curve; on the sell side of the curve price is seeking liquidity
+  below and discount PD arrays are expected to support it, while on the buy side premium PD arrays are
+  expected to RESIST price. The operational consequence he states twice is that trades taken against the
+  curve - looking for a reversal on the wrong side - tend to be run straight through, and that this is
+  the diagnosis for repeatedly getting stopped out at otherwise valid levels.
+timeframes:
+  htf:
+  - 4H
+  - 1H
+  - 15m
+  ltf:
+  - 5m
+  - 1m
+  fractal: true
+preconditions:
+- A range or dealing range with an identifiable high and low.
+detection_rules:
+- Locate where price sits within the operative range - moving up = one side of the curve, moving down
+  = the other.
+- On the sell side of the curve, expect price to keep seeking the liquidity below rather than reverse
+  at a level.
+- On the buy side of the curve, expect premium PD arrays (e.g. an order block above) to RESIST price.
+- Do not look for a reversal long while price is still on the side of the curve that is seeking lower
+  liquidity.
+invalidation:
+- Price transitions to the other side of the curve (a new extreme / a reversal).
+measurable:
+- reaction rate at a PD array taken with the curve vs against it
+- share of stop-outs attributable to counter-curve entries
+sources:
+- video_id: E6bpY4dQvlE
+  title: Box Setup - The Easiest Entry Model? - ICT Concepts
+  quote: we're on the buy side of the curve
+- video_id: E6bpY4dQvlE
+  title: Box Setup - The Easiest Entry Model? - ICT Concepts
+  quote: enter long on a cell side of the curve and enter short
+- video_id: xvqsLTpmpsI
+  title: Find Lower Time Frame Entries Using Bias - ICT Concepts
+  quote: when we were on the cell side of the curve here
+- video_id: xvqsLTpmpsI
+  title: Find Lower Time Frame Entries Using Bias - ICT Concepts
+  quote: you want the premium PD arrays right to resist price
+ambiguities:
+- NO RULE LOCATES THE CURVE. Nothing says where the buy side ends and the sell side begins - it is not
+  tied to the range equilibrium, to a swing, or to a timeframe. Not decidable as stated.
+- 'The transcript is internally confusing on which side is which: ''we''re on the buy side of the curve
+  right so we''re moving up'' but later ''you''re trying to enter long on a cell side of the curve'' as
+  the described ERROR. The intent - do not fade the direction price is currently seeking - is clear; the
+  labelling is not. Auto-caption renders ''sell'' as ''cell'' throughout.'
+- Its relationship to premium/discount is implied but never stated as identity.
+related:
+- premium-discount
+- box-setup
+- market-maker-model
+- dealing-range
+- phases-of-price
+voice: ttrades
+contributing_units:
+- education_ict_01
+draft_count: 1

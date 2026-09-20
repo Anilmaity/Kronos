@@ -1,0 +1,60 @@
+id: entry-time-window
+name: "Entry Time Window (and rejection of kill zones)"
+aliases: ["8am to 10:30", "10am four hour candle", "no kill zones"]
+category: time
+status: specified
+
+definition: >
+  Time matters to him only through higher timeframe candle boundaries, not through
+  named session windows. The majority of his entries come between 8:00 a.m. and about
+  10:30, and after 11:00 he loses interest in the day. The one clock time he uses
+  actively is 10:00 a.m., because it opens a new 4-hour candle - which is what he waits
+  for when the current 4-hour candle does not support his direction. He explicitly does
+  not use kill zones, does not mark session highs and lows, and does not use macros.
+
+timeframes:
+  htf: ["4H", "1H"]
+  ltf: ["15m", "5m"]
+  fractal: false
+
+preconditions:
+  - "US index futures / New York session context."
+
+detection_rules:
+  - "Most entries fall between 08:00 and roughly 10:30; interest drops off after 11:00."
+  - "10:00 a.m. opens a new 4-hour candle - wait for it when the current 4-hour candle is against the intended direction."
+  - "Do not filter by kill zones; the relevant question is which higher timeframe candle you are trading inside."
+  - "Do not mark session highs and lows as levels - a London high with no drawn objective at it is given as having no relevance."
+  - "First-presented fair value gap is not used; the 9:30 open is used instead if something of that kind is wanted."
+  - "Macros are not used - he characterises a macro as just a section of an open-high-low-close."
+
+invalidation:
+  - "Not applicable - this is a filter, not a setup."
+
+execution:
+  bias: null
+  entry: "Preferentially within 08:00-10:30; at or after a 4-hour candle boundary when alignment was missing."
+  stop: null
+  targets: null
+
+measurable:
+  - "entry timestamp distribution and P&L by hour of day"
+  - "outcome of entries after 11:00 vs before"
+  - "whether kill-zone filtering would have improved or degraded the same trade set"
+
+sources:
+  - video_id: wM1s7UivQ08
+    title: "New York Open Live Q&A"
+    quote: "I don't really care about kill zones"
+  - video_id: bMkRomKEunU
+    title: "New York Open Live Q&A"
+  - video_id: r7yW6ou1LDs
+    title: "TTrades Sunday Session - Live Q&A"
+
+ambiguities:
+  - "Whether 08:00 means 08:00 EST is not stated explicitly, though the New York context implies it."
+  - "The 4-hour candle boundaries other than 10:00 a.m. are not enumerated in these streams."
+  - "He says he does not care about 10:00 a.m. news specifically, but the 10:00 a.m. candle boundary matters - the two are easy to conflate."
+
+python_detector: null
+related: ["timeframe-alignment", "small-wick-expansion-rule", "macros-not-used", "new-york-reversal-profile"]

@@ -1,0 +1,71 @@
+id: daily-bias-c2-c3-h1-cisd
+name: Daily Bias = Daily C2/C3 Closure Confirmed by H1 CISD
+category: model
+status: specified
+aliases:
+- the two-part gate
+- closure plus CISD
+definition: 'The two-part gate that every setup in this unit passes through: a candle 2 (or candle 3)
+  closure on the higher timeframe, AND a change in the state of delivery inside that same candle on
+  the paired lower timeframe. Neither half is sufficient. A closure without a lower-timeframe CISD is
+  ''not a valid fractal model'' and he waits or ignores it; a CISD without a higher-timeframe closure
+  ''does not mean anything''. He also gives the failure mode: when the CISD never forms, price typically
+  consolidates and then takes one side of the range and trades to the other.'
+timeframes:
+  htf:
+  - 1D
+  - 4H
+  - 1H
+  ltf:
+  - 1H
+  - 15m
+  - 5m
+  - 3m
+  fractal: true
+preconditions:
+- A higher-timeframe candle 2 or candle 3 closure has printed.
+detection_rules:
+- Locate the extreme of the closure candle on the lower timeframe.
+- Locate the series of same-direction candles that made that extreme.
+- Require a close through that series. Until that close occurs the model is unconfirmed and no entry
+  is valid.
+- A CISD with no higher-timeframe candle closure is discarded.
+- 'Quality test on the CISD: a fast V-shape is wanted. If price consolidates for half the candle and
+  then closes over, treat it as consolidation rather than a confirmed reversal.'
+invalidation:
+- The lower timeframe makes a new extreme before closing through -- the old level is abandoned and the
+  new series is tracked instead.
+- No close through occurs before the higher-timeframe candle ends.
+measurable:
+- proportion of HTF closures that receive an LTF CISD within the same candle
+- forward expansion of confirmed vs unconfirmed closures
+- frequency of the consolidate-then-take-one-side failure mode
+sources:
+- video_id: vn1RYjhJUnQ
+  title: Validating Swing Points Using Lower Timeframe Confirmation (CISD)
+  quote: If it consolidates for half of the candle and then closes over
+- video_id: TNybDCtwBnc
+  title: TTrades Playbook | Fractal Model Fundamentals (TTFM)
+  quote: I first have to identify a daily bias
+- video_id: q3nauvjT3q0
+  title: Stop Overcomplicating Trading (Here's the Fix)
+  quote: with an hourly chart, you do need a point of interest
+- video_id: 9AL41xON3hA
+  title: The Only Trading Strategy You Need For 2026
+- video_id: FgP2lc9nneM
+  title: The Best Timeframe for TTrades Fractal Model (Simple)
+ambiguities:
+- '''Half of the candle'' as the consolidation cut-off is the only timing quantifier given and appears
+  once.'
+- Whether the CISD must sit inside the wick specifically, or anywhere inside the closure candle's range,
+  is not settled here.
+related:
+- cisd
+- fractal-model-c2
+- fractal-model-c3
+- daily-bias-framework
+- consolidation-vs-retracement-test
+contributing_units:
+- build_a_model_intro_to_ttrades_fractal_model_02
+draft_count: 1
+voice: ttrades

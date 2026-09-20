@@ -1,0 +1,85 @@
+id: pd-array-matrix-ladder
+name: The PD Array Matrix As An Ordered Target Ladder
+definition: 'Ben''s method for setting targets without a projection tool: he does not fib
+  the leg and does not use standard deviations. Instead he enumerates every PD array lying
+  between current price and the draw, and takes them in the order price must pass through
+  them. In his worked bearish case the first target is the fair value gap, the second the
+  order block below it, the third the sell-side liquidity pool - and he names the general
+  principle that price works from one extreme of the range to the other, going through the
+  ladder on the way. He also states the ladder''s polarity rule: below a bullish order block
+  sits sell-side liquidity, which is the bottom of the bullish matrix; if that breaks, the
+  matrix inverts and the arrays are climbed in the other direction - breaker, fair value gap,
+  bearish order block, buy-side liquidity pool.
+
+  '
+category: entry
+status: specified
+aliases:
+- pd array matrix
+- ladder of pd arrays
+- first target second target third target
+preconditions:
+- A directional draw has been established (for Ben, gated by the dollar).
+- The PD arrays between price and the draw have been marked.
+detection_rules:
+- 'List every PD array between current price and the draw: fair value gaps, order blocks,
+  breakers, balanced price ranges, liquidity pools.'
+- Order them by the sequence price must traverse them; that ordering is the target list.
+- 'Bullish matrix, from the top down: buy-side liquidity, bearish order block, fair value
+  gap, breaker, bullish order block, sell-side liquidity at the bottom. Breaking the bottom
+  inverts the matrix and the ladder is climbed the other way.'
+- Take profit at ladder steps rather than at a projected multiple - he explicitly does not
+  use standard-deviation projections for targets, only PD arrays.
+- When trading counter-trend, target PD arrays; when trading with the trend, liquidity pools
+  are the primary targets.
+- Do not commit to the final extreme early - he states that on a temporary shift he is not
+  certain the far lows will be reached until price shows it.
+invalidation:
+- A step of the ladder is not respected and price closes through it - the next step becomes
+  the working target.
+measurable:
+- hit rate of ladder step 1 versus step 2 versus step 3 from a given entry
+- R distribution when exiting at each ladder step
+- how often price traverses the full ladder to the liquidity pool
+sources:
+- video_id: yRmKkR4CojU
+  title: Fractalizing Entries -Q&A with Ben - ICT Concepts
+  quote: price is going to work from one extreme to the other
+- video_id: yRmKkR4CojU
+  title: Fractalizing Entries -Q&A with Ben - ICT Concepts
+  quote: in the process it's going to go through the ladder of pd arrays
+ambiguities:
+- No rule ranks two arrays sitting at the same price from different timeframes.
+- He rejects one candidate order block in the worked example purely on appearance ('it doesn't
+  look clean enough for me'), so the ladder's membership is partly discretionary.
+- The matrix ordering is attributed to ICT and stated from memory, not derived.
+- No rule says how much of the position comes off at each step.
+related:
+- point-of-interest
+- sponsorship-vs-execution-timeframe
+- internal-external-rotation
+- single-pd-array-mastery
+guest_sources:
+- Ben (Ben TT)
+- Fractalizing Entries -Q&A with Ben - ICT Concepts
+timeframes:
+  htf:
+  - 1W
+  - 1D
+  - 4H
+  ltf:
+  - 1H
+  - 15m
+  - 5m
+  - 1m
+  fractal: true
+execution:
+  bias: Toward the draw.
+  entry: Not set by this rule.
+  stop: Not set by this rule.
+  targets:
+  - each PD array in ladder order, then the liquidity pool beyond them
+contributing_units:
+- live_stream_guests_01
+draft_count: 1
+voice: guest

@@ -1,0 +1,64 @@
+id: breakeven-after-new-protected-swing
+name: Move the Stop Only After a New Protected Swing Forms
+category: risk
+status: contested
+definition: 'The earliest statement of the trailing rule, in pre-''protected swing'' vocabulary. Two
+  conditions gate every stop move and they are both required: he has taken his FIRST PARTIAL, and
+  STRUCTURE HAS BROKEN. Only then does the stop move - to the entry price or to the short-term high
+  (short) / low (long) that the break has just protected. The procedure then repeats: each subsequent
+  structure break creates a new short-term extreme and the stop is trailed to it. He explicitly permits
+  doing this on the 1-minute for a tighter trail, with the same gate - a shift in structure must occur
+  before the stop moves.'
+timeframes:
+  htf:
+  - 5m
+  ltf:
+  - 1m
+  fractal: true
+preconditions:
+- A position is open.
+- A first partial has been taken.
+- Structure has broken in the trade's direction.
+detection_rules:
+- Do not move the stop until structure breaks in the trade's direction.
+- On the break, move the stop to the entry price or to the short-term high/low that is now protected
+  by the break.
+- Each further structure break creates a new short-term extreme; trail to it.
+- Where the drop between the current stop and the new extreme is very large, take partials instead
+  of only trailing.
+- Tighter trailing is permitted on the 1-minute, but the same gate applies - require a shift in structure
+  before every move.
+- Where the last structure was never broken, use the short-term high once price starts to shift structure
+  against the position.
+measurable:
+- realised R with structure-gated trailing vs a fixed stop
+- count of stop moves per trade
+sources:
+- video_id: LZZAaILYNyI
+  title: Stop Losses, Placement & Trailing - ICT Concepts
+  quote: that is after i normally take my first partial and we break structure
+- video_id: LZZAaILYNyI
+  title: Stop Losses, Placement & Trailing - ICT Concepts
+  quote: you're going to want to only move your stop once structure is broken
+- video_id: LZZAaILYNyI
+  title: Stop Losses, Placement & Trailing - ICT Concepts
+  quote: just make sure you get a shift in structure before you move your stop
+ambiguities:
+- 'EVOLUTION: the later canon requires the trail target to be a PROTECTED SWING - a point of interest
+  engaged and then closed through - and forbids trailing to an opposing candle that never reached
+  a point of interest. This earlier version has no point-of-interest requirement at all; any short-term
+  high after a structure break qualifies.'
+- The first-partial precondition is stated here and does not appear in the later canon.
+- '''Break structure'' is not given a displacement requirement in this video, unlike in the market-structure-shift
+  lesson.'
+- How large a gap between stop and new extreme justifies partials instead is not stated.
+related:
+- stop-loss-placement
+- partial-profit-taking
+- market-structure-shift
+- protected-swing
+voice: ttrades
+contributing_units:
+- education_ict_02
+draft_count: 1
+python_detector: null

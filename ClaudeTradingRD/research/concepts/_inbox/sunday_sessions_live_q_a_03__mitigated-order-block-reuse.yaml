@@ -1,0 +1,53 @@
+id: mitigated-order-block-reuse
+name: "Re-using a Mitigated Order Block"
+aliases: ["already tapped order block", "mitigated CISD", "second tap"]
+category: entry
+status: specified
+
+definition: >
+  An order block or change-in-state-of-delivery level that price has already traded
+  into once remains usable on a later tap, but only while the drawn liquidity or
+  objective it was pointing at has not yet been taken. The moment the objective has
+  been reached, the block is spent and a further tap is not a trade. This is stated
+  as the specific error that gets traders stopped out: they see the familiar level
+  re-tested, do not notice that the objective is already gone, and take the entry
+  anyway.
+
+timeframes:
+  htf: ["1D", "4H"]
+  ltf: ["1H", "15m", "5m"]
+  fractal: true
+
+preconditions:
+  - "An order block / CISD level exists and has been tapped at least once."
+  - "A specific drawn objective (the liquidity the block was expected to deliver price toward) was identified before the first tap."
+
+detection_rules:
+  - "Check the status of the drawn objective. If untaken, the block is still live and a second tap may be traded in the same direction."
+  - "If the objective has already been reached, treat the block as expired regardless of how clean the retest looks."
+
+invalidation:
+  - "Objective already taken."
+  - "Price closes through the block against the direction."
+
+execution:
+  bias: "Unchanged from the original block direction while the objective is untaken."
+  entry: "Same as a first tap - reaction plus confirmation, not a resting limit."
+  stop: "Beyond the block."
+  targets: ["the original drawn objective"]
+
+measurable:
+  - "win rate of second-and-later taps split by whether the objective had been reached"
+  - "count of blocks that are re-tapped after the objective was taken (the trap frequency)"
+
+sources:
+  - video_id: r7yW6ou1LDs
+    title: "TTrades Sunday Session - Live Q&A"
+
+ambiguities:
+  - "'Drawn liquidity' is not mechanically defined; it depends on what the trader marked in advance, so the rule is only as objective as the marking."
+  - "No limit is stated on how many taps a block may survive while the objective is untaken."
+  - "Whether a partial reach of the objective (a wick into it) counts as 'taken' is not addressed."
+
+python_detector: null
+related: ["order-block", "cisd", "relevant-level"]

@@ -1,0 +1,66 @@
+id: risk-limits-and-trade-frequency
+name: "Hard Risk And Frequency Caps"
+aliases: ["two loss rule", "daily loss stop", "one trade per session"]
+category: risk
+status: specified
+voice: guest
+guest_sources:
+- "$niper (Matt)"
+- "Trader T"
+
+definition: >
+  Two guests in this unit independently state the same hard daily loss cap: two losses in a session
+  or day and you stop. $niper frames it as a -2R ceiling for the day and aims for one trade per
+  session (he says he currently prefers the AM session to the PM). Trader T frames it as a
+  diagnosis - two back-to-back losses means he is reading the market wrong that day, so he shuts it
+  down. Trader T applies the cap to live trading only, explicitly not to his backtesting sessions.
+
+timeframes:
+  htf: ["1D"]
+  ltf: []
+  fractal: false
+
+preconditions:
+- "Live trading (Trader T excludes simulated backtesting from the cap)."
+
+detection_rules:
+- "Count losing trades within the session / day."
+- "On the second loss, stop trading for the day. $niper states the same cap as a -2R daily floor."
+- "$niper's target frequency is one trade per session (one in the AM or one in the PM), not one per day."
+- "The cap is on losses, not on total trades - a day of winners is not capped by this rule."
+
+invalidation:
+- "Not applicable - this is a policy, not a setup."
+
+execution:
+  bias: "Not applicable."
+  entry: "Not applicable."
+  stop: "Not applicable."
+  targets: []
+
+measurable:
+- "P&L of trades that would have been taken after the second daily loss (the cost or saving of the cap)"
+- "distribution of losses per day to see how often the cap binds"
+
+sources:
+- video_id: UmLWRlXd_V8
+  title: "8/14/22  MMXM Live with $niper  - ICT concepts"
+  quote: "I don't exceed like let's say two losses in uh a session"
+- video_id: UmLWRlXd_V8
+  title: "8/14/22  MMXM Live with $niper  - ICT concepts"
+  quote: "I'm liking the am session a lot more"
+- video_id: wCtxmWe4KNc
+  title: "Back Testing Live Session With Trader T"
+  quote: "I take two losses in a day then I shut it down for the day"
+
+ambiguities:
+- "$niper says 'a session or a day I guess' - whether the counter resets between the AM and PM sessions is left open."
+- "Neither speaker says whether a break-even trade counts toward the cap."
+- "$niper attributes his AM preference partly to the month being August, so it is a conditional preference rather than a rule."
+- "Trader T states the cap in the psychological register ('obviously I'm just reading the market wrong'), not as a tested threshold."
+
+python_detector: null
+related: ["max-one-trade-per-day", "trade-frequency-baseline", "tilt-stop-rule", "position-sizing-fixed-risk"]
+contributing_units:
+- live_stream_guests_01
+draft_count: 1

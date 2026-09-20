@@ -1,0 +1,57 @@
+id: multi-timeframe-fvg-indicator
+name: A Multi-Timeframe Fair Value Gap Indicator (thinkorswim)
+aliases:
+- fvg script
+- highlighted gaps
+category: model
+status: specified
+definition: 'The guest wrote and shares a thinkorswim study that draws fair value gaps from several
+  timeframes at once on whatever chart is open, colour-coded by source timeframe. His stated preference
+  is to run it with slightly higher sources - five, ten and fifteen minute - while working on a lower-timeframe
+  chart, and to switch to one- and two-minute sources when hunting entries around levels such as pre-market
+  highs. The claimed value is twofold: it removes the need to annotate gaps by hand, and it makes
+  overlap visible, so a five-minute gap that coincides with gaps from a couple of other timeframes
+  is flagged as more likely to be reactive. He is explicit that, like anything else, it guarantees
+  no reaction. It is the only indicator either speaker in that stream uses; the host states plainly
+  that he uses no indicators at all.'
+timeframes:
+  htf:
+  - 15m
+  - 10m
+  - 5m
+  ltf:
+  - 2m
+  - 1m
+  fractal: true
+preconditions:
+- A charting platform capable of multi-timeframe studies (thinkorswim in this case).
+detection_rules:
+- Compute fair value gaps on several timeframes and draw them all on the working chart, colour-coded
+  by source timeframe.
+- Prefer 5 / 10 / 15-minute sources for context and 1 / 2-minute sources for entry hunting.
+- Treat an area where gaps from several timeframes overlap as a stronger point of interest.
+invalidation:
+- Price trades through the overlapped area without reaction.
+measurable:
+- reaction rate at single-timeframe gaps vs multi-timeframe overlaps
+- annotation time saved and gaps missed by hand versus by script
+sources:
+- video_id: 0bH_kkG2q6s
+  title: Stream Q & A with Trade For Opportunity  - ICT concepts
+  quote: it's a thinkorswim indicator so you can kind of play with the colors
+ambiguities:
+- The gap definition inside the script is never stated (a three-candle wick-to-wick construction is
+  assumed but not confirmed).
+- No rule states how much overlap counts as a signal.
+- No mitigation or removal rule is described for a gap that has been filled.
+related:
+- fair-value-gap
+- ttfm-minimal-toolkit
+- excluded-tooling
+- three-pd-array-confluence
+contributing_units:
+- live_stream_guests_03
+draft_count: 1
+voice: guest
+guest_sources:
+- Trade For Opportunity

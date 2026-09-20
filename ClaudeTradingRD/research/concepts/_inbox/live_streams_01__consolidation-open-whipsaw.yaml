@@ -1,0 +1,56 @@
+id: consolidation-open-whipsaw
+name: 'No-Bias Range Day: Expect the Open To Sweep One Side, Then Rotate'
+definition: 'When the higher timeframe gives no bias and price is sitting inside a pre-open range
+  between a protected high and a protected low, the working assumption for the 9:30 open is consolidation,
+  not expansion. Consolidation is defined operationally as: take out the range high, come back into
+  the range, take out the range low, come back into the range. The nearer extreme is expected to be
+  swept first. This is an anticipation used to stay out of trades, not an entry model - he explicitly
+  declines to trade it.'
+category: model
+status: specified
+timeframes:
+  htf:
+  - 1D
+  - 4H
+  ltf:
+  - 15m
+  - 3m
+  - 1m
+  fractal: false
+preconditions:
+- No higher-timeframe bias for the session.
+- Price is inside a range bounded by a protected high and a protected low.
+detection_rules:
+- Mark the pre-open range high and range low.
+- Note which extreme price is currently closer to - that is the one the 9:30 open is expected to sweep
+  first.
+- After that sweep, expect a return into the range and a rotation toward the opposite extreme.
+- 'Only two outcomes are allowed: sweep and return into the range, or sweep followed by a continuation
+  that breaks out of the range.'
+- If price does not return into the range after the sweep, the consolidation read is wrong and it
+  is a breakout.
+invalidation:
+- A higher-timeframe setup appears, in which case the day is no longer a no-bias range day.
+- Price fails to come back into the range after the first sweep.
+measurable:
+- proportion of no-bias range days where the nearer extreme is swept first
+- proportion that return into the range vs break out
+sources:
+- video_id: xraklBJHW5k
+  title: New York Open Live Q&A
+  quote: it takes out range highs, comes back into the range
+ambiguities:
+- '''No bias'' is a judgement call; no checklist is given for declaring the day biasless.'
+- The two outcomes (return vs breakout) are stated but no test distinguishes them in advance - he
+  says he only knew he was wrong once price stopped staying in the range.
+- He does not say how long after 9:30 the first sweep is expected.
+related:
+- consolidation-range-no-trade
+- range-edge-trading
+- consolidation-avoidance
+- protected-swing
+- liquidity-sweep-vs-consolidation
+contributing_units:
+- live_streams_01
+draft_count: 1
+voice: ttrades

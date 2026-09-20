@@ -1,0 +1,66 @@
+id: intraweek-reversal-week
+name: "Intraweek Reversal (weekly profile)"
+aliases: ["intraweek reversal"]
+category: model
+status: underspecified
+
+definition: >
+  A week in which the tradeable reversal does not form the high or low of the week. The
+  canonical shape given is: Monday expands away from the weekly open - which is itself the
+  directional information, telling you which way the weekly candle wants to go - Tuesday
+  consolidates, Wednesday forms a reversal, and Thursday and Friday expand. The trigger is
+  a daily candle 2 closure (or even a candle 3 closure) printed inside the week after
+  price has already moved away from the weekly open, confirmed as always by an hourly
+  change in the state of delivery inside that reversal candle. The speaker presents this
+  as the profile for weeks that are not picture-perfect: the reversal day can shift to
+  Thursday if Wednesday also consolidates, and the point is to wait for a new swing point
+  on the daily and then trade away from it.
+
+timeframes:
+  htf: ["1W", "1D"]
+  ltf: ["1H"]
+  fractal: true
+
+preconditions:
+  - "Price has already expanded away from the weekly open, so the week's directional intent is established."
+  - "The week does not match classic expansion, midweek reversal or Thursday counter."
+
+detection_rules:
+  - "Monday (or the early week) expands away from the weekly open; that expansion is read as the weekly candle's intended direction."
+  - "A subsequent day inside the same week prints a candle 2 closure (or candle 3 closure) that reverses, without being the weekly high or low."
+  - "An hourly change in the state of delivery exists inside that reversal candle."
+  - "The following one or two days are traded as continuations in the established direction."
+  - "The reversal day is not fixed to a weekday - if Wednesday consolidates instead, Thursday becomes the reversal and Friday the trade."
+
+invalidation:
+  - "The candidate reversal day is an open-high-low-close expansion candle rather than an open-low-high-close reversal candle (bullish case)."
+  - "The day is simultaneously a bullish and a bearish candle 2 closure and the required additional intraday confirmation fails - price does not respect the area."
+  - "Price trades below the protected swing that the continuation was built from."
+  - "On a monthly candle 2 context, 50% of that candle stops being respected."
+
+execution:
+  bias: "The direction established by the expansion away from the weekly open."
+  entry: "After the hourly change in the state of delivery inside the reversal day; where the daily candle is two-sided, additionally wait intraday for price to open, make its low, and form a new continuation before entering."
+  stop: "Below the protected swing (bullish case) formed at the reversal."
+  targets: ["prior daily highs / lows", "equal lows or equal highs", "previous month's low or high", "the next fair value gap in the direction of travel"]
+
+measurable:
+  - "frequency of weeks where the tradeable reversal is not the weekly extreme"
+  - "hit rate of the continuation day after a confirmed intraweek reversal"
+  - "comparative hit rate of open-low-high-close reversal candles versus open-high-low-close candles as candle 2 triggers"
+  - "how often the reversal day slips from Wednesday to Thursday"
+
+sources:
+  - video_id: FvOUvQ7odiw
+    title: "Weekly Profile for Daily Bias - Intraweek Reversal"
+    quote: "where we don't have the reversal forming the high of the week"
+
+ambiguities:
+  - "What counts as 'expanding away from the weekly open' is not quantified - no ATR, range or percentage threshold is given, so the profile's entry condition is not decidable from a chart alone."
+  - "Whether a candle 3 closure is fully equivalent to a candle 2 closure as the trigger, or only a fallback, is not made explicit."
+  - "For the two-sided candle 2 case the remedy is 'more intraday confirmation' - the amount and the timeframe are unspecified."
+  - "'RB', the correlated instrument supplying the SMT in the third example, is never expanded in the transcript and the chart is not visible; the instrument is deliberately left unidentified here rather than guessed."
+  - "Status is underspecified because the defining condition (Monday's expansion away from the weekly open) has no threshold, and the reversal day is explicitly allowed to float across weekdays."
+
+python_detector: null
+related: ["weekly-profile-framework", "hourly-cisd-confirmation", "reversal-candle-quality", "smt-swing-point-substitute", "monday-trade-rule"]

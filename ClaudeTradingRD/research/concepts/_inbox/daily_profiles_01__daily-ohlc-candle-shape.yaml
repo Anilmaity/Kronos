@@ -1,0 +1,53 @@
+id: daily-ohlc-candle-shape
+name: "OHLC / OLHC Daily Candle Shape (and the Indecision Candle)"
+aliases: ["open high low close", "open low high close", "indecision candle"]
+category: structure
+status: underspecified
+
+definition: >
+  The vocabulary the whole daily-profile series uses to state what a completed day looks like.
+  A bearish directional day is Open-High-Low-Close: the day opens, prints its high, expands
+  lower, and closes near the low. A bullish directional day is Open-Low-High-Close. The
+  manipulation leg forms the wick of the daily candle and the expansion leg forms the body. A
+  day that is neither is an indecision candle - open and close at relatively the same point with
+  no directional expansion - which is the daily signature of Seek & Destroy.
+
+timeframes:
+  htf: ["1D", "4H"]
+  ltf: []
+  fractal: true
+
+preconditions:
+  - "A completed daily (or 4-hour) candle."
+
+detection_rules:
+  - "Bearish directional day: the high is made before the low in time, and the close is in the lower portion of the range (Open-High-Low-Close)."
+  - "Bullish directional day: the low is made before the high in time, and the close is in the upper portion of the range (Open-Low-High-Close)."
+  - "Indecision candle: open and close at relatively the same point, with no sustained directional expansion."
+  - "The same shape is applied to the 4-hour candle: one 4-hour candle can contain a full London-consolidation / New York-sweep / expansion sequence as its own Power of Three."
+
+invalidation:
+  - "Not applicable (a classification of a completed candle)."
+
+measurable:
+  - "distribution of OHLC vs OLHC vs indecision daily candles per instrument per month"
+  - "time-of-day distribution of the daily high and daily low"
+  - "body-to-range ratio threshold that best separates the speaker's directional days from his indecision days"
+
+sources:
+  - video_id: y6SnEdASVLY
+    title: "ICT Daily Profile - London Reversal / New York Continuation"
+  - video_id: xdzyejskSKE
+    title: "ICT Daily Profile - New York Reversal"
+  - video_id: IeXtmeKqjnQ
+    title: "ICT Daily Profile - New York Manipulation"
+  - video_id: 4WCiIyCiBrQ
+    title: "ICT Daily Profile - Seek & Destroy"
+
+ambiguities:
+  - "The speaker explicitly defers the definition to a separate 'Open High Low Close' video that is not in this unit, so this entry captures only the usage inside the daily-profile series."
+  - "'Relatively the same point' for the indecision candle is not quantified; the only figure given is an 80-point NQ close-to-open distance described as small, which is an illustration and not a threshold."
+  - "No body-to-range or close-location threshold is given for the directional shapes either."
+
+python_detector: null
+related: ["daily-profile-framework", "seek-and-destroy-profile", "london-reversal-profile", "new-york-manipulation-profile"]

@@ -1,0 +1,54 @@
+id: swing-point
+name: Swing High / Swing Low
+aliases:
+- bullish swing point
+- bearish swing point
+category: structure
+status: contested
+definition: 'Restated at the opening of the relevant-swings video in its plainest form, and it matches
+  the three-bar definition recorded elsewhere in the corpus: a bullish swing point is a candle with
+  a low that has a higher low on its right and on its left; a bearish swing point is a candle with
+  a high that has a lower high on its left and right. Everything downstream in this unit - relevant
+  swings, candle 2 / candle 3 closures, the fractal model itself - is filtered from this set.'
+timeframes:
+  htf:
+  - 1M
+  - 1W
+  - 1D
+  - 4H
+  ltf:
+  - 1H
+  - 15m
+  - 5m
+  - 1m
+  fractal: true
+preconditions:
+- Three consecutive candles are complete.
+detection_rules:
+- swing_low(i) := low[i] < low[i-1] AND low[i] < low[i+1].
+- swing_high(i) := high[i] > high[i-1] AND high[i] > high[i+1].
+- The right-hand candle must have printed, so a swing at index i is usable only from i+1.
+- Swing points are then filtered by separation (relevant vs failure swing) before use.
+invalidation:
+- Not applicable - this is a primitive definition.
+measurable:
+- count of three-bar swing points per HTF window, split into relevant vs failure
+sources:
+- video_id: HbOeD_JVens
+  title: Which Swing Highs and Lows Matter in Trading? (Relevant Swings)
+  quote: a candle that has a low and then a higher low to its right
+- video_id: HbOeD_JVens
+  title: Which Swing Highs and Lows Matter in Trading? (Relevant Swings)
+  quote: a high and then a lower high to its left and right
+ambiguities:
+- Whether wicks or bodies define the high/low is not stated here; the examples are read off wicks.
+- Equal highs/lows (a low exactly equal to its neighbour) are not covered by the strict inequality
+  he gives, yet he marks 'basically exactly equal' lows on the chart.
+related:
+- relevant-swings-separation
+- failure-swing
+- relevant-swing-lookback
+contributing_units:
+- build_a_model_intro_to_ttrades_fractal_model_03
+draft_count: 1
+voice: ttrades

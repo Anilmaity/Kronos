@@ -1,0 +1,75 @@
+id: hourly-cisd-manipulation-confirmation
+name: Hourly Change In State Of Delivery As Manipulation Confirmation (three-step form)
+aliases:
+- CISD
+- change in state of delivery
+- weekly CISD
+category: entry
+status: specified
+definition: 'AM Trades gives the confirmation as an explicit three-step check, and says he uses the
+  HOURLY for a weekly-scale change in state of delivery. Step one: price is engaging a higher-timeframe
+  PD array. Step two: that engagement is paired with the day of the week the weekly profile calls for
+  - time AND price together. Step three: identify the last up-close candle that engaged that higher-timeframe
+  PD array, and require an hourly close BELOW that candle (mirrored for bullish). The observable consequence
+  he points to is a flip in what price respects: before the CISD, price was respecting down-close candles
+  on the way up; after it, price is retesting up-close candles and continuing lower. He offers a breaker
+  on the 30-minute as an interchangeable alternative to the up-close-candle close.'
+timeframes:
+  htf:
+  - 1W
+  - 1D
+  - 4H
+  ltf:
+  - 1H
+  - 30m
+  fractal: true
+preconditions:
+- A higher-timeframe PD array (daily or 4-hour) is being engaged.
+- A weekly profile hypothesis that makes this day the reversal day.
+detection_rules:
+- Confirm price is engaging a higher-timeframe PD array (previous day high/low or above; he does not
+  use intra-session or internal liquidity for this).
+- Confirm the day of the week matches the weekly profile (e.g. Wednesday for a midweek reversal).
+- Find the LAST up-close candle that engaged the PD array (for a bearish reversal).
+- Require an hourly close below that candle. That close is the change in state of delivery.
+- 'Mirror for a bullish reversal: last down-close candle, hourly close above it.'
+- 'Alternative form: on the 30-minute, require a close through the breaker formed by the down-close
+  candles at the PD array.'
+- After the CISD, price should retest the opposing candles rather than respect them.
+invalidation:
+- No hourly close through the opposing candle - the profile is unconfirmed and no trade is taken.
+execution:
+  bias: Opposite the swept side.
+  entry: New York session only; he does not trade until New York.
+  stop: Not stated.
+  targets:
+  - standard deviation projections of the manipulation leg
+measurable:
+- frequency of an hourly CISD landing on the profile day
+- expansion size following a confirmed CISD vs an unconfirmed sweep
+sources:
+- video_id: wGYde-h84cs
+  title: Live Q&A with AM Trades - Weekly Profile
+  quote: I want to see a close below that price
+- video_id: wGYde-h84cs
+  title: Live Q&A with AM Trades - Weekly Profile
+  quote: always following manipulation we look for expansion
+- video_id: wGYde-h84cs
+  title: Live Q&A with AM Trades - Weekly Profile
+  quote: I'm marking out the external high and low
+ambiguities:
+- Body close or wick close through the up-close candle is not specified.
+- The transcript garbles 'higher timeframe PD array' as 'hard time for impede array' and 'change in
+  state of delivery' as 'change in stated/sale/Theta delivery' throughout, so no phrasing here is verbatim-reliable.
+- The breaker alternative is shown once and never given the same three-step formality.
+related:
+- standard-deviation-projection
+- midweek-reversal-week
+- consolidation-reversal-week
+- cisd
+contributing_units:
+- live_stream_guests_02
+draft_count: 1
+voice: guest
+guest_sources:
+- AM Trades

@@ -1,0 +1,76 @@
+id: sponsorship-vs-execution-timeframe
+name: "Sponsorship Timeframe vs Execution Timeframe (fractalizing entries)"
+aliases: ["sponsorship", "the first model is the sponsorship", "fractalizing entries"]
+category: model
+status: specified
+voice: guest
+guest_sources:
+- "Ben (Ben TT)"
+
+definition: >
+  Ben's central lesson and the clearest automation-relevant idea in this unit. Every trade has two
+  models. The SPONSORSHIP model is where the idea comes from - the higher-timeframe PD array price
+  has arrived at - and it fixes the TARGET: a weekly-sponsored move has weekly targets. The
+  EXECUTION model is the same market-maker / power-of-three shape recreated on a much lower
+  timeframe inside that array, and it fixes the ENTRY. His argument is arithmetic: the weekly-chart
+  short in his worked example needs 300-500 points and months of holding to make 2R-3R, while the
+  same idea executed on the 4-hour reaches 2R in 50 points, and on the 1-minute the same 2.5R comes
+  from a leg that starts halfway through the move. Zooming in also multiplies frequency and removes
+  the swap, overnight-event and long-consolidation exposure of the higher-timeframe version.
+
+timeframes:
+  htf: ["1W", "1D", "4H"]
+  ltf: ["1H", "15m", "5m", "1m"]
+  fractal: true
+
+preconditions:
+- "A higher-timeframe PD array has been reached - in his example an unmitigated weekly fair value gap and a weekly order block."
+- "The higher-timeframe target set has been enumerated (see pd-array-matrix-ladder)."
+
+detection_rules:
+- "Identify the sponsoring timeframe: the timeframe of the PD array price has arrived at."
+- "Take the targets from the sponsoring timeframe - weekly sponsorship means weekly targets - and do not shorten them because the entry was found lower."
+- "Recreate the same model INSIDE that array on progressively lower timeframes: 4-hour, 1-hour, 15-minute, 5-minute, 1-minute, stopping at the timeframe where the model is clean."
+- "At each step the required components are the same: a dealing range with buy-side and sell-side taken, a shift in market structure, and a fair value gap left by the shift, with entry above/below equilibrium of the new range."
+- "A secondary shift on the lowest timeframe - one that is invisible on the higher timeframe - re-anchors the dealing range and gives a still better entry."
+- "The test of a good execution timeframe is the R it produces to the SAME sponsoring target, not the pattern's appearance."
+
+invalidation:
+- "The sponsoring array fails - Ben's test is a candle CLOSE beyond the defending edge of the sponsoring fair value gap or breaker."
+
+execution:
+  bias: "From the sponsoring array."
+  entry: "The lowest-timeframe model inside it (he executes on 1m, 2m and 5m)."
+  stop: "The swing low / high of the execution model - explicitly not one that has just been raided."
+  targets: ["the sponsoring timeframe's PD arrays and liquidity pools, in ladder order"]
+
+measurable:
+- "R to the same target by execution timeframe (weekly / 4H / 1H / 5m / 1m) - directly reproduces his 2R-in-50-points versus 2R-in-400-points comparison"
+- "trade frequency by execution timeframe against the same sponsoring array"
+- "holding time and overnight exposure by execution timeframe"
+
+sources:
+- video_id: yRmKkR4CojU
+  title: "Fractalizing Entries -Q&A with Ben - ICT Concepts"
+  quote: "sponsorship is just where the original idea comes from"
+- video_id: yRmKkR4CojU
+  title: "Fractalizing Entries -Q&A with Ben - ICT Concepts"
+  quote: "weekly sponsorship means weekly target"
+- video_id: yRmKkR4CojU
+  title: "Fractalizing Entries -Q&A with Ben - ICT Concepts"
+  quote: "the first model is the sponsorship the second model is your execution"
+- video_id: yRmKkR4CojU
+  title: "Fractalizing Entries -Q&A with Ben - ICT Concepts"
+  quote: "the same r gain in a literal fraction of the time"
+
+ambiguities:
+- "No rule says when to stop zooming in - he goes to the 1-minute in one example and stops at the 5-minute in another, judged by whether the model looks clean."
+- "'Partially mitigated' sponsorship (his weekly gap was only partly filled) is accepted, but no fraction is given at which the sponsorship expires."
+- "He acknowledges he could not personally have held the higher-timeframe version of his own example, so the R comparison is between a trade he took and one he would not have."
+- "Nothing prevents the lower-timeframe entry from being stopped out repeatedly while the sponsoring idea remains valid; re-entry rules are not given."
+
+python_detector: null
+related: ["timeframe-pairing", "pd-array-matrix-ladder", "internal-external-rotation", "market-structure-shift", "intermediate-timeframe-bridge"]
+contributing_units:
+- live_stream_guests_01
+draft_count: 1

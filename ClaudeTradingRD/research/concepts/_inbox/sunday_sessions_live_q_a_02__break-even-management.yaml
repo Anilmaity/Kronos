@@ -1,0 +1,51 @@
+id: break-even-management
+name: "Break-Even and Stop Migration Rules"
+aliases: ["move to break even", "stop to protected swing"]
+category: risk
+status: specified
+
+definition: >
+  Two stated management rules. (1) Once a continuation closure creates a protected swing,
+  the stop is moved behind that swing. (2) After price has expanded away from entry, a
+  return to the entry price is itself evidence the move has failed - go to break-even; the
+  same applies on reaching the range low/high of a consolidation, where the position is
+  either about to fail or must break through.
+
+timeframes:
+  htf: ["4H", "1H"]
+  ltf: ["15m", "5m", "1m"]
+  fractal: true
+
+preconditions:
+  - "An open position with a defined structural stop."
+
+detection_rules:
+  - "On the continuation closure, relocate the stop behind the newly protected swing."
+  - "If price has expanded meaningfully and then returns to the entry price, move to break-even."
+  - "On arrival at a consolidation boundary that must be broken, move to break-even."
+
+invalidation:
+  - "n/a"
+
+execution:
+  bias: "n/a"
+  entry: "n/a"
+  stop: "Migrates: initial structural stop, then protected swing, then break-even on retrace to entry."
+  targets: "Unchanged."
+
+measurable:
+  - "R lost to premature break-even stops vs R saved."
+  - "Frequency of a return-to-entry after expansion resolving as reversal vs continuation."
+
+sources:
+  - video_id: yud7TpE2AMs
+    title: "New York Open Live Q&A"
+  - video_id: Qv6Ux_Z8VrA
+    title: "New York Open Live Q&A"
+
+ambiguities:
+  - "'Expanded meaningfully' before the return-to-entry rule applies is not quantified."
+  - "He notes trailing stops and pyramiding as topics he has deliberately withheld ('it would help a few people but hurt the masses'), so the full management scheme is not in this unit."
+
+python_detector: null
+related: ["protected-swing", "position-sizing", "shallow-retracement"]

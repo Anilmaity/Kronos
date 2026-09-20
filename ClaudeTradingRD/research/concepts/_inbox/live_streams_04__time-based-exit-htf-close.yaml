@@ -1,0 +1,59 @@
+id: time-based-exit-htf-close
+name: "Time-Based Exit at the Higher-Timeframe Candle Close"
+aliases: ["time based exits", "10 a.m. ends the move"]
+category: risk
+status: specified
+
+definition: >
+  He runs a live quiz on it: given that price is expanding lower off the 9:30 open, when can
+  the move be expected to end? The answer is 10:00 a.m., and the reason is that three
+  higher-timeframe candles expire together there - the 4-hour, the 1-hour and the 30-minute
+  all end an expansion at 10:00. Occasionally the flip comes at 9:45 instead because a
+  15-minute expansion ends there, but he says it is usually the higher-timeframe candles that
+  matter. He restates it mid-stream as the time-based exit for the position he is discussing:
+  look for 10:00 a.m. to end the move.
+
+timeframes:
+  htf: ["4H", "1H", "30m"]
+  ltf: ["15m"]
+  fractal: false
+
+preconditions:
+  - "An intraday expansion driven off the 9:30 New York open."
+
+detection_rules:
+  - "A 9:30-driven expansion is expected to terminate at 10:00, where the 4-hour, 1-hour and 30-minute candles all close."
+  - "It can instead terminate at 9:45, when a 15-minute expansion ends - the less common case."
+  - "Prefer the higher-timeframe boundary (10:00) over the 15-minute one when choosing an exit."
+  - "The same boundary that ends the move opens the next 4-hour candle, so it is both an exit and the earliest re-entry point for a new phase of price."
+
+invalidation:
+  - "Price continues to expand through the boundary, in which case the new higher-timeframe candle is carrying the move."
+
+execution:
+  bias: null
+  entry: null
+  stop: null
+  targets: ["exit at the 10:00 boundary regardless of whether the price target was reached"]
+
+measurable:
+  - "distribution of the intraday extreme's timestamp on days with a 9:30 drive"
+  - "P&L of exiting at 10:00 vs holding, on 9:30-driven expansions"
+  - "how often 9:45 rather than 10:00 marks the turn"
+
+sources:
+  - video_id: N3Ml-r0X30o
+    title: "New York Open Live Q&A"
+    quote: "it either ends at 10:00 or it can sometimes end at 9:45"
+
+ambiguities:
+  - "No timezone is stated; the New York index-futures context implies US Eastern but he never says it."
+  - "Whether the exit is taken at the boundary unconditionally or only when the target has not been reached is not stated."
+  - "The 30-minute is named as one of the three candles ending at 10:00, which is true of every even hour - so the specific significance of 10:00 rests on the 4-hour boundary."
+
+python_detector: null
+related: ["time-based-exit", "entry-time-window", "trading-window", "continuation-timing", "new-york-intraday-time-levels"]
+
+contributing_units: ["live_streams_04"]
+draft_count: 1
+voice: ttrades

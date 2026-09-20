@@ -1,0 +1,54 @@
+id: mitigation-block-nested-pd
+name: "Mitigation Block Requires A Nested PD Array"
+aliases: ["extend the mitigation block to the buy side of the curve"]
+category: entry
+status: specified
+
+definition: >
+  The entry mechanism for a market maker model. The old areas of institutional buying on the
+  sell side of the curve - the up-close candles - are extended horizontally to the buy side of
+  the curve, where they become mitigation blocks. A mitigation block on its own is not the
+  entry: a new PD array must form within the range of that block, typically a fair value gap
+  or an opposing order block, and the nested array is what is traded. Where price trades
+  through a mitigation block without forming a nested array inside it, no entry is taken
+  there.
+
+timeframes:
+  htf: ["1W", "1D", "4H"]
+  ltf: ["1H", "15m", "5m"]
+  fractal: true
+
+preconditions:
+  - "The curve has been split and the sell-side up-close candles marked."
+  - "Price is on the buy side of the curve, retracing into an extended block."
+
+detection_rules:
+  - "Extend each sell-side up-close candle (bullish order block) across to the buy side of the curve."
+  - "When price trades into an extended block, check whether a new PD array has formed inside the block's price range."
+  - "If a fair value gap or opposing order block formed inside the block, that nested array is the entry."
+  - "If no nested array formed, do not enter at that block."
+
+invalidation:
+  - "Price trades through the mitigation block and its nested array without reaction."
+
+execution:
+  bias: "Direction of the market maker model."
+  entry: "The PD array nested inside the extended mitigation block."
+  stop: "Not stated."
+  targets: ["the opposing extreme of the range"]
+
+measurable:
+  - "hold rate of mitigation blocks with a nested PD array vs without"
+  - "count of mitigation blocks available per model"
+
+sources:
+  - video_id: Ibw4saRtYMk
+    title: "The MMXM Trader | Advanced ICT MMXM Lesson (Everything You Need To Know)"
+
+ambiguities:
+  - "Whether the nested array must form on the same timeframe as the block is not stated."
+  - "No stop placement is given."
+  - "Whether all mitigation blocks are traded or only those in a particular part of the curve is shown by example only."
+
+python_detector: null
+related: ["mmxm-phase-sequence", "mmxm-hedging-program", "mmxm-timeframe-alignment"]

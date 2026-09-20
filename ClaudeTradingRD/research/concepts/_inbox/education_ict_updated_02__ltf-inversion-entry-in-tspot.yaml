@@ -1,0 +1,95 @@
+id: ltf-inversion-entry-in-tspot
+name: 1-Minute Inversion Entry Inside The T-Spot
+aliases:
+- 1 minute inversion
+- refining entries within my fractal model
+category: entry
+status: specified
+definition: 'The entry refinement this video exists to teach. Once the higher-timeframe candle has
+  swept and closed back inside, and the paired lower timeframe has closed through the series of opposing
+  candles, the indicator marks the t-spot - the area in which the higher-timeframe wick is expected
+  to form. Price is then allowed to trade into that t-spot and the trader drops one more timeframe
+  (1-minute under an hourly/5-minute model, 15-minute under a daily/hourly model) and waits for an
+  INVERSION: a fair value gap in the opposing direction that price then closes back through. The
+  close through the inversion is the entry, the stop goes on the swing low/high that formed the wick,
+  and the target is 2R or the higher-timeframe objective.'
+timeframes:
+  htf:
+  - 1D
+  - 1H
+  ltf:
+  - 15m
+  - 5m
+  - 1m
+  fractal: true
+preconditions:
+- A higher-timeframe sweep-and-closure-back-inside has occurred.
+- The paired lower timeframe has closed through the series of opposing candles (alignment).
+- Price has traded into the t-spot, ideally having swept a low or reached a relevant point of interest
+  inside it.
+detection_rules:
+- Mark the t-spot after the higher-timeframe closure and the lower-timeframe alignment - not before.
+- Wait for price to trade into the t-spot; the higher-timeframe wick should be forming there.
+- On the execution timeframe locate an opposing fair value gap inside the t-spot.
+- Require a CLOSE through that gap - the inversion. No close, no entry ('no close yet got to wait
+  for this close').
+- Enter on the close or on the retest; the retest is chosen when the close entry does not give 2R.
+- Reject inversions that have not been preceded by a sweep of a low or a relevant point of interest
+  inside the t-spot.
+- Prefer the inversion that forms the wick itself over an earlier one inside the range.
+invalidation:
+- Price returning below the low that formed the wick (bullish case) - the wick is no longer the extreme.
+- Price consolidating inside the t-spot without running a high/low first - he waits for a protected
+  extreme rather than entering.
+- Never returning to the t-spot at all - a missed trade, explicitly accepted.
+execution:
+  bias: Direction of the higher-timeframe expansion candle.
+  entry: On the close through the inversion, or on its retest.
+  stop: On the swing low/high forming the higher-timeframe wick (he prefers this to waiting for another
+    close).
+  targets:
+  - 2R
+  - failure swings to the left
+  - higher timeframe targets on runners
+  - a time-based exit at the higher-timeframe candle close (11:00 in the hourly examples)
+measurable:
+- hit rate of 2R from a t-spot inversion entry
+- how often price returns into the t-spot at all after alignment (the missed-trade rate)
+- difference between close entries and retest entries on the same signals
+- outcome of a time-based exit at the higher-timeframe close vs a fixed 2R
+sources:
+- video_id: 4jU547ocod4
+  title: TTrades Fractal Model + Inversion (Intraday Strategy)
+  quote: the area in which I expect this higher time frame Wick to form
+- video_id: 4jU547ocod4
+  title: TTrades Fractal Model + Inversion (Intraday Strategy)
+  quote: I prefer to put my stop at the swing low
+- video_id: 4jU547ocod4
+  title: TTrades Fractal Model + Inversion (Intraday Strategy)
+  quote: this isn't just pattern trading
+- video_id: 4jU547ocod4
+  title: TTrades Fractal Model + Inversion (Intraday Strategy)
+  quote: they usually close in the high or the low
+ambiguities:
+- The t-spot is drawn by his indicator and its derivation is not given in this video.
+- '''Inversion'' is used throughout without being defined here; it is assumed from his inversion
+  fair value gap video.'
+- When several inversions form inside the t-spot, the selection rule is qualitative ('I want to see
+  that inversion that forms the wick').
+- The positional variant - entering right on the higher-timeframe open when the invalidation has
+  already formed before that open - is shown once and has no threshold for 'very close to the opening
+  price'.
+- Whether the time-based exit or the 2R target takes precedence is left open; he shows both on the
+  same trades.
+related:
+- fractal-model-c2
+- t-spot
+- inversion-fair-value-gap
+- timeframe-alignment-pairs
+- time-based-exit-htf-close
+- positional-entry-before-open
+python_detector: null
+contributing_units:
+- education_ict_updated_02
+draft_count: 1
+voice: ttrades

@@ -1,0 +1,53 @@
+id: unicorn-model
+name: "Unicorn Model"
+aliases: ["unicorn", "breaker + FVG overlap"]
+category: model
+status: specified
+
+definition: >
+  A breaker block overlapped by a fair value gap of the same polarity: a bullish breaker
+  overlapping a bullish fair value gap, or a bearish breaker overlapping a bearish fair value
+  gap. It is the channel's expression of the requirement that a breaker be accompanied by
+  displacement — the fair value gap is the evidence of that displacement.
+
+timeframes:
+  htf: ["1D", "1H"]
+  ltf: ["15m", "5m"]
+  fractal: true
+
+preconditions:
+  - "A valid breaker block (four-point swing sequence)."
+  - "A fair value gap created by the displacement leg that produced the fourth swing point."
+
+detection_rules:
+  - "Detect a breaker block zone [b_low, b_high] (see breaker-block)."
+  - "Detect a fair value gap zone [f_low, f_high] of the same direction created by the displacement through the breaker."
+  - "unicorn := the two zones overlap in price."
+  - "Entry choice is then between the breaker zone and the near edge of the FVG."
+
+invalidation:
+  - "Price trading beyond the breaker extreme after entry (demonstrated in the losing ES example)."
+
+execution:
+  bias: "Direction of the breaker."
+  entry: "At the breaker (fill certainty, allow price to trade back into the zone) or at the start of the fair value gap (better R:R, may not fill)."
+  stop: "Below the breaker low / above the breaker high, or at the swing extreme."
+  targets: ["fixed 2R", "-2 to -2.5 and -4 to -4.5 projections of the manipulation leg"]
+
+measurable:
+  - "hit rate of unicorn setups vs plain breakers at 2R"
+  - "fill rate of the FVG-edge entry vs the breaker entry"
+  - "loss rate (the video shows a full losing example, so the sample must include failures)"
+
+sources:
+  - video_id: 75S4vwD4P1U
+    title: "Breaker Blocks Simplified - ICT Concepts"
+    quote: "I want to see displacement paired with them"
+
+ambiguities:
+  - "No minimum overlap between the breaker zone and the FVG is specified."
+  - "Whether the FVG must be created by the displacement leg specifically, or any same-direction FVG in the zone qualifies, is not stated."
+  - "Entry selection between the two candidate prices is explicitly discretionary."
+
+python_detector: null
+related: ["breaker-block", "fair-value-gap", "displacement", "standard-deviation-projection"]

@@ -1,0 +1,49 @@
+id: stuck-orderflow
+name: "Stuck / Trapped Order Flow"
+aliases: ["order flow stuck between two PD arrays", "trapped orderflow", "indecision on daily bias"]
+category: structure
+status: specified
+
+definition: >
+  When price sits between two opposing higher-timeframe PD arrays - a bullish array below
+  holding and a bearish array above capping - order flow is described as stuck or trapped,
+  and price is expected to range rather than trend. The condition is treated as a no-trade
+  state by both speakers who name it. The resolution is a close through one of the two
+  arrays, which then becomes the directional trigger: a close above the upper array turns it
+  into a breaker to buy from, a close below the lower array turns it into an inversion level
+  to sell from.
+
+timeframes:
+  htf: ["1W", "1D"]
+  ltf: []
+  fractal: true
+
+preconditions:
+  - "Two opposing higher-timeframe PD arrays have been marked, one above and one below price."
+
+detection_rules:
+  - "Price is trading between the two arrays and neither has been closed through."
+  - "Both arrays are being respected (no close beyond either)."
+  - "-> classify as stuck/trapped order flow; do not trade."
+  - "Bullish trigger: a close above the upper array; use it as a breaker."
+  - "Bearish trigger: a close below the lower array (and below the framing swing low); use it as an inversion level."
+
+invalidation:
+  - "A close through either framing array resolves the state."
+
+measurable:
+  - "average time spent in the stuck state before resolution"
+  - "expectancy of trades taken inside the stuck state vs after resolution"
+
+sources:
+  - video_id: JABOO4LYNjQ
+    title: "Jokerszn | Daily Orderflow - ICT Daily Bias"
+    quote: "order flow is stuck between two PD arays"
+  - video_id: G44VpidBD_U
+    title: "NickDoesFutures | Unicorn Model & Experiences With ICT"
+
+ambiguities:
+  - "Nick's version is framed on the weekly/daily FVG pair with an 'indecisive candle'; Jokerszn's is framed on any two opposing daily arrays. The concept is the same, the framing timeframe differs."
+
+python_detector: null
+related: ["no-draw-no-trade", "range-eq-no-trade", "low-probability-day-checklist"]

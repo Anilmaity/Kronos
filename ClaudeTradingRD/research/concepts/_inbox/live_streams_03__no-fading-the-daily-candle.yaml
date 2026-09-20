@@ -1,0 +1,77 @@
+id: no-fading-the-daily-candle
+name: Do Not Fade The Current Daily Candle
+aliases:
+- countering the daily range
+- I don't fade the daily candle
+category: model
+status: specified
+
+definition: >
+  A directional filter applied before any intraday framing: whatever the current daily candle
+  is doing, do not look for trades against it. Asked repeatedly whether a long was possible
+  into a bearish daily candle, he answers that he does not prefer to counter the daily range,
+  that he likes to align with the daily chart, and that a counter-trend idea is fighting the
+  daily trend even when the hourly and 4-hour agree with each other. The stated preference is
+  for the daily, 4-hour and hourly all pointing at the same objective.
+
+timeframes:
+  htf:
+  - 1D
+  - 4H
+  - 1H
+  ltf:
+  - 15m
+  - 5m
+  fractal: false
+
+preconditions:
+- The current daily candle has a readable direction.
+
+detection_rules:
+- Read the direction of the current daily candle before framing anything intraday.
+- Do not look for longs inside a bearish daily candle, or shorts inside a bullish one.
+- Require the daily, 4-hour and hourly to align toward the same objective before taking the
+  trade.
+- If the 4-hour and hourly agree with each other but oppose the daily, classify the idea as
+  counter-trend and treat it as much harder.
+
+invalidation:
+- The daily candle flips direction as it develops.
+
+measurable:
+- expectancy of intraday trades aligned with the developing daily candle versus against it
+- how often a developing daily candle's direction at the New York open matches its close
+
+sources:
+- video_id: X4XSsv5CNqg
+  title: New York Open Live Q&A
+  quote: I don't prefer to counter the daily range
+- video_id: X4XSsv5CNqg
+  title: New York Open Live Q&A
+  quote: I just like to align with the daily chart
+- video_id: W7Fu3Rx5iMs
+  title: New York Open Live Q&A
+  quote: It's countertrend because the daily nice and bearish
+- video_id: W7Fu3Rx5iMs
+  title: New York Open Live Q&A
+  quote: Ideally, you want these aligned together. You want it all in one direction.
+
+ambiguities:
+- The daily candle is still forming when the decision is made; no rule is given for how much
+  of the day must have elapsed before its direction is trusted.
+- No treatment of a doji / indecision daily candle, where there is no direction to align with.
+- Stated as a personal preference ("you can do whatever you want", "it's just not my style"),
+  not as an absolute rule.
+- It is not reconciled with the invalidation trade, which is by construction taken against
+  the model that was valid earlier in the same day.
+
+related:
+- daily-ohlc-candle-shape
+- timeframe-alignment
+- invalidation-trade
+- dont-trade-after-expansion
+
+contributing_units:
+- live_streams_03
+draft_count: 1
+voice: ttrades

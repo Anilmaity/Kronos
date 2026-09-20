@@ -1,0 +1,60 @@
+id: ic-cisd
+name: "Intracandle CISD (IC-CISD)"
+aliases: ["intra candle change in the state of delivery", "IC CISD"]
+category: entry
+status: specified
+
+definition: >
+  The change in the state of delivery that happens *inside* a single higher-timeframe candle,
+  used to confirm that that candle's wick is finished. His reasoning is stated explicitly here
+  for the first time in this unit: for price to make a wick it has to have a short-term trend
+  in the opposite direction, so inside a candle whose wick is forming, price is trending
+  against the candle's intended direction; the IC-CISD is the moment that internal short-term
+  trend flips. Mechanically it is the same CISD test applied intracandle — price closes over
+  (or under) the series of opposing-close candles that made the extreme, with that extreme
+  sitting at a point of interest, and optionally with the upper (or lower) half of the candle
+  respected. He states it is his own invention rather than something inherited.
+
+timeframes:
+  htf: ["1D", "4H", "1H"]
+  ltf: ["15m", "5m", "3m", "1m"]
+  fractal: true
+
+preconditions:
+  - "A higher-timeframe candle is open and its wick is still forming."
+  - "The extreme of that wick is at a point of interest — a high, a low, or a fair value gap."
+
+detection_rules:
+  - "Identify the short-term counter-trend inside the open higher-timeframe candle (the leg forming the wick)."
+  - "Find the series of consecutively opposing-close candles that produced the extreme."
+  - "Require a close through that series, into or from the point of interest."
+  - "Optionally require the relevant half of the higher-timeframe candle to be respected."
+  - "The resulting swing becomes the protected swing and therefore the stop; entry may be taken anywhere that gives acceptable risk-to-reward."
+
+invalidation:
+  - "The new extreme formed by the IC-CISD is taken out — the wick was not finished."
+
+measurable:
+  - "hit rate of IC-CISD-confirmed wicks (extreme not revisited before the candle closes)"
+  - "R achieved from IC-CISD entries versus waiting for the higher-timeframe close"
+  - "frequency of IC-CISD per higher-timeframe candle"
+
+sources:
+  - video_id: G1IIdQ3RAkY
+    title: "New York Open Live Q&A"
+    quote: "it has to have a short-term trend in the opposite direction"
+  - video_id: Je7cd9HJUBE
+    title: "New York Open Live Q&A"
+    quote: "this is an intra candle change in state of delivery"
+
+ambiguities:
+  - "The 'respecting the upper half' step is offered as optional ('if you want to'), so it is not clear whether it is part of the rule or a preference."
+  - "How many opposing-close candles constitute the 'series' is not bounded, here or anywhere in the corpus."
+  - "Entry is deliberately left free ('you can enter really however you want if it makes sense in terms of risk-to-reward'), so the concept fixes the stop and the trigger but not the fill."
+
+python_detector: null
+related: ["cisd", "protected-swing", "point-of-interest", "t-spot", "half-wick-respect"]
+
+contributing_units: ["live_streams_02"]
+draft_count: 1
+voice: ttrades

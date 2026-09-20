@@ -1,0 +1,100 @@
+id: fractal-model-c4
+name: "Candle 4 (second continuation candle)"
+category: model
+status: specified
+
+definition: >
+  Two Shorts state candle 4 as a standalone DAILY BIAS PROCEDURE rather than as a position in
+  the sequence, and give the full four-step chain. The trigger is the printing of the third
+  candle, which completes the swing (a low with a higher low on each side). Once that has
+  printed, the fourth day is where he expects the day's wick to form inside the marked half of
+  the candle - upper half for a bullish scenario, lower half for a bearish one - and then trade
+  away. The half therefore doubles as both the bias and the point of interest. From there:
+  drop to a lower timeframe such as the hourly, find a point of interest inside that half, wait
+  for an intraday change in the state of delivery to show the wick has formed, and align with a
+  lower-timeframe entry. The worked example takes the entry on the closure through the
+  down-close candles, stops on the low, and looks for 2R.
+
+timeframes:
+  htf: ["1D"]
+  ltf: ["1H", "15m", "5m"]
+  fractal: true
+
+preconditions:
+  - "A swing high or swing low has completed - the third candle has printed, leaving a low with
+    a higher low on each side (bearish: a high with a lower high on each side)."
+
+detection_rules:
+  - "Wait for the third candle of the swing to print, which confirms the swing point."
+  - "Mark the upper half of the candle for a bullish scenario, the lower half for a bearish
+    one."
+  - "That half is where the fourth day's upper or lower wick is expected to form before price
+    trades away - it is simultaneously the bias and the point of interest."
+  - "Drop to a lower timeframe (he names the hourly) and find a point of interest inside that
+    half."
+  - "Wait for an intraday change in the state of delivery to confirm the wick has formed."
+  - "Align with a lower-timeframe entry."
+  - "Reinforcing test used in the worked example: if price cannot aggressively move lower and
+    close through the level, expect the low below to get taken out first - unless an SMT forms,
+    which removes the need for that sweep."
+
+invalidation:
+  - "Price forms its extreme outside the marked half - the expansion read for the fourth day
+    fails (see upper-half-eq-expansion-filter for the failure branches)."
+
+execution:
+  bias: "Direction of the confirmed swing."
+  entry: "On the closure through the opposing (down-close) candles inside the half."
+  stop: "On the low."
+  targets:
+    - "2R"
+    - "the highs the swing is heading into"
+
+measurable:
+  - "how often the fourth day's extreme forms inside the marked half"
+  - "hit rate of the 2R target on fourth-day continuation entries"
+  - "how often the SMT substitution fires instead of the low being swept"
+
+sources:
+  - video_id: Te9jUijPXZo
+    title: "The 4th Day of a Swing: An Easy Way to Get Daily Bias"
+    quote: "The fourth day in a swing is an easy way to get daily bias."
+  - video_id: Te9jUijPXZo
+    title: "The 4th Day of a Swing: An Easy Way to Get Daily Bias"
+    quote: "mark out the upper half of the candle for a bullish scenario"
+  - video_id: Te9jUijPXZo
+    title: "The 4th Day of a Swing: An Easy Way to Get Daily Bias"
+    quote: "Here is where I'll look for price to form its upper or lower wick"
+  - video_id: EnAoorLVtoQ
+    title: "Trading Continuation on the 4th Day of a Swing"
+    quote: "We have a low with a higher low on each side."
+  - video_id: EnAoorLVtoQ
+    title: "Trading Continuation on the 4th Day of a Swing"
+    quote: "since we cannot aggressively move lower and then close through here"
+
+ambiguities:
+  - "'The candle' whose half is marked is ambiguous between candle 3 and the whole swing range;
+    the first Short says 'the candle', the second marks 0.5 of 'this range'."
+  - "Whether the half is measured wick-to-wick or body-to-body is not stated."
+  - "'Aggressively move lower' is used as the gate in the second Short and is not defined -
+    another instance of the corpus's unquantified 'aggressive'."
+  - "Neither Short states an upper bound - whether a fifth day may be traded the same way is
+    not addressed here."
+  - "TRANSCRIPT HYGIENE NOTE for whoever re-reads these: the auto-captions in this corpus render
+    'candle 2' as 'candle to'. It does not occur in the quotes cited above but does elsewhere in
+    the unit."
+
+related:
+  - fractal-model-c3
+  - fractal-model-c2
+  - upper-half-eq-expansion-filter
+  - swing-point
+  - protected-swing
+  - cisd
+  - smt-swing-point-substitute
+  - daily-bias-framework
+
+python_detector: null
+voice: ttrades
+contributing_units: [shorts_03]
+draft_count: 1

@@ -1,0 +1,57 @@
+id: gap-direction-fade-rule
+name: Fade The Gap, Unless It Gaps Into A Higher-Timeframe Trigger
+aliases:
+- sell gap ups buy gap downs
+category: entry
+status: specified
+definition: 'The guest''s default on a gap open is to fade it, because a gap that comes back through
+  the previous range is the one that stops people out, and a gap up is itself a reason for holders to
+  take profit. So: gap up, prefer to sell back into the previous range; gap down, prefer to buy. The
+  stated exception is when the gap DELIVERS a higher-timeframe trigger - his Apple example gapped down
+  through the previous month''s low, which put the month in force to the downside, and in that case
+  the gap is continuation, not a fade.'
+timeframes:
+  htf:
+  - 1M
+  - 1W
+  - 1D
+  ltf:
+  - 1H
+  - 15m
+  - 5m
+  fractal: false
+preconditions:
+- A session open that gaps away from the previous close.
+- A previous range / broadening formation drawn.
+detection_rules:
+- 'Gap up and NOT through a higher-timeframe level: bias is short, back into the previous range.'
+- 'Gap down and NOT through a higher-timeframe level: bias is long, back into the previous range.'
+- 'Gap that takes out the previous month''s (or other higher-timeframe) extreme: that timeframe is now
+  in force in the gap''s direction - trade with the gap, not against it.'
+- Confirm with timeframe continuity before acting either way.
+invalidation:
+- The gap is not filled and the higher timeframe stays in force in the gap direction.
+measurable:
+- fill rate of gap ups vs gap downs on the traded universe
+- outcome split between gaps that do vs do not clear a higher-timeframe extreme
+sources:
+- video_id: 1XWyy6Q-_8Q
+  title: Live Stream With Alex's Options - TheSTRAT & Broadening Formations
+  quote: ideally on gaps down we want to buy
+- video_id: 1XWyy6Q-_8Q
+  title: Live Stream With Alex's Options - TheSTRAT & Broadening Formations
+  quote: every hour is like a new day when you're trading these gappers
+ambiguities:
+- '''Depending on continuity there''s some differences in there where we won''t buy or sell just based
+  on signals going in force with the gaps'' - explicitly flagged as more advanced and NOT taught here.'
+- No gap-size threshold; a one-tick gap and a 12% earnings gap are treated the same in the rule as stated.
+related:
+- timeframe-continuity
+- strat-scalping-hour-two-filter
+- gap-open-adr-budget
+contributing_units:
+- live_stream_guests_02
+draft_count: 1
+voice: guest
+guest_sources:
+- Alex's Options

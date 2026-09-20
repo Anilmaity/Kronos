@@ -1,0 +1,85 @@
+id: cisd
+name: Change In State Of Delivery (CISD)
+aliases:
+- change in the state of delivery
+- CISD
+- closure through the series
+category: entry
+status: specified
+definition: 'The procedure is stated step by step twice in this unit and is identical both times:
+  find the low (or high), find the single candle or series of candles that MADE that low, mark the
+  opening price of that series, and require price to close over it. Until that close happens there
+  is no CISD and the swing is not trusted. Where the move into the low is untidy and there is no
+  clean series of down-close candles, his stated fallback is to take the whole move as the reference
+  instead. The same close that produces the CISD is what validates an order block at that swing.'
+timeframes:
+  htf:
+  - 1H
+  - 15m
+  ltf:
+  - 5m
+  - 1m
+  fractal: true
+preconditions:
+- A low or high has formed, ideally at an important level or after a stop raid.
+detection_rules:
+- Locate the extreme (the low for a bullish CISD).
+- Identify the single candle or consecutive series of down-close candles that made that low.
+- Mark the OPENING PRICE of that single candle or series.
+- Require a close over that opening price. No close, no CISD - explicitly 'we wait'.
+- If price makes a new low before closing over, discard the candidate and re-derive from the new
+  low.
+- 'Fallback when the leg is untidy: if there is no clean series of down-close candles, use the whole
+  move as the reference instead.'
+- Mirror for a bearish CISD (series of up-close candles, close below their opening price).
+invalidation:
+- A new low forming before the close-over occurs (the candidate series is replaced).
+- Price trading back through the swing after the CISD.
+execution:
+  bias: Direction of the close-through.
+  entry: On the close through the series, or on a retest of that level (retest preferred when the
+    close entry does not give 2R).
+  stop: On the swing low; or, when that is too wide, just beyond 0.5 of the down-close candle body
+    - 'similar to where a breaker block entry stop loss would be'.
+  targets:
+  - 2R minimum
+  - external range liquidity
+  - previous week high / previous day high
+measurable:
+- how often a candidate series is invalidated by a new low before the close-over
+- hit rate of close entries vs retest entries from the same CISD
+- outcome difference between clean-series CISDs and whole-move fallback CISDs
+sources:
+- video_id: TfHlNgAZ_II
+  title: Trading IRL & ERL With Order Blocks! - ICT Concepts
+  quote: we don't have a clean series of down closed candles
+- video_id: TfHlNgAZ_II
+  title: Trading IRL & ERL With Order Blocks! - ICT Concepts
+  quote: I just use this whole move
+- video_id: r_UF8U-hsL8
+  title: Why You're Failing with ICT Concepts
+  quote: I use highs, lows, and opposing candles or the change in the state of delivery
+- video_id: 4jU547ocod4
+  title: TTrades Fractal Model + Inversion (Intraday Strategy)
+- video_id: xP-o11jRCyg
+  title: Trade Continuations Using Breaker Blocks
+ambiguities:
+- '''Close over'' is never specified as a body close vs any close - the examples are all body closes
+  but the rule is not stated.'
+- 'The untidy-leg fallback (''just use this whole move'') has no boundary rule: where the move starts
+  is chosen visually.'
+- No timeframe is mandated for the CISD itself; it is inherited from the timeframe pairing in use.
+- In this unit CISD and 'market structure shift' are used interchangeably in one video (the Twitter
+  model) and treated as alternatives in another.
+related:
+- order-block
+- propulsion-block
+- irl-erl-flowchart-model
+- order-of-reversal
+- single-cisd-at-swing-point
+- hourly-cisd-confirmation
+python_detector: null
+contributing_units:
+- education_ict_updated_02
+draft_count: 1
+voice: ttrades

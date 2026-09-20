@@ -1,0 +1,64 @@
+id: psp-precision-swing-point
+name: PSP (opposite candle closes across correlated assets)
+category: structure
+status: specified
+aliases:
+- candle one PSP
+- candle two PSP
+definition: 'PSP is a divergence in the CLOSE COLOUR of the same-time candle across correlated assets:
+  the structure matches (both swept, both closed back in) but one asset closes a different colour from
+  the other. He frames it as a smaller sibling of SMT -- SMT is a divergence in whether the level was
+  taken, PSP is a divergence in the closure. Two named types, both defined by WHERE in the model the
+  divergent candle sits: a CANDLE ONE PSP (the candle before the swing point closes a different colour)
+  and a CANDLE TWO PSP (the swing candle itself closes a different colour). He is emphatic about scope:
+  PSP is only looked for inside an already-valid fractal model, never used to form one.'
+timeframes:
+  htf:
+  - 1M
+  - 1D
+  - 4H
+  - 1H
+  ltf:
+  - 1H
+  - 15m
+  fractal: true
+preconditions:
+- 'A valid fractal model on the primary asset: a candle 2 or candle 3 closure WITH its change in the
+  state of delivery.'
+- At least one correlated asset (for NQ he uses ES and YM).
+detection_rules:
+- Align the same-period candles across the correlated assets.
+- 'Candle 1 PSP: candle 1 closes a different colour on the correlated asset than on the primary.'
+- 'Candle 2 PSP: candle 2 (the swing candle) closes a different colour on the correlated asset.'
+- PSP may be combined with SMT on the same candle for additional confluence.
+- Do not scan for PSP on arbitrary candles -- only on the higher-timeframe candles that belong to a
+  valid model.
+invalidation:
+- The underlying fractal model is invalid -- the PSP then means nothing.
+execution:
+  bias: Unchanged; PSP only adds confidence to the existing model.
+  entry: Intracandle change in the state of delivery / new protected swing after the PSP, as normal.
+  stop: The protected swing.
+  targets:
+  - as per the model
+measurable:
+- expansion of C3 with vs without a C1 or C2 PSP present
+- co-occurrence rate of PSP and SMT at the same swing point
+sources:
+- video_id: ZAEgtvsD-qQ
+  title: Using PSP to Confirm Swing Points (TTFM)
+  quote: the correlated market closes a different color on candle two
+ambiguities:
+- No rule ranks candle 1 PSP against candle 2 PSP, or says whether both together is stronger.
+- Which correlated asset to check is left open -- for Nasdaq he says he uses ES and YM and 'all three
+  personally'.
+- No statement on what a PSP against the direction of the model means, only what a confirming one means.
+related:
+- smt-divergence
+- smt-as-confirmation-not-signal
+- fractal-model-c2
+- gold-correlated-assets
+contributing_units:
+- build_a_model_intro_to_ttrades_fractal_model_02
+draft_count: 1
+voice: ttrades

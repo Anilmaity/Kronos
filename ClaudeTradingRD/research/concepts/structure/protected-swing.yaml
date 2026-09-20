@@ -1,0 +1,500 @@
+id: protected-swing
+name: Protected Swing (the invalidation level)
+variants:
+  name:
+  - Protected Swing
+  definition:
+  - 'The unit''s most-repeated mechanical construct and the source of every stop in the model.
+    A protected swing requires TWO things: (1) price must reach an IMPORTANT LEVEL -- which
+    he defines as sweeping out a low/high OR reaching into a fair value gap -- and (2) price
+    must then close through the series of same-direction candles that made that extreme. Only
+    then is the extreme ''protected'' and tradeable away from. An extreme that never touched
+    an important level is explicitly NOT a protected swing, however good the close looks --
+    he refuses several such candidates on camera.'
+  - 'A swing extreme that has been validated by a subsequent close and can therefore be used
+    as the invalidation for a position. It is created when price reaches into a fair value
+    gap (or trades to a low) and then closes back over it - the closure through protects the
+    low beneath, which is then expected to hold while price travels toward the draw. Protected
+    swings serve three distinct jobs in these walkthroughs: they are the stop-loss reference
+    at entry; they are the qualifier that makes a candle 2 closure "ideal"; and they are the
+    trailing reference during management, where each new swept low that is closed back over
+    becomes a new protected swing and the stop is moved to it. The absence of a usable protected
+    swing is an explicit reason to refuse a trade - if the only protected low sits too far
+    away for the target, the trade is not taken and a new low is awaited.
+
+    '
+  - 'Asked what the protected swing replaced, he answers that it is his deliberate simplification
+    of ICT''s advanced market structure (short-term / intermediate-term point labelling),
+    which he found too confusing to code. His replacement is stated as a two-step mechanical
+    test: price must sweep out a low (or reach into a gap), and then produce a change in the
+    state of delivery — at that moment the low is a protected swing, without waiting for a
+    further swing to form the way the advanced-market-structure labelling requires. He also
+    gives the print timing that matters for backtesting: the protected swing is valid on the
+    closure through, but it is drawn on the *open of the next higher-timeframe candle*, one
+    second in, so a replay that looks delayed is not actually delayed.
+
+    '
+  - 'Two viewer questions in this unit pin down properties of the protected swing that the
+    lesson videos leave open. First, duration: asked how long a protected high or low stays
+    protected, he says every protected swing in a sequence stays protected until the opposing
+    extreme - the high the sequence is trading toward - is taken out. Once that high is taken,
+    the protection lapses, and the pattern he then expects is that price runs back through
+    a former protected swing and forms a continuation there, often around the equilibrium.
+    Second, quality: a low is not a protected swing merely because price closed over it. He
+    rejects a candidate because of how long it took to form - by the time price took out the
+    high above it, the structure read as a consolidation range rather than a protected swing.
+
+    '
+  - 'A swing point that a subsequent continuation closure has confirmed. Once a protected
+    swing exists the stop is moved behind it, and the expectation is that it will not be traded
+    through before the target is reached. After the target is reached, the first protected
+    swing is frequently run out, and that run-out is a preferred re-entry location.
+
+    '
+  - 'This unit supplies both the entry-side and the structure-side account of the same object.
+    On the entry side: after a sweep of a low and a close back over the candles that made
+    it, he places the stop on that new low because it is now protected; and on the daily,
+    a sweep of the previous day low that closes back inside is described as forming a protected
+    low that he anticipates will hold while the trend continues. On the structure side, the
+    market structure video identifies which low that is in trend terms: it is the low that
+    made the new high, before price came back and broke it - the pivot whose break ends the
+    trend.'
+  - 'Two live refinements. First, the mechanical formation rule stated aloud: once price closes
+    over the level, that swing is protected - the close is what protects it, and until the
+    close happens the low is not protected. Second, a quality filter: a swing whose sweep
+    is very shallow, barely forming a sweep and close to equal highs, is hard to trust even
+    when the indicator marks it mechanically; to trade away from a swing he wants to see at
+    least some sort of reach. He also uses a protected swing as the thing to trail a stop
+    to, and treats a swing as no longer protected once the previous day''s low that anchored
+    it has been taken.'
+  - 'This unit supplies both the verbal test and the coded one. Verbally: a swing is protected
+    when price hits a point of interest and then closes through the series of candles into
+    that point of interest - in one example the series is a single candle. Mechanically, as
+    coded: the protected swing forms on the closure through, and is printed at the open of
+    the next candle, drawn as a dot plus a line. It does not repaint - a protected swing that
+    is later taken out is not deleted, it turns gray and stays on the chart so that a failure
+    can be reviewed afterwards, and a new protected swing forms in its place. A swing that
+    forms without interacting with a point of interest (a fair value gap) is not a protected
+    swing at all.'
+  - 'A Short states the sequencing rule that the entry waits on: after a daily sweep and closure
+    back in, the existing protected high is marked, and then he explicitly LETS A NEW PROTECTED
+    SWING FORM before looking for the entry. The new one forms when price reaches into a point
+    of interest (a fair value gap), leaves a series - or a single - up-close candle into it,
+    and closes through. Only then does he sell, with the stop on the protected swing high,
+    looking for 2R and then the first standard deviation projection. He states the expectation
+    that the new protected swing remains intact if the trend is going to continue.'
+  - 'A swing high or low that has been swept and then closed back through, so that the extreme
+    is now defended by the closure. Once protected, 50% of the swing should be respected on
+    any pullback, and price trading beyond the protected extreme invalidates the idea. It
+    is the object he trades away from, and having one already formed is the precondition for
+    a pre-open positional entry.
+
+    '
+definition: 'A protected swing is a high or low that is expected to hold while the trend continues;
+  it is the model''s invalidation level and, per this unit, the thing entries are actually
+  built on. There are three constructions, all of which are ''point of interest, then closure
+  through the series of opposing candles that made the extreme'': (1) a short-term low/high
+  is swept, then price closes through the series of opposing candles that made it; (2) the
+  sweep is absent but a correlated asset swept instead - SMT substitutes, and the opposing
+  candles that made the failure swing are used; (3) no sweep at all, but price reaches into
+  a fair value gap, and the opposing candles that made the extreme inside it are closed through.
+  Where neither a fair value gap nor a low to be swept exists, 0.5 of the opposing candle
+  is used as the point of interest.'
+category: structure
+status: contested
+aliases:
+- protected high
+- protected low
+- new continuation
+- invalidation
+- new protected swing
+- it is now protected
+- forming a protected low
+- protected swing
+- dot and line
+- protected swing point
+preconditions:
+- A directional read exists; protected swings are tracked in the direction of trend.
+- 'An identified important level: a swing high/low to be swept, or a fair value gap.'
+- A swing low (or high) formed by price reaching into a fair value gap or sweeping a level.
+- A low (or high) that has swept liquidity or reached into a gap.
+- A swing low (or high) with a close over (under) it.
+- A swing point formed by a sweep of a genuine (not failure) swing.
+- A continuation closure printed after it.
+- A swing extreme that price has swept or traded into.
+- A swing high or low that has traded into a point of interest / fair value gap.
+- A daily sweep of the highs with a closure back inside (bearish case).
+- The existing protected high has been identified as the series of candles that made that
+  high.
+- A swing high or low exists and has been swept.
+- There is separation between the swept level and the newly formed swing - a swing that forms
+  at equal lows with the swept level is not tradeable away from.
+detection_rules:
+- 'Identify a point of interest: a swept short-term high/low, OR a fair value gap price has
+  reached into, OR (fallback) 0.5 of the opposing candle.'
+- Find the extreme formed at that point of interest.
+- Find the series of opposing candles that made that extreme (may be a single candle).
+- Require a CLOSE through that series' level. Until that close, the swing is not protected.
+- 'Once closed through, the extreme is protected: it must hold for the trend to continue.'
+- 'SMT substitution: if this asset did not sweep but the correlated asset did, use the opposing
+  candles that made the failure swing.'
+- Track protected swings forward - each new one supersedes the last as the invalidation.
+- Price must sweep a low/high or trade into a fair value gap. If it does neither, no protected
+  swing can form.
+- Identify the series of down-close (bullish case) or up-close (bearish case) candles that
+  reached that level.
+- Require a close through the opening price of that series.
+- On that close, the extreme becomes the protected swing and the invalidation level.
+- If price makes a NEW extreme before closing through, abandon the old series and track the
+  new one.
+- When the lower-timeframe structure is messy, ignore the small candles and take the whole
+  move as the series.
+- SMT against a correlated asset can substitute for the sweep requirement.
+- 'Bullish: price trades into a fair value gap or sweeps a low, then closes back over that
+  level - the low beneath is now protected.'
+- 'Bearish: price trades into a fair value gap or sweeps a high, then closes back below -
+  the high above is now protected.'
+- Each subsequent qualifying event creates a new, tighter protected swing that supersedes
+  the previous one for trailing purposes.
+- A candle 2 closure that also forms a protected swing is called ideal.
+- 'The test is applied negatively as well: zoom in on the candidate level and ask whether
+  price actually closed through it - if it did not, the level is not a protected swing and
+  there is no invalidation available.'
+- 'With no protected swing available there are exactly two ways one can form: price retraces
+  up into the higher-timeframe level (a fair value gap) and trades back through, creating
+  opposing candles and protecting the highs in place; or price first runs out the highs and
+  forms a new protected high there.'
+- One retracement into a level can create two sets of opposing candles and therefore two protected
+  extremes at once.
+- When a newly formed protected swing is taken out and price stops respecting the opposing
+  candles, the trend is over.
+- Require the extreme to have swept out a prior low/high OR to have reached into a fair value
+  gap.
+- Require a change in the state of delivery after that extreme.
+- The extreme is then a protected swing — no additional swing formation is required.
+- Once price continues, a new protected swing forms and the previous one is superseded.
+- 'Timing: valid on the closure through, printed at the open of the following higher-timeframe
+  candle.'
+- Each protected swing in a sequence remains protected until the opposing extreme it is trading
+  toward is taken out.
+- Once that opposing extreme is taken, treat the protection as lapsed and expect price to
+  run back through the former protected swing and form a continuation, frequently near the
+  equilibrium.
+- 'Reject a candidate protected swing that took a long time to form relative to the move:
+  if price consumed many candles between forming it and taking the opposing extreme, read
+  it as a consolidation range instead.'
+- A protected swing formed on a lower timeframe before the open of the higher-timeframe candle
+  is what produces a candle 3 that opens with no wick.
+- Identify the swing that price swept before the continuation closure.
+- After the closure, mark that swing as protected and move the stop behind it.
+- A protected swing should hold until the target is reached.
+- The swing is protected once price has swept it and then closed back over the series of candles
+  that made it.
+- The stop goes on that protected extreme; it is expected to hold while price travels to the
+  objective.
+- In structural terms the protected low is the low that made the new high - the pivot whose
+  break is what shifts the trend.
+- 'Daily instance: price trades back into a fair value gap while sweeping the previous day
+  low, closes back inside, and that forms the protected low for the following day.'
+- A swing becomes protected when price closes over (or under) the level.
+- Before that close, the swing is not protected and is not tradeable as an invalidation.
+- Filter out swings whose sweep is negligible - near-equal highs with barely any reach.
+- A protected swing ceases to count once the level that anchored it has been taken out.
+- Price reaches a point of interest.
+- Price closes through the series of candles that traded into it (the series may be a single
+  candle).
+- The swing behind that closure is now protected; it is marked at the open of the following
+  candle.
+- A swing with no interaction with a point of interest does not qualify.
+- Once taken out, the protected swing is greyed rather than removed, and a new one forms -
+  successive protected swings are the trailing reference.
+- 'Identify the current protected swing: the series of candles that made the high (it can
+  be a single candle).'
+- Do not enter on it - let a NEW protected swing form first.
+- New protected swing forms when price reaches into a point of interest (fair value gap),
+  prints the series or single up-close candle into it, and closes through it.
+- Enter there; stop on the protected swing high; target 2R, then the first standard deviation
+  projection.
+- Expect the new protected swing to remain intact for the trend to continue.
+- Price sweeps out a high (bearish case) and then closes below it - the swept high is now
+  protected.
+- That level becomes the point of interest; 50% of it should be respected on the pullback.
+- Price retraces into the fair value gap created by the displacement, then closes below the
+  protected swing again - that close is the entry.
+- For a pre-open positional entry the protected swing must already exist before 09:30, with
+  all timeframes aligned.
+invalidation:
+- Price trades through the protected extreme - the trend read is over.
+- A protected swing that is 'instantly invalidated' after forming signals consolidation or
+  reversal rather than trend.
+- Price trades back through the protected swing -- the trend read is over.
+- Price trades back through the protected swing - the invalidation is hit and the idea is
+  dead.
+- Price trades through the protected swing — this is the stated invalidation of the idea,
+  not a level to give room to.
+- Price trades beyond the protected swing.
+- Price trades back through the protected swing before the target is reached - the sequence
+  is broken.
+- The swing being used is a failure swing (a minor high/low that did not sweep liquidity)
+  - it does not qualify as protected.
+- The protected extreme is traded through - which is simultaneously the market structure shift.
+- Price trades through the protected extreme - the swing is failed (greyed), not erased.
+- Price trades through the new protected swing.
+- Price trades beyond the protected extreme.
+- The 50% level is not respected on the pullback.
+- The swing formed at equal lows/highs with no separation from the swept level - there is
+  nothing to trade away from even if the sweep technically occurred.
+measurable:
+- survival rate of protected swings by construction type (sweep / SMT / fair value gap)
+- share of protected swings invalidated within N bars of forming
+- R distribution of entries taken at a fresh protected swing vs at the prior one
+- protected swings formed per session per timeframe
+- violation rate of protected swings
+- R distribution of stops placed at the swing vs at the body
+- hold rate of protected swings until the draw is reached
+- distance in R from entry to the protected swing across a sample
+- frequency with which trailing to each new protected swing exits before the final objective
+- frequency with which a protected swing is violated before target
+- R difference between stops at the protected swing and stops beyond it
+- count of protected swings formed per higher-timeframe candle
+- hold rate of protected swings, measured until the opposing extreme is taken
+- frequency of the run-back-through-then-continuation pattern after protection lapses, and
+  how often it lands within x% of the EQ
+- difference in hold rate between fast-forming and slow-forming protected swings
+- Rate at which protected swings hold until target.
+- Frequency and expectancy of the post-target protected-swing run-out re-entry.
+- hold rate of protected swings until the stated objective
+- agreement rate between 'the low that made the new high' and the low the stop was actually
+  placed on
+- sweep depth distribution of protected swings that held vs those that failed
+- how many mechanically-marked swings the reach filter removes
+- hold rate of protected swings until the target is reached
+- number of protected swings formed per higher-timeframe candle
+- failure rate by instrument (he notes stocks produce messy protected swings)
+- hold rate of the new protected swing through to 2R
+- R difference between entering at the first protected swing and waiting for the new one
+- hit rate of the 50% level holding after a protected swing forms
+- outcome difference between protected swings with and without separation from the swept level
+- 2R hit rate from the close-below entry
+sources:
+- video_id: -wr4xATE37g
+  title: Protected Swings - Understanding Trend and Invalidations
+  quote: A protected swing is a high or low in which I'm expecting to hold
+- video_id: -wr4xATE37g
+  title: Protected Swings - Understanding Trend and Invalidations
+  quote: close through the series of downclo candles that made the low
+- video_id: -wr4xATE37g
+  title: Protected Swings - Understanding Trend and Invalidations
+  quote: the other type of protected swing is one formed out of a fair value gap
+- video_id: -wr4xATE37g
+  title: Protected Swings - Understanding Trend and Invalidations
+  quote: I am mainly focused on a new invalidation forming
+- video_id: WFqLwOp2pXw
+  title: How To Trade Consolidation - Phases Of Price
+  quote: That is when I can use 0.5 of this opposing candle here
+- video_id: CKltGYiesHA
+  title: Quit Moving Your Stop Loss Before You Know This (Trailing Stop Loss)
+  quote: Our stop losses can only be trailed to new protected swings
+- video_id: JHVaSKtE1Ys
+  title: 'Stop Losses in Trading: Know When You''re Wrong'
+  quote: a protected swing must reach into an important level, which is sweeping out a low
+- video_id: NqSbvqDKML0
+  title: The Only Points of Interest That Actually Matter For Trading
+- video_id: IJcfC6wAPZU
+  title: Trade Continuations Using Order Blocks
+- video_id: FAKWJ-1NlLE
+  title: Trading The 4 Hour Power Of Three - OHLC / OLHC
+- video_id: vn1RYjhJUnQ
+  title: Validating Swing Points Using Lower Timeframe Confirmation (CISD)
+- video_id: IzOQmcgLyA0
+  title: 'TTrades Top-Down Chart Lessons #3'
+- video_id: w-JekHg6Ldk
+  title: 'TTrades Top-Down Chart Lessons #4'
+- video_id: UBTl7za9obc
+  title: 'TTrades Top-Down Chart Lessons #2'
+- video_id: Nlw-PZhoViQ
+  title: 'TTrades Top-Down Chart Lessons #1'
+  quote: So this level does not form a protected swing
+- video_id: G1IIdQ3RAkY
+  title: New York Open Live Q&A
+  quote: we have to sweep out a low or reach into a gap
+- video_id: Je7cd9HJUBE
+  title: New York Open Live Q&A
+  quote: It's going to print on the open of the next candle
+- video_id: m8xcjkOuBHU
+  title: New York Open Live Q&A
+  quote: this is a protected low within trading in this range
+- video_id: i2HhHhWdaPQ
+  title: New York Open Live Q&A
+  quote: These all are protected until when till this high is taken out
+- video_id: eIPM-D8RrSQ
+  title: New York Open Live Q&A
+  quote: it's more of a consolidation range than an actual protected swing to me
+- video_id: x4sRGuZIqWk
+  title: New York Open Live Q&A
+  quote: lower time frame protected swing prior to the open of the higher
+- video_id: yud7TpE2AMs
+  title: New York Open Live Q&A
+- video_id: 00iZXPAdR5A
+  title: New York Open Live Q&A
+- video_id: Qv6Ux_Z8VrA
+  title: New York Open Live Q&A
+- video_id: iEaMbuFZb24
+  title: Trade Like TTrades - Top Down Analysis
+  quote: My Stop on this new low because it is now protected
+- video_id: iEaMbuFZb24
+  title: Trade Like TTrades - Top Down Analysis
+  quote: sweeping out this previous day low forming a protected low
+- video_id: sgAnVR6RSDg
+  title: Understanding Market Structure For Trading
+  quote: the low that made the new high before price came and broke it
+- video_id: NESSCPMzWR0
+  title: New York Open Live Q&A
+  quote: When this closes over, this swing is protected
+- video_id: yNgx9OAefuI
+  title: New York Open Live Q&A
+  quote: Barely even forms a sweep
+- video_id: tDiwwMRWF2k
+  title: New York Open Live Q&A with NickDoesFutures
+  quote: It closes through the series of candles into that point of interest
+- video_id: sdZkE-naNiY
+  title: TTrades Indicator Updates - Walkthrough and Q&A
+  quote: protected swings will form on the closure through
+- video_id: sAh3ZMkzzpQ
+  title: Let a New Protected Swing Form, Then Look for the Entry
+  quote: I'm going to let a new protected swing form to look for an entry
+- video_id: sAh3ZMkzzpQ
+  title: Let a New Protected Swing Form, Then Look for the Entry
+  quote: put my stop on the protected swing high, and then look for 2R
+- video_id: bMkRomKEunU
+  title: New York Open Live Q&A
+- video_id: wM1s7UivQ08
+  title: New York Open Live Q&A
+ambiguities:
+- '''The series of opposing candles that made the extreme'' is judged by eye; in several examples
+  he chooses a different candle from the one the mechanical reading would pick, justifying
+  it as ''that is the swing high that created this swing low''.'
+- Whether the close must be a body close through the OPEN of the first opposing candle or
+  through its high/low is never stated.
+- The 0.5-of-the-opposing-candle fallback is introduced as 'a quick lesson' in one video and
+  not carried into the definition elsewhere.
+- 'The important-level requirement has one documented waiver: ''even if it didn''t have a
+  fair value gap, I''m expecting this low to hold'' -- he then uses the CISD level instead.
+  When the waiver applies is not stated.'
+- '''Ignore those small candles'' when defining the series is explicitly discretionary and
+  unquantified.'
+- Whether the close must be through the series' opening price or through its extreme is stated
+  as opening price in some passes and simply 'over that level' in others.
+- Sourced from an ASR (whisper-small) transcript, not YouTube captions; wording may be imprecise.
+- In video Nlw-PZhoViQ the two ways a protected swing can form are enumerated as the operator's
+  only two options for keeping a bias alive, but no preference or probability is attached
+  to either branch.
+- Whether the close over the fair value gap must be a full body close, and whether the gap
+  must be fully or partially filled first, is not stated.
+- Stops are placed below the bodies in one scalp and below the swing low elsewhere; no rule
+  distinguishes the two cases.
+- Trailing to every new protected swing stopped the scalp out on a move that subsequently
+  resolved in his favour, and no rule is given for when not to trail.
+- Whether the sweep and the gap-entry are true alternatives or whether one is preferred is
+  not stated.
+- The CISD that confirms the protected swing is the same unbounded 'series of opposing-close
+  candles' test — the series length is never defined.
+- In the m8xcjkOuBHU walkthrough he adds a refinement step (a lower-timeframe low below the
+  50% level 'that needs to get swept out') without saying when refinement is required versus
+  optional.
+- He also says he is 'not a huge fan of trying to trade protected swings that form a higher
+  time frame gap', which implies a quality filter on protected swings that is never spelled
+  out.
+- '''Took how long to form'' is the disqualifier but no candle count or time threshold is
+  given.'
+- The run-back-then-continuation pattern is said to happen 'a lot of times' and 'kind of advanced',
+  with the EQ location given as a tendency, not a rule.
+- Whether protection lapses for all swings in the sequence at once, or only for those below
+  the taken extreme, is not stated.
+- The post-target run-out re-entry is described as frequent but given no frequency, timeframe
+  or invalidation; he says he deliberately avoids teaching it live.
+- Whether a protected swing survives across timeframes (e.g. an M1 break of an M15 protected
+  swing) is not stated.
+- The entry-side and structure-side accounts are never explicitly identified with each other;
+  this unit is the closest the corpus comes and it is still the reader joining them.
+- Whether the close back over must be a body close is not stated.
+- No rule for how many protected swings may be stacked before the original is discarded.
+- '''Some sort of reach'' is the filter and is never quantified - no minimum sweep depth in
+  points, ticks or fraction of range.'
+- His own indicator marks the shallow case as a protected swing, so the filter is discretionary
+  on top of the mechanical definition; he states this openly.
+- Whether the closure must be a body close through the whole series or only through its extreme
+  is not stated.
+- '''Series of candles'' has no maximum length; one example is a single candle.'
+- On stocks he says the protected-swing display gets messy and he would turn it off, without
+  giving a rule for when it is unreliable.
+- The Short does not say how long to wait for the new protected swing, or what to do if none
+  forms.
+- '"Closed through" is not specified as a body close or a wick.'
+- He notes his indicator marks the protected swing automatically, so the manual rule is only
+  demonstrated, not fully specified.
+- '''Separation'' - the minimum distance between the swept level and the new swing - is never
+  quantified; he rejected a live setup on this basis without giving a threshold.'
+- '''Stop on the bodies'' does not specify which bodies.'
+- Whether the retracement into the fair value gap is mandatory or merely typical is not stated.
+related:
+- cisd
+- ic-cisd
+- order-block
+- opposing-candle
+- smt-swing-point-substitute
+- breakeven-after-new-protected-swing
+- positional-entry
+- ideal-formation
+- stop-loss-placement
+- continuation-order-block
+- point-of-interest
+- fractal-model-c2
+- swing-point
+- advanced-market-structure-labeling
+- equilibrium-eq
+- fractal-model-c3
+- clean-day-criteria
+- failure-swing
+- continuation-over-reversal
+- market-structure-shift
+- propulsion-block
+- relatively-equal-highs-lows
+- liquidity-sweep
+- fair-value-gap
+- standard-deviation-projection
+- swing-forming-candle-selection
+- positional-entry-before-open
+timeframes:
+  htf:
+  - 1D
+  - 4H
+  ltf:
+  - 1H
+  - 15m
+  - 5m
+  - 3m
+  - 1m
+  fractal: true
+execution:
+  bias: The direction the protected swing supports.
+  entry: At or near the protected swing so the stop is close - stated explicitly as the reason
+    to wait for a NEW protected swing rather than use a distant one.
+  stop: On the protected swing.
+  targets:
+  - 2R
+  - the marked liquidity / previous candle extremes
+contributing_units:
+- build_a_model_intro_to_ttrades_fractal_model_01
+- build_a_model_intro_to_ttrades_fractal_model_02
+- chart_lessons_01
+- live_streams_01
+- live_streams_02
+- live_streams_04
+- live_streams_05
+- shorts_02
+- sunday_sessions_live_q_a_02
+- sunday_sessions_live_q_a_03
+- the_foundation_02
+draft_count: 11
+voice: ttrades

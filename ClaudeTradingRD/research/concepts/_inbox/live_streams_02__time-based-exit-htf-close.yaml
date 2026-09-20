@@ -1,0 +1,55 @@
+id: time-based-exit-htf-close
+name: "Time-Based Exit at the Higher-Timeframe Candle Close"
+aliases: ["timebased exit", "two types of targets"]
+category: time
+status: specified
+
+definition: >
+  He names two kinds of target and treats them as equally binding: one on the chart (a level)
+  and one on the clock. The clock target is the close of the higher-timeframe expansion candles
+  being ridden — in the New York morning he enumerates the 4-hour, the hourly and the 30-minute
+  and notes all of them end at 10:00, which is therefore the exit. The general form he states
+  for choosing the next objective once a level target is gone is the same list: where the
+  correlated asset is hitting a target, the average daily range, or the time-based exit; failing
+  those, drop to a lower timeframe and trail.
+
+timeframes:
+  htf: ["4H", "1H", "30m"]
+  ltf: ["5m", "3m", "1m"]
+  fractal: true
+
+preconditions:
+  - "A position taken inside a higher-timeframe expansion candle."
+
+detection_rules:
+  - "Identify which higher-timeframe candles the position is riding."
+  - "Exit at the close of those candles (in the morning session, the 10:00 simultaneous close)."
+  - "If a level target is still open, use whichever of level, correlated-asset target, ADR or clock comes first."
+  - "If none is available, drop a timeframe and trail rather than holding open-ended."
+
+invalidation:
+  - "Not applicable — this is an exit rule."
+
+measurable:
+  - "give-back between the 10:00 close and the session close on held positions"
+  - "R of clock exits versus level exits on the same trades"
+
+sources:
+  - video_id: Je7cd9HJUBE
+    title: "New York Open Live Q&A"
+    quote: "time based is 10:00 a.m. because that's when we get new candles"
+  - video_id: TjUolMJNCMY
+    title: "New York Open Live Q&A"
+    quote: "you would have to wait for 10 a.m. to properly trade the model"
+
+ambiguities:
+  - "Whether the clock exit overrides an unmet level target, or only applies once the level is reached, is not stated."
+  - "Only the 10:00 boundary is worked through; the equivalent for an afternoon or overnight position is not given."
+  - "The trailing fallback references his trailing-stop video and is not spelled out here."
+
+python_detector: null
+related: ["ten-am-candle-alignment", "cross-asset-target-transfer", "average-daily-range", "time-based-exit", "trailing-stop-opposing-candles"]
+
+contributing_units: ["live_streams_02"]
+draft_count: 1
+voice: ttrades

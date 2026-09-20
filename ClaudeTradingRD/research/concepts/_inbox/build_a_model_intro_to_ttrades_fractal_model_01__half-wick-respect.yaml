@@ -1,0 +1,82 @@
+id: half-wick-respect
+name: 0.5 of the Wick Must Be Respected
+category: structure
+status: specified
+aliases:
+- 50% of the wick
+- upper half of the wick
+- 0.5 of this wick
+definition: 'A wick is read as a lower-timeframe reversal: during that period price made an aggressive
+  move and came back. The level marked is 0.5 of the wick, measured FROM THE BODY TO THE LOW (bullish)
+  or FROM THE BODY TO THE HIGH (bearish) - i.e. the midpoint of the wick itself, not of the candle.
+  The test: in a bullish read the upper half of the wick must support price higher; in a bearish
+  read the lower half of the wick must support price lower. If that half is not respected - price
+  closes through 0.5 of the wick - the candle is unlikely to be an expansion candle in that direction
+  and price is instead more likely to run the opposite extreme.'
+timeframes:
+  htf:
+  - 1D
+  - 4H
+  - 1H
+  ltf:
+  - 15m
+  - 5m
+  fractal: true
+preconditions:
+- A candle with a wick has closed, and a directional read exists.
+detection_rules:
+- Measure the wick from the candle BODY to the wick extreme; mark its 50%.
+- 'Bullish: on the following period price should open, form a low at or above that level, then trade
+  higher (open-low-high-close).'
+- 'Bearish: price should open, form a high at or below that level, then trade lower (open-high-low-close).'
+- A close through 0.5 of the wick counts as disrespect; the opposite extreme then becomes the more
+  likely draw.
+- Disrespect early in the period is stronger evidence than a late poke - one example notes a level
+  respected all period then run out at the very end.
+invalidation:
+- Price closes beyond 0.5 of the wick against the read.
+execution:
+  bias: The direction the respected half supports.
+  entry: Lower-timeframe entry inside the respected half; or, after a disrespect close, trade the
+    other way with the stop on the wick extreme.
+  stop: Beyond the wick extreme.
+  targets:
+  - 2R
+  - previous candle extremes
+measurable:
+- forward expansion conditional on the 0.5-of-wick level holding vs breaking
+- false-signal rate of a late-period disrespect vs an early one
+sources:
+- video_id: LKNQDAdId4s
+  title: Master Candlestick Wicks - The Key To Catching Reversals
+  quote: Wicks are generally a lower time frame reversal
+- video_id: LKNQDAdId4s
+  title: Master Candlestick Wicks - The Key To Catching Reversals
+  quote: the main focus for Wix is marking out 0.5 of this Wick
+- video_id: LKNQDAdId4s
+  title: Master Candlestick Wicks - The Key To Catching Reversals
+  quote: if the upper half of this Wick is not respected then it is likely
+- video_id: tyoxl1l-6iI
+  title: 'Candle 2 Closure: The Foundation of TTrades Fractal Model'
+  quote: If it doesn't respect the 0.5, then it's likely to fail
+- video_id: CKltGYiesHA
+  title: Quit Moving Your Stop Loss Before You Know This (Trailing Stop Loss)
+  quote: we want to see it respect 50% of this higher time frame candle
+ambiguities:
+- 'Two different 50% levels are used in the same corpus without being distinguished by name: 0.5
+  of the WICK (body-to-extreme, this concept) and 0.5 of the CANDLE (the EQ / T-spot). The trailing-stop
+  video says ''respect 50% of this higher time frame candle'', which is the candle EQ, not the wick
+  half.'
+- Whether the disrespect must be a body close or a wick through is stated as a close in the rules
+  but shown both ways on the charts.
+- No rule is given for which of the two halves to use when a candle has wicks on both ends.
+related:
+- equilibrium-eq
+- t-spot
+- small-wick-expansion-rule
+- wick-trust-test
+- daily-ohlc-candle-shape
+contributing_units:
+- build_a_model_intro_to_ttrades_fractal_model_01
+draft_count: 1
+voice: ttrades

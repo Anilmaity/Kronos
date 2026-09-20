@@ -1,0 +1,504 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+/* Algorobos landing — scoped under .algorobos-root */
+
+.algorobos-root {
+  --bg-deep:    oklch(0.12 0.018 160);
+  --bg:         oklch(0.15 0.022 160);
+  --bg-soft:    oklch(0.18 0.026 162);
+  --bg-card:    oklch(0.21 0.030 162);
+  --ink:        #ffffff;
+  --ink-muted:  rgba(255, 255, 255, 0.88);
+  --ink-faint:  rgba(255, 255, 255, 0.66);
+  --gold:       oklch(0.82 0.180 158); /* luminous jade */
+  --gold-deep:  oklch(0.66 0.160 156); /* emerald */
+  --gold-dim:   oklch(0.46 0.110 154); /* forest */
+  --ember:      oklch(0.66 0.180 30);
+  --line:       color-mix(in oklch, var(--gold) 30%, transparent);
+  --line-faint: color-mix(in oklch, var(--gold) 14%, transparent);
+  --display: "Cinzel", "Trajan Pro", "Times New Roman", serif;
+  --serif:   "EB Garamond", "Sorts Mill Goudy", "Garamond", serif;
+  --mono:    "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+
+  font-family: var(--serif);
+  font-size: 22px;
+  font-weight: 500;
+  line-height: 1.65;
+  font-feature-settings: "liga","kern","onum";
+  background:
+    radial-gradient(1400px 800px at 78% -10%, color-mix(in oklch, var(--gold) 14%, transparent), transparent 60%),
+    radial-gradient(1100px 700px at 0% 100%, color-mix(in oklch, var(--gold-deep) 12%, transparent), transparent 60%),
+    radial-gradient(700px 500px at 50% 50%, color-mix(in oklch, var(--gold) 5%, transparent), transparent 70%),
+    var(--bg-deep);
+  color: var(--ink);
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+}
+
+.algorobos-root *,
+.algorobos-root *::before,
+.algorobos-root *::after { box-sizing: border-box; }
+
+.algorobos-root::before{
+  content:"";
+  position:fixed;inset:0;pointer-events:none;z-index:1;
+  background-image:
+    radial-gradient(rgba(255,220,160,0.014) 1px, transparent 1px),
+    radial-gradient(rgba(0,0,0,0.025) 1px, transparent 1px);
+  background-size: 3px 3px, 7px 7px;
+  background-position: 0 0, 1px 2px;
+  mix-blend-mode:overlay;
+  opacity:0.7;
+}
+
+.algorobos-root ::selection{background:var(--gold-deep);color:var(--bg-deep)}
+
+/* Type */
+.algorobos-root .display{font-family:var(--display);font-weight:500;letter-spacing:0.02em;line-height:1.05}
+.algorobos-root .eyebrow{
+  font-family:var(--mono); font-size:11px; font-weight:500;
+  letter-spacing:0.22em; text-transform:uppercase; color:var(--gold-deep);
+}
+.algorobos-root .ital{font-style:italic;font-family:var(--serif);font-weight:400}
+.algorobos-root .gold{color:var(--gold)}
+.algorobos-root .muted{color:var(--ink-muted)}
+.algorobos-root .faint{color:var(--ink-faint)}
+.algorobos-root .mono{font-family:var(--mono)}
+
+/* Layout */
+.algorobos-root .wrap{max-width:1240px;margin:0 auto;padding:0 40px;position:relative;z-index:2}
+.algorobos-root section{position:relative;z-index:2}
+
+/* Nav */
+.algorobos-root nav.top{
+  position:sticky; top:0; z-index:50;
+  backdrop-filter:blur(8px) saturate(140%);
+  -webkit-backdrop-filter:blur(8px) saturate(140%);
+  background:color-mix(in oklch, var(--bg-deep) 75%, transparent);
+  border-bottom:1px solid var(--line-faint);
+}
+.algorobos-root .nav-row{display:flex;align-items:center;justify-content:space-between;padding:18px 0}
+.algorobos-root .brand{display:flex;align-items:center;gap:12px;text-decoration:none;color:inherit}
+.algorobos-root .brand-mark{
+  width:36px;height:36px;border-radius:50%;
+  background-image: url('/website/algorobos-gear.png');
+  background-size: cover; background-position: center;
+  box-shadow:
+    0 0 0 1px color-mix(in oklch, var(--gold) 30%, transparent),
+    0 0 14px -2px color-mix(in oklch, var(--gold) 35%, transparent);
+  filter: saturate(1.05);
+  animation: agSpin 60s linear infinite;
+}
+.algorobos-root .brand-name{
+  font-family:var(--display); font-weight:600;
+  letter-spacing:0.28em; font-size:14px; text-transform:uppercase; color:var(--ink);
+}
+.algorobos-root .nav-links{display:flex;gap:32px;align-items:center}
+.algorobos-root .nav-links a{
+  text-decoration:none; color:var(--ink-muted);
+  font-family:var(--mono); font-size:11px; letter-spacing:0.18em;
+  text-transform:uppercase; transition:color .2s;
+}
+.algorobos-root .nav-links a:hover{color:var(--gold)}
+
+/* Buttons */
+.algorobos-root .btn{
+  display:inline-flex; align-items:center; gap:10px;
+  font-family:var(--mono); font-size:13px; letter-spacing:0.2em;
+  text-transform:uppercase; font-weight:600;
+  padding:16px 26px; border-radius:2px;
+  text-decoration:none; cursor:pointer;
+  transition: all .25s cubic-bezier(.3,.7,.4,1);
+  position:relative; overflow:hidden;
+}
+.algorobos-root .btn-primary{
+  background:linear-gradient(180deg, var(--gold), var(--gold-deep));
+  color:var(--bg-deep); border:1px solid var(--gold);
+  box-shadow:
+    inset 0 1px 0 color-mix(in oklch, white 25%, transparent),
+    inset 0 -1px 0 color-mix(in oklch, black 12%, transparent),
+    0 0 0 1px color-mix(in oklch, var(--gold) 25%, transparent),
+    0 8px 24px -8px color-mix(in oklch, var(--gold) 50%, transparent);
+}
+.algorobos-root .btn-primary:hover{
+  transform:translateY(-1px);
+  box-shadow:
+    inset 0 1px 0 color-mix(in oklch, white 35%, transparent),
+    inset 0 -1px 0 color-mix(in oklch, black 12%, transparent),
+    0 0 0 1px color-mix(in oklch, var(--gold) 40%, transparent),
+    0 14px 32px -10px color-mix(in oklch, var(--gold) 60%, transparent);
+}
+.algorobos-root .btn-ghost{color:var(--ink); background:transparent; border:1px solid var(--line)}
+.algorobos-root .btn-ghost:hover{border-color:var(--gold);color:var(--gold)}
+.algorobos-root .btn .arr{display:inline-block;transition:transform .25s}
+.algorobos-root .btn:hover .arr{transform:translateX(3px)}
+
+/* Ornaments */
+.algorobos-root .orn{display:flex;align-items:center;gap:14px;color:var(--gold-deep);font-size:14px;user-select:none}
+.algorobos-root .orn-rule{flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--gold-dim),transparent)}
+.algorobos-root .orn-glyph{font-family:var(--display);letter-spacing:0.3em}
+
+/* Hero */
+.algorobos-root .hero{padding:100px 0 80px; position:relative}
+.algorobos-root .hero-grid{display:grid;grid-template-columns:1.5fr .9fr;gap:80px;align-items:center}
+.algorobos-root .hero h1{
+  font-family:var(--display); font-weight:700;
+  font-size: clamp(56px, 7vw, 112px); line-height:1.02;
+  letter-spacing:0.005em; margin:18px 0 22px; color:var(--ink);
+  text-shadow: 0 0 28px color-mix(in oklch, var(--gold) 22%, transparent);
+}
+.algorobos-root .hero h1 em{font-family:var(--serif);font-style:italic;font-weight:400;color:var(--gold);letter-spacing:0}
+.algorobos-root .hero h1 .amp{font-family:var(--serif);font-style:italic;font-weight:400;color:var(--gold-deep);padding:0 4px}
+.algorobos-root .hero-sub{font-size:24px;font-weight:500;color:var(--ink-muted);max-width:560px;margin:0 0 36px}
+.algorobos-root .hero-sub em{color:var(--ink);font-style:italic}
+.algorobos-root .hero-cta{display:flex;gap:14px;flex-wrap:wrap;align-items:center}
+.algorobos-root .hero-meta{
+  display:flex;gap:28px;margin-top:48px;
+  border-top:1px solid var(--line-faint);padding-top:24px;color:var(--ink-faint);
+  font-family:var(--mono);font-size:11px;letter-spacing:0.2em;text-transform:uppercase;
+}
+.algorobos-root .hero-meta span{display:flex;gap:8px;align-items:baseline}
+.algorobos-root .hero-meta span b{color:var(--gold);font-weight:500}
+
+/* Reading card */
+.algorobos-root .reading{
+  border:1px solid var(--line);
+  background:
+    linear-gradient(180deg, color-mix(in oklch, var(--gold) 4%, transparent), transparent 30%),
+    var(--bg-card);
+  padding:32px; position:relative;
+  box-shadow: inset 0 1px 0 color-mix(in oklch, var(--gold) 10%, transparent);
+}
+.algorobos-root .reading::before,
+.algorobos-root .reading::after{content:"";position:absolute;width:14px;height:14px;border:1px solid var(--gold-deep)}
+.algorobos-root .reading::before{top:-1px;left:-1px;border-right:none;border-bottom:none}
+.algorobos-root .reading::after{bottom:-1px;right:-1px;border-left:none;border-top:none}
+.algorobos-root .reading-tag{
+  font-family:var(--mono);font-size:10px;letter-spacing:0.24em;
+  text-transform:uppercase;color:var(--gold-deep);
+  display:flex;justify-content:space-between;align-items:center;
+}
+.algorobos-root .reading-tag .pulse{
+  display:inline-block;width:6px;height:6px;border-radius:50%;
+  background:oklch(0.78 0.13 145);
+  box-shadow:0 0 10px oklch(0.78 0.13 145);
+  animation:agPulse 2s ease-in-out infinite;
+}
+@keyframes agPulse{50%{opacity:0.3}}
+.algorobos-root .reading-roman{
+  font-family:var(--display);font-weight:400;color:var(--gold);
+  font-size:36px;letter-spacing:0.1em;margin:24px 0 6px;
+}
+.algorobos-root .reading-title{
+  font-family:var(--display);font-size:18px;letter-spacing:0.08em;
+  color:var(--ink);text-transform:uppercase;margin:0 0 18px;
+}
+.algorobos-root .reading-body{font-style:italic;color:var(--ink-muted);font-size:17px;line-height:1.55}
+.algorobos-root .reading-foot{
+  margin-top:28px;padding-top:18px;border-top:1px dashed var(--line-faint);
+  display:flex;justify-content:space-between;align-items:center;
+  font-family:var(--mono);font-size:10px;letter-spacing:0.18em;
+  text-transform:uppercase;color:var(--ink-faint);
+}
+.algorobos-root .reading-foot button{
+  background:none;border:none;cursor:pointer;
+  font-family:inherit;font-size:inherit;letter-spacing:inherit;text-transform:inherit;
+  color:var(--gold);padding:0;
+}
+.algorobos-root .reading-foot button:hover{text-decoration:underline;text-underline-offset:4px}
+
+/* About */
+.algorobos-root .about{padding:100px 0;text-align:center}
+.algorobos-root .about-inner{max-width:760px;margin:0 auto}
+.algorobos-root .about h2{
+  font-family:var(--display);font-weight:700;
+  font-size:clamp(44px,5.2vw,64px);margin:18px 0 28px;letter-spacing:0.01em;
+}
+.algorobos-root .about p{font-size:24px;font-weight:500;line-height:1.7;color:var(--ink-muted)}
+.algorobos-root .about p::first-letter{
+  font-family:var(--display);font-weight:600;
+  font-size:64px;float:left;line-height:0.9;
+  padding:8px 12px 0 0;color:var(--gold);
+}
+
+/* Pillars */
+.algorobos-root .pillars{padding:80px 0 120px}
+.algorobos-root .pillars-head{text-align:center;margin-bottom:64px}
+.algorobos-root .pillars h2{
+  font-family:var(--display);font-weight:700;
+  font-size:clamp(44px,5.2vw,64px);letter-spacing:0.01em;margin:18px 0 6px;
+}
+.algorobos-root .pillars-sub{color:var(--ink-faint);font-style:italic;font-size:20px;font-weight:500}
+.algorobos-root .codex{
+  display:grid;grid-template-columns:1fr 1.3fr;gap:56px;
+  border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+  padding:48px 0;
+}
+.algorobos-root .codex-list{display:flex;flex-direction:column;gap:0}
+.algorobos-root .codex-item{
+  display:grid;grid-template-columns:56px 1fr 18px;align-items:baseline;
+  padding:18px 4px;border-bottom:1px dashed var(--line-faint);cursor:pointer;
+  transition: background .2s, padding-left .25s cubic-bezier(.3,.7,.4,1);
+  background:transparent;border-left:0;border-right:0;border-top:0;
+  width:100%;text-align:left;font-family:inherit;color:inherit;
+}
+.algorobos-root .codex-item:last-child{border-bottom:none}
+.algorobos-root .codex-item:hover{padding-left:14px}
+.algorobos-root .codex-item:hover .ci-title{color:var(--gold)}
+.algorobos-root .codex-item.active{padding-left:14px;background:linear-gradient(90deg, color-mix(in oklch, var(--gold) 8%, transparent), transparent)}
+.algorobos-root .codex-item.active .ci-title{color:var(--gold)}
+.algorobos-root .codex-item.active .ci-rom{color:var(--gold);opacity:1}
+.algorobos-root .ci-rom{font-family:var(--display);font-weight:500;color:var(--gold-dim);opacity:.85;font-size:18px;letter-spacing:0.1em}
+.algorobos-root .ci-title{font-family:var(--display);font-weight:600;font-size:24px;letter-spacing:0.04em;color:var(--ink);transition:color .2s}
+.algorobos-root .ci-mark{color:var(--gold);font-size:9px;opacity:0;transition:opacity .2s;align-self:center}
+.algorobos-root .codex-item.active .ci-mark{opacity:1}
+.algorobos-root .codex-detail{position:relative;padding:8px 0 8px 8px;min-height:340px}
+.algorobos-root .codex-detail .pillar-rom{
+  font-family:var(--display);font-weight:400;color:var(--gold);
+  font-size:64px;letter-spacing:0.08em;line-height:1;margin-bottom:14px;
+}
+.algorobos-root .codex-detail h3{font-family:var(--display);font-weight:700;font-size:42px;letter-spacing:0.02em;margin:0 0 6px;color:var(--ink)}
+.algorobos-root .codex-detail .lede{font-style:italic;color:var(--gold-deep);font-size:22px;font-weight:500;margin:0 0 24px}
+.algorobos-root .codex-detail .body{font-size:20px;font-weight:500;line-height:1.7;color:var(--ink-muted);max-width:540px}
+.algorobos-root .codex-tenets{margin-top:32px;display:flex;flex-direction:column;gap:8px}
+.algorobos-root .codex-tenets .t{
+  font-family:var(--mono);font-size:11px;letter-spacing:0.16em;text-transform:uppercase;
+  color:var(--ink-faint);display:flex;gap:14px;align-items:baseline;
+}
+.algorobos-root .codex-tenets .t::before{content:"◆";color:var(--gold-deep);font-size:7px}
+
+/* Why us */
+.algorobos-root .why{
+  padding:120px 0;
+  background:radial-gradient(800px 400px at 50% 0%, color-mix(in oklch, var(--gold) 5%, transparent), transparent 70%);
+}
+.algorobos-root .why-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:32px;margin-top:64px}
+.algorobos-root .why-card{
+  border:1px solid var(--line-faint);padding:32px;
+  background:color-mix(in oklch, var(--bg-card) 60%, transparent);
+  position:relative;transition: all .3s cubic-bezier(.3,.7,.4,1);
+}
+.algorobos-root .why-card:hover{
+  border-color:var(--gold-deep);transform:translateY(-3px);
+  box-shadow:0 14px 30px -16px color-mix(in oklch, var(--gold) 30%, transparent);
+}
+.algorobos-root .why-rom{font-family:var(--display);color:var(--gold);font-size:14px;letter-spacing:0.2em}
+.algorobos-root .why-num{
+  font-family:var(--display);font-weight:400;font-size:54px;color:var(--ink);
+  margin:18px 0 4px;font-feature-settings:"lnum","tnum";letter-spacing:0.01em;
+}
+.algorobos-root .why-num em{font-style:italic;color:var(--gold);font-size:32px;font-weight:400;letter-spacing:0}
+.algorobos-root .why-label{font-family:var(--mono);font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:var(--gold-deep);margin-bottom:18px}
+.algorobos-root .why-desc{font-size:18px;font-weight:500;color:var(--ink-muted);line-height:1.6}
+.algorobos-root .why-head{text-align:center;margin-bottom:0}
+.algorobos-root .why h2{font-family:var(--display);font-weight:700;font-size:clamp(44px,5.2vw,60px);letter-spacing:0.01em;margin:18px 0 6px}
+
+/* Testimonial */
+.algorobos-root .testi{padding:120px 0;text-align:center}
+.algorobos-root .testi-quote{
+  font-family:var(--serif);font-style:italic;
+  font-size:clamp(32px,4vw,50px);line-height:1.35;
+  max-width:980px;margin:32px auto 0;color:var(--ink);font-weight:500;
+}
+.algorobos-root .testi-quote::before{
+  content:"\201C";font-family:var(--display);color:var(--gold);
+  font-size:1.3em;line-height:0;vertical-align:-0.2em;padding-right:8px;
+}
+.algorobos-root .testi-quote::after{
+  content:"\201D";font-family:var(--display);color:var(--gold);
+  font-size:1.3em;line-height:0;vertical-align:-0.4em;padding-left:6px;
+}
+.algorobos-root .testi-attrib{
+  margin-top:42px;font-family:var(--mono);font-size:11px;letter-spacing:0.22em;
+  text-transform:uppercase;color:var(--ink-faint);
+}
+.algorobos-root .testi-attrib b{color:var(--gold);font-weight:500}
+
+/* Golden Rule */
+.algorobos-root .rule{padding:60px 0 120px;display:grid;place-items:center}
+.algorobos-root .tablet{
+  width:100%;max-width:880px;border:1px solid var(--gold-deep);
+  padding:64px 72px;text-align:center;
+  background:
+    linear-gradient(180deg, color-mix(in oklch, var(--gold) 5%, transparent), transparent 50%),
+    var(--bg-soft);
+  position:relative;
+  box-shadow:
+    0 0 0 1px color-mix(in oklch, var(--gold) 12%, transparent),
+    inset 0 0 80px color-mix(in oklch, var(--gold) 4%, transparent);
+}
+.algorobos-root .tablet::before,
+.algorobos-root .tablet::after{content:"";position:absolute;width:24px;height:24px;border:1px solid var(--gold-deep)}
+.algorobos-root .tablet::before{top:-1px;left:-1px;border-right:none;border-bottom:none}
+.algorobos-root .tablet::after{bottom:-1px;right:-1px;border-left:none;border-top:none}
+.algorobos-root .tablet .eyebrow{margin-bottom:28px}
+.algorobos-root .tablet h3{font-family:var(--display);font-weight:700;font-size:clamp(38px,4.6vw,56px);color:var(--gold);letter-spacing:0.04em;margin:0 0 24px;text-shadow:0 0 22px color-mix(in oklch, var(--gold) 35%, transparent)}
+.algorobos-root .tablet p{font-size:24px;font-style:italic;font-weight:500;color:var(--ink-muted);margin:0;line-height:1.55}
+.algorobos-root .tablet .seal{
+  margin:36px auto 0;width:48px;height:48px;border-radius:50%;
+  border:1px solid var(--gold-deep);display:grid;place-items:center;
+  color:var(--gold);font-family:var(--display);font-size:14px;letter-spacing:0.1em;
+  background: radial-gradient(circle at 35% 30%, color-mix(in oklch, var(--gold) 18%, transparent), transparent 65%);
+}
+
+/* CTA */
+.algorobos-root .cta{
+  padding:140px 0;border-top:1px solid var(--line-faint);
+  background:radial-gradient(900px 500px at 50% 100%, color-mix(in oklch, var(--gold) 8%, transparent), transparent 60%);
+  text-align:center;
+}
+.algorobos-root .cta h2{font-family:var(--display);font-weight:700;font-size:clamp(48px,5.6vw,80px);letter-spacing:0.01em;margin:18px 0 18px}
+.algorobos-root .cta p{font-size:24px;font-weight:500;color:var(--ink-muted);max-width:620px;margin:0 auto 40px;font-style:italic}
+
+/* Footer */
+.algorobos-root footer{padding:48px 0 64px;border-top:1px solid var(--line-faint);background:var(--bg-deep)}
+.algorobos-root .foot-grid{display:grid;grid-template-columns:1fr auto 1fr;gap:48px;align-items:center}
+.algorobos-root .foot-links{display:flex;gap:24px;justify-self:center}
+.algorobos-root .foot-links a{color:var(--ink-muted);text-decoration:none;font-family:var(--mono);font-size:11px;letter-spacing:0.2em;text-transform:uppercase}
+.algorobos-root .foot-links a:hover{color:var(--gold)}
+.algorobos-root .foot-meta{color:var(--ink-faint);font-family:var(--mono);font-size:11px;letter-spacing:0.18em;text-transform:uppercase}
+.algorobos-root .foot-meta.right{justify-self:end}
+
+/* Section label */
+.algorobos-root .section-num{
+  display:flex;gap:14px;align-items:center;justify-content:center;
+  font-family:var(--mono);font-size:11px;letter-spacing:0.24em;text-transform:uppercase;color:var(--gold-deep);
+}
+.algorobos-root .section-num b{font-weight:500;color:var(--gold)}
+.algorobos-root .section-num .bar{flex:0 0 36px;height:1px;background:var(--gold-dim)}
+
+/* Manifesto */
+.algorobos-root .manifesto{padding:120px 0;border-top:1px solid var(--line-faint);border-bottom:1px solid var(--line-faint)}
+.algorobos-root .manifesto-head{text-align:center;margin-bottom:80px}
+.algorobos-root .manifesto h2{
+  font-family:var(--display);font-weight:700;
+  font-size:clamp(48px,6vw,84px);letter-spacing:0.005em;line-height:1.05;
+  margin:18px auto 0;color:var(--ink);max-width:1000px;
+}
+.algorobos-root .manifesto h2 em{font-family:var(--serif);font-style:italic;color:var(--gold);font-weight:400;letter-spacing:0}
+.algorobos-root .verses{display:grid;grid-template-columns:96px 1fr;gap:48px;max-width:880px;margin:0 auto}
+.algorobos-root .verse{display:contents}
+.algorobos-root .verse .v-num{
+  font-family:var(--display);font-weight:500;color:var(--gold);
+  font-size:24px;letter-spacing:0.12em;text-align:right;padding-top:6px;
+  font-feature-settings:"lnum";border-right:1px solid var(--line-faint);padding-right:24px;
+}
+.algorobos-root .verse .v-body{font-size:23px;font-weight:500;line-height:1.65;color:var(--ink-muted);padding-bottom:42px}
+.algorobos-root .verse:last-child .v-body{padding-bottom:0}
+.algorobos-root .verse .v-body em{color:var(--ink);font-style:italic}
+.algorobos-root .verse .v-body b{color:var(--gold);font-weight:500;font-style:normal}
+
+/* Marquee */
+.algorobos-root .marquee{
+  overflow:hidden;padding:60px 0;
+  border-top:1px solid var(--line-faint);border-bottom:1px solid var(--line-faint);
+  background:radial-gradient(1200px 200px at 50% 50%, color-mix(in oklch, var(--gold) 6%, transparent), transparent 70%);
+}
+.algorobos-root .marquee-track{
+  display:flex;gap:80px;white-space:nowrap;
+  animation: agTick 60s linear infinite;
+  font-family:var(--display);font-weight:400;
+  font-size:clamp(48px,7vw,110px);line-height:1;letter-spacing:0.02em;
+  color:transparent;-webkit-text-stroke:1px var(--gold-deep);
+}
+.algorobos-root .marquee-track span{display:inline-flex;gap:80px;align-items:center}
+.algorobos-root .marquee-track .filled{color:var(--gold);-webkit-text-stroke:0;font-style:italic;font-family:var(--serif)}
+.algorobos-root .marquee-track .dot{color:var(--gold-deep);-webkit-text-stroke:0;font-size:0.35em;transform:translateY(-0.4em)}
+@keyframes agTick{from{transform:translate3d(0,0,0)}to{transform:translate3d(-50%,0,0)}}
+
+/* Finale */
+.algorobos-root .finale{
+  padding:160px 0 120px;border-top:1px solid var(--line-faint);
+  background:radial-gradient(1100px 600px at 50% 100%, color-mix(in oklch, var(--gold) 10%, transparent), transparent 60%);
+  text-align:center;
+}
+.algorobos-root .finale h2{
+  font-family:var(--display);font-weight:700;
+  font-size:clamp(56px,8.6vw,144px);letter-spacing:0;line-height:1.0;
+  margin:24px auto 14px;max-width:1100px;color:var(--ink);
+  text-shadow:0 0 40px color-mix(in oklch, var(--gold) 25%, transparent);
+}
+.algorobos-root .finale h2 em{font-family:var(--serif);font-style:italic;color:var(--gold);font-weight:500;letter-spacing:-0.01em}
+.algorobos-root .finale .lede{font-size:24px;font-weight:500;color:var(--ink-muted);font-style:italic;max-width:620px;margin:0 auto 48px}
+.algorobos-root .finale .post-orn{margin:36px auto 0;max-width:300px}
+
+/* Reveal */
+.algorobos-root .reveal{opacity:0;transform:translateY(16px);transition:opacity .9s ease, transform .9s ease}
+.algorobos-root .reveal.in{opacity:1;transform:none}
+.algorobos-root .lm{display:block;overflow:hidden;padding:0.06em 0;line-height:1.05}
+.algorobos-root .lm > .lm-inner{display:block;transform:translateY(110%);transition:transform 1.05s cubic-bezier(.22,.7,.18,1);will-change:transform}
+.algorobos-root .lm.in > .lm-inner{transform:translateY(0)}
+.algorobos-root .lm.d1 > .lm-inner{transition-delay:0.08s}
+.algorobos-root .lm.d2 > .lm-inner{transition-delay:0.18s}
+.algorobos-root .lm.d3 > .lm-inner{transition-delay:0.28s}
+.algorobos-root .lm.d4 > .lm-inner{transition-delay:0.38s}
+.algorobos-root .sup{opacity:0;transform:translateY(14px);transition:opacity .8s ease, transform .8s cubic-bezier(.22,.7,.18,1)}
+.algorobos-root .sup.in{opacity:1;transform:none}
+
+/* Scroll thread */
+.algorobos-root .thread{
+  position:fixed;left:18px;top:0;bottom:0;width:1px;
+  background: linear-gradient(180deg,
+    transparent 0,
+    var(--line-faint) 80px,
+    var(--line-faint) calc(100% - 80px),
+    transparent 100%);
+  z-index:40;pointer-events:none;
+}
+.algorobos-root .thread-fill{
+  position:absolute;left:-1px;top:80px;width:3px;
+  background:linear-gradient(180deg, var(--gold), var(--gold-deep));
+  box-shadow:0 0 12px var(--gold);height:0;transform-origin: top;
+}
+.algorobos-root .thread-num{
+  position:fixed;left:8px;bottom:18px;
+  font-family:var(--mono);font-size:10px;letter-spacing:0.2em;color:var(--gold-deep);
+  writing-mode:vertical-rl;transform: rotate(180deg);z-index:40;
+}
+
+@keyframes agSpin{to{transform:rotate(360deg)}}
+@keyframes agRdfade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@keyframes agCxfade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+.algorobos-root .reading-roman,
+.algorobos-root .reading-title,
+.algorobos-root .reading-body{animation: agRdfade .55s cubic-bezier(.22,.7,.18,1) both}
+
+.algorobos-root .codex-detail .pillar-rom,
+.algorobos-root .codex-detail h3,
+.algorobos-root .codex-detail .lede,
+.algorobos-root .codex-detail .body,
+.algorobos-root .codex-detail .codex-tenets{animation: agCxfade .55s cubic-bezier(.22,.7,.18,1) both}
+.algorobos-root .codex-detail h3{animation-delay:.05s}
+.algorobos-root .codex-detail .lede{animation-delay:.10s}
+.algorobos-root .codex-detail .body{animation-delay:.15s}
+.algorobos-root .codex-detail .codex-tenets{animation-delay:.22s}
+
+@media (prefers-reduced-motion: reduce){
+  .algorobos-root .lm > .lm-inner,
+  .algorobos-root .sup{transform:none !important;opacity:1 !important;transition:none !important}
+  .algorobos-root .reading-roman,
+  .algorobos-root .reading-title,
+  .algorobos-root .reading-body,
+  .algorobos-root .codex-detail *{animation:none !important}
+  .algorobos-root .marquee-track{animation:none !important}
+  .algorobos-root .brand-mark{animation:none !important}
+}
+
+@media (max-width: 980px){
+  .algorobos-root .thread,
+  .algorobos-root .thread-num{display:none}
+  .algorobos-root .hero-grid{grid-template-columns:1fr;gap:48px}
+  .algorobos-root .codex{grid-template-columns:1fr;gap:32px;padding:32px 0}
+  .algorobos-root .why-grid{grid-template-columns:repeat(2,1fr)}
+  .algorobos-root .nav-links{display:none}
+  .algorobos-root .foot-grid{grid-template-columns:1fr;gap:18px;text-align:center}
+  .algorobos-root .foot-meta.right,
+  .algorobos-root .foot-links{justify-self:center}
+}
+@media (max-width: 600px){
+  .algorobos-root .wrap{padding:0 22px}
+  .algorobos-root .why-grid{grid-template-columns:1fr}
+  .algorobos-root .hero-meta{flex-wrap:wrap;gap:14px}
+}

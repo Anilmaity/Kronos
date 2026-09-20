@@ -1,0 +1,60 @@
+id: new-york-reversal-profile
+name: "New York Reversal"
+aliases: ["NY reversal", "New York reversal profile"]
+category: model
+status: underspecified
+
+definition: >
+  A daily profile with the same daily-candle shapes as a London Reversal
+  (Open-High-Low-Close or Open-Low-High-Close) but in which the reversal extreme forms during
+  the New York a.m. session instead of London. It is defined by contrast: London ran in the
+  counter direction but never reached a relevant higher-timeframe PD array, so price keeps
+  retracing past 05:00 until New York finally reaches that level, changes the state of delivery
+  there, and expands for the rest of the day.
+
+timeframes:
+  htf: ["1D", "4H", "1H"]
+  ltf: ["30m", "15m", "5m"]
+  fractal: false
+
+preconditions:
+  - "A directional daily bias and a specific higher-timeframe PD array marked as the objective (examples used: previous day high/low, the consequent encroachment of a wick, a measured gap/HTF imbalance, external liquidity)."
+  - "London 02:00-05:00 has completed without reaching that objective."
+
+detection_rules:
+  - "During London, price runs counter to the intended daily direction but does not reach the marked higher-timeframe PD array."
+  - "Price continues in that counter direction into the New York a.m. session and reaches the PD array there."
+  - "At the level, mark the opposing series of candles; a close back through them is the change in the state of delivery and forms the order block."
+  - "If a structure shift occurred in London with no relevant PD array behind it, treat it as a fake change in the state of delivery and expect the same liquidity to be run again, ideally around the New York opening times."
+  - "A first attempted CISD that fails (price cannot close through) is read as a sign price will make a new extreme first; re-mark the opposing series on the new extreme."
+
+invalidation:
+  - "Failure to close back through the opposing series of candles at the level; price makes a further new extreme instead and the framing is re-drawn there."
+
+execution:
+  bias: "Opposite the side that was swept at the higher-timeframe PD array."
+  entry: "On the order block formed by the close through the opposing series of candles; New York open itself frequently is that order block."
+  stop: "At the swing extreme OR at the far side of the order block - he chooses between them by risk-to-reward, with a floor of 'over two R'."
+  targets: ["failure swings / low resistance liquidity left behind", "Asia and London session highs and lows", "midnight open (used for partials)", "previous day high/low"]
+
+measurable:
+  - "how often a London structure shift with no HTF PD array behind it is subsequently run out (the fake-CISD claim)"
+  - "hit rate of the 2R+ target on New York Reversal entries"
+  - "how often the reversal extreme coincides with 08:30, 09:30 or New York open"
+
+sources:
+  - video_id: xdzyejskSKE
+    title: "ICT Daily Profile - New York Reversal"
+    quote: "London never reached a relevant PD aray"
+  - video_id: y6SnEdASVLY
+    title: "ICT Daily Profile - London Reversal / New York Continuation"
+
+ambiguities:
+  - "'Relevant' PD array is never defined; the entire distinction from a London Reversal rests on it."
+  - "The fake-CISD diagnosis is 'look left and see nothing relevant', which is not mechanically decidable."
+  - "The profile is not exclusive of London Reversal - the final example is explicitly both, because London's continuation reached the HTF objective inside the New York session and the reversal was then framed from it."
+  - "Stop selection (swing extreme vs order block edge) is decided by desired R, not by a rule."
+  - "'Failure swing' is used as a target type but is never defined in this video."
+
+python_detector: null
+related: ["daily-profile-framework", "london-reversal-profile", "relevant-htf-pd-array-test", "new-york-intraday-time-levels", "opposing-run-entry"]

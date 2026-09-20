@@ -1,0 +1,50 @@
+id: swing-point-stop-hunt
+name: "Three-Candle Swing Point And Its Stop Hunt"
+aliases: ["stop hunt", "swing high", "swing low"]
+category: liquidity
+status: specified
+
+definition: >
+  The liquidity precondition for the unicorn. A swing point is defined by a strict three-candle
+  test, and the stop hunt is the run of that swing point into the higher-timeframe area of
+  interest. Without the stop hunt there is nothing to displace away from and no setup.
+
+timeframes:
+  htf: ["1H"]
+  ltf: ["5m", "1m"]
+  fractal: true
+
+preconditions:
+  - "Price has arrived at a higher-timeframe area of interest."
+
+detection_rules:
+  - "A swing high is a candle whose high is higher than the candle before it and the candle after it - lower highs on each side."
+  - "A swing low is a candle whose low is lower than the candle before it and the candle after it - higher lows on each side."
+  - "A stop hunt occurs when price trades above that swing high (or below that swing low)."
+  - "The stop hunt must occur into the higher-timeframe area of interest, not in isolation."
+  - "Only after the stop hunt is displacement through the breaker looked for."
+
+invalidation:
+  - "Price runs the swing point and continues without displacing back through the breaker - no trade."
+
+execution:
+  bias: "Opposite the side that was hunted."
+  entry: "Not from the stop hunt alone - it is step two of four in the unicorn sequence."
+  stop: "Not set at this stage."
+  targets: []
+
+measurable:
+  - "count of three-candle swing points run per session open"
+  - "conversion rate from stop hunt to completed unicorn"
+
+sources:
+  - video_id: zXtJSSkiNmo
+    title: "Ash Trades | The Journey To Profitability & The Unicorn Model"
+
+ambiguities:
+  - "Whether the run must exceed the swing by a body or merely a wick is not stated."
+  - "No minimum size for the swing point - any three-candle pattern qualifies, so the count on a 5-minute chart is large."
+  - "How deep into the area of interest the stop hunt must reach is not specified."
+
+python_detector: null
+related: ["unicorn-model", "breaker-block", "internal-external-range-liquidity"]

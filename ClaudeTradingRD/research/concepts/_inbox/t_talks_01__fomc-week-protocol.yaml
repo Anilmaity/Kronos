@@ -1,0 +1,49 @@
+id: fomc-week-protocol
+name: "FOMC Week Protocol"
+aliases: ["FOMC press conference protocol"]
+category: time
+status: specified
+
+definition: >
+  A fixed day-by-day plan for a week containing an FOMC press conference. The press conference is
+  at 14:30 ET on a Wednesday (preceded by the 14:00 statement) and is the high-impact event.
+  Everything before it is avoided; how the event enters the market then determines Thursday and
+  Friday.
+
+timeframes:
+  htf: ["1W", "1D"]
+  ltf: ["1H"]
+  fractal: false
+
+preconditions:
+  - "The economic calendar shows an FOMC press conference in the week."
+
+detection_rules:
+  - "Avoid Monday. Avoid Tuesday. Avoid all of Wednesday before 14:30."
+  - "Observe how the 14:30 release enters the market and how it impacts the weekly range."
+  - "Use that reading to decide how Thursday and Friday should print, and trade those days."
+  - "The FOMC press conference is distinct from FOMC minutes and from other Powell appearances, which are not high impact."
+
+invalidation:
+  - "Not stated."
+
+execution:
+  bias: "Set by how the event entered the weekly range."
+  entry: "Thursday and Friday, per the confirmed weekly profile."
+  stop: "Not stated."
+  targets: ["the weekly draw implied by the post-event profile"]
+
+measurable:
+  - "range of Monday-Wednesday-pre-1430 versus Wednesday-post-1430 through Friday"
+  - "how often the weekly high or low is set by the FOMC release"
+
+sources:
+  - video_id: QmGJFxfSHxM
+    title: "AM Trades | Blending The Economic Calendar, Daily Chart, & Weekly Profiles"
+
+ambiguities:
+  - "The protocol is stated as a forward plan for an upcoming week; no completed FOMC-week example is walked through, so the post-event decision rules are not demonstrated."
+  - "No rule is given for what 'how the event enters the market' means operationally (expansion versus manipulation versus flat)."
+
+python_detector: null
+related: ["news-impact-tiering", "pre-event-avoidance-rule", "weekly-profile-alignment"]

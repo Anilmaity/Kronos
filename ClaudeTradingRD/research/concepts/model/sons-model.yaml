@@ -1,0 +1,102 @@
+id: sons-model
+name: Son's Model (draw, stop raid, lower-timeframe fair value gap)
+definition: 'A three-component mechanical model: a draw on liquidity, a stop raid in the OPPOSITE
+  direction of that draw, and a fair value gap entry two timeframes down. The base version:
+  draw = an old high or low on the 1-hour, or the 15-minute if the hour has none; stop raid
+  on the 5-minute (a swing high taken when the draw is below, a swing low taken when the draw
+  is above) followed by a candle closing back into the range in the trade direction; then
+  drop to the 30-second chart and enter the first fair value gap. On NQ the stop is 12 handles
+  or less and the target is a fixed 1:1.'
+category: model
+status: specified
+aliases:
+- Cameron's model
+- ICT Son's model
+- 30 second setup
+preconditions:
+- A draw on liquidity exists on the 1-hour or 15-minute chart (old high, old low, or an imbalance).
+detection_rules:
+- '1. Identify the draw on liquidity: an old high or old low on the 1-hour; if none, use the
+  15-minute.'
+- 2. On the 5-minute, require a stop raid in the OPPOSITE direction of the draw (draw above
+  -> a swing low is taken; draw below -> a swing high is taken).
+- '3. Wait for the 5-minute candle to close back into the range: an up-close candle for a
+  long, a down-close candle for a short.'
+- 4. Drop to the 30-second chart and enter the first fair value gap in the direction of the
+  draw.
+- '5. Stop: 12 handles / points or less on NQ — smaller if the swing extreme is nearer (he
+  used 10 when 12 would have overshot the high).'
+- '6. Target: fixed 1:1.'
+- 'Higher-timeframe ladder (same model, shifted): 4H or 1H draw -> 15-minute stop raid + candle
+  close -> 1-minute FVG entry; daily or 4H draw -> 1-hour stop raid -> 5-minute entry model.'
+invalidation:
+- No 30-second fair value gap forms after the 5-minute close — no entry.
+measurable:
+- hit rate of the fixed 1:1 version vs the structural-target variant on the same signals
+- how often the first 30-second FVG fills before the target
+- frequency of entries missed by waiting for the 5-minute close
+sources:
+- video_id: q40pRwjuPYQ
+  title: ICT Son's Model - 30 Second Setup
+  quote: this model is made up of three components a draw on liquidity a stop rate
+- video_id: q40pRwjuPYQ
+  title: ICT Son's Model - 30 Second Setup
+  quote: looking for an old high or old low on a hour or 15-minute chart
+- video_id: q40pRwjuPYQ
+  title: ICT Son's Model - 30 Second Setup
+  quote: I am then dropping down to the 30second Chart
+- video_id: q40pRwjuPYQ
+  title: ICT Son's Model - 30 Second Setup
+  quote: on NQ I'm looking for a stop loss of 12 handles or less
+- video_id: q40pRwjuPYQ
+  title: ICT Son's Model - 30 Second Setup
+  quote: 'then I''m targeting a fixed one: one'
+- video_id: q40pRwjuPYQ
+  title: ICT Son's Model - 30 Second Setup
+  quote: I personally prefer a strategy with a higher risk to reward and taking profit
+- video_id: AdmnWLjf8rY
+  title: ICT Son's Model - Higher Time Frames
+  quote: I want to look for a four hour or one hour draw on liquidity
+- video_id: AdmnWLjf8rY
+  title: ICT Son's Model - Higher Time Frames
+  quote: looking for a stop rate on the 15 minute chart in the opposite direction
+- video_id: AdmnWLjf8rY
+  title: ICT Son's Model - Higher Time Frames
+  quote: I would want to have a daily or four hour drawn liquidity
+ambiguities:
+- He attributes the mechanical rules to ICT ('according to ICT we want to wait for that down
+  close candle') and then states he personally does NOT wait for the 5-minute close, instead
+  going straight to the lower timeframe for a box setup or displacement entry. Two incompatible
+  entry triggers are taught in the same video.
+- The 12-handle stop is NQ-specific and no equivalent is given for other instruments.
+- '''First fair value gap'' is what the examples do, but he also takes second and third gaps
+  when the first misses — no cap is stated.'
+- In the higher-timeframe variant (AdmnWLjf8rY) he explicitly drops the close-back-in candle
+  requirement for the 5-minute-entry ladder ('I'm going to do how I trade it and not waiting
+  for this candle closed back in').
+related:
+- unicorn-model
+- box-setup
+- internal-external-rotation
+- timeframe-pairing
+- risk-reward-minimum
+timeframes:
+  htf:
+  - 1H
+  - 15m
+  ltf:
+  - 5m
+  - 30s
+  fractal: true
+execution:
+  bias: Toward the drawn liquidity.
+  entry: First 30-second fair value gap after the 5-minute close-back-in candle.
+  stop: 12 points or less on NQ, above/below the raided extreme.
+  targets:
+  - Fixed 1:1 (the mechanical version)
+  - 'Structural: a prior low / fair value gap / OTE — his personal variant, shown as 1.83R,
+    2R+ and 4.22R on the same three setups'
+contributing_units:
+- education_ict_updated_01
+draft_count: 1
+voice: ttrades

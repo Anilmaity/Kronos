@@ -1,0 +1,61 @@
+id: fractal-model-c2
+name: "Candle 2 Closure (the reversal candle)"
+aliases: ["C2", "candle two closure", "C2 closure"]
+category: model
+status: specified
+
+definition: >
+  C2 is the higher-timeframe candle that sweeps the prior candle's extreme and closes back
+  inside it, producing a reversal shape: the candle opens, makes its extreme against the
+  intended direction, and reverses. C1 is explicitly arbitrary and is never analysed on its
+  own; it is simply whatever precedes C2. A C2 closure licenses looking for a C3 expansion
+  in the intended direction.
+
+timeframes:
+  htf: ["1M", "1D", "4H", "1H"]
+  ltf: ["15m", "5m", "3m", "1m"]
+  fractal: true
+
+preconditions:
+  - "A prior candle with a defined high and low exists (C1)."
+
+detection_rules:
+  - "For a bullish C2: price trades below the previous candle low and closes back above it."
+  - "For a bearish C2: price trades above the previous candle high and closes back below it."
+  - "The candle's own shape must be a reversal: open, then the extreme against the intended direction, then close in the intended direction."
+  - "If C2 produced no CISD on the lower timeframe, a V-shape is required instead, plus a subsequent continuation."
+
+invalidation:
+  - "The candle opened, moved in the intended direction first, and then continued - i.e. no reversal shape. Not a valid C2 even if the closure levels line up (Qv6Ux_Z8VrA, 4H example)."
+  - "C2 is also the expansion candle (reversal and expansion blended into one candle) - the following candle then sets up at lower probability and often begins a new phase of price."
+  - "C3 fails to close beyond the open of C2 - the sequence produces nothing."
+
+execution:
+  bias: "Opposite the side swept by C2."
+  entry: "Continuation entry inside C3, at or near the opening price of the C3 candle, after its wick has formed."
+  stop: "Beyond the C2 extreme / the protected swing."
+  targets: ["previous day high or low", "nearest relevant swing", "equal highs or lows"]
+
+measurable:
+  - "Count of C2 closures per month per timeframe."
+  - "Hit rate of C3 closing beyond the C2 open."
+  - "Conditional hit rate when C2 is also an expansion candle vs a pure reversal candle."
+
+sources:
+  - video_id: aqnY1yZvfYs
+    title: "New York Open Live Q&A"
+    quote: "you never actually focus on C1. You only focus on C2"
+  - video_id: Qv6Ux_Z8VrA
+    title: "New York Open Live Q&A"
+  - video_id: yud7TpE2AMs
+    title: "New York Open Live Q&A"
+  - video_id: 00iZXPAdR5A
+    title: "New York Open Live Q&A"
+
+ambiguities:
+  - "'Reversal shape' is judged visually; no ratio of wick to body is given to separate a reversal candle from an expansion candle."
+  - "The blended reversal+expansion warning has no threshold for how much expansion disqualifies C2."
+  - "Whether the sweep must be a wick or may be a body close outside is not stated."
+
+python_detector: null
+related: ["fractal-model-c3", "cisd", "v-shape-reversal", "point-of-interest", "protected-swing"]

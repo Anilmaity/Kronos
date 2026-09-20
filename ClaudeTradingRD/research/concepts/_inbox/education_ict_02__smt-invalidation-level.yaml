@@ -1,0 +1,51 @@
+id: smt-invalidation-level
+name: An SMT Has Its Own Invalidation Level
+category: liquidity
+status: specified
+definition: 'The one place in the corpus where an SMT is given a hard invalidation, which is what
+  makes it tradeable on its own. The divergence exists because one asset held a low that the other
+  broke; if that held low is subsequently broken or taken, the divergence no longer exists - the two
+  assets are doing the same thing again. He therefore places the stop exactly there, and states the
+  reason plainly: if price returns and takes those lows it is not a divergence any more, because that
+  is what the other asset already did.'
+timeframes:
+  htf:
+  - 15m
+  ltf:
+  - 5m
+  - 1m
+  fractal: true
+preconditions:
+- An SMT divergence has been identified between two correlated assets.
+detection_rules:
+- 'Bullish SMT: the stop sits beyond the HIGHER low held by the diverging asset.'
+- 'Bearish SMT: the stop sits beyond the LOWER high held by the diverging asset.'
+- If that level is broken or taken, the SMT is invalid and the position is out - no discretion.
+- The stop belongs on the asset you are trading, i.e. the diverging one.
+invalidation:
+- The diverging asset takes the level the correlated asset already took.
+measurable:
+- stop-out rate of SMT-invalidation stops
+- how often an invalidated SMT is followed by continuation in the original direction
+sources:
+- video_id: eHQ4nE-TQ2w
+  title: Smart Money Divergences (SMT) - ICT Concepts
+  quote: if these lows or highs are broken or taken the divergence is invalidated
+- video_id: eHQ4nE-TQ2w
+  title: Smart Money Divergences (SMT) - ICT Concepts
+  quote: you want to take the one that is diverging
+ambiguities:
+- Whether a wick through the level invalidates, or only a close, is not stated.
+- No buffer beyond the level is specified.
+- This makes SMT a standalone trade, which contradicts the confluence-only reading given in the other
+  SMT video of the same playlist and in the later canon.
+related:
+- smt-divergence
+- smt-as-confirmation-not-signal
+- relative-strength-asset-selection
+- stop-loss-placement
+voice: ttrades
+contributing_units:
+- education_ict_02
+draft_count: 1
+python_detector: null

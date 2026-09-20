@@ -1,0 +1,70 @@
+id: single-cisd-at-swing-point
+name: One CISD Per Sequence, And It Belongs To The Candle 2
+aliases:
+- you just need a CISD from the swing point
+category: entry
+status: specified
+
+definition: >
+  A direct answer to whether a C4 traded after a C3 closure needs its own change in the state
+  of delivery: it does not. Only one CISD is required per fractal sequence and it sits at the
+  swing point - inside the candle 2 - because its job is to confirm the swing low (or high).
+  The C3 and C4 continuations run off that single confirmation; no further CISD is required
+  inside them.
+
+timeframes:
+  htf:
+  - 1D
+  - 4H
+  - 1H
+  ltf:
+  - 15m
+  - 5m
+  fractal: true
+
+preconditions:
+- A candle 2 closure has formed at the swing point that starts the sequence.
+
+detection_rules:
+- Locate the swing point that begins the sequence - the candle 2.
+- Require exactly one CISD there, on the lower timeframe, to confirm that swing low / high.
+- Trade candle 3 and candle 4 continuations off that same confirmation.
+- Do not require a separate CISD inside the candle 3 or the candle 4.
+
+invalidation:
+- No CISD at the candle 2 - the swing point is unconfirmed and the whole sequence is not live.
+
+measurable:
+- expectancy of C3 / C4 continuations taken with only the C2 CISD versus those that also had
+  their own CISD
+
+sources:
+- video_id: U4j-fZD-FJk
+  title: New York Open Live Q&A
+  quote: You just need a CISD from the swing point
+- video_id: U4j-fZD-FJk
+  title: New York Open Live Q&A
+  quote: You don't need a CISD in here and in here
+- video_id: U4j-fZD-FJk
+  title: New York Open Live Q&A
+  quote: You just need one to confirm the swing low
+
+ambiguities:
+- If no CISD is needed inside C3 / C4, what actually triggers the continuation entry is left
+  unstated here (elsewhere he uses continuation order blocks and candle closures).
+- In the same stream he answers that he "normally always" waits for the second CISD, which
+  appears to be a different object (second continuation confirmation) but is never distinguished
+  from the C2 CISD in words.
+- The timeframe on which that single CISD must appear is not restated in this answer.
+
+related:
+- cisd
+- fractal-model-c2
+- fractal-model-c3
+- fractal-model-c4
+- second-continuation-confirmation
+
+contributing_units:
+- live_streams_03
+draft_count: 1
+voice: ttrades

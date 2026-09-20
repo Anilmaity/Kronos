@@ -1,0 +1,84 @@
+id: high-vs-low-resistance-liquidity
+name: High Resistance vs Low Resistance Liquidity
+category: liquidity
+status: contested
+aliases:
+- low resistance liquidity run
+- LRLR
+- HRLR
+definition: 'THE DEDICATED PRIMARY-SOURCE LESSON for this pair, and it gives a fully decidable definition
+  that the library previously only had in circular / regime form. Low resistance liquidity is a high
+  or a low that carries a FAILURE SWING - price approached it, turned before reaching it, and so the
+  resting liquidity above/below it was never taken. High resistance liquidity is the opposite: price
+  swept that level before reversing, so the stops there are already gone and what remains is the liquidity
+  at the next extreme. The operational consequence is a target filter: before the session he marks
+  the low-resistance side and uses it as the objective, because price is much more likely to expand
+  through an area whose liquidity has not yet been taken.'
+timeframes:
+  htf:
+  - 1D
+  - 4H
+  - 15m
+  ltf:
+  - 5m
+  - 1m
+  fractal: true
+preconditions:
+- A prior high or low has been marked.
+- A subsequent price leg toward it has completed.
+detection_rules:
+- 'For a marked level L and the most recent price leg toward it: if the leg reversed WITHOUT trading
+  through L, L is low resistance liquidity (a failure swing sits in front of it).'
+- If the leg traded THROUGH L and then reversed, L is high resistance liquidity; the liquidity has
+  moved out to the next untaken extreme.
+- 'Daily scan for a low-resistance region: find runs of consecutive daily candles in which no previous
+  day high was ever taken out (mirrored for lows). Every one of those previous day highs is unswept,
+  so the whole band is low resistance liquidity.'
+- Once price starts to break through such a band, expect it to continue through and expand in that
+  direction.
+- 'Targeting rule: prior to the session, mark the low-resistance side and set it as the draw.'
+- Do not target the extreme of a high-resistance level directly - see high-resistance-target-adjustment.
+- 'Asset-selection use: when two correlated assets are candidates, prefer the one that has low resistance
+  liquidity in the trade''s direction.'
+invalidation:
+- The level is swept; it ceases to be low resistance liquidity from that moment.
+measurable:
+- expansion-through rate of low-resistance vs high-resistance targets
+- count of consecutive days with no previous-day-high taken, and the subsequent expansion size
+sources:
+- video_id: 2lIaRUtJqpU
+  title: Low Resistance Liquidity Run - ICT Concepts
+  quote: low resistance liquidity is just a high or low with a failure swing
+- video_id: 2lIaRUtJqpU
+  title: Low Resistance Liquidity Run - ICT Concepts
+  quote: high resistance liquidity does not have a failure swing
+- video_id: 2lIaRUtJqpU
+  title: Low Resistance Liquidity Run - ICT Concepts
+  quote: prior to the session that I am trading I will look for low resistance liquidity
+- video_id: 2lIaRUtJqpU
+  title: Low Resistance Liquidity Run - ICT Concepts
+  quote: consecutive candles where no high is broken and I will Mark that out
+- video_id: q1NmxUTm4n4
+  title: SMT Divergence - ICT Concepts
+  quote: I would personally look to trade Nasdaq as it has low resistance liquidity above
+ambiguities:
+- '''A high or low with a failure swing'' is decidable only relative to a chosen lookback: which price
+  leg counts as ''the leg toward it'' is not bounded in candles or time.'
+- Whether a wick through the level (rather than a close) is enough to convert low resistance into
+  high resistance is not stated.
+- The consecutive-days scan is given as 'consecutive candles where no high is broken' with no minimum
+  count.
+- This unit's sense (a property of a specific swept/unswept level) is not the same as the sunday_sessions_live_q_a_03
+  / the_foundation_02 sense (a whole-day regime classification). Both are preserved; this is the dedicated
+  lesson.
+related:
+- failure-swing
+- high-resistance-target-adjustment
+- draw-on-liquidity
+- liquidity-sweep
+- relative-strength-asset-selection
+voice: ttrades
+contributing_units:
+- education_ict_02
+draft_count: 1
+python_detector: null

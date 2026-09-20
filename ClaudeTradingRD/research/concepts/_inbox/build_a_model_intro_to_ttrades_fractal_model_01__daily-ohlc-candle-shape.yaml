@@ -1,0 +1,61 @@
+id: daily-ohlc-candle-shape
+name: OHLC / OLHC Daily Candle Shape (and the Indecision Candle)
+category: structure
+status: specified
+aliases:
+- open low high close
+- open high low close
+- OLHC
+- OHLC
+definition: 'The shape a candle prints in time order is the read. Stated flatly in this unit: when
+  price opens and makes a LOW first, that is bullish; when price opens and makes a HIGH first, that
+  is bearish. A bullish day is therefore expected to deliver open-low-high-close, and a bearish day
+  open-high-low-close. This is the target of the whole intraday procedure: the wick (the first extreme)
+  is allowed to form and confirm, then the body is traded.'
+timeframes:
+  htf:
+  - 1D
+  - 4H
+  - 1H
+  ltf:
+  - 15m
+  - 5m
+  fractal: true
+preconditions:
+- A directional bias for the period.
+detection_rules:
+- Record the time order of the period's open, high, low and close.
+- Open then low first -> bullish shape. Open then high first -> bearish shape.
+- The wick formed first must be confirmed (CISD or lower-timeframe candle closure) before the body
+  is traded.
+- Bullish continuation additionally requires the opposing move to respect the EQ of the previous
+  period's range.
+invalidation:
+- Price opens and makes the extreme in the wrong order for the bias - the setup is invalidated (one
+  worked SMT example is abandoned for exactly this reason).
+measurable:
+- distribution of OLHC vs OHLC days conditional on the previous day's closure type
+- expectancy of trading the body after the first extreme is confirmed
+sources:
+- video_id: -KKuZb5Z5aU
+  title: Easy Daily Bias - Mechanical Framework
+  quote: When price opens and makes a low first, that is bullish
+- video_id: -KKuZb5Z5aU
+  title: Easy Daily Bias - Mechanical Framework
+  quote: When price opens and makes a high first, that is bearish
+- video_id: v1X8UMWgWmI
+  title: Best Trading Strategy for 2026 - TTFM
+  quote: we want to see price open, trade lower to form the wick
+ambiguities:
+- The rule is about the ORDER of the extremes, so it is only decidable intrabar; on a closed candle
+  it requires lower-timeframe data.
+- No tolerance is given for the degenerate case where the open IS the extreme (no wick).
+related:
+- half-wick-respect
+- daily-bias-c2-c3-h1-cisd
+- daily-wick-confirmation-timeframes
+- equilibrium-eq
+contributing_units:
+- build_a_model_intro_to_ttrades_fractal_model_01
+draft_count: 1
+voice: ttrades

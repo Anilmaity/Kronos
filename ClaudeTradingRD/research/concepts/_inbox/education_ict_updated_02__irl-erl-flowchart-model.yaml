@@ -1,0 +1,86 @@
+id: irl-erl-flowchart-model
+name: The Internal / External Range Liquidity Model (flowchart)
+aliases:
+- external and internal range liquidity model
+- IRL ERL model
+category: model
+status: specified
+definition: 'A complete, self-contained trade model given as a flowchart. Step 1: form a higher-timeframe
+  bias. Step 2: given that bias, pick the pair - either internal range liquidity (a fair value gap)
+  as the reaction point and a high or low as the target, or a high/low as the reaction point and
+  a fair value gap as the target. Step 3: once that criterion is met, drop to the lower timeframe
+  and require a stop raid followed by a change in the state of delivery. Step 4: target approximately
+  2R. Step 5: the whole sequence must occur inside a kill zone. He describes the model as simple
+  and fairly mechanical because only a few things have to be determined.'
+timeframes:
+  htf:
+  - 1W
+  - 1D
+  - 4H
+  - 1H
+  ltf:
+  - 15m
+  - 5m
+  fractal: true
+preconditions:
+- 'A higher-timeframe directional bias (in the examples: a weekly candle closing over the previous,
+  or a daily sweep-and-close-back-inside).'
+- Both an internal (fair value gap) and an external (swing high/low) reference identified on the
+  working timeframe.
+detection_rules:
+- Establish the higher-timeframe bias first.
+- Identify the internal range liquidity (fair value gap) and the external range liquidity (swing
+  high/low) that the bias implies price will travel between.
+- Wait for price to reach the reaction point implied by the bias.
+- On the lower timeframe require a stop raid (a sweep of a low/high).
+- Then require a change in the state of delivery (see cisd).
+- Enter and target roughly 2R, or hold runners toward the external liquidity.
+- All of it must occur within a kill zone.
+invalidation:
+- Taking out the higher-timeframe level the bias depends on (in the example, sweeping the daily low
+  that was supposed to hold invalidates the idea).
+- External liquidity already taken without a strong narrative - he states he then avoids it, since
+  the next draw could be internal or the other side of the range.
+execution:
+  bias: From the higher timeframe candle closure.
+  entry: On the CISD close, or on a retest / propulsion-block formation when the close entry does
+    not give 2R.
+  stop: Swing low; or above/below 0.5 of the CISD candle body when the swing stop is too wide.
+  targets:
+  - 2R minimum
+  - external range liquidity
+  - previous week high / previous day extreme
+measurable:
+- hit rate of the 2R target once all five flowchart conditions are met
+- how often all five conditions co-occur inside a kill zone per week
+- difference in outcome when the strong-narrative override is used vs not
+sources:
+- video_id: TfHlNgAZ_II
+  title: Trading IRL & ERL With Order Blocks! - ICT Concepts
+  quote: looking for a stop raid a change in the state of delivery
+- video_id: TfHlNgAZ_II
+  title: Trading IRL & ERL With Order Blocks! - ICT Concepts
+  quote: this must all be done within a Kill Zone
+- video_id: TfHlNgAZ_II
+  title: Trading IRL & ERL With Order Blocks! - ICT Concepts
+  quote: it is fairly mechanical in its process
+ambiguities:
+- Which kill zone, and its clock, is never stated in this video - the term is used without hours.
+- The 'strong bias / strong narrative' override that permits trading after external liquidity has
+  been taken is explicitly discretionary and unquantified.
+- The higher-timeframe bias step is delegated to his daily bias video; only two example forms are
+  shown here.
+- '''Just around a 2R trade'' is a target guideline, not a stated hard rule.'
+related:
+- internal-external-rotation
+- internal-range-liquidity
+- external-range-liquidity
+- cisd
+- killzones
+- propulsion-block
+- risk-reward-minimum
+python_detector: null
+contributing_units:
+- education_ict_updated_02
+draft_count: 1
+voice: ttrades

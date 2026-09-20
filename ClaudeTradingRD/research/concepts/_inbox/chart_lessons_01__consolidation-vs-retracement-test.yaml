@@ -1,0 +1,63 @@
+id: consolidation-vs-retracement-test
+name: "The Protected-Swing Test For Consolidation vs Retracement"
+aliases: ["is this a retracement or a reversal", "we are now just consolidating", "failure to close below this level"]
+category: structure
+status: specified
+
+definition: >
+  This unit supplies a second, closure-based form of the same test, and it is the only
+  mechanical answer this unit gives to the question the other three Chart Lessons decide by
+  eye. A leg that has expanded is provisionally read as expansion -> retracement -> expansion.
+  The retracement label is only earned if price then produces the closure that continues the
+  expansion (a close below the level for a bearish sequence). If price cannot produce that
+  closure, the leg is not a retracement at all - it is a consolidation, and the operator
+  switches immediately to range handling: mark the high and the low and watch only those. The
+  same closure test is used one level up to separate a retracement from a reversal: a leg
+  against the move is left unclassified on purpose, and the opposing-direction change in the
+  state of delivery is what resolves it. The explicit stance is that the classification does
+  not have to be made early - it is decided by whether a closure arrives, not by judgement.
+
+timeframes:
+  htf: ["1D", "1H", "30m"]
+  ltf: ["15m", "3m"]
+  fractal: true
+
+preconditions:
+  - "An expansion leg has completed and a counter-move or a stall is in progress."
+  - "A defined level whose breach would continue the expansion."
+
+detection_rules:
+  - "Provisionally frame the sequence as expansion, retracement, expansion, and identify the level that must be closed through for the second expansion."
+  - "If that closure arrives, the leg was a retracement and the expansion continues."
+  - "If the closure repeatedly fails to arrive, reclassify the leg as a consolidation - stop looking for the continuation and mark only the range high and the range low."
+  - "To separate a retracement from a reversal, do not decide early: wait to see whether the opposing-direction change in the state of delivery prints. Its arrival makes the leg a reversal; its absence leaves the original direction in play."
+  - "A separate, softer signature is stated in the same video: after a failure to close below the level, the high is usually taken out - so a failed closure predicts a sweep of the opposite side rather than immediate continuation."
+
+invalidation:
+  - "The closure that was awaited finally arrives late - the leg was a slow retracement, not a consolidation."
+  - "One side of the consolidation range is swept and the sequence restarts at expansion."
+
+execution:
+  bias: "Unchanged by the reclassification; only the handling changes."
+  entry: "Retracement -> continuation entry at the point of interest. Consolidation -> wait for the range extreme to be swept."
+  stop: "The protected swing available under whichever handling is in force."
+  targets: ["previous day low or high", "the opposite range extreme"]
+
+measurable:
+  - "share of counter-moves that eventually produce the continuation closure, by how many candles it took"
+  - "hit rate of 'no closure => the opposite extreme of the range is taken next'"
+  - "forward return after reclassification to consolidation vs after the closure arrives"
+
+sources:
+  - video_id: Nlw-PZhoViQ
+    title: "TTrades Top-Down Chart Lessons #1"
+    quote: "We are now just consolidating"
+
+ambiguities:
+  - "Sourced from an ASR (whisper-small) transcript, not YouTube captions; wording may be imprecise."
+  - "How many failed closure attempts are required before reclassifying is not stated - in the worked example it is one candle that cannot close through."
+  - "Whether the closure must be a body close is not stated, though the whole video is read on closures."
+  - "The passage that states the CISD differentiates a retracement from a reversal is one where the ASR garbles the phrase for the change in the state of delivery; the reading given here is recovered from context (he is waiting for a bullish CISD to decide whether the leg is a reversal) and from the identical construction used elsewhere in the same video."
+
+python_detector: null
+related: ["phases-of-price", "protected-swing", "cisd", "consolidation-sweep-entry", "failure-to-displace"]

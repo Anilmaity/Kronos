@@ -1,0 +1,80 @@
+id: protected-swing
+name: Protected Swing (the invalidation level)
+category: structure
+status: specified
+aliases:
+- protected low
+- protected high
+definition: 'The unit''s most-repeated mechanical construct and the source of every stop in the model.
+  A protected swing requires TWO things: (1) price must reach an IMPORTANT LEVEL -- which he defines
+  as sweeping out a low/high OR reaching into a fair value gap -- and (2) price must then close through
+  the series of same-direction candles that made that extreme. Only then is the extreme ''protected''
+  and tradeable away from. An extreme that never touched an important level is explicitly NOT a protected
+  swing, however good the close looks -- he refuses several such candidates on camera.'
+timeframes:
+  htf:
+  - 1D
+  - 4H
+  - 1H
+  - 30m
+  ltf:
+  - 15m
+  - 5m
+  - 3m
+  - 1m
+  fractal: true
+preconditions:
+- 'An identified important level: a swing high/low to be swept, or a fair value gap.'
+detection_rules:
+- Price must sweep a low/high or trade into a fair value gap. If it does neither, no protected swing
+  can form.
+- Identify the series of down-close (bullish case) or up-close (bearish case) candles that reached that
+  level.
+- Require a close through the opening price of that series.
+- On that close, the extreme becomes the protected swing and the invalidation level.
+- If price makes a NEW extreme before closing through, abandon the old series and track the new one.
+- When the lower-timeframe structure is messy, ignore the small candles and take the whole move as the
+  series.
+- SMT against a correlated asset can substitute for the sweep requirement.
+invalidation:
+- Price trades back through the protected swing -- the trend read is over.
+execution:
+  bias: Away from the protected swing.
+  entry: On the close through, on a retest of the level, or on a later continuation.
+  stop: Beyond the protected swing (or its body extreme when R demands).
+  targets:
+  - the next drawn liquidity
+  - 2R minimum
+measurable:
+- protected swings formed per session per timeframe
+- violation rate of protected swings
+- R distribution of stops placed at the swing vs at the body
+sources:
+- video_id: JHVaSKtE1Ys
+  title: 'Stop Losses in Trading: Know When You''re Wrong'
+  quote: a protected swing must reach into an important level, which is sweeping out a low
+- video_id: NqSbvqDKML0
+  title: The Only Points of Interest That Actually Matter For Trading
+- video_id: IJcfC6wAPZU
+  title: Trade Continuations Using Order Blocks
+- video_id: FAKWJ-1NlLE
+  title: Trading The 4 Hour Power Of Three - OHLC / OLHC
+- video_id: vn1RYjhJUnQ
+  title: Validating Swing Points Using Lower Timeframe Confirmation (CISD)
+ambiguities:
+- 'The important-level requirement has one documented waiver: ''even if it didn''t have a fair value
+  gap, I''m expecting this low to hold'' -- he then uses the CISD level instead. When the waiver applies
+  is not stated.'
+- '''Ignore those small candles'' when defining the series is explicitly discretionary and unquantified.'
+- Whether the close must be through the series' opening price or through its extreme is stated as opening
+  price in some passes and simply 'over that level' in others.
+related:
+- cisd
+- ideal-formation
+- stop-loss-placement
+- continuation-order-block
+- point-of-interest
+contributing_units:
+- build_a_model_intro_to_ttrades_fractal_model_02
+draft_count: 1
+voice: ttrades

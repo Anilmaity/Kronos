@@ -1,0 +1,60 @@
+id: smt-as-confirmation-not-signal
+name: "SMT As Confirmation, Not Signal"
+aliases: ["SMT divergence", "SMT confluence"]
+category: liquidity
+status: specified
+
+definition: >
+  SMT between correlated assets is a filter, never a trigger and never a source of
+  bias. Bias comes from the higher timeframe narrative. Two rules bound it: SMT alone
+  is not a trade and must be confirmed by a change in state of delivery, and the
+  absence of SMT will not stop him from taking a setup that his higher timeframe
+  framework supports. The named failure mode is people entering on the SMT itself and
+  being run over as price continues.
+
+timeframes:
+  htf: ["1D", "4H", "1H"]
+  ltf: ["15m", "5m", "3m"]
+  fractal: true
+
+preconditions:
+  - "Two or more correlated assets (YM/ES/NQ, gold vs a correlated metal, oil vs gasoline)."
+  - "A higher timeframe narrative already exists - SMT is checked after, not before."
+
+detection_rules:
+  - "One asset makes a new high/low while the correlated asset fails to - that is the SMT."
+  - "Do not enter on the divergence. Wait for a CISD / order block formation before acting."
+  - "SMT that appears in the wrong place is a warning, not a signal: when a correlated asset has already run the equivalent high and the traded asset has not, he reads it as the traded asset likely running to that high instead."
+  - "SMT can be used to validate a series of opposing candles as an order block (the oil/gasoline TGIF case)."
+
+invalidation:
+  - "No confirming CISD after the divergence."
+  - "The divergence resolves by the lagging asset catching up rather than by a reversal."
+
+execution:
+  bias: "Not set by SMT."
+  entry: "Only after CISD confirmation following the SMT."
+  stop: null
+  targets: null
+
+measurable:
+  - "win rate of SMT-plus-CISD entries vs SMT-only entries"
+  - "how often SMT resolves by catch-up rather than reversal"
+  - "outcome of setups with vs without SMT present, holding the framework constant"
+
+sources:
+  - video_id: r7yW6ou1LDs
+    title: "TTrades Sunday Session - Live Q&A"
+  - video_id: u8bnmaih_hA
+    title: "TTrades Sunday Session - Live Q&A"
+    quote: "smt is an added Confluence for me"
+  - video_id: wM1s7UivQ08
+    title: "New York Open Live Q&A"
+
+ambiguities:
+  - "The two statements - 'we need CISD to confirm SMT' and 'SMT is not going to stop me taking a setup' - are only compatible if SMT is strictly a filter; he does not say this explicitly."
+  - "He says SMT is fractal (usable on daily or 5-minute) but gives no rule for which timeframe's SMT matters for a given setup."
+  - "He does not use contract-vs-contract SMT (MNQ vs NQ) and does not study whether SMT behaves differently around news."
+
+python_detector: null
+related: ["relative-strength-asset-selection", "cisd", "liquidity-sweep"]

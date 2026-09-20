@@ -1,0 +1,65 @@
+id: failure-swing
+name: "Failure Swings (structure that is ignored, liquidity that is targeted)"
+aliases: ["failure swings", "these failure swings here"]
+category: structure
+status: underspecified
+
+definition: >
+  A cluster of swing highs (or lows) at a similar level that failed to expand, treated in
+  two connected ways. First, as structure to disregard: a reversal that only leaves failure
+  swings behind it is called basically irrelevant and does not change the bias. Second, as
+  an obstruction and a target: with failure swings stacked on the highs, a short cannot be
+  framed off the open on that instrument - a manipulation into the low would have to come
+  first - and conversely, when trading long the objective is to be positioned before those
+  failure swings are taken, because they are where the liquidity sits. In the ES scalp the
+  failure swings on the highs, together with equal highs, are the stated draw for the trade.
+
+timeframes:
+  htf: ["1D", "1H"]
+  ltf: ["15m", "5m"]
+  fractal: true
+
+preconditions:
+  - "Multiple swing points formed at a similar level without expansion beyond them."
+
+detection_rules:
+  - "Identify repeated swing highs (or lows) at a similar level that did not expand."
+  - "A reversal that produces only failure swings does not change the higher-timeframe bias - disregard it."
+  - "Do not frame a trade into the side covered by failure swings without a manipulation into the opposite extreme first."
+  - "When trading toward them, target the failure swings and be positioned before they are taken."
+
+  - "Failure swings and equal highs are cited together at the same level and treated as the same thing for targeting purposes."
+  - "Failure swings on a side mean there is no protected swing on that side, which is a direct reason to refuse to get onside."
+  - "The positive use: when failure swings are present, expect those levels to be revisited and taken out, and wait for that to happen before framing the trade."
+invalidation:
+  - "Price expands cleanly through the cluster - they were not failure swings but the start of a trend leg."
+
+execution:
+  bias: "Toward the failure swings, as the draw."
+  entry: "Before the failure swings are taken."
+  stop: "At the protected swing behind entry."
+  targets: ["the failure swings themselves", "equal highs or lows at the same level"]
+
+measurable:
+  - "count of swing points required before a cluster reads as failure swings"
+  - "hit rate of failure-swing clusters as an intraday draw"
+  - "frequency of trades framed against a failure-swing side that failed"
+
+sources:
+  - video_id: w-JekHg6Ldk
+    title: "TTrades Top-Down Chart Lessons #4"
+  - video_id: UBTl7za9obc
+    title: "TTrades Top-Down Chart Lessons #2"
+
+  - video_id: Nlw-PZhoViQ
+    title: "TTrades Top-Down Chart Lessons #1"
+    quote: "that's when I want to see those levels revisited"
+ambiguities:
+  - "Sourced from an ASR (whisper-small) transcript, not YouTube captions; wording may be imprecise."
+  - "In video Nlw-PZhoViQ failure swings are read as a positive expectation (the level will be revisited) rather than as irrelevant structure, which sits alongside - not obviously with - the dismissal of failure swings in video UBTl7za9obc. No reconciliation is offered."
+  - "The term is used as if already defined and is never defined in this unit; the reconstruction above is entirely from how it is applied on the two charts."
+  - "No count and no tolerance is given - how many swings at how similar a level constitutes failure swings is unstated."
+  - "The relationship to equal highs is left implicit; in video w-JekHg6Ldk both are cited at the same level without distinguishing them."
+
+python_detector: null
+related: ["relatively-equal-highs-lows", "smt-divergence", "draw-on-liquidity", "relative-strength-asset-selection"]

@@ -1,0 +1,58 @@
+id: internal-external-rotation
+name: "Internal ↔ External Range Liquidity Rotation"
+aliases: ["internal to external", "external to internal", "the market only does two things"]
+category: model
+status: specified
+
+definition: >
+  The bias engine of this corpus: after price takes external range liquidity (a swing high or
+  low) it seeks internal range liquidity (a fair value gap); after it reaches internal range
+  liquidity it seeks external range liquidity again. The alternation is claimed to hold on any
+  timeframe, so a weekly read produces a week-long directional bias. What makes it tradeable
+  rather than circular is the conditional: whether the fair value gap is respected or violated
+  decides which external target becomes the draw.
+
+timeframes:
+  htf: ["1W", "1D", "4H", "1H"]
+  ltf: ["15m", "5m", "1m"]
+  fractal: true
+
+preconditions:
+  - "A range with identifiable swing extremes."
+  - "At least one unfilled fair value gap, or the willingness to wait until one forms."
+
+detection_rules:
+  - "State A (external just taken): set the draw to the nearest unfilled FVG on the working timeframe. If none exists, hold and wait for one to form."
+  - "State B (internal reached): evaluate respect. If price reacts away from the FVG without closing through it, set the draw to the external liquidity in the direction of that reaction."
+  - "State B-violation: if price closes through the FVG (an inversion), flip the directional read and set the draw to the external liquidity on the other side."
+  - "Repeat. Each completed leg re-enters state A."
+  - "Model switch: to go from a sell model to a buy model, additionally require a change in state of delivery / structure shift over the relevant swing high."
+
+invalidation:
+  - "The speaker explicitly concedes the sequence can skip a step — a retracement may simply not happen."
+
+execution:
+  bias: "Whichever of internal or external is currently the draw."
+  entry: "On reaching the FVG, drop timeframes and use an order block / CISD entry in the direction of the new draw."
+  stop: "Beyond the extreme that formed at the FVG."
+  targets: ["the external swing", "then the next internal FVG"]
+
+measurable:
+  - "completion rate of the external->internal->external sequence per timeframe"
+  - "frequency of skipped legs (external to external with no FVG visit)"
+  - "conditional hit rate of the external target given the FVG was respected vs violated"
+
+sources:
+  - video_id: 3OivsP1j_UE
+    title: "Internal & External Liquidity (Daily Bias) - ICT Concepts"
+  - video_id: uDJI2AbyyCs
+    title: "Inversion Fair Value Gaps (IFVG) - ICT Concepts"
+
+ambiguities:
+  - "'Respect' of the FVG is judged visually in this video; the IFVG video supplies the only hard test (a close through the gap = inversion)."
+  - "No timeframe-consistency rule: examples mix a weekly FVG with 4H swing targets."
+  - "No timing expectation — a leg may take many bars or be skipped entirely."
+  - "The claim 'the market only does two things' is asserted, never tested."
+
+python_detector: null
+related: ["internal-range-liquidity", "external-range-liquidity", "fair-value-gap", "inversion-fair-value-gap", "cisd", "market-maker-model"]

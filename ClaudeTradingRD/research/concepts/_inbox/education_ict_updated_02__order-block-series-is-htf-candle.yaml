@@ -1,0 +1,48 @@
+id: order-block-series-is-htf-candle
+name: A Series Of Candles Is Used Because It Is One Candle A Timeframe Up
+aliases:
+- series versus single candle
+category: structure
+status: specified
+definition: 'The stated reason order blocks are marked as a SERIES of consecutive same-direction-close
+  candles rather than as a single candle: consecutive same-direction candles on the current timeframe
+  merge into one candle one timeframe up. Asked why he chooses the run rather than the individual
+  candle nearest price, he answers that moving up a timeframe makes it a single candle - so the series
+  is the lower-timeframe rendering of the higher-timeframe order block.'
+timeframes:
+  htf:
+  - 1H
+  ltf:
+  - 5m
+  - 1m
+  fractal: true
+preconditions:
+- A run of consecutive same-direction-close candles at a swing.
+detection_rules:
+- When two or more consecutive candles close in the same direction at the level, mark the whole run
+  as the block, not the last candle only.
+- 'Equivalence test: the run should collapse into a single candle on the next timeframe up.'
+invalidation:
+- An opposing close inside the run breaks the series.
+measurable:
+- difference in reaction rate between series-marked and single-candle-marked blocks
+- how often the merged run does in fact equal one candle on the paired higher timeframe
+sources:
+- video_id: Y8DkNYhq0X0
+  title: Orderblocks Simplified - ICT Concepts
+  quote: if you move up a time frame that becomes a single candle
+ambiguities:
+- Which higher timeframe is meant is not stated, so the merge is only exact when the run happens
+  to align with that timeframe's boundaries.
+- Whether a single opposing-close candle inside an otherwise clean run breaks the series is not addressed
+  here.
+related:
+- order-block
+- opposing-candle
+- timeframe-alignment-pairs
+- cisd
+python_detector: null
+contributing_units:
+- education_ict_updated_02
+draft_count: 1
+voice: ttrades

@@ -1,0 +1,60 @@
+id: smt-swing-point-substitute
+name: SMT As A Swing Point Substitute
+category: structure
+status: specified
+aliases:
+- SMT in place of the sweep
+definition: 'Where the model requires a liquidity sweep to validate a swing point or a protected
+  swing, an SMT can stand in for it. If this asset did not run out the high/low but a correlated
+  asset did, the level is treated as if it had been swept: the opposing candles that made the failure
+  swing are used as the series to close through, and the resulting extreme is treated as protected.
+  This is stated for consolidations (the manipulation requirement), for protected swings, and for
+  targets (a target counts as hit if the correlated asset took it).'
+timeframes:
+  htf:
+  - 1D
+  - 4H
+  ltf:
+  - 1H
+  - 15m
+  - 5m
+  fractal: true
+preconditions:
+- A named correlated asset is being watched (ES/NQ/YM; gold vs gold-euro/gold-pound; EU/GU vs DXY).
+detection_rules:
+- This asset fails to take out the relevant high/low; the correlated asset does take it out.
+- 'Treat the level as manipulated: use the opposing candles that made the failure swing as the series
+  to close through.'
+- Once closed over, the extreme is protected exactly as if the sweep had occurred here.
+- 'Target variant: a target is treated as reached when the correlated asset takes it out.'
+invalidation:
+- The correlated asset that swept fails to reverse.
+measurable:
+- hit rate of SMT-substituted protected swings vs swept ones
+- how often the SMT-hit-target rule would have closed a trade early
+sources:
+- video_id: WFqLwOp2pXw
+  title: How To Trade Consolidation - Phases Of Price
+  quote: we don't need price to run out the high or the low
+- video_id: -wr4xATE37g
+  title: Protected Swings - Understanding Trend and Invalidations
+  quote: I'll use the series of downclosed candles that made the failure swing
+- video_id: A4NasIa371c
+  title: How to Set Price Targets Using the Fractal Model
+  quote: when there's SMT or a correlated asset takes out this low
+- video_id: F0G31iLVpVg
+  title: How To Trade Retracement - Phases Of Price
+  quote: ES has taken out that low. So, we can consider that an SMT
+ambiguities:
+- No rule for which correlated asset is authoritative when two disagree.
+- How close the failure swing must be to the correlated asset's swept level is not stated.
+related:
+- smt-divergence
+- smt-requires-framework
+- protected-swing
+- consolidation-phase
+- failure-swing
+contributing_units:
+- build_a_model_intro_to_ttrades_fractal_model_01
+draft_count: 1
+voice: ttrades

@@ -1,0 +1,59 @@
+id: driver-pairing-rule
+name: Driver Pairing - Continuation Versus Reversal
+definition: 'Scheduled high-attention times are called drivers: the 8:30 news release, the
+  9:30 index open (a driver in itself, present every day), and 10:00 news. The rule pairs
+  the day''s reversal with the driver. If a reversal was already put in before the driver,
+  the driver should expand away from it - which confirms the narrative. If no reversal was
+  put in before the driver, the driver should be the thing that reverses price from the key
+  level. If the driver reaches a key level and fails to reverse from it, the daily range or
+  daily profile is invalidated, because no less important time in the day is expected to produce
+  the reversal.
+
+  '
+category: time
+status: specified
+aliases:
+- pairing a reversal with a driver
+- 8:30 / 9:30 / 10:00 drivers
+preconditions:
+- Index futures or an instrument with the same session drivers.
+- A key level for the day has been marked.
+detection_rules:
+- 'Identify the day''s drivers: 8:30 news, 9:30 open, 10:00 news.'
+- If a reversal (low of day / high of day at a key level) exists before the driver -> expect
+  the driver to expand away from it.
+- If no reversal exists before the driver -> expect the driver to reverse price from the key
+  level.
+- Driver reaches the key level and does not reverse -> daily profile invalidated, stand down.
+- A 10:00 reversal cannot be paired with a driver unless there is 10:00 news.
+invalidation:
+- Driver fails to reverse at a key level (explicitly named an invalidation of the daily range/profile).
+measurable:
+- rate at which the day's extreme is set within 15 minutes of a driver
+- expansion distance after a driver conditioned on whether a reversal preceded it
+sources:
+- video_id: J_EeS2_2CAM
+  title: GxTradez | Phases of Price & Profiles For Expansion
+ambiguities:
+- Only index-futures drivers are enumerated; forex equivalents are not given.
+- '''Red folder'' is used once for 8:30; which calendar tier counts as a driver is otherwise
+  unspecified.'
+related:
+- four-hour-session-if-then-chain
+- daily-candle-profile-open-low-first
+- low-probability-day-checklist
+timeframes:
+  htf:
+  - 1D
+  - 4H
+  ltf:
+  - 1H
+  - 15m
+  - 5m
+  fractal: false
+contributing_units:
+- t_talks_02
+draft_count: 1
+voice: guest
+guest_sources:
+- GxTradez | Phases of Price & Profiles For Expansion

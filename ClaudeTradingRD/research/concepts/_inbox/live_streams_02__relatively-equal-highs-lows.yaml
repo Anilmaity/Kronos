@@ -1,0 +1,56 @@
+id: relatively-equal-highs-lows
+name: "Relatively Equal Highs / Lows"
+aliases: ["three equal highs", "sus", "failure swings"]
+category: liquidity
+status: contested
+
+definition: >
+  In the m8xcjkOuBHU session equal highs become the reason a whole afternoon is stood down. ES
+  prints three equal highs; he calls them "sus", says an SMT there is not enough, and states
+  repeatedly that he will not trade away from three equal highs or from those failure swings —
+  the expectation is that such a level gets run again rather than holding, so it cannot be used
+  as the level to trade away from. The positive form he gives is that ES should go back and take
+  them out, which in turn means the strongest asset is not reversing. Once price has already
+  reversed and is in a continuation well away from them, he says he no longer cares about them.
+
+timeframes:
+  htf: ["1H", "15m"]
+  ltf: ["5m", "3m"]
+  fractal: true
+
+preconditions:
+  - "Two or more highs (or lows) at effectively the same price on the working timeframe."
+
+detection_rules:
+  - "Mark relatively equal highs/lows as liquidity to be run, not as a level to trade away from."
+  - "Do not take a reversal whose invalidation sits behind equal highs, even with an SMT present."
+  - "Expect the equal level to be swept again; treat that sweep as the more likely path."
+  - "Once price has reversed and is in a continuation away from them, they stop being a constraint."
+
+invalidation:
+  - "The equal level is taken out and price closes decisively away from it — the liquidity is gone."
+
+measurable:
+  - "frequency with which equal highs/lows are swept within N bars"
+  - "outcome of reversals taken away from equal levels versus away from a single swing"
+
+sources:
+  - video_id: m8xcjkOuBHU
+    title: "New York Open Live Q&A"
+    quote: "I'm not trading away from three equal highs."
+  - video_id: G1IIdQ3RAkY
+    title: "New York Open Live Q&A"
+    quote: "it still swept it"
+
+ambiguities:
+  - "The stance is not consistent across the unit: asked in G1IIdQ3RAkY whether equal lows make an SMT 'sus', he answers that it still swept it and he does not really care that much, whereas in m8xcjkOuBHU equal highs are the stated reason for refusing the trade. The reconciling factor he offers is distance — it matters if you are trading right there."
+  - "'Relatively equal' has no tolerance in ticks or percentage; the judgement is visual."
+  - "Two highs versus three is not distinguished — he says 'three equal highs' but treats two equal lows the same way."
+  - "How far away is far enough for them to stop mattering ('not even close to it') is not quantified."
+
+python_detector: null
+related: ["failure-swing", "buyside-sellside-liquidity", "liquidity-sweep", "smt-divergence", "high-vs-low-resistance-liquidity"]
+
+contributing_units: ["live_streams_02"]
+draft_count: 1
+voice: ttrades

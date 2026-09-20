@@ -1,0 +1,61 @@
+id: mitigation-block
+name: "Mitigation Block"
+aliases: ["mitigation", "failure swing block"]
+category: entry
+status: specified
+
+definition: >
+  A four-point swing sequence identical in shape to a breaker except that NO prior extreme is
+  swept. Bullish: low -> high -> higher low -> higher high. Bearish: high -> low -> lower high
+  -> lower low. The zone is the down-close candle (bearish) or up-close candle (bullish) at the
+  failure swing, dragged forward. The speaker states plainly that he generally does NOT trade
+  these, because the unswept failure swings they leave behind are themselves liquidity and are
+  what he targets — so price tends to run through the block. He also uses "mitigation" more
+  loosely to mean dragging any old order block across the curve for a retest.
+
+timeframes:
+  htf: ["1D", "4H", "1H"]
+  ltf: ["15m", "5m"]
+  fractal: true
+
+preconditions:
+  - "Four confirmed swing points in the mitigation order (no sweep of the prior extreme)."
+  - "For the endorsed variant: an SMT divergence at the corresponding low/high."
+
+detection_rules:
+  - "Bullish: L1, H1, L2, H2 with L2 > L1 (higher low, i.e. NO sweep) and H2 > H1."
+  - "Bearish: H1, L1, H2, L2 with H2 < H1 (lower high, NO sweep) and L2 < L1."
+  - "Zone := the down-close candle immediately preceding the failure swing (bearish) or the up-close candle (bullish); wick-vs-body marking explicitly left to the user."
+  - "Quality filter stated: higher probability when the zone overlaps a fair value gap."
+  - "Trade filter stated: only take it when the correlated instrument DID sweep (SMT), meaning the correlated chart has a breaker there."
+  - "Market-maker usage: after a smart money reversal, drag old order blocks from the prior side of the curve forward and require a PD array inside the block (FVG, volume imbalance) for the reaction."
+
+invalidation:
+  - "Price closing through and beyond the block; the video shows one failing exactly this way."
+
+execution:
+  bias: "Direction of the fourth leg."
+  entry: "Retest of the block, optionally after a close beyond it."
+  stop: "Not explicitly stated for this pattern."
+  targets: ["the failure swings left behind by the pattern (they are liquidity)"]
+
+measurable:
+  - "hit rate of mitigation blocks WITHOUT an SMT vs WITH one — the video's core claim, directly testable"
+  - "how often the failure swings above/below a mitigation block are subsequently taken"
+
+sources:
+  - video_id: bbWPoajy2MY
+    title: "Mitigation Blocks Simplified - ICT Concepts"
+    quote: "with a mitigation block we just have to make a lower low here"
+  - video_id: 75S4vwD4P1U
+    title: "Breaker Blocks Simplified - ICT Concepts"
+
+ambiguities:
+  - "Wick vs body marking is explicitly left to the user."
+  - "Whether a close through the block is required before the retest is entry-valid is stated only conditionally."
+  - "SMT is the gating filter but is not defined in this video; the dedicated SMT video (27S9gjgcSlI) is missing from this unit."
+  - "No stop-loss rule is given for the endorsed SMT variant."
+  - "The term is used in two senses — a specific swing pattern, and generically 'dragging out old highs / old order blocks' — without a stated distinction."
+
+python_detector: null
+related: ["breaker-block", "smt-divergence", "market-maker-model", "relatively-equal-highs-lows", "old-fvg-across-the-curve"]

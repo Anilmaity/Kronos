@@ -1,0 +1,53 @@
+id: htf-poi-gate-before-ltf
+name: Do Not Drop Timeframes Until The POI Is Tagged
+category: risk
+status: specified
+definition: 'TTRADES'' OWN VOICE for a concept the library previously held only in a guest''s. The
+  procedure is stated as the frame for two whole videos: mark the higher-timeframe points of interest
+  first (a 4-hour fair value gap / BPR, a daily block, previous highs), then wait; the lower timeframe
+  is only consulted once price has RETURNED to one of them, and the entry model is hunted there. He
+  also states the negative case explicitly - being above the highs he wants to short is not itself
+  a reason to short: ''I don''t just short when we''re above those highs I wait for a model''.'
+timeframes:
+  htf:
+  - 1D
+  - 4H
+  - 1H
+  - 15m
+  ltf:
+  - 5m
+  - 1m
+  - 15s
+  fractal: true
+detection_rules:
+- Mark the higher-timeframe points of interest before the session.
+- Do not look for an entry model until price has reached one of them.
+- Being at a price level you have an opinion about is not an entry; require the lower-timeframe model.
+- Once tagged, the lower timeframe supplies either the entry INTO the level or the entry AWAY from
+  it.
+measurable:
+- proportion of sessions in which a marked POI is tagged
+- win rate of entries taken at a tagged POI vs entries taken elsewhere
+sources:
+- video_id: YmdC_LKT-Pk
+  title: Lower Time Frame Entries Using HTF POI - ICT Concepts
+  quote: even if you have the wrong bias you can still get decent entries
+- video_id: wDXTIDbIMwU
+  title: Top Down Analysis - ICT Concepts
+  quote: most of my points of interest lie on The Daily 4 Hour one hour
+- video_id: wDXTIDbIMwU
+  title: Top Down Analysis - ICT Concepts
+  quote: this is dependent on which time frame you're entering on
+ambiguities:
+- '''Reached'' the point of interest is not defined as near edge, midpoint or full fill.'
+- No cap on how many points of interest may be marked in this unit (the guest version caps at one
+  or two).
+related:
+- poi-timeframe-selection
+- top-down-analysis-procedure
+- point-of-interest
+voice: ttrades
+contributing_units:
+- education_ict_02
+draft_count: 1
+python_detector: null

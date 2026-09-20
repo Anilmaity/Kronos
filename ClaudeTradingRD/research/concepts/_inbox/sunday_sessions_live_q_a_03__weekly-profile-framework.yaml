@@ -1,0 +1,57 @@
+id: weekly-profile-framework
+name: "Weekly Profile (built day by day)"
+aliases: ["weekly profile", "weekly open high low close", "day-by-day bias"]
+category: time
+status: specified
+
+definition: >
+  The weekly candle is treated as an open-high-low-close object that is built one
+  day at a time and never predicted in advance. Monday carries no information
+  because the daily and weekly candle are the same; from Tuesday onward each new
+  daily close adds information, so the week gets easier to trade as it progresses.
+  He refuses to draw a Monday-does-X / Tuesday-does-Y outlook because the first
+  open invalidates the whole plan.
+
+timeframes:
+  htf: ["1W", "1D"]
+  ltf: ["1H"]
+  fractal: false
+
+preconditions:
+  - "A weekly open is marked - he marks the weekly open explicitly as the frame for the week's trades."
+
+detection_rules:
+  - "Skip Monday roughly 90-95% of the time; let Monday print."
+  - "A Monday reversal makes Tuesday the continuation day - this is the highest-frequency pattern he names."
+  - "Once the high or low of the week is in, the following expansion days are materially easier than the reversal day; do not try to pick the weekly extreme inside the week."
+  - "If Monday made the weekly low and price expanded up all week, do not buy on Friday - Friday normally caps the weekly range."
+  - "A weekly candle closing weak and inside the previous week's candle frames downside for early the following week."
+  - "Only the hourly chart is used to work the weekly profile."
+
+invalidation:
+  - "Any pre-drawn multi-day plan is void the moment the week opens differently."
+
+execution:
+  bias: "Rebuilt each day; never a single direction held across the week."
+  entry: "Tuesday continuation after a Monday reversal is the canonical case."
+  stop: null
+  targets: ["weekly open", "the opposite extreme of the weekly range"]
+
+measurable:
+  - "frequency of Monday-reversal / Tuesday-continuation weeks"
+  - "win rate of Monday trades vs Tuesday-onward trades"
+  - "how often Friday caps the weekly range after a Monday extreme"
+
+sources:
+  - video_id: r7yW6ou1LDs
+    title: "TTrades Sunday Session - Live Q&A"
+  - video_id: u8bnmaih_hA
+    title: "TTrades Sunday Session - Live Q&A"
+
+ambiguities:
+  - "The 90-95% Monday-skip figure is stated casually and hedged ('like 90 95% of the time yeah')."
+  - "'Weak close' for the weekly candle is not quantified."
+  - "He mentions using the 6 p.m. open for the daily candle but then says he does not care about midnight price; the exact daily/weekly open convention is left loose."
+
+python_detector: null
+related: ["tgif-setup", "phases-of-price", "daily-ohlc-candle-shape"]

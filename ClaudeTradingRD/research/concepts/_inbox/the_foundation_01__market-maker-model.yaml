@@ -1,0 +1,57 @@
+id: market-maker-model
+name: "Market Maker Buy / Sell Model (The Curve)"
+aliases: ["market maker buy model", "market maker sell model", "buy side of the curve", "sell side of the curve"]
+category: model
+status: underspecified
+
+definition: >
+  The large-scale container the other patterns sit inside: price works down one side of a curve
+  (the sell side), turns at a smart money reversal, and works back up the other side (the buy
+  side), with the whole structure nesting inside larger versions of itself. Its practical use in
+  this unit is positional: order blocks and fair value gaps created on one side of the curve are
+  dragged across and reused as reaccumulation (or redistribution) zones on the other side, and
+  the internal↔external liquidity rotation is what carries price along each side.
+
+timeframes:
+  htf: ["1W", "1D", "4H"]
+  ltf: ["1H", "15m", "5m"]
+  fractal: true
+
+preconditions:
+  - "A higher timeframe level that can terminate the current leg (examples: weekly fair value gap, hourly fair value gap)."
+
+detection_rules:
+  - "Sell side of the curve: the leg into the higher timeframe level, during which order blocks and fair value gaps form."
+  - "Smart money reversal: the turn (see smart-money-reversal)."
+  - "Buy side of the curve: the leg away from the level, driven by internal->external liquidity rotation."
+  - "Reuse rule: extend the sell-side order blocks and fair value gaps forward; on the buy side treat them as reaccumulation support, requiring a PD array inside the zone for the reaction."
+  - "Nesting: a market maker buy model on a lower timeframe can sit inside a larger market maker buy model (demonstrated on GBPJPY weekly/4H/15m)."
+
+invalidation:
+  - "Not stated."
+
+execution:
+  bias: "Determined by which side of the curve price is on."
+  entry: "Order block / mitigation block / old fair value gap on the active side of the curve."
+  stop: "Beyond the local swept extreme."
+  targets: ["external range liquidity on the working timeframe, then the higher timeframe old high/low"]
+
+measurable:
+  - "reaction rate at dragged-forward zones on the opposite side of the curve"
+  - "how often the nested lower-timeframe model completes within the higher timeframe one"
+
+sources:
+  - video_id: 3OivsP1j_UE
+    title: "Internal & External Liquidity (Daily Bias) - ICT Concepts"
+  - video_id: bbWPoajy2MY
+    title: "Mitigation Blocks Simplified - ICT Concepts"
+  - video_id: uDJI2AbyyCs
+    title: "Inversion Fair Value Gaps (IFVG) - ICT Concepts"
+
+ambiguities:
+  - "The model is used as vocabulary rather than taught: no video in this unit defines the curve's phases, expected proportions, or how to know in advance which side you are on."
+  - "The distinction between a market maker model and simple AMD is not drawn."
+  - "How far back on the curve zones may be dragged, and how many, is not specified."
+
+python_detector: null
+related: ["smart-money-reversal", "internal-external-rotation", "mitigation-block", "old-fvg-across-the-curve", "power-of-three-amd"]

@@ -1,0 +1,61 @@
+id: new-york-manipulation-profile
+name: "New York Manipulation"
+aliases: ["NY manipulation profile", "New York manipulates London's range"]
+category: model
+status: underspecified
+
+definition: >
+  A daily profile in which London produces nothing tradeable - it either consolidates outright
+  or fails to reach a higher-timeframe PD array - leaving a London range with a defined high
+  and low. The New York a.m. session then sweeps one side of that range (the manipulation),
+  changes the state of delivery, and expands the other way for the rest of the day. The speaker
+  frames it as a textbook Power of Three: London is accumulation, the New York sweep is
+  manipulation, the expansion is distribution.
+
+timeframes:
+  htf: ["1D", "4H"]
+  ltf: ["15m", "5m"]
+  fractal: true
+
+preconditions:
+  - "A directional daily bias, sourced in the examples from: repeated closes over previous day high, a daily fair value gap holding as support, or a close over the consequent encroachment of a wick."
+  - "London (02:00-05:00) consolidated or failed to reach a relevant higher-timeframe PD array, i.e. produced no significant high or low for New York to trade off."
+  - "A range with a defined high and low exists (London's range, or the current dealing range if London's is unusable)."
+
+detection_rules:
+  - "London consolidates or fails to reach a higher-timeframe key level."
+  - "At 08:30 or 09:30, price sweeps one side of that range."
+  - "A move at 08:30 in one direction is read as manipulation and biases the trader to the opposite direction."
+  - "Price then closes back through the opposing series of candles at the sweep extreme (change in the state of delivery); those candles form the order block."
+  - "A first failed CISD attempt is expected to be followed by a new extreme; re-mark the opposing series there."
+
+invalidation:
+  - "Not stated explicitly. In the examples a failed close-through is treated as 'not yet', with re-marking on the new extreme, rather than as invalidation of the profile."
+
+execution:
+  bias: "Opposite the side of the range that New York swept."
+  entry: "Prefer an entry at a discount (for longs) or premium (for shorts) of the manipulated range rather than at the opening price - typically the mean threshold of the order block where it overlaps that half of the range. A fair value gap paired with the CISD is also given as a valid alternative entry."
+  stop: "Beyond the manipulation extreme (the swept low/high)."
+  targets: ["previous day high/low", "the opposite side of the range", "standard deviation projections as confluence (2 to 2.5 landed on previous day high, 4 to 4.5 on max expansion in one example)"]
+
+measurable:
+  - "frequency of days where London's range is swept between 08:30 and 09:30"
+  - "hit rate of previous day high/low as target after the CISD"
+  - "difference in fill rate and R between the opening-price entry and the discount/mean-threshold entry"
+
+sources:
+  - video_id: IeXtmeKqjnQ
+    title: "ICT Daily Profile - New York Manipulation"
+    quote: "London is consolidating or failing to reach a higher time frame key level"
+  - video_id: y6SnEdASVLY
+    title: "ICT Daily Profile - London Reversal / New York Continuation"
+
+ambiguities:
+  - "'Consolidating' is never quantified. In one example London did make a high, and he simply substituted the current dealing range for the London range."
+  - "Which range gets manipulated (London's range, the current dealing range, or a prior-day range) varies between examples with no selection rule."
+  - "08:30 'or' 09:30 - no rule for which, and no stated cut-off after which the manipulation is considered not to have happened."
+  - "The discount/premium entry preference is hedged as 'normally a discount', not stated as a rule."
+  - "Standard deviation projections are used as confluence but their anchor points are not explained in this video."
+
+python_detector: null
+related: ["daily-profile-framework", "opposing-run-entry", "new-york-intraday-time-levels", "london-reversal-profile", "relevant-htf-pd-array-test"]

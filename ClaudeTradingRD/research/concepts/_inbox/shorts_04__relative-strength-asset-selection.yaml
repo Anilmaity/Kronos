@@ -1,0 +1,60 @@
+id: relative-strength-asset-selection
+name: "Ranking Correlated Assets And Trading The Middle One"
+category: structure
+status: specified
+definition: >
+  Three Shorts lay out the ranking toolkit as an ordered fallback. The precondition is stated
+  flatly: this can only be done with correlated assets, which should share the same structure.
+  Tool 1 is SMT - when one asset takes a shared reference level and the other does not, the one
+  making the lower high is weaker. Tool 2 is used when there is no obvious SMT: separation,
+  meaning how far each asset has travelled from the shared reference low; the one further away is
+  the stronger. Tool 3 is the candle closure itself - a doji or small-range candle against an
+  engulfing candle on the correlated asset ranks the two directly.
+
+timeframes:
+  htf: ["1D", "4H", "1H"]
+  ltf: ["15m", "5m"]
+  fractal: true
+
+detection_rules:
+  - "Precondition: the assets must be correlated and normally share the same structure."
+  - "Tool 1 (SMT): at a shared reference level, the asset making the lower high is weaker; the higher high is stronger."
+  - "Tool 2 (separation): with no obvious SMT, compare distance travelled from the shared reference; further from it = stronger."
+  - "Tool 3 (closures): compare the same candle across assets - doji/small range = weaker, engulfing/strong body = stronger."
+  - "Also check which asset took out the previous candle's extreme and which did not."
+
+invalidation:
+  - "The assets decouple structurally, so they no longer share the reference level being compared."
+
+measurable:
+  - "agreement rate between the SMT, separation and closure rankings on the same bar"
+  - "subsequent relative performance of the ranked assets"
+
+sources:
+  - video_id: 1eL9Edk1FrI
+    title: "Using SMT to Determine Relative Strength & Weakness"
+    quote: "it is important that you understand that you can only do this with correlated assets"
+  - video_id: 1eL9Edk1FrI
+    title: "Using SMT to Determine Relative Strength & Weakness"
+    quote: "The NASDAQ is weaker, as it is making the lower high."
+  - video_id: B1tTNDOtFaw
+    title: "Using Separation to Measure Relative Strength"
+    quote: "there's not really a very obvious SMT in here"
+  - video_id: B1tTNDOtFaw
+    title: "Using Separation to Measure Relative Strength"
+    quote: "This is where we can use separation."
+  - video_id: nNfhTDkyhtw
+    title: "Using Candle Closures to Measure Relative Strength & Weakness"
+    quote: "This is a doji candle, while this is an engulfing bearish candle."
+
+ambiguities:
+  - "'Separation' is measured by eye off the chart; no normalisation (points, ATR, percentage) is given."
+  - "The order of precedence is implied by the narration (SMT first, separation when SMT is absent) but never stated as a rule."
+  - "'Doji' and 'engulfing' are used without the closure-size thresholds that would make them decidable."
+
+python_detector: null
+related: ["smt-divergence", "relative-strength-weakness", "correlated-triads", "eurgbp-relative-strength-cross", "separation"]
+
+voice: ttrades
+contributing_units: [shorts_04]
+draft_count: 1

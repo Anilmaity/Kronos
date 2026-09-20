@@ -1,0 +1,72 @@
+id: zero-dte-strike-selection
+name: 0DTE Strike Selection Derived From The First Price Target
+aliases:
+- zero DTE
+- intrinsic value versus theta value
+category: risk
+status: specified
+definition: 'A rule for choosing a same-day-expiry option strike from the chart target rather than
+  from the greeks. Options are simplified to exactly two components: intrinsic value, where every
+  dollar in the money is worth $100 because contracts are 100x, and theta value, which is whatever
+  is paid for an out-of-the-money contract. Choose a strike that will be in the money before the first
+  price target is reached, then pay less than half the intrinsic value the contract will carry at
+  that target, which guarantees a 100% gain if the target is hit. The worked example: targeting 3948
+  with morning highs as the objective, buying the 3940 calls whose intrinsic value at 3948 is $8.00,
+  therefore paying under $4.00. At +100% he takes 50% off and runs the rest to T2; that trade finished
+  about $30 in the money, so 4.00 to 30.00, and expiry converts intrinsic value to cash with no theta
+  left to lose.'
+timeframes:
+  htf:
+  - 1D
+  - 15m
+  ltf:
+  - 5m
+  - 1m
+  fractal: false
+preconditions:
+- A same-day-expiry option chain.
+- A first price target fixed from the chart before the strike is chosen.
+detection_rules:
+- Fix the first price target from the chart before selecting a strike.
+- Choose a strike that will be in the money at that target.
+- intrinsic_at_target = (target - strike) for calls, times 100 per contract.
+- Pay strictly less than half of intrinsic_at_target so that reaching T1 is at least a 100% gain.
+- At +100%, take 50% off and run the remainder to T2.
+invalidation:
+- No strike exists that satisfies both the in-the-money-at-target and the price conditions - do not
+  take the options expression.
+execution:
+  bias: As per the underlying chart setup.
+  entry: Buy the selected strike below half its intrinsic value at T1.
+  stop: Not stated as a price stop; the position is managed on the underlying's structure.
+  targets:
+  - +100% on the contract at T1 (50% off)
+  - T2 on the underlying
+measurable:
+- realised contract return at T1 vs the modelled 100%
+- how often the price condition (paying under half of intrinsic-at-target) is actually available at
+  entry time
+sources:
+- video_id: V8P6lNIisvc
+  title: Q&A Live with Alex's Options - ICT + Strat
+  quote: wherever you're going to be in the money
+- video_id: V8P6lNIisvc
+  title: Q&A Live with Alex's Options - ICT + Strat
+  quote: we want our contract to be in the money before those morning highs
+ambiguities:
+- Implied volatility, bid/ask spread and time decay between entry and target are not modelled at all.
+- The rule assumes the target is reached the same day; nothing is said about what to do when it is
+  reached after expiry.
+- He separately warns that after a missed strong open the options IV is 'jacked up', which would break
+  the pricing condition, but does not connect that to the rule.
+related:
+- options-proxy-execution
+- options-expiry-3x-rule
+- t1-t2-partial-system
+- chart-futures-execute-elsewhere
+contributing_units:
+- live_stream_guests_03
+draft_count: 1
+voice: guest
+guest_sources:
+- Alex's Options

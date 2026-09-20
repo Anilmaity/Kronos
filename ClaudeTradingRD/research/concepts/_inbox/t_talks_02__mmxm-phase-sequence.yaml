@@ -1,0 +1,55 @@
+id: mmxm-phase-sequence
+name: "MMXM Phase Sequence And The Silver Bullet"
+aliases: ["original consolidation, distribution, smart money reversal, accumulation", "low risk buy"]
+category: model
+status: specified
+
+definition: >
+  The fixed phase sequence of a market maker buy model: original consolidation (the range
+  high), distribution phase one, distribution phase two, the smart money reversal at the
+  lowest low, a low-risk buy which only forms after a short-term breaker, accumulation phase
+  one, and accumulation phase two. The second stage of accumulation (or of distribution in a
+  sell model), when paired with SMT, is named the silver bullet and is claimed to be the
+  highest probability trade available. There are almost always two stages of accumulation on
+  the sell side of a buy model, and two on the buy side of a sell model.
+
+timeframes:
+  htf: ["1M", "1W", "1D"]
+  ltf: ["4H", "1H", "15m", "5m", "1m"]
+  fractal: true
+
+preconditions:
+  - "An MMXM range has been identified and paired with a HTF key level."
+  - "The curve has been split at the lowest low (buy model) or highest high (sell model)."
+
+detection_rules:
+  - "Label in order: original consolidation -> distribution 1 -> distribution 2 -> smart money reversal -> low-risk buy -> accumulation 1 -> accumulation 2."
+  - "The low-risk buy is only valid after a short-term breaker has formed."
+  - "Expect two stages of accumulation on the sell side of a buy model (two distributions on the buy side of a sell model)."
+  - "The second stage of accumulation/distribution paired with SMT is the silver bullet."
+
+invalidation:
+  - "Not stated."
+
+execution:
+  bias: "Direction of the model (long in a buy model)."
+  entry: "At each accumulation phase, via an extended mitigation block containing a nested PD array."
+  stop: "Not stated."
+  targets: ["the opposing side of the range (buy stops in a buy model)"]
+
+measurable:
+  - "frequency with which exactly two accumulation stages occur"
+  - "R and hit rate of the second-stage accumulation entry vs the first"
+
+sources:
+  - video_id: Ibw4saRtYMk
+    title: "The MMXM Trader | Advanced ICT MMXM Lesson (Everything You Need To Know)"
+    quote: "in a market maker model paired with smt is the Silver Bullet"
+
+ambiguities:
+  - "'Short-term breaker' preceding the low-risk buy is asserted but never defined."
+  - "No stop-loss placement is given anywhere in the talk."
+  - "One worked example (GBPCAD) showed three accumulation phases, contradicting the 'almost always two' framing."
+
+python_detector: null
+related: ["mmxm-range-definition", "mitigation-block-nested-pd", "smt-as-confirmation-not-signal"]

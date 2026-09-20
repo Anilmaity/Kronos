@@ -1,0 +1,54 @@
+id: dollar-gate-for-fx
+name: The Dollar Gate For Forex (and when to pair currencies against each other)
+category: model
+status: specified
+definition: 'SHORTS EVIDENCE giving the selection procedure as a worked ranking. The dollar is read
+  first - here a bearish engulfing monthly candle whose lower half is respected, so a continuation lower.
+  Given a bearish dollar, the requirement is to find a BULLISH FOREIGN CURRENCY, and the candidates
+  are then ranked by how bullish they are: euro is bullish, pound is not as bullish as euro, yen is
+  quite bullish, and CAD is avoided because it is also bearish. The two that survive - euro and yen
+  - become the pairs to trade the next day (EUR/USD, USD/JPY).'
+preconditions:
+- A directional read on the dollar exists (from a higher-timeframe candle).
+detection_rules:
+- Read the dollar first and establish its direction from the higher-timeframe candle.
+- Bearish dollar -> require a BULLISH foreign currency; bullish dollar -> require a bearish one.
+- Rank the candidate currencies by how strongly they are trending against the dollar.
+- Exclude any currency trending the SAME way as the dollar (here CAD, also bearish).
+- Exclude the weaker of two same-direction candidates (here pound, less bullish than euro).
+- Trade the surviving currencies against the dollar as the next day's pairs.
+measurable:
+- outcome spread between the top-ranked and second-ranked foreign currency
+- share of days where the dollar read and the pair selection agree with the eventual move
+sources:
+- video_id: ulH5Re5D6zQ
+  title: Choosing the Right Forex Pair
+  quote: We want to find a bullish foreign currency
+- video_id: ulH5Re5D6zQ
+  title: Choosing the Right Forex Pair
+  quote: Pound, you see how that is not as bullish as euro
+- video_id: ulH5Re5D6zQ
+  title: Choosing the Right Forex Pair
+  quote: CAD, we would want to avoid that
+ambiguities:
+- '''How bullish'' is judged by eye - no measure (ranking metric, slope, ADR) is given.'
+- Which timeframe the foreign-currency indices are read on is not stated (the dollar is read monthly).
+- No rule states how many pairs to carry forward - two survive here by example only.
+related:
+- currency-pairing-opposition
+- relative-strength-asset-selection
+- eurgbp-relative-strength-cross
+- relative-strength-weakness
+timeframes:
+  htf:
+  - 1M
+  - 1W
+  - 1D
+  ltf:
+  - 4H
+  - 1H
+  fractal: false
+voice: ttrades
+contributing_units:
+- shorts_01
+draft_count: 1

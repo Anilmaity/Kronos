@@ -1,0 +1,54 @@
+id: breaker-block
+name: "Breaker Block"
+aliases: ["bullish breaker", "institutional swing point"]
+category: structure
+status: specified
+
+definition: >
+  The opposing-close candle (or run of candles) at the swing that produced a liquidity raid, used
+  as the entry level once price displaces back through it. Two formulations appear in this unit -
+  Ash defines it by the candle, Rauf defines it by the three-point swing shape - and they describe
+  the same structure from different angles.
+
+timeframes:
+  htf: ["1W", "1D", "1H"]
+  ltf: ["5m", "1m"]
+  fractal: true
+
+preconditions:
+  - "A liquidity raid has occurred - a swing high or swing low has been run."
+
+detection_rules:
+  - "Ash's definition (bearish setup): the breaker is the lowest down-close candle before the leg up that took the liquidity. If there are consecutive same-direction closes, all of them are included in the block. Mirror for a bullish setup."
+  - "Rauf's definition (bullish breaker): a low, then a high, then a LOWER low. The up-close candles at that structure are the breaker; project them forward in time."
+  - "The breaker becomes actionable only once price body-closes through it."
+  - "Rauf's additional requirement: the trade through the breaker must land in an area of fair value for the reversal to be trusted."
+
+invalidation:
+  - "Price closes back through the far side of the block."
+
+execution:
+  bias: "Opposite the side whose liquidity was raided."
+  entry: "At the beginning of the breaker (Ash), or on the return into the projected breaker (Rauf)."
+  stop: "The other side of the breaker."
+  targets: ["2R (Ash)", "the original consolidation (Rauf)"]
+
+measurable:
+  - "hit rate of a return into a breaker producing continuation"
+  - "difference in outcome between the single-candle and merged-consecutive-candle definitions"
+  - "how often the body close through the breaker coincides with an FVG being left behind"
+
+sources:
+  - video_id: zXtJSSkiNmo
+    title: "Ash Trades | The Journey To Profitability & The Unicorn Model"
+  - video_id: wB-fQiT_UDo
+    title: "DayTradingRauf | ICT MMXM Models"
+
+ambiguities:
+  - "The two definitions are not reconciled by either speaker; Ash names a candle, Rauf names a swing shape and projects candles forward."
+  - "Neither states the timeframe on which the confirming body close must occur."
+  - "Ash sources the concept to ICT core content month 5 'institutional swing points'; that source is described but not reproduced, so the original definition is not verifiable here."
+  - "How long a projected breaker stays valid is unstated."
+
+python_detector: null
+related: ["unicorn-model", "smart-money-reversal-breaker-confirmation", "silver-bullet-breaker-requirement", "mitigation-block"]

@@ -1,0 +1,61 @@
+id: four-hour-wick-positioning
+name: "Positioning Inside The 4-Hour / Hourly Wick"
+aliases: ["positioned in the 4 hour wick", "trading the wick invalidation"]
+category: entry
+status: underspecified
+
+definition: >
+  The guest's primary intraday model, described only in outline. He tries to be
+  positioned inside the wick of the forming 4-hour (and hourly) candle, noting that
+  these candles often overlap a key market time of 10:00 a.m. In a bullish market the
+  sequence is: the hourly expands, price retraces, and he wants to be filled on that
+  retrace at 50% of the move. Once price trades into and inverts something inside the
+  wick, he treats the high of that wick as the reference level and trades the
+  invalidation of it back toward the candle's close. If the wick is shallow he says he
+  cannot be positioned this way - there is not enough excursion - and he switches to a
+  different model for that reversal.
+
+timeframes:
+  htf: ["4H", "1H"]
+  ltf: []
+  fractal: false
+
+preconditions:
+  - "A forming 4-hour or hourly candle, ideally one overlapping 10:00 a.m."
+  - "An expansion leg on the hourly that price then retraces."
+
+detection_rules:
+  - "Identify the wick of the forming 4-hour / hourly candle."
+  - "Mark 50% of the expansion leg; seek the fill on the retrace into that level."
+  - "Require price to trade into and invert something inside the wick before treating the wick extreme as the reference."
+  - "Trade the invalidation of the wick extreme back toward the candle close."
+  - "If the wick is shallow, do not use this model."
+
+invalidation:
+  - "The wick extreme is taken and holds - the invalidation being traded has failed."
+  - "A shallow wick - the model is explicitly not applicable."
+
+execution:
+  bias: "Direction of the prevailing expansion; long side in a bullish market."
+  entry: "Retrace into 50% of the expansion move, inside the forming candle's wick."
+  stop: "Not stated in this interview."
+  targets: ["the close of the 4-hour / hourly candle"]
+
+measurable:
+  - "hit rate of 50%-retrace fills inside the forming 4H wick"
+  - "distribution of wick depth on candles where the model did vs did not work"
+  - "excess performance of 4H candles overlapping 10:00 a.m. vs other 4H candles"
+
+sources:
+  - video_id: 1wKfc2gN4xg
+    title: "Trader Kane | The Mind Behind a Multi-Million Dollar Day Trader"
+
+ambiguities:
+  - "Inverting something inside the wick is the trigger and is never defined - it may be an inversion fair value gap, a close through a level, or something else."
+  - "Shallow wick is the switch between two different models and is not quantified anywhere."
+  - "No stop-loss placement is given for this model."
+  - "The timezone of the stated 10:00 a.m. key time is not specified in the transcript."
+  - "This is a guest's model summarised in an interview, not a taught lesson; every step is stated once and none is demonstrated on a chart."
+
+python_detector: null
+related: ["small-wick-expansion-rule", "half-wick-respect", "range-market-avoidance"]

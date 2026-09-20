@@ -1,0 +1,86 @@
+id: fifteen-second-execution-timeframe
+name: 15-Second Execution To Shrink The Stop (payoff first, win rate second)
+aliases:
+- 15 second chart
+- lower time frame entries
+category: entry
+status: specified
+definition: 'The stated purpose of dropping to the 1-minute and then the 15-second chart is to shrink
+  the stop while holding the higher-timeframe target constant, so the payoff ratio rises and the required
+  win rate falls. The worked ES example: shorting from the higher-timeframe optimal trade entry risks
+  about ten points; taking the same idea at the 1-minute fair value gap left by the displacement through
+  an intermediate-term low risks under four points (3.5 is quoted) for the same target, which he calls
+  a tenfold improvement, ''one to ten''. Because size is derived from the stop, the tighter stop also
+  buys more contracts at identical dollar risk - a ten-point stop is two ES contracts, a 3.5-4 point
+  stop is four. He accepts the consequence explicitly: with 1:10, 1:6 or 1:5 payoffs the win rate
+  can be extremely low, and he has day-to-day stretches at 10-15%, because ten losers are covered
+  by one winner. He has not had more than five losses in a row recently and prefers a break-even stop-out
+  to a loss. The one caveat is structural rather than statistical: trading the 15-second without higher-timeframe
+  reference still works on payoff alone, but forfeits the large running moves.'
+timeframes:
+  htf:
+  - 1W
+  - 1D
+  - 1H
+  - 15m
+  ltf:
+  - 1m
+  - 15s
+  fractal: true
+preconditions:
+- A higher-timeframe point of interest is already identified (weekly or daily fair value gap, hourly
+  optimal trade entry).
+- A higher-timeframe liquidity target exists (relatively equal highs or lows).
+detection_rules:
+- Fix the point of interest and the target on the higher timeframe before dropping down.
+- Drop to 1-minute, then 15-second, and take the entry at the fair value gap left by the displacement
+  through the intermediate-term swing.
+- Enter at the bottom or the midpoint of that fair value gap; the midpoint is preferred.
+- Place the stop at the swing extreme that is not expected to be revisited; on the 15-second use the
+  wider high because the market is sloppier when volume is thin.
+- 'Size from the stop: contracts = fixed dollar risk / stop distance.'
+- Accept the low win rate implied by 1:5 to 1:10 payoffs; do not tighten entries to raise it.
+invalidation:
+- The higher-timeframe point of interest is invalidated.
+- No displacement and no fair value gap forms on the execution timeframe.
+execution:
+  bias: Direction of the higher-timeframe point of interest.
+  entry: Midpoint (preferred) or lower edge of the execution-timeframe fair value gap.
+  stop: The execution-timeframe swing extreme not expected to be revisited.
+  targets:
+  - the higher-timeframe liquidity pool (relatively equal highs/lows)
+  - T1 = the nearest prior swing extreme
+measurable:
+- realised R and win rate of 15s vs 1m vs 5m entries taken against the same higher-timeframe target
+- slippage and commission drag per R at 15-second execution
+- observed maximum consecutive-loss run at 1:10 payoff
+sources:
+- video_id: V8P6lNIisvc
+  title: Q&A Live with Alex's Options - ICT + Strat
+  quote: lower time frames, we all know that's going to reduce your risk
+- video_id: V8P6lNIisvc
+  title: Q&A Live with Alex's Options - ICT + Strat
+  quote: your win rate can be extremely small
+- video_id: V8P6lNIisvc
+  title: Q&A Live with Alex's Options - ICT + Strat
+  quote: I could have 10 trades in a row that lose, hit one that wins
+- video_id: V8P6lNIisvc
+  title: Q&A Live with Alex's Options - ICT + Strat
+  quote: you should be sizing based on your stop loss
+ambiguities:
+- No rule bounds when the 15-second is too thin to trade beyond 'if the volume's not there'.
+- Commission and slippage costs of the higher trade frequency are never netted against the payoff
+  improvement.
+- The claimed 80-90% accuracy at picking the higher-timeframe point of interest is unsourced and unmeasured.
+- The exception allowing 15-second trading with no higher-timeframe reference is not bounded.
+related:
+- optimal-trade-entry
+- position-sizing-fixed-risk
+- structure-requires-htf-context
+- t1-t2-partial-system
+contributing_units:
+- live_stream_guests_03
+draft_count: 1
+voice: guest
+guest_sources:
+- Alex's Options

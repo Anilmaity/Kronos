@@ -1,0 +1,71 @@
+id: consolidation-vs-retracement-test
+name: The Protected-Swing Test For Consolidation vs Retracement
+category: structure
+status: specified
+aliases:
+- is it a retracement or a consolidation
+- consolidation test
+definition: 'The one mechanical test in the corpus for the consolidation phase, which otherwise blocks
+  everything downstream of it. A counter-move that looks like a retracement IS a retracement only if
+  it forms a protected swing -- i.e. price reaches an important level and then closes through the series
+  of opposing candles that made the extreme. If it does not, it is a consolidation. Three corroborating
+  signatures are given: price staying inside a single prior candle''s range; an inside bar; and a close-through
+  that takes longer than about half the candle to occur (that is ''usually just a consolidation'').
+  The practical consequence is a phase switch: with a retracement he waits for the continuation, with
+  a consolidation he stops waiting and instead demands a sweep of one side of the range.'
+timeframes:
+  htf:
+  - 1D
+  - 4H
+  - 1H
+  ltf:
+  - 15m
+  - 5m
+  fractal: true
+preconditions:
+- An expansion leg has completed and a counter-move is in progress.
+detection_rules:
+- Mark the extreme of the counter-move and the series of opposing candles that made it.
+- If price closes through that series (protected swing forms) -> retracement. Continuation is expected
+  in the original direction.
+- If no such close occurs -> consolidation. Mark the range high and low and wait for one side to be
+  swept.
+- 'Corroborating signatures of consolidation: price remains inside one prior candle''s range; the current
+  bar is an inside bar; repeated failures to close over the level.'
+- 'Timing signature: if the close-through takes longer than roughly half the candle, treat it as consolidation
+  rather than a confirmed reversal.'
+- Once in consolidation, only the edges of the range are traded, and only after a sweep plus a change
+  in the state of delivery.
+invalidation:
+- One side of the consolidation range is swept and confirmed -- the consolidation resolves and the phase
+  clock restarts at expansion.
+measurable:
+- share of counter-moves classified consolidation vs retracement by this test
+- forward return of the range-edge trade after a consolidation sweep
+- how often 'inside bar' and 'no protected swing' agree
+sources:
+- video_id: 8BWkRGhuj1k
+  title: 'The Phases of Price Action: A Blueprint for Market Movement'
+  quote: does it form a protected swing? No. That means it's then a consolidation
+- video_id: vn1RYjhJUnQ
+  title: Validating Swing Points Using Lower Timeframe Confirmation (CISD)
+  quote: If it consolidates for half of the candle and then closes over
+- video_id: 9AL41xON3hA
+  title: The Only Trading Strategy You Need For 2026
+ambiguities:
+- The test is stated once, in passing, inside a longer example -- it is not presented as a named rule,
+  so its intended generality is inferred from its repeated use rather than declared.
+- '''Half of the candle'' is a fraction of the higher-timeframe candle''s duration, but nothing says
+  whether the count starts at the candle open or at the sweep.'
+- The three signatures (no protected swing / inside range / inside bar) are never reconciled when they
+  disagree.
+related:
+- phases-of-price
+- protected-swing
+- consolidation-avoidance
+- range-edge-trading
+- liquidity-sweep-vs-consolidation
+contributing_units:
+- build_a_model_intro_to_ttrades_fractal_model_02
+draft_count: 1
+voice: ttrades

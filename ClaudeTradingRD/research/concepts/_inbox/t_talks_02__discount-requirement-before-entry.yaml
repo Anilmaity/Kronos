@@ -1,0 +1,50 @@
+id: discount-requirement-before-entry
+name: "Discount / Premium Requirement Before Entry"
+aliases: ["optimal trade entry", "fair valuation"]
+category: entry
+status: underspecified
+
+definition: >
+  Before buying, price must trade below 50% of the range (a discount); before selling, above
+  50% (a premium). The justification given is that institutions negotiate fair value and a
+  retail trader must adopt the same constraint, which converts patience from a virtue into a
+  mechanical filter: no entry is permitted on the wrong side of equilibrium regardless of how
+  strong the directional narrative is.
+
+timeframes:
+  htf: ["1D", "4H", "1H"]
+  ltf: ["15m", "5m"]
+  fractal: true
+
+preconditions:
+  - "A directional bias aligned with daily order flow exists."
+  - "A range with a defined high and low has been chosen."
+
+detection_rules:
+  - "Compute the 50% level of the chosen range."
+  - "Bullish: no entry until price trades below the 50% level."
+  - "Bearish: no entry until price trades above the 50% level."
+
+invalidation:
+  - "Price expands to the objective without returning through equilibrium - the trade is missed, not taken late."
+
+execution:
+  bias: "Direction of daily order flow."
+  entry: "Any entry pattern, but only from the discount (bullish) or premium (bearish) half of the range."
+  stop: "Not stated."
+  targets: ["the higher-timeframe draw on liquidity"]
+
+measurable:
+  - "R multiple of entries taken below EQ vs above EQ for the same directional call"
+  - "percentage of directional calls that offer a sub-EQ entry at all"
+
+sources:
+  - video_id: nncJGt6j19Q
+    title: "Gene | Align Yourself For High Probability Trades"
+
+ambiguities:
+  - "The range whose 50% is measured is never specified (weekly, daily, or the current leg)."
+  - "Marked underspecified for this reason: without the range definition the rule is not decidable on a chart."
+
+python_detector: null
+related: ["weak-longs-weak-shorts", "upper-half-eq-expansion-filter", "intermediate-timeframe-bridge"]

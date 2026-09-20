@@ -1,0 +1,53 @@
+id: missed-move-no-chase
+name: "Missed Move / No-Chase Rule"
+aliases: ["you missed it", "don't chase", "don't trade after expansion"]
+category: psychology
+status: specified
+
+definition: >
+  Once the expansion has occurred, the trade is gone and must be treated as gone. Entering
+  after the move, or above/below the level that was the objective, is classified as a chase.
+  The named failure loop is: a clean expansion is missed, the trader waits, tries to join
+  late, gets chopped out, and then the next clean expansion happens without them. The stated
+  remedy is to accept the miss and wait for the next C2 closure.
+
+timeframes:
+  htf: ["1D", "4H", "1H"]
+  ltf: ["15m", "5m"]
+  fractal: false
+
+preconditions:
+  - "An expansion leg has already delivered toward its objective."
+
+detection_rules:
+  - "If price is already beyond the range high/low that framed the trade, do not enter in that direction."
+  - "If the daily/4H candle has already produced its typical range, do not initiate in its direction."
+  - "If a target has already been taken, do not enter toward it."
+
+invalidation:
+  - "A new phase of price forms with a new swing and a new continuation - a fresh setup, not a chase."
+
+execution:
+  bias: "n/a"
+  entry: "None."
+  stop: "n/a"
+  targets: "n/a"
+
+measurable:
+  - "Expectancy of entries taken beyond the framing range boundary vs inside it."
+
+sources:
+  - video_id: aqnY1yZvfYs
+    title: "New York Open Live Q&A"
+  - video_id: Qv6Ux_Z8VrA
+    title: "New York Open Live Q&A"
+  - video_id: yud7TpE2AMs
+    title: "New York Open Live Q&A"
+  - video_id: 00iZXPAdR5A
+    title: "New York Open Live Q&A"
+
+ambiguities:
+  - "The boundary between 'a new phase of price' (tradeable) and 'a chase' (not) is judgemental; the only stated marker is a new swing plus a new continuation."
+
+python_detector: null
+related: ["continuation-failure-short-term-target", "htf-opening-price-entry", "average-daily-range", "consolidation-avoidance"]

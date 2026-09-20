@@ -1,0 +1,47 @@
+id: balanced-price-range-overlap
+name: "Balanced Price Range From Overlapping Opposing Gaps"
+aliases: ["BPR", "inversion gap overlapping a new gap"]
+category: structure
+status: specified
+
+definition: >
+  Where a former bullish fair value gap and a newly formed bearish fair value gap overlap in
+  price, the overlap itself is marked as a balanced price range and treated as a single
+  stronger point of interest with a defined polarity. The same construction is applied
+  fractally: on the daily, on the H1, and on the M15 in the worked examples, and it is the
+  level from which lower-timeframe executions are framed.
+
+timeframes:
+  htf: ["1D", "1H"]
+  ltf: ["15m", "5m"]
+  fractal: true
+
+preconditions:
+  - "Two opposing fair value gaps exist at overlapping prices."
+
+detection_rules:
+  - "Identify a bullish FVG that has been inverted and a bearish FVG formed over it (or vice versa)."
+  - "The price overlap of the two gaps is the balanced price range."
+  - "Assign polarity from the more recent gap; a close beyond the balanced price range invalidates that polarity."
+
+invalidation:
+  - "A candle close beyond the balanced price range in the opposing direction."
+
+execution:
+  bias: "Polarity of the balanced price range."
+  entry: "Return into the balanced price range during a kill zone, after a sweep of the opposing liquidity."
+  stop: "Beyond the balanced price range, or beyond the EQ of the daily wick that contains it."
+  targets: ["previous session lows/highs", "the daily draw on liquidity"]
+
+measurable:
+  - "hold rate of balanced price ranges vs single fair value gaps on first retest"
+
+sources:
+  - video_id: JABOO4LYNjQ
+    title: "Jokerszn | Daily Orderflow - ICT Daily Bias"
+
+ambiguities:
+  - "Whether partial overlap is sufficient or full containment is required is not stated."
+
+python_detector: null
+related: ["daily-wick-as-balanced-price-range", "daily-close-inversion", "killzone-execution-sequence"]

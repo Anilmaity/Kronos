@@ -1,0 +1,52 @@
+id: new-york-intraday-time-levels
+name: "New York Intraday Time Levels (8:30 / 9:30 / 10:00, Midnight Open)"
+aliases: ["important time levels", "8:30 manipulation 9:30 continuation"]
+category: time
+status: underspecified
+
+definition: >
+  The clock times inside the New York a.m. session at which the daily profiles are expected to
+  resolve. 08:30 is where the manipulation or opposing run occurs and where the order block is
+  built; 09:30 is where the continuation begins; 10:00 is repeatedly cited as where the day's
+  high or low completes, attributed to the 4-hour open-high-low-close. Midnight opening price
+  is used both as an intraday support/resistance reference and as a partial-profit level.
+
+timeframes:
+  htf: ["4H", "1D"]
+  ltf: ["15m", "5m"]
+  fractal: false
+
+preconditions:
+  - "The New York a.m. session (08:30-12:00) and midnight opening price are marked."
+
+detection_rules:
+  - "08:30: expect the manipulation / opposing run. Its extreme is the stop reference and the candles it prints form the order block."
+  - "09:30 (New York open): expect the continuation in the profile's direction. New York open itself can be the order block level."
+  - "10:00: the day's high or low frequently completes here; he attributes this to the 4-hour OHLC."
+  - "Midnight opening price: used as intraday support/resistance and as a partials level; in one example the down-close series forming the CISD coincided with it."
+
+invalidation:
+  - "Not stated. These are expectations about where events cluster, not signals with an invalidation."
+
+measurable:
+  - "distribution of the daily high/low timestamp across 08:30 / 09:30 / 10:00"
+  - "how often the 08:30 move is counter to the eventual daily direction"
+  - "how often midnight opening price is respected as support/resistance during the a.m. session"
+
+sources:
+  - video_id: y6SnEdASVLY
+    title: "ICT Daily Profile - London Reversal / New York Continuation"
+  - video_id: xdzyejskSKE
+    title: "ICT Daily Profile - New York Reversal"
+  - video_id: IeXtmeKqjnQ
+    title: "ICT Daily Profile - New York Manipulation"
+
+ambiguities:
+  - "No timezone is stated anywhere in the unit."
+  - "The videos repeatedly refer back to a separate 'important time levels' video that is not in this unit, so the list here may be partial."
+  - "No tolerance window is given around any of the times (is 08:33 still '8:30'?)."
+  - "The claim that 10:00 completes the day's extreme is asserted via the 4-hour OHLC but the mechanism is not explained here."
+  - "'Respected' for midnight open is not quantified (wick touch vs close)."
+
+python_detector: null
+related: ["daily-profile-session-windows", "opposing-run-entry", "london-reversal-profile", "new-york-manipulation-profile"]

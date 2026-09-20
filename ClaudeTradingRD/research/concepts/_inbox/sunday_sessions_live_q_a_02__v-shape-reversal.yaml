@@ -1,0 +1,55 @@
+id: v-shape-reversal
+name: "V-Shape Reversal"
+aliases: ["V-shape", "V shape reversal"]
+category: structure
+status: underspecified
+
+definition: >
+  A sharp reversal shape used in two roles. (1) As a substitute for CISD: if C2 produced no
+  CISD, a V-shape is required instead before the sequence can be trusted - and even then a
+  subsequent continuation is still needed. (2) As an invalidator: when a supposed retracement
+  is deep enough that the leg is fully bought/sold back, it is reclassified as a V-shape
+  reversal and the prior directional read is dropped. A V-shape occurring away from a relevant
+  level is dismissed as a "fake move" that creates no framework.
+
+timeframes:
+  htf: ["4H", "1H"]
+  ltf: ["15m", "5m", "3m", "1m"]
+  fractal: true
+
+preconditions:
+  - "A recent directional leg whose reversal can be assessed."
+
+detection_rules:
+  - "Price reverses sharply with little or no consolidation at the turn, retracing a large fraction of the prior leg."
+  - "Role 1: accept as C2 confirmation only when no CISD is present, and only with a following continuation."
+  - "Role 2: if the retracement of an expansion leg is deep (reaching OTE of the leg), reclassify as V-shape reversal and drop the continuation read."
+  - "Role 3 (filter): a V-shape not occurring at a relevant level does not create a tradeable framework."
+
+invalidation:
+  - "The reversal occurs at no relevant level - treated as noise."
+
+execution:
+  bias: "Direction of the V, only if at a relevant level."
+  entry: "Never on the V itself - only on the following continuation."
+  stop: "Behind the V extreme."
+  targets: "Per the sequence."
+
+measurable:
+  - "Continuation rate after V-shapes at relevant levels vs away from them."
+  - "Overlap between the V-shape reclassification and the OTE-depth threshold."
+
+sources:
+  - video_id: aqnY1yZvfYs
+    title: "New York Open Live Q&A"
+  - video_id: Qv6Ux_Z8VrA
+    title: "New York Open Live Q&A"
+  - video_id: yud7TpE2AMs
+    title: "New York Open Live Q&A"
+
+ambiguities:
+  - "No geometric definition (retracement fraction, bar count, wick/body ratio) is ever given."
+  - "The relationship between 'V-shape' and 'deep retracement' is asserted rather than defined - they may be the same test stated twice."
+
+python_detector: null
+related: ["shallow-retracement", "cisd", "fractal-model-c2", "continuation-over-reversal"]

@@ -1,0 +1,53 @@
+id: stop-loss-placement
+name: "Stop Loss Placement (Swing vs Body)"
+category: risk
+status: specified
+definition: >
+  A Short devoted to the question gives the cleanest binary in the unit. The stop always goes on
+  a protected low, but there are two ways to express it. The FULL INVALIDATION places it on the
+  very low of the protected swing: safest, but 2R is further away. The BODY INVALIDATION places
+  it on the bodies of the opposing candles that form the protected swing: a smaller stop and a
+  quicker 2R, at the explicit cost that price can stop you out without having invalidated the
+  idea. He states the cost is something you have to accept if you choose the body version, and
+  gives no rule for choosing between them.
+
+timeframes:
+  htf: ["4H", "1H"]
+  ltf: ["15m", "5m", "1m"]
+  fractal: true
+
+detection_rules:
+  - "The stop always sits on a protected low (bullish case) or protected high."
+  - "Full invalidation: stop at the extreme of the protected swing."
+  - "Body invalidation: stop at the bodies of the opposing candles that make the protected swing."
+  - "Body invalidation reduces stop size and brings 2R closer; full invalidation protects against being stopped without invalidation."
+
+invalidation:
+  - "Price trades beyond the chosen level."
+
+measurable:
+  - "frequency of stop-outs at the body level that would not have hit the full-invalidation level"
+  - "realised R distribution under each stop convention on the same trade set"
+
+sources:
+  - video_id: T1F4aT_7ppg
+    title: "What Invalidation Point Should You Use for Your Stop Loss?"
+    quote: "within my strategy, I will always put my stop loss on a protected low"
+  - video_id: T1F4aT_7ppg
+    title: "What Invalidation Point Should You Use for Your Stop Loss?"
+    quote: "move my stop loss to the bodies of these opposing candles"
+  - video_id: T1F4aT_7ppg
+    title: "What Invalidation Point Should You Use for Your Stop Loss?"
+    quote: "price could come stop me out before actually invalidating my idea"
+
+ambiguities:
+  - "No rule is given for WHEN to choose body over full invalidation - it is presented as a trader's trade-off only."
+  - "'The bodies of these opposing candles' does not say whether the reference is the highest/lowest body of the series or the nearest one."
+  - "No buffer beyond the chosen level is mentioned."
+
+python_detector: null
+related: ["protected-swing", "risk-reward-minimum", "stop-size-reduction", "position-sizing-fixed-risk", "breakeven-after-new-protected-swing"]
+
+voice: ttrades
+contributing_units: [shorts_04]
+draft_count: 1

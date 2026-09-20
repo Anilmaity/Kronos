@@ -1,0 +1,60 @@
+id: strat-outside-bar
+name: Outside Bar Is A Power Of Three (TheSTRAT)
+aliases:
+- outside bar
+- outside day
+category: structure
+status: specified
+definition: 'An outside bar is a candle that trades both above the previous candle''s high and below
+  its low. The guest equates it directly with ICT''s power of three and uses the equivalence as a
+  target rule: the weekly open is traded above, the high of the week is set on Monday or Tuesday,
+  structure shifts, and the trade is to target last week''s low so that the current weekly candle
+  completes as an outside bar. He runs the identical reading on the yearly chart - previous year''s
+  highs taken out, aggressive rejection leaving a fair value gap, then last year''s lows as the objective
+  - with the daily standing in as the execution chart the way a 1-minute would for a weekly outside
+  bar. He attributes the concept to Rob Smith.'
+timeframes:
+  htf:
+  - 1Y
+  - 1M
+  - 1W
+  ltf:
+  - 1D
+  - 1H
+  - 1m
+  fractal: true
+preconditions:
+- A completed previous candle on the analysis timeframe with a defined high and low.
+detection_rules:
+- outside_bar := candle.high > prev.high AND candle.low < prev.low.
+- Once one side of the previous candle has been taken and structure shifts, target the opposite side
+  of that previous candle to complete the outside bar.
+- 'The construction is fractal: use a daily execution chart for a yearly outside bar, a 1-minute for
+  a weekly one.'
+invalidation:
+- The candle closes without having traded through both sides of the previous candle.
+measurable:
+- completion rate of outside bars once the first side is taken and structure shifts, by timeframe
+- R available from the structure shift to the opposite side of the previous candle
+sources:
+- video_id: V8P6lNIisvc
+  title: Q&A Live with Alex's Options - ICT + Strat
+  quote: it's going to be your outside bar
+- video_id: V8P6lNIisvc
+  title: Q&A Live with Alex's Options - ICT + Strat
+  quote: it's also your power of three
+ambiguities:
+- No deadline is given for the outside bar to complete within the candle's own period.
+- The equivalence with power of three is asserted rather than derived, and the manipulation/distribution
+  phases are not mapped onto the bar.
+related:
+- power-of-three-amd
+- strat-pivot-targets
+- strat-inside-bar
+- previous-period-high-low
+contributing_units:
+- live_stream_guests_03
+draft_count: 1
+voice: guest
+guest_sources:
+- Alex's Options

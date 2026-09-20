@@ -1,0 +1,75 @@
+id: ttfm-swing-trading-model
+name: TTrades Swing Trading Model (Weekly bias / Daily swing / Hourly entry)
+definition: A named, complete swing strategy. Step one is always a weekly bias -- will the
+  week reach for the previous week's high or the previous week's low -- derived from liquidity,
+  highs/lows, fair value gaps and candle closures. Step two is a DAILY candle 2 or candle
+  3 closure to mark the swing point that forms the daily wick, checked for a change in the
+  state of delivery. Step three is an hourly entry, held through the following days into the
+  weekly draw. He states the whole thing is fractal and offers monthly / weekly / 4-hour as
+  the higher-timeframe variant, plus a simplified weekly-direct-to-4-hour route.
+category: model
+status: specified
+aliases:
+- the swing trading model
+- weekly daily hourly
+- monthly weekly 4H
+preconditions:
+- A weekly directional expectation (previous week's high or low as the draw).
+detection_rules:
+- 'Weekly: form a bias using liquidity, highs/lows, fair value gaps and candle closures --
+  concretely, a weekly candle 2 closure implies expansion in weekly candle 3.'
+- 'Daily: require a candle 2 or candle 3 closure that forms the daily wick, plus a change
+  in the state of delivery inside it. No daily swing point -> no trade.'
+- 'Hourly: enter on a continuation (closure through the series of opposing candles); hold
+  through the following days toward the weekly draw.'
+- If price retraces beyond the upper half (bullish) of the reference range during the expansion,
+  treat it as turning bearish rather than as a deeper entry.
+- If the aligned timeframe is messy, move UP one timeframe (hourly -> 4-hour, 30m -> hourly)
+  rather than forcing the pairing.
+- 'Variant: weekly bias straight to a 4-hour fractal model, with no intermediate daily alignment.'
+invalidation:
+- The daily swing point's protected swing is taken out.
+- Price retraces to the fair value gap below the reference range -- at that point it 'might
+  as well just take out this low'.
+measurable:
+- weekly directional hit rate after a weekly C2 closure
+- holding-period distribution of swing trades
+- 'loss rate of second entries after a first winner (his own example: 1 win, 1 loss)'
+sources:
+- video_id: 9BY-MQRNy-Y
+  title: TTrades Swing Trading Model - Simple Strategy
+  quote: step one is always going to be getting a weekly bias
+ambiguities:
+- The weekly bias is built from four ingredients (liquidity, highs/lows, fair value gaps,
+  closures) with no priority or tie-break among them.
+- '''A bit messy'' is the trigger for moving up a timeframe and is purely visual.'
+- Whether the weekly-to-4-hour shortcut carries the same expectancy as the three-step version
+  is not addressed.
+related:
+- fractal-model-c2
+- fractal-model-c3
+- timeframe-pairing
+- weekly-profile-framework
+timeframes:
+  htf:
+  - 1M
+  - 1W
+  ltf:
+  - 1D
+  - 4H
+  - 1H
+  - 15m
+  fractal: true
+execution:
+  bias: Weekly (or monthly) candle 2 closure.
+  entry: Hourly (or 4-hour) continuation off a protected swing, sometimes positional at the
+    swing itself.
+  stop: The protected swing.
+  targets:
+  - previous week's high/low
+  - failure swings / equal highs beyond
+  - 2R minimum (examples reached 3.74R and beyond)
+contributing_units:
+- build_a_model_intro_to_ttrades_fractal_model_02
+draft_count: 1
+voice: ttrades

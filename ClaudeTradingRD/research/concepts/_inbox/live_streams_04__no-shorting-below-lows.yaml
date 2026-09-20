@@ -1,0 +1,63 @@
+id: no-shorting-below-lows
+name: "Do Not Short Below Lows (sell at the open or in the wick instead)"
+aliases: ["selling around the daily open", "shorting below the lows"]
+category: entry
+status: specified
+
+definition: >
+  Where he wants the entry to sit within the daily candle, stated as a location rule and then
+  as a prohibition. Bearish: sell around the daily open or inside the wick of the daily candle,
+  and in any case before the first target is reached. He does not want to be selling below the
+  previous day low. His reason is the phases-of-price one: price expanding into a low sets up a
+  new phase of price, so a short entered down there is entered exactly where the move is due to
+  end. He applies it to himself on air twice - refusing a short at the low of the day after a
+  big low was already taken, and refusing to long over highs on a bullish instrument for the
+  mirrored reason ("not a fan of longing over the highs. That's not how I trade").
+
+timeframes:
+  htf: ["1D"]
+  ltf: ["1H", "15m"]
+  fractal: true
+
+preconditions:
+  - "A directional daily bias and a marked previous day high / low."
+
+detection_rules:
+  - "Bearish: enter around the daily open or inside the daily candle's upper wick."
+  - "Do not sell below the previous day low; do not buy above the previous day high."
+  - "Enter before the first target is reached, not after."
+  - "Price expanded into a low (or high) is due a new phase of price - do not initiate in that direction there."
+  - "If price is already at the extreme, the day is finished for that direction; wait for the next daily candle."
+
+invalidation:
+  - "The daily candle's wick is exceeded."
+
+execution:
+  bias: "Direction of the daily candle."
+  entry: "At the daily open or in the wick."
+  stop: "Beyond the wick."
+  targets: ["previous day low / high"]
+
+measurable:
+  - "expectancy by entry location relative to the daily open and the previous day extreme"
+  - "frequency of reversal within n bars of price taking a previous day extreme"
+
+sources:
+  - video_id: N3Ml-r0X30o
+    title: "New York Open Live Q&A"
+    quote: "I don't want to be selling below previous day low"
+  - video_id: x4sRGuZIqWk
+    title: "New York Open Live Q&A"
+    quote: "I'm not looking short here because we're at the low of the day"
+
+ambiguities:
+  - "'Around the daily open' is not bounded - no tolerance in points or percentage of range is given."
+  - "The rule is stated for entries; nothing is said about whether an existing position should be exited when price reaches the extreme."
+  - "'Generally speaking' is attached to the prohibition, so exceptions exist but are not enumerated."
+
+python_detector: null
+related: ["htf-opening-price-entry", "phases-of-price", "dont-trade-after-expansion", "average-daily-range", "range-edge-trading"]
+
+contributing_units: ["live_streams_04"]
+draft_count: 1
+voice: ttrades

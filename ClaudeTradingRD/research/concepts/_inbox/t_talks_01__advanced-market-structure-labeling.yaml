@@ -1,0 +1,54 @@
+id: advanced-market-structure-labeling
+name: "Advanced Market Structure (long-term / short-term / intermediate-term points)"
+aliases: ["LTH/STH/ITH", "LTL/STL/ITL", "advanced market structure"]
+category: structure
+status: underspecified
+
+definition: >
+  A three-tier labelling of swing points used to refine the entry after price reacts from a
+  higher-timeframe key level. A long-term point is anchored inside the HTF level. A short-term
+  point forms next; when that short-term point is violated it promotes the swing to an
+  intermediate-term point. The preferred entry is the short-term point formed immediately to the
+  right of the intermediate-term point.
+
+timeframes:
+  htf: ["1D", "4H", "1H"]
+  ltf: ["1H", "15m", "5m"]
+  fractal: true
+
+preconditions:
+  - "Price has reacted from a higher-timeframe internal or external range level."
+  - "The paired lower timeframe is in view."
+
+detection_rules:
+  - "Label the extreme set inside the HTF level as the long-term low (bullish case) or long-term high (bearish case)."
+  - "Label the next minor swing as the short-term low/high."
+  - "When that short-term point is violated, the swing it protected becomes the intermediate-term low/high."
+  - "The entry candidate is the short-term point formed immediately to the right of the intermediate-term point."
+  - "Bearish mirror: after an intermediate-term high is created by a stop hunt, use the short-term high to its right as the short entry."
+
+invalidation:
+  - "Not stated explicitly. Only a stop-placement alternative is offered - place the stop nearer the intermediate-term high if the short-term high feels too tight."
+
+execution:
+  bias: "From the higher-timeframe internal/external read."
+  entry: "The short-term point to the right of the intermediate-term point."
+  stop: "Beyond that short-term point, or beyond the intermediate-term point for a wider stop."
+  targets: ["the anticipated draw on liquidity - the opposing internal or external pool"]
+
+measurable:
+  - "hit rate of the short-term-point entry versus a naive entry at the HTF level touch"
+  - "average stop distance for the tight versus the wide placement"
+
+sources:
+  - video_id: 5aRB_ZY3474
+    title: "$niper | Internal & External Liquidity - ICT Daily Bias"
+
+ambiguities:
+  - "No definition of what size or fractal degree makes a swing minor enough to be short-term rather than long-term - the labels are applied by eye."
+  - "The promotion rule is stated once and never restated in the same words for the bearish case."
+  - "It is not stated whether violation means a wick through or a body close through."
+  - "No rule for how many short-term points may form to the right before the setup is stale."
+
+python_detector: null
+related: ["htf-reaction-mss-retrace-entry", "timeframe-alignment-ladder", "valid-structure-flip"]

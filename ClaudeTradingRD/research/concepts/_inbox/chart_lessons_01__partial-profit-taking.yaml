@@ -1,0 +1,65 @@
+id: partial-profit-taking
+name: "Partial Profit Taking (contested)"
+aliases: ["took off at 2R", "partials", "scaling out", "trailing the runner"]
+category: risk
+status: contested
+
+definition: >
+  Two directly opposed positions on scaling out of an intraday position appear in this
+  corpus and are recorded here together rather than averaged. Reading A (TTrades, in both
+  Chart Lessons trade reviews): partial at approximately 2R, take further partials at each
+  intermediate structural target, and hold a runner for the final objective with the stop
+  trailed to each new protected swing. In this reading the risk-to-reward calculation that
+  gates the entry is explicitly framed around being able to partial at or before the
+  short-term targets, so partials are structural to the entry decision, not an afterthought.
+  Reading B (guest trader in t_talks_03): intraday partials are a mistake - they steal from
+  the future trade, and taking them means either you have a draw and should hold to it or
+  you do not have a trade at all; he concedes partials are logical on swing trades to avoid
+  round-tripping a large move. Both traders are describing intraday index-futures trading.
+
+timeframes:
+  htf: ["1D", "1H"]
+  ltf: ["15m", "1m"]
+  fractal: false
+
+preconditions:
+  - "An open position with a defined final target and at least one intermediate structural level between entry and target."
+
+detection_rules:
+  - "Reading A - partial at approximately 2R; partial again at each intermediate high or low as it is taken; hold the remainder for the final objective."
+  - "Reading A - trail the stop to each new protected swing (a swept extreme that is then closed back over)."
+  - "Reading A - if a limit at the final target does not fill, exit manually rather than surrender the position for a tick or two."
+  - "Reading B - take no intraday partials; exit in full at the anticipated draw."
+  - "Reading B - partials are permitted on swing trades to avoid round-tripping."
+
+invalidation:
+  - "Reading A - a consolidation that breaks and then pushes back through is read as a reversal and is the cue to be flat."
+  - "Reading B - the absence of a definable draw means there was no trade to be in."
+
+execution:
+  bias: "n/a - this is a management rule."
+  entry: "n/a"
+  stop: "Reading A trails to each new protected swing; Reading B does not describe trailing."
+  targets: ["Reading A: 2R, intermediate highs/lows, final objective", "Reading B: the single anticipated draw"]
+
+measurable:
+  - "expectancy of partial-at-2R-plus-runner vs single full exit at the draw, on the same trade sequence"
+  - "how often the trailed runner exits before the final objective is reached"
+  - "average R surrendered by partialling vs average R surrendered by round-tripping"
+
+sources:
+  - video_id: UBTl7za9obc
+    title: "TTrades Top-Down Chart Lessons #2"
+  - video_id: w-JekHg6Ldk
+    title: "TTrades Top-Down Chart Lessons #4"
+  - video_id: 1wKfc2gN4xg
+    title: "Trader Kane | The Mind Behind a Multi-Million Dollar Day Trader"
+
+ambiguities:
+  - "The two readings are from different speakers (host vs interview guest) and neither addresses the other, so this is a corpus-level conflict rather than a stated debate."
+  - "Reading A never states 2R as a rule; it is inferred from repeated behaviour in both trade reviews."
+  - "Reading B does not define where a trade stops being intraday and becomes a swing, which is exactly where he permits partials."
+  - "In both Reading A examples the trailed runner produced no additional profit over the take-profit level - in one case it was trailed out at the identical price - which is evidence against the runner leg but is not treated as such in the videos."
+
+python_detector: null
+related: ["rr-gated-entry-refinement", "protected-swing", "phases-of-price", "prop-account-scaling-plan"]

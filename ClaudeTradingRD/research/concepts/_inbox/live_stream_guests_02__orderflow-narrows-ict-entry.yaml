@@ -1,0 +1,76 @@
+id: orderflow-narrows-ict-entry
+name: ICT For Context, Footprint And DOM For The Entry
+aliases:
+- order flow narrows the ICT level
+- two-layer stack
+category: entry
+status: specified
+definition: HolyAngelBruv's stated division of labour between the two methods he runs. ICT concepts
+  supply the OVERARCHING context - which trades to be looking at, which side of the curve, which liquidity
+  is the objective. Once price is close to that area, he switches to footprint and depth of market to
+  pick the actual entry, because that is where the most concise entries and locations come from. His
+  argument against stopping at the ICT layer is that an OTE gives you a broad area and does not show
+  what is happening inside each candle; the footprint does. Specifically, at the level he checks whether
+  the speed of the tape is picking up and whether there is aggression on the side he wants - and if
+  price is selling down hard and the tape shows nothing, that is a deterrent to entering there at all.
+timeframes:
+  htf:
+  - 1D
+  - 1H
+  - 15m
+  ltf:
+  - 5m
+  - 1m
+  - 15s
+  fractal: false
+preconditions:
+- An ICT-derived point of interest (liquidity pool, fair value gap, OTE area).
+- Order flow tooling (footprint / DOM) on the same instrument.
+detection_rules:
+- 'Use ICT concepts to select the setup and the area: equal highs / equal lows, fair value gaps, side
+  of the curve.'
+- Do not act on the area alone - wait until price is close to it.
+- 'At the area, read the footprint and the DOM: is the speed of the tape picking up, is there aggression
+  on the intended side.'
+- Enter only when the order flow confirms; a level reached on no tape activity is a reason NOT to enter.
+- Refine the entry timeframe down (5m, 1m, 15s) only once at the point of interest.
+invalidation:
+- Price reaches the area with no order-flow confirmation.
+execution:
+  bias: From the ICT context (curve side / draw on liquidity).
+  entry: Footprint / DOM confirmation at the level, executed on 5m / 1m / 15s.
+  stop: Tight - see orderflow-tight-stop-profile.
+  targets:
+  - the ICT objective (opposing liquidity / point of control)
+measurable:
+- win rate of ICT levels taken with vs without tape confirmation
+- adverse excursion of entries refined on the 15-second chart vs the 15-minute
+sources:
+- video_id: 8Z2AbZLjunU
+  title: ICT + Orderflow - Q&A with HolyAngelBruv
+  quote: that's where i try to narrow it down to footprint
+- video_id: 8Z2AbZLjunU
+  title: ICT + Orderflow - Q&A with HolyAngelBruv
+  quote: i mostly will look at the speed of the tape
+- video_id: 8Z2AbZLjunU
+  title: ICT + Orderflow - Q&A with HolyAngelBruv
+  quote: i use a sierra chart and then i just have my amp account connected
+ambiguities:
+- '''Speed picking up'' and ''aggressive on the buy side'' are read by eye off the footprint; no delta,
+  volume or rate threshold is given.'
+- He states plainly that the DOM is the part he has not mastered ('i don't think i'm quite there yet
+  with the dom'), so this stack is aspirational at the DOM layer.
+- He also warns the same stack produces analysis paralysis when the flow and the PD array disagree,
+  and gives no tie-break.
+related:
+- volume-profile-ledge
+- balance-area-poc-target
+- delta-divergence-recency-limit
+- level-two-orders-can-be-pulled
+- orderflow-tight-stop-profile
+contributing_units:
+- live_stream_guests_02
+draft_count: 1
+voice: guest
+guest_sources:
+- HolyAngelBruv

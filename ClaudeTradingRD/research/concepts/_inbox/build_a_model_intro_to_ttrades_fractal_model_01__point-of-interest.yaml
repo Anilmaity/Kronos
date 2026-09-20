@@ -1,0 +1,74 @@
+id: point-of-interest
+name: Point Of Interest (POI)
+category: entry
+status: specified
+aliases:
+- POI
+- important level
+- higher time frame key level
+definition: 'The location requirement without which no candle closure and no CISD is valid. Enumerated
+  in this unit as: a fair value gap, a high being taken out, or a low being taken out - ''I use fair
+  value gaps and highs and lows''. Its role is stated as framing: you find the candle closures first,
+  then check whether each has a point of interest, and only those that do give you a bias. Two extensions
+  are given: a series of opposing candles can serve as a point of interest (''more advanced''), and
+  where neither a fair value gap nor a sweepable low exists, 0.5 of the opposing candle is used instead.'
+timeframes:
+  htf:
+  - 1M
+  - 1W
+  - 1D
+  - 4H
+  ltf:
+  - 1H
+  - 15m
+  - 5m
+  fractal: true
+preconditions:
+- A candle closure has been identified.
+detection_rules:
+- 'Accept as a point of interest: a fair value gap price reached into, a high taken out, or a low
+  taken out.'
+- 'Procedure: mark candle closures first, then test each for a point of interest; a closure without
+  one is discarded.'
+- The point of interest may come from a much higher timeframe (a monthly high is used in one example).
+- 'Extension: opposing candles / a protected swing can act as the point of interest.'
+- 'Fallback: 0.5 of the opposing candle when no fair value gap or sweepable extreme exists.'
+- A fair value gap already traded through is no longer a valid point of interest.
+invalidation:
+- The closure has no point of interest - not a valid setup.
+measurable:
+- fraction of C2 closures that survive the POI gate
+- outcome difference by POI type (fair value gap vs swept high/low)
+sources:
+- video_id: tyoxl1l-6iI
+  title: 'Candle 2 Closure: The Foundation of TTrades Fractal Model'
+  quote: I need a point of interest to frame a candle closure
+- video_id: tyoxl1l-6iI
+  title: 'Candle 2 Closure: The Foundation of TTrades Fractal Model'
+  quote: which I use fair value gaps and highs and lows
+- video_id: tyoxl1l-6iI
+  title: 'Candle 2 Closure: The Foundation of TTrades Fractal Model'
+  quote: I can use these opposing candles as the point of interest
+- video_id: v1X8UMWgWmI
+  title: Best Trading Strategy for 2026 - TTFM
+  quote: sweeping out a low or reaching into a fair value gap or ideally both
+- video_id: WFqLwOp2pXw
+  title: How To Trade Consolidation - Phases Of Price
+  quote: That is when I can use 0.5 of this opposing candle here
+ambiguities:
+- No ranking is given when several points of interest are available; the stated method is to wait
+  and see which one a swing actually forms at.
+- '''Ideally both'' (sweep AND fair value gap) is preferred but not required.'
+- No relevance test is given for which highs/lows qualify beyond 'previous days and previous weeks
+  are always relevant'.
+related:
+- cisd
+- fractal-model-c2
+- fair-value-gap
+- relevant-level
+- protected-swing
+- reversal-signature
+contributing_units:
+- build_a_model_intro_to_ttrades_fractal_model_01
+draft_count: 1
+voice: ttrades

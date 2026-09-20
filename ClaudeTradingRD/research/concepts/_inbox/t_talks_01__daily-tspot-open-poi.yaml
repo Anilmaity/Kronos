@@ -1,0 +1,50 @@
+id: daily-tspot-open-poi
+name: "The Daily T-Spot As A Standalone Open Point Of Interest"
+aliases: ["daily t-spot", "C2 t-spot"]
+category: entry
+status: underspecified
+
+definition: >
+  A level produced by the TTFM fractal indicator on a confirmed C2 closure. It is treated as an
+  open-ended point of interest - sufficient on its own, with no other confluence required - and it
+  remains actionable until an hourly candle closes past it.
+
+timeframes:
+  htf: ["1D"]
+  ltf: ["5m"]
+  fractal: true
+
+preconditions:
+  - "A bearish or bullish daily C2 candle closure has occurred (flagged by the TTFM indicator alert)."
+
+detection_rules:
+  - "On a confirmed daily C2 closure, mark the daily T-spot."
+  - "Treat it as a valid standalone point of interest - no other point of interest is required to take the trade."
+  - "It remains open until an hourly candle closes past it."
+  - "Once price engages it, look for the unicorn on the 5-minute within the candle-count filter."
+
+invalidation:
+  - "An hourly close beyond the T-spot closes the point of interest."
+
+execution:
+  bias: "The direction of the C2 closure."
+  entry: "The 5-minute unicorn at the T-spot."
+  stop: "Not stated."
+  targets: ["the nearest session level (the worked example took roughly 2.25R with further targets near 4R)"]
+
+measurable:
+  - "hit rate of trades taken on a T-spot alone versus a T-spot plus other stacked POIs"
+  - "how long a T-spot typically remains open before an hourly close through it"
+
+sources:
+  - video_id: 07lOxv39LdY
+    title: "DTR | C2U - Blending The Fractal Model & Unicorn Model - No Daily Bias"
+
+ambiguities:
+  - "The T-spot is NEVER DEFINED in this video - it is an output of the TTFM fractal indicator and its construction is not explained, which is why this entry is underspecified."
+  - "It is not stated whether the hourly close must be a body close."
+  - "The relationship between the daily T-spot and the C2 candle's own levels is not given."
+  - "Do not backfill this definition from outside the corpus."
+
+python_detector: null
+related: ["c2-unicorn", "unicorn-candle-count-filter"]

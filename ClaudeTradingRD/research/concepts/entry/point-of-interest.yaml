@@ -1,0 +1,331 @@
+id: point-of-interest
+name: Point Of Interest (POI)
+variants:
+  name:
+  - Point Of Interest (POI) - required for reversals, optional for continuations
+  definition:
+  - 'EARLIER RECORDING. Here the POI is given as a CLOSED LIST OF FIVE trigger types whose
+    only job is to tell you when to drop to the execution timeframe and start hunting an entry
+    model: (1) highs and lows - equal highs/lows, session highs/lows, daily highs/lows; (2)
+    fair value gaps; (3) order blocks, including the point at which a fair value gap FILLS;
+    (4) the OTE of a range; (5) internal range liquidity of a range, which often coincides
+    with the OTE. The explicit purpose is negative - to stop you watching the lower timeframe
+    all day.'
+  - 'A dedicated lesson states the list is CLOSED and gives exactly three members, in a strict
+    priority order: (1) fair value gaps, (2) swing highs and lows, (3) the change-in-the-state-of-delivery
+    level (an order block). The third is explicitly a last resort -- he says he ''rarely''
+    uses it and only when neither a fair value gap nor a swing high/low exists in the range.
+    The search domain is also fixed: measure from the POINT OF REVERSAL (the protected swing
+    being traded away from) to the far edge of the range price has since created, and look
+    only inside that. Where both a fair value gap and a swing point exist, he wants BOTH tagged
+    before trading away, to avoid being stopped at the shallower one.'
+  - 'Asked how to tell whether a level is a POI or a valid PD array, he gives a closed enumeration
+    and refuses to extend it: points of interest are fair value gaps, highs and lows - "that''s
+    it". He repeats it later in the same stream when a viewer uses an unfamiliar term: all
+    he knows are highs, lows and fair value. Asked whether a trade must come out of a higher-timeframe
+    fair value gap he says no - it must come out of a point of interest, which is normally
+    a high or a fair value gap. The POI is what lets him anticipate a reversal; where none
+    exists he can only anticipate a continuation after one has formed. A separate answer resolves
+    the all-time-high case: with nothing to the left there is no POI at all, and he treats
+    the eyeballed daily range as the stand-in objective rather than abandoning the day.
+
+    '
+  - The top-down video enumerates points of interest much more widely than the live streams
+    do. On the entry timeframe he instructs the viewer to use the structure-timeframe point
+    of interest and there look for opposing candles or order blocks; he counts a swept high
+    sitting on an opposing candle as two points of interest overlapping and treats the overlap
+    as better; and when a leg contains no fair value gap or point of interest at all, he falls
+    back on a sweep of a previous low as the point of interest. That set - opposing candles,
+    order blocks, sweeps - conflicts with the closed live-stream enumeration recorded in the
+    library, which is fair value gaps, highs and lows and explicitly nothing else.
+  - 'A live exception that cuts against the general requirement. Asked whether the daily candle
+    must reach a point of interest before its closure can be used for a swing, he answers
+    no: the daily is the one specific timeframe where he does not require a point of interest,
+    provided he has the context of the higher timeframe (in the example, a monthly candle
+    trending down). It is ideal but not required. He redraws the case to make the point -
+    an aggressive daily closure with no fair value gap under it is still clean to him. Separately
+    he narrows what counts as a point of interest at all: he does not use breakers, rarely
+    uses higher-timeframe order blocks, uses CISD levels, and mostly prefers gaps and highs
+    and lows.'
+  - 'A prior level (fair value gap, previous swing high/low, opposing-candle midpoint) that
+    a C2 closure is expected to occur at. The corpus contains two versions of the requirement:
+    the simplified public rule that a C2 closure must be at a point of interest, and the nuanced
+    rule he states in 00iZXPAdR5A - POI is required 100% for a reversal C2, and is NOT required
+    for a continuation C2, because on a continuation the daily profile itself supplies the
+    extra confirmation. He explicitly says he teaches the simplified version "for simplicity''s
+    sake".
+
+    '
+definition: 'The location requirement without which no candle closure and no CISD is valid.
+  Enumerated in this unit as: a fair value gap, a high being taken out, or a low being taken
+  out - ''I use fair value gaps and highs and lows''. Its role is stated as framing: you find
+  the candle closures first, then check whether each has a point of interest, and only those
+  that do give you a bias. Two extensions are given: a series of opposing candles can serve
+  as a point of interest (''more advanced''), and where neither a fair value gap nor a sweepable
+  low exists, 0.5 of the opposing candle is used instead.'
+category: entry
+status: contested
+aliases:
+- POI
+- important level
+- higher time frame key level
+- higher time frame points of interest
+- the five things I search for
+- the only three points of interest
+- PD array
+- relevant level
+- points of interest overlapping
+- opposing candles or order blocks
+- T spot
+preconditions:
+- A candle closure has been identified.
+- The higher timeframes have been fixed relative to the execution timeframe.
+- A point of reversal / protected swing has been established.
+- A range has been created between that reversal and current price.
+- A chart with prior highs, lows and fair value gaps marked.
+- A structure timeframe has been read and a direction fixed.
+- A C2 closure candidate exists.
+- The trade has been classified as either a reversal or a continuation.
+detection_rules:
+- 'Accept as a point of interest: a fair value gap price reached into, a high taken out, or
+  a low taken out.'
+- 'Procedure: mark candle closures first, then test each for a point of interest; a closure
+  without one is discarded.'
+- The point of interest may come from a much higher timeframe (a monthly high is used in one
+  example).
+- 'Extension: opposing candles / a protected swing can act as the point of interest.'
+- 'Fallback: 0.5 of the opposing candle when no fair value gap or sweepable extreme exists.'
+- A fair value gap already traded through is no longer a valid point of interest.
+- Mark which highs and lows have already been taken and which are still likely to be taken;
+  untaken equal highs/lows act as magnets.
+- Mark fair value gaps on the paired higher timeframes.
+- Mark order blocks, and the price at which a higher-timeframe fair value gap would be fully
+  filled.
+- Mark the OTE of the operative range.
+- Mark internal range liquidity inside the range.
+- When price reaches any of the five, drop to the execution timeframe and look for the entry
+  model - and only then.
+- 'Target selection after a sweep: internal range liquidity first, then the external highs/lows.'
+- 'Define the search range: from the point of reversal to the extreme price has since made.'
+- '1st: is there a fair value gap in that range? If yes, that is the point of interest.'
+- '2nd: if no fair value gap, is there a swing high (bearish) or swing low (bullish) to be
+  taken out? If yes, that is the point of interest.'
+- '3rd: only if NEITHER exists, use the CISD level, and additionally require 50% of the bodies
+  of that opposing-candle series to hold.'
+- If both a fair value gap and a swing point are present, require both to be tagged before
+  trading away.
+- A candidate opposing candle that never reaches a point of interest is rejected as a protected
+  swing, however clean it looks.
+- 'In a consolidation, repeat the process at the range edges: sweep, then confirm with a change
+  in the state of delivery.'
+- 'A POI is one of exactly three things: a fair value gap, a previous high, or a previous
+  low.'
+- Nothing else qualifies - no breakers, no rejection blocks, no named PD-array variants.
+- A reversal may only be anticipated where price reaches a POI; without one, wait for a continuation
+  to form and trade that instead.
+- At all-time highs there is no POI to the left; use the eyeballed daily-range objective as
+  the stand-in and trade the candles in front of you.
+- On the entry timeframe, the point of interest is an opposing candle or an order block.
+- Two objects at the same price (a swept high plus an opposing candle) counts as two points
+  of interest overlapping and is preferred.
+- 'Fallback when a leg contains no fair value gap or point of interest: use a sweep of the
+  previous low as the point of interest.'
+- Fair value gaps are used as points of interest throughout, including a retrace 'right into
+  this fair value Gap' before the entry closure.
+- Reversals elsewhere in the corpus require a point of interest.
+- On the daily timeframe specifically, a candle 2 / candle 3 closure does not require one,
+  provided higher-timeframe context supports the direction.
+- 'Candidate points of interest for this model: gaps, highs and lows, CISD levels.'
+- 'Not points of interest for this model: breaker blocks; higher-timeframe order blocks are
+  used rarely.'
+- 'Classify the setup: is the C2 attempting to reverse the higher-timeframe direction, or
+  continue it?'
+- 'If reversal: the C2 must occur at a point of interest, or the setup is rejected.'
+- 'If continuation: the POI requirement is waived.'
+- 'Acceptable POIs seen in use: fair value gap, previous day high/low, prior swing, 50% of
+  an opposing candle.'
+invalidation:
+- The closure has no point of interest - not a valid setup.
+- The level is consumed (fair value gap filled, high taken) without a model forming - move
+  to the next POI.
+- Price closes beyond 50% of the bodies of the level being used -- the level is no longer
+  respected.
+- Price trades through the POI without a reaction, after which it is no longer relevant.
+- Price passes through the point of interest without the confirming closure.
+- A reversal C2 with no POI - reject.
+measurable:
+- fraction of C2 closures that survive the POI gate
+- outcome difference by POI type (fair value gap vs swept high/low)
+- share of the five POI types that actually produce a lower-timeframe model
+- how often internal range liquidity is reached before external liquidity after a sweep
+- distribution of POI type used (FVG / swing / CISD level)
+- hit rate by POI type
+- how often both an FVG and a swing exist in the same range
+- reaction rate at each of the three POI classes
+- expectancy of reversals attempted with vs without a POI present
+- reaction rate by point-of-interest type (opposing candle, order block, FVG, sweep)
+- outcome of single vs overlapping points of interest
+- win rate of daily closures with a POI vs without, given aligned monthly context
+- Expectancy of reversal C2s with vs without a POI.
+- Expectancy of continuation C2s with vs without a POI (tests whether the waiver costs anything).
+sources:
+- video_id: tyoxl1l-6iI
+  title: 'Candle 2 Closure: The Foundation of TTrades Fractal Model'
+  quote: I need a point of interest to frame a candle closure
+- video_id: tyoxl1l-6iI
+  title: 'Candle 2 Closure: The Foundation of TTrades Fractal Model'
+  quote: which I use fair value gaps and highs and lows
+- video_id: tyoxl1l-6iI
+  title: 'Candle 2 Closure: The Foundation of TTrades Fractal Model'
+  quote: I can use these opposing candles as the point of interest
+- video_id: v1X8UMWgWmI
+  title: Best Trading Strategy for 2026 - TTFM
+  quote: sweeping out a low or reaching into a fair value gap or ideally both
+- video_id: WFqLwOp2pXw
+  title: How To Trade Consolidation - Phases Of Price
+  quote: That is when I can use 0.5 of this opposing candle here
+- video_id: hh_kKK4Fhrw
+  title: Higher Time Frame Points of Interest - ICT Concepts
+  quote: there's five things that I search for
+- video_id: hh_kKK4Fhrw
+  title: Higher Time Frame Points of Interest - ICT Concepts
+  quote: OTE of a range internal range liquidity of a range
+- video_id: hh_kKK4Fhrw
+  title: Higher Time Frame Points of Interest - ICT Concepts
+  quote: you don't want to just be searching all the time
+- video_id: xvqsLTpmpsI
+  title: Find Lower Time Frame Entries Using Bias - ICT Concepts
+  quote: waiting for areas or points of interest and then look for lower time frame setups
+- video_id: xvqsLTpmpsI
+  title: Find Lower Time Frame Entries Using Bias - ICT Concepts
+  quote: we wait for a lower time frame setup to reduce our risk
+- video_id: NqSbvqDKML0
+  title: The Only Points of Interest That Actually Matter For Trading
+  quote: the only three points of interest that I use
+- video_id: 9AL41xON3hA
+  title: The Only Trading Strategy You Need For 2026
+  quote: points of interest are always going to be either a fair value gap
+- video_id: IJcfC6wAPZU
+  title: Trade Continuations Using Order Blocks
+- video_id: q3nauvjT3q0
+  title: Stop Overcomplicating Trading (Here's the Fix)
+- video_id: i2HhHhWdaPQ
+  title: New York Open Live Q&A
+  quote: All I know are highs, lows, and fair value.
+- video_id: x4sRGuZIqWk
+  title: New York Open Live Q&A
+  quote: which is normally a high or a uh fair value gap
+- video_id: eIPM-D8RrSQ
+  title: New York Open Live Q&A
+  quote: you're not going to have a POI at all time highs
+- video_id: iEaMbuFZb24
+  title: Trade Like TTrades - Top Down Analysis
+  quote: two points of interest overlapping
+- video_id: iEaMbuFZb24
+  title: Trade Like TTrades - Top Down Analysis
+  quote: look for opposing candles or order blocks
+- video_id: iEaMbuFZb24
+  title: Trade Like TTrades - Top Down Analysis
+  quote: a sweep of this previous low right here
+- video_id: xraklBJHW5k
+  title: New York Open Live Q&A
+  quote: I don't require a point of interest
+- video_id: m0wTBdUe7gs
+  title: New York Open Live Q&A
+  quote: which is gaps and highs and lows
+- video_id: 00iZXPAdR5A
+  title: New York Open Live Q&A
+- video_id: Qv6Ux_Z8VrA
+  title: New York Open Live Q&A
+ambiguities:
+- No ranking is given when several points of interest are available; the stated method is
+  to wait and see which one a swing actually forms at.
+- '''Ideally both'' (sweep AND fair value gap) is preferred but not required.'
+- No relevance test is given for which highs/lows qualify beyond 'previous days and previous
+  weeks are always relevant'.
+- EARLIER RECORDING. No ranking among the five, and no rule for what to do when two conflict.
+- '''Which Highs are likely to be taken'' is a judgement, not a test.'
+- The counter-trend caveat ('we're in a bearish trend here so it's likely we couldn't displace
+  over this High') is stated as context, not as a gate.
+- The channel elsewhere is quoted as saying 'all I know are highs, lows, and fair value' --
+  a two-member list. This lesson agrees on the first two and their primacy but adds a conditional
+  third (the CISD level), so the live-stream claim is close but not exact.
+- He allows the CISD retest to count even when price does not reach the level exactly, 'when
+  I have the context' -- an undefined discretionary override.
+- Where several fair value gaps are stacked, the selection rule is only 'we don't want a deep
+  retracement', which does not always single one out.
+- Which highs and lows qualify is not bounded here - separation, age and relevance are handled
+  by other concepts, not by this answer.
+- The auto-caption renders his enumeration as 'POIs to use your value gaps, highs, lows',
+  dropping 'fair'; it is read as fair value gaps, highs and lows, consistent with his restatement
+  later in the same stream.
+- Whether an unmitigated fair value gap and a mitigated one both count is not addressed.
+- This enumeration includes order blocks and opposing candles, which the live-stream enumeration
+  in the library explicitly excludes ('gaps, highs and lows - that's it'). The two are not
+  reconcilable as stated.
+- No ranking rule when several points of interest are available at different prices.
+- '''Overlapping'' is not given a tolerance.'
+- This contradicts the stricter POI requirement recorded elsewhere in the corpus; the exemption
+  is stated only for the daily timeframe and only when higher-timeframe context exists.
+- '''The context of the monthly candle trending down'' is the substitute for the POI and is
+  not itself given a test.'
+- 'CONFLICT: his simplified public teaching (POI always required) versus his stated real rule
+  (reversal only). Any concept drafted from the polished lessons should be reconciled with
+  this.'
+- The classification reversal-vs-continuation is itself judgemental and is the gate on the
+  whole rule.
+- The set of acceptable POIs is enumerated by example only.
+related:
+- cisd
+- fractal-model-c2
+- fair-value-gap
+- relevant-level
+- protected-swing
+- reversal-signature
+- timeframe-pairing
+- draw-on-liquidity
+- optimal-trade-entry
+- internal-range-liquidity
+- four-entry-models
+- poi-density-by-timeframe
+- continuation-order-block
+- important-level
+- level-to-trade-away-from
+- ttfm-minimal-toolkit
+- top-down-analysis-procedure
+- order-block
+- opposing-candle
+- liquidity-sweep
+- fair-value-gap-not-an-entry
+- ic-cisd
+- london-reversal-ny-continuation
+- equilibrium-eq
+timeframes:
+  htf:
+  - 1M
+  - 1W
+  - 1D
+  - 4H
+  ltf:
+  - 1H
+  - 15m
+  - 5m
+  fractal: true
+execution:
+  bias: Away from the point of reversal.
+  entry: After price reaches the point of interest and closes through the opposing-candle
+    series there.
+  stop: The resulting protected swing.
+  targets:
+  - drawn liquidity
+  - 2R
+contributing_units:
+- build_a_model_intro_to_ttrades_fractal_model_01
+- build_a_model_intro_to_ttrades_fractal_model_02
+- education_ict_01
+- live_streams_01
+- live_streams_04
+- sunday_sessions_live_q_a_02
+- the_foundation_02
+draft_count: 7
+voice: ttrades

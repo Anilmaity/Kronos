@@ -1,0 +1,61 @@
+id: unicorn-model
+name: "The Unicorn Model (breaker block + fair value gap)"
+aliases: ["unicorn", "breaker plus FVG", "the entry function"]
+category: model
+status: specified
+
+definition: >
+  A single-pattern entry model. After a stop hunt of a swing point into a higher-timeframe area of
+  interest, price must displace THROUGH the breaker block and, in doing so, leave a fair value gap
+  aligned with that breaker. The overlap of breaker and fair value gap is the unicorn, and it is
+  the only entry taken. Bias comes from the daily, the area of interest from the hourly, and the
+  entry function is read on the 5-minute at a session open.
+
+timeframes:
+  htf: ["1D", "1H"]
+  ltf: ["5m"]
+  fractal: true
+
+preconditions:
+  - "Daily bias established from internal versus external liquidity (price at a daily bearish FVG implies a draw to the daily swing low, and the mirror)."
+  - "An hourly area of interest exists in the direction of bias - for a short, an hourly bearish FVG or an hourly swing high; for a long, an hourly bullish FVG or an hourly swing low."
+  - "It is a session open - London 02:00 EST or New York 09:30."
+
+detection_rules:
+  - "Price reaches the hourly area of interest at or after the session open."
+  - "A stop hunt occurs - price runs a swing point (a swing high has a lower high on each side; a swing low has higher lows on each side)."
+  - "Price displaces through the breaker block, closing beyond it."
+  - "That displacement leaves a fair value gap aligned with the breaker block."
+  - "Only when all four are true is a limit order set."
+
+invalidation:
+  - "Price closes back through the far side of the breaker block - that is where the stop sits."
+  - "If price displaces but leaves no fair value gap aligned with the breaker, there is no unicorn and no trade."
+
+execution:
+  bias: "From the daily internal/external liquidity read."
+  entry: "Limit order at the beginning of the breaker block."
+  stop: "On the other side of the breaker block."
+  targets: ["a fixed 2R"]
+
+measurable:
+  - "count of unicorns formed per session open per instrument"
+  - "fill rate of the limit at the beginning of the breaker"
+  - "hit rate of the fixed 2R target versus the breaker stop"
+  - "how often price only just touches the breaker before running (the fill-risk case he cites for forex)"
+
+sources:
+  - video_id: zXtJSSkiNmo
+    title: "Ash Trades | The Journey To Profitability & The Unicorn Model"
+  - video_id: 07lOxv39LdY
+    title: "DTR | C2U - Blending The Fractal Model & Unicorn Model - No Daily Bias"
+
+ambiguities:
+  - "'Displacement' is given no size, body-ratio or candle-count threshold."
+  - "'Aligned with the breaker' is not defined - whether the FVG must overlap, be contained by, or merely sit in the same price band is not stated."
+  - "No maximum delay is given between the session open and the formation of the entry function."
+  - "The daily bias rule is given only for the case where price is sitting AT a daily FVG; no rule covers price at neither an FVG nor a swing."
+  - "DTR uses the same pattern name but supplies an additional candle-count filter that Ash does not state."
+
+python_detector: null
+related: ["breaker-block", "swing-point-stop-hunt", "internal-external-range-liquidity", "mechanical-trade-management", "c2-unicorn"]

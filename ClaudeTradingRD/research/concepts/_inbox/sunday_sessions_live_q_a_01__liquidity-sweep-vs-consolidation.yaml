@@ -1,0 +1,47 @@
+id: liquidity-sweep-vs-consolidation
+name: "Distinguishing a Liquidity Sweep from Part of a Consolidation"
+aliases: ["is it a sweep or a range", "V-shape vs lethargic"]
+category: liquidity
+status: specified
+
+definition: >
+  The discriminator between a genuine liquidity sweep and a level being taken as part of an
+  ongoing consolidation is the reaction. A real sweep produces an immediate V-shaped reversal; a
+  consolidation sweep is lethargic, drifting sideways after taking the level.
+
+timeframes:
+  htf: ["1D", "4H", "1H"]
+  ltf: ["15m", "5m", "3m", "1m"]
+  fractal: true
+
+preconditions:
+  - "A high or low has just been traded through."
+
+detection_rules:
+  - "Observe the candles immediately after the level is taken."
+  - "Sweep: immediate displacement back through the level producing a V-shape."
+  - "Consolidation: no displacement; price lingers around the level."
+
+invalidation:
+  - "Delay in the reaction; the longer it takes, the less it qualifies as a sweep."
+
+execution:
+  bias: "Opposite the swept side, only for the V-shape case."
+  entry: "Per the continuation model after the V-shape."
+  stop: "Beyond the sweep extreme."
+  targets: ["Opposing drawn liquidity"]
+
+measurable:
+  - "continuation rate after V-shaped versus lethargic reactions to a swept level"
+
+sources:
+  - video_id: 0AYGNc9czYc
+    title: "New York Open Live Q&A"
+  - video_id: WBwoiMDXT2c
+    title: "New York Open Live Q&A"
+
+ambiguities:
+  - "V-shape is not quantified (no candle count, displacement size or slope threshold)."
+
+python_detector: null
+related: ["v-shape-reversal-speed", "inducement-equals-sweep", "smt-requires-framework"]

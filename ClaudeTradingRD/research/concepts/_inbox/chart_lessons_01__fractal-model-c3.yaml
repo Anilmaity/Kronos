@@ -1,0 +1,65 @@
+id: fractal-model-c3
+name: "Candle 3 Continuation (the easier trade)"
+aliases: ["candle 3", "candle three continuation", "the continuation"]
+category: model
+status: specified
+
+definition: >
+  The candle following a confirmed candle 2 closure, traded as a continuation in the
+  direction the candle 2 reversed toward. The speaker states outright that the reversal
+  itself is difficult to trade and the continuation is much easier, and both trade
+  reviews are structured around it: Tuesday reverses, therefore Wednesday is expected to
+  expand higher; a daily candle 2 closure on CAD futures, therefore the next day is
+  expected to trade higher into the previous month's high. Candle 3 carries a shape
+  requirement as well as a direction: because price is expanding, the retracement inside
+  candle 3 should be shallow, so its wick should form in the upper half (bullish) of the
+  preceding candle and inside the T-spot. A further timing condition appears in the
+  scalp review - candle 3 is allowed to close before acting when the confirming
+  correlated asset's candle has not yet closed.
+
+timeframes:
+  htf: ["1D", "1H", "15m"]
+  ltf: ["5m", "1m"]
+  fractal: true
+
+preconditions:
+  - "A candle 2 closure confirmed by a change in the state of delivery on the timeframe below."
+  - "A defined draw for the continuation to travel toward."
+
+detection_rules:
+  - "Candle 3 is the candle immediately following the confirmed candle 2."
+  - "Expect candle 3 to expand in the direction the candle 2 reversed toward."
+  - "Require candle 3's wick to form in the relevant half of the preceding candle (upper half for a bullish continuation) - a shallow wick supports expansion."
+  - "Where a correlated asset is being used for confirmation, wait for that asset's corresponding candle to close before acting inside candle 3."
+  - "Enter inside candle 3 on the lower timeframes at the point of interest inside the T-spot."
+
+invalidation:
+  - "Candle 3's wick forms beyond the half level of the preceding candle - the shallow-retracement condition fails."
+  - "The protected swing formed by candle 2 is taken out."
+
+execution:
+  bias: "Direction of the candle 2 reversal."
+  entry: "Lower-timeframe continuation inside candle 3, at a fair value gap or opposing candle within the T-spot."
+  stop: "On the protected swing / candle 2 extreme."
+  targets: ["previous period high or low", "equal highs or lows", "intraday session extremes"]
+
+measurable:
+  - "expansion range of candle 3 following confirmed vs unconfirmed candle 2 closures"
+  - "proportion of candle 3s whose wick stays within the relevant half of candle 2"
+  - "hit rate of the candle 2 implied draw inside candle 3 alone"
+
+sources:
+  - video_id: UBTl7za9obc
+    title: "TTrades Top-Down Chart Lessons #2"
+  - video_id: IzOQmcgLyA0
+    title: "TTrades Top-Down Chart Lessons #3"
+  - video_id: w-JekHg6Ldk
+    title: "TTrades Top-Down Chart Lessons #4"
+
+ambiguities:
+  - "In video w-JekHg6Ldk a candle four continuation is also named without being defined; the numbering beyond candle 3 is not explained in this unit."
+  - "Waiting for the correlated asset's candle to close is stated for one trade only; whether it is a general rule is unclear."
+  - "No rule is given for what to do if candle 3 opens beyond the T-spot."
+
+python_detector: null
+related: ["fractal-model-c2", "t-spot", "cisd", "small-wick-expansion-rule", "smt-divergence"]

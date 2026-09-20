@@ -1,0 +1,53 @@
+id: nested-fvg-entry-refinement
+name: Nest A Lower-Timeframe Fair Value Gap Inside The Higher Ones
+definition: 'The concrete refinement procedure behind ''refine the entry'': having marked
+  a 15-minute fair value gap inside the OTE of a displacement range, drop to the 5-minute
+  and mark the fair value gap there, then drop to the 15-second and look LEFT for a gap NESTED
+  BETWEEN the 15-minute and 5-minute gaps. That nested gap is the entry, and the stated benefit
+  is not a better ratio but LITTLE TO NO DRAWDOWN - the position is entered at the tightest
+  point of the stack. The procedure is a stack of three timeframes'' gaps resolving to one
+  price band.'
+category: entry
+status: specified
+preconditions:
+- A displacement range with a marked OTE / discount exists.
+- A higher-timeframe fair value gap sits inside it.
+detection_rules:
+- Mark the highest-timeframe fair value gap inside the OTE.
+- Drop one timeframe and mark the gap there; it should sit inside the first.
+- Drop again (15-second in his example) and look LEFT for a gap that sits between the two
+  already-marked gaps.
+- Enter at the innermost nested gap; expect little to no drawdown.
+- 'The alternative when no nested gap exists: wait for a move out of the area and take a lower-timeframe
+  confirmation entry instead (structure break plus order block / gap).'
+measurable:
+- maximum adverse excursion of the nested entry vs the 15-minute gap entry
+- fill rate of the nested gap
+sources:
+- video_id: ivirRu3fc4o
+  title: Refine Entries and Scalp Using the 15 Second Chart - ICT Concepts
+  quote: a 15 second fair value gap right here nested in between the 15 minute
+- video_id: ivirRu3fc4o
+  title: Refine Entries and Scalp Using the 15 Second Chart - ICT Concepts
+  quote: your lower time frame entry right there with little to no drawdown
+ambiguities:
+- '''Look to the left'' for the nested gap has no lookback bound.'
+- No rule for what to do when the lower-timeframe gap sits OUTSIDE the higher-timeframe one.
+- The three timeframes used (15m / 5m / 15s) are the example, not a stated ladder.
+related:
+- rr-gated-entry-refinement
+- fair-value-gap
+- optimal-trade-entry
+- three-pd-array-confluence
+timeframes:
+  htf:
+  - 15m
+  - 5m
+  ltf:
+  - 1m
+  - 15s
+  fractal: true
+contributing_units:
+- education_ict_02
+draft_count: 1
+voice: ttrades

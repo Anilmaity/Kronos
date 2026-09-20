@@ -1,0 +1,60 @@
+id: smt-swing-point-substitute
+name: SMT As A Swing Point Substitute
+category: structure
+status: specified
+aliases:
+- SMT instead of the sweep
+definition: 'SMT against a correlated asset is allowed to REPLACE the sweep requirement in two places
+  in this unit, which is a stronger claim than ''SMT is confluence''. (1) For a continuation order block:
+  normally price must sweep a low or reach a fair value gap before an opposing candle counts -- but
+  if the correlated asset swept and this one did not, the opposing candle is accepted anyway. (2) At
+  a swing point: when a low is expected to hold and price does not reach it, an SMT with the correlated
+  asset means the low no longer needs to be taken, and the closure through the opposing candles is accepted
+  as confirmation.'
+timeframes:
+  htf:
+  - 1D
+  - 4H
+  - 1H
+  ltf:
+  - 15m
+  - 5m
+  - 3m
+  fractal: true
+preconditions:
+- A correlated asset is being charted alongside.
+- An existing directional model.
+detection_rules:
+- Identify the level one asset takes and the other does not -- that divergence is the SMT.
+- 'Continuation case: accept an opposing candle / order block as valid without its own sweep or fair
+  value gap tag, provided SMT is present.'
+- 'Swing-point case: when the anticipated low is not reached but SMT forms, stop requiring the low to
+  be taken and look for the close through the opposing candles instead.'
+- Still require the closure through the series -- SMT waives the sweep, not the confirmation.
+invalidation:
+- Both assets take the level -- there is no divergence and the ordinary sweep requirement applies.
+measurable:
+- share of continuation entries admitted only via the SMT waiver
+- hit rate of SMT-waived entries vs ordinary swept entries
+sources:
+- video_id: IJcfC6wAPZU
+  title: Trade Continuations Using Order Blocks
+  quote: the only time price does not need to sweep out a low
+- video_id: 5fnFOh5YuM0
+  title: TTrades Fractal Model - Trading Candle 4
+- video_id: JHVaSKtE1Ys
+  title: 'Stop Losses in Trading: Know When You''re Wrong'
+- video_id: jKuXaC84Qx4
+  title: Trading the Invalidation of Daily Bias
+ambiguities:
+- Which correlated asset is authoritative is not specified in this unit beyond ES/NQ/YM and CL/RB examples.
+- Whether the SMT must be on the exact same candle as the would-be sweep is not stated.
+related:
+- smt-divergence
+- psp-precision-swing-point
+- continuation-order-block
+- protected-swing
+contributing_units:
+- build_a_model_intro_to_ttrades_fractal_model_02
+draft_count: 1
+voice: ttrades

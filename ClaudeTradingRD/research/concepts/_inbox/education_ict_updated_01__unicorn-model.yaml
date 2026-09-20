@@ -1,0 +1,68 @@
+id: unicorn-model
+name: Unicorn Model (breaker block + overlapping fair value gap)
+aliases:
+- the unicorn
+- unicorn entry model
+category: model
+status: specified
+definition: A breaker block combined with a fair value gap that OVERLAPS it. The breaker comes from
+  the four-point structure (high, low, higher high, lower low); the displacement leg through the breaker
+  leaves the gap; the overlap is what is used for entry. He attributes the model to Tyler and Ash and
+  points at their 40-page PDF rather than claiming it.
+timeframes:
+  htf:
+  - 1H
+  ltf:
+  - 15m
+  - 5m
+  - 2m
+  - 1m
+  fractal: true
+preconditions:
+- A draw on liquidity is identified (smooth or equal highs/lows).
+- A completed breaker structure exists.
+detection_rules:
+- 'Complete the breaker sequence: low, high, lower low (sweep), higher high with displacement (bullish
+  case).'
+- Mark the last opposing-close candle before the sweeping leg — the breaker.
+- Require a fair value gap that OVERLAPS that breaker; without the overlap it is not a unicorn.
+- Entry inside the overlap; bodies must not close beyond the mean threshold of the breaker candles even
+  if wicks dig in.
+invalidation:
+- Bodies closing below the mean threshold of the breaker candles (bullish case).
+execution:
+  bias: Toward the identified draw on liquidity.
+  entry: The overlapping fair value gap inside the breaker.
+  stop: On the swept extreme (2.3R in his example) or just beyond the breaker (5R on the same trade).
+  targets:
+  - The draw on liquidity — equal/smooth highs or lows
+  - 2 to 2.5 standard deviations of the projected manipulation leg
+measurable:
+- share of breakers that carry an overlapping FVG
+- fill rate — one of his three examples was left behind
+sources:
+- video_id: rXMVPUZPw4A
+  title: Breaker Block & FVG Entry Model
+  quote: The unicorn is a breaker block paired with a fair value gap
+- video_id: rXMVPUZPw4A
+  title: Breaker Block & FVG Entry Model
+  quote: I would suggest checking out Tyler and Ash on Twitter
+- video_id: rXMVPUZPw4A
+  title: Breaker Block & FVG Entry Model
+  quote: it is a high low higher high lower low
+- video_id: q40pRwjuPYQ
+  title: ICT Son's Model - 30 Second Setup
+  quote: I don't really like waiting for the 5 minute close
+ambiguities:
+- '''Overlapping'' is not quantified — any overlap appears to qualify.'
+- Which of the two stop placements to use is left to risk-to-reward.
+- He teaches the model and credits it to others; whether it is part of his own routine is not stated.
+related:
+- breaker-block
+- fair-value-gap
+- standard-deviation-projection
+- sons-model
+voice: ttrades
+contributing_units:
+- education_ict_updated_01
+draft_count: 1

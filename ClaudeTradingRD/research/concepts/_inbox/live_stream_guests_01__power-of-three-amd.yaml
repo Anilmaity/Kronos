@@ -1,0 +1,60 @@
+id: power-of-three-amd
+name: "Power Of Three (Accumulation, Manipulation, Distribution)"
+aliases: ["open high low close week", "weekly power of three"]
+category: model
+status: specified
+voice: ttrades
+guest_sources: []
+
+definition: >
+  TTrades draws the power of three on the WEEKLY candle and uses it as a forward plan for the
+  coming week's daily candles. He sketches the shape he wants - the weekly candle opens, puts in
+  its high, then trades lower and closes near the low, i.e. an open-high-low-close week - and then
+  maps it onto days: Monday is explicitly not cared about, Tuesday is expected to come up into a
+  daily order block and form the high, and Wednesday, Thursday and Friday deliver the move down to
+  a named price objective. $niper states the same expectation for the same week independently.
+
+timeframes:
+  htf: ["1W", "1D"]
+  ltf: []
+  fractal: true
+
+preconditions:
+- "A directional expectation for the week already exists (here: bearish, from the higher-timeframe read)."
+- "A price objective for the week has been named (in this example ~4150 on the index)."
+
+detection_rules:
+- "Draw the desired weekly candle first: open, high, low, close - for a bearish week that is open, put in the high, expand lower, close near the low."
+- "Map the sketch onto days: Monday is not required to do anything; the high is expected on Tuesday, ideally into a daily order block; Wednesday, Thursday and Friday deliver the expansion."
+- "$niper's version of the same week: Monday or Tuesday sets the high of the week and Wednesday, Thursday, Friday drop."
+- "The plan is stated as an expectation to be traded around, not a prediction to be forced."
+
+invalidation:
+- "Not stated. Neither speaker gives the price or day that would retire the weekly shape."
+
+execution:
+  bias: "Direction of the sketched weekly candle."
+  entry: "Not specified by this rule."
+  stop: "Not specified."
+  targets: ["the named weekly price objective (a 4-hour fair value gap in this example)"]
+
+measurable:
+- "frequency of open-high-low-close weeks by instrument"
+- "how often the weekly extreme actually lands on Monday or Tuesday when this shape is anticipated"
+
+sources:
+- video_id: UmLWRlXd_V8
+  title: "8/14/22  MMXM Live with $niper  - ICT concepts"
+  quote: "don't really care what Monday does Tuesday come up into here"
+
+ambiguities:
+- "Nothing quantifies 'close near the low' - the sketch is drawn freehand on the chart."
+- "The Tuesday order block that is supposed to cap the week is pointed at on screen, not defined."
+- "No rule is given for what to do if Monday, rather than Tuesday, makes the high."
+- "The forward plan given in the video was for the week of 22 August 2022 and its outcome is never reviewed."
+
+python_detector: null
+related: ["daily-ohlc-candle-shape", "classic-expansion-week", "weekly-profile-framework", "power-of-three-amd"]
+contributing_units:
+- live_stream_guests_01
+draft_count: 1

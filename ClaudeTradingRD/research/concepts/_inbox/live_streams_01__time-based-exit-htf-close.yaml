@@ -1,0 +1,48 @@
+id: time-based-exit-htf-close
+name: Time-Based Exit at the Higher-Timeframe Candle Close
+definition: 'The reasoning behind exiting on the clock rather than at a price. An expansion candle
+  has a small wick and a large body, so a bearish expansion candle - once its wick is formed - generally
+  closes near the low of the candle, and a bullish one near the high. That means holding to the end
+  of the candle produces an exit near its extreme. So the exits are the candle closes: 9:45 for a
+  15-minute expansion candle and 10:00 for the 30-minute / hourly / 4-hour. He listed three exits
+  on one live move - the price target, 9:45 and 10:00 - and called them all good exits. Time-based
+  exits are grouped with trailing stops and average daily range as the ways to take profit when the
+  target is an all-time high with no level above it.'
+category: time
+status: specified
+preconditions:
+- The candle being held is an expansion candle (small wick, large body).
+- Its wick has already formed.
+detection_rules:
+- Identify which timeframe's expansion candle the move belongs to.
+- 'Hold until that candle''s close: 9:45 for a 15-minute candle, 10:00 for the 30-minute / hourly
+  / 4-hour.'
+- Expect the close to sit near the candle's extreme in the traded direction.
+- If the higher-timeframe candle is also expanding, the move can be held past the lower-timeframe
+  close to the higher one.
+invalidation:
+- The candle is not an expansion candle - the close-near-the-extreme assumption fails.
+measurable:
+- distance from candle close to candle extreme, for candles classified as expansion
+- P&L of exiting at the candle close vs at the price target
+sources:
+- video_id: yNgx9OAefuI
+  title: New York Open Live Q&A
+  quote: after it forms its wick generally closes into the low of the candle
+- video_id: m0wTBdUe7gs
+  title: New York Open Live Q&A
+  quote: Timebased exits, trailing your stop losses, average daily range
+ambiguities:
+- '''Small wick'' is not quantified here (see small-wick-expansion-rule elsewhere in the corpus).'
+- No rule chooses between the price target and the time exit when both are available; on the live
+  example he simply listed all three as acceptable.
+related:
+- macros-are-htf-opens
+- time-based-exit
+- small-wick-expansion-rule
+- trailing-stop-opposing-candles
+- est-timezone-anchor
+contributing_units:
+- live_streams_01
+draft_count: 1
+voice: ttrades

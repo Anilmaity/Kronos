@@ -1,0 +1,59 @@
+id: wick-to-pd-array-rule
+name: Every Wick Terminates At A Same-Or-Higher Timeframe PD Array
+definition: 'Both extremes of any candle - the wick high and the wick low - are asserted to
+  terminate at a PD array drawn from the same timeframe or a higher timeframe, never a lower
+  one. The manipulation phase reaches for the array that produces the first wick; the close
+  reaches for an opposing array that produces the second wick. Lower-timeframe arrays may
+  be used only to refine an entry inside the governing same-or-higher array, never to justify
+  the extreme itself.
+
+  '
+category: structure
+status: specified
+aliases:
+- the wick high and wick low are in one specific PD array
+preconditions:
+- A candle on the working timeframe is in development or has just closed.
+- PD arrays of the same and higher timeframes have been marked.
+detection_rules:
+- Locate the extreme (wick high or wick low) of the candle.
+- The extreme must sit inside a PD array (FVG, order block, breaker) of the same timeframe
+  or higher.
+- If the only array containing the extreme is from a lower timeframe, the rule is violated.
+invalidation:
+- An extreme forms with no same-or-higher timeframe array present at that price.
+measurable:
+- percentage of 4H wick extremes that land inside a 4H-or-higher PD array
+- distribution of governing-array timeframe (same / +1 / +2 steps up)
+sources:
+- video_id: wWIHS_dxbEY
+  title: DexterLab | Putting All The ICT Pieces Together - Master PO3
+  quote: it's in one specific pdra the same time frame or higher
+ambiguities:
+- '''PD array'' is never enumerated exhaustively; FVG, order block and breaker are the ones
+  shown.'
+- Tolerance is not defined - whether the wick must enter the array, touch it, or close inside
+  it.
+- The transcript is ASR-corrupted ('weak high' = wick high, 'pdra' = PD array); the reading
+  is inferred from context.
+related:
+- po3-four-hour-opening-times
+- internal-dynamics-sequence
+- smt-as-confirmation-not-signal
+timeframes:
+  htf:
+  - 1M
+  - 1W
+  - 1D
+  - 4H
+  ltf:
+  - 15m
+  - 5m
+  - 1m
+  fractal: true
+contributing_units:
+- t_talks_02
+draft_count: 1
+voice: guest
+guest_sources:
+- DexterLab | Putting All The ICT Pieces Together - Master PO3

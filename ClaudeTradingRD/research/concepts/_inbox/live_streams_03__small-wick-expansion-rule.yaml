@@ -1,0 +1,72 @@
+id: small-wick-expansion-rule
+name: Small Wick Supports Expansion; Large Wick Waits for Candle 3
+aliases:
+- expansion candles are objective
+category: model
+status: contested
+
+definition: >
+  Two readings of the expansion filter appear in this unit and they pull in different
+  directions. Asked whether an hourly candle that had run five or six candles still counted,
+  he answers that expansion candles are objective and the whole test is "did price expand?" -
+  if it did, it is an expansion candle. Elsewhere he applies the wick filter instead, refusing
+  a gold continuation because the candle does not have a small enough wick to look for upside
+  and calling it just a doji candle. So the corpus gives an outcome-based definition (price
+  expanded) alongside a shape-based filter (small wick), and neither is quantified.
+
+timeframes:
+  htf:
+  - 1D
+  - 4H
+  - 1H
+  ltf:
+  - 15m
+  - 5m
+  fractal: true
+
+preconditions:
+- A completed or nearly-completed candle on the timeframe being graded.
+
+detection_rules:
+- 'Reading A (outcome-based): if price expanded over the candle, it is an expansion candle -
+  no wick condition attached.'
+- 'Reading B (shape-based): the candle must have a small enough wick on the side you intend to
+  trade away from; a doji-shaped candle is refused.'
+- In both readings the classification gates whether the next candle can be traded as a
+  continuation.
+
+invalidation:
+- Under reading B, an opposing wick large enough to disqualify the candle.
+
+measurable:
+- follow-through of candles classified as expansion under reading A but failing reading B
+- wick-to-range ratio distribution of the candles he calls expansion candles
+
+sources:
+- video_id: X4XSsv5CNqg
+  title: New York Open Live Q&A
+  quote: Expansion candles are objective. Did price expand?
+- video_id: U4j-fZD-FJk
+  title: New York Open Live Q&A
+  quote: It doesn't have a small enough wick to look for it to the upside
+- video_id: U4j-fZD-FJk
+  title: New York Open Live Q&A
+  quote: It's just a doji candle
+
+ambiguities:
+- '"Did price expand" is circular - expansion is defined by expansion, with no reference range
+  or threshold.'
+- '"Small enough wick" is never given a ratio in this unit.'
+- The two readings are given days apart with no acknowledgement that they differ, so it is
+  unclear whether the wick filter is a sub-case of the objective test or a separate gate.
+
+related:
+- expansion-signature
+- small-wick-supports-expansion
+- daily-ohlc-candle-shape
+- time-based-exit-htf-close
+
+contributing_units:
+- live_streams_03
+draft_count: 1
+voice: ttrades

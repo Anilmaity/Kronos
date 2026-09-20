@@ -1,0 +1,63 @@
+id: cross-asset-reversal-confirmation
+name: "The Strongest Asset Must Reverse for the Weakest to Expand"
+aliases: ["wait for the weakest asset to reverse", "who is lying"]
+category: structure
+status: specified
+
+definition: >
+  The sequencing rule he uses to decide when a correlated-asset trade is live, stated in both
+  directions in the same unit. To trade the weakest asset lower, the strongest must first
+  reverse off its level; if the strongest asset cannot reverse, the weakest will not get its
+  continuation. Mirrored: to trade the strongest asset higher, wait for the weakest to form a
+  reversal first. His justification is that correlated assets go in the same direction, so when
+  one is diverging, one of them is lying - the question of the day is which. He runs both
+  streams' framing off it, and on the day the strongest never swept anything at the open he
+  simply refuses to frame the reversal and waits for the 10:00 candle.
+
+timeframes:
+  htf: ["1H", "4H"]
+  ltf: ["15m", "5m"]
+  fractal: true
+
+preconditions:
+  - "Two or more correlated assets, with the strongest and weakest identified."
+  - "The strongest (or weakest) is at a level from which a reversal could form."
+
+detection_rules:
+  - "To trade the weakest asset lower, require the strongest to reverse off its level first."
+  - "To trade the strongest asset higher, require the weakest to form a reversal first."
+  - "A reversal in the required asset needs a sweep - if it never swept anything, no reversal can be framed there."
+  - "If the required reversal does not appear, do not trade; wait for the next higher-timeframe candle open."
+  - "If the required asset instead continues through its level, expect the others to follow it rather than diverge."
+
+invalidation:
+  - "The asset that was supposed to reverse trades through its level instead."
+
+execution:
+  bias: "Direction of the continuation expected in the paired asset."
+  entry: "After the confirming reversal appears in the other asset."
+  stop: null
+  targets: ["the paired asset's own previous day / session extreme"]
+
+measurable:
+  - "conditional probability of the weakest asset's continuation given the strongest reversed"
+  - "false-signal rate when the required reversal is absent"
+
+sources:
+  - video_id: x4sRGuZIqWk
+    title: "New York Open Live Q&A"
+    quote: "the weakest asset's going to get a continuation"
+  - video_id: eIPM-D8RrSQ
+    title: "New York Open Live Q&A"
+    quote: "all you got to do is wait for NQ to form a reversal"
+
+ambiguities:
+  - "How long to wait for the confirming reversal is not stated; in practice he waits until the next 4-hour candle open and then re-reads."
+  - "Strength can switch mid-session (it does so several times on air), which changes which asset must reverse - he gives no rule for re-anchoring after a switch."
+
+python_detector: null
+related: ["relative-strength-asset-selection", "relative-strength-weakness", "smt-divergence", "idea-vs-executable-setup"]
+
+contributing_units: ["live_streams_04"]
+draft_count: 1
+voice: ttrades

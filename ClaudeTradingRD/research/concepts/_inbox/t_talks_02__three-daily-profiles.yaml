@@ -1,0 +1,45 @@
+id: three-daily-profiles
+name: "Three Daily Profiles: Expansion, Retracement, Consolidation"
+aliases: ["anticipating the next daily candle's profile"]
+category: model
+status: specified
+
+definition: >
+  Every daily candle is classified as one of three profiles - expansion, retracement or
+  consolidation - and the practice is to anticipate not merely the direction of the next
+  daily candle but which profile it will have. Expansion profiles are the only ones actively
+  traded, on the stated grounds that they deliver one-sided price action. A consolidation
+  profile is identified after the fact by a daily candle whose open and close are at
+  almost the same price; a retracement profile moves against the prevailing daily order flow.
+
+timeframes:
+  htf: ["1D"]
+  ltf: ["1H", "15m"]
+  fractal: false
+
+preconditions:
+  - "Daily order flow direction has been established."
+
+detection_rules:
+  - "Consolidation profile: the daily candle opens and closes at almost the same price."
+  - "Retracement profile: the daily candle travels against the prevailing daily order flow."
+  - "Expansion profile: one-sided delivery in the direction of daily order flow."
+  - "Trade intraday only when an expansion profile is anticipated."
+
+invalidation:
+  - "Not applicable - this is a classification scheme."
+
+measurable:
+  - "base rates of the three profiles per instrument"
+  - "intraday win rate conditioned on the realised daily profile"
+
+sources:
+  - video_id: JABOO4LYNjQ
+    title: "Jokerszn | Daily Orderflow - ICT Daily Bias"
+
+ambiguities:
+  - "No positive test is given for anticipating an expansion profile; only the conditions that predict consolidation are enumerated."
+  - "'Almost the same price' for a consolidation close is not quantified."
+
+python_detector: null
+related: ["consolidation-profile-conditions", "three-consecutive-closes-rule", "daily-orderflow-confirms-draw"]

@@ -1,0 +1,59 @@
+id: seek-and-destroy-profile
+name: "Seek & Destroy"
+aliases: ["seek and destroy profile", "indecision day"]
+category: model
+status: underspecified
+
+definition: >
+  The non-directional daily profile: the daily candle is an indecision candle (open and close
+  at relatively the same point, no directional expansion) and the intraday chart shows repeated
+  excursions outside a range that are immediately reclaimed. It is presented as a day to stand
+  aside from rather than to trade. Two recognition conditions are given, both readable before
+  the New York session: London took out BOTH sides of the Asia range without holding beyond
+  either, or London already produced most of the daily range.
+
+timeframes:
+  htf: ["1D"]
+  ltf: ["15m"]
+  fractal: false
+
+preconditions:
+  - "The Asia range high and low are marked (the Asia session window itself is never given numerically in this unit)."
+  - "Context that raises the prior: the day before a high-impact release (CPI, FOMC, NFP), a lack of direction on the higher timeframe charts, or the day after a very large range day."
+
+detection_rules:
+  - "Recognition A: during London, price takes out the Asia low AND the Asia high, failing to displace or break out beyond either side, returning inside the range each time."
+  - "Recognition B: London expanded and created most of the daily range, leaving little expected range for New York."
+  - "Confirmation on the daily: the candle opens and closes at relatively the same point with no directional expansion (indecision candle)."
+  - "Intraday signature: every deviation outside the reference range (Asia range, London range, daily open) is rebalanced back into it."
+
+invalidation:
+  - "Displacement / a genuine breakout beyond one side of the range. The video does not define what separates a genuine breakout from another failed excursion, which is the profile's central weakness."
+
+execution:
+  bias: "None - non-directional. The speaker's stated preference is to avoid the profile entirely."
+  entry: "If traded at all: only from OUTSIDE the range back in (outside-in), never from inside out. See seek-destroy-outside-in-entry."
+  stop: "Not stated."
+  targets: ["equilibrium (0.5) of the range, as first target", "the opposite extreme of the range, as second target", "the daily open and the initial range, described as magnets"]
+
+measurable:
+  - "conditional probability of an indecision daily candle given that London took both sides of the Asia range"
+  - "distribution of daily range on the day before CPI / FOMC / NFP versus baseline"
+  - "conditional probability of a small New York range given that London already produced most of the daily range"
+  - "how often price returns to range equilibrium after deviating outside the Asia range"
+
+sources:
+  - video_id: 4WCiIyCiBrQ
+    title: "ICT Daily Profile - Seek & Destroy"
+    quote: "London will take both sides of the Asia range"
+
+ambiguities:
+  - "'Relatively the same point' for the indecision candle is not quantified. The 80-point NQ example is illustrative, not a threshold."
+  - "'Most of the daily range' created in London is not quantified - no percentage is given."
+  - "No deadline is given for when the both-sides-of-Asia sweep must complete (by 05:00? by 08:30?)."
+  - "The Asia session window is never stated numerically anywhere in the unit, yet the Asia range is the load-bearing input for recognition A."
+  - "The relationship between recognition A and B is not stated - they appear to be alternatives, but he does not say whether either alone is sufficient."
+  - "No definition of the displacement that would invalidate the profile mid-session."
+
+python_detector: null
+related: ["daily-profile-framework", "seek-destroy-outside-in-entry", "daily-profile-session-windows"]

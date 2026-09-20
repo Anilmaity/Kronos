@@ -1,0 +1,112 @@
+id: old-accumulation-new-distribution
+name: Old Accumulation Becomes New Distribution
+definition: 'Finessee_Fx''s mirrored-curve claim, demonstrated candle by candle on a daily
+  NASDAQ swing. He splits a completed swing with a vertical line at its reversal: the left
+  side is the buy side of the curve, where bullish PD arrays are respected; the right side
+  is the sell side, where bearish PD arrays are respected. His specific finding is that the
+  SAME price zone that held as a bullish order block on the left side of the curve reappears
+  as a BEARISH order block on the right side - because the positions accumulated there have
+  to be offset on the way back down. He extends each left-side block forward in time and shows
+  price creating an opposite-polarity block inside the same band on the return leg.
+
+  '
+variants:
+  definition:
+  - 'A rule for selecting which fair value gaps to map forward. Only OLD gaps count - gaps
+    price traded into, accumulated within, and then departed from. Projected forward in time
+    they become inversion levels and areas of new distribution, and the algorithm is said
+    to return to them for roughly the next 60 days. Fresh gaps with no accumulation history
+    are not mapped.
+
+    '
+category: liquidity
+status: contested
+aliases:
+- left side of the curve, right side of the curve
+- offsetting old positions
+- old gaps
+- old fair value gaps drawn out in time
+preconditions:
+- A completed swing with an identifiable reversal point (which itself sits at a higher-timeframe
+  PD array).
+- A market maker model with an identifiable buy-side and sell-side of the curve.
+detection_rules:
+- Draw a vertical divider at the swing's reversal; label left = buy side of the curve, right
+  = sell side.
+- On the left side, mark every bullish order block that was respected (wick-to-body) and extend
+  it forward in time.
+- On the right side, look for a bearish order block forming inside the SAME extended band
+  - typically one or two up-close candles immediately before the aggressive decline.
+- Blend the right-side bearish block with the imbalance created by that decline (from the
+  up-candle's high to the block's low) and with the left-side band.
+- Expect the price to be rejected there on the way down as it was supported there on the way
+  up.
+- Select fair value gaps that price has already traded into, accumulated inside, and then
+  moved away from.
+- Do not map gaps that were simply formed and left behind with no accumulation.
+- Project the selected gaps forward in time as horizontal levels and expect price to return
+  to them for roughly the next 60 days.
+- When bullish, the gaps to map are the BEARISH fair value gaps sitting on the sell-side of
+  the curve; expect them to be respected on the way up.
+- A mapped old gap functions both as an inversion level and as an area of new distribution
+  (of longs, in the bullish case).
+invalidation:
+- Not stated as a price condition; he only says the reversal itself must have occurred at
+  a higher-timeframe PD array for the curve to be valid.
+- Not stated.
+measurable:
+- how often a left-curve bullish order block band produces an opposite-polarity block on the
+  return leg
+- reaction rate at re-polarised bands versus fresh same-side blocks
+- reaction rate at projected old gaps versus at unaccumulated gaps
+- decay of that reaction rate with age, to test the ~60 day claim
+- how often a mapped old gap acts as an inversion rather than as support/resistance
+sources:
+- video_id: eK_6wgNpNh0
+  title: Advanced ICT Directional Bias Teachings with Finessee_Fx
+  quote: so they have to offset their old positions on the right side of the curve
+- video_id: wB-fQiT_UDo
+  title: DayTradingRauf | ICT MMXM Models
+ambiguities:
+- How wide the 'same zone' tolerance is - the new block only has to be inside the extended
+  band, with no overlap fraction stated.
+- The offsetting explanation is a narrative; nothing in the rule set tests it.
+- He shows this on one daily NASDAQ swing and asserts it generalises to a 15-minute chart,
+  with no second example.
+- No rule for what to do when the right side of the curve produces no block inside the old
+  band.
+- The ~60 day validity is asserted with no derivation, instrument, timeframe or test.
+- '''Accumulated inside'' is judged by eye - no dwell-time or candle-count threshold is given.'
+- It is not stated whether the gap must be fully or partially filled to count as old.
+- All examples are schematic, so the claimed respect of these levels cannot be checked from
+  the video.
+related:
+- market-maker-model
+- mitigation-block
+- wick-to-body-order-block-zone
+- smart-money-reversal
+- mmxm-hedging-definition
+- breakaway-gap-anticipation
+guest_sources:
+- Advanced ICT Directional Bias Teachings with Finessee_Fx
+- DayTradingRauf | ICT MMXM Models
+- Finessee_Fx
+timeframes:
+  htf:
+  - 1D
+  - 4H
+  ltf:
+  - 1H
+  - 15m
+  fractal: true
+execution:
+  bias: Short on the right side of the curve (mirror for a buy model).
+  entry: The re-polarised block in the old zone, wick-to-body.
+  stop: Beyond the zone.
+  targets:
+  - the low-resistance liquidity run below - a series of successive lows / a trendline
+contributing_units:
+- live_stream_guests_01
+- t_talks_01
+draft_count: 2
+voice: guest

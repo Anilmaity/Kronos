@@ -1,0 +1,89 @@
+id: htf-poi-gate-before-ltf
+name: Do Not Drop Timeframes Until The POI Is Tagged
+definition: 'TTRADES'' OWN VOICE for a concept the library previously held only in a guest''s.
+  The procedure is stated as the frame for two whole videos: mark the higher-timeframe points
+  of interest first (a 4-hour fair value gap / BPR, a daily block, previous highs), then wait;
+  the lower timeframe is only consulted once price has RETURNED to one of them, and the entry
+  model is hunted there. He also states the negative case explicitly - being above the highs
+  he wants to short is not itself a reason to short: ''I don''t just short when we''re above
+  those highs I wait for a model''.'
+variants:
+  definition:
+  - 'Before the session, one or two higher-timeframe points of interest are marked on the
+    1-hour and 4-hour - a high or low, a fair value gap, a volume imbalance, occasionally
+    a new-week opening gap - each aligned with the daily bias or the draw on liquidity. If
+    price does not tag one of them during the session, the lower timeframes are not opened
+    at all. The stated purpose is explicitly behavioural: looking at a 1-minute chart with
+    no higher-timeframe justification produces impulsive and FOMO entries.
+
+    '
+category: risk
+status: contested
+aliases:
+- the POI gate
+- no tag no chart
+preconditions:
+- A daily bias or a clear session draw on liquidity exists.
+detection_rules:
+- Mark the higher-timeframe points of interest before the session.
+- Do not look for an entry model until price has reached one of them.
+- Being at a price level you have an opinion about is not an entry; require the lower-timeframe
+  model.
+- Once tagged, the lower timeframe supplies either the entry INTO the level or the entry AWAY
+  from it.
+- Mark at most one or two points of interest before the session, on H1/H4.
+- Each must be in line with the daily bias; levels on the wrong side are ignored.
+- If price does not tag a marked point of interest, do not open the 5m or 15m chart.
+- 'If it does tag, drop only to the paired timeframe: 4H POI -> 15m -> 1m, or 1H POI -> 5m.'
+invalidation:
+- Not applicable - process gate.
+measurable:
+- proportion of sessions in which a marked POI is tagged
+- win rate of entries taken at a tagged POI vs entries taken elsewhere
+- number of sessions where the POI went untagged
+- expectancy of trades taken from a tagged POI vs those without one
+sources:
+- video_id: YmdC_LKT-Pk
+  title: Lower Time Frame Entries Using HTF POI - ICT Concepts
+  quote: even if you have the wrong bias you can still get decent entries
+- video_id: wDXTIDbIMwU
+  title: Top Down Analysis - ICT Concepts
+  quote: most of my points of interest lie on The Daily 4 Hour one hour
+- video_id: wDXTIDbIMwU
+  title: Top Down Analysis - ICT Concepts
+  quote: this is dependent on which time frame you're entering on
+- video_id: G44VpidBD_U
+  title: NickDoesFutures | Unicorn Model & Experiences With ICT
+ambiguities:
+- '''Reached'' the point of interest is not defined as near edge, midpoint or full fill.'
+- No cap on how many points of interest may be marked in this unit (the guest version caps
+  at one or two).
+- How the daily bias itself is formed is only sketched (obvious market structure shifts, DXY,
+  bonds, clear displacement).
+- A session bias is offered as an acceptable substitute for a daily bias, but is not defined.
+related:
+- poi-timeframe-selection
+- top-down-analysis-procedure
+- point-of-interest
+- unicorn-entry-model
+- intermediate-timeframe-bridge
+- less-trades-more-capital
+timeframes:
+  htf:
+  - 1D
+  - 4H
+  - 1H
+  - 15m
+  ltf:
+  - 5m
+  - 1m
+  - 15s
+  fractal: true
+contributing_units:
+- education_ict_02
+- t_talks_02
+draft_count: 2
+voice: ttrades
+voice_playlist: mixed
+guest_sources:
+- NickDoesFutures | Unicorn Model & Experiences With ICT

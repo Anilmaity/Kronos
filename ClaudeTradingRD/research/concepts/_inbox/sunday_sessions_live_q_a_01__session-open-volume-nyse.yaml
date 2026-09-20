@@ -1,0 +1,46 @@
+id: session-open-volume-nyse
+name: "9:30 Matters Because the NYSE Cash Session Opens"
+aliases: ["why 9:30", "New York open volume"]
+category: time
+status: specified
+
+definition: >
+  The volatility at 9:30 New York time on index futures is attributed to the cash equity market
+  opening: SPY, QQQ and the individual constituents begin trading, so regular-trading-hours volume
+  enters the market that the index futures track. He explicitly rejects the explanation that an
+  algorithm injects volatility at that time. He also states 9:30 has no comparable effect on
+  currencies.
+
+timeframes:
+  htf: ["1D"]
+  ltf: ["15m", "5m", "3m", "1m"]
+  fractal: false
+
+preconditions:
+  - "Instrument is an equity index future or a related ETF/index."
+
+detection_rules:
+  - "At 09:30 New York time, cash equities open and index-future volume rises."
+  - "Expect the open to resolve intraday direction when the pre-open structure was ambiguous."
+  - "Do not expect the same effect on FX pairs."
+
+invalidation: []
+
+execution:
+  bias: "Not applicable."
+  entry: "He waits for the 9:30 open to reveal direction when pre-open structure is unclear."
+  stop: "Not specified by this concept."
+  targets: ["Not specified by this concept."]
+
+measurable:
+  - "index-future volume and realised range in the 15 minutes after 09:30 versus before"
+
+sources:
+  - video_id: egV_gABTQks
+    title: "(CPI) New York Open Live Q&A"
+
+ambiguities:
+  - "No rule is given for how long after the open the effect persists."
+
+python_detector: null
+related: ["macros-are-htf-opens", "time-based-exit-htf-close"]

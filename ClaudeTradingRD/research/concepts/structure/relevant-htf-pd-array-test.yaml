@@ -1,0 +1,118 @@
+id: relevant-htf-pd-array-test
+name: Relevant Higher-Timeframe PD Array Test (London Reversal vs New York Reversal)
+definition: 'A 46-second Short states the discriminator in a single sentence: what separates
+  a New York reversal from a London reversal is that in the New York case London never reached
+  a relevant PD array. The retracement therefore continues past London into New York, where
+  the higher-timeframe key level is finally reached; the change in the state of delivery prints
+  there and the move follows. The Short also gives the resulting daily candle shape for both
+  directions - open, high, low, close for the bearish case and open, low, high, close for
+  the bullish one.
+
+  '
+variants:
+  definition:
+  - 'The discriminator that decides which daily profile is in play once London has run counter
+    to the intended daily direction. If the London run reached a relevant higher-timeframe
+    PD array, the reversal is allowed to stand and the day is a London Reversal. If it did
+    not, any structure shift printed in London is treated as a fake change in the state of
+    delivery: the liquidity built there is expected to be run again, and the genuine reversal
+    is deferred to the New York a.m. session where the level is finally reached.
+
+    '
+category: structure
+status: contested
+aliases:
+- relevant PD array
+- higher time frame key level
+- fake change in the state of delivery
+preconditions:
+- A counter-directional run has occurred in the London window.
+- Higher-timeframe levels are marked on the chart before the session.
+detection_rules:
+- When London runs counter to the intended daily direction, test whether that run reached
+  a relevant higher-timeframe PD array.
+- Reached -> the reversal stands in London (London reversal).
+- Not reached -> the retracement continues into New York, where the level is reached and the
+  reversal forms there.
+- Confirm the New York reversal with a change in the state of delivery at that level before
+  entering.
+- Expect the daily candle to print open-low-high-close (bullish) or open-high-low-close (bearish).
+- 'Identify whether the extreme of the London run touched a marked higher-timeframe PD array.
+  Levels used as ''relevant'' in the worked examples: previous day high or low, the consequent
+  encroachment (midpoint) of a wick, a measured gap between a high and a low (higher-timeframe
+  imbalance), a daily fair value gap, and external liquidity/range extremes.'
+- 'If it did: the London change in the state of delivery is taken as genuine and the day is
+  traded as a London Reversal.'
+- If it did not - and looking left shows only equal highs/lows, i.e. newly manufactured liquidity,
+  rather than a level - the structure shift is a fake change in the state of delivery.
+- After a fake CISD, expect the swept liquidity to be run again, ideally around the New York
+  opening times.
+invalidation:
+- The higher-timeframe level is never reached in either session.
+- 'Price reaches the higher-timeframe PD array intraday: from that point a reversal from the
+  level is valid regardless of what London did (the final example is a London Reversal that
+  becomes a New York Reversal once the objective is hit).'
+measurable:
+- share of London counter-runs that reach a marked HTF level
+- hit rate of the New York branch when London did not reach one
+- 'hit rate of the fake-CISD claim: given a London structure shift with no HTF level at its
+  extreme, how often is that extreme taken out again the same day'
+- how often a London CISD at a marked HTF level holds as the day's extreme
+- how often the re-run of the faked level occurs within 08:30-10:00
+sources:
+- video_id: 2ctrcNs4tFo
+  title: What Sets NY Reversals Apart from London Reversals?
+  quote: London never reached a relevant PD array
+- video_id: 2ctrcNs4tFo
+  title: What Sets NY Reversals Apart from London Reversals?
+  quote: we never reached a PDA to form the reversal
+- video_id: 2ctrcNs4tFo
+  title: What Sets NY Reversals Apart from London Reversals?
+  quote: London moves lower, never reaches a relevant higher time frame level
+- video_id: 2ctrcNs4tFo
+  title: What Sets NY Reversals Apart from London Reversals?
+  quote: we go higher until New York to form the reversal
+- video_id: xdzyejskSKE
+  title: ICT Daily Profile - New York Reversal
+  quote: this is going to be a fake change in the state of delivery
+- video_id: IeXtmeKqjnQ
+  title: ICT Daily Profile - New York Manipulation
+  quote: London did not reach an important level it just Consolidated
+- video_id: y6SnEdASVLY
+  title: ICT Daily Profile - London Reversal / New York Continuation
+ambiguities:
+- '''Relevant'' PD array is again asserted and never defined - this Short repeats the term
+  without adding a test.'
+- NO SESSION HOURS ARE GIVEN. 'London' and 'New York' are used as hard gates in this Short
+  with no clock times attached.
+- No tolerance for 'reached' (wick touch vs body trade into the level).
+- '''Relevant'' is never defined. The list of level types above is inferred from what he actually
+  marked in the examples, not from a stated rule.'
+- No rule for which timeframe counts as 'higher' relative to the execution timeframe.
+- No tolerance is given for 'reached' - whether a wick touch is enough, or whether the level
+  must be traded into by a body.
+- The fake-CISD test ('look left, is there anything relevant?') is a judgement call and is
+  not mechanically decidable as taught.
+- This test is the hinge of the entire London-vs-New-York-Reversal distinction, so its underspecification
+  propagates to both profile concepts.
+related:
+- new-york-reversal-profile
+- london-reversal-profile
+- daily-ohlc-candle-shape
+- killzones
+- entry-time-window
+- new-york-manipulation-profile
+- daily-profile-framework
+timeframes:
+  htf:
+  - 1D
+  - 4H
+  ltf:
+  - 1H
+  - 15m
+  fractal: false
+contributing_units:
+- daily_profiles_01
+- shorts_04
+draft_count: 2
+voice: ttrades

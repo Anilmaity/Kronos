@@ -1,0 +1,65 @@
+id: ttfm-favorite-daily-4h-15m
+name: His Favourite Pairing - Daily Bias / 4-Hour Swing Point / 15-Minute Entry
+category: model
+status: specified
+aliases:
+- the best timeframe for the fractal model
+- daily 4H 15m
+definition: 'Named by the speaker as his favourite fractal model: the daily supplies bias, the 4-hour
+  supplies the swing point AND the daily profile, and the 15-minute supplies the entry. The logic is
+  that the daily wick is allowed to form and its body is traded, and then the same operation is repeated
+  one level down -- so the trader is trading candle 3 on the daily and candle 3 on the 4-hour at the
+  same time, which is stated to be where the easiest expansions occur.'
+timeframes:
+  htf:
+  - 1D
+  ltf:
+  - 4H
+  - 15m
+  fractal: true
+preconditions:
+- A daily candle 2 closure (preferred, though a bias from any source is allowed) at a point of interest
+  -- a low, a high, or a fair value gap.
+detection_rules:
+- 'Daily: candle 2 closure inside a point of interest, or a reversal candle closing back inside the
+  previous candle''s range -> expect expansion next day (candle 3).'
+- '4-hour: wait for a candle 2 or candle 3 closure on the traded day; that closure marks where the daily
+  wick formed.'
+- After a 2:00 (London) 4-hour candle 2 closure, anticipate the 6:00 and 10:00 candles to expand; the
+  10:00 expansion is conditional on 6:00 closing strongly.
+- Only trade the third expansion candle if the drawn liquidity has not yet been met.
+- '15-minute: require a change in the state of delivery inside the 4-hour candle 3, then take a continuation
+  entry (not the reversal).'
+- Respect the lower/upper half of the 4-hour candle depending on direction.
+invalidation:
+- Price trades beyond 50% of the reference candle right off the open of the new higher-timeframe candle.
+- The in-candle change in the state of delivery fails to form before the low/high is taken out -- wait
+  for a new candle 2 closure rather than abandoning the idea.
+execution:
+  bias: Daily candle 2 / candle 3 closure.
+  entry: 15-minute continuation (closure through the series of opposing candles into a point of interest)
+    inside the 4-hour candle 3.
+  stop: The protected low/high formed by that continuation.
+  targets:
+  - 2R minimum
+  - failure swings / equal highs to the left (shown as 4R and 8R)
+measurable:
+- hit rate when daily C3 and 4H C3 coincide vs daily C3 alone
+- conditional expansion of the 10:00 candle given a strong 06:00 close
+sources:
+- video_id: FgP2lc9nneM
+  title: The Best Timeframe for TTrades Fractal Model (Simple)
+  quote: the daily for bias and then using the 4 hour for a swing point
+ambiguities:
+- '''Strong closure'' on the 06:00 candle, which gates the 10:00 expansion, is not quantified.'
+- The session times quoted (2:00 / 6:00 / 10:00) are the futures grid; the forex grid differs by one
+  hour (see po3-four-hour-opening-times) and this video does not flag the difference.
+related:
+- fractal-model-c3
+- timeframe-pairing
+- po3-four-hour-opening-times
+- continuation-order-block
+contributing_units:
+- build_a_model_intro_to_ttrades_fractal_model_02
+draft_count: 1
+voice: ttrades

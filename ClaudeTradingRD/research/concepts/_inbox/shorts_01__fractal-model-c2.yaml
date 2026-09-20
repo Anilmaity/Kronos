@@ -1,0 +1,79 @@
+id: fractal-model-c2
+name: Candle 2 Closure (the reversal candle)
+category: model
+status: specified
+definition: 'SHORTS EVIDENCE. The cleanest, most compressed statement of the C2 test in the corpus,
+  with worked negative examples. A candle 2 closure requires price to take out its PREVIOUS CANDLE''S
+  high and then close back BELOW it (bearish), or take out the previous candle''s low and close back
+  ABOVE it (bullish). The negative test is stated twice on chart: a swing point where price swept the
+  previous high but never closed back below it is NOT a candle 2 closure and is removed. Confirmation
+  of a daily C2 is taken on the aligned lower timeframe as a change in the state of delivery, and the
+  concept is explicitly fractal - the same C2-at-a-point-of- interest pattern appears on the hourly
+  chart and marks where the high of day forms.'
+preconditions:
+- A completed previous candle with a defined high and low on the same timeframe.
+- 'For the fractal/hourly application: the sweep occurs at a point of interest.'
+detection_rules:
+- 'Bearish C2: high[i] > high[i-1] AND close[i] < high[i-1].'
+- 'Bullish C2: low[i] < low[i-1] AND close[i] > low[i-1].'
+- A sweep of the previous extreme WITHOUT the close back inside is not a C2 - discard it.
+- Validate a higher-timeframe C2 by finding a change in the state of delivery on the aligned lower timeframe.
+- After a valid C2, price must continue to respect the previous candle's range for the read to stand.
+- 'Fractal: the same test on the hourly chart at a point of interest marks the candidate high (or low)
+  of day.'
+- An 'ideal' C2 is one where the closure also protects a swing - it closes over the down-close candles
+  into the fair value gap, leaving that low protected.
+invalidation:
+- Price fails to respect the previous candle's range after the C2 closure.
+measurable:
+- share of C2 closures followed by a C3 continuation in the same direction
+- hit rate of 'high of day' when an hourly C2 forms at a point of interest
+sources:
+- video_id: JoFxG1TrnDA
+  title: 'Candle 2 Closures: Take High, Close Below / Take Low, Close Above'
+  quote: price to take out its previous candle's high and then close back below it
+- video_id: JoFxG1TrnDA
+  title: 'Candle 2 Closures: Take High, Close Below / Take Low, Close Above'
+  quote: price never closed back below its previous candle's high
+- video_id: lTO4L6B0cpU
+  title: Breaking Down How to Use C3 Closures to Anticipate the Next Candle
+  quote: that means it's not a candle two closure
+- video_id: B_tHxplbxV0
+  title: Candle 2 Closures at a POI Are Fractal
+  quote: We have a candle to closure at a point of interest
+- video_id: B_tHxplbxV0
+  title: Candle 2 Closures at a POI Are Fractal
+  quote: we can anticipate this to be where the high of day forms
+- video_id: oSrXv92fIzc
+  title: 'Candle 2 Closures: A Fractal Concept for Top-Down Analysis'
+  quote: It's a fractal concept
+- video_id: a6s8N_WciY4
+  title: Daily Bias Made Simple
+  quote: this is an ideal candle to closure
+ambiguities:
+- Body close versus wick close is implied by 'close back below' but never stated explicitly.
+- Which lower timeframe is 'the aligned timeframe' for confirmation is not given in these Shorts.
+- 'TRANSCRIPT ARTIFACT: the auto-captions render ''candle 2'' as ''candle to'' throughout; quotes are
+  preserved verbatim including that artifact.'
+related:
+- fractal-model-c3
+- cisd
+- ideal-formation
+- daily-bias-c2-c3-h1-cisd
+- hourly-cisd-confirmation
+- half-wick-respect
+timeframes:
+  htf:
+  - 1M
+  - 1W
+  - 1D
+  - 4H
+  ltf:
+  - 1H
+  - 15m
+  - 5m
+  fractal: true
+voice: ttrades
+contributing_units:
+- shorts_01
+draft_count: 1

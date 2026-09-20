@@ -1,0 +1,56 @@
+id: failure-to-displace
+name: "Failure To Displace"
+aliases: ["lack of displacement", "cannot close outside the range", "failure swing"]
+category: structure
+status: underspecified
+
+definition: >
+  Price trades to or through a level (a swing point, previous-period high/low, or session
+  extreme) but cannot expand beyond it and returns inside the prior range. The channel treats
+  this as a bias-flipping event: failure to displace under a low makes the bias up, failure to
+  displace over a high makes the bias down. In the worked examples the operational test used is
+  a candle that reaches beyond the level but closes back inside the previous range.
+
+timeframes:
+  htf: ["1W", "1D", "4H", "1H"]
+  ltf: ["15m", "5m", "1m"]
+  fractal: true
+
+preconditions:
+  - "A defined reference level (swing point, previous period high/low, or session extreme)."
+  - "Price has traded to or beyond that level."
+
+detection_rules:
+  - "bearish_failure_to_displace := high[i] > level AND close[i] < level AND close[i] inside the previous period's range."
+  - "bullish_failure_to_displace := low[i] < level AND close[i] > level AND close[i] inside the previous period's range."
+  - "The complement — a close outside the range — is treated as displacement and produces a continuation read instead."
+
+invalidation:
+  - "A subsequent close beyond the level in the original direction cancels the flipped bias."
+
+execution:
+  bias: "Opposite the level that failed (failed low -> bullish; failed high -> bearish)."
+  entry: "Requires a lower timeframe model; the next-day-model expectation is the candle shape, not a trigger."
+  stop: "Beyond the extreme of the failed probe."
+  targets: ["the opposite previous-period level or swing point"]
+
+measurable:
+  - "hit rate: after a failure to displace at PDH, does the following day trade to PDL"
+  - "distribution of how far beyond the level the failed probe extends"
+
+sources:
+  - video_id: g3oDYq4P9ZE
+    title: "ICT Daily Bias - The Only Video You Will Ever Need!"
+    quote: "when price fails to displace over a high my bias can be down"
+  - video_id: 3OivsP1j_UE
+    title: "Internal & External Liquidity (Daily Bias) - ICT Concepts"
+  - video_id: YESqIoA7Wyg
+    title: "Important Liquidity Levels - Draw On Liquidity - ICT"
+
+ambiguities:
+  - "'Displacement' is never quantified anywhere in the unit — no minimum candle range, ATR multiple, or number of bars. The close-back-inside proxy is inferred from the examples, not stated as the definition."
+  - "The speaker uses 'fails to displace' and 'cannot close outside the range' interchangeably; whether they are the same test is not confirmed."
+  - "How long after the failed probe the flipped bias remains valid is not stated."
+
+python_detector: null
+related: ["previous-period-high-low", "next-day-model", "daily-bias-framework", "displacement", "session-high-low"]

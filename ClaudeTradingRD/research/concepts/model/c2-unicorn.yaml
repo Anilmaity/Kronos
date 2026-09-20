@@ -1,0 +1,85 @@
+id: c2-unicorn
+name: C2U - The C2 Unicorn
+definition: 'A hybrid of the TTrades fractal model and the unicorn model, built as a point-of-interest
+  model that requires no daily bias. An hourly swing point forms at a point of interest; the
+  trader drops to the 5-minute and looks for a unicorn inside the wick of that swing point.
+  A unicorn forming inside Candle 2 is accepted as confirmation that C2 will be a valid closure
+  - so the trade is taken inside C2 rather than waiting for the C2 close and trading Candle
+  3.
+
+  '
+category: model
+status: specified
+aliases:
+- C2 unicorn
+- C2U
+preconditions:
+- An hourly (or paired-timeframe) swing point is forming.
+- That swing point reaches a point of interest.
+- Ideally multiple points of interest are stacked at the same price.
+detection_rules:
+- Identify hourly swing points; keep only those that reach a point of interest.
+- 'Accepted points of interest: another swing high or swing low, opposing range candles, fair
+  value gaps, previous day high/low, previous session high/low, previous week high/low, the
+  daily T-spot.'
+- Prefer swing point candles with larger wicks - the unicorn is looked for inside the wick.
+- Drop to the paired lower timeframe and require a unicorn (breaker plus fair value gap) to
+  form there.
+- The unicorn must form in roughly 10 to 12 candles or fewer.
+- If the unicorn forms inside the C2 candle, treat it as confirmation of a valid C2 closure
+  and enter there - do not wait for the C2 close and Candle 3.
+- 'Favoured formation: an hourly swing low resting just above a bullish fair value gap (mirror
+  - swing high just below a bearish FVG).'
+invalidation:
+- Not stated. No stop-placement or invalidation rule appears anywhere in the video.
+measurable:
+- count of hourly swing points reaching a point of interest per week
+- conversion rate from qualifying swing point to a unicorn forming within the candle-count
+  filter
+- hit rate of the low-hanging-fruit target
+- how often the in-C2 entry beats waiting for the C2 close and a Candle 3 entry on the same
+  setups
+sources:
+- video_id: 07lOxv39LdY
+  title: DTR | C2U - Blending The Fractal Model & Unicorn Model - No Daily Bias
+ambiguities:
+- Entering inside C2 is an explicit departure from the TTrades fractal model as the speaker
+  himself describes it (wait for a valid C2 closure, trade in Candle 3). The departure is
+  stated but not justified with data.
+- '''Unicorn'' is never defined in this video - the breaker plus FVG mechanics are assumed
+  from Ash Trades / ICT.'
+- '''Opposing range candles'' is used as a point of interest and never defined.'
+- The speaker states that parts of the model come from paid mentorships and are deliberately
+  withheld, so the published rule set is knowingly incomplete.
+- No stop rule is given in the entire video.
+related:
+- unicorn-model
+- unicorn-candle-count-filter
+- fractal-c2-unicorn-pairing
+- daily-tspot-open-poi
+- swing-point-above-fvg
+- daily-bias-requirement
+timeframes:
+  htf:
+  - 7H
+  - 4H
+  - 1H
+  - 15m
+  ltf:
+  - 15m
+  - 5m
+  - 1m
+  fractal: true
+execution:
+  bias: None required - the model is explicitly bias-free.
+  entry: The unicorn inside the swing-point wick, taken within C2.
+  stop: Not stated.
+  targets:
+  - the nearest 'low hanging fruit' session level - Asia high/low, London high/low, session
+    open - for roughly 2 to 2.5R
+contributing_units:
+- t_talks_01
+draft_count: 1
+voice: guest
+guest_sources:
+- DTR | C2U - Blending The Fractal Model & Unicorn Model - No Daily Bias

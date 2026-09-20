@@ -1,0 +1,51 @@
+id: daily-wick-as-balanced-price-range
+name: "A Large Daily Wick Is A Balanced Price Range"
+aliases: ["trading inside the daily wick"]
+category: structure
+status: specified
+
+definition: >
+  A large daily wick is treated as a balanced price range in its own right, on the reasoning
+  that on the lower timeframe the wick was produced by price trading up and being
+  immediately rejected - which is exactly the construction of a balanced price range. The
+  full wick, low to high, is marked as the range; the reaction is expected from the lower
+  half (for a bearish wick); and the equilibrium of the wick is used as the stop reference
+  because it is wide enough to survive a news spike.
+
+timeframes:
+  htf: ["1D"]
+  ltf: ["1H", "15m", "5m"]
+  fractal: true
+
+preconditions:
+  - "A daily candle with a large wick has closed."
+
+detection_rules:
+  - "Mark the full extent of the daily wick, from its base to its extreme."
+  - "Treat it as a balanced price range with the polarity of the rejection."
+  - "Refine inside it on H1 - look for an H1 fair value gap or H1 balanced price range within the lower half (bearish case)."
+  - "Require the reaction from the lower half of the wick (bearish) or upper half (bullish)."
+
+invalidation:
+  - "A close above the EQ of the daily wick (bearish case)."
+
+execution:
+  bias: "Opposite the direction the wick travelled."
+  entry: "H1 fair value gap or balanced price range inside the wick's lower half."
+  stop: "Above the EQ of the daily wick - deliberately wider than the H1 level to survive a news wick."
+  targets: ["prior session lows", "daily lows", "equal lows on H1"]
+
+measurable:
+  - "hold rate of the daily-wick EQ as a stop level"
+  - "R achieved using the wick EQ stop vs a tighter H1 stop"
+
+sources:
+  - video_id: JABOO4LYNjQ
+    title: "Jokerszn | Daily Orderflow - ICT Daily Bias"
+
+ambiguities:
+  - "'Large' wick is not quantified."
+  - "Whether the wick base is the candle body edge or the open/close is not specified."
+
+python_detector: null
+related: ["balanced-price-range-overlap", "killzone-execution-sequence", "pd-array-mean-threshold-test"]

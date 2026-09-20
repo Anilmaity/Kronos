@@ -1,0 +1,58 @@
+id: next-day-model
+name: "Next Day Model"
+aliases: ["the next day model", "OHLC / OLHC anticipation"]
+category: model
+status: specified
+
+definition: >
+  A daily-candle-shape anticipation credited to MMXM Trader. When price sweeps a level or PD
+  array and closes back inside the range (a failure to displace), the following daily candle is
+  expected to form in a specific shape: after a failed low sweep, an open-low-high-close
+  (bullish) candle; after a failed high sweep, an open-high-low-close (bearish) candle. The
+  bias is then carried forward day after day until the draw on liquidity is reached.
+
+timeframes:
+  htf: ["1D"]
+  ltf: ["1H", "15m", "5m"]
+  fractal: true
+
+preconditions:
+  - "A prior day has swept a swing point, previous-period level, or PD array and closed back inside the range."
+  - "A draw on liquidity has been identified."
+
+detection_rules:
+  - "Trigger (bullish): day D trades below a reference low (swing low, PDL, or a PD array) and closes back above it."
+  - "Expectation for day D+1: low of day forms early relative to the close, high forms later, close near the high (open-low-high-close)."
+  - "Trigger (bearish): day D trades above a reference high and closes back below it -> expect open-high-low-close on D+1."
+  - "The bias persists across successive days until the identified draw on liquidity is reached."
+
+invalidation:
+  - "Day D+1 closing beyond the swept level in the direction of the sweep contradicts the model."
+
+execution:
+  bias: "Set by the shape expected (bullish for OLHC, bearish for OHLC)."
+  entry: "Lower timeframe: identify the session that sets the extreme (London or New York), then take an FVG / order block / OTE entry inside that session."
+  stop: "Beyond the session extreme that formed the wick."
+  targets: ["previous day high/low", "swing points beyond it"]
+
+measurable:
+  - "hit rate of the anticipated candle shape (classified by where the day's extreme forms relative to open and close)"
+  - "average excursion of the anticipated direction on day D+1"
+  - "how many consecutive days the bias survives before the draw is reached"
+
+sources:
+  - video_id: g3oDYq4P9ZE
+    title: "ICT Daily Bias - The Only Video You Will Ever Need!"
+  - video_id: MlMsG7li9zY
+    title: "Discount & Premium - ICT Concepts"
+  - video_id: YESqIoA7Wyg
+    title: "Important Liquidity Levels - Draw On Liquidity - ICT"
+
+ambiguities:
+  - "'Open-low-high-close' is a shape description, not a threshold — no rule states how near the close must be to the high for the day to count as OLHC."
+  - "The model predicts a candle shape but not a time of day for the extreme; the killzone and power-of-three videos supply that separately (London manipulation)."
+  - "The dedicated 'Open High Low Close - Understanding Candlesticks' video (sIcsLFSNoXM) is missing from this unit, so the vocabulary is only defined in passing."
+  - "No statement about what invalidates the carried-forward bias other than reaching the draw."
+
+python_detector: null
+related: ["failure-to-displace", "previous-period-high-low", "daily-bias-framework", "power-of-three-amd", "draw-on-liquidity"]

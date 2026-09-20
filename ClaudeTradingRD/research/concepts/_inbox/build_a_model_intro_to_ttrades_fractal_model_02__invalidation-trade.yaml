@@ -1,0 +1,75 @@
+id: invalidation-trade
+name: Invalidation Trade (trading the failure of a valid model)
+category: model
+status: specified
+aliases:
+- trading the invalidation of daily bias
+- opposing setup
+definition: 'He will trade AGAINST his own daily bias in exactly two situations and no others: (1) an
+  OPPOSING SETUP forms -- a candle 2 in the other direction, typically off the previous day high/low,
+  confirmed on the lower timeframe; or (2) the EQ IS INVALIDATED -- price closes beyond the equilibrium
+  of the previous candle on the aligned timeframe. Any other way the bias goes wrong (consolidation,
+  drift) invalidates the idea but does NOT create a trade in the opposite direction. The precondition
+  is absolute: there must have been a valid fractal model to fail in the first place -- the invalidation
+  cannot be pattern-traded on its own.'
+timeframes:
+  htf:
+  - 1M
+  - 1D
+  - 4H
+  - 1H
+  ltf:
+  - 1H
+  - 30m
+  - 5m
+  fractal: true
+preconditions:
+- A valid fractal model (closure + CISD) existed and gave a bias.
+- The traded day has opened.
+detection_rules:
+- 'Case 1 (opposing setup): price opens near the previous day extreme, sweeps it, and forms a change
+  in the state of delivery in the opposite direction. Prefer it paired with SMT or a continuation.'
+- 'Case 2 (EQ invalidation): price closes beyond the EQ of the previous higher-timeframe candle on the
+  aligned lower timeframe, having failed to form any continuation in the original direction.'
+- In both cases, still wait for a candle 2 / candle 3 closure and a continuation in the NEW direction
+  before entering -- the invalidation itself is not the entry.
+- 'Target selection: the EQ of the previous candle, then the previous day extreme; on a failed candle
+  2, the candle 2''s own low/high becomes the draw on liquidity.'
+- 'Wick size decides the target: a small wick supports expansion to the current extreme, a large wick
+  means targeting back to the opening price / EQ only.'
+invalidation:
+- No prior valid model -> there is nothing to invalidate and no trade.
+- Price is bought back up through the EQ -- the invalidation read is over; he stresses it is 'not an
+  all or nothing thing'.
+execution:
+  bias: Opposite the original daily bias.
+  entry: Continuation (candle 2 / candle 3 closure) in the new direction after the invalidation.
+  stop: Above/below the opposing setup's extreme.
+  targets:
+  - EQ of the previous candle
+  - previous day low/high
+  - the failed candle 2's extreme
+measurable:
+- frequency of case 1 vs case 2 invalidations
+- hit rate of the EQ and previous-day-extreme targets on invalidation trades
+- proportion of failed biases that produce NO tradeable invalidation (consolidation)
+sources:
+- video_id: jKuXaC84Qx4
+  title: Trading the Invalidation of Daily Bias
+  quote: an opposing setup that forms or the invalidation of the EQ
+ambiguities:
+- The EQ referenced is 'the EQ of our previous candle' on the aligned timeframe, but which candle counts
+  as 'previous' when several timeframes are in play is not spelled out.
+- '''Closing below the EQ'' is required, but the closing timeframe is described only as ''the aligned
+  time frame''.'
+- He states an EQ break does not guarantee the target and gives a counter-example, without offering
+  a filter to tell the two apart in advance.
+related:
+- equilibrium-eq
+- daily-bias-framework
+- fractal-model-c2
+- smt-divergence
+contributing_units:
+- build_a_model_intro_to_ttrades_fractal_model_02
+draft_count: 1
+voice: ttrades

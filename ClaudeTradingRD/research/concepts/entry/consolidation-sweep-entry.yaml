@@ -1,0 +1,94 @@
+id: consolidation-sweep-entry
+name: Trade From The Consolidation Low After The Sweep
+definition: 'The handling rule for price classified as a consolidation rather than a retracement.
+  Once the leg is called a consolidation, the response is not to wait for a breakout but to
+  mark the range high and the range low and to trade from the extreme opposite the intended
+  direction: for a long, wait for the range low to be swept into a point of interest, and
+  look for the reversal there. The point of interest must be one already identified from the
+  higher timeframe - in the ES example a fair value gap sitting in the upper half of the previous
+  daily candle - so the sweep and the higher-timeframe level must coincide. Once the low has
+  been swept, that is the cue to drop to the lower timeframes and look for the reversal structure
+  that gives the entry. The same range logic appears in reverse on exit: a consolidation whose
+  high is taken can begin a new phase of price, which is why a take-profit is placed at the
+  consolidation high.
+
+  '
+category: entry
+status: specified
+aliases:
+- range high and range low
+- sweep out the low of the consolidation
+preconditions:
+- A leg classified as a consolidation rather than a retracement.
+- A higher-timeframe point of interest (fair value gap or order block) positioned near one
+  of the range extremes.
+detection_rules:
+- Mark the consolidation's range high and range low.
+- 'For a long: require the range low to be swept, and the sweep to reach into the higher-timeframe
+  point of interest.'
+- Look for a reversal to form inside that point of interest.
+- Then drop to the lower timeframe and take the entry from the reversal structure there.
+- 'On the exit side: a consolidation whose high is taken can start a new phase of price -
+  place the take-profit at the consolidation high.'
+- 'Stated as the general form: inside a consolidation the manipulation comes first - for a
+  bearish continuation the range high should be taken out, and only then does price run the
+  lows (and the mirror for bullish).'
+- A consolidation can also simply break out rather than sweep; that is accepted, but the break
+  itself is not traded - wait for a continuation entry after it.
+- If the range manipulation you require and a swing high you do not want taken are the same
+  level, the ideas conflict and price is avoided.
+invalidation:
+- Price sweeps the range low and continues without forming a reversal in the point of interest.
+- The range extreme is taken and price expands away - the consolidation has resolved, not
+  reversed.
+measurable:
+- proportion of consolidation-low sweeps that reverse when coinciding with an HTF point of
+  interest vs when not
+- excursion beyond the range extreme before the reversal
+- hit rate of a take-profit placed at the consolidation high
+sources:
+- video_id: UBTl7za9obc
+  title: 'TTrades Top-Down Chart Lessons #2'
+- video_id: IzOQmcgLyA0
+  title: 'TTrades Top-Down Chart Lessons #3'
+- video_id: Nlw-PZhoViQ
+  title: 'TTrades Top-Down Chart Lessons #1'
+  quote: generally in a consolidation, we want to see the highs taken out
+ambiguities:
+- Sourced from an ASR (whisper-small) transcript, not YouTube captions; wording may be imprecise.
+- The consolidation manipulation rule (take the high, then run the lows) and the requirement
+  that a particular high not be taken can point at the same price, and video Nlw-PZhoViQ resolves
+  this by standing aside rather than by ranking the two conditions.
+- The classification of the leg as a consolidation rather than a retracement is the precondition
+  and is itself not rule-based in these videos.
+- No minimum number of candles or minimum width defines a consolidation.
+- How far past the range low the sweep may go before the idea is abandoned is not stated.
+- In video IzOQmcgLyA0 the consolidation is identified on a 30-minute chart under an hourly/daily
+  framework; no rule assigns which timeframe to inspect.
+related:
+- phases-of-price
+- fractal-model-c2
+- protected-swing
+- top-down-analysis-procedure
+timeframes:
+  htf:
+  - 1D
+  - 1H
+  ltf:
+  - 30m
+  - 5m
+  - 1m
+  fractal: true
+execution:
+  bias: From the higher-timeframe candle 2 / phase read.
+  entry: Lower-timeframe reversal inside the higher-timeframe point of interest at the swept
+    range extreme.
+  stop: Below the swept low.
+  targets:
+  - the opposite range extreme
+  - intraday highs
+  - the higher-timeframe draw
+contributing_units:
+- chart_lessons_01
+draft_count: 1
+voice: ttrades

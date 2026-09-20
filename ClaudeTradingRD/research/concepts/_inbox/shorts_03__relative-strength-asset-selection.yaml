@@ -1,0 +1,90 @@
+id: relative-strength-asset-selection
+name: "Ranking Correlated Assets And Trading The Middle One"
+category: structure
+status: specified
+
+definition: >
+  A Short supplies a sharper ranking test than the library's existing "bullish closure =
+  stronger". Strength is graded by HOW FAR EACH ASSET'S CLOSE HAS PROGRESSED AGAINST ITS OWN
+  OPPOSING-CANDLE SERIES - the same level a change in the state of delivery uses. The weaker
+  asset's closure still sits below the down-close candles (and below the low); the stronger
+  asset has bought all the way back up and closed OVER its down-close candles. The stated
+  consequence: the asset that has closed over its series is forming a continuation, the one
+  that has not yet even reached for the opening price of its down-close candle is not, and he
+  would rather trade the stronger one - which is the one that then delivers the expansion.
+
+timeframes:
+  htf: ["1D", "4H", "1H"]
+  ltf: ["15m", "5m"]
+  fractal: true
+
+preconditions:
+  - "Two or more correlated assets, compared on the same closed candle."
+  - "Each asset has an identifiable series of opposing (down-close, in the bullish case)
+    candles that made its low."
+
+detection_rules:
+  - "For each asset, locate the series of down-close candles that made the low (bullish case)."
+  - "Grade the same candle's close on each asset against that series."
+  - "WEAKER: the close is still below those down-close candles, or below the low."
+  - "STRONGER: the close has bought all the way back up and closed OVER those down-close
+    candles."
+  - "Intermediate/weakest reading: the asset has not yet even reached for the OPENING PRICE of
+    its down-close candle."
+  - "The asset that closed over its series is forming a continuation; the one that has not is
+    not."
+  - "Trade the stronger asset."
+
+invalidation:
+  - "Not stated in this Short; the ranking is re-graded on each new closed candle."
+
+execution:
+  bias: "The direction the stronger asset has confirmed."
+  entry: "On the stronger asset, per the ordinary continuation entry."
+  stop: "Not stated in this Short."
+  targets: "Not stated in this Short."
+
+measurable:
+  - "expansion delivered by the asset that closed over its opposing series vs the one that did
+    not, measured over the next N candles"
+  - "how often the grading by opposing-series progress disagrees with the simple
+    bullish-close/bearish-close grading, and which is more predictive"
+
+sources:
+  - video_id: yTatKcNuKQU
+    title: "Use Relative Strength to Trade the Stronger Asset"
+    quote: "This one is closing below those down close candles"
+  - video_id: yTatKcNuKQU
+    title: "Use Relative Strength to Trade the Stronger Asset"
+    quote: "that's showing you it's a much weaker close"
+  - video_id: yTatKcNuKQU
+    title: "Use Relative Strength to Trade the Stronger Asset"
+    quote: "this one is forming a continuation, while this one is not yet reaching"
+  - video_id: yTatKcNuKQU
+    title: "Use Relative Strength to Trade the Stronger Asset"
+    quote: "we'd rather focus on trading the stronger asset"
+
+ambiguities:
+  - "This Short works only the BULLISH case (trade the stronger). The library's fuller rule is
+    directional - trade the strongest when targeting a high, the weakest when targeting a low.
+    This clip states no such condition and does not mention a target. Do not read the
+    directional qualifier into it."
+  - "The assets being compared are never named in the clip, so the correlated set is unknown."
+  - "The timeframe of the compared candles is not stated."
+  - "No tie-break is given when both assets have closed over their series, or neither has."
+  - "'Reaching for the opening price of this down close candle' introduces a third, finer grade
+    between 'closed over' and 'closed below', but no ranking is stated for it."
+
+related:
+  - relative-strength-weakness
+  - cisd
+  - opposing-candle
+  - smt-divergence
+  - cross-asset-reversal-confirmation
+  - es-nq-ratio-chart
+  - correlated-triads
+
+python_detector: null
+voice: ttrades
+contributing_units: [shorts_03]
+draft_count: 1

@@ -1,0 +1,57 @@
+id: relevant-level
+name: "Relevant Level"
+aliases: ["relevant swing", "drawn liquidity", "higher timeframe objective", "key level"]
+category: liquidity
+status: underspecified
+
+definition: >
+  The gate that decides whether a counter-trend or counter-range trade exists at all.
+  A level is relevant only if it is a drawn objective that price has actually reached;
+  the existence of a line, a session extreme or a local swing does not make it relevant.
+  Across these streams the rule appears in three places: no TGIF / weekly-range trade
+  without a relevant level hit, no reversal without a relevant swing being run, and no
+  interest in an asset while it sits mid-range with no relevant level in reach.
+
+timeframes:
+  htf: ["1W", "1D", "4H"]
+  ltf: ["1H", "15m"]
+  fractal: true
+
+preconditions:
+  - "Objectives were drawn in advance of the move (previous day/week highs and lows, imbalances, failure swings)."
+
+detection_rules:
+  - "Before framing a counter-range trade, confirm the drawn objective was reached. If it was not, the setup does not exist regardless of the structural pattern."
+  - "Levels he explicitly counts: previous day high/low, weekly objectives, higher timeframe imbalances, failure swings, the 20-30% band of the weekly range."
+  - "Levels he explicitly does NOT mark or count: session highs and lows (London high is named as having no relevance), kill-zone boundaries."
+  - "A level in the middle of a range is not relevant - his interest is at the edges."
+
+invalidation:
+  - "The objective was never reached during the expansion - expect continuation into it instead of a counter move."
+  - "The objective has already been traded through, so it no longer draws price."
+
+execution:
+  bias: "No trade in the counter direction until the relevant level is hit."
+  entry: null
+  stop: null
+  targets: ["the relevant level itself, when trading toward it"]
+
+measurable:
+  - "how often a structurally valid TGIF / counter-range setup without a relevant-level hit would have lost"
+  - "count of days with no relevant level in reach (the stand-aside rate)"
+
+sources:
+  - video_id: bMkRomKEunU
+    title: "New York Open Live Q&A"
+  - video_id: r7yW6ou1LDs
+    title: "TTrades Sunday Session - Live Q&A"
+  - video_id: wM1s7UivQ08
+    title: "New York Open Live Q&A"
+
+ambiguities:
+  - "No mechanical definition or ranking is given; relevance is decided by eye against what he had drawn."
+  - "'Key level', 'relevant level' and 'drawn liquidity' are used interchangeably across the four streams."
+  - "Whether a wick into the level counts as 'hit' is not addressed."
+
+python_detector: null
+related: ["tgif-setup", "liquidity-sweep", "range-edge-trading", "order-block"]

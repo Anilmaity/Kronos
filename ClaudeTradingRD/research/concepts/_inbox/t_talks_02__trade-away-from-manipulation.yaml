@@ -1,0 +1,51 @@
+id: trade-away-from-manipulation
+name: "Trade Away From Manipulation, Never From Failure Swings"
+aliases: ["manipulation is the trigger for expansion", "protected swing requirement"]
+category: structure
+status: specified
+
+definition: >
+  Expansion is anticipated only after manipulation. When price retraces into internal range
+  liquidity, a manipulation or protected swing must form there before a trade back into the
+  range is taken; entries taken away from failure swings - deep pullbacks that left stacked
+  highs or lows with no sweep - are rejected. The corollary is that fair value gaps and
+  order blocks are most useful when they are formed by the manipulation itself, since those
+  are the arrays expected to support the expansion away from it.
+
+timeframes:
+  htf: ["1D", "4H"]
+  ltf: ["1H", "15m", "5m"]
+  fractal: true
+
+preconditions:
+  - "Price has retraced into internal range liquidity or reached an external key level."
+
+detection_rules:
+  - "Require a sweep (manipulation) of a prior high or low at the level before entering."
+  - "If the level was reached without a sweep, only failure swings exist - do not trade away from it."
+  - "Prefer FVGs and order blocks that were formed by the manipulation over pre-existing ones."
+  - "Every manipulation used as a trigger is paired with an SMT."
+
+invalidation:
+  - "A deep retracement follows the manipulation instead of expansion - the manipulation is treated as invalidated."
+
+execution:
+  bias: "Away from the manipulated extreme."
+  entry: "The FVG or order block created by the manipulation."
+  stop: "Beyond the manipulation extreme."
+  targets: ["internal or external range liquidity as applicable"]
+
+measurable:
+  - "expansion rate after a swept level vs an unswept level"
+  - "frequency of the deep-retracement invalidation after manipulation"
+
+sources:
+  - video_id: J_EeS2_2CAM
+    title: "GxTradez | Phases of Price & Profiles For Expansion"
+
+ambiguities:
+  - "Price 'does not have to manipulate' to expand - the speaker says so explicitly - so this is a selection filter, not a description of price."
+  - "The depth of retracement that invalidates a manipulation is not quantified."
+
+python_detector: null
+related: ["reversal-signature", "continuation-signature", "smt-as-confirmation-not-signal"]

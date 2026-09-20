@@ -1,0 +1,50 @@
+id: swing-point-above-fvg
+name: "Swing Point Resting Just Above (Or Below) A Fair Value Gap"
+aliases: ["swing point sitting above the gap"]
+category: structure
+status: specified
+
+definition: >
+  A named favoured formation. For a long, an hourly swing low sitting just above an hourly bullish
+  fair value gap; for a short, an hourly swing high sitting just below a bearish fair value gap.
+  The reading is that price is likely to sweep both - the swing point's liquidity and the gap -
+  and then react.
+
+timeframes:
+  htf: ["7H", "1H"]
+  ltf: ["5m", "1m"]
+  fractal: true
+
+preconditions:
+  - "A fair value gap and a swing point are both marked on the same timeframe."
+
+detection_rules:
+  - "Bullish: an hourly swing low sits immediately above an hourly bullish fair value gap."
+  - "Bearish: an hourly swing high sits immediately below an hourly bearish fair value gap."
+  - "Expect price to sweep into both and then react away."
+  - "The formation is also used at the 7-hour scale (a 7-hour swing low above a 7-hour bullish FVG)."
+
+invalidation:
+  - "Price trades through the fair value gap without reacting."
+
+execution:
+  bias: "Away from the swept side."
+  entry: "The unicorn that forms on the paired lower timeframe once both are swept."
+  stop: "Not stated."
+  targets: ["the nearest session level"]
+
+measurable:
+  - "reaction rate when a swing point and an FVG are adjacent versus when either is isolated"
+  - "how often both are swept in the same move"
+
+sources:
+  - video_id: 07lOxv39LdY
+    title: "DTR | C2U - Blending The Fractal Model & Unicorn Model - No Daily Bias"
+
+ambiguities:
+  - "'Just above' / 'just below' is not given a distance in ticks, points or ATR."
+  - "It is not stated whether the gap must be unfilled."
+  - "The stated basis is 'usually a good sign' - no frequency or hit rate is offered."
+
+python_detector: null
+related: ["c2-unicorn", "unicorn-model", "three-pd-array-confluence"]

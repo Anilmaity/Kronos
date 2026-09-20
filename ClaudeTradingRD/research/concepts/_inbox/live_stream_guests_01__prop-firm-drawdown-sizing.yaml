@@ -1,0 +1,78 @@
+id: prop-firm-drawdown-sizing
+name: "Prop Firm Sizing Off The Drawdown"
+aliases: ["it's really a fifteen hundred dollar account", "0.5 percent on funded"]
+category: risk
+status: specified
+voice: mixed
+guest_sources:
+- "Trader T"
+
+definition: >
+  The one place in this unit where TTrades states a risk principle in his own words, and the guest
+  had just stated its arithmetic counterpart. Trader T's version: on a prop account you only have
+  the drawdown to play with, so hitting the profit target is effectively doubling the money you
+  actually control. TTrades' version, offered immediately after and in his own framing: a 25,000
+  dollar account with a 1,500 dollar drawdown is treated by most people as a 25,000 dollar account
+  when in reality it is a 1,500 dollar account. Trader T's implementation follows from it - he
+  risks 0.5 percent per trade on funded accounts (having previously used 1 percent and found it too
+  aggressive when only 10 percent of the balance is available), averages roughly 3-7 percent a
+  month on them, and deliberately pushes risk up to about 1 percent during a challenge to get it
+  passed. He was funded with 400k at FTMO plus 300k at a second firm, about 700k total.
+
+timeframes:
+  htf: []
+  ltf: []
+  fractal: false
+
+preconditions:
+- "The account is a prop / evaluation account with a maximum drawdown much smaller than its nominal balance."
+
+detection_rules:
+- "Size from the DRAWDOWN, not from the nominal balance - the drawdown is the real account."
+- "Funded account: 0.5 percent of nominal per trade (Trader T), chosen because 1 percent leaves only about ten losing trades of headroom."
+- "Challenge / evaluation: risk may be raised to about 1 percent to pass, and he does push it when the account is only slightly in profit late in the period."
+- "Do not push risk once already above the extension threshold (he cites 5 percent) - the extension makes the gamble unnecessary."
+- "Expected return on a funded account at 0.5 percent risk: about 3-7 percent per month."
+
+invalidation:
+- "Not applicable."
+
+execution:
+  bias: "Not applicable."
+  entry: "Not applicable."
+  stop: "Not applicable."
+  targets: []
+
+measurable:
+- "risk per trade expressed as a fraction of the DRAWDOWN rather than of the balance"
+- "probability of ruin at 0.5 percent versus 1 percent of nominal given the firm's drawdown cap and the measured win rate"
+- "pass rate of challenges run at 1 percent versus 0.5 percent"
+
+sources:
+- video_id: wCtxmWe4KNc
+  title: "Back Testing Live Session With Trader T"
+  quote: "when in reality it's a fifteen hundred dollar account"
+- video_id: wCtxmWe4KNc
+  title: "Back Testing Live Session With Trader T"
+  quote: "you only actually have 10 to play with"
+- video_id: wCtxmWe4KNc
+  title: "Back Testing Live Session With Trader T"
+  quote: "for my funded accounts I only risk point five percent per trade"
+- video_id: wCtxmWe4KNc
+  title: "Back Testing Live Session With Trader T"
+  quote: "I usually average like three to seven percent per month"
+- video_id: wCtxmWe4KNc
+  title: "Back Testing Live Session With Trader T"
+  quote: "for challenges I risk one percent"
+
+ambiguities:
+- "The 25,000 / 1,500 framing is TTrades' own statement; the '10 percent to play with' arithmetic immediately preceding it is Trader T's. They converge on air, but the transcript has no speaker labels, so the exact turn boundary is inferred from context - TTrades introduces the point with 'I was just gonna say to go along with accounts'."
+- "Raising risk during a challenge is stated as personal practice and is in tension with the same speaker's own drawdown-is-the-account logic; the tension is not addressed."
+- "The percentages are of nominal balance, not of drawdown, so the sizing rule and the framing principle are stated in different units."
+- "The second firm is named only in garbled caption form ('my 4x1'), so only the FTMO 400k figure is reliably attributable."
+
+python_detector: null
+related: ["position-sizing-fixed-risk", "realistic-r-expectations", "risk-limits-and-trade-frequency", "eval-vs-funded-mindset"]
+contributing_units:
+- live_stream_guests_01
+draft_count: 1

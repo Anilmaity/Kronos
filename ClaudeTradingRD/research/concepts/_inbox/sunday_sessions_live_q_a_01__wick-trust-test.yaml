@@ -1,0 +1,54 @@
+id: wick-trust-test
+name: "Let the Wick Form, Trade the Body (Wick Trust Test)"
+aliases: ["do I trust this high", "trust the wick", "let the wick form"]
+category: structure
+status: specified
+
+definition: >
+  The model reduced to one operation: wait until the higher-timeframe candle's wick can be
+  trusted as complete, then trade the body of that candle away from it. The decidable test is
+  whether price returning through the extreme would still leave the idea valid. If it would, the
+  wick is not formed and the extreme cannot be used as a stop; if it would not, the extreme is a
+  trusted invalidation.
+
+timeframes:
+  htf: ["1M", "1D", "4H", "1H"]
+  ltf: ["15m", "5m", "3m"]
+  fractal: true
+
+preconditions:
+  - "A higher-timeframe candle has opened and price has traded into the anticipated wick-formation area."
+
+detection_rules:
+  - "The extreme was reached early in the higher-timeframe candle, not midway through it."
+  - "The reach into the extreme is shallow (a small opposing run), not a deep run using much of the candle range."
+  - "A lower-timeframe change in state of delivery has confirmed the reversal away from the extreme."
+  - "If all three hold, the extreme is trusted and becomes the stop; otherwise widen the stop to a level that is trusted, or skip the trade."
+
+invalidation:
+  - "Price consolidates at the extreme instead of displacing away, so the wick is likely to be extended."
+  - "Price returns through the extreme."
+
+execution:
+  bias: "Away from the trusted wick."
+  entry: "After the wick is trusted, on the CISD or the following continuation."
+  stop: "Beyond the trusted wick extreme."
+  targets: ["Drawn liquidity in the direction of the body"]
+
+measurable:
+  - "frequency with which an extreme meeting all three detection rules is subsequently exceeded"
+  - "stop-out rate of entries placed against untrusted vs trusted extremes"
+
+sources:
+  - video_id: uzPGXVYpVGc
+    title: "Candle 2 Confirmations - Live Lesson, Q&A"
+    quote: "let the wick form trade the body"
+  - video_id: egV_gABTQks
+    title: "(CPI) New York Open Live Q&A"
+
+ambiguities:
+  - "Early into the candle versus midway through it is never quantified as a fraction of the candle time or range."
+  - "Shallow reach is judged visually against the candle body with no numeric threshold."
+
+python_detector: null
+related: ["small-wick-expansion-rule", "half-wick-respect", "c2-confirmation-scaling"]

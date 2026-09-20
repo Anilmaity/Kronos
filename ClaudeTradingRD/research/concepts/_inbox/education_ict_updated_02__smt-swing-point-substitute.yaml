@@ -1,0 +1,58 @@
+id: smt-swing-point-substitute
+name: SMT As A Swing Point Substitute
+aliases:
+- paired with smt
+- consider this low protected
+category: structure
+status: specified
+definition: The one sanctioned exception to the requirement that a low must actually be swept before
+  a continuation structure counts. Asked directly whether the low always has to be taken out, he
+  answers yes - unless it is paired with an SMT. When the correlated asset HAS formed the structure
+  and this one has not, the unswept low is treated as protected and the setup is traded as if the
+  breaker had formed, with the stop on that low. He flags the substitution as more discretionary
+  than the rest, because what forms is not a true breaker.
+timeframes:
+  htf:
+  - 1H
+  ltf:
+  - 15m
+  - 5m
+  - 1m
+  fractal: true
+preconditions:
+- A correlated asset is being watched alongside the traded one.
+detection_rules:
+- 'Default: the low (or high) must be swept for the continuation structure to be valid.'
+- 'Exception: if an SMT exists at that low - the correlated asset made the corresponding structure
+  and this one did not - treat the low as protected.'
+- Under the exception, mark the up-close candles as the breaker once price closes through them and
+  place the stop on the unswept low.
+invalidation:
+- Price trading below the low that was treated as protected.
+measurable:
+- outcome of SMT-substituted continuations vs genuinely swept ones
+- frequency of the substitution being available per session
+sources:
+- video_id: xP-o11jRCyg
+  title: Trade Continuations Using Breaker Blocks
+  quote: yes it does unless it is paired with smt
+- video_id: WwmS47Gb3M0
+  title: The "Twitter Model" The MMXM Trader - ICT Concepts
+ambiguities:
+- The correlated asset is unnamed in the breaker examples; only the Twitter-model video names specific
+  pairs.
+- No tolerance is given for how closely the two assets' structures must correspond for an SMT to
+  count.
+- He calls the substitution 'a little bit more discretionary', so it is not mechanically decidable
+  as stated.
+related:
+- breaker-continuation
+- smt-divergence
+- protected-swing
+- smt-as-confirmation-not-signal
+- relative-strength-weakness
+python_detector: null
+contributing_units:
+- education_ict_updated_02
+draft_count: 1
+voice: ttrades

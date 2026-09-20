@@ -1,0 +1,68 @@
+id: dollar-gate-for-fx
+name: The Dollar Gate For Forex (and when to pair currencies against each other)
+category: model
+status: specified
+aliases:
+- DXY gate
+- exotic pairing
+definition: 'A decision procedure for choosing WHICH forex pair to trade, driven entirely by whether
+  the dollar index is trending. If the dollar is trending, pair the dollar against the opposing extreme:
+  dollar bullish -> find the weakest currency future; dollar bearish -> find the strongest. If the dollar
+  is CONSOLIDATING, do not pair against the dollar at all -- find the strongest and the weakest non-dollar
+  currency futures and trade that cross (''exotic pairing''). For futures-only traders the same read
+  collapses to trading the single strongest or weakest currency future, or longing one and shorting
+  another.'
+timeframes:
+  htf:
+  - 1M
+  - 1W
+  - 1D
+  ltf:
+  - 4H
+  - 1H
+  fractal: false
+preconditions:
+- A directional read on the dollar index / dollar futures.
+- Currency futures charts for the majors available for ranking.
+detection_rules:
+- 'Classify the dollar: strong bullish, bullish, consolidating, bearish, strong bearish.'
+- 'Dollar bullish -> select the most bearish currency future and trade FOREIGNUSD (result: strong bearish
+  trend).'
+- 'Dollar bearish -> select the most bullish currency future and trade USDFOREIGN (result: strong bearish
+  trend on that pair) or FOREIGNUSD long.'
+- Dollar consolidating -> ignore the dollar; select one strongly bullish and one strongly bearish foreign
+  currency future and trade the cross between them.
+- Anticipate dollar consolidation after a large expansion or after a higher-timeframe key level is hit.
+- If the dollar is consolidating or retracing, expect euro and pound to be doing the same in the opposite
+  direction -- that is what makes them the bearish leg of a cross.
+- 'Futures-only: trade the single most extreme currency future opposing the dollar, or long one and
+  short another to synthesise the cross.'
+invalidation:
+- Both legs are trending the same way -- the resulting pair consolidates and is a no-trade.
+- The strongest currency has just taken out a large target (he skips CHF on exactly that basis).
+execution:
+  bias: The dollar read, translated through the fraction rule.
+  entry: The chosen pair is then traded with the normal fractal model.
+  stop: Per the fractal model.
+  targets:
+  - per the fractal model
+measurable:
+- expansion range of the selected pair vs the rejected pairs on the same day
+- frequency of dollar-consolidating days (when exotic pairing is required)
+sources:
+- video_id: HrjYoxAUb3s
+  title: Using Currency Futures to Choose the Right Forex Pair
+  quote: If the dollar is bullish, find the weakest currency to pair with it
+ambiguities:
+- '''Strong bullish'' vs ''bullish'' is an icon on a slide, never a rule; the ranking of currency futures
+  is eyeballed from daily candles.'
+- He concedes there is often no single best pair and several are acceptable -- the procedure is better
+  at excluding pairs than at selecting one.
+related:
+- currency-pairing-opposition
+- relative-strength-asset-selection
+- chart-futures-execute-elsewhere
+contributing_units:
+- build_a_model_intro_to_ttrades_fractal_model_02
+draft_count: 1
+voice: ttrades

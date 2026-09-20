@@ -1,0 +1,78 @@
+id: reversal-candle-quality
+name: "Candle 2 Closure Quality (reversal candle vs expansion candle)"
+category: structure
+status: specified
+
+definition: >
+  This unit supplies the shape definition the library previously flagged as missing: a
+  reversal candle has a LARGE WICK and a SMALL BODY. He then narrates what that looks like a
+  timeframe down - price opens, makes a run in one direction, then trades back and closes -
+  and states the discriminator against a directional (expansion) candle: the reversal candle
+  made a large move from its open to its extreme, consuming a lot of time and a lot of range,
+  and therefore he is not expecting price to expand out of it. This is a shape test on the
+  closed candle, complementary to (and stated independently of) the open-low-high-close path
+  test recorded in the library from the weekly-profile series.
+
+timeframes:
+  htf: ["1D", "4H", "1H"]
+  ltf: ["15m", "5m", "1m"]
+  fractal: true
+
+preconditions:
+  - "A candle has closed on the working timeframe and is a candidate reversal."
+
+detection_rules:
+  - "Shape test: the candle has a large wick and a small body. That is the reversal candle."
+  - "Complement: a small wick with a large body is a directional / expansion candle, not a
+    reversal candle."
+  - "Discriminator narrated on the lower timeframe: price opens, makes a large move to its
+    extreme, then trades back and closes - the large open-to-extreme leg is what makes it a
+    reversal rather than a directional candle."
+  - "The size of that open-to-extreme leg is judged by the time and the range it consumed."
+  - "Consequence: after a reversal candle, do not expect expansion out of it (see
+    large-wick-target-adjustment for what to target instead)."
+
+invalidation:
+  - "The candle's open-to-extreme leg is small - it is a directional candle and the reversal
+    read does not apply."
+
+measurable:
+  - "wick-to-body ratio on candles he annotates as reversal candles vs directional candles"
+  - "forward expansion rate after a large-wick / small-body candle vs after a small-wick /
+    large-body candle"
+
+sources:
+  - video_id: ecTRHQrbYzI
+    title: "Understanding What a Reversal Candle Looks Like"
+    quote: "A reversal candle has a large wick and a small body."
+  - video_id: ecTRHQrbYzI
+    title: "Understanding What a Reversal Candle Looks Like"
+    quote: "price opens, makes a run lower, and then trades higher and closes"
+  - video_id: ecTRHQrbYzI
+    title: "Understanding What a Reversal Candle Looks Like"
+    quote: "So, I'm not expecting price to expand."
+
+ambiguities:
+  - "'Large' and 'small' are still unquantified - no wick-to-body ratio is given."
+  - "The Short does not restate the open-low-high-close path test the library holds from the
+    weekly-profile series; whether the shape test and the path test are two views of one rule
+    or two independent filters is not stated."
+  - "Only the bullish-reversal illustration (run lower, trade higher, close) is narrated; the
+    bearish mirror is implied."
+  - "The Short does not say whether the reversal candle must sit at a level or a point of
+    interest, a condition every long-form treatment attaches. Do not assume it from the
+    long-form videos - this clip omits it."
+
+related:
+  - wick-size-test
+  - fractal-model-c2
+  - small-wick-expansion-rule
+  - large-wick-target-adjustment
+  - daily-ohlc-candle-shape
+  - reversal-signature
+  - v-shape-reversal
+
+python_detector: null
+voice: ttrades
+contributing_units: [shorts_03]
+draft_count: 1

@@ -1,0 +1,68 @@
+id: position-sizing-fixed-risk
+name: Fixed $100 Risk Per Trade On A Prop Evaluation (the host's own numbers)
+aliases:
+- consistent position sizing
+- four percent of the drawdown
+category: risk
+status: specified
+definition: 'The host gives his own sizing numbers twice in this unit, in two different guest streams,
+  and they agree. On a $50,000 Apex evaluation account with a $2,500 trailing drawdown he risked exactly
+  $100 per trade, every time, no matter what - four percent of the drawdown allowance, which he points
+  out is still under one percent of the nominal account balance. Contract count is derived from the
+  stop: a four-point ES stop is five contracts, a two-point ES stop is ten contracts, and a fifteen-point
+  NQ stop is three (micro) contracts. He passed the $3,000 profit target in thirteen days. The argument
+  for the constancy is the one the corpus already carries: with inconsistent sizing even a seventy-five
+  percent win rate can be unprofitable, because a ten-percent-risk loser cancels several one-percent-risk
+  winners. He reports never going through a heavy drawdown under this regime - the worst run was two
+  or three consecutive losses, about $300 - and exactly one deviation, a sizing error that cost $145
+  instead of $100. He frames the four-percent-of-drawdown figure as specific to a challenge account
+  he wanted to finish in under thirty days, explicitly more than he would otherwise risk, and ''not
+  advice''.'
+timeframes:
+  htf: []
+  ltf: []
+  fractal: false
+preconditions:
+- A defined stop distance and a known per-point value for the instrument.
+- A chosen fixed dollar risk.
+detection_rules:
+- Fix the dollar risk per trade first; derive the contract count from the stop distance.
+- 'Worked values at $100 risk: ES four-point stop -> 5 contracts; ES two-point stop -> 10 contracts;
+  NQ fifteen-point stop -> 3 micro contracts.'
+- 'On a prop evaluation, size the risk against the drawdown allowance rather than the nominal balance:
+  4% of a $2,500 trailing drawdown = $100.'
+- Never deviate; a single oversized trade breaks the win-rate / payoff arithmetic.
+invalidation:
+- Any trade whose realised risk deviates from the fixed amount breaks the regime.
+measurable:
+- variance of realised risk per trade across a live sample (target zero)
+- days to pass an evaluation at 4% of drawdown per trade vs at 1%
+- maximum consecutive-loss drawdown under the fixed regime
+sources:
+- video_id: CrUfTskOveo
+  title: Stream Q & A with AM Trades  - ICT concepts
+  quote: the first thing i would have focused on is consistent position sizing
+- video_id: CrUfTskOveo
+  title: Stream Q & A with AM Trades  - ICT concepts
+  quote: i risked a hundred dollars per trade every time no matter what
+- video_id: CrUfTskOveo
+  title: Stream Q & A with AM Trades  - ICT concepts
+  quote: it took me 13 days to pass it using this
+- video_id: 0bH_kkG2q6s
+  title: Stream Q & A with Trade For Opportunity  - ICT concepts
+  quote: four percent per trade on that of my drawdown
+ambiguities:
+- Four percent of the drawdown is conceded to be more than would normally be risked, and is justified
+  only by a thirty-day deadline.
+- Commissions and slippage are excluded from every figure.
+- The $145 deviation shows the regime is manually enforced rather than platform-enforced.
+- The account was an evaluation, so the reported outcome is not a live-funded result.
+related:
+- prop-firm-drawdown-sizing
+- stop-loss-placement
+- prop-cushion-scaling
+- daily-trade-cap-risk-envelope
+contributing_units:
+- live_stream_guests_03
+draft_count: 1
+voice: ttrades

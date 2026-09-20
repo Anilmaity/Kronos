@@ -1,0 +1,52 @@
+id: shallow-retracement
+name: "Shallow Retracement Requirement (deep retracement = reversal)"
+aliases: ["shallow retracements", "deep retracement", "no OTE"]
+category: structure
+status: specified
+
+definition: >
+  During genuine expansion, retracements are shallow. A deep retracement is not a
+  retracement at all - it is a V-shape reversal, and it flips the read. Specifically, a
+  retracement that reaches the OTE of the impulse leg is treated as a counter-signal: he
+  then looks for a trade in the opposite direction rather than a continuation entry.
+
+timeframes:
+  htf: ["4H", "1H"]
+  ltf: ["15m", "5m", "3m", "1m"]
+  fractal: true
+
+preconditions:
+  - "An expansion leg has printed in the direction of bias."
+
+detection_rules:
+  - "Measure the pullback against the impulse leg."
+  - "A pullback reaching the OTE zone of the leg invalidates the expansion read and is treated as a V-shape reversal."
+  - "In gap terms: he wants price to retrace at most into the lower half (bearish) of the gap it left, and then continue."
+
+invalidation:
+  - "Price resumes expansion from a shallow pullback - the expansion read stands."
+
+execution:
+  bias: "Expansion direction while retracements stay shallow; opposite once a deep retracement prints."
+  entry: "Continuation entry only on a shallow retracement."
+  stop: "Behind the shallow pullback extreme / protected swing."
+  targets: ["the standing objective"]
+
+measurable:
+  - "Distribution of retracement depth (as fraction of the impulse leg) in trades that continued vs reversed."
+  - "Hit rate of the 'reached OTE therefore reverse' rule."
+
+sources:
+  - video_id: aqnY1yZvfYs
+    title: "New York Open Live Q&A"
+  - video_id: Qv6Ux_Z8VrA
+    title: "New York Open Live Q&A"
+  - video_id: 00iZXPAdR5A
+    title: "New York Open Live Q&A"
+
+ambiguities:
+  - "Two different measurements are used for the same invalidation within one stream: 'reaches OTE of the range' and 'lower half of the gap'. No precedence given."
+  - "OTE is invoked as a boundary while he simultaneously says he does not use OTE - it functions as a threshold he trades against, not a zone he enters in."
+
+python_detector: null
+related: ["v-shape-reversal", "fractal-model-c3", "continuation-over-reversal", "expansion-sequence-quality"]

@@ -1,0 +1,431 @@
+id: fractal-model-c2
+name: Candle 2 Closure (the reversal candle)
+variants:
+  name:
+  - Candle 2 Closure
+  definition:
+  - 'PRIMARY-SOURCE DEFINITION (this is the channel''s own dedicated lesson). The model has
+    exactly two closure types, candle 2 and candle 3, and they are distinguished by where
+    the candle CLOSES relative to the previous candle''s extreme. A REVERSAL closure (= candle
+    2) sweeps the previous candle''s high or low and then closes back INSIDE the previous
+    candle''s range. A CONTINUATION closure closes BEYOND the previous candle''s extreme.
+    A candle 2 closure alone is not a signal: it must occur at a higher-timeframe key level
+    / point of interest (a fair value gap, or a high or low being swept), and it must be confirmed
+    by a change in the state of delivery on the aligned lower timeframe before candle 3 is
+    traded.'
+  - 'The swing-point candle of the fractal model. Mechanically, candle 2 trades beyond candle
+    1''s extreme (a sweep) and closes back inside candle 1''s range. In the playbook he states
+    it categorically: candle 2 is always the swing low or the swing high, candle 1 is the
+    candle before it, candle 3 the one after. A candle 2 closure is never tradeable on the
+    closure alone -- it must be paired with a change in the state of delivery inside that
+    candle on the paired lower timeframe, which is what confirms the wick has formed. Whether
+    the candle 2 itself is tradeable, or only the candle 3 that follows it, is decided by
+    wick size: a small wick supports expansion inside candle 2, a large opposing run does
+    not and forces the trader to wait for candle 3.'
+  - 'Across five Shorts the candle 2 closure is presented as a two-part gate that is used
+    to PRUNE marked swings, not to generate them. Part one: price must sweep the previous
+    candle''s extreme and close back inside it (equivalently, close below the body of candle
+    2 in the bearish case). Part two: the sweep must have occurred AT a point of interest
+    - a swept high/low or a fair value gap. A closure that satisfies one but not the other
+    is removed from the chart. A third, discretionary step removes a mechanically valid closure
+    whose swing sits too close to an adjacent swing. The same test is applied on the 5-minute
+    chart, which he uses to state that the validation is fractal and applies on any timeframe.
+
+    '
+  - 'C2 is the higher-timeframe candle that sweeps the prior candle''s extreme and closes
+    back inside it, producing a reversal shape: the candle opens, makes its extreme against
+    the intended direction, and reverses. C1 is explicitly arbitrary and is never analysed
+    on its own; it is simply whatever precedes C2. A C2 closure licenses looking for a C3
+    expansion in the intended direction.
+
+    '
+  - 'The reversal candle in the fractal model, used here as the bias-setting event on whatever
+    timeframe it is found. In these walkthroughs a candle 2 closure is a candle that sweeps
+    the prior candle''s extreme (or a nearby consolidation extreme) and closes back in the
+    opposite direction, producing the aggressive-in / aggressive-out signature on the timeframe
+    below. Its function is directional: a bearish candle 2 closure on the monthly makes the
+    question "is price more likely to reach the previous month''s high or the previous month''s
+    low", and the answer becomes the draw. A candle 2 closure is called *ideal* when it additionally
+    forms a protected swing. A candle 2 closure is not acted on until it is confirmed by a
+    change in the state of delivery on the timeframe below, and the trade taken from it is
+    normally the following candle''s continuation rather than the reversal itself.
+
+    '
+  - 'The primary-source statement of the model''s trigger, given as the opening premise of
+    the intraday strategy video: the whole goal is to anticipate one candle''s open-high-low-close
+    or open-low-high-close. The trigger that licenses that anticipation is the previous candle
+    sweeping a level and closing back inside; with that sweep and closure back in, the NEXT
+    candle is anticipated to expand away from the sweep. The direction is therefore supplied
+    by the swept side - a swept high implies a bearish expansion candle, a swept low a bullish
+    one - and is then cross-checked by lower-timeframe alignment and by the draw the trade
+    is travelling toward.'
+  - 'Referred to throughout these live streams as an already-taught building block rather
+    than re-derived. A candle two closure is the mechanical swing-point definition on the
+    higher timeframe candle - price trades beyond the prior candle''s extreme and closes back
+    inside it. Once a change in state of delivery confirms it on the lower timeframe, the
+    following candle is a candle three in the new direction.
+
+    '
+definition: 'SHORTS EVIDENCE. The cleanest, most compressed statement of the C2 test in the
+  corpus, with worked negative examples. A candle 2 closure requires price to take out its
+  PREVIOUS CANDLE''S high and then close back BELOW it (bearish), or take out the previous
+  candle''s low and close back ABOVE it (bullish). The negative test is stated twice on chart:
+  a swing point where price swept the previous high but never closed back below it is NOT
+  a candle 2 closure and is removed. Confirmation of a daily C2 is taken on the aligned lower
+  timeframe as a change in the state of delivery, and the concept is explicitly fractal -
+  the same C2-at-a-point-of- interest pattern appears on the hourly chart and marks where
+  the high of day forms.'
+category: model
+status: contested
+aliases:
+- C2
+- reversal closure
+- candle to closure
+- candle 2 closure
+- reversal candle
+- the swing point candle
+- candle two closure
+- C2 closure
+- ideal candle 2 closure
+- sweep and closure back in
+- candle to closure (auto-caption)
+preconditions:
+- A completed previous candle with a defined high and low on the same timeframe.
+- 'For the fractal/hourly application: the sweep occurs at a point of interest.'
+- A previous candle (candle 1) with a defined high and low.
+- A higher-timeframe point of interest at the extreme.
+- A candle 1 exists with a defined high and low.
+- A point of interest (fair value gap, or a swing high/low) is present at the extreme, on
+  the daily and lower; on the 4-hour a point of interest is preferred but not required.
+- A prior candle with a defined high and low exists (C1).
+- A prior candle with a defined high and low, or a consolidation with a defined range.
+- A phase classification for the leg into the candle (expansion into the level).
+- A prior candle (C1) with a defined extreme to be swept.
+- A completed prior candle with a defined high and low.
+detection_rules:
+- 'Bearish C2: high[i] > high[i-1] AND close[i] < high[i-1].'
+- 'Bullish C2: low[i] < low[i-1] AND close[i] > low[i-1].'
+- A sweep of the previous extreme WITHOUT the close back inside is not a C2 - discard it.
+- Validate a higher-timeframe C2 by finding a change in the state of delivery on the aligned
+  lower timeframe.
+- After a valid C2, price must continue to respect the previous candle's range for the read
+  to stand.
+- 'Fractal: the same test on the hourly chart at a point of interest marks the candidate high
+  (or low) of day.'
+- An 'ideal' C2 is one where the closure also protects a swing - it closes over the down-close
+  candles into the fair value gap, leaving that low protected.
+- 'Bullish C2: the candle trades below candle 1''s low AND closes back above candle 1''s low.'
+- 'Bearish C2: the candle trades above candle 1''s high AND closes back below candle 1''s
+  high.'
+- If the candle closes BEYOND candle 1's extreme instead, it is a continuation closure, not
+  a C2.
+- 'Validity gate: the sweep must occur at a point of interest - a fair value gap, or a high/low
+  being taken out. Without one, it is not a valid C2 (''I need a point of interest to frame
+  a candle closure'').'
+- 'Confirmation gate: a change in the state of delivery must form inside candle 2 on the aligned
+  lower timeframe before candle 3 is traded.'
+- 'Quality: C2 should itself be a reversal (open-low-high-close for a bullish C2). A C2 with
+  a shallow wick that already expanded is valid but does not set up candle 3 well.'
+- 'If C2 has a large wick, watch the upper (bullish) / lower (bearish) half of that wick:
+  candle 3''s wick must respect 0.5 of it or the swing point is unlikely to form.'
+- Candle 2 trades beyond candle 1's high (bearish case) or below candle 1's low (bullish case).
+- Candle 2 closes back inside candle 1's range.
+- Drop to the paired lower timeframe and require a change in the state of delivery inside
+  candle 2 before the closure counts as confirmed.
+- 'Classify the candle 2 by wick size: an expansion candle has a small wick each side and
+  a large body; a reversal candle opens, makes a large opposing run to form its wick, then
+  returns toward its opening price before closing.'
+- Small wick -> candle 2 itself may be traded for expansion. Large opposing run -> do not
+  trade candle 2; let it close and trade candle 3.
+- A candle 2 closure that occurs on both the bullish and bearish side is resolved by the higher-timeframe
+  bias; the side against bias is ignored.
+- An ideal candle 2 closure additionally closes through the series of opposing candles that
+  reached the point of interest, creating a protected swing in the same bar (see ideal-formation).
+- 'Candidate: price trades beyond the previous candle''s extreme and closes back inside that
+  candle''s range.'
+- Gate 1 - a point of interest must be present at the sweep (a swept previous high/low, or
+  a fair value gap traded into).
+- Gate 2 - the closure must be a valid candle 2 (or candle 3) closure; neither alone is sufficient.
+- If either gate fails, discard the swing rather than trading it.
+- 'Discretionary third step: discard a mechanically valid swing that sits too close to an
+  adjacent same-side swing.'
+- The test is applied identically on any timeframe, including the 5-minute.
+- 'For a bullish C2: price trades below the previous candle low and closes back above it.'
+- 'For a bearish C2: price trades above the previous candle high and closes back below it.'
+- 'The candle''s own shape must be a reversal: open, then the extreme against the intended
+  direction, then close in the intended direction.'
+- If C2 produced no CISD on the lower timeframe, a V-shape is required instead, plus a subsequent
+  continuation.
+- The candle trades beyond the prior candle's extreme (or sweeps the consolidation extreme)
+  and closes back inside, against the direction of the sweep.
+- 'Bearish candle 2 closure: sweeps the high and closes down. Bullish candle 2 closure: sweeps
+  the low and closes up.'
+- The candle is called ideal if it also forms a protected swing.
+- Confirm on the timeframe below with a change in the state of delivery inside the candle
+  2 before acting.
+- Read the confirmation on the bodies (stated for the hourly confirmation on the dollar example).
+- C2 trades beyond the prior candle's extreme (the sweep) and closes back inside it.
+- Direction of the anticipated expansion := away from the swept side.
+- Then require the paired lower timeframe to align in that same direction, via a closure through
+  the series of opposing candles (see cisd and timeframe-alignment-pairs).
+- Where the higher-timeframe read is conflicted (e.g. bullish structure but a previous day
+  high just taken), fall back on the daily profile to resolve it.
+- The anticipated shape of the expansion candle is open-high-low-close (bearish) or open-low-high-close
+  (bullish).
+- Price trades beyond the prior candle's extreme and closes back inside its range.
+- He prefers, but does not require, that the C2 closure forms from a key level; on the 4-hour
+  and daily it does not always need to.
+- A C2 with a small wick supports expansion; a C2 with a large wick suggests a trade back
+  to the opening price instead.
+- On a C2 with a large wick, mark 0.5 of the wick and expect price to reach it before delivering
+  away.
+- Once a change in state of delivery confirms the C2, the following candle is a candle three.
+invalidation:
+- Price fails to respect the previous candle's range after the C2 closure.
+- Candle 3 fails to respect 0.5 of candle 2's wick.
+- No point of interest at the sweep.
+- No lower-timeframe CISD inside candle 2.
+- No change in the state of delivery forms inside the candle 2 on the lower timeframe -- the
+  swing point is not confirmed and the model does not print.
+- Price closes back outside candle 1's range in the direction of the sweep (it was expansion,
+  not manipulation).
+- The protected swing formed at the candle 2 extreme is taken out.
+- Price does not close back inside the previous candle's range.
+- The candle opened, moved in the intended direction first, and then continued - i.e. no reversal
+  shape. Not a valid C2 even if the closure levels line up (Qv6Ux_Z8VrA, 4H example).
+- C2 is also the expansion candle (reversal and expansion blended into one candle) - the following
+  candle then sets up at lower probability and often begins a new phase of price.
+- C3 fails to close beyond the open of C2 - the sequence produces nothing.
+- The extreme of the candle 2 is taken out after the closure.
+- No change in the state of delivery forms inside the candle 2 on the timeframe below - not
+  confirmed, no trade.
+- The lower timeframe failing to close through the series of opposing candles - alignment
+  is absent and the setup is not live.
+- The higher-timeframe wick failing to form in the t-spot / price returning beyond the wick
+  extreme.
+- The candle closes outside the prior candle's range - expansion, not a C2 closure.
+measurable:
+- share of C2 closures followed by a C3 continuation in the same direction
+- hit rate of 'high of day' when an hourly C2 forms at a point of interest
+- base rate of C2 closures per month by timeframe
+- expansion in candle 3 conditional on C2 having / not having a point of interest
+- expansion in candle 3 conditional on the lower-timeframe CISD being present
+- rate at which a daily C2 closure is followed by an LTF CISD inside it
+- expansion range of C2 conditioned on wick-to-body ratio
+- hit rate of trading C2 directly vs waiting for C3
+- fraction of raw sweeps that survive both gates
+- follow-through of surviving vs discarded closures
+- Count of C2 closures per month per timeframe.
+- Hit rate of C3 closing beyond the C2 open.
+- Conditional hit rate when C2 is also an expansion candle vs a pure reversal candle.
+- count of candle 2 closures per month per timeframe
+- hit rate of the previous-period-extreme draw following a confirmed candle 2 closure
+- difference in follow-through between ideal (protected-swing-forming) and ordinary candle
+  2 closures
+- share of sweep-and-close-back-inside candles followed by an expansion candle in the anticipated
+  direction
+- how often the paired lower timeframe confirms alignment before the expansion is over
+- hit rate of 2R entries taken only after alignment vs immediately on the closure
+- C2 formation frequency per timeframe
+- outcome split by whether the C2 formed at a key level
+- outcome split by C2 wick size
+sources:
+- video_id: JoFxG1TrnDA
+  title: 'Candle 2 Closures: Take High, Close Below / Take Low, Close Above'
+  quote: price to take out its previous candle's high and then close back below it
+- video_id: JoFxG1TrnDA
+  title: 'Candle 2 Closures: Take High, Close Below / Take Low, Close Above'
+  quote: price never closed back below its previous candle's high
+- video_id: lTO4L6B0cpU
+  title: Breaking Down How to Use C3 Closures to Anticipate the Next Candle
+  quote: that means it's not a candle two closure
+- video_id: B_tHxplbxV0
+  title: Candle 2 Closures at a POI Are Fractal
+  quote: We have a candle to closure at a point of interest
+- video_id: B_tHxplbxV0
+  title: Candle 2 Closures at a POI Are Fractal
+  quote: we can anticipate this to be where the high of day forms
+- video_id: oSrXv92fIzc
+  title: 'Candle 2 Closures: A Fractal Concept for Top-Down Analysis'
+  quote: It's a fractal concept
+- video_id: a6s8N_WciY4
+  title: Daily Bias Made Simple
+  quote: this is an ideal candle to closure
+- video_id: tyoxl1l-6iI
+  title: 'Candle 2 Closure: The Foundation of TTrades Fractal Model'
+  quote: When price closes below the previous candle's low, I can anticipate a continuation
+    lower
+- video_id: tyoxl1l-6iI
+  title: 'Candle 2 Closure: The Foundation of TTrades Fractal Model'
+  quote: we sweep out the previous candle's low, but we don't close below it
+- video_id: tyoxl1l-6iI
+  title: 'Candle 2 Closure: The Foundation of TTrades Fractal Model'
+  quote: we want this to occur at a higher time frame key level
+- video_id: tyoxl1l-6iI
+  title: 'Candle 2 Closure: The Foundation of TTrades Fractal Model'
+  quote: I need a point of interest to frame a candle closure
+- video_id: tyoxl1l-6iI
+  title: 'Candle 2 Closure: The Foundation of TTrades Fractal Model'
+  quote: If it doesn't respect the 0.5, then it's likely to fail
+- video_id: v1X8UMWgWmI
+  title: Best Trading Strategy for 2026 - TTFM
+  quote: we do need a change in the state of delivery inside that candle two
+- video_id: m4k_1pF5zFI
+  title: TTrades Fractal Model - Trading Candle 2
+  quote: An expansion candle has a small wick on each side and a large body
+- video_id: TNybDCtwBnc
+  title: TTrades Playbook | Fractal Model Fundamentals (TTFM)
+  quote: Candle 2 will always be the swing low or swing high
+- video_id: vn1RYjhJUnQ
+  title: Validating Swing Points Using Lower Timeframe Confirmation (CISD)
+  quote: unless it is paired with a higher time frame candle closure
+- video_id: q3nauvjT3q0
+  title: Stop Overcomplicating Trading (Here's the Fix)
+  quote: when a candle sweeps out its previous and closes back above that level
+- video_id: SF61vCsBl1A
+  title: TTrades Ideal Formation - High Probability Swing Points
+- video_id: FgP2lc9nneM
+  title: The Best Timeframe for TTrades Fractal Model (Simple)
+- video_id: p1xrHuEHpQY
+  title: Using POIs and Valid Closures to Confirm Swings
+  quote: if we do not have a point of interest or a valid closure
+- video_id: jo2D1AOuxHM
+  title: Validating C2 Closures at Points of Interest
+  quote: do they all occur at a point of interest
+- video_id: jo2D1AOuxHM
+  title: Validating C2 Closures at Points of Interest
+  quote: we failed to take out this high, so it is not valid
+- video_id: La4MlftJc14
+  title: Validating Swing Points for Continuation
+  quote: We have the sweep, we have the change in the state of delivery
+- video_id: 0fhZ_jpespw
+  title: Validating Swing Points Is a Fractal Concept
+  quote: it's a fractal concept, and so we can apply it to any time frame
+- video_id: aqnY1yZvfYs
+  title: New York Open Live Q&A
+  quote: you never actually focus on C1. You only focus on C2
+- video_id: Qv6Ux_Z8VrA
+  title: New York Open Live Q&A
+- video_id: yud7TpE2AMs
+  title: New York Open Live Q&A
+- video_id: 00iZXPAdR5A
+  title: New York Open Live Q&A
+- video_id: IzOQmcgLyA0
+  title: 'TTrades Top-Down Chart Lessons #3'
+- video_id: w-JekHg6Ldk
+  title: 'TTrades Top-Down Chart Lessons #4'
+- video_id: UBTl7za9obc
+  title: 'TTrades Top-Down Chart Lessons #2'
+- video_id: 4jU547ocod4
+  title: TTrades Fractal Model + Inversion (Intraday Strategy)
+  quote: to anticipate one candle's open high low close or open low high close
+- video_id: 4jU547ocod4
+  title: TTrades Fractal Model + Inversion (Intraday Strategy)
+  quote: with the sweep of this first candle and the closure back in
+- video_id: 4jU547ocod4
+  title: TTrades Fractal Model + Inversion (Intraday Strategy)
+  quote: with a conflicted bias we can go ahead and use the daily profile
+- video_id: wM1s7UivQ08
+  title: New York Open Live Q&A
+- video_id: bMkRomKEunU
+  title: New York Open Live Q&A
+ambiguities:
+- Body close versus wick close is implied by 'close back below' but never stated explicitly.
+- Which lower timeframe is 'the aligned timeframe' for confirmation is not given in these
+  Shorts.
+- 'TRANSCRIPT ARTIFACT: the auto-captions render ''candle 2'' as ''candle to'' throughout;
+  quotes are preserved verbatim including that artifact.'
+- '''Closes back inside the previous candle''s range'' is stated as closing back above/below
+  candle 1''s LOW/HIGH specifically - so a close inside candle 1''s body is not required.
+  This is more permissive than some Q&A-derived readings in the library.'
+- Whether the sweep must be a wick-through or can be a full trade-through is not stated.
+- '''Point of interest'' is enumerated (fair value gap, high, low) but not ranked; the video
+  also allows opposing candles to serve as one, calling that ''more advanced''.'
+- The exact requirements for C2/C3/C4 in the indicator are explicitly deferred to the paid
+  course ('I go over all the requirements for these within my course and mentorship').
+- '''Small wick'' vs ''large opposing run'' is never given a numeric threshold (no wick-to-body
+  ratio, no percentage of range) anywhere in this unit, despite the whole trade/no-trade decision
+  resting on it.'
+- Whether the sweep must be of candle 1's wick extreme or its body extreme is not stated.
+- The auto-captioner renders 'candle 2' as 'candle to' in the Weekly Profile series; in this
+  unit the numeral is transcribed correctly throughout.
+- The 'too close' discard step is explicitly discretionary ('does it make sense... probably
+  not') with no distance threshold.
+- The Shorts do not say how far left a point of interest may be drawn from; one example reaches
+  back to a monthly-chart high.
+- '''Closes back inside'' is shown but never stated as body-close vs wick-close.'
+- '''Reversal shape'' is judged visually; no ratio of wick to body is given to separate a
+  reversal candle from an expansion candle.'
+- The blended reversal+expansion warning has no threshold for how much expansion disqualifies
+  C2.
+- Whether the sweep must be a wick or may be a body close outside is not stated.
+- These videos refer back to a separate candle 2 lesson and never restate the definition in
+  full; the reconstruction above is from usage across the three walkthroughs.
+- 'Whether the sweep must exceed the prior candle''s extreme or merely a nearby liquidity
+  pool is used inconsistently: previous day low in #2, a consolidation low in #2, and previous
+  month''s structure in #3.'
+- Whether the closure must be a body close back inside is not explicitly stated, though the
+  speaker does say to focus on the bodies for the hourly confirmation.
+- The auto-transcript renders candle 2 as candle to throughout video IzOQmcgLyA0.
+- The numbering 'candle 1 / candle 2 / candle 3' is never spoken in this video; the sequence
+  is described as 'this first candle' and 'this candle', so the mapping to C1/C2/C3 is inferred
+  from the rest of the corpus, not stated here.
+- Which level C1's sweep must be of (its own extreme, a swing, a session level) is not specified.
+- Whether the closure back inside must be a body close is not stated.
+- The 'conflicted bias -> use the daily profile' escape hatch is named but the daily profile
+  procedure is not restated.
+- The definition is assumed knowledge in these streams and never fully restated - the sweep-and-close-inside
+  reading here is assembled from how he uses it, and should be corroborated against the dedicated
+  C2 videos.
+- '''Key level'' preference is stated without a rule for when it becomes mandatory.'
+- Whether a body close or a wick close inside the range is required is not stated.
+related:
+- fractal-model-c3
+- cisd
+- ideal-formation
+- daily-bias-c2-c3-h1-cisd
+- hourly-cisd-confirmation
+- half-wick-respect
+- fractal-model-c4
+- point-of-interest
+- reversal-signature
+- small-wick-expansion-rule
+- protected-swing
+- relevant-swing-separation
+- indicator-print-conditions
+- v-shape-reversal
+- htf-wick-formation
+- top-down-analysis-procedure
+- ltf-inversion-entry-in-tspot
+- t-spot
+- timeframe-alignment-pairs
+- daily-profile-framework
+timeframes:
+  htf:
+  - 1M
+  - 1W
+  - 1D
+  - 4H
+  ltf:
+  - 1H
+  - 15m
+  - 5m
+  fractal: true
+execution:
+  bias: Opposite the swept side.
+  entry: Aligned-lower-timeframe CISD inside C2, then candle 3; or the C2 reversal itself
+    if the wick is small.
+  stop: Beyond the C2 extreme.
+  targets:
+  - previous candles' unswept highs/lows on the reference higher timeframe
+contributing_units:
+- build_a_model_intro_to_ttrades_fractal_model_01
+- build_a_model_intro_to_ttrades_fractal_model_02
+- chart_lessons_01
+- education_ict_updated_02
+- shorts_01
+- shorts_04
+- sunday_sessions_live_q_a_02
+- sunday_sessions_live_q_a_03
+draft_count: 8
+voice: ttrades

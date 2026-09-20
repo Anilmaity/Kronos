@@ -1,0 +1,51 @@
+id: consolidation-external-liquidity-only
+name: "In A Daily Range, Only The External High And Low Matter"
+aliases: ["external range manipulation"]
+category: entry
+status: specified
+
+definition: >
+  While the daily chart is in a consolidation or range, all internal price action is discarded and
+  only the external high and external low of that range are treated as tradeable references. A
+  high-impact release occurring while the market is internal is expected to manipulate an external
+  level and return into the range, not to start a continuation.
+
+timeframes:
+  htf: ["1D"]
+  ltf: ["1H", "15m"]
+  fractal: false
+
+preconditions:
+  - "The daily phase has been classified as consolidation, or the week has remained internal to a prior daily range."
+
+detection_rules:
+  - "Mark the external high and external low of the range."
+  - "Ignore internal structure while the range holds."
+  - "If a high-impact news driver runs the external high while the draw is lower, treat the run as manipulation, not as a continuation signal, and look for entries in the opposite direction."
+  - "If the release fails to run the external level, trades in the draw direction, or consolidates, take no trade."
+  - "An internal retracement need not return to the opposite extreme before the expansion resumes."
+
+invalidation:
+  - "Price closes decisively beyond the external level and continues - the range read is wrong and no fade is taken."
+
+execution:
+  bias: "Toward the unrun external level (the draw)."
+  entry: "After the manipulation of the opposing external level - the worked example used intraday SMT plus a lower-timeframe change in state of delivery."
+  stop: "Not stated."
+  targets: ["the opposing external level of the range"]
+
+measurable:
+  - "hit rate of fading an external-level run during a classified consolidation"
+  - "how often the unrun external level is reached before the range is broken"
+
+sources:
+  - video_id: QmGJFxfSHxM
+    title: "AM Trades | Blending The Economic Calendar, Daily Chart, & Weekly Profiles"
+
+ambiguities:
+  - "No quantitative test for 'the daily is consolidating' - it is read from the phase framework by eye."
+  - "'Decisively beyond' is not defined; the invalidation above is inferred from his statement that he simply would not trade those cases."
+  - "No stop rule is given."
+
+python_detector: null
+related: ["daily-phases-of-price-delivery", "nfp-week-protocol", "hourly-cisd-manipulation-confirmation"]

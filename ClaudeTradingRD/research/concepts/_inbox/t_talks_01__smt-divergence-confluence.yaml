@@ -1,0 +1,54 @@
+id: smt-divergence-confluence
+name: "SMT Divergence As Confluence"
+aliases: ["smart money divergence", "SMT"]
+category: liquidity
+status: contested
+
+definition: >
+  Correlated-instrument divergence (NQ versus ES, NQ versus YM) used as a supporting signal. The
+  two speakers who use it in this unit disagree fundamentally on WHERE it counts: one uses it at
+  every scale including inside ranges and on 1-minute charts, the other discards intra-range SMT
+  entirely and only counts divergence at structural extremes.
+
+timeframes:
+  htf: ["1D", "1W", "4H"]
+  ltf: ["1H", "15m", "5m", "1m"]
+  fractal: true
+
+preconditions:
+  - "Two correlated instruments are charted side by side (NQ/ES or NQ/YM in the examples)."
+
+detection_rules:
+  - "Sniper's reading: when price runs into a higher-timeframe internal or external range level, check whether the correlated instrument failed to make the matching high or low. Divergence there is an 'extra confluence booster' for the timeframe-aligned entry. He applies this at daily and weekly levels and again inside 1-minute up-close candles."
+  - "AP's reading: intra-range SMT is ignored ('you can scalp it' but it is not the true focus). SMT matters only at extremes - specifically, did one index take or mitigate a weak high or a swing while the other failed to."
+  - "AM Trades uses SMT as one component of the pre-entry signature on a news candle, without a stated placement rule."
+
+invalidation:
+  - "The divergence resolves - both instruments make the matching extreme."
+
+execution:
+  bias: "Away from the side where the divergence formed."
+  entry: "Not from SMT alone in either reading - it supports the structural entry."
+  stop: "Not specified."
+  targets: []
+
+measurable:
+  - "hit rate of the base entry with versus without SMT present, split by whether the SMT formed intra-range or at a structural extreme - this directly tests the disagreement"
+  - "frequency of intra-range SMT versus extreme SMT per session"
+
+sources:
+  - video_id: 5aRB_ZY3474
+    title: "$niper | Internal & External Liquidity - ICT Daily Bias"
+  - video_id: gjoRPszj-Qk
+    title: "AP | Use Market Structure & Fibonacci Levels for Sniper Entries"
+  - video_id: QmGJFxfSHxM
+    title: "AM Trades | Blending The Economic Calendar, Daily Chart, & Weekly Profiles"
+
+ambiguities:
+  - "Contested: the two primary sources give opposite guidance on intra-range SMT and neither acknowledges the other."
+  - "No rule in any source for choosing the reference instrument."
+  - "Neither speaker defines how far apart the two instruments' extremes must be for divergence to count."
+  - "Sniper's 1-minute SMT usage sits inside AP's explicitly excluded category."
+
+python_detector: null
+related: ["htf-reaction-mss-retrace-entry", "valid-structure-flip", "failure-swing-draw"]

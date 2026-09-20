@@ -1,0 +1,50 @@
+id: opening-price-breaker
+name: "Breaker At The Candle's Own Opening Price"
+aliases: ["breaker zone in the time opening"]
+category: entry
+status: underspecified
+
+definition: >
+  A breaker is only considered "in development" once price closes back through the opening
+  price of the candle currently in development (for example the midnight open for a daily
+  PO3, or the 10:00 open for a 4H PO3). The breaker zone is constructed from the swing
+  low - swing high - swing low that produced that close, and the most powerful breakers are
+  those that overlap the time-opening price itself.
+
+timeframes:
+  htf: ["1D", "4H"]
+  ltf: ["15m", "5m"]
+  fractal: true
+
+preconditions:
+  - "The manipulation wick of the current PO3 has printed and been confirmed (SMT)."
+  - "The order block internal dynamic has already been broken."
+
+detection_rules:
+  - "Price closes back through the opening price of the candle in development."
+  - "Mark the low-high-low (bullish case) that produced that close as the breaker zone."
+  - "Prefer the breaker whose range overlaps the opening price."
+
+invalidation:
+  - "Price closes back beyond the breaker in the original direction."
+
+execution:
+  bias: "Direction of the distribution leg (opposite the manipulation wick)."
+  entry: "Retracement into the breaker zone overlapping the time opening."
+  stop: "Not stated."
+  targets: ["2 and 2.5 deviation", "the opposing same-or-higher timeframe PD array"]
+
+measurable:
+  - "hit rate of the first retracement into an opening-price-overlapping breaker"
+
+sources:
+  - video_id: wWIHS_dxbEY
+    title: "DexterLab | Putting All The ICT Pieces Together - Master PO3"
+
+ambiguities:
+  - "No stop-loss placement is given anywhere in the talk."
+  - "Whether the close through the opening price must be on the working timeframe or the execution timeframe is not stated."
+  - "The exact swing points used to draw the breaker box are shown visually, not defined."
+
+python_detector: null
+related: ["internal-dynamics-sequence", "po3-four-hour-opening-times"]

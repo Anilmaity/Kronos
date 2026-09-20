@@ -1,0 +1,71 @@
+id: futures-contract-specs
+name: Futures Contract Specs (points, ticks, handles, multipliers)
+definition: 'The unit''s hard-number reference for index futures arithmetic. A point is the smallest
+  move left of the decimal, a tick is the smallest move right of it, and one point equals one handle.
+  ES and MES move in 25-cent increments, so there are four ticks in one point. The multiplier is
+  stated for the NASDAQ pair: the mini (NQ) moves 20 dollars a point and the micro (MNQ) moves 2
+  dollars a point, the micro being one tenth of the mini; the same mini/micro tenth relationship
+  is stated for ES/MES without its dollar figures being spoken. A worked example: 5 points on 2 NQ
+  contracts is 200 dollars. Two execution consequences are given: futures are traded in whole contracts,
+  so partials can only be taken in one-contract increments (unlike forex lots); and the CFD-to-futures
+  mapping is SPX500 to ES, NAS to NQ, gold to GC, oil to CL, with currency futures such as 6E (continuous
+  6E1!) standing in for EURUSD.'
+category: risk
+status: specified
+aliases:
+- ticks
+- handles
+- points
+- tick value
+- minis and micros
+preconditions:
+- Trading index or currency futures rather than spot/CFD.
+detection_rules:
+- point := smallest price move left of the decimal; tick := smallest move right of it; 1 point =
+  1 handle.
+- ES / MES tick size = 25 cents, therefore 4 ticks = 1 point.
+- NQ moves $20 per point; MNQ moves $2 per point (micro = 1/10 of the mini).
+- 'P&L = points moved x multiplier x contracts (worked: 5 points x $20 x 2 = $200).'
+- Partials can only be taken in whole-contract increments - a 2-lot can only be halved.
+- 'CFD to futures mapping: SPX500 -> ES, NAS -> NQ, gold -> GC, oil -> CL, EURUSD -> 6E (6E1! continuous).'
+invalidation:
+- Not applicable - contract specifications.
+measurable:
+- backtest P&L reconciliation using the stated multipliers
+- how often a position size below 2 contracts makes partial-taking impossible under his own rules
+sources:
+- video_id: dtsrR8dX2Ro
+  title: Intro To Futures Trading & Prop Firms
+  quote: a mini will move $20 a point and a micro will move $2 a point
+- video_id: dtsrR8dX2Ro
+  title: Intro To Futures Trading & Prop Firms
+  quote: there would be four of those to make one point
+- video_id: dtsrR8dX2Ro
+  title: Intro To Futures Trading & Prop Firms
+  quote: one point is also equal to one handle
+- video_id: dtsrR8dX2Ro
+  title: Intro To Futures Trading & Prop Firms
+  quote: you have to do that in one contract increments
+ambiguities:
+- The ES / MES dollar-per-point values are never spoken - only that they share the 25-cent tick and
+  the same mini/micro tenth relationship. Do not assume a figure.
+- The auto-captioner garbles the point arithmetic example ('it would move from 400.2 to 41.25');
+  the intended step is one point.
+- Margin figures given for platforms are garbled in the transcript ('$112,000', '$133,000', '$500
+  day margin') and are platform- and date-specific; they are not treated as reliable numbers here.
+- Tick values for instruments other than the ES/NQ family are explicitly deferred to the broker's
+  website.
+related:
+- position-sizing-fixed-risk
+- partial-profit-taking
+- futures-vs-forex-differences
+- futures-contract-rollover
+- chart-data-settings
+timeframes:
+  htf: []
+  ltf: []
+  fractal: false
+contributing_units:
+- resources_01
+draft_count: 1
+voice: ttrades

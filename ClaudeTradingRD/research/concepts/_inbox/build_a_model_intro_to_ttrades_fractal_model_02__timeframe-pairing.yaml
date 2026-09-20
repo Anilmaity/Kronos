@@ -1,0 +1,79 @@
+id: timeframe-pairing
+name: Timeframe Pairing (context / swing point / entry)
+category: time
+status: specified
+aliases:
+- aligned time frame
+- time frame alignment
+definition: 'A fixed two-level pairing between a structure timeframe and its entry timeframe, applied
+  recursively to build three-level stacks. The pairs used explicitly across this unit are: monthly->daily,
+  weekly->daily, daily->1H, 4H->15m, 1H->5m, 30m->3m, and 15m->1m. Full stacks named in the unit: daily/1H/5m
+  (the playbook), daily/4H/15m (his stated favourite), 1H/15m/1m (scalping), weekly/daily/1H and monthly/weekly/4H
+  (swing), monthly/daily/1H. He adds an override that matters: if the paired timeframe is messy, move
+  UP one timeframe rather than force it, and he also allows skipping the entry timeframe and taking
+  the entry on the structure timeframe directly.'
+timeframes:
+  htf:
+  - 1M
+  - 1W
+  - 1D
+  - 4H
+  - 1H
+  - 30m
+  - 15m
+  ltf:
+  - 1D
+  - 1H
+  - 15m
+  - 5m
+  - 3m
+  - 1m
+  fractal: true
+preconditions:
+- A higher-timeframe candle closure to be confirmed.
+detection_rules:
+- 'Pair table: monthly->daily, weekly->daily, daily->1H, 4H->15m, 1H->5m, 30m->3m, 15m->1m.'
+- Confirm a closure on the structure timeframe with a change in the state of delivery on its paired
+  entry timeframe.
+- Stack three levels where possible (bias / swing point / entry) and require all three to point the
+  same way -- 'this is when expansion can occur'.
+- If the paired timeframe is messy, move up one timeframe instead of forcing the pairing.
+- Refining further down is optional -- he sometimes takes the entry on the structure timeframe itself.
+- 'Session-dependent variant early in the day: in Asia use only the hourly or 30-minute; in London the
+  hourly, 30-minute or 15-minute; in New York drop lower because the reversal is quick.'
+invalidation:
+- The timeframes stop agreeing -- the expansion premise is gone.
+measurable:
+- expansion conditioned on 1 / 2 / 3 aligned timeframes
+- frequency of the 'messy, move up one' override
+sources:
+- video_id: q3nauvjT3q0
+  title: Stop Overcomplicating Trading (Here's the Fix)
+  quote: We are only going to focus on trading candle three on all time frames
+- video_id: 9BY-MQRNy-Y
+  title: TTrades Swing Trading Model - Simple Strategy
+  quote: you can use the monthly time frame, then a weekly swing point
+- video_id: eywpZT3z6GQ
+  title: TTrades Scalping Model - Simple Day Trading Strategy
+- video_id: TNybDCtwBnc
+  title: TTrades Playbook | Fractal Model Fundamentals (TTFM)
+- video_id: 9AL41xON3hA
+  title: The Only Trading Strategy You Need For 2026
+- video_id: m4k_1pF5zFI
+  title: TTrades Fractal Model - Trading Candle 2
+ambiguities:
+- '''Messy'' is the trigger for the override and is entirely visual.'
+- The pairing is roughly 1:4 to 1:12 in ratio terms but he never states a ratio, only the table; the
+  30m->3m pair (1:10) and the daily->1H pair (1:24) do not fit one rule.
+- Whether an entry taken directly on the structure timeframe still requires its own lower-timeframe
+  CISD is not addressed.
+related:
+- ttfm-favorite-daily-4h-15m
+- ttfm-scalping-model
+- ttfm-swing-trading-model
+- automatic-fractal-pairing
+- daily-wick-confirmation-timeframes
+contributing_units:
+- build_a_model_intro_to_ttrades_fractal_model_02
+draft_count: 1
+voice: ttrades

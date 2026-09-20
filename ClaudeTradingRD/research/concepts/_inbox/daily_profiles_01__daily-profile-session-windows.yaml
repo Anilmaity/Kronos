@@ -1,0 +1,52 @@
+id: daily-profile-session-windows
+name: "Session Windows for Daily Profiles (London 2-5, New York a.m. 8:30-12)"
+aliases: ["kill zones", "sessions", "London 2 to 5", "New York am session"]
+category: time
+status: underspecified
+
+definition: >
+  The two clock windows the daily-profile series is built on. From the full kill-zone set
+  (Asia, London, New York a.m., New York p.m.) the speaker discards all but two: London is
+  taken as 02:00-05:00, and New York a.m. as 08:30-12:00, where the 12:00 end is stated to be
+  his personal extension. Every profile in the series is classified by what price did inside
+  these two windows. The Asia range is excluded from the framework except in the Seek & Destroy
+  profile, where it becomes the load-bearing reference.
+
+timeframes:
+  htf: ["1D"]
+  ltf: ["30m", "15m", "5m"]
+  fractal: false
+
+preconditions:
+  - "A chart with session boxes or equivalent time marking."
+
+detection_rules:
+  - "London window = 02:00 to 05:00."
+  - "New York a.m. window = 08:30 to 12:00 (08:30 is the stated start; 12:00 is his personal extension of the standard end)."
+  - "For charting convenience only, the Seek & Destroy video draws the London box as 02:00-08:30 so there is no blank gap before the a.m. session; the analytical window remains 02:00-05:00."
+
+invalidation:
+  - "Not applicable (a definition, not a signal)."
+
+measurable:
+  - "distribution of daily high/low timestamps inside vs outside each window"
+  - "how often the daily extreme forms inside 02:00-05:00 vs 08:30-12:00"
+
+sources:
+  - video_id: y6SnEdASVLY
+    title: "ICT Daily Profile - London Reversal / New York Continuation"
+  - video_id: xdzyejskSKE
+    title: "ICT Daily Profile - New York Reversal"
+  - video_id: IeXtmeKqjnQ
+    title: "ICT Daily Profile - New York Manipulation"
+  - video_id: 4WCiIyCiBrQ
+    title: "ICT Daily Profile - Seek & Destroy"
+
+ambiguities:
+  - "No timezone is stated in any of the four videos. EST/EDT is the ICT convention but the speaker never says it, so the windows are not fully decidable from the corpus alone."
+  - "The Asia session window is never given numerically, yet the Asia high and low are required to recognise Seek & Destroy."
+  - "New York p.m. is shown on the kill-zone PDF but deliberately excluded from the series with no explanation."
+  - "The 12:00 a.m.-session end is explicitly a personal preference, not a rule."
+
+python_detector: null
+related: ["daily-profile-framework", "new-york-intraday-time-levels", "seek-and-destroy-profile"]

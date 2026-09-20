@@ -1,0 +1,99 @@
+id: large-wick-target-adjustment
+name: "Large Wick - Adjust Targets, Do Not Expect Expansion"
+category: risk
+status: specified
+
+definition: >
+  Two Shorts state the target substitution explicitly and name the substitute levels. When the
+  candle being traded away from carries a LARGER wick (a large opposing run rather than a
+  shallow one), the expectation of a full expansion through the opposite extreme is dropped and
+  the targets move in to the opening price - specifically the daily open and the session lows /
+  the targets clustered around the opening price. He states the reasoning as a refusal to be
+  greedy: the trade is still taken, but a wick that does not support expansion does not justify
+  a massive move as the objective. He is explicit that price CAN still travel further (one
+  example names a fair value gap around the EQ of the range as reachable); the rule is about
+  where expectation is set, not about a hard ceiling.
+
+timeframes:
+  htf: ["1D", "4H"]
+  ltf: ["1H", "15m", "5m"]
+  fractal: true
+
+preconditions:
+  - "A reversal is being framed away from a candle whose opposing run is large (see
+    wick-size-test)."
+
+detection_rules:
+  - "Classify the opposing run: shallow run, or large opposing run?"
+  - "If large: do not target a full expansion through the far side of the range."
+  - "Substitute targets: the opening price - concretely the daily open, plus the session lows /
+    the levels clustered around that opening price."
+  - "The shallow-run branch is the alternative: a shallow run above the previous day high
+    supports a reversal traded back toward equilibrium."
+  - "Price travelling beyond the adjusted target is allowed and does not invalidate the read;
+    the rule sets expectation, not a ceiling."
+
+invalidation:
+  - "The candle turns out to carry a small wick after all - the ordinary expansion targets
+    apply."
+  - "In the worked example the day simply closed as a reversal candle and the further move
+    never came, which is the cost the rule is designed to avoid paying."
+
+execution:
+  bias: "Away from the large wick, as normal."
+  entry: "Unchanged - the change is only to the target."
+  stop: "Not restated in these Shorts."
+  targets:
+    - "the daily opening price"
+    - "the session lows (bearish) clustered around that open"
+    - "explicitly NOT the far extreme of the range"
+
+measurable:
+  - "hit rate of the daily-open target on large-wick days vs the hit rate of the far-extreme
+    target on the same days"
+  - "give-up in R from using the daily open instead of the range extreme"
+  - "how often price continues past the daily open to the range EQ on large-wick days"
+
+sources:
+  - video_id: 5UsKZ7pZqvY
+    title: "Trading C2 Back Into the Daily Open"
+    quote: "This is one of those scenarios of trading a larger wick."
+  - video_id: 5UsKZ7pZqvY
+    title: "Trading C2 Back Into the Daily Open"
+    quote: "when we have a larger wick, my expectations is favoring back towards that daily open"
+  - video_id: 5UsKZ7pZqvY
+    title: "Trading C2 Back Into the Daily Open"
+    quote: "not trying to be greedy and look for a massive move"
+  - video_id: aQoMSAaIXsg
+    title: "Understanding Wick Size for Reversals"
+    quote: "if we are to frame a bearish reversal today, we want to adjust our targets"
+  - video_id: aQoMSAaIXsg
+    title: "Understanding Wick Size for Reversals"
+    quote: "I want to be focused on the opening price"
+  - video_id: nyTiWfwWM6M
+    title: "Small Wicks Support Expansion"
+    quote: "do we get a large opposing run, in which case we adjust our targets"
+
+ambiguities:
+  - "'Larger wick' is not quantified - the threshold that separates it from a shallow run is
+    the same unresolved judgement recorded in wick-size-test."
+  - "'Session lows' is used without defining which session or its hours."
+  - "Which daily open is meant (the 18:00 open the corpus elsewhere prefers, or midnight, or
+    the exchange open) is not stated in either Short."
+  - "No rule is given for choosing between the daily open and the session lows when both are
+    available and at different distances."
+  - "The permission to keep going past the adjusted target ('it's not that price can't trade
+    lower') has no management rule attached - whether to hold runners is not stated."
+
+related:
+  - wick-size-test
+  - small-wick-expansion-rule
+  - reversal-candle-quality
+  - reversal-candle-target-adjustment
+  - htf-opening-price-entry
+  - half-wick-respect
+
+python_detector: null
+voice: ttrades
+contributing_units: [shorts_03]
+draft_count: 1

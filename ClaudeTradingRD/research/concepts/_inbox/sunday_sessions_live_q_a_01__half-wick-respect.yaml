@@ -1,0 +1,52 @@
+id: half-wick-respect
+name: "0.5 of the Wick Must Be Respected"
+aliases: ["EQ of the wick", "50% of the wick", "point five of the wick"]
+category: structure
+status: specified
+
+definition: >
+  When a candle forms a wick large enough that mechanical expansion is doubtful, the midpoint
+  (equilibrium) of that wick becomes the level the subsequent move must respect. Price trading
+  back beyond 50% of the wick means the candle is behaving as a reversal candle rather than a
+  continuation candle. The same midpoint test is applied to a change-in-state-of-delivery leg: the
+  stop should not sit beyond 50% of that leg.
+
+timeframes:
+  htf: ["1D", "4H", "1H", "30m"]
+  ltf: ["15m", "5m", "3m", "1m"]
+  fractal: true
+
+preconditions:
+  - "A wick (opposing run) or a change-in-state-of-delivery leg exists with a defined high and low."
+
+detection_rules:
+  - "Compute the midpoint of the wick, or of the CISD leg."
+  - "For a continuation to remain valid, price must not trade beyond that midpoint."
+  - "For a CISD entry, the stop must lie within 50% of the CISD leg."
+
+invalidation:
+  - "Price trades materially beyond 50% of the wick; the setup is then treated as a reversal candle and the next candle becomes the continuation candidate."
+
+execution:
+  bias: "Direction of the expected body expansion."
+  entry: "Inside the 0.5-of-wick zone."
+  stop: "Not beyond 50% of the wick or CISD leg."
+  targets: ["Drawn liquidity in the expansion direction"]
+
+measurable:
+  - "rate at which a violated 0.5-of-wick level is followed by failure of the continuation"
+
+sources:
+  - video_id: egV_gABTQks
+    title: "(CPI) New York Open Live Q&A"
+  - video_id: WBwoiMDXT2c
+    title: "New York Open Live Q&A"
+  - video_id: 0AYGNc9czYc
+    title: "New York Open Live Q&A"
+
+ambiguities:
+  - "He says price should not trade beyond it, but also that price can exceed it and still reverse; how far beyond 0.5 counts as invalidation is not specified."
+  - "It is not stated whether the midpoint is measured to the wick extreme or to a body close."
+
+python_detector: null
+related: ["small-wick-expansion-rule", "wick-trust-test", "continuation-order-block"]

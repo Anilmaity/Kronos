@@ -1,0 +1,81 @@
+id: silver-bullet-am-model
+name: Silver Bullet (AM session, no daily bias)
+aliases:
+- am session Silver Bullet
+- 10 to 11 window
+category: model
+status: specified
+definition: A bias-free session model on NQ. At 10:00 New York, mark the high and the low of the 09:00
+  hourly candle. Wait for price to take ONE side of that range; the target is then the OTHER side of
+  the same candle. Entries are only valid inside the 10:00-11:00 window; if no sweep occurs, or no entry
+  model appears before 11:00, the session is skipped. Entry is by any of his usual models (breaker,
+  order block, fair value gap) after the sweep; once a position reaches 3R he moves the stop to break-even.
+timeframes:
+  htf:
+  - 1H
+  ltf:
+  - 1m
+  fractal: false
+preconditions:
+- It is 10:00 New York.
+- The 09:00 hourly candle has completed.
+detection_rules:
+- Mark the 09:00 hourly candle's high and low.
+- Mark the 10:00-11:00 window.
+- Wait for a stop raid above the 09:00 high or below the 09:00 low.
+- After the raid, look on the 1-minute for displacement and an entry model (breaker, order block, or
+  fair value gap) in the opposite direction.
+- Target the opposite side of the 09:00 candle's range.
+- The entry must be filled before 11:00; a pending order still unfilled at 11:00 is cancelled.
+- No sweep of either side by 11:00 = no trade that session.
+- Once the trade reaches 3R, move the stop to break-even.
+invalidation:
+- The shallow / unconvincing sweep — repeatedly declined ('not a fan of that price action or these sweeps
+  in here').
+- No aggressive displacement after the sweep — he waits or skips.
+- Price reaching almost to the target before an entry appears — he will not enter 'when price is coming
+  back'.
+execution:
+  bias: None required — the swept side of the 09:00 range sets the direction.
+  entry: Breaker / order block / fair value gap on the 1-minute after the sweep, inside 10:00-11:00.
+  stop: On the swept extreme (the swing high/low that made the sweep).
+  targets:
+  - The opposite side of the 09:00 hourly candle
+measurable:
+- sessions per month with no sweep (he skipped roughly a third of days)
+- hit rate of the opposite-side target
+- R distribution and how often 3R break-even is reached before the target
+sources:
+- video_id: o0v4KQxZbpU
+  title: ICT Silver Bullet Strategy - No Daily Bias | With Backtest!
+  quote: 'I''m going to be focusing on the 10 to 11: a.m. time window'
+- video_id: o0v4KQxZbpU
+  title: ICT Silver Bullet Strategy - No Daily Bias | With Backtest!
+  quote: 'these entries have to fall within 10 to 11: a.m. window'
+- video_id: o0v4KQxZbpU
+  title: ICT Silver Bullet Strategy - No Daily Bias | With Backtest!
+  quote: the previous hours high and low or the 9:00 a.m. hourly candle
+- video_id: o0v4KQxZbpU
+  title: ICT Silver Bullet Strategy - No Daily Bias | With Backtest!
+  quote: I look for a entry to Target the 900 a.m. low
+- video_id: o0v4KQxZbpU
+  title: ICT Silver Bullet Strategy - No Daily Bias | With Backtest!
+  quote: once this hits 3r I will move my stop to break even
+ambiguities:
+- The entry model is deliberately open ('an entry model lower'); which of breaker / OB / FVG to prefer
+  is decided live by what looks aggressive enough. Several sessions were skipped purely on that judgement,
+  so the model as taught is NOT fully mechanical.
+- '''Sweep'' is not defined against equal highs — he explicitly declined one touch as ''just equal highs''.'
+- Whether the 3R break-even rule is part of the model or a backtest-only convention is not stated; he
+  says 'what I did in back testing was...'.
+- The framework is imported from his intraday-bias video (previous candle's high and low); it is not
+  derived here.
+related:
+- silver-bullet-window
+- daily-bias-framework
+- breaker-block
+- silver-bullet-am-backtest-result
+voice: ttrades
+contributing_units:
+- education_ict_updated_01
+draft_count: 1

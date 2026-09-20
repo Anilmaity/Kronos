@@ -1,0 +1,78 @@
+id: daily-ohlc-candle-shape
+name: OHLC / OLHC Daily Candle Shape
+category: structure
+status: contested
+definition: 'THE DEDICATED VIDEO the library recorded as missing. The argument is arithmetic rather
+  than behavioural: every candle has an open, high, low and close, so a bullish candle that does not
+  open exactly on its low MUST trade below its open to put the low in before expanding up - open,
+  low, high, close. A bearish candle must put its high in above the open first - open, high, low,
+  close. The trading consequence is positional: with a bullish expectation look for buys BELOW or
+  NEAR the opening price; with a bearish expectation look for sells BETWEEN the high and the opening
+  price. Which of the two shapes you expect comes entirely from the draw on liquidity. He demonstrates
+  it on the weekly (read from daily candles), the daily (using the MIDNIGHT opening price as the daily
+  open, executed on 15-minute) and the 4-hour (executed on 5-minute), and closes by mapping the shape
+  onto AMD.'
+timeframes:
+  htf:
+  - 1W
+  - 1D
+  - 4H
+  ltf:
+  - 15m
+  - 5m
+  fractal: true
+preconditions:
+- A draw on liquidity has been identified; that is what selects the shape.
+detection_rules:
+- Bullish expectation -> expect open, LOW, high, close. Position at or below the opening price.
+- Bearish expectation -> expect open, HIGH, low, close. Position between the high already made and
+  the opening price.
+- The shape is selected by the draw on liquidity, not by the candle itself.
+- 'Confirmation while the candle develops: the opening price should SUPPORT the lower-timeframe candles
+  - nothing closing below it in the bullish case.'
+- 'AMD mapping: consolidation around the opening price = accumulation; the excursion beyond the opening
+  price = manipulation; the move to the far extreme = distribution.'
+- 'Degenerate case he names explicitly: if the candle''s low IS its open there is no wick and no entry
+  window.'
+invalidation:
+- Lower-timeframe candles begin closing through the opening price against the expected shape.
+measurable:
+- proportion of directional daily candles whose extreme forms on the correct side of the open first
+- R available between the open and the eventual extreme
+sources:
+- video_id: YXoNowXQirM
+  title: Open High Low Close (OHLC / OLHC) - ICT Concepts
+  quote: every candle has an open high low and close
+- video_id: YXoNowXQirM
+  title: Open High Low Close (OHLC / OLHC) - ICT Concepts
+  quote: I can look for opportunities to buy below the open or near the open
+- video_id: YXoNowXQirM
+  title: Open High Low Close (OHLC / OLHC) - ICT Concepts
+  quote: I want to look for selling opportunities between this high and around this opening price
+- video_id: YXoNowXQirM
+  title: Open High Low Close (OHLC / OLHC) - ICT Concepts
+  quote: this is dependent on my draw on liquidity
+- video_id: YXoNowXQirM
+  title: Open High Low Close (OHLC / OLHC) - ICT Concepts
+  quote: that opening price is supporting the candles and nothing is closing below it
+- video_id: YXoNowXQirM
+  title: Open High Low Close (OHLC / OLHC) - ICT Concepts
+  quote: what happens when we go above this opening price that is our manipulation
+ambiguities:
+- 'EVOLUTION / DIRECT CONFLICT: the daily open used in this recording is the MIDNIGHT opening price.
+  The later canon anchors the daily candle at 18:00 New York and the Q&A answer is ''I always use
+  18:00''. This is the earlier recording; see daily-open-eighteen-hundred.'
+- No close-location or body-to-range threshold is given for calling a candle directional.
+- The rule is about the ORDER of the extremes, so it is only decidable while the candle is forming;
+  on a closed candle the order is not recoverable without lower-timeframe data.
+- No tolerance for 'near the open'.
+related:
+- daily-open-eighteen-hundred
+- htf-opening-price-entry
+- power-of-three-amd
+- draw-on-liquidity
+voice: ttrades
+contributing_units:
+- education_ict_02
+draft_count: 1
+python_detector: null

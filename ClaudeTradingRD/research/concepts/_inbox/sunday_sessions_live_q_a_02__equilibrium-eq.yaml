@@ -1,0 +1,56 @@
+id: equilibrium-eq
+name: "Equilibrium / 50% Level (EQ, T spot)"
+aliases: ["EQ", "0.5 of the wick", "50% of the bodies", "T spot"]
+category: entry
+status: contested
+
+definition: >
+  The midpoint level that must hold for a continuation to remain valid. Within this unit
+  three different measurements are used, apparently interchangeably: 50% of the whole
+  higher-timeframe candle, 50% of the reversal candle's wick, and 50% of the bodies of the
+  opposing candle. It is used both as the zone a retracement may reach without invalidating
+  the move, and as the reference for expecting a reaction.
+
+timeframes:
+  htf: ["1M", "1D", "4H", "1H"]
+  ltf: ["15m", "5m", "1m"]
+  fractal: true
+
+preconditions:
+  - "A reversal or opposing candle exists whose midpoint can be measured."
+
+detection_rules:
+  - "Reading A (aqnY1yZvfYs, direct answer to a chat question): EQ is measured on the whole candle, not the body."
+  - "Reading B (yud7TpE2AMs, 00iZXPAdR5A): use 50% of the bodies of the opposing candle - in one worked case this coincided with a volume imbalance, which he then used as the level."
+  - "Reading C (Qv6Ux_Z8VrA, yud7TpE2AMs): use 0.5 of the reversal candle's wick as the level that must be respected."
+  - "In all readings: price respecting the level supports continuation; trading decisively through it argues the setup has failed."
+
+invalidation:
+  - "Price closes through the chosen midpoint against the intended direction."
+  - "Displacing through the EQ of a monthly candle is read as a signal the candle wants to close outside the prior range (Qv6Ux_Z8VrA, gold)."
+
+execution:
+  bias: "Continuation direction."
+  entry: "Around the EQ / T spot after the wick has formed."
+  stop: "Beyond the candle extreme the EQ was measured from."
+  targets: "Per the sequence."
+
+measurable:
+  - "Comparative hit rate of whole-candle 50%, wick 50% and body 50% as reaction levels on the same sample."
+
+sources:
+  - video_id: aqnY1yZvfYs
+    title: "New York Open Live Q&A"
+  - video_id: Qv6Ux_Z8VrA
+    title: "New York Open Live Q&A"
+  - video_id: yud7TpE2AMs
+    title: "New York Open Live Q&A"
+  - video_id: 00iZXPAdR5A
+    title: "New York Open Live Q&A"
+
+ambiguities:
+  - "CONTESTED: three different midpoint measurements are used within the same unit with no stated precedence or context rule. This must be resolved before any detector is written."
+  - "He also says he uses EQ 'as I teach it' and points to a dedicated video, which is not in this unit."
+
+python_detector: null
+related: ["point-of-interest", "shallow-retracement", "fractal-model-c2"]

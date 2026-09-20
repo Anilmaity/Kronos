@@ -1,0 +1,56 @@
+id: no-shorting-below-lows
+name: "Do Not Short Below Lows (trade back into the range instead)"
+aliases: ["no shorting under the low", "wait for a swing point", "chasing below lows"]
+category: entry
+status: specified
+
+definition: >
+  Once price is already beneath a swept low he will not initiate shorts there. Instead
+  he waits for a swing point to form and trades back into the range that was left above.
+  The range is measured from the last impulse leg, and what he wants inside it is the
+  discount of that range plus an imbalance plus an overlapping order block; longs become
+  valid once the change in state of delivery prints. The mirrored rule applies to longs
+  above highs - he will not enter long above a range high away from the daily open.
+
+timeframes:
+  htf: ["1D", "4H"]
+  ltf: ["1H", "15m", "5m"]
+  fractal: true
+
+preconditions:
+  - "Price has swept a prior low and is now trading beneath it."
+
+detection_rules:
+  - "Do not initiate shorts below the swept low."
+  - "Wait for a swing point to form beneath, then frame a trade back into the range above."
+  - "Choose the range from the last impulse leg (he acknowledges multiple candidate ranges and picks the last impulse)."
+  - "Inside that range, want the discount plus an imbalance plus an overlapping order block."
+  - "Longs become valid once the change in state of delivery prints at that confluence."
+  - "Mirror: do not enter long above a range high, away from the daily open - the window was near the daily open or mid-range before the high was taken."
+
+invalidation:
+  - "Price continuing lower without forming a swing point - no trade exists yet."
+  - "The range objective above being reached before entry."
+
+execution:
+  bias: "Back into the range, counter to the sweep."
+  entry: "CISD at the discount/imbalance/order-block confluence."
+  stop: "Beyond the newly formed swing point."
+  targets: ["the upper part of the range from the last impulse leg"]
+
+measurable:
+  - "outcome of shorts initiated below a swept low vs waits for the swing point"
+  - "how often the last-impulse-leg range choice differs from alternative range choices"
+
+sources:
+  - video_id: u8bnmaih_hA
+    title: "TTrades Sunday Session - Live Q&A"
+  - video_id: wM1s7UivQ08
+    title: "New York Open Live Q&A"
+
+ambiguities:
+  - "'Last impulse leg' is chosen by eye; he shows two candidate ranges and picks one without a stated criterion."
+  - "Whether all three of discount, imbalance and overlapping order block are required or whether one suffices is not stated - he lists them together in one worked example."
+
+python_detector: null
+related: ["range-edge-trading", "order-block", "liquidity-sweep", "premium-discount"]

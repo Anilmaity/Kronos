@@ -1,0 +1,48 @@
+id: fake-smt-strength-switch
+name: "Fake SMT And The Strength Switch"
+aliases: ["how to know an SMT is fake", "assets switching strength"]
+category: liquidity
+status: specified
+
+definition: >
+  An SMT divergence is judged false when the asset that swept the level fails to reverse. In
+  a genuine SMT both correlated assets expand away from the level; if only one sweeps and
+  then does not reverse, the lagging asset is simply behind and will take the level too. The
+  tell is a strength switch: the previously weaker asset momentarily out-delivers the
+  stronger one - shown by opposing-candle colour, run depth into a range, and relative fair
+  value gap size - so that the two assets re-correlate. A second requirement is that a true
+  reversal clears all relevant swings rather than leaving failure swings behind.
+
+timeframes:
+  htf: ["1D", "4H"]
+  ltf: ["1H", "15m", "5m"]
+  fractal: true
+
+preconditions:
+  - "Two or more correlated instruments are charted (gold/silver, CL/HO/RB, ES/NQ/YM)."
+  - "One instrument has swept a level the other has not."
+
+detection_rules:
+  - "Check the sweeping asset: does it show a reversal signature (expansion into, expansion away)? If not, the SMT is fake."
+  - "Check for a strength switch: the weaker asset making a deeper run, or opposing-colour candles appearing on the stronger one."
+  - "Compare fair value gap size between the assets; the asset with the smaller or absent gap is the weaker one."
+  - "Check whether relevant swings were cleared; leftover failure swings argue against a true reversal."
+  - "Expect the lagging asset to catch up and take the same level."
+
+invalidation:
+  - "Both assets expand away from the level - the SMT is genuine."
+
+measurable:
+  - "reversal rate after SMT where the sweeping asset also reversed vs where it did not"
+  - "frequency of the lagging asset subsequently taking the level"
+
+sources:
+  - video_id: J_EeS2_2CAM
+    title: "GxTradez | Phases of Price & Profiles For Expansion"
+
+ambiguities:
+  - "'Strength switch' is read from several visual cues (candle colour, run depth, FVG size) with no ranking or threshold."
+  - "This is stricter than generic ICT SMT usage; the corpus does not elsewhere state the sweeping-asset-must-reverse condition."
+
+python_detector: null
+related: ["smt-as-confirmation-not-signal", "reversal-signature"]

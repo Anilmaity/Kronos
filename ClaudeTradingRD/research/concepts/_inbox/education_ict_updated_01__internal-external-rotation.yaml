@@ -1,0 +1,61 @@
+id: internal-external-rotation
+name: Internal <-> External Range Liquidity Rotation
+aliases:
+- internal liquidity
+- external liquidity
+- external to internal
+category: model
+status: specified
+definition: 'Internal liquidity is a fair value gap; external liquidity is simply highs and lows (swing
+  highs/lows, i.e. buyside and sellside liquidity). The rotation: when price sweeps external liquidity
+  and CANNOT displace through it, it is likely to reach back for internal liquidity; once it respects
+  that fair value gap and closes away, the expectation is a move back to external liquidity. Price moves
+  from external to internal and back to external.'
+timeframes:
+  htf:
+  - 1W
+  - 1D
+  - 4H
+  ltf:
+  - 1H
+  - 15m
+  - 5m
+  fractal: true
+detection_rules:
+- 'Mark external liquidity: swing highs (high with a lower high each side) and swing lows.'
+- 'Mark internal liquidity: unmitigated fair value gaps inside the range.'
+- 'External -> internal: price sweeps a swing extreme and fails to displace through it; the nearest
+  unmitigated FVG becomes the draw.'
+- 'Internal -> external: price reaches the FVG, respects it and closes away; the opposing swing extreme
+  becomes the draw.'
+- A mitigated fair value gap is no longer counted as the internal draw.
+invalidation:
+- Displacement through the external extreme — no rotation back inside.
+measurable:
+- completion rate of each rotation leg by timeframe
+sources:
+- video_id: mwmWNCTEYtY
+  title: Internal & External Liquidity Model
+  quote: internal liquidity is just a fair value Gap
+- video_id: mwmWNCTEYtY
+  title: Internal & External Liquidity Model
+  quote: external liquidity is simply highs and lows
+- video_id: mwmWNCTEYtY
+  title: Internal & External Liquidity Model
+  quote: price moves from external to internal and back to external
+- video_id: q40pRwjuPYQ
+  title: ICT Son's Model - 30 Second Setup
+  quote: an old high or old low on a hour or 15-minute chart
+ambiguities:
+- When several unmitigated FVGs sit inside the range, no rule selects which is the draw — he uses proximity
+  and premium/discount informally.
+- '''Cannot displace through'' is the usual unquantified judgement.'
+related:
+- internal-external-liquidity-model
+- fair-value-gap
+- failure-to-displace
+- universal-models
+voice: ttrades
+contributing_units:
+- education_ict_updated_01
+draft_count: 1

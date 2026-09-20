@@ -1,0 +1,86 @@
+id: cisd
+name: Change In State Of Delivery (CISD)
+category: entry
+status: specified
+aliases:
+- change in the state of delivery
+- CISD
+- shift in trend
+definition: 'PRIMARY-SOURCE DEFINITION, stated more explicitly here than anywhere else in the corpus:
+  a change in the state of delivery is a shift in trend, found by (1) locating the level that HIT
+  A POINT OF INTEREST - price interacting with a fair value gap, a high, or a low - and (2) requiring
+  price to CLOSE OVER THE SERIES OF CANDLES INTO that point of interest. Bullish: price takes out
+  a low, then closes over the series of down-close candles that took out that low. Bearish: price
+  reaches into a high, then closes through the series of up-close candles that made it. The point
+  of interest is part of the definition, not an extra filter - which is what distinguishes this reading
+  from a bare ''close through the opposing candles'' rule.'
+timeframes:
+  htf:
+  - 1D
+  - 4H
+  - 1H
+  ltf:
+  - 30m
+  - 15m
+  - 5m
+  - 3m
+  - 1m
+  fractal: true
+preconditions:
+- Price has interacted with a point of interest (fair value gap, high, or low).
+detection_rules:
+- Locate the extreme that engaged the point of interest.
+- Identify the series of opposing candles that produced that extreme (may be one candle).
+- Mark the level of that series.
+- Require a CLOSE through that level. Before that close there is no CISD.
+- Bullish uses down-close candles into a swept low / fair value gap; bearish uses up-close candles
+  into a swept high / fair value gap.
+- 'Two applications: REVERSAL CISD confirms a swing point; INTRACANDLE CISD (see ic-cisd) confirms
+  that a continuation candle''s wick has formed.'
+- An inversion fair value gap may be used in place of the CISD to confirm a continuation.
+invalidation:
+- Price fails to close through the level and instead ranges - the sweep is untrusted.
+execution:
+  bias: Direction of the closure.
+  entry: On the close, or on the retest of the level.
+  stop: On the extreme, or on the bodies where the wick gives poor R.
+  targets:
+  - 2R
+  - previous candle extremes
+measurable:
+- agreement rate between a POI-gated CISD detector and a bare opposing-candle-close detector
+- hit rate of trades taken on the close vs on the retest
+sources:
+- video_id: Vo2n47RjjMo
+  title: Intracandle CISD (IC-CISD) - Improve Your Entries
+  quote: finding the level that hit a point of interest
+- video_id: Vo2n47RjjMo
+  title: Intracandle CISD (IC-CISD) - Improve Your Entries
+  quote: price closing over the series of candles into that point of interest
+- video_id: Vo2n47RjjMo
+  title: Intracandle CISD (IC-CISD) - Improve Your Entries
+  quote: a change in the state of delivery is and that is a shift in trend
+- video_id: tyoxl1l-6iI
+  title: 'Candle 2 Closure: The Foundation of TTrades Fractal Model'
+  quote: Find the series of candles that made that high
+- video_id: FKTBkTzsmUA
+  title: How To Actually Trade Inversion Fair Value Gaps (IFVG)
+  quote: an inversion in place of a change in the state of delivery
+ambiguities:
+- '''Closes over the series'' - whether the level is the OPEN of the first opposing candle, the highest
+  of their opens, or their extremes is never stated. This is the source of the library''s three mutually
+  inconsistent CISD readings and it is NOT resolved here.'
+- 'The choice of WHICH series to use is discretionary in practice: one example explicitly picks a
+  different candle ''because that is the swing high that created this swing low''.'
+- Whether a wick through the level counts or a body close is required is not stated.
+related:
+- ic-cisd
+- protected-swing
+- point-of-interest
+- hourly-cisd-confirmation
+- inversion-fair-value-gap
+- opposing-candle
+contributing_units:
+- build_a_model_intro_to_ttrades_fractal_model_01
+draft_count: 1
+voice: ttrades

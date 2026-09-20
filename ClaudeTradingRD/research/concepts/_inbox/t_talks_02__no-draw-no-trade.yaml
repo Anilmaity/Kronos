@@ -1,0 +1,47 @@
+id: no-draw-no-trade
+name: "No Directional Draw, No Trade"
+aliases: ["50/50 scenario", "wait for more market information"]
+category: risk
+status: specified
+
+definition: >
+  If the daily draw on liquidity is neither clearly higher nor clearly lower, the situation
+  is treated as 50/50 and any trade taken from it is by definition low probability. The
+  prescribed action is to take no trade, allow the market to play out, and re-run the
+  analysis once a direction is established. The same doctrine appears in this unit as
+  refusing to trade when the daily bias shows indecision and as returning bias to neutral
+  once a higher-timeframe objective is reached.
+
+timeframes:
+  htf: ["1W", "1D"]
+  ltf: []
+  fractal: false
+
+preconditions:
+  - "Higher-timeframe analysis has been attempted."
+
+detection_rules:
+  - "There is no clearly higher or clearly lower daily draw on liquidity -> do not trade."
+  - "Higher-timeframe objective has already been reached -> bias is neutral, do not trade."
+  - "Price is caught between two opposing higher-timeframe PD arrays with no close through either -> do not trade."
+
+invalidation:
+  - "A daily close establishes direction through one of the framing arrays."
+
+measurable:
+  - "win rate of trades taken on days classified as no-clear-draw vs clear-draw"
+  - "count of sessions skipped per month under this rule"
+
+sources:
+  - video_id: nncJGt6j19Q
+    title: "Gene | Align Yourself For High Probability Trades"
+  - video_id: JABOO4LYNjQ
+    title: "Jokerszn | Daily Orderflow - ICT Daily Bias"
+  - video_id: G44VpidBD_U
+    title: "NickDoesFutures | Unicorn Model & Experiences With ICT"
+
+ambiguities:
+  - "'Clearly higher or lower' is not given a mechanical test in Gene's talk; Jokerszn supplies one (daily close through a framing PD array) and Nick another (a daily close above/below the opposing weekly FVG)."
+
+python_detector: null
+related: ["stuck-orderflow", "daily-orderflow-confirms-draw", "low-probability-day-checklist"]

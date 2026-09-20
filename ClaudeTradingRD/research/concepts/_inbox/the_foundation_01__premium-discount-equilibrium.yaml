@@ -1,0 +1,62 @@
+id: premium-discount-equilibrium
+name: "Premium, Discount & Equilibrium"
+aliases: ["discount and premium", "equilibrium", "the 0.5", "dealing range"]
+category: structure
+status: specified
+
+definition: >
+  A range is drawn from a swing high to a swing low; its 0.5 level is equilibrium. Everything
+  above 0.5 is premium, everything below is discount. The purpose is explicitly risk-to-reward,
+  not prediction: an entry exactly at equilibrium with the stop at the far extreme and the
+  target at the near extreme is 1R by construction, and R:R improves the deeper into
+  discount (for longs) or premium (for shorts) the entry sits. Therefore longs are only sought
+  at PD arrays in discount and shorts only at PD arrays in premium. Ranges are nested and
+  expanding: while a new extreme is still forming, the range is re-anchored bar by bar, and
+  each new leg creates an additional coexisting range.
+
+timeframes:
+  htf: ["1D", "4H", "1H"]
+  ltf: ["15m", "5m", "1m"]
+  fractal: true
+
+preconditions:
+  - "A swing high and a swing low defining 'the most prominent range in this area'."
+
+detection_rules:
+  - "equilibrium := (range_high + range_low) / 2."
+  - "premium := price > equilibrium; discount := price < equilibrium."
+  - "While price is making new highs and no swing high has been confirmed, re-anchor range_high to the running high each bar (the range expands)."
+  - "When a new leg forms after a new swing point, create a NEW range; multiple ranges coexist and are evaluated separately."
+  - "Filter: take long PD-array entries only below equilibrium; short PD-array entries only above equilibrium."
+  - "Also used with a displacement range (the impulse leg) as the anchor rather than a classic swing pair."
+
+invalidation:
+  - "A new swing extreme re-anchors the range, moving equilibrium."
+
+execution:
+  bias: "n/a — a location filter applied to other entry models."
+  entry: "PD array (FVG, order block, OTE) located on the correct side of equilibrium."
+  stop: "The far extreme of the range in the examples."
+  targets: ["the opposite extreme of the range"]
+
+measurable:
+  - "R:R distribution of entries by decile of range position (the video's 3.43R at OTE vs 1.6R at equilibrium is the claim to test)"
+  - "hit rate of discount-only longs vs all longs on the same signal set"
+
+sources:
+  - video_id: MlMsG7li9zY
+    title: "Discount & Premium - ICT Concepts"
+    quote: "anything above the 0.5 FIB is considered at a premium"
+  - video_id: CHIK5oBRKiw
+    title: "Change In State Of Delivery [CISD] - Orderblock Formation - ICT Concepts"
+  - video_id: 1YRs4Z1lMws
+    title: "Optimal Trade Entry (OTE) - ICT Concepts"
+
+ambiguities:
+  - "Selecting the most prominent range in the area is discretionary and has no algorithm; the speaker concedes the nesting gets confusing."
+  - "No precedence rule when nested ranges disagree about premium vs discount."
+  - "Wick-to-wick versus body-to-body anchoring is not stated."
+  - "Fib tool and Gann box are treated as interchangeable, implying only the 0.5 matters."
+
+python_detector: null
+related: ["optimal-trade-entry", "swing-point", "order-block", "fair-value-gap", "cisd-entry-model"]

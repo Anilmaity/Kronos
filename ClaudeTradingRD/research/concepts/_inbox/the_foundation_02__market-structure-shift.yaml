@@ -1,0 +1,99 @@
+id: market-structure-shift
+name: Market Structure Shift / Market Structure Break
+aliases:
+- shift in structure
+- market structure break
+- change in Trend
+- MSS
+- lowrisk buy
+category: structure
+status: specified
+definition: 'The transition from one trend to the other, defined by the swing sequence plus a close
+  beyond the pivot. Bearish-to-bullish: while making lower highs and lower lows, price puts in a
+  lower low but cannot displace lower; it then displaces and closes over the previous high, creating
+  a higher high; the pullback that follows is the higher low (which he calls the low-risk buy), and
+  a further higher high confirms the new uptrend. Bullish-to-bearish is the mirror: after a higher
+  high and higher low price makes a lower low, puts in a lower high, then displaces and closes below
+  that low to make another lower low, followed by a lower high. He names the confirming close as
+  the point where the market structure shift or market structure break occurs, and he specifies which
+  pivot counts: the low that made the new high, before price came back and broke it.'
+timeframes:
+  htf:
+  - 1D
+  - 4H
+  - 1H
+  ltf:
+  - 15m
+  - 5m
+  - 1m
+  fractal: true
+preconditions:
+- An established trend read on the working timeframe.
+- The higher-timeframe trend is known first - he states this as the condition that decides whether
+  the shift is believable.
+detection_rules:
+- 'Bearish-to-bullish step 1: inside a sequence of lower highs and lower lows, price makes a lower
+  low and then fails to displace lower.'
+- 'Step 2: price displaces and closes over the previous high, creating a higher high.'
+- 'Step 3: the retracement that follows is the higher low; a further higher high confirms the uptrend.'
+- 'Bullish-to-bearish: after higher highs and higher lows price makes a lower low; a lower high is
+  put in; price then displaces and closes below that low, creating another lower low; the following
+  lower high completes the shift.'
+- The pivot whose break counts is the low that made the new high (bullish trend) or the high that
+  made the new low - not any nearby swing.
+- 'A new extreme without a swing being broken is NOT a shift: he rejects a candidate on the grounds
+  that a higher high formed but no swing was broken.'
+- Displacement is resolved in every worked case as a CLOSE beyond the pivot ('displace and close
+  below this low'), never as a size threshold.
+invalidation:
+- The confirming close never arrives - the oil example forms the lower high but never closes below
+  the low, and price takes the first high instead.
+- The shift runs against the higher-timeframe trend, in which case it is read as a retracement into
+  a higher-timeframe PD array and is expected to fail.
+execution:
+  bias: Direction of the confirmed shift, but only when it agrees with the higher timeframe.
+  entry: After the displacing close below the pivot low (bearish) / above the pivot high (bullish);
+    he says that is when he is looking short.
+  stop: Beyond the lower high / higher low that formed after the shift.
+  targets:
+  - old lows / old highs on the other side of the prior structure
+measurable:
+- hit rate of shifts taken with the higher-timeframe trend vs against it
+- share of first-candidate shifts that never receive the confirming close
+- distribution of bars between the displacing close and the confirming opposite-side swing
+sources:
+- video_id: sgAnVR6RSDg
+  title: Understanding Market Structure For Trading
+  quote: that is where our Market structure shift or Market structure break would be
+- video_id: sgAnVR6RSDg
+  title: Understanding Market Structure For Trading
+  quote: we can't displace lower now we get displacement creating what a higher high
+- video_id: sgAnVR6RSDg
+  title: Understanding Market Structure For Trading
+  quote: the low that made the new high before price came and broke it
+- video_id: sgAnVR6RSDg
+  title: Understanding Market Structure For Trading
+  quote: once we displace and close below this low
+ambiguities:
+- Displacement is never quantified; the only operational test he applies is the close beyond the
+  pivot, which is decidable but is a proxy he never labels as the definition.
+- Whether the pivot must already be a confirmed 3-bar swing before it can be 'broken' is stated both
+  ways in the same video - he registers a higher high 'even if we have not formed a swing High yet',
+  but rejects a candidate because 'we don't have a swing we break'.
+- The preference for the post-shift lower high to sit in premium (or the higher low in discount)
+  is stated as 'ideally', not as a filter.
+- 'No expiry: how long a confirmed shift remains the operative read is not stated.'
+- He defers the harder cases to a follow-up 'Advanced Market structure' video which is not part of
+  this unit.
+python_detector: null
+related:
+- basic-trend-structure
+- displacement
+- structure-requires-htf-context
+- protected-swing
+- swing-point
+- premium-discount-equilibrium
+contributing_units:
+- the_foundation_02
+draft_count: 1
+voice: ttrades

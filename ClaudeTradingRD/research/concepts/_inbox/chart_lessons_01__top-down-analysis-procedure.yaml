@@ -1,0 +1,73 @@
+id: top-down-analysis-procedure
+name: "Top-Down Read (the fixed order of operations)"
+aliases: ["top down analysis", "top-down chart lesson", "going back top down"]
+category: model
+status: specified
+
+definition: >
+  The invariant sequence used to read a chart in every Chart Lessons walkthrough. It is
+  an order of operations, not a pattern. Start on the highest timeframe in play and
+  classify the phase of price; identify a candle 2 closure (the reversal candle) and the
+  draw it implies; drop one timeframe and require a change in the state of delivery
+  inside that candle 2 to confirm it; mark the levels the following candle must respect
+  (half of the opposing candle, the upper or lower half of the higher-timeframe candle -
+  the T-spot); locate a protected swing to serve as the invalidation; then refine the
+  entry downward, timeframe by timeframe, only until the risk-to-reward to the nearest
+  real target is acceptable. Bias never comes from the entry timeframe; the entry
+  timeframe only supplies the fill and the stop.
+
+timeframes:
+  htf: ["1M", "1W", "1D", "4H", "1H"]
+  ltf: ["15m", "5m", "3m", "1m"]
+  fractal: true
+
+preconditions:
+  - "A higher-timeframe chart with at least the previous period's high and low visible."
+  - "For index futures, the correlated assets (YM, ES, NQ) charted alongside for relative strength and SMT."
+
+detection_rules:
+  - "Step 1 - on the highest timeframe, classify the phase of price (expansion, retracement, consolidation, reversal) and identify the draw on liquidity (previous period high or low, equal highs or lows)."
+  - "Step 2 - identify a candle 2 closure on the working higher timeframe; prefer the continuation candle (candle 3) over trading the reversal itself."
+  - "Step 3 - drop one timeframe and require a change in the state of delivery inside that candle 2 to confirm the reversal."
+  - "Step 4 - mark 0.5 of the opposing candle and the relevant half of the higher-timeframe candle; require the next candle's wick to form inside that overlap."
+  - "Step 5 - locate a protected swing to act as the invalidation and stop reference."
+  - "Step 6 - refine downward through the lower timeframes seeking continuations until the risk-to-reward to the nearest target is acceptable; enter there."
+  - "Step 7 - manage by phase and by protected swings; partial at the intermediate targets."
+
+  - "Step 0 - the series is framed as applying the channel's concepts to the current week's price action, replayed candle by candle; the read is rebuilt after every close rather than fixed once."
+  - "A weak higher-timeframe close against the intended direction does not cancel the bias; it raises the confirmation requirement on the lower timeframes instead."
+invalidation:
+  - "The protected swing is taken out."
+  - "The higher-timeframe candle fails to respect its half level / the T-spot."
+  - "No acceptable risk-to-reward exists at any refinement level - stand aside rather than extend the target."
+
+execution:
+  bias: "From the highest timeframe candle 2 closure and its implied draw."
+  entry: "Lowest timeframe at which the risk-to-reward is acceptable, on a continuation or a close back over an opposing candle."
+  stop: "Beyond the protected swing (in one example, tight below the bodies)."
+  targets: ["intraday highs or lows", "previous period high or low", "equal highs or equal lows"]
+
+measurable:
+  - "proportion of higher-timeframe candle 2 closures that receive a lower-timeframe change in the state of delivery"
+  - "distribution of the entry timeframe actually used (15m vs 5m vs 3m vs 1m)"
+  - "hit rate of the implied draw within N periods of the confirmed candle 2"
+
+sources:
+  - video_id: UBTl7za9obc
+    title: "TTrades Top-Down Chart Lessons #2"
+  - video_id: IzOQmcgLyA0
+    title: "TTrades Top-Down Chart Lessons #3"
+  - video_id: w-JekHg6Ldk
+    title: "TTrades Top-Down Chart Lessons #4"
+
+  - video_id: Nlw-PZhoViQ
+    title: "TTrades Top-Down Chart Lessons #1"
+    quote: "blend concepts you see on this channel within the current week's price action"
+ambiguities:
+  - "Sourced from an ASR (whisper-small) transcript, not YouTube captions; wording may be imprecise."
+  - "The starting timeframe varies by trade (weekly for the ES swing, monthly for the dollar analysis, hourly for the ES scalp) and no rule is given for choosing it."
+  - "Chart Lessons #1 (video_id Nlw-PZhoViQ) has since been recovered by speech recognition and is now cited above. It does NOT contain an explicit framing statement of the procedure - it opens the series by saying only that it blends the channel's concepts into the current week's price action, and then demonstrates the same order of operations without naming it. The procedure remains a reconstruction from usage across all four videos."
+  - "The step where a consolidation is distinguished from a retracement is decided by stated distrust of the move in videos UBTl7za9obc and IzOQmcgLyA0, but video Nlw-PZhoViQ supplies a mechanical alternative (no closure to continue expanding => consolidation) - see concept consolidation-vs-retracement-test."
+
+python_detector: null
+related: ["phases-of-price", "fractal-model-c2", "fractal-model-c3", "cisd", "t-spot", "protected-swing", "rr-gated-entry-refinement", "timeframe-pairing"]

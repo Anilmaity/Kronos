@@ -1,0 +1,57 @@
+id: session-high-low
+name: "Session (Killzone) Highs & Lows"
+aliases: ["killzone pivots", "Asia session high/low", "London session high/low", "Asian range"]
+category: liquidity
+status: specified
+
+definition: >
+  The high and low of a completed killzone session (Asia, London, New York AM/PM), extended
+  forward and treated as liquidity pools of the same kind as previous-day levels. The speaker
+  marks them with the killzone pivots feature of TFO's indicator and uses displacement — or the
+  conspicuous lack of it — around these levels to decide which side of the range the day will
+  work toward.
+
+timeframes:
+  htf: ["1D"]
+  ltf: ["1H", "15m", "5m", "1m"]
+  fractal: false
+
+preconditions:
+  - "The session window (in New York time) has completed, or is complete enough to have a working high and low."
+
+detection_rules:
+  - "asia_high/low := max/min over 20:00-00:00 New York time."
+  - "london_high/low := max/min over 02:00-05:00 New York time."
+  - "ny_am_high/low := max/min over 07:00-10:00 (forex) or 08:30-11:00 (indices) New York time."
+  - "Rule stated: if price fails to displace out of one side of the session range, direct attention to the other side."
+  - "Rule stated: a sweep of the session high that holds, followed by displacement below the session low, indicates continuation lower into the next session."
+
+invalidation:
+  - "Once both session extremes have been consumed, the speaker moves attention to previous-day levels and then to swing points ('look left')."
+
+execution:
+  bias: "Set by which session extreme is swept and whether the move displaces or is rejected."
+  entry: "Requires a lower timeframe model at the level."
+  stop: "Beyond the session extreme."
+  targets: ["the opposite session extreme", "previous day high/low", "projection deviations of the session's manipulation leg"]
+
+measurable:
+  - "frequency with which the Asia range high/low is swept during London"
+  - "conditional probability that New York expands in the direction opposite the London sweep"
+  - "share of the daily range produced inside each session"
+
+sources:
+  - video_id: MPeeE55rNOw
+    title: "ICT Killzones & Indicator Settings"
+  - video_id: YESqIoA7Wyg
+    title: "Important Liquidity Levels - Draw On Liquidity - ICT"
+  - video_id: U8xH2dEgH5A
+    title: "Liquidity: Buyside & Sellside - ICT Concepts"
+
+ambiguities:
+  - "'Displacement' out of a session extreme is never quantified."
+  - "New York AM differs between forex and indices (07:00 vs 08:30) with no explanation, so the same instrument class must be fixed before automating."
+  - "Whether the Asian range for the 'Asia accumulates' reading is the full 20:00-00:00 window or a narrower one is not addressed."
+
+python_detector: null
+related: ["killzones", "buyside-sellside-liquidity", "power-of-three-amd", "standard-deviation-projection", "draw-on-liquidity"]

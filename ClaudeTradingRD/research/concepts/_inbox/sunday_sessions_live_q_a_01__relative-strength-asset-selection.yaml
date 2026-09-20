@@ -1,0 +1,55 @@
+id: relative-strength-asset-selection
+name: "Trade the Weakest Asset Short, the Strongest Long"
+aliases: ["relative strength and weakness", "weakest asset", "lagging asset"]
+category: structure
+status: specified
+
+definition: >
+  Among correlated assets (NQ, ES, YM for indices; the dollar versus its counter currencies in
+  FX), the bias direction decides which instrument is traded: for a bearish idea trade the weakest
+  asset, for a bullish idea trade the strongest. The asset that has not yet reached its level is
+  the lagging asset and is deliberately not traded. When relative strength between the two
+  extremes is unclear, ES (the middle asset) is used because it behaves more cleanly.
+
+timeframes:
+  htf: ["1D", "4H", "1H"]
+  ltf: ["15m", "5m", "3m"]
+  fractal: true
+
+preconditions:
+  - "A directional bias exists from the daily chart."
+  - "At least two correlated instruments are compared over the same window."
+
+detection_rules:
+  - "Rank correlated assets by which has reached or failed to reach the same relative level (one makes the high while another leaves equal highs)."
+  - "Bearish bias: select the weakest asset (the one that failed to make the high, or is nearest its low)."
+  - "Bullish bias: select the strongest asset."
+  - "If NQ versus YM strength is ambiguous, select ES."
+  - "Never select the lagging asset, the one still to reach its level."
+
+invalidation:
+  - "The strongest asset fails to reverse at its level, removing the basis for the weakest asset to expand."
+
+execution:
+  bias: "From the daily chart."
+  entry: "On the selected asset only."
+  stop: "Per the entry model used."
+  targets: ["Previous day low for bearish ideas, previous day high for bullish ideas, on the selected asset"]
+
+measurable:
+  - "difference in realised R between trading the weakest and the strongest asset on the same signal"
+
+sources:
+  - video_id: egV_gABTQks
+    title: "(CPI) New York Open Live Q&A"
+  - video_id: 0AYGNc9czYc
+    title: "New York Open Live Q&A"
+  - video_id: WBwoiMDXT2c
+    title: "New York Open Live Q&A"
+
+ambiguities:
+  - "Strength and weakness are assessed visually over an unspecified lookback window."
+  - "He notes strength can switch intraday (YM strongest on the day but weakest into the open) without giving a rule for handling the switch."
+
+python_detector: null
+related: ["cross-asset-reversal-confirmation", "smt-requires-framework", "currency-pairing-opposition"]

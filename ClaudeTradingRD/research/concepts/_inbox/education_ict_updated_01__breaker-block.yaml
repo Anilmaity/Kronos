@@ -1,0 +1,69 @@
+id: breaker-block
+name: Breaker Block
+aliases:
+- breaker
+category: entry
+status: specified
+definition: 'A structural (not candle-level) pattern. Bearish breaker: price puts in a swing high, then
+  a swing low, then sweeps stops above the swing high making a HIGHER HIGH, then displaces below the
+  swing low making a LOWER LOW — ''a high, low, higher high, lower low''. The traded candle is the LOWEST
+  DOWN-CLOSE candle prior to the move that made the higher high / raided the stops. The bullish case
+  mirrors: low, high, lower low, higher high, and the last up-close candle before the move that made
+  the lower low.'
+timeframes:
+  htf:
+  - 4H
+  - 1H
+  ltf:
+  - 15m
+  - 5m
+  - 2m
+  - 1m
+  fractal: true
+preconditions:
+- A swing high and a swing low exist in sequence.
+detection_rules:
+- 'Bearish: identify swing high H1, then swing low L1.'
+- Price sweeps above H1 (higher high), then displaces and closes below L1 (lower low).
+- The breaker candle is the LOWEST down-close candle before the leg that made the higher high.
+- 'Bullish mirrors exactly: low, high, lower low (sweep), higher high (displacement); the breaker is
+  the last up-close candle before the leg that made the lower low.'
+- Stop can sit either on the swept extreme or just beyond the breaker itself — he shows both (2.3R vs
+  5R on the same trade).
+invalidation:
+- No displacement through the opposing swing — the four-point sequence never completes.
+execution:
+  bias: Direction of the displacement leg.
+  entry: Return into the breaker, preferably where an overlapping fair value gap sits (the unicorn).
+  stop: On the swept extreme, or just beyond the breaker for a tighter risk.
+  targets:
+  - The draw on liquidity (smooth/equal highs or lows)
+  - 2 to 2.5 standard deviations of the manipulation leg
+measurable:
+- frequency of the four-point sequence per session
+- fill rate of breaker retests before target
+sources:
+- video_id: rXMVPUZPw4A
+  title: Breaker Block & FVG Entry Model
+  quote: it is a high low higher high lower low
+- video_id: rXMVPUZPw4A
+  title: Breaker Block & FVG Entry Model
+  quote: I'm focused on the lowest down close candle prior to the move that went
+- video_id: 0xygpCMwxbQ
+  title: A+ ICT Entry Checklist
+  quote: the first thing I focus on is a stop raid
+ambiguities:
+- '''Lowest down close candle'' vs ''the series'' is used interchangeably in the examples; for a series
+  he marks the whole block.'
+- Whether the higher high must CLOSE above the swing high or only wick above is not stated — the diagrams
+  show a wick sweep.
+- The two stop placements are offered as a risk-to-reward choice, not a rule.
+related:
+- unicorn-model
+- order-block
+- market-structure-shift
+- a-plus-entry-checklist
+voice: ttrades
+contributing_units:
+- education_ict_updated_01
+draft_count: 1

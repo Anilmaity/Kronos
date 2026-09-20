@@ -1,0 +1,56 @@
+id: nfp-week-protocol
+name: Non-Farm Payroll Week Protocol
+aliases:
+- NFP week
+category: time
+status: specified
+definition: AM Trades treats NFP week as a special case with a fixed order of operations. Monday is
+  never traded. Tuesday is only a candidate if Monday engaged a higher-timeframe PD array. He usually
+  avoids the beginning of NFP week entirely. Monday through Thursday are used as DATA to see whether
+  a weekly profile has set up. Friday's 08:30 NFP release is then used as the volatility driver that
+  delivers the move, and he follows the profile through on Friday.
+timeframes:
+  htf:
+  - 1W
+  - 1D
+  ltf:
+  - 1H
+  fractal: false
+preconditions:
+- It is the week containing the non-farm payroll release.
+detection_rules:
+- 'Monday: no trade.'
+- 'Tuesday: trade only if Monday engaged a higher-timeframe PD array.'
+- Generally avoid the first half of the week.
+- 'Monday-Thursday: record the range and check whether a weekly profile has formed.'
+- 'Friday: use the 08:30 release as the volatility driver and trade the profile that the week has painted.'
+invalidation:
+- No weekly profile has formed by Thursday's close - Friday is not traded on the profile.
+measurable:
+- frequency of a confirmed profile by Thursday in NFP weeks
+- Friday post-08:30 expansion size in NFP weeks
+sources:
+- video_id: wGYde-h84cs
+  title: Live Q&A with AM Trades - Weekly Profile
+  quote: I never trade Mondays
+- video_id: wGYde-h84cs
+  title: Live Q&A with AM Trades - Weekly Profile
+  quote: Monday is data you can use to anticipate the profile
+- video_id: wGYde-h84cs
+  title: Live Q&A with AM Trades - Weekly Profile
+  quote: I only focus on red folder
+ambiguities:
+- Whether to enter before or only after 08:30 on Friday is implied ('use the release as a driver') but
+  not stated as a time gate.
+- The transcript renders NFP as 'NSP' in places.
+related:
+- no-monday-rule
+- news-impact-tiering
+- fomc-week-protocol
+- pre-event-avoidance-rule
+contributing_units:
+- live_stream_guests_02
+draft_count: 1
+voice: guest
+guest_sources:
+- AM Trades

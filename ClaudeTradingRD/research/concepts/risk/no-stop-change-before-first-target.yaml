@@ -1,0 +1,60 @@
+id: no-stop-change-before-first-target
+name: Do Not Touch The Stop Before The First Target Is Hit
+definition: 'AM Trades'' management rule is a single conditional with an explicit prohibition
+  attached. Nothing happens to the stop until the first target is reached - and specifically,
+  if structure shifts against the position before that, the stop is still not moved, ''regardless
+  of what the market shows''. Once the first target is hit he scales, moves the stop to break
+  even or slightly into profit, and lets the remainder run out. The stated purpose is removing
+  risk rather than protecting profit: you do not want to be holding a full position through
+  your targets. He acknowledges the standard objection - that trades come back after the stop
+  is moved to break even - and answers it with a timing condition: wait for displacement over
+  the highs and for a higher low to be put in before moving the stop, otherwise you are taken
+  out ahead of the real move by what he calls the inducement model.'
+category: risk
+status: specified
+aliases:
+- stops stay put
+preconditions:
+- An open position with a defined first target.
+detection_rules:
+- 'Before the first target: do not modify the stop, regardless of what structure does.'
+- 'On the first target being hit: scale out, then move the stop to break even or slightly
+  into profit.'
+- Let the remainder run to the final target.
+- Do not move a stop to break even without displacement over the prior high and a higher low
+  formed.
+invalidation:
+- Stop taken before the first target - a full-risk loss by design.
+measurable:
+- expectancy of never-move-before-T1 vs moving on an adverse structure shift
+- share of trades that would have been saved by an early stop move, net of those stopped out
+  early
+sources:
+- video_id: CrUfTskOveo
+  title: Stream Q & A with AM Trades  - ICT concepts
+  quote: whenever it reaches first target move stop back to break even
+- video_id: CrUfTskOveo
+  title: Stream Q & A with AM Trades  - ICT concepts
+  quote: if i'm not hitting my first target i'm not touching my stop
+ambiguities:
+- '''First target'' is never defined mechanically in this video.'
+- The scale-out fraction at the first target is not given.
+- He explicitly says there is no right or wrong way and everyone differs, which weakens it
+  from a rule to a personal policy; the host offers a trailing method in the same recording.
+related:
+- trail-market-structure-swings
+- t1-t2-partial-system
+- break-even-management
+- mechanical-trade-management
+- breakeven-after-new-protected-swing
+guest_sources:
+- AM Trades
+- Stream Q & A with AM Trades  - ICT concepts
+timeframes:
+  htf: []
+  ltf: []
+  fractal: false
+contributing_units:
+- live_stream_guests_03
+draft_count: 1
+voice: guest

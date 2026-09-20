@@ -1,0 +1,54 @@
+id: stop-loss-placement
+name: "Stop Loss Placement (Swing vs Zone)"
+aliases: ["stop at the protected swing", "no extra room"]
+category: risk
+status: specified
+
+definition: >
+  Asked how many points above the protected swing the stop should sit, he answers that there is
+  no buffer: the stop goes at the protected swing itself, because if that level is taken out
+  that is the invalidation of the idea, and adding room (his example: "24 points extra") would
+  only be paying to be wrong more slowly. The one stated exception is the advanced entry where
+  the CISD level is too far away for the risk-to-reward to work: there the stop may be moved to
+  50% of the swing being entered from — explicitly *below* that half level, never at it.
+
+timeframes:
+  htf: ["1D", "4H", "1H"]
+  ltf: ["15m", "5m", "1m"]
+  fractal: true
+
+preconditions:
+  - "A protected swing exists on the timeframe being traded."
+
+detection_rules:
+  - "Default: place the stop at the protected swing with no additional buffer."
+  - "Treat a trade through the protected swing as invalidation, not as noise to be absorbed."
+  - "Exception (advanced entry off a candle 2 / candle 3 closure): the stop may be placed relative to 50% of the swing, positioned below that level rather than on it."
+  - "If the stop cannot be placed in a location that makes the target's risk-to-reward work, do not take the trade — refine or move up a timeframe."
+
+invalidation:
+  - "Not applicable — this is a placement rule."
+
+measurable:
+  - "rate of stop-outs that would have been avoided by a buffer, versus the R cost of that buffer"
+  - "R distribution of protected-swing stops versus 50%-of-swing stops"
+
+sources:
+  - video_id: Je7cd9HJUBE
+    title: "New York Open Live Q&A"
+    quote: "I'm just putting my stop loss at the protected swing"
+  - video_id: G1IIdQ3RAkY
+    title: "New York Open Live Q&A"
+    quote: "You can sometimes adjust your stop loss to what would be 50% of this"
+
+ambiguities:
+  - "How far below the 50% level the exception stop should sit is not quantified."
+  - "Whether the no-buffer rule survives on instruments with wider spreads or on forex is never addressed; all examples are futures."
+  - "He states separately that he prefers to enter at market rather than with limits, but does not say whether the stop is placed as a resting order or managed."
+
+python_detector: null
+related: ["protected-swing", "rr-gated-entry-refinement", "position-sizing-fixed-risk", "entry-timeframe-elevation", "break-even-management"]
+
+contributing_units: ["live_streams_02"]
+draft_count: 1
+voice: ttrades

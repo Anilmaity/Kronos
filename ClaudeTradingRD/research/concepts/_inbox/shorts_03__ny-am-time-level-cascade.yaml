@@ -1,0 +1,112 @@
+id: ny-am-time-level-cascade
+name: "New York AM Time-Level Cascade (8:30 / 9:30 / 10:00)"
+aliases:
+  - "8:30 and 9:30 are the most important time levels"
+  - NY AM opposing-run cascade
+  - which time level expands
+category: time
+status: underspecified
+
+definition: >
+  A compressed if-then chain that assigns the manipulation and the expansion to specific New
+  York morning clock levels. He names 8:30 and 9:30 as the two most important time levels when
+  entering the New York session WITH a bias, and then branches on whether London has already
+  set the day's extreme. If London has set it, the day is a continuation and the only question
+  is which level makes the opposing run: if 8:30 makes the opposing run, 9:30 expands; if 8:30
+  fails to make it, 9:30 makes the opposing run and 10:00 expands. If London has NOT set the
+  day's extreme, the same two levels are candidates to set it: 8:30 makes the low of day and
+  9:30 expands, or 8:30 fails and 9:30 makes the manipulation, with expansion at 9:30 itself or
+  deferred to 10:00. In every branch the pattern is identical - one level manipulates, the next
+  one expands - and the cascade only ever shifts one slot later when a level fails to deliver
+  its manipulation.
+
+timeframes:
+  htf: ["1H", "30m"]
+  ltf: ["15m", "5m", "1m"]
+  fractal: false
+
+preconditions:
+  - "A directional bias is already held coming into the New York session (the rule is stated
+    only for the with-a-bias case)."
+  - "The London session's outcome is known: whether it did or did not set the day's high or low."
+
+detection_rules:
+  - "Bullish worked case. Step 1: ask whether London set the low of day."
+  - "If London DID set the low of day, treat New York as a continuation and go to step 2."
+  - "Step 2: does 8:30 make an opposing run? If yes, expect 9:30 to expand."
+  - "If 8:30 does NOT make an opposing run, expect 9:30 to make the opposing run and 10:00 to
+    expand."
+  - "If London did NOT set the low of day, look for 8:30 or 9:30 to set it: if 8:30 makes the
+    low of day, 9:30 can expand; if 8:30 fails, 9:30 makes the manipulation and either expands
+    or defers the expansion to 10:00."
+  - "Bearish case is stated as the mirror (the source works the bullish example explicitly)."
+
+invalidation:
+  - "Not stated. The source gives no rule for abandoning the day when neither 8:30, 9:30 nor
+    10:00 produces the expansion."
+
+execution:
+  bias: "The bias carried into the session; the cascade only selects the timing, not the side."
+  entry: "At the level identified as the expansion level, after the preceding level's opposing
+    run has printed (the companion Short pairs this with a lower-timeframe CISD at 9:30)."
+  stop: "Not stated in this unit."
+  targets: "Not stated in this unit."
+
+measurable:
+  - "frequency of each branch (London-set vs 8:30-set vs 9:30-set extreme)"
+  - "conditional probability that 9:30 expands given an 8:30 opposing run, versus the
+    unconditional 9:30 expansion rate"
+  - "share of the day's range delivered in the predicted expansion slot vs the other two"
+  - "how often the cascade slips a second time (both 8:30 and 9:30 fail, 10:00 does not expand)"
+
+sources:
+  - video_id: B_7pMkbHyC4
+    title: "The Power of Key Time Levels in the NY AM Session"
+    quote: "8:30 and 9:30 are the most important time levels"
+  - video_id: B_7pMkbHyC4
+    title: "The Power of Key Time Levels in the NY AM Session"
+    quote: "if 8:30 makes an opposing run. And if it does, 9:30 can expand"
+  - video_id: B_7pMkbHyC4
+    title: "The Power of Key Time Levels in the NY AM Session"
+    quote: "8:30 fails to make an opposing run, then I want to see 9:30"
+  - video_id: B_7pMkbHyC4
+    title: "The Power of Key Time Levels in the NY AM Session"
+    quote: "If London has not yet set the low a day"
+  - video_id: -fgyK1yb4Io
+    title: "The Structure of a 9:30 C2 Reversal"
+    quote: "I want to see the higher time frame candle have a small wick"
+  - video_id: -fgyK1yb4Io
+    title: "The Structure of a 9:30 C2 Reversal"
+    quote: "looking for 930 to10 to expand higher to fill out this expansion candle"
+
+ambiguities:
+  - "NO TIMEZONE IS SPOKEN. The times are bare clock numbers; Eastern is the corpus-wide
+    convention but is not stated in either Short."
+  - "'Opposing run' is the gate at every branch and is not defined or bounded here - no minimum
+    range, no duration, no requirement that it sweep a level."
+  - "'London has set the low of day' is not decidable in real time; it is a hindsight statement
+    used as a live precondition, and no confirmation test (e.g. an hourly CISD) is attached to
+    it in this Short."
+  - "No tolerance window is given around any time - whether 8:33 still counts as '8:30' is not
+    stated, nor whether the level means the candle open or the whole 8:30-9:00 period."
+  - "Only the bullish direction is worked; the bearish mirror is assumed, not shown."
+  - "The companion 9:30 Short adds that the lower-timeframe change in the state of delivery may
+    be a closure right at the 9:30 open OR an opposing run then a close over it, which makes
+    'opposing run at 9:30' and 'expansion at 9:30' possible in the same candle. The two Shorts
+    are not reconciled."
+
+related:
+  - new-york-intraday-time-levels
+  - session-cascade
+  - important-time-levels
+  - opposing-run
+  - opposing-run-entry
+  - london-reversal-profile
+  - new-york-manipulation-profile
+  - nine-thirty-expansion-invalidation
+  - session-open-volume-nyse
+
+python_detector: null
+voice: ttrades
+contributing_units: [shorts_03]
+draft_count: 1

@@ -1,0 +1,58 @@
+id: midnight-open-directional-filter
+name: "Only Short Above The Midnight Open, Only Long Below It"
+aliases: ["deep discount", "deep premium", "midnight and 8:30 opening price"]
+category: time
+status: specified
+voice: guest
+guest_sources:
+- "$niper (Matt)"
+
+definition: >
+  $niper's two-line reading of the midnight and 08:30 opening prices, which he attributes to ICT.
+  Price trading below BOTH the midnight opening price and the 08:30 opening price is in deep
+  discount: he will not look for sells there, only buys at or above those levels. Price trading
+  above both is in deep premium: he anticipates a retracement down into discount. He frames the
+  purpose as a risk-to-reward device - it stops you selling the bottom.
+
+timeframes:
+  htf: ["1D"]
+  ltf: ["1H", "15m", "5m", "1m"]
+  fractal: false
+
+preconditions:
+- "The midnight opening price and the 08:30 opening price are plotted (he uses an indicator for this)."
+
+detection_rules:
+- "If price is below the midnight open AND below the 08:30 open, classify as deep discount: no sells; look for buys at or above those two levels."
+- "If price is above the midnight open AND above the 08:30 open, classify as deep premium: anticipate a retracement into discount."
+- "Both levels must agree - the classification is stated on the pair, not on either alone."
+
+invalidation:
+- "Not stated as a separate condition; the classification simply flips when price crosses back through the two opens."
+
+execution:
+  bias: "Long only in deep discount, short only in deep premium."
+  entry: "Not specified by this rule - it is a location filter applied on top of the entry model."
+  stop: "Not stated."
+  targets: ["the opposing premium / discount region"]
+
+measurable:
+- "expectancy of the same entry model with and without the both-opens filter applied"
+- "how often price closes the day back through the two opens after being classified deep"
+
+sources:
+- video_id: UmLWRlXd_V8
+  title: "8/14/22  MMXM Live with $niper  - ICT concepts"
+  quote: "I'm not looking for cells underneath the 830 open and the midnight open"
+
+ambiguities:
+- "Time zone is not stated in this video; the levels are named as 'midnight' and '8 30' with no exchange or zone."
+- "Whether the test is on the wick or the body being below both opens is not stated."
+- "The rule is asserted as ICT's teaching and given no evidence."
+- "No rule for the case where price is above one open and below the other."
+
+python_detector: null
+related: ["important-time-levels", "premium-discount-equilibrium", "discount-requirement-before-entry"]
+contributing_units:
+- live_stream_guests_01
+draft_count: 1

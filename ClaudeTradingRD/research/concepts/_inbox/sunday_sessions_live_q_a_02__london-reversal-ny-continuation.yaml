@@ -1,0 +1,58 @@
+id: london-reversal-ny-continuation
+name: "A+ Setup: Daily C3 + London Reversal + New York Continuation"
+aliases: ["favourite fractal model", "A+ setup", "London reversal New York continuation"]
+category: model
+status: specified
+
+definition: >
+  His single highest-conviction setup, described as the one he would trade if restricted to
+  one forever. Structure: the daily chart is in candle 3 (the day after a daily C2 closure);
+  within that day, the London session forms the low (bullish) or high (bearish) of day - the
+  reversal; New York then continues in the daily direction, entered on a 15-minute chart. The
+  claimed edge is that it stacks a continuation inside a continuation: the intraday
+  continuation of the London reversal is itself a continuation of the daily move.
+
+timeframes:
+  htf: ["1D", "4H", "1H"]
+  ltf: ["15m", "5m"]
+  fractal: false
+
+preconditions:
+  - "A daily C2 closure printed on the previous day, so today is daily C3."
+  - "London has produced the reversal (the day's extreme against the daily direction)."
+
+detection_rules:
+  - "Confirm daily C3: yesterday swept the prior day's extreme and closed back inside, in the direction of today's bias."
+  - "Confirm a London reversal: price opens, makes its extreme during London, and turns."
+  - "Confirm a continuation closure on the 15-minute chart in the New York session."
+  - "A protected swing must form, confirming the wick."
+  - "Point of interest is NOT required here because this is a continuation (see point-of-interest)."
+
+invalidation:
+  - "No daily C2 closure the prior day - the day is not C3."
+  - "London does not produce the reversal / the day's extreme forms later."
+  - "The 15-minute continuation closure does not print."
+
+execution:
+  bias: "Direction of the daily C2/C3 sequence."
+  entry: "15-minute continuation closure in the New York session, near the HTF candle opening price."
+  stop: "Behind the protected swing that confirms the wick."
+  targets: ["previous day high or low", "equal highs or lows", "approximately 2R", "close of the 4H expansion candle"]
+
+measurable:
+  - "Frequency of days meeting all three conditions."
+  - "Hit rate to previous day high/low and to 2R."
+  - "Fraction of the day's range captured from the 15m entry."
+
+sources:
+  - video_id: 00iZXPAdR5A
+    title: "New York Open Live Q&A"
+    quote: "Candle three on the daily, London forms a reversal, New York continuation"
+
+ambiguities:
+  - "London's session boundaries are never defined in this transcript."
+  - "'2R would be there' and 'previous day high' are both quoted as targets on the same example; precedence is unstated."
+  - "He refers to a free blog article ('TTrades favourite fractal model') as the canonical write-up; not read here."
+
+python_detector: null
+related: ["fractal-model-c2", "fractal-model-c3", "point-of-interest", "session-cascade", "protected-swing"]

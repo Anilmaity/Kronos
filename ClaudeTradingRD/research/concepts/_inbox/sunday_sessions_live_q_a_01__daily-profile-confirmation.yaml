@@ -1,0 +1,54 @@
+id: daily-profile-confirmation
+name: "Daily Profile Must Confirm the Daily Bias"
+aliases: ["daily profile", "open high first", "profile does not confirm"]
+category: model
+status: underspecified
+
+definition: >
+  The daily profile is the shape of the current daily candle: where it opened, whether it made a
+  low or a high first, and how it expanded. It acts as a veto on the daily bias. A bullish daily
+  bias is only confirmed if price opens, makes some sort of low, and then trades higher. If price
+  opens and immediately expands higher into its objectives with no low to trade away from, the
+  profile is read as bearish intraday, pointing back toward the daily open even though the daily
+  bias is bullish.
+
+timeframes:
+  htf: ["1D", "4H", "1H"]
+  ltf: ["15m"]
+  fractal: false
+
+preconditions:
+  - "A daily bias has been established (daily C2/C3 plus H1 CISD)."
+  - "The current day has opened."
+
+detection_rules:
+  - "Bullish confirmation: price opens, forms a low (ideally a shallow sweep), then trends higher."
+  - "Bearish confirmation: price opens, forms a high, then trends lower."
+  - "Non-confirmation: price opens and immediately expands into objectives without forming the opposing extreme first."
+  - "On non-confirmation, look for a move back to the daily open or to a level that gets swept, rather than continuation."
+
+invalidation:
+  - "A relevant level is swept, creating a new level to trade away from and restoring the bias direction."
+
+execution:
+  bias: "Daily bias, unless the profile contradicts it, in which case intraday direction may be opposite."
+  entry: "Only once a level exists to trade away from."
+  stop: "Per the entry model used."
+  targets: ["Daily open", "Overnight structural lows or highs"]
+
+measurable:
+  - "outcome of days where daily bias and daily profile agree versus disagree"
+
+sources:
+  - video_id: WBwoiMDXT2c
+    title: "New York Open Live Q&A"
+  - video_id: 0AYGNc9czYc
+    title: "New York Open Live Q&A"
+
+ambiguities:
+  - "No enumeration of valid versus invalid profiles is given in this unit; he points to a separate daily-profile video."
+  - "When bias and profile disagree he does not state a general priority rule beyond following whichever his model can frame."
+  - "How much expansion counts as the day having already expanded is not quantified."
+
+python_detector: null
+related: ["daily-bias-c2-c3-h1-cisd", "three-entry-quality-criteria", "level-to-trade-away-from"]

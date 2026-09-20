@@ -1,0 +1,71 @@
+id: large-wick-target-adjustment
+name: Large Wick - Adjust Targets, Do Not Expect Expansion
+category: risk
+status: specified
+aliases:
+- adjust your targets
+- trading a larger wick
+definition: 'The explicit target-side counterpart to the wick-size filter. A reversal candle with a
+  large wick can still be traded -- he says so directly -- but the target set must be swapped, because
+  most of the period''s range has already been spent forming the wick. With a small wick (reversal-to-expansion
+  candle) he targets previous candles'' extremes and standard deviation projections. With a large wick
+  he targets, instead: the DAILY OPEN (or the higher-timeframe open when used fractally), the SESSION
+  LOWS/HIGHS, and the CURRENT candle''s low/high. He also gives the disqualifier: if the overnight session
+  highs/lows have ALREADY been taken, there is no low-resistance liquidity left and the R is not there.'
+timeframes:
+  htf:
+  - 1D
+  - 4H
+  - 1H
+  ltf:
+  - 15m
+  - 5m
+  fractal: true
+preconditions:
+- A reversal candle whose wick against the intended direction is large.
+detection_rules:
+- Classify the wick as large (a large opposing run, close near the open).
+- 'Replace expansion targets with: the daily open (or higher-timeframe open), the session lows/highs,
+  and the current candle''s low/high.'
+- Do not target previous candles' extremes or the deeper standard deviation projections on a large-wick
+  candle.
+- 'Disqualifier: if the session highs/lows have already been taken out, there are no failure swings
+  left as targets -- the R does not work and the setup is skipped.'
+- 'Preferred alternative to trading a large-wick candle at all: let the reversal day trade, then look
+  for the continuation day and check whether IT has a small wick.'
+invalidation:
+- The reduced target set is reached -- expectations end there; further movement is a bonus, not a plan.
+execution:
+  bias: Away from the large wick.
+  entry: As per the model, on the lower timeframe.
+  stop: Protected swing / body extreme.
+  targets:
+  - daily open / higher-timeframe open
+  - session lows or highs
+  - current candle low or high
+measurable:
+- hit rate of the daily open as a target on large-wick days
+- range covered after a large-wick candle vs a small-wick candle
+- how often session extremes are already taken at decision time
+sources:
+- video_id: m4k_1pF5zFI
+  title: TTrades Fractal Model - Trading Candle 2
+  quote: my expectations is favoring back towards that daily open in those session lows
+- video_id: jKuXaC84Qx4
+  title: Trading the Invalidation of Daily Bias
+- video_id: qdQYhePcvGE
+  title: TTrades Fractal Model - Trading Candle 3
+ambiguities:
+- Which 'daily open' is meant (18:00, midnight, 09:30) is not stated in this unit.
+- '''Session lows'' is used without naming the sessions in the candle 2 video; Asia and London are named
+  only in passing.'
+- The large/small threshold is the same unquantified classification the whole model rests on.
+related:
+- small-wick-expansion-rule
+- average-daily-range
+- standard-deviation-projection
+- session-high-low
+contributing_units:
+- build_a_model_intro_to_ttrades_fractal_model_02
+draft_count: 1
+voice: ttrades

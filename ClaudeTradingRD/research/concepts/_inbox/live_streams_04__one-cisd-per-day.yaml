@@ -1,0 +1,53 @@
+id: one-cisd-per-day
+name: "Only One Change In The State Of Delivery Per Day"
+aliases: ["which session CISD is more important", "the CISD that forms the daily wick"]
+category: entry
+status: specified
+
+definition: >
+  Answering a viewer who asked whether the London CISD or the New York CISD matters more, he
+  states there is only one change in the state of delivery per day - the one that forms the
+  daily candle's wick. If London produced it, anything that looks like a CISD in New York is
+  not a second CISD but a continuation off the first, built from opposing candles. If London
+  did not produce one, then New York is the session that forms it. A CISD is defined here as
+  the opposing-candle block that confirms a shift in trend; a later break in the same
+  direction is a continuation of that same shift, not a new one.
+
+timeframes:
+  htf: ["1D"]
+  ltf: ["1H", "30m", "15m", "5m"]
+  fractal: false
+
+preconditions:
+  - "A daily candle in progress whose wick (high or low, per bias) has not yet been confirmed."
+
+detection_rules:
+  - "Within one daily candle, identify the first CISD - the opposing-candle block whose break confirms the trend shift that forms the daily wick."
+  - "That is the day's only CISD; mark it once."
+  - "Any subsequent break in the same direction later in the day is a continuation of that CISD, not a new CISD."
+  - "If no CISD formed in London, the New York session is the one that forms it."
+
+invalidation:
+  - "The daily wick the CISD confirmed is traded through, i.e. the day's extreme was not in."
+
+measurable:
+  - "count of CISDs detected per day by a naive detector vs one-per-day under this rule"
+  - "session distribution (Asia / London / New York) of the day's single CISD"
+  - "hit rate of continuations taken off the second and third same-direction breaks"
+
+sources:
+  - video_id: i2HhHhWdaPQ
+    title: "New York Open Live Q&A"
+    quote: "you really only have one change in the state delivery per day"
+
+ambiguities:
+  - "No rule is given for the case where London's CISD is later invalidated - whether New York can then supply a replacement CISD in the same daily candle."
+  - "Which timeframe the 'one' CISD is counted on is not stated in this answer; the companion answer (see daily-wick-confirmation-timeframes) makes the timeframe session-dependent, so the count is presumably per that timeframe."
+  - "The transcript renders CISD variously as 'CISD', 'CIST', 'CSD' and 'CSC'; all are read as change in the state of delivery."
+
+python_detector: null
+related: ["cisd", "daily-wick-confirmation-timeframes", "hourly-cisd-confirmation", "opposing-candle", "london-reversal-ny-continuation"]
+
+contributing_units: ["live_streams_04"]
+draft_count: 1
+voice: ttrades

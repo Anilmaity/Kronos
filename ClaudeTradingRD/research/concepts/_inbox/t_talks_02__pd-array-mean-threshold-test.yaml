@@ -1,0 +1,42 @@
+id: pd-array-mean-threshold-test
+name: "PD Array Mean Threshold Test"
+aliases: ["reaction from the upper half", "mean threshold of a fair value gap"]
+category: structure
+status: specified
+
+definition: >
+  A probability test for whether a PD array will hold. For a bullish array, price should not
+  close below its mean threshold (the 50% of the gap), and ideally the bullish reaction comes
+  from the upper half of the array. For a bearish array, price should not close above the
+  mean threshold and the rejection should come from the lower half. A close beyond the mean
+  threshold is read as an early indication that the array will fail, and in the worked
+  example was used to anticipate that the next array in the same direction would also fail.
+
+timeframes:
+  htf: ["1D", "1H"]
+  ltf: ["15m", "5m"]
+  fractal: true
+
+preconditions:
+  - "A fair value gap, balanced price range or order block has been marked."
+
+detection_rules:
+  - "Compute the array's mean threshold (50% of its range)."
+  - "Bullish array: a candle close below the mean threshold weakens it; a reaction from the upper half strengthens it."
+  - "Bearish array: a candle close above the mean threshold weakens it; a rejection from the lower half strengthens it."
+
+invalidation:
+  - "A close fully beyond the array."
+
+measurable:
+  - "hold rate of arrays where price reacted from the upper half vs those where it closed below the mean threshold"
+
+sources:
+  - video_id: JABOO4LYNjQ
+    title: "Jokerszn | Daily Orderflow - ICT Daily Bias"
+
+ambiguities:
+  - "The timeframe of the 'close' used for the test is not fixed; the daily is used in the worked examples but the rule is applied to H1 and M15 arrays too."
+
+python_detector: null
+related: ["daily-close-only-bias", "daily-close-inversion", "balanced-price-range-overlap"]

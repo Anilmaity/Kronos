@@ -1,0 +1,83 @@
+id: previous-period-high-low
+name: Previous Day / Week / Month High & Low
+category: liquidity
+status: specified
+aliases:
+- previous candle extremes
+- formation liquidity
+- targets
+definition: 'The targeting rule of the fractal model, and it is deliberately simple: whatever timeframe
+  you are entering on, take the targets from the HIGHER timeframe you are referencing, and they are
+  that higher timeframe''s previous candles'' highs (bullish) or lows (bearish). Candle 1''s extreme
+  is the first target, then progressively older unswept extremes. Extremes that have ALREADY been
+  taken out are not marked. Equal highs/lows are singled out as good targets. Because the model is
+  fractal, a lower-timeframe entry can carry a runner to the higher-timeframe version of the same
+  target - this is the stated route to high R. The indicator''s ''formation liquidity'' line is this
+  rule automated: the previous candle''s extreme in the bias direction that has not yet been taken.'
+timeframes:
+  htf:
+  - 1M
+  - 1W
+  - 1D
+  - 4H
+  - 1H
+  ltf:
+  - 15m
+  - 5m
+  fractal: true
+preconditions:
+- A valid swing point / model on the reference timeframe.
+detection_rules:
+- Identify the candle you are trading away from (candle 2).
+- Look LEFT on the reference higher timeframe and mark the previous candles' highs (bullish) or lows
+  (bearish), starting with candle 1's.
+- Skip any extreme that has already been taken out.
+- Prefer equal highs / equal lows.
+- Escalate one timeframe up for the runner target (e.g. daily entry -> weekly swing extreme).
+- 'SMT rule: a target counts as satisfied when the correlated asset takes it out.'
+- 'Feasibility check: do not expect all targets in one day - ''that''s too much daily range''.'
+invalidation: []
+execution:
+  bias: n/a - targeting rule.
+  entry: n/a
+  stop: n/a
+  targets:
+  - candle 1's extreme
+  - older unswept previous-candle extremes
+  - equal highs / equal lows
+  - the higher-timeframe version of the same target for runners
+measurable:
+- hit rate of the first previous-candle extreme vs the second and third
+- R achieved by taking partial at the short-term target and holding a runner (worked examples reached
+  1:11 and 1:16)
+sources:
+- video_id: A4NasIa371c
+  title: How to Set Price Targets Using the Fractal Model
+  quote: we're always focused on swing highs and swing lows in the market
+- video_id: A4NasIa371c
+  title: How to Set Price Targets Using the Fractal Model
+  quote: why am I not marking out this high here
+- video_id: A4NasIa371c
+  title: How to Set Price Targets Using the Fractal Model
+  quote: take off a portion of your position at your short-term target
+- video_id: A4NasIa371c
+  title: How to Set Price Targets Using the Fractal Model
+  quote: when there's SMT or a correlated asset takes out this low
+- video_id: CqMIh-Vvhbg
+  title: Intro To TTrades Fractal Model [Indicator & Settings]
+  quote: this previous day's low has not been taken
+ambiguities:
+- '''Already taken out'' has no lookback bound - how far back to keep marking extremes is not stated.'
+- No rule chooses between this previous-candle-extreme target set and the standard-deviation projections,
+  which are also called targets and generally sit elsewhere.
+- '''Too much daily range'' is judged by eye - no ADR figure is used in this unit.'
+related:
+- standard-deviation-projection
+- draw-on-liquidity
+- relatively-equal-highs-lows
+- partial-profit-taking
+- average-daily-range
+contributing_units:
+- build_a_model_intro_to_ttrades_fractal_model_01
+draft_count: 1
+voice: ttrades

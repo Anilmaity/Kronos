@@ -1,0 +1,46 @@
+id: upper-half-positioning
+name: "Position in the Upper Half of the Swing-to-Target Range"
+aliases: ["first short-term target", "upper 50 percent"]
+category: entry
+status: specified
+
+definition: >
+  When shorting toward a target, the entry should be located in the upper 50% of the distance
+  between the swing being traded away from and the target (mirrored for longs). Once price has
+  traded into the lower half of that distance there is nothing meaningful left to risk against and
+  the trade should not be taken; that zone is more likely to become a consolidation.
+
+timeframes:
+  htf: ["4H", "1H", "30m"]
+  ltf: ["15m", "5m", "3m"]
+  fractal: true
+
+preconditions:
+  - "A swing to trade away from and a defined target both exist."
+
+detection_rules:
+  - "Measure from the swing extreme to the target."
+  - "Take entries only in the half of that range nearer the swing."
+  - "Reject entries in the half nearer the target."
+
+invalidation:
+  - "Price is already in the half nearer the target."
+
+execution:
+  bias: "Unchanged."
+  entry: "Upper half for shorts, lower half for longs."
+  stop: "Beyond the swing extreme."
+  targets: ["The defined target"]
+
+measurable:
+  - "reward-to-risk distribution of entries by position within the swing-to-target range"
+
+sources:
+  - video_id: uzPGXVYpVGc
+    title: "Candle 2 Confirmations - Live Lesson, Q&A"
+
+ambiguities:
+  - "He notes that once inside the lower half you would actually want the consolidation but cannot trade it, without saying what would make it tradeable."
+
+python_detector: null
+related: ["cisd-skip-at-target", "three-entry-quality-criteria", "dont-trade-after-expansion"]

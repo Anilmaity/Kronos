@@ -1,0 +1,76 @@
+id: phases-of-price
+name: Phases of Price Delivery
+category: structure
+status: specified
+aliases:
+- expansion retracement consolidation reversal
+- the flowchart
+definition: 'Four phases -- expansion, retracement, consolidation, reversal -- arranged as a closed
+  flowchart that ALWAYS starts at expansion and always returns to it. Legal transitions: expansion ->
+  retracement -> expansion in the SAME direction (continuation signature); expansion -> consolidation
+  -> either a breakout (expansion same direction) or a manipulation (expansion opposite, which if met
+  with expansion back is a reversal); expansion met with expansion = reversal, which forms a higher-timeframe
+  wick and is followed by a continuation. He insists the phases must be blended with the daily bias,
+  because the phase alone does not say which side to take -- the bias says whether he wants the low
+  or the high of a consolidation run out.'
+timeframes:
+  htf:
+  - 1D
+  - 4H
+  - 1H
+  ltf:
+  - 15m
+  - 5m
+  fractal: true
+preconditions:
+- An identified expansion leg to start from.
+- A daily bias, to decide which branch is wanted.
+detection_rules:
+- Start at expansion. Then classify the next leg.
+- Slow shallow counter-move that closes through the series of opposing candles and forms a protected
+  swing = retracement -> expect expansion again in the same direction.
+- Counter-move that fails to form a protected swing, or price staying inside one candle's range, or
+  an inside bar = consolidation -> expect one side of the range to be taken, then a move to the other
+  side.
+- Expansion one way immediately met with expansion the other way = reversal -> a higher-timeframe wick
+  has formed; expect a continuation away from it.
+- Expansion -> consolidation -> expansion opposite -> met with expansion = the manipulation branch,
+  i.e. a reversal formed out of a consolidation.
+- After any phase resolves, return to expansion and repeat.
+- If the next phase is not yet decidable, let more candles print rather than guessing.
+invalidation:
+- A reversal read is invalidated if expansion is met with expansion in the opposite direction again
+  and the anchoring extreme is taken.
+- A continuation read is invalidated when the counter-move goes beyond the EQ.
+measurable:
+- transition frequency matrix between the four phases
+- forward return after each transition type
+- share of counter-moves that qualify as retracement (protected swing) vs consolidation (none)
+sources:
+- video_id: 8BWkRGhuj1k
+  title: 'The Phases of Price Action: A Blueprint for Market Movement'
+  quote: expansion met with expansion that is a reversal
+- video_id: eywpZT3z6GQ
+  title: TTrades Scalping Model - Simple Day Trading Strategy
+  quote: a consolidation is a continuation signature to me
+- video_id: 9AL41xON3hA
+  title: The Only Trading Strategy You Need For 2026
+- video_id: FAKWJ-1NlLE
+  title: Trading The 4 Hour Power Of Three - OHLC / OLHC
+ambiguities:
+- '''Expansion'' itself has no size threshold; the whole flowchart is anchored on an undefined primitive.'
+- '''Slow shallow move'' (retracement) vs a fast counter-move (reversal) is judged visually; only the
+  protected-swing test is mechanical.'
+- In the scalping video a consolidation is called a continuation signature outright, while the flowchart
+  makes it a branch that can go either way -- the difference is that the bias resolves the branch, but
+  this is stated only in the flowchart video.
+related:
+- consolidation-vs-retracement-test
+- v-shape-reversal
+- protected-swing
+- daily-bias-framework
+- expansion-signature
+contributing_units:
+- build_a_model_intro_to_ttrades_fractal_model_02
+draft_count: 1
+voice: ttrades

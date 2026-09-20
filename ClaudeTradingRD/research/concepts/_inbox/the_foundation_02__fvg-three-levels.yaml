@@ -1,0 +1,81 @@
+id: fvg-three-levels
+name: The Three Levels Inside A Fair Value Gap
+aliases:
+- three things that I look for within a fair value Gap
+- start of the fair value gap
+- complete fill
+category: entry
+status: specified
+definition: 'Inside any fair value gap he marks exactly three prices - the start of the gap (the
+  near edge price first reaches), the consequent encroachment at 50%, and the point of complete fill
+  (the far edge) - and accepts three corresponding return behaviours. Price may reach into the near
+  edge, close back out and continue; it may reach the consequent encroachment, where he wants a candle
+  to close back outside but says he is flexible as long as the CE is respected; or it may fill the
+  gap entirely, in which case he prefers to see the close come back outside the consequent encroachment.
+  On a full fill he adds a refinement: he would like price to reach the discount of the range as
+  well.'
+timeframes:
+  htf:
+  - 1D
+  - 4H
+  - 1H
+  ltf:
+  - 15m
+  - 5m
+  - 1m
+  fractal: true
+preconditions:
+- A defined fair value gap with a known near edge, far edge and midpoint.
+detection_rules:
+- Level 1 = the start of the fair value gap (the near edge).
+- Level 2 = the consequent encroachment, 50% of the gap.
+- Level 3 = complete fill of the gap (the far edge).
+- 'Reaction A (accepted): price reaches into the gap, a candle closes back outside it, price continues
+  away.'
+- 'Reaction B (accepted): price reaches the consequent encroachment; he prefers a candle to close
+  back outside, but accepts the level as respected without it.'
+- 'Reaction C (accepted): price fills the gap completely; here he prefers a close back outside the
+  consequent encroachment.'
+- 'Refinement on a full fill: he would like price to reach a little lower to reach the discount of
+  the range.'
+invalidation:
+- Price closes over the consequent encroachment or outside the fair value gap - see consequent-encroachment,
+  where he uses the word 'invalidate' for exactly this.
+measurable:
+- distribution of how deep returns go into a gap (near edge / CE / full fill) and the reaction rate
+  at each
+- hit rate conditional on a close back outside the CE after a full fill vs no such close
+sources:
+- video_id: ZVUDpCyvxfQ
+  title: Understanding Fair Value Gaps (FVG) - ICT Concepts
+  quote: there are three things that I look for within a fair value Gap
+- video_id: ZVUDpCyvxfQ
+  title: Understanding Fair Value Gaps (FVG) - ICT Concepts
+  quote: the consequent encroachment or the 50 of the fair value Gap
+- video_id: ZVUDpCyvxfQ
+  title: Understanding Fair Value Gaps (FVG) - ICT Concepts
+  quote: where price completely fills the fair value Gap
+- video_id: ZVUDpCyvxfQ
+  title: Understanding Fair Value Gaps (FVG) - ICT Concepts
+  quote: as long as it's respecting the consequent encroachment I'm pretty flexible
+- video_id: ZVUDpCyvxfQ
+  title: Understanding Fair Value Gaps (FVG) - ICT Concepts
+  quote: I would like to have it reach a little bit lower
+ambiguities:
+- '''Respecting the consequent encroachment'' is explicitly left to judgement - he says he is pretty
+  flexible with it, which is the opposite of a threshold.'
+- Which of the three levels an order should actually be placed at is never stated; the three levels
+  are described as things he looks for, not as entries.
+- The discount refinement is applied to one example only and no range is specified for measuring
+  the discount.
+- Whether a wick to a level counts as 'reaching' it, or only a body, is not distinguished.
+python_detector: null
+related:
+- fair-value-gap
+- consequent-encroachment
+- inversion-fair-value-gap
+- premium-discount-equilibrium
+contributing_units:
+- the_foundation_02
+draft_count: 1
+voice: ttrades

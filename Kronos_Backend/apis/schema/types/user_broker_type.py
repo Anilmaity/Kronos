@@ -1,0 +1,153 @@
+#####################################################################   LIBRARIES   ########################################################################
+import graphene
+from django.db.models import Sum
+from graphene_django import DjangoObjectType
+
+
+from apis.constants import today_ist
+from apis.models import (Position,
+                                UserBroker,
+                                models)
+from apis.schema.types.position_type import PositionType
+from apis.schema.types.strategy_type import AnalyticsType
+from apis.schema.types.user_strategy_type import UserStrategyType
+
+##############################################################################################################################################################
+
+
+
+def _broker_holder_name(broker):
+    """Display name for a UserBroker: the owning user's full name, else
+    username, else email. Returns "" when no user is attached."""
+    u = getattr(broker, "user", None)
+    if not u:
+        return ""
+    full = f"{(u.first_name or '').strip()} {(u.last_name or '').strip()}".strip()
+    return full or (u.username or "") or (u.email or "")
+
+
+class UserBrokerType(DjangoObjectType):
+    """ "Get daily, weekly and"""
+
+    userstrategys = graphene.List(
+        UserStrategyType, strategies=graphene.List(graphene.UUID)
+    )
+    dailypnl = graphene.List(PositionType)
+    marginAvailable = graphene.String()
+    accountHolderName = graphene.String()
+    accountValueOnStartingOfMonth = graphene.String()
+    marginUsed = graphene.String()
+    status = graphene.String()
+    label = graphene.String()
+
+    def resolve_label(self, info):
+        return self.label
+
+
+
+
+
+    def resolve_status(self, info):
+        return (self.status)
+
+
+    def resolve_today_actual_total_profit_loss(self, info):
+        broker_positions = self.userbrokerposition_set.filter(
+            created_at__date=today_ist()
+        ).aggregate(Sum("profit_loss"))["profit_loss__sum"]
+
+        if broker_positions:
+            return broker_positions
+        else:
+            return 0
+
+
+
+    def resolve_marginUsed(self, info):
+        return (self.margin_used)
+
+
+
+
+
+    def resolve_marginAvailable(self, info):
+        return (self.margin_available)
+
+    name = graphene.String()
+    hasToken = graphene.Boolean()
+
+    def resolve_name(self, info):
+        return _broker_holder_name(self)
+
+    def resolve_hasToken(self, info):
+        return bool(self.meta_api_token_enc)
+
+    def resolve_accountHolderName(self, info):
+        return _broker_holder_name(self)
+
+
+    def resolve_strategy_positions(self, info):
+        positions = (
+            Position.objects.filter(
+                created_at__date=today_ist(),
+            )
+            .exclude(quantity=0)
+            .order_by("-id")
+        )
+        return positions
+
+
+
+
+    # get positions of
+    def get_positions_query(self):
+        positions_query = (
+            Position.objects.filter(user_strategy__user_broker=self.id)
+            .values("user_strategy__user_broker__client_code")
+            .annotate(
+                overall_profit_loss=Sum(
+                    "profit_loss", output_field=models.DecimalField()
+                )
+            )
+        )
+        return positions_query
+
+
+    def resolve_dailypnl(self, info):
+        userstrategy = self.userstrategy_set.all()
+        positions = []
+
+        for us in userstrategy:
+            positions.extend(us.position_set.all().order_by("-id"))
+
+        unique_date = []
+        for position in positions:
+            if position.date not in unique_date:
+                unique_date.append(position.date)
+
+        daily_positions = []
+        for date in unique_date:
+            same_days_position = []
+            for position in positions:
+                if position.date == date:
+                    same_days_position.append(position)
+
+            same_days_position[0].profit_loss = sum(
+                position.profit_loss for position in same_days_position
+            )
+
+            daily_positions.append(same_days_position[0])
+
+        daily_positions.sort(key=lambda x: x.date, reverse=True)
+        return daily_positions
+
+    def resolve_userstrategys(self, info, strategies=[]):
+        # select_related: UserStrategyType resolvers touch .strategy and .user_broker.
+        qs = self.userstrategy_set.select_related("strategy", "user_broker")
+        if len(strategies) > 0:
+            qs = qs.filter(strategy__in=strategies)
+        return qs.exclude(archived=True).order_by("-created_at")
+
+    class Meta:
+        model = UserBroker
+        exclude = ("user", "userstrategy_set", "order_set", "meta_api_token_enc")

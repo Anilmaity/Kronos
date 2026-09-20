@@ -1,0 +1,48 @@
+id: futures-over-forex-for-fills
+name: "Futures Over Forex For Limit Fills At The Breaker"
+aliases: ["spread fill risk"]
+category: risk
+status: specified
+
+definition: >
+  An instrument-selection rule specific to a limit-entry model. Because the entry is a resting
+  limit at the beginning of the breaker and price frequently only just touches that level before
+  moving away, the forex spread can leave the order unfilled while the futures order fills. The
+  model is therefore run on futures.
+
+timeframes:
+  htf: []
+  ltf: ["5m"]
+  fractal: false
+
+preconditions:
+  - "The entry is a resting limit at a precise level rather than a market or stop order."
+
+detection_rules:
+  - "If the entry model depends on a touch of an exact level, prefer an instrument where the quoted price reaches that level without a spread offset."
+  - "The stated case: in the GBPUSD example price barely touched the breaker before moving in the intended direction - in forex the fill may not have occurred, in futures it would have."
+
+invalidation:
+  - "Not applicable."
+
+execution:
+  bias: "Unchanged."
+  entry: "Unchanged, but the instrument is chosen so the limit fills."
+  stop: "Unchanged."
+  targets: []
+
+measurable:
+  - "fill rate of an identical limit level in futures versus a spread-quoted forex feed, over the same setups"
+  - "proportion of setups where price touches the level by less than the typical spread"
+
+sources:
+  - video_id: zXtJSSkiNmo
+    title: "Ash Trades | The Journey To Profitability & The Unicorn Model"
+
+ambiguities:
+  - "No spread size or instrument comparison is quantified."
+  - "Commission and tick-value differences between the two are not addressed."
+  - "The claim is made for one worked example; it is not generalised with data."
+
+python_detector: null
+related: ["unicorn-model", "mechanical-trade-management"]

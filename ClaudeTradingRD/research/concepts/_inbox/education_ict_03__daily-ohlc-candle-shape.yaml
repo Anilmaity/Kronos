@@ -1,0 +1,64 @@
+id: daily-ohlc-candle-shape
+name: OHLC / OLHC Daily Candle Shape (and the Indecision Candle)
+definition: 'EARLIER RECORDING. The daily profile is taught as a four-point shape: a sell day delivers
+  open, then high, then low, then close; a buy day delivers open, then low, then high, then close.
+  The shape is used to locate where in the day the entry must happen - the second point (the high
+  on a sell day, the low on a buy day) is the manipulation to be sold or bought, and this video anchors
+  that point in price by pairing it with the midnight and 08:30 opens. He also shows the degraded
+  case: a day that gaps and then chops around the midnight open delivers no clean shape, and the
+  levels are used as pivots instead.'
+category: structure
+status: contested
+aliases:
+- open high low close
+- OLHC
+- buy day
+- sell day
+- daily profile
+preconditions:
+- A daily directional read exists before the day is traded.
+detection_rules:
+- Sell day := open, high, low, close in that order; the high is the manipulation.
+- Buy day := open, low, high, close in that order; the low is the manipulation.
+- 'Pair the manipulation point with the two opens: sell-day high above them, buy-day low below them.'
+- A day that gaps and then oscillates around the midnight open is classified as not clean; use the
+  level as a pivot rather than expecting the shape.
+invalidation:
+- Price making its extreme on the wrong side of the opens, or oscillating across them, means the
+  shape is not in play that day.
+measurable:
+- share of days that deliver a clean OHLC / OLHC shape
+- share of the daily range captured by entering at the second point of the shape
+sources:
+- video_id: b6yvRKf8haE
+  title: Why You Should Use 8:30 & Midnight Open (EST) -  ICT Concepts
+  quote: if you understand open high low close of a daily profile
+- video_id: b6yvRKf8haE
+  title: Why You Should Use 8:30 & Midnight Open (EST) -  ICT Concepts
+  quote: inversely if you have a buy day open low high close
+- video_id: b6yvRKf8haE
+  title: Why You Should Use 8:30 & Midnight Open (EST) -  ICT Concepts
+  quote: here's an example of a day that isn't very clean
+ambiguities:
+- Earlier recording; the updated material carries the same OHLC/OLHC framing plus an indecision-candle
+  case that is absent here.
+- No test is given for classifying the day as a buy or sell day in advance - the shape is applied
+  under an assumed bias.
+- '''Isn''t very clean'' is the only label for the degraded case; no criterion separates clean from
+  unclean days.'
+related:
+- opposing-run-entry
+- midnight-open-directional-filter
+- power-of-three-amd
+- daily-profile-framework
+timeframes:
+  htf:
+  - 1D
+  ltf:
+  - 15m
+  - 5m
+  fractal: false
+contributing_units:
+- education_ict_03
+draft_count: 1
+voice: ttrades

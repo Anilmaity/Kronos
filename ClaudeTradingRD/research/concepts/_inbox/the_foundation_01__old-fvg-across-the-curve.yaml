@@ -1,0 +1,55 @@
+id: old-fvg-across-the-curve
+name: "Old Fair Value Gaps Carried Across The Curve"
+aliases: ["old civy / old bissy", "reaccumulation gap", "redistribution gap"]
+category: entry
+status: underspecified
+
+definition: >
+  After a smart money reversal, fair value gaps left behind on the previous (sell) side of the
+  curve are dragged forward and used as support on the new (buy) side — reaccumulation — and
+  the mirror image is used for redistribution. The gap is not required to be respected in its
+  original polarity; it is being reused precisely because price has traded through it and the
+  curve has turned.
+
+timeframes:
+  htf: ["1D", "4H", "1H"]
+  ltf: ["15m", "5m"]
+  fractal: true
+
+preconditions:
+  - "A smart money reversal has occurred: a close over/under the opposing candles (CISD), an inversion, a market structure shift, and a short-term low/high put in."
+  - "One or more fair value gaps exist on the prior side of the curve."
+
+detection_rules:
+  - "Identify FVGs formed during the prior (opposite-direction) leg."
+  - "Extend those zones forward in time."
+  - "Once price closes beyond such a zone in the new direction, treat a return to it as reaccumulation (long) or redistribution (short) support/resistance."
+  - "Take the reaction at the zone as the entry area."
+
+invalidation:
+  - "Price closing back through the zone against the new direction."
+
+execution:
+  bias: "Direction of the smart money reversal."
+  entry: "On the retest of the dragged-forward old gap."
+  stop: "Not stated in this section."
+  targets: ["buyside liquidity above (equal highs) in the demonstrated example"]
+
+measurable:
+  - "reaction rate at dragged-forward old gaps vs freshly formed gaps"
+  - "how far back in time a dragged gap can be and still react"
+
+sources:
+  - video_id: uDJI2AbyyCs
+    title: "Inversion Fair Value Gaps (IFVG) - ICT Concepts"
+  - video_id: bbWPoajy2MY
+    title: "Mitigation Blocks Simplified - ICT Concepts"
+
+ambiguities:
+  - "No rule for which old gaps to carry forward or how many — the examples pick visually obvious ones."
+  - "'Smart money reversal' is used as the gate but is never formally defined in this unit."
+  - "No stop-loss or target rule is given for this specific pattern."
+  - "Overlaps heavily with mitigation-block usage (old order blocks dragged across); the distinction between dragging a gap and dragging an order block is not drawn."
+
+python_detector: null
+related: ["inversion-fair-value-gap", "fair-value-gap", "mitigation-block", "market-maker-model", "smart-money-reversal"]

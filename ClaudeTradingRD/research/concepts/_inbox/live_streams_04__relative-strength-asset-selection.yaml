@@ -1,0 +1,77 @@
+id: relative-strength-asset-selection
+name: "Ranking Correlated Assets And Choosing Which To Trade"
+aliases: ["relative strength and weakness", "focus on ES", "leading vs lagging asset"]
+category: structure
+status: specified
+
+definition: >
+  Across all four streams he is asked how he picks between NQ, ES and YM, and the answer is
+  consistently mechanical and small: compare the same higher-timeframe candle's closure across
+  the correlated assets. A bullish 4-hour (or 1-hour) closure on one and a bearish closure on
+  another is the whole of it - "don't make it super complex" - and he adds the divergence
+  (SMT) as the second input. Three selection rules sit on top. First, the relative strength
+  that matters is measured on the timeframe you are executing on, not on the daily: if you are
+  trading a 5-minute move you care about the lower-timeframe strength. Second, when the ranking
+  is unclear, default to ES, because NQ and YM alternate and bounce around while ES sits in the
+  middle and moves most consistently. Third, never trade the lagging asset in the hope that it
+  follows - trade the strongest or the weakest; and if you are looking lower, do not trade the
+  strongest. He also declines to call the closure divergence a PSP, because PSP implies a
+  reversal and he is using it only as basic relative strength.
+
+timeframes:
+  htf: ["4H", "1H"]
+  ltf: ["15m", "5m"]
+  fractal: true
+
+preconditions:
+  - "Two or more correlated assets on screen (his fixed layout is NQ left, ES middle, YM right)."
+
+detection_rules:
+  - "Compare the most recent closed higher-timeframe candle across the assets: bullish closure = stronger, bearish closure = weaker."
+  - "Measure that comparison on the timeframe you intend to execute on, not on a higher one."
+  - "Add SMT (divergence at a shared high or low) as the second input."
+  - "If the ranking is unclear or keeps switching, trade ES."
+  - "Trade the strongest or the weakest, never the lagging asset."
+  - "Looking lower: do not trade the strongest asset. Looking higher: do not trade the weakest."
+  - "The middle asset is only traded in the scenario where one asset has already expanded or reversed and the middle one is expected to follow, and even then only if entry is still in the upper half (short) or lower half (long) of the swing-to-target range."
+
+invalidation:
+  - "Strength switches, which he says can happen at any time and does so repeatedly on air."
+
+execution:
+  bias: "From the higher-timeframe framework, not from the ranking."
+  entry: "In the asset the ranking selects."
+  stop: null
+  targets: null
+
+measurable:
+  - "agreement rate between closure-based ranking and subsequent relative performance"
+  - "expectancy of trading the selected asset vs the lagging asset on the same signal"
+  - "how often ES outperforms a coin-flip between NQ and YM when the ranking is ambiguous"
+
+sources:
+  - video_id: x4sRGuZIqWk
+    title: "New York Open Live Q&A"
+    quote: "I don't like to trade the lagging asset"
+  - video_id: N3Ml-r0X30o
+    title: "New York Open Live Q&A"
+    quote: "If we're uncertain on relative strength focus on ES."
+  - video_id: eIPM-D8RrSQ
+    title: "New York Open Live Q&A"
+    quote: "Look at the 4hour close here. Bullish closure."
+  - video_id: i2HhHhWdaPQ
+    title: "New York Open Live Q&A"
+    quote: "You don't trade the strongest asset if you're looking lower"
+
+ambiguities:
+  - "'Uncertain' is not defined; in practice it means the ranking has flipped during the session."
+  - "There is unresolved tension between 'default to ES' (the middle asset) and 'never trade the lagging asset' - ES is by construction between the leader and the laggard."
+  - "How much of the closure must be directional (body vs wick) is not stated; he reads it visually."
+  - "He rejects the PSP label for the closure divergence without saying what, if anything, would make it a PSP."
+
+python_detector: null
+related: ["relative-strength-weakness", "cross-asset-reversal-confirmation", "smt-divergence", "upper-half-positioning", "currency-pairing-opposition"]
+
+contributing_units: ["live_streams_04"]
+draft_count: 1
+voice: ttrades

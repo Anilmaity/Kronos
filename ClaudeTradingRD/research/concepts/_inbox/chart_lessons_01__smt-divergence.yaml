@@ -1,0 +1,60 @@
+id: smt-divergence
+name: "SMT (one correlated asset takes the level, the other does not)"
+aliases: ["SMT", "previous day low SMT", "NQ has taken this low while ES has not"]
+category: liquidity
+status: specified
+
+definition: >
+  A divergence between correlated instruments at the same level, used here both as the
+  reason a trade exists and as the trigger inside it. The construction is simple and
+  binary: at a shared reference level - the previous day low, or an intraday swing low -
+  one asset trades through the level and the other does not. In the ES scalp, NQ takes the
+  previous day low while ES and YM do not, which simultaneously marks NQ as the weakest
+  asset and establishes that the level is being swept rather than broken. The same
+  divergence is then used again on the 1-minute chart: NQ takes an intraday low, ES does
+  not, and that divergence is what makes the subsequent close back over the opposing candle
+  a valid entry rather than noise. SMT is also listed as one of the three inputs for ranking
+  relative strength.
+
+timeframes:
+  htf: ["1D", "1H"]
+  ltf: ["15m", "1m"]
+  fractal: true
+
+preconditions:
+  - "Two or more correlated instruments (YM, ES, NQ) charted together."
+  - "A shared reference level - previous day low/high, or an intraday swing."
+
+detection_rules:
+  - "Identify the shared level on both instruments."
+  - "SMT exists when one instrument trades beyond the level and the correlated instrument does not."
+  - "Bullish SMT at a low: the weaker asset takes the low, the stronger holds above it."
+  - "Bearish SMT at a high: the weaker asset fails to make the high the stronger one makes."
+  - "Require a reversal closure on the asset that took the level before acting."
+  - "Where SMT governs timing, wait for the diverging asset's candle to close before entering."
+
+invalidation:
+  - "The asset that held the level subsequently trades through it - the divergence is resolved and gone."
+
+execution:
+  bias: "Away from the swept level, on the asset that did not take it."
+  entry: "On the close back over the opposing candle on the non-sweeping asset."
+  stop: "Below the protected low created by that close-through."
+  targets: ["the failure swings / equal highs above"]
+
+measurable:
+  - "frequency of previous-day-extreme SMT per week across YM/ES/NQ"
+  - "follow-through after SMT with a reversal closure vs SMT without one"
+  - "R achieved entering the non-sweeping asset vs the sweeping asset"
+
+sources:
+  - video_id: w-JekHg6Ldk
+    title: "TTrades Top-Down Chart Lessons #4"
+
+ambiguities:
+  - "No tolerance is given - how far one asset must exceed the level, or how close the other may come without counting as having taken it, is unstated."
+  - "The reference levels used are previous day low and an intraday swing low; whether SMT is valid at any level or only at specific ones is not addressed here."
+  - "Waiting for the correlated asset's candle to close is stated for this trade and not generalised."
+
+python_detector: null
+related: ["relative-strength-asset-selection", "smt-as-confirmation-not-signal", "smt-requires-framework", "order-block", "failure-swing"]

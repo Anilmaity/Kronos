@@ -1,0 +1,77 @@
+id: session-open-volume-nyse
+name: 9:30 Belongs To Indices Because The NYSE Opens; Forex Uses 8:30 News Instead
+variants:
+  name:
+  - 9:30 Matters Because the NYSE Cash Session Opens
+  definition:
+  - 'The volatility at 9:30 New York time on index futures is attributed to the cash equity
+    market opening: SPY, QQQ and the individual constituents begin trading, so regular-trading-hours
+    volume enters the market that the index futures track. He explicitly rejects the explanation
+    that an algorithm injects volatility at that time. He also states 9:30 has no comparable
+    effect on currencies.
+
+    '
+definition: 'Asked whether 08:30 or 09:30 should be used for forex, TTrades answers no to
+  09:30: it matters because that is when the New York Stock Exchange opens and equities start
+  trading, which makes it specific to the index asset class. 08:30 can be used in forex when
+  there is news at that time, because a release is currency-relevant in a way that an equity
+  cash open is not.'
+category: time
+status: contested
+aliases:
+- 9:30 is not a forex level
+- why 9:30
+- New York open volume
+preconditions:
+- Instrument class identified (index vs FX).
+- Instrument is an equity index future or a related ETF/index.
+detection_rules:
+- 'For indices: 09:30 EST is a valid time level (cash equity open).'
+- 'For forex: do not use 09:30 as a structural time level.'
+- 'For forex: 08:30 is usable when a release lands at that time.'
+- At 09:30 New York time, cash equities open and index-future volume rises.
+- Expect the open to resolve intraday direction when the pre-open structure was ambiguous.
+- Do not expect the same effect on FX pairs.
+measurable:
+- realised volatility at 09:30 in index futures vs major FX pairs
+- FX volatility at 08:30 on news vs no-news days
+- index-future volume and realised range in the 15 minutes after 09:30 versus before
+sources:
+- video_id: wGYde-h84cs
+  title: Live Q&A with AM Trades - Weekly Profile
+  quote: that's when the stock New York Stock Exchange opens
+- video_id: egV_gABTQks
+  title: (CPI) New York Open Live Q&A
+ambiguities:
+- Whether other equity-driven levels (10:00, 16:00) inherit the same asset-class restriction
+  is not addressed.
+- No rule is given for how long after the open the effect persists.
+related:
+- important-time-levels
+- new-york-intraday-time-levels
+- killzones
+- est-timezone-anchor
+- macros-are-htf-opens
+- time-based-exit-htf-close
+timeframes:
+  htf:
+  - 1D
+  ltf:
+  - 1H
+  - 15m
+  - 5m
+  fractal: false
+execution:
+  bias: Not applicable.
+  entry: He waits for the 9:30 open to reveal direction when pre-open structure is unclear.
+  stop: Not specified by this concept.
+  targets:
+  - Not specified by this concept.
+contributing_units:
+- live_stream_guests_02
+- sunday_sessions_live_q_a_01
+draft_count: 2
+voice: ttrades
+voice_playlist: mixed
+guest_sources:
+- Live Q&A with AM Trades - Weekly Profile

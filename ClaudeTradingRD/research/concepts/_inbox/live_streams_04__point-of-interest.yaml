@@ -1,0 +1,66 @@
+id: point-of-interest
+name: "Point Of Interest (POI)"
+aliases: ["POI", "PD array", "relevant level"]
+category: entry
+status: specified
+
+definition: >
+  Asked how to tell whether a level is a POI or a valid PD array, he gives a closed
+  enumeration and refuses to extend it: points of interest are fair value gaps, highs and
+  lows - "that's it". He repeats it later in the same stream when a viewer uses an unfamiliar
+  term: all he knows are highs, lows and fair value. Asked whether a trade must come out of a
+  higher-timeframe fair value gap he says no - it must come out of a point of interest, which
+  is normally a high or a fair value gap. The POI is what lets him anticipate a reversal;
+  where none exists he can only anticipate a continuation after one has formed. A separate
+  answer resolves the all-time-high case: with nothing to the left there is no POI at all, and
+  he treats the eyeballed daily range as the stand-in objective rather than abandoning the day.
+
+timeframes:
+  htf: ["1D", "4H", "1H"]
+  ltf: ["15m", "5m"]
+  fractal: true
+
+preconditions:
+  - "A chart with prior highs, lows and fair value gaps marked."
+
+detection_rules:
+  - "A POI is one of exactly three things: a fair value gap, a previous high, or a previous low."
+  - "Nothing else qualifies - no breakers, no rejection blocks, no named PD-array variants."
+  - "A reversal may only be anticipated where price reaches a POI; without one, wait for a continuation to form and trade that instead."
+  - "At all-time highs there is no POI to the left; use the eyeballed daily-range objective as the stand-in and trade the candles in front of you."
+
+invalidation:
+  - "Price trades through the POI without a reaction, after which it is no longer relevant."
+
+execution:
+  bias: null
+  entry: "Out of the POI, in the direction of the aligned higher timeframes."
+  stop: "Beyond the extreme formed at the POI."
+  targets: ["the opposing POI"]
+
+measurable:
+  - "reaction rate at each of the three POI classes"
+  - "expectancy of reversals attempted with vs without a POI present"
+
+sources:
+  - video_id: i2HhHhWdaPQ
+    title: "New York Open Live Q&A"
+    quote: "All I know are highs, lows, and fair value."
+  - video_id: x4sRGuZIqWk
+    title: "New York Open Live Q&A"
+    quote: "which is normally a high or a uh fair value gap"
+  - video_id: eIPM-D8RrSQ
+    title: "New York Open Live Q&A"
+    quote: "you're not going to have a POI at all time highs"
+
+ambiguities:
+  - "Which highs and lows qualify is not bounded here - separation, age and relevance are handled by other concepts, not by this answer."
+  - "The auto-caption renders his enumeration as 'POIs to use your value gaps, highs, lows', dropping 'fair'; it is read as fair value gaps, highs and lows, consistent with his restatement later in the same stream."
+  - "Whether an unmitigated fair value gap and a mitigated one both count is not addressed."
+
+python_detector: null
+related: ["relevant-level", "fair-value-gap", "important-level", "level-to-trade-away-from", "ttfm-minimal-toolkit"]
+
+contributing_units: ["live_streams_04"]
+draft_count: 1
+voice: ttrades

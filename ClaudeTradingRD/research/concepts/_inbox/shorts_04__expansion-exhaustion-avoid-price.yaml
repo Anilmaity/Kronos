@@ -1,0 +1,53 @@
+id: expansion-exhaustion-avoid-price
+name: "Avoid Price (expansion exhaustion)"
+category: risk
+status: specified
+definition: >
+  The Shorts state the avoid-price rule with an explicit trigger and an explicit refusal to
+  rationalise. After a reversal with multiple candles of expansion, the continuation he wants is
+  a sweep of the previous low (with or without SMT) followed by an inversion. Where several fair
+  value gaps are stacked he treats them as one large gap that must be closed through in its
+  entirety. When price fails to close through and fails to produce a clean V-shape reversal, he
+  avoids the area - and states that even if the move subsequently works, he is not interested,
+  because a run higher out of a consolidation is usually just the consolidation highs being taken
+  before price goes lower.
+
+timeframes:
+  htf: ["1D", "4H"]
+  ltf: ["1H", "15m", "5m"]
+  fractal: true
+
+detection_rules:
+  - "Require a sweep of the previous extreme (or an SMT) followed by an inversion for the continuation."
+  - "Where several fair value gaps stack, treat them as one large gap; the closure must clear all of them."
+  - "No clean close through and no V-shape reversal -> avoid price in that area."
+  - "Do not re-enter on the grounds that the move later worked; a run out of the consolidation is read as a sweep of its highs."
+
+invalidation:
+  - "A clean close through the stacked gap with a V-shape reversal, which reinstates the setup."
+
+measurable:
+  - "outcome of moves out of structures classified avoid-price"
+  - "how often the run out of such a consolidation reverses"
+
+sources:
+  - video_id: MtczT00fhJI
+    title: "Using IFVGs to Identify Low-Probability Setups"
+    quote: "this is where I want to avoid price"
+  - video_id: MtczT00fhJI
+    title: "Using IFVGs to Identify Low-Probability Setups"
+    quote: "Even if this was to work out, price is just consolidating here."
+  - video_id: MtczT00fhJI
+    title: "Using IFVGs to Identify Low-Probability Setups"
+    quote: "it is not meeting the requirements for my model"
+
+ambiguities:
+  - "'Multiple fair value gaps' is not bounded - no maximum span for the aggregated gap is given."
+  - "The V-shape requirement inherits its own missing geometric test."
+
+python_detector: null
+related: ["v-shape-reversal-speed", "inversion-fair-value-gap", "fair-value-gap", "consolidation-avoidance", "liquidity-sweep-vs-consolidation"]
+
+voice: ttrades
+contributing_units: [shorts_04]
+draft_count: 1

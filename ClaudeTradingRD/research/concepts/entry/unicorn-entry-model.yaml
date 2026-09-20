@@ -1,0 +1,67 @@
+id: unicorn-entry-model
+name: Unicorn Entry Model (Breaker + FVG After A Stop Hunt)
+definition: 'The execution pattern: price tags a pre-marked higher-timeframe point of interest
+  aligned with the daily bias, then a short-term stop run occurs (frequently the Asia range
+  high or low, or relative equal highs/lows), then displacement leaves a fair value gap with
+  a breaker overlapping it. A limit order is placed at the top or bottom of the breaker, the
+  stop goes at the top or bottom of the fair value gap candle or the breaker itself - never
+  at the swing low, on the explicit grounds that it ruins the risk-reward - and 80% is taken
+  at 2R with the remainder at 3R, occasionally leaving a runner at break-even.
+
+  '
+category: entry
+status: specified
+aliases:
+- the Unicorn
+- breaker entry model
+preconditions:
+- Session is New York AM, 9:00 to 11:30; no new entries after 11:00.
+- Price has tagged a pre-marked HTF point of interest in line with the daily bias.
+- 'Timeframe pairing satisfied: 4H POI -> 15m confirmation -> 1m execution, or 1H POI -> 5m
+  execution.'
+detection_rules:
+- A short-term stop run occurs at the point of interest (Asia range extreme, relative equal
+  highs/lows, consolidation extreme).
+- Displacement follows, leaving a fair value gap.
+- A breaker overlaps the fair value gap.
+- Place a limit at the breaker edge rather than entering at market where possible.
+invalidation:
+- Price trades fully through the fair value gap - treated as evidence the move continues against
+  the idea.
+measurable:
+- hit rate of 2R and 3R targets
+- frequency of the full pattern appearing in the 9:00-11:30 window
+sources:
+- video_id: G44VpidBD_U
+  title: NickDoesFutures | Unicorn Model & Experiences With ICT
+ambiguities:
+- The breaker's formation rule (how many candles, which swing) is described only by example.
+- Session times are given without a stated timezone (New York implied).
+- Risk per trade is never expressed as a percentage.
+related:
+- htf-poi-gate-before-ltf
+- killzone-execution-sequence
+- low-probability-day-checklist
+timeframes:
+  htf:
+  - 4H
+  - 1H
+  ltf:
+  - 15m
+  - 5m
+  - 1m
+  fractal: true
+execution:
+  bias: Daily bias / draw on liquidity.
+  entry: Limit at the top or bottom of the breaker.
+  stop: At the fair value gap candle edge, or the breaker itself. Never at the swing low.
+  targets:
+  - 2R for 80% of the position
+  - 3R for the remainder
+  - occasional runner left at break-even
+contributing_units:
+- t_talks_02
+draft_count: 1
+voice: guest
+guest_sources:
+- NickDoesFutures | Unicorn Model & Experiences With ICT

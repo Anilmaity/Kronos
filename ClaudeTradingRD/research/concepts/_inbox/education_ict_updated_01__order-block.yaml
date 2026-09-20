@@ -1,0 +1,85 @@
+id: order-block
+name: Order Block (the opposing candle in the move that swept liquidity)
+aliases:
+- my favorite reversal pattern
+- opposing candle
+- up close candle into an important level
+category: structure
+status: specified
+definition: 'His self-described favourite reversal model. Starting from an important level (a PD array,
+  or resting buyside/sellside liquidity), price makes a short-term swing and then raids it. The order
+  block is the opposing candle — or series of opposing candles — inside the move that swept that swing
+  INTO the level: the up-close candle(s) for a bearish block, the down-close candle(s) for a bullish
+  one. It is not validated until price closes back through it, and the level he then trades from is
+  the block''s OPENING PRICE.'
+timeframes:
+  htf:
+  - 1W
+  - 1D
+  - 4H
+  ltf:
+  - 1H
+  - 5m
+  - 1m
+  fractal: true
+preconditions:
+- An important level exists (higher-timeframe PD array, or resting buyside/sellside liquidity).
+- A short-term swing high/low has formed near that level.
+detection_rules:
+- Price raids the short-term high (bearish case) or low (bullish case) into the important level.
+- Identify the up-close candle, or series of up-close candles, inside that sweeping move (down-close
+  candle(s) for the bullish case).
+- Wait for price to CLOSE below that up-close candle (or above that down-close candle) — the close validates
+  the block.
+- Mark the block's opening price; that is the level expected to support price away from it.
+- Wicks may trade into the block; the bodies must keep respecting it.
+invalidation:
+- Bodies closing through the block's opening price / beyond its mean threshold.
+- No close back through the opposing candle — the block is never validated.
+execution:
+  bias: Away from the swept side, toward the opposing liquidity.
+  entry: Retest of the order block, its opening price, or its 0.5 / mean threshold; often paired with
+    an overlapping fair value gap.
+  stop: Beyond the block's extreme (the swept high/low).
+  targets:
+  - Opposing buyside/sellside liquidity
+  - -2 to -2.5 then -4 standard deviations of the manipulation leg
+measurable:
+- hit rate of order blocks validated at a HTF level vs those without one
+- frequency of body violation of the opening price before target
+sources:
+- video_id: 7p9MBFk8EEM
+  title: My Favorite Reversal Pattern | Orderblocks
+  quote: This is my favorite reversal pattern
+- video_id: 7p9MBFk8EEM
+  title: My Favorite Reversal Pattern | Orderblocks
+  quote: the first thing I start with is an important level
+- video_id: 7p9MBFk8EEM
+  title: My Favorite Reversal Pattern | Orderblocks
+  quote: When price closes below this uplo candle, it then validates this order block
+- video_id: 7p9MBFk8EEM
+  title: My Favorite Reversal Pattern | Orderblocks
+  quote: now I'm going to be looking at the opening price of this order block
+- video_id: 7p9MBFk8EEM
+  title: My Favorite Reversal Pattern | Orderblocks
+  quote: the wicks reach into there, the body is still respecting this down close candle
+- video_id: E89d1HArbgM
+  title: Market Structure Shift vs Change In State Of Delivery
+  quote: focused on the close and displacement below the opening price of this up close
+ambiguities:
+- Whether the validating close must also displace (leave an FVG) is stated in E89d1HArbgM ('close and
+  displacement') but only as 'closes below' in 7p9MBFk8EEM.
+- '''Important level'' is enumerated by instance (daily/weekly FVG, previous month high, daily swing
+  low) but never ranked or bounded.'
+- When a SERIES of opposing candles is used, whether the opening price is the first candle's open or
+  the highest/lowest is not stated.
+related:
+- cisd
+- propulsion-block
+- mean-threshold
+- breaker-block
+- unicorn-model
+voice: ttrades
+contributing_units:
+- education_ict_updated_01
+draft_count: 1

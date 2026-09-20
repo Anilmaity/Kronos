@@ -1,0 +1,82 @@
+id: relative-strength-asset-selection
+name: Ranking Correlated Assets And Trading The Middle One
+aliases:
+- I don't trade the lagging asset
+- the middle asset
+category: structure
+status: specified
+
+definition: >
+  How he picks which index to trade once the three are ranked. He never trades the lagging
+  asset: if the complex is bullish he will not trade the weakest, and if it is bearish he will
+  not trade the strongest, because those catch up sometimes but usually just stop you out. His
+  default ranking is NQ strongest, ES middle, YM weakest (or the mirror), and when the strength
+  ranking whipsaws intraday he deliberately takes the middle asset - ES - because it does not
+  whipsaw the way the outer two do, which matters when he is in options. If he does want the
+  weakest asset to move, he waits for the strongest to reverse first. He also notes that ES
+  leading is unusual and throws his expectations off, and quantifies it: it had happened three
+  or four days in the past month.
+
+timeframes:
+  htf:
+  - 1D
+  - 1H
+  ltf:
+  - 15m
+  - 5m
+  - 3m
+  fractal: false
+
+preconditions:
+- Two or more correlated instruments (ES / NQ / YM) charted side by side.
+
+detection_rules:
+- Rank the correlated assets by relative strength; the default is NQ strongest, ES middle,
+  YM weakest, or the mirror image.
+- Never trade the lagging asset - not the weakest in a bullish complex, not the strongest in
+  a bearish one.
+- When the ranking is switching around intraday, trade the middle asset (ES) to avoid the
+  whipsaw.
+- To trade the weakest asset, first wait for the strongest one to reverse at its level.
+- Treat ES leading as an off-pattern day and lower expectations.
+
+invalidation:
+- The ranking flips against the position while it is running.
+
+measurable:
+- expectancy by rank position (strongest / middle / weakest) at entry
+- frequency of ES-leading days per month and their outcome
+
+sources:
+- video_id: X4XSsv5CNqg
+  title: New York Open Live Q&A
+  quote: I don't trade the lagging asset
+- video_id: U4j-fZD-FJk
+  title: New York Open Live Q&A
+  quote: I prefer to just focus on the middle asset here, so that's ES
+- video_id: c7nk7ypJHN4
+  title: New York Open Live Q&A
+  quote: generally, you want to wait for a stronger asset to reverse
+- video_id: c7nk7ypJHN4
+  title: New York Open Live Q&A
+  quote: three or four days out of the past month. ES will lead
+
+ambiguities:
+- Relative strength is read visually from three synced charts, never computed; no lookback or
+  normalisation is given.
+- The middle-asset preference is stated as a response to whipsaw, with no test for when the
+  ranking counts as whipsawing.
+- The same streams contain the opposite emphasis at times - he focuses on the weakest asset
+  reaching a target once the strongest has already expanded too far - so "middle asset" is a
+  default, not a law.
+
+related:
+- relative-strength-weakness
+- cross-asset-reversal-confirmation
+- smt-divergence
+- gold-correlated-assets
+
+contributing_units:
+- live_streams_03
+draft_count: 1
+voice: ttrades

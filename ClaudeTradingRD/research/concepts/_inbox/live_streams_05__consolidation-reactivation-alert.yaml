@@ -1,0 +1,49 @@
+id: consolidation-reactivation-alert
+name: Alert Above The Gap (when a consolidating instrument becomes tradeable again)
+category: risk
+status: specified
+definition: A concrete way to stop watching an instrument that is going nowhere without losing it.
+  For gold, printing small days and small bodies, the advice is to look at the daily chart, find the
+  opposing daily gap above (a bearish gap dated to a specific session), and set a price alert above
+  it. Only above that level does the instrument become attractive, because only then does it look
+  like it has the confirmation to reach for the liquidity above. Until the alert fires, the instrument
+  is not watched.
+timeframes:
+  htf:
+  - 1D
+  ltf:
+  - 4H
+  - 1H
+  - 15m
+  fractal: false
+preconditions:
+- An instrument in consolidation with small daily ranges and small bodies.
+detection_rules:
+- On the daily, locate the nearest opposing gap above (bullish case).
+- Set a price alert above that gap.
+- Do not trade or monitor the instrument until the alert fires.
+- Above the gap, treat the liquidity above as the draw.
+invalidation:
+- Price stays below the gap - the instrument stays off the watchlist.
+measurable:
+- expansion range in the N days after the gap is cleared vs before
+- false-alert rate (gap cleared but no expansion)
+sources:
+- video_id: tDiwwMRWF2k
+  title: New York Open Live Q&A with NickDoesFutures
+  quote: set like an alert above the bearish gap from June 5th
+ambiguities:
+- '''Above the gap'' is not defined as above the gap high, its midpoint, or a close through it.'
+- '''Small days, small bodies'' is not quantified.'
+- Spoken by the guest; the host concurred, saying he had the same level marked on his own chart.
+related:
+- consolidation-range-no-trade
+- fair-value-gap
+- draw-on-liquidity
+- range-market-avoidance
+contributing_units:
+- live_streams_05
+draft_count: 1
+voice: guest
+guest_sources:
+- NickDoesFutures

@@ -1,0 +1,62 @@
+id: continuation-timing
+name: "Continuations Must Form Early in a New Higher-Timeframe Candle"
+category: entry
+status: specified
+definition: >
+  A Short devoted entirely to the failure mode supplies the candle count that the long-form
+  treatment left deferred. At a point of interest with a V-shaped wick, a continuation is
+  expected to close through the level quickly. In the rejected example price spends three candles
+  struggling to close below the level and takes the low on the fourth; his verdict is that it
+  took too long, that the structure is therefore a consolidation rather than a continuation, and
+  that once the closure finally arrives it can no longer be traded as a continuation. The
+  accepted counterpart closes through in a couple of candles. A third Short states the gating
+  rule: he waits for the higher-timeframe closure before treating anything as a continuation.
+
+timeframes:
+  htf: ["1D", "4H", "1H"]
+  ltf: ["15m", "5m"]
+  fractal: true
+
+detection_rules:
+  - "Mark the level the continuation must close through (the series of opposing candles into the point of interest)."
+  - "Count candles from the touch of the point of interest to the close through that level."
+  - "A couple of candles ('it only takes a couple candles') = a continuation."
+  - "Three candles failing to close through, with the level taken out on the fourth = reclassify as consolidation, not continuation."
+  - "Once reclassified, the eventual closure is not tradeable as a continuation."
+  - "Do not act before the higher-timeframe candle closure that the model requires."
+
+invalidation:
+  - "The opposing extreme is taken out before the close through the level."
+
+measurable:
+  - "distribution of candles-to-closure for continuations that worked vs failed"
+  - "hit rate of continuations closing within 2 candles vs 3+"
+
+sources:
+  - video_id: 7v9Y2GHNqCg
+    title: "When a Continuation Takes Too Long, It Becomes Consolidation"
+    quote: "it just takes too long to form this continuation"
+  - video_id: 7v9Y2GHNqCg
+    title: "When a Continuation Takes Too Long, It Becomes Consolidation"
+    quote: "It takes 1 2 3 candles and we're struggling to close below this level"
+  - video_id: 7v9Y2GHNqCg
+    title: "When a Continuation Takes Too Long, It Becomes Consolidation"
+    quote: "Once we do get the closure, this is now just a consolidation"
+  - video_id: ZEK8fDzxClA
+    title: "What to Look for in an Ideal Continuation"
+    quote: "we get a pretty swift closure over. It only takes a couple candles"
+  - video_id: GxJP4JWuX54
+    title: "Wait for the Higher Time Frame Closure Before Trading Continuation"
+    quote: "I'm waiting for this closure on the higher time frame"
+
+ambiguities:
+  - "The count is narrated over one example ('1 2 3 candles'), not stated as a threshold - three is described, not legislated."
+  - "The timeframe on which the candles are counted is the execution timeframe shown, which is never named in the Short."
+  - "No rule is given for the borderline case of exactly three candles that DO close through."
+
+python_detector: null
+related: ["v-shape-reversal-speed", "continuation-failure-consolidation", "consolidation-vs-retracement-test", "wait-for-candle-close"]
+
+voice: ttrades
+contributing_units: [shorts_04]
+draft_count: 1

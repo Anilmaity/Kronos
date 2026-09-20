@@ -1,0 +1,53 @@
+id: reversal-candle-target-adjustment
+name: "Reversal Candle - Adjust Targets, Do Not Expect Expansion Past The Open"
+aliases: ["trading a large-wick daily candle"]
+category: model
+status: specified
+
+definition: >
+  When the daily candle being traded has a large opposing wick, it is classified as a
+  reversal candle rather than a reversal-into-expansion candle. Such a candle is not
+  expected to displace past its own opening price, so targets are reduced to objectives
+  inside the current day's range - typically the current day's opposing extreme, which will
+  be a session high or low. The setup requires the day to have opened in the correct
+  direction first so that the opposing extreme is low-resistance liquidity (a session high
+  or low that tagged no key level).
+
+timeframes:
+  htf: ["1D"]
+  ltf: ["4H", "1H", "15m"]
+  fractal: false
+
+preconditions:
+  - "The daily candle in play has a large opposing wick."
+  - "The day opened in the required direction first (low first for a bullish reversal candle)."
+  - "The day's extreme formed from a key level."
+
+detection_rules:
+  - "Classify the daily candle: large opposing wick -> reversal candle."
+  - "Confirm the opposing extreme of the day is a session high/low that did not tag a key level (low-resistance liquidity)."
+  - "Set targets inside the current day's range; do not target beyond the daily opening price."
+
+invalidation:
+  - "The opposing extreme of the day already tagged a relevant key level - the profile does not apply."
+
+execution:
+  bias: "Direction away from the day's extreme."
+  entry: "Standard reversal signature on the execution timeframe."
+  stop: "Not stated for this variant."
+  targets: ["current day's opposing session high/low", "the daily opening price (not beyond)"]
+
+measurable:
+  - "frequency with which large-wick daily candles close beyond their open"
+  - "R achieved with reduced targets vs full targets on these days"
+
+sources:
+  - video_id: J_EeS2_2CAM
+    title: "GxTradez | Phases of Price & Profiles For Expansion"
+
+ambiguities:
+  - "This exception applies only to the daily timeframe; the speaker says 4-hour reversal candles are not traded at all, with one unstated exception."
+  - "'Large' wick remains unquantified."
+
+python_detector: null
+related: ["small-wick-supports-expansion", "daily-candle-profile-open-low-first"]

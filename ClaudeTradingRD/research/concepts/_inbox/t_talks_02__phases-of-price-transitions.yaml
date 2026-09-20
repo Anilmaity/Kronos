@@ -1,0 +1,48 @@
+id: phases-of-price-transitions
+name: "Phases Of Price Delivery - Legal Transitions"
+aliases: ["what price can and cannot do", "phases of price"]
+category: structure
+status: specified
+
+definition: >
+  Price delivery is modelled as four phases - consolidation, expansion, retracement,
+  reversal - with a closed set of legal transitions. Consolidation can only be followed by
+  expansion. Expansion can be followed by retracement, reversal or consolidation.
+  Consolidation can never be followed directly by a reversal or by a retracement. Every
+  phase starts and ends with expansion. The practical consequence is that the current phase
+  partly determines the next: if price expanded and is now consolidating, it must expand
+  again.
+
+timeframes:
+  htf: ["1W", "1D", "4H"]
+  ltf: ["1H", "15m", "5m"]
+  fractal: true
+
+preconditions:
+  - "The current phase on the working timeframe has been classified using its signature."
+
+detection_rules:
+  - "consolidation -> expansion : legal (and the only legal successor)."
+  - "expansion -> retracement | reversal | consolidation : legal."
+  - "consolidation -> reversal : illegal."
+  - "consolidation -> retracement : illegal."
+  - "A phase sequence always begins and ends with expansion."
+
+invalidation:
+  - "An observed transition from consolidation directly into a reversal would falsify the rule."
+
+measurable:
+  - "empirical transition matrix between classified phases per timeframe"
+  - "frequency of the illegal transitions actually occurring"
+
+sources:
+  - video_id: J_EeS2_2CAM
+    title: "GxTradez | Phases of Price & Profiles For Expansion"
+    quote: "Price never goes from a consolidation to a reversal."
+
+ambiguities:
+  - "Phase classification depends on the signature definitions, which are partly visual (wick size, 'shallow' retracement)."
+  - "The framework is credited to the MMXM trader; it is not original to this speaker."
+
+python_detector: null
+related: ["expansion-signature", "continuation-signature", "reversal-signature", "aligning-expansion-candles"]

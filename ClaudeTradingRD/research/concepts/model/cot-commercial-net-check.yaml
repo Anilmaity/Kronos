@@ -1,0 +1,53 @@
+id: cot-commercial-net-check
+name: COT Commercial Net Position Check At A New Quarter
+definition: 'A higher-timeframe filter for market maker models. Read the Commitment of Traders
+  data on the individual currency futures contract - the yen futures, not USDJPY and never
+  the dollar index. Take the last twelve months of COT data, split that range in half, and
+  check at a new quarter whether the commercials sit above or below the midpoint: above is
+  net long, below is net short. The worked example showed the commercials at their highest
+  net-long reading of the twelve months at the daily chart''s lowest low, at an old low in
+  higher-timeframe discount, at a quarterly boundary.
+
+  '
+category: model
+status: specified
+aliases:
+- 12 month COT range split in half
+preconditions:
+- COT data for the individual currency futures contract is available.
+- A quarterly boundary is at hand.
+detection_rules:
+- Use the individual currency futures contract. Never the dollar index, never the FX cross.
+- Take the last 12 months of COT data and split that range in half.
+- 'At the new quarter, read the commercials: above the midpoint = net long, below = net short.'
+- Pair a net-long commercial reading with an old low in higher-timeframe discount as the smart
+  money reversal.
+invalidation:
+- Commercials sit on the wrong side of the 12-month midpoint for the intended direction.
+measurable:
+- hit rate of quarterly lows/highs coinciding with commercial extremes in the 12-month range
+sources:
+- video_id: Ibw4saRtYMk
+  title: The MMXM Trader | Advanced ICT MMXM Lesson (Everything You Need To Know)
+ambiguities:
+- '''At a new quarter'' is not defined - whether the first COT report of the quarter or the
+  quarterly candle open.'
+- Whether the midpoint split is of the net position range or of the raw reading is not stated.
+- No equivalent is offered for instruments without a COT report.
+related:
+- mmxm-hedging-program
+- mmxm-phase-sequence
+timeframes:
+  htf:
+  - 1Q
+  - 1M
+  - 1W
+  - 1D
+  ltf: []
+  fractal: false
+contributing_units:
+- t_talks_02
+draft_count: 1
+voice: guest
+guest_sources:
+- The MMXM Trader | Advanced ICT MMXM Lesson (Everything You Need To Know)

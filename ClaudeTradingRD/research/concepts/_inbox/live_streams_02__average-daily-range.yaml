@@ -1,0 +1,58 @@
+id: average-daily-range
+name: "Average Daily Range (eyeballed) as target filter"
+aliases: ["ADR", "average true range", "how much are these going"]
+category: risk
+status: underspecified
+
+definition: >
+  He confirms ADR is a real input and then confirms it is eyeballed rather than computed: he
+  looks at the recent daily candles, reads off their sizes ("the larger range size, you know,
+  120. This one did 60. These ones are like probably 80") and guesses a band — 80 to 100 — then
+  compares the day's range so far against it. Once the day is at or near that band he stops
+  expecting further expansion and stops looking for continuation entries. The same reasoning is
+  used to reject targets: on a day already 300 points into a 500-600 point typical range he
+  declines to project previous day low, and on the index sessions a 500-point range is called
+  reason enough not to expect another 600. He says it is a fractal concept and that average true
+  range can be used, but does not use a lookback or a setting himself.
+
+timeframes:
+  htf: ["1D"]
+  ltf: []
+  fractal: true
+
+preconditions:
+  - "Several recent daily candles visible for comparison."
+
+detection_rules:
+  - "Read the range of the last several daily candles and take a rough band as the expected day range."
+  - "Compare the current day's range so far against that band."
+  - "If the day has already covered the band, do not expect meaningful further expansion; stop seeking continuations."
+  - "Reject a target that would require the instrument to cover much more than the band in the remaining session."
+
+invalidation:
+  - "Not applicable — this is a filter."
+
+measurable:
+  - "distribution of daily ranges versus the eyeballed band"
+  - "outcome of continuation entries taken after the band was already covered"
+  - "hit rate of targets rejected on ADR grounds"
+
+sources:
+  - video_id: m8xcjkOuBHU
+    title: "New York Open Live Q&A"
+    quote: "So I'm just guessing like 80 to 100 maybe"
+  - video_id: Je7cd9HJUBE
+    title: "New York Open Live Q&A"
+    quote: "average daily range, what is it? 600 points"
+
+ambiguities:
+  - "No lookback period, no averaging method and no ATR setting are given — he explicitly guesses."
+  - "No threshold is given for 'already expanded enough'; in one session 300 of 500-600 is treated as enough context to refuse a further target, in another 500 points is."
+  - "Whether the band is measured high-to-low or close-to-close is not stated."
+
+python_detector: null
+related: ["average-daily-range-targeting", "daily-range-budget", "expansion-exhaustion-avoid-price", "dont-trade-after-expansion"]
+
+contributing_units: ["live_streams_02"]
+draft_count: 1
+voice: ttrades

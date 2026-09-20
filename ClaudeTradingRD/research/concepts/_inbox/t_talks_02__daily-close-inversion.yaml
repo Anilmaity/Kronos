@@ -1,0 +1,47 @@
+id: daily-close-inversion
+name: "Daily Close Inverts A Fair Value Gap"
+aliases: ["bearish inversion level", "inversion fair value gap on a daily close"]
+category: structure
+status: specified
+
+definition: >
+  A bullish daily fair value gap that receives a daily close below it is converted into a
+  bearish inversion level, and is thereafter used as a point of interest to sell from. The
+  mirror applies for bearish gaps. Two things happen at once at that close: a bullish PD
+  array has been disrespected (a bearish order flow signal) and a new bearish array has been
+  created (an execution level).
+
+timeframes:
+  htf: ["1D"]
+  ltf: ["1H", "15m"]
+  fractal: true
+
+preconditions:
+  - "A daily fair value gap exists and price is trading at or through it."
+
+detection_rules:
+  - "A daily candle closes below a bullish daily fair value gap (or above a bearish one)."
+  - "Mark the gap as an inversion level of the opposite polarity."
+  - "Use it as the higher-timeframe POI for lower-timeframe executions in the new direction."
+
+invalidation:
+  - "A subsequent daily close back through the inverted array in the original direction."
+
+execution:
+  bias: "The direction of the close that caused the inversion."
+  entry: "Lower-timeframe execution when price returns to the inversion level during a kill zone."
+  stop: "Above/below the inversion level (or the EQ of a daily wick when the level is a wick-derived range)."
+  targets: ["the next unmitigated daily fair value gap", "the discount / premium of the daily dealing range", "old daily highs or lows"]
+
+measurable:
+  - "hold rate of inverted daily gaps on first retest"
+
+sources:
+  - video_id: JABOO4LYNjQ
+    title: "Jokerszn | Daily Orderflow - ICT Daily Bias"
+
+ambiguities:
+  - "Whether a close below the gap's mean threshold alone is sufficient, or a close below the entire gap is required, is inconsistent in the worked example - both are described as meaningful."
+
+python_detector: null
+related: ["balanced-price-range-overlap", "pd-array-mean-threshold-test", "daily-close-only-bias"]
