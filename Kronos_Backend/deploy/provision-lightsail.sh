@@ -108,6 +108,23 @@ until [[ "$(lsail get-relational-database --relational-database-name "$DB_NAME_L
 done
 echo; echo "database: available"
 
+# ---- normalise master password ----------------------------------------------
+# Lightsail generates passwords full of shell/URL metacharacters ($ & ( > { ...),
+# which break .env parsing and postgres:// URLs. Rotate once to alphanumeric.
+log "master password"
+CUR_PW=$(lsail get-relational-database-master-user-password --relational-database-name "$DB_NAME_LS" --query masterUserPassword --output text)
+if [[ "$CUR_PW" =~ ^[A-Za-z0-9]+$ ]]; then
+  echo "already alphanumeric"
+else
+  NEW_PW=$(python3 -c 'import secrets,string; a=string.ascii_letters+string.digits; print("".join(secrets.choice(a) for _ in range(32)))')
+  lsail update-relational-database --relational-database-name "$DB_NAME_LS" --master-user-password "$NEW_PW" --apply-immediately >/dev/null
+  printf 'rotating'
+  until [[ "$(lsail get-relational-database-master-user-password --relational-database-name "$DB_NAME_LS" --query masterUserPassword --output text)" == "$NEW_PW" ]]; do printf '.'; sleep 10; done
+  until [[ "$(lsail get-relational-database --relational-database-name "$DB_NAME_LS" --query 'relationalDatabase.state' --output text)" == "available" ]]; do printf '.'; sleep 10; done
+  echo " done"
+fi
+unset CUR_PW NEW_PW
+
 DB_HOST=$(lsail get-relational-database --relational-database-name "$DB_NAME_LS" --query 'relationalDatabase.masterEndpoint.address' --output text)
 DB_PORT=$(lsail get-relational-database --relational-database-name "$DB_NAME_LS" --query 'relationalDatabase.masterEndpoint.port' --output text)
 

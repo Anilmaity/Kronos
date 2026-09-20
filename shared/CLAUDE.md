@@ -278,6 +278,19 @@ AWS account `086769945463` (IAM user `anil`), region **ap-south-1 (Mumbai)**. Cr
   scp a local `.env`/`*.session` to the box, and never read the running container's env (it leaks live
   broker/Redis/Telegram secrets).
 
+### Standalone backend environment (PrijenBalar's AWS account — NOT production)
+A second, independent Kronos_Backend deployment lives in AWS account `948806325684` (IAM user
+`prijenbalar`, local profile `prijen`), region ap-south-1, created 2026-09-20. It shares nothing
+with production: own Lightsail box **`kronos-backend`** (`ubuntu@15.252.166.251`, `micro_3_1`,
+SSH key `~/.ssh/kronos-backend-key.pem`, always `ssh -F /dev/null`) and own private managed
+PostgreSQL 18 **`kronos-db`** (empty schema, migrations only — no strategies, users or broker data).
+Only the Django backend runs there (Docker: `web` + `nginx`, project `kronos-backend`, `:80`);
+no trading engine, no frontend. Tooling in `Kronos_Backend/deploy/`: `provision-lightsail.sh`
+(idempotent infra) and `deploy.sh` (rsync + build + migrate + smoke test) —
+`AWS_PROFILE=prijen Kronos_Backend/deploy/deploy.sh` ships the current checkout. Endpoint:
+`http://15.252.166.251/graphql/`. Django admin login needs HTTPS (`SESSION_COOKIE_SECURE`), so
+add a domain + TLS before expecting `/admin/` to work.
+
 ### Frontend
 - **Netlify** builds `kronos_frontend` (`netlify.toml`: `npm run build`, publish `.next`,
   `@netlify/plugin-nextjs`). It serves `app.algorobos.com`, which the SPA also points at for the GraphQL

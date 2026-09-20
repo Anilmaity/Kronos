@@ -57,19 +57,25 @@ rsync -az --delete -e "ssh ${SSH_OPTS[*]}" \
 echo "synced"
 
 log "writing on-box .env (SECRET_KEY is generated once and kept across deploys)"
-rssh "set -e; cd $REMOTE_DIR
-  if [ -f .env ] && grep -q '^SECRET_KEY=' .env; then SK=\$(grep '^SECRET_KEY=' .env | cut -d= -f2-); else SK=\$(python3 -c 'import secrets;print(secrets.token_urlsafe(50))'); fi
-  umask 077
-  cat > .env <<ENV
-SECRET_KEY=\$SK
-DB_HOST=$DB_HOST
-DB_PORT=$DB_PORT
-DB_NAME=$DB_NAME
-DB_USER=$DB_USER
-DB_PASSWORD=$DB_PASSWORD
-EXTRA_ALLOWED_HOSTS=$PUBLIC_IP
-ENV
-  echo written"
+EXISTING_SK=$(rssh "grep '^SECRET_KEY=' $REMOTE_DIR/.env 2>/dev/null | cut -d= -f2- | tr -d \"'\"" || true)
+# Values are single-quoted (literal for docker compose env_file) and shipped base64-encoded
+# so no shell on either side ever interprets them.
+ENV_B64=$(python3 - "$EXISTING_SK" "$DB_HOST" "$DB_PORT" "$DB_NAME" "$DB_USER" "$DB_PASSWORD" "$PUBLIC_IP" <<'PY'
+import sys, secrets, base64
+sk, host, port, name, user, pw, ip = sys.argv[1:]
+sk = sk or secrets.token_urlsafe(50)
+for k, v in [("SECRET_KEY", sk), ("DB_PASSWORD", pw)]:
+    if "'" in v:
+        sys.exit(f"ERROR: {k} contains a single quote; rotate it to an alphanumeric value")
+env = "".join(f"{k}='{v}'\n" for k, v in [
+    ("SECRET_KEY", sk), ("DB_HOST", host), ("DB_PORT", port), ("DB_NAME", name),
+    ("DB_USER", user), ("DB_PASSWORD", pw), ("DB_SSLMODE", "require"),
+    ("EXTRA_ALLOWED_HOSTS", ip),
+])
+print(base64.b64encode(env.encode()).decode())
+PY
+)
+rssh "umask 077 && echo '$ENV_B64' | base64 -d > $REMOTE_DIR/.env && echo written"
 
 log "building + starting containers"
 rssh "cd $REMOTE_DIR && $COMPOSE up -d --build --remove-orphans 2>&1 | tail -5"
