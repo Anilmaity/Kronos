@@ -5,17 +5,31 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## What this project is
 
 Kronos is an algorithmic trading platform for **XAUUSD (gold)** — also XAG (silver) and BTC —
-built around **ICT/SMC** (Inner Circle Trader / Smart Money Concepts) strategies. It is split
-across **three independent git repositories**, each with its own remote, `.git`, `.venv`/`node_modules`,
-and its own `CLAUDE.md`. There is **no git repo at this `E:/Projects/Kronos` root** — it is just
-a workspace folder holding the three siblings.
+built around **ICT/SMC** (Inner Circle Trader / Smart Money Concepts) strategies. Since
+**2026-09-20 the whole workspace is one git monorepo** — remote GitHub `Anilmaity/Kronos`
+(private), branch `main`, `.git` at the workspace root. The three product folders plus the
+research sandbox are plain subdirectories of it, each still with its own `.venv`/`node_modules`,
+its own `.gitignore` (nested ignore files stay in force) and its own `CLAUDE.md`.
 
 ```
-E:/Projects/Kronos/
+<workspace root>/            # git monorepo → github.com/Anilmaity/Kronos
 ├── KronosStrategies/   # Python live trading engine + backtester  (the "brain")
 ├── Kronos_Backend/     # Django 5 + GraphQL API                   (the "control plane")
-└── kronos_frontend/    # Next.js 14 dashboard                     (the "cockpit")
+├── kronos_frontend/    # Next.js 14 dashboard                     (the "cockpit")
+├── ClaudeTradingRD/    # research sandbox (corpus studies, lab harnesses)
+├── shared/             # this CLAUDE.md, audit docs, reports, chart PNGs
+├── kb/                 # local Chroma semantic index over lab reports + vault (chroma/ store is ignored)
+└── .claude/            # workspace-level Claude Code settings + skills
 ```
+
+> **History before the monorepo.** Until 2026-09-20 these were four independent repos
+> (KronosStrategies → GitHub `Anilmaity/KronosStrategies` + Bitbucket `jegnus/kronosstrategies`;
+> Kronos_Backend → GitHub `Anilmaity/Kronos_Backend`; kronos_frontend → Bitbucket
+> `jegnus/algomaya-frontend`; ClaudeTradingRD → the Mac over Tailscale). Those remotes are now
+> **frozen** — they are not updated from the monorepo. Their full local histories, including
+> branches that were never pushed, are kept in `~/Kronos_git_backups/20260920-160317/<repo>.git`
+> on the Mac. Workspace root on the Mac is `/Users/anil/Projects/Kronos`; on the Windows box it
+> was `E:/Projects/Kronos`.
 
 ### Product naming (one product, several names)
 - **Kronos** — the product/app name (page title: *"Kronos — ICT/SMC XAUUSD Algorithmic Trading Bot"*).
@@ -60,13 +74,14 @@ Broker side: strategies & Telegram_Bot ─► MetaAPI REST ─► MT4/MT5
 > The two per-repo `CLAUDE.md` files (`Kronos_Backend/CLAUDE.md`, and the stale pointer note in
 > `KronosStrategies/Claude.md`) are authoritative for their own repo's detail. The path constants
 > inside `KronosStrategies/Claude.md` and `info` (`C:\Projects\PycharmProjects\...`) are **outdated** —
-> the real workspace is `E:/Projects/Kronos`.
+> the real workspace is the monorepo root (`/Users/anil/Projects/Kronos` on the Mac).
 
 ---
 
 ## 1. KronosStrategies — Python trading engine
 
-Branch in use: `feat/strategy-manager` (since ~2026-07-23; the old `fix/tg-copy-fidelity` note was stale). Remotes: GitHub `Anilmaity/KronosStrategies` + Bitbucket `jegnus/kronosstrategies`.
+Subdirectory of the monorepo (see above). Pre-monorepo it lived on branch `feat/strategy-manager`;
+the frozen remotes were GitHub `Anilmaity/KronosStrategies` + Bitbucket `jegnus/kronosstrategies`.
 
 This is a **Docker Compose stack** (`compose.yml`, project name `kronos`) of long-running services
 plus a library of strategy modules and an offline backtester. No web server.
@@ -144,7 +159,8 @@ Python 3.12 in `.venv`.
 
 ## 2. Kronos_Backend — Django 5 + GraphQL API
 
-Branch in use: `fix/pnl-short-positions`. Remote: GitHub `Anilmaity/Kronos_Backend`.
+Subdirectory of the monorepo. Pre-monorepo it lived on branch `feat/strategy-manager` (the
+`fix/pnl-short-positions` note was stale); frozen remote GitHub `Anilmaity/Kronos_Backend`.
 **This repo has its own detailed `CLAUDE.md` — read it for specifics.** Essentials:
 
 - Django app dir is **`apis/`** (registered as `"apis"`; all imports `apis.*`). Project package /
@@ -180,8 +196,11 @@ Env via `.env` (`python-dotenv`): `SECRET_KEY`, and `NAME/USER/PASSWORD/HOST/POR
 
 ## 3. kronos_frontend — Next.js 14 dashboard
 
-Branch: `main`. Remote: Bitbucket `jegnus/algomaya-frontend`. Deployed on **Netlify** (`netlify.toml`,
-`@netlify/plugin-nextjs`).
+Subdirectory of the monorepo; frozen pre-monorepo remote Bitbucket `jegnus/algomaya-frontend`.
+Deployed on **Netlify** (`netlify.toml`, `@netlify/plugin-nextjs`). The Netlify site was linked to
+the old Bitbucket repo (the frontend's only hosted remote), so **pushing the monorepo does not
+trigger a frontend deploy** until the site is re-linked to `Anilmaity/Kronos` with base directory
+`kronos_frontend/` — verify in the Netlify dashboard before assuming a push shipped.
 
 - **Next.js 14 App Router** with route groups: `(auth)` (`/login` + OTP), `(main)` protected
   (`/dashboard`, `/accounts`, `/backtests`, `/chart`, `/marketplace`, `/signals`, `/admin`,
@@ -218,8 +237,13 @@ npm run lint       # next lint
 - The old local `db`/`tsdb` containers were retired; Postgres + TimescaleDB are now managed cloud
   services (TigerData Cloud and/or the Lightsail-managed DB — see Deployment). Anything needing live data
   (backtests, runners, the position monitor) requires network access to whichever host the active `.env` targets.
-- Each repo is committed/branched **independently** — there is no umbrella repo. When making a change,
-  branch and commit inside the specific repo, not at `E:/Projects/Kronos`.
+- **One repo, one history** (since 2026-09-20). Branch and commit at the workspace root; a change
+  that touches backend + frontend together is one commit. Prefix commit scopes with the folder
+  (`feat(backend): …`, `fix(frontend): …`, `lab(research_s5): …`) since the diff no longer says which
+  project it belongs to. Never `git init` inside a subfolder again.
+- Root `.gitignore` covers the cross-cutting exclusions (all `.env*`, `*.pem`, `*.session`,
+  `account*.txt`, `.venv/`, `node_modules/`, `.next/`, `__pycache__/`, `kb/chroma/`, `.idea/`); the
+  per-folder `.gitignore` files still apply inside their folders.
 - **opt15 (2026-07-30/31)** platform-hardening + strategy-gate change log: source report
   `shared/OPTIMIZATION_15_POINTS_2026-07-30.md`, plan + outcome ledger
   `KronosStrategies/docs/superpowers/plans/2026-07-30-optimization-15-plan.md`.
@@ -255,7 +279,9 @@ AWS account `086769945463` (IAM user `anil`), region **ap-south-1 (Mumbai)**. Cr
   broker/Redis/Telegram secrets).
 
 ### Frontend
-- **Netlify** auto-deploys `kronos_frontend` on push (`netlify.toml`: `npm run build`, publish `.next`,
+- **Netlify** builds `kronos_frontend` (`netlify.toml`: `npm run build`, publish `.next`,
   `@netlify/plugin-nextjs`). It serves `app.algorobos.com`, which the SPA also points at for the GraphQL
   API — so the Django backend on the `algorobos` box is what answers `https://app.algorobos.com/graphql/`.
-  **Pushing the frontend branch ships it live**, so verify before pushing.
+  Auto-deploy-on-push was linked to the old Bitbucket `algomaya-frontend` repo, which the monorepo no
+  longer pushes to (see §3). Once the site is re-linked to `Anilmaity/Kronos` (base dir `kronos_frontend/`),
+  **every push to `main` that touches the frontend ships it live** — verify before pushing.

@@ -17,10 +17,14 @@ When production state changes (roster, deploys, incidents), update the high-chur
 `20 Strategies/Live Roster.md`, `40 Incidents/Timeline.md`, `30 Operations/Deploy Gotchas.md`
 and bump their `updated:` frontmatter.
 
-## Workspace root contents beyond the three repos
+## Workspace root contents beyond the three product folders
 
-- `shared/` — non-repo workspace files: the full CLAUDE.md imported above, chart PNGs,
-  audit docs, and reports (created in the 2026-07-29 root cleanup).
-- `ClaudeTradingRD/` — research-sandbox git checkout (origin = the Mac dev machine over
-  Tailscale, `100.75.120.39`; sync is two-way — check the Mac for unpushed work).
+The root is a git monorepo (GitHub `Anilmaity/Kronos`, since 2026-09-20 — see `shared/CLAUDE.md`).
+
+- `shared/` — the full CLAUDE.md imported above, chart PNGs, audit docs, and reports
+  (created in the 2026-07-29 root cleanup).
+- `ClaudeTradingRD/` — research sandbox (corpus studies, lab harnesses). Formerly its own repo
+  synced with the Mac over Tailscale; now just a folder in the monorepo.
+- `kb/` — local Chroma semantic index over the lab reports + vault (`kb/ask.py`, `kb/index_kb.py`);
+  the `chroma/` store and `.venv/` are rebuilt locally, not committed.
 - `.claude/` — workspace-level Claude Code settings and skills.
