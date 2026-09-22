@@ -8,8 +8,8 @@ cleanup. They are imported below so every session still auto-loads them — **ed
 
 ## Project knowledge vault (Obsidian)
 
-Deep project knowledge lives in a standalone Obsidian vault at **`E:\Projects\KronosVault`**
-(deliberately outside the git repos): architecture maps, the live strategy roster, incident
+Deep project knowledge lives in a standalone Obsidian vault at **`/Users/anil/Projects/KronosVault`**
+on the Mac (`E:\Projects\KronosVault` on the old Windows box; deliberately outside the git repo): architecture maps, the live strategy roster, incident
 postmortems, deploy gotchas, and research-campaign histories. Start at `Home.md` — it is the
 map of contents and carries the current production status snapshot.
 
