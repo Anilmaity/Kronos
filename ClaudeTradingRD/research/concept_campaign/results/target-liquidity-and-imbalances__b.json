@@ -1,0 +1,203 @@
+{
+ "concept_id": "target-liquidity-and-imbalances",
+ "reading": "b",
+ "testable": true,
+ "test_type": "rate",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "15m three-bar FVG (bullish: low[i] > high[i-2]; bearish: high[i] < low[i-2]), known at the close of bar i",
+   "target = the gap's near edge (bullish: bar i low, approached from above; bearish: bar i high, from below)",
+   "hit = M1 trades to it within 240 M1 bars",
+   "null = random 15m closes +/-30d, same ATR-unit distance, same side"
+  ],
+  "params": {
+   "tf": "15min",
+   "edge": "near",
+   "horizon_m1_bars": 240,
+   "atr_n": 14,
+   "null": "ATR-scaled distance"
+  }
+ },
+ "params_source": {
+  "horizon_m1_bars": "declared-before-run: 240 trading minutes (~one session); the corpus gives no time limit on a target",
+  "atr_n": "declared-before-run: ATR14 of the level's timeframe, used only to scale the null's distance (README trap 4: same geometry, same bars)",
+  "null": "declared-before-run: matched random bar closes +/-30d (locked reps/window/seed), same ATR-unit distance and side",
+  "tf": "corpus: pWAjzKndWXo 'the 15-minute gap' (one timeframe above the 5m)",
+  "edge": "declared-before-run: reaching the imbalance = tagging its near edge ('reached' is undefined in the corpus)"
+ },
+ "n": 49990,
+ "span": {
+  "start": "2016-01-04 01:45:00+00:00",
+  "end": "2026-07-23 04:15:00+00:00",
+  "years": 10.549
+ },
+ "avg_R": null,
+ "avg_R_gross": null,
+ "win_rate": null,
+ "pf": null,
+ "observed_rate": 0.8268453690738148,
+ "null_rate": 0.8087367473494699,
+ "lift": 1.02239124385493,
+ "control": {
+  "rate": 0.8087367473494699,
+  "reps": 5,
+  "kind": "null_fn x5"
+ },
+ "diff": 0.018106506702295078,
+ "ci_lo": 0.014045852373625435,
+ "ci_hi": 0.022001022345700685,
+ "ci_method": "day_block",
+ "p": 4.578506778718377e-19,
+ "halves": {
+  "H1": {
+   "n": 22414,
+   "diff": 0.02020389042562687,
+   "ci_lo": 0.014447164718479663,
+   "ci_hi": 0.025884268760596057,
+   "ci_method": "iid",
+   "p": 4.3709432820115935e-12,
+   "start": "2016-01-04 01:45:00+00:00",
+   "end": "2020-12-31 20:30:00+00:00"
+  },
+  "H2": {
+   "n": 27576,
+   "diff": 0.016405570060922692,
+   "ci_lo": 0.011348999129677975,
+   "ci_hi": 0.021700572961995946,
+   "ci_method": "iid",
+   "p": 5.216418579380262e-10,
+   "start": "2021-01-03 23:15:00+00:00",
+   "end": "2026-07-23 04:15:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 10739,
+   "diff": 0.01721296210075418,
+   "ci_lo": 0.008994901759940551,
+   "ci_hi": 0.025694897104013407,
+   "ci_method": "iid",
+   "p": 5.337495452728212e-05,
+   "start": "2016-01-04 01:45:00+00:00",
+   "end": "2018-08-22 09:15:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 12956,
+   "diff": 0.02309354739117009,
+   "ci_lo": 0.015418724915097142,
+   "ci_hi": 0.03073479468971896,
+   "ci_method": "iid",
+   "p": 3.411502716205512e-09,
+   "start": "2018-08-22 11:30:00+00:00",
+   "end": "2021-04-12 06:30:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 13447,
+   "diff": 0.020301926080166566,
+   "ci_lo": 0.012517661932029437,
+   "ci_hi": 0.02788874841972182,
+   "ci_method": "iid",
+   "p": 2.2501317529549097e-07,
+   "start": "2021-04-12 09:45:00+00:00",
+   "end": "2023-12-01 20:30:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 12848,
+   "diff": 0.011534869240348633,
+   "ci_lo": 0.00360717621419413,
+   "ci_hi": 0.019305339352420563,
+   "ci_method": "block",
+   "p": 0.003972617995307969,
+   "start": "2023-12-03 23:15:00+00:00",
+   "end": "2026-07-23 04:15:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.005685585262335543,
+ "mde_threshold": 0.04781581316263253,
+ "power_floor_n": 707,
+ "verdict": "EDGE",
+ "verdict_detail": "CI excludes 0 in claimed direction; halves agree (H1 +0.0202, H2 +0.0164); powered",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 49990,
+  "min_slack_min": 0.0,
+  "passed": true,
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 3647,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "side",
+    "level",
+    "atr"
+   ],
+   "ignored": [],
+   "lookback": "10D",
+   "recent": "1D",
+   "events_fp": "81d7c6833e082cbc",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "reps": 5,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "mde_threshold": null,
+  "cluster": null,
+  "outcome_horizon": "1 days 00:00:00",
+  "null_kind": "null_fn x5"
+ },
+ "notes": "Imbalance half of a two-item target list; order blocks are not scored.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/risk_own_02b/target-liquidity-and-imbalances.py",
+ "runtime_sec": 8.0,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:22:51+00:00",
+ "dropped": {
+  "nan_rows": 0
+ },
+ "null_kind": "null_fn x5",
+ "events_fp": "81d7c6833e082cbc",
+ "predictors_probed": true,
+ "ci_components": {
+  "phase3_block": [
+   0.014189687937611809,
+   0.022065513102623318
+  ],
+  "day_block": [
+   0.014045852373625435,
+   0.022001022345700685
+  ]
+ },
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 2722,
+  "n_clusters": null,
+  "n_eff": 2722
+ },
+ "run_id": "6c5125ee7fc44ef999ad642e24964675",
+ "hyp_key": "287ae9486d91ed84"
+}

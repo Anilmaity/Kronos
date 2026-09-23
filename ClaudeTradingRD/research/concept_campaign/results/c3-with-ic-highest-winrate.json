@@ -1,0 +1,286 @@
+{
+ "concept_id": "c3-with-ic-highest-winrate",
+ "reading": null,
+ "testable": true,
+ "test_type": "gate",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "4H forex-grid C2 (method_spec 3.2), one-sided only, with >=1 aligned 15m CISD confirmed inside C2",
+   "baseline: aligned 15m CISDs (series_open, 2/2, max_wait 3) whose confirming bar starts in C3 or C4; next-M1-open entry, stop = protected swing, 2R, 150 min",
+   "gate: in C3 and intracandle (CISD extreme bar starts at/after C3 open)",
+   "claim '+': gated beats complement (C4 entries + non-IC C3 entries) on control-adjusted R; clustered by the C2 candle"
+  ],
+  "params": {
+   "htf": "4h",
+   "grid4h": "forex",
+   "ltf": "15min",
+   "c2_test": "method_spec 3.2",
+   "require_ltf_cisd_in_c2": true,
+   "level_rule": "series_open",
+   "max_wait": 3,
+   "rr": 2.0,
+   "max_hold": "150min",
+   "windows": "C3 and C4"
+  }
+ },
+ "params_source": {
+  "htf": "corpus: YAML timeframes htf 4H (1D also listed); phase3 15m/4H/1D stack",
+  "grid4h": "session_window_fit: forex grid for gold (carried as a knob)",
+  "ltf": "corpus: YAML ltf 15m; phase3 15m/4H/1D stack",
+  "c2_test": "method_spec: 3.2 C2 test",
+  "require_ltf_cisd_in_c2": "method_spec: 3.5 a model = closure + aligned LTF CISD",
+  "level_rule": "phase3: locked series_open",
+  "max_wait": "phase3: locked 3",
+  "rr": "phase3: locked 2R",
+  "max_hold": "phase3: 10 entry-TF bars",
+  "windows": "method_spec: 3.3/3.4 C3 then C4 are the model's continuation candles"
+ },
+ "n": 3514,
+ "span": {
+  "start": "2016-01-04 19:30:00+00:00",
+  "end": "2026-07-22 15:45:00+00:00",
+  "years": 10.543
+ },
+ "avg_R": -0.045326380314417714,
+ "avg_R_gross": -0.005326380314417691,
+ "win_rate": 0.4206033010813887,
+ "pf": 0.8958264764540429,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "avg_R_gated": -0.044140163393151494,
+  "avg_R_complement": -0.04247471247470726,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": -0.006076782088379709,
+ "ci_lo": -0.05638702702326174,
+ "ci_hi": 0.04540924442248473,
+ "ci_method": "cluster",
+ "p": 0.8149832952191531,
+ "halves": {
+  "H1": {
+   "n": 4100,
+   "diff": 0.028639342369728902,
+   "ci_lo": -0.03858218297248589,
+   "ci_hi": 0.09995738856472662,
+   "ci_method": "iid",
+   "p": 0.4177447766346409,
+   "start": "2016-01-04 19:30:00+00:00",
+   "end": "2020-12-30 21:00:00+00:00",
+   "n_gated": 1671
+  },
+  "H2": {
+   "n": 4627,
+   "diff": -0.03764275064753536,
+   "ci_lo": -0.10472341477392505,
+   "ci_hi": 0.025752355650842662,
+   "ci_method": "iid",
+   "p": 0.2580913004026183,
+   "start": "2021-01-05 00:15:00+00:00",
+   "end": "2026-07-22 15:45:00+00:00",
+   "n_gated": 1843
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 2116,
+   "diff": 0.055750463538551606,
+   "ci_lo": -0.05626112085274114,
+   "ci_hi": 0.15970818119814864,
+   "ci_method": "block",
+   "p": 0.3115892651177767,
+   "start": "2016-01-04 19:30:00+00:00",
+   "end": "2018-08-21 14:45:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 2206,
+   "diff": -0.014486397115220442,
+   "ci_lo": -0.10556116247136663,
+   "ci_hi": 0.07343635174280931,
+   "ci_method": "iid",
+   "p": 0.7510595411915452,
+   "start": "2018-08-23 05:00:00+00:00",
+   "end": "2021-04-09 12:15:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 2251,
+   "diff": -0.06913915211844857,
+   "ci_lo": -0.1635959470972068,
+   "ci_hi": 0.031129474366699893,
+   "ci_method": "block",
+   "p": 0.16398039295591646,
+   "start": "2021-04-12 09:30:00+00:00",
+   "end": "2023-11-30 11:45:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 2154,
+   "diff": 0.005269641943984701,
+   "ci_lo": -0.08892303200262609,
+   "ci_hi": 0.10101349224482871,
+   "ci_method": "iid",
+   "p": 0.9133965232059024,
+   "start": "2023-12-05 12:15:00+00:00",
+   "end": "2026-07-22 15:45:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.07275411873338786,
+ "mde_threshold": 0.1,
+ "power_floor_n": 1861,
+ "verdict": "NULL",
+ "verdict_detail": "CI contains 0; powered (MDE 0.0728 <= 0.1000)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 8727,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "gate_mask_checked": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 64.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 600,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "rr",
+    "c3_ic",
+    "c2_id"
+   ],
+   "ignored": [],
+   "lookback": "20D",
+   "recent": "1D",
+   "events_fp": "e1b7a471ce92e011",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "150min",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": null,
+  "entry_mode": "next_open",
+  "hold_basis": "clock",
+  "mde_threshold": null,
+  "cluster": "column:c2_id",
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "The claim is about win rate; the harness reads control-adjusted R (raw win rate is geometry-confounded, trap 3). POI gate on C2 not applied (phase 3: inert).",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/entry_own_02a/c3-with-ic-highest-winrate.py",
+ "runtime_sec": 2.85,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:15:23+00:00",
+ "n_events_in": 8755,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 2,
+  "target_not_beyond_entry": 0,
+  "no_bars_in_hold": 26
+ },
+ "n_complement": 5213,
+ "gate_firing_rate": 0.4026584164088461,
+ "events_fp": "e1b7a471ce92e011",
+ "mask_fp": "21cf6e085dc53a52",
+ "mask_col": "c3_ic",
+ "exit_mix": {
+  "stop": 0.33750711439954467,
+  "target": 0.1163915765509391,
+  "time": 0.5461013090495163
+ },
+ "gated_vs_own_control": {
+  "diff": -0.00118621692126622,
+  "ci_lo": -0.03996289890531594,
+  "ci_hi": 0.038113941044667456,
+  "p": 0.9525098685402908
+ },
+ "complement": {
+  "n": 5213,
+  "avg_R": -0.03758414730759376,
+  "win_rate": 0.4201035871858815,
+  "pf": 0.9158697355517712,
+  "sd_R": 1.0218692211356584,
+  "exit_mix": {
+   "stop": 0.35142911950892003,
+   "target": 0.12545559178975638,
+   "time": 0.5231152887013236
+  },
+  "vs_own_control": {
+   "diff": 0.004890565167113496,
+   "ci_lo": -0.02545636642985879,
+   "ci_hi": 0.03457398970466194,
+   "p": 0.7494615117004897
+  }
+ },
+ "ci_components": {
+  "phase3_block": [
+   -0.055019843634498,
+   0.04064093376404674
+  ],
+  "day_block": [
+   -0.055017043697591236,
+   0.04313015021237989
+  ],
+  "cluster": [
+   -0.05638702702326174,
+   0.04540924442248473
+  ]
+ },
+ "diff_meaning": "mean(R-ctrl | gated) - mean(R-ctrl | complement)",
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_eff_gated": 1845,
+  "n_eff_complement": 2050,
+  "n_eff": 1845
+ },
+ "ties": {
+  "real_ambiguous": 0.00045834765669760516,
+  "control_ambiguous": 0.00038959550819296434,
+  "real_gap_stop": 0.008479431648905696,
+  "control_gap_stop": 0.006691875787785035,
+  "gated_excess": -0.00011383039271485488,
+  "complement_excess": 0.00019182812200268558,
+  "verdict_stop_first": "NULL"
+ },
+ "ctrl_overlap": 0.018104732439555404,
+ "exposure_bars": {
+  "real_mean": 142.59608112753523,
+  "control_mean": 142.97139910622207,
+  "hold_basis": "clock"
+ },
+ "run_id": "a725a0992aea4bf48a9f1a619d92babf",
+ "hyp_key": "5f1b76704a3a170f"
+}

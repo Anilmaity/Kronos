@@ -1,0 +1,278 @@
+{
+ "concept_id": "balanced-price-range-revisit",
+ "reading": null,
+ "testable": true,
+ "test_type": "gate",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "15m three-bar FVGs, known at the third bar's close; eligible for 24h",
+   "plain arm: first M1 touch of the near edge, trade with the gap, stop far edge, 2R",
+   "BPR arm: gap filled = a 15m close beyond the far edge; revisit = first M1 touch back at the band after that close; trade in the filling leg's direction; stop beyond the band (the other edge); 2R",
+   "touch minutes that trade through the stop edge are skipped; entry next M1 open; hold 150 min",
+   "gate_test: BPR rows vs plain rows, control-adjusted, clustered by gap"
+  ],
+  "params": {
+   "tf": "15min",
+   "window": "24h",
+   "rr": 2.0,
+   "max_hold": "150min",
+   "fill": "15m close beyond far edge"
+  }
+ },
+ "params_source": {
+  "tf": "declared-before-run: 15m from the concept's ltf list (1H/15m/5m/1m); fractal: true",
+  "window": "declared-before-run: eligibility unstated ('How long a filled gap stays eligible is not stated'); 24h = 96 entry bars",
+  "rr": "declared-before-run: target 'the next step of the PD array ladder' is not mechanical; 2R (phase3 primary target)",
+  "max_hold": "phase3: 10 entry-TF bars (conjunction_preregistration 1.13)",
+  "fill": "corpus: yRmKkR4CojU 'fegs that have already been filled that get revisited'; a close beyond the far edge = filled and left (declared-before-run)"
+ },
+ "n": 26686,
+ "span": {
+  "start": "2016-01-03 23:33:00+00:00",
+  "end": "2026-07-23 04:01:00+00:00",
+  "years": 10.549
+ },
+ "avg_R": -0.03187076800656606,
+ "avg_R_gross": 0.008129231993433956,
+ "win_rate": 0.34759799145619424,
+ "pf": 0.9523439918803657,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "avg_R_gated": -0.05988211619005047,
+  "avg_R_complement": -0.05220931587206708,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": -0.004715809198953636,
+ "ci_lo": -0.029183475526410912,
+ "ci_hi": 0.019575942554466656,
+ "ci_method": "cluster",
+ "p": 0.7045993347601565,
+ "halves": {
+  "H1": {
+   "n": 26748,
+   "diff": -0.009372699403949029,
+   "ci_lo": -0.045661144094380296,
+   "ci_hi": 0.025746226364204202,
+   "ci_method": "iid",
+   "p": 0.6068905700743721,
+   "start": "2016-01-03 23:33:00+00:00",
+   "end": "2020-12-31 20:32:00+00:00",
+   "n_gated": 11682
+  },
+  "H2": {
+   "n": 34130,
+   "diff": -0.0010943940039310762,
+   "ci_lo": -0.03222338733199511,
+   "ci_hi": 0.031275793134115555,
+   "ci_method": "iid",
+   "p": 0.9461366368112415,
+   "start": "2021-01-04 01:34:00+00:00",
+   "end": "2026-07-23 04:01:00+00:00",
+   "n_gated": 15004
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 12823,
+   "diff": -0.016038012791245754,
+   "ci_lo": -0.06681309728090921,
+   "ci_hi": 0.041341800208236766,
+   "ci_method": "iid",
+   "p": 0.5610543957539236,
+   "start": "2016-01-03 23:33:00+00:00",
+   "end": "2018-08-22 09:31:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 15514,
+   "diff": 0.008538017245852299,
+   "ci_lo": -0.0422846477574455,
+   "ci_hi": 0.06049797209923114,
+   "ci_method": "iid",
+   "p": 0.7447094033797883,
+   "start": "2018-08-22 12:01:00+00:00",
+   "end": "2021-04-12 08:10:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 16664,
+   "diff": -7.732656024745516e-05,
+   "ci_lo": -0.04933760981047101,
+   "ci_hi": 0.044336198663480306,
+   "ci_method": "iid",
+   "p": 0.9974181684249769,
+   "start": "2021-04-12 09:52:00+00:00",
+   "end": "2023-12-01 21:01:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 15877,
+   "diff": -0.013428349636328142,
+   "ci_lo": -0.059623139600235284,
+   "ci_hi": 0.036078717681345567,
+   "ci_method": "iid",
+   "p": 0.5823040204884331,
+   "start": "2023-12-04 00:05:00+00:00",
+   "end": "2026-07-23 04:01:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.034848511070640936,
+ "mde_threshold": 0.1,
+ "power_floor_n": 3241,
+ "verdict": "NULL",
+ "verdict_detail": "CI contains 0; powered (MDE 0.0348 <= 0.1000)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 60878,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "gate_mask_checked": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 60.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 4280,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "rr",
+    "is_bpr",
+    "gap_id",
+    "gap_time"
+   ],
+   "ignored": [],
+   "lookback": "5D",
+   "recent": "1D",
+   "events_fp": "028341198c86b9ec",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "150min",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": null,
+  "entry_mode": "next_open",
+  "hold_basis": "clock",
+  "mde_threshold": null,
+  "cluster": "column:gap_id",
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "Direction of the BPR trade = the filling leg (yaml execution.bias 'direction of the leg that ... filled the gap'). Comparison is his ranking claim: BPR revisit vs untouched FVG first touch on the same gap population.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/structure_guest_02a/balanced-price-range-revisit.py",
+ "runtime_sec": 27.57,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:20:54+00:00",
+ "n_events_in": 61411,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 531,
+  "target_not_beyond_entry": 0,
+  "no_bars_in_hold": 2
+ },
+ "n_complement": 34192,
+ "gate_firing_rate": 0.43835211406419394,
+ "events_fp": "028341198c86b9ec",
+ "mask_fp": "48956fa6d9113daa",
+ "mask_col": "is_bpr",
+ "exit_mix": {
+  "stop": 0.6329910814659372,
+  "target": 0.3139099153113992,
+  "time": 0.05309900322266357
+ },
+ "gated_vs_own_control": {
+  "diff": 0.028011348183484407,
+  "ci_lo": 0.009683166028457249,
+  "ci_hi": 0.04656589092334609,
+  "p": 0.0029101718942202187
+ },
+ "complement": {
+  "n": 34192,
+  "avg_R": -0.019482158489629035,
+  "win_rate": 0.3554047730463266,
+  "pf": 0.9704380892083524,
+  "sd_R": 1.38520435851365,
+  "exit_mix": {
+   "stop": 0.6230989705194198,
+   "target": 0.31311417875526437,
+   "time": 0.06378685072531587
+  },
+  "vs_own_control": {
+   "diff": 0.032727157382438046,
+   "ci_lo": 0.016448374270210467,
+   "ci_hi": 0.04906260930898407,
+   "p": 8.371776354799958e-05
+  }
+ },
+ "ci_components": {
+  "phase3_iid": [
+   -0.028966371648875507,
+   0.018613518509565486
+  ],
+  "day_block": [
+   -0.027524924317154285,
+   0.019234309603807224
+  ],
+  "cluster": [
+   -0.029183475526410912,
+   0.019575942554466656
+  ]
+ },
+ "diff_meaning": "mean(R-ctrl | gated) - mean(R-ctrl | complement)",
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_eff_gated": 2717,
+  "n_eff_complement": 2720,
+  "n_eff": 2717
+ },
+ "ties": {
+  "real_ambiguous": 0.022093367061992837,
+  "control_ambiguous": 0.02763559906698643,
+  "real_gap_stop": 0.020877821216202897,
+  "control_gap_stop": 0.02021748414862512,
+  "gated_excess": -0.00469159859102151,
+  "complement_excess": -0.006206130088909686,
+  "verdict_stop_first": "NULL"
+ },
+ "ctrl_overlap": 0.00788133644337856,
+ "exposure_bars": {
+  "real_mean": 143.74626301783897,
+  "control_mean": 142.62758632018134,
+  "hold_basis": "clock"
+ },
+ "run_id": "f9a7e4dacf584c7cb8d9bf6b0f46f7ca",
+ "hyp_key": "f7d7a4a783054fa6"
+}

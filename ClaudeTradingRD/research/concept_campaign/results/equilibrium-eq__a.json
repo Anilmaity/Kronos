@@ -1,0 +1,209 @@
+{
+ "concept_id": "equilibrium-eq",
+ "reading": "a",
+ "testable": true,
+ "test_type": "rate",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "previous trading day (18:00 NY roll, >=600 M1 bars) closed up (down)",
+   "event: first 1H close of the next day below (above) that day's EQ = 50% of its wick high-to-low range",
+   "hit: previous day low (high) traded before the end of the trading day",
+   "null: same signed distance from the next M1 open, same trading-minute horizon, matched random moments; claim '+'"
+  ],
+  "params": {
+   "eq": "whole-candle wick-to-wick 50%",
+   "closure_tf": "1h",
+   "bias": "previous day close vs open",
+   "day_open_hour": 18,
+   "min_day_m1": 600,
+   "horizon": "to end of the trading day",
+   "null_tod_tol_min": 30
+  }
+ },
+ "params_source": {
+  "eq": "corpus: IPZjNI1B5a0 'I'm always going to measure the candles from Wick High to Wick low'",
+  "closure_tf": "corpus: -KKuZb5Z5aU 'it's not ideal to have closures on the hourly chart below that'",
+  "bias": "declared-before-run: the day's direction = close vs open (BmTJEWru_9U bullish C2 day simplified)",
+  "day_open_hour": "session_window_fit: settled 18:00 NY roll",
+  "min_day_m1": "declared-before-run: skip stub sessions (trap 6)",
+  "horizon": "corpus: HMYcwQwaWm0 'Closing below the EQ here means that we could be looking for price' (the day's low as draw)",
+  "null_tod_tol_min": "session_window_fit: time-of-day buys opportunity on gold (README trap 9), added in the corrected re-run (see notes); events cluster at 19:00 NY (first 1H close of the day), so the null holds the NY clock within +/-30 min"
+ },
+ "n": 1638,
+ "span": {
+  "start": "2016-01-06 02:00:00+00:00",
+  "end": "2026-07-23 02:00:00+00:00",
+  "years": 10.543
+ },
+ "avg_R": null,
+ "avg_R_gross": null,
+ "win_rate": null,
+ "pf": null,
+ "observed_rate": 0.49633699633699635,
+ "null_rate": 0.49340659340659343,
+ "lift": 1.005939123979213,
+ "control": {
+  "rate": 0.49340659340659343,
+  "reps": 5,
+  "kind": "null_fn x5"
+ },
+ "diff": 0.00293040293040292,
+ "ci_lo": -0.023086080586080613,
+ "ci_hi": 0.0312606837606838,
+ "ci_method": "phase3_iid",
+ "p": 0.8326029732111999,
+ "halves": {
+  "H1": {
+   "n": 770,
+   "diff": 0.018701298701298774,
+   "ci_lo": -0.025194805194805214,
+   "ci_hi": 0.05819480519480511,
+   "ci_method": "iid",
+   "p": 0.37934746135890896,
+   "start": "2016-01-06 02:00:00+00:00",
+   "end": "2020-12-30 00:00:00+00:00"
+  },
+  "H2": {
+   "n": 868,
+   "diff": -0.011059907834101379,
+   "ci_lo": -0.0504608294930875,
+   "ci_hi": 0.030650921658986217,
+   "ci_method": "iid",
+   "p": 0.5929972576959579,
+   "start": "2021-01-06 04:00:00+00:00",
+   "end": "2026-07-23 02:00:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 396,
+   "diff": 0.027272727272727337,
+   "ci_lo": -0.029810606060606083,
+   "ci_hi": 0.08688131313131307,
+   "ci_method": "iid",
+   "p": 0.35958901025334916,
+   "start": "2016-01-06 02:00:00+00:00",
+   "end": "2018-08-16 23:00:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 413,
+   "diff": 0.00968523002421301,
+   "ci_lo": -0.047966101694915296,
+   "ci_hi": 0.06973365617433419,
+   "ci_method": "iid",
+   "p": 0.7470273940775516,
+   "start": "2018-08-24 09:00:00+00:00",
+   "end": "2021-04-09 09:00:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 414,
+   "diff": -0.02512077294685988,
+   "ci_lo": -0.085036231884058,
+   "ci_hi": 0.03769323671497591,
+   "ci_method": "iid",
+   "p": 0.42235226057822156,
+   "start": "2021-04-13 13:00:00+00:00",
+   "end": "2023-12-01 00:00:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 415,
+   "diff": 0.0009638554216867545,
+   "ci_lo": -0.055433734939759026,
+   "ci_hi": 0.054951807228915635,
+   "ci_method": "iid",
+   "p": 0.9726955734939099,
+   "start": "2023-12-04 15:00:00+00:00",
+   "end": "2026-07-23 02:00:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.03884180520469509,
+ "mde_threshold": 0.05,
+ "power_floor_n": 989,
+ "verdict": "NULL",
+ "verdict_detail": "CI contains 0; powered (MDE 0.0388 <= 0.0500)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 1645,
+  "min_slack_min": 0.0,
+  "passed": true,
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 129,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "level",
+    "side",
+    "day_end",
+    "eq"
+   ],
+   "ignored": [],
+   "lookback": "10D",
+   "recent": "1D",
+   "events_fp": "ad7da50ec1c9ec62",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "reps": 5,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "mde_threshold": null,
+  "cluster": null,
+  "outcome_horizon": "1 days 00:00:00",
+  "null_kind": "null_fn x5"
+ },
+ "notes": "Tests the EQ-as-bias-invalidator branch (previous-day range EQ). RE-RUN NOTE: the first locked run used a null WITHOUT time-of-day matching and returned EDGE (obs 0.494 vs null 0.461, diff +0.033 [+0.006, +0.061], p=0.017). After that run I found 28% of events sit in the 19:00 NY hour (first 1H close of the session), which trap 9 says requires a time-of-day-matched null; this is the single corrected re-run with sample_times(tod_tol_min=30). Both runs are in the ledger.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/entry_own_02a/equilibrium-eq.py",
+ "runtime_sec": 0.44,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:22:01+00:00",
+ "dropped": {
+  "nan_rows": 7
+ },
+ "null_kind": "null_fn x5",
+ "events_fp": "ad7da50ec1c9ec62",
+ "predictors_probed": true,
+ "ci_components": {
+  "phase3_iid": [
+   -0.023086080586080613,
+   0.0312606837606838
+  ],
+  "day_block": [
+   -0.020271672771671988,
+   0.02686507936508039
+  ]
+ },
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 1638,
+  "n_clusters": null,
+  "n_eff": 1638
+ },
+ "run_id": "67c25425622949b1955ecd36816d0ae4",
+ "hyp_key": "472d3d135dd4f642"
+}

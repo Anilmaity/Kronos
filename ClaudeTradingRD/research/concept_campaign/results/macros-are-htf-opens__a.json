@@ -1,0 +1,194 @@
+{
+ "concept_id": "macros-are-htf-opens",
+ "reading": "a",
+ "testable": true,
+ "test_type": "rate",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "per NY weekday, pivot 10:00 NY (DST-aware)",
+   "pre leg = close(09:59 M1) - open(09:30 M1); post leg = close(10:29 M1) - open(10:00 M1); hit = the two legs have opposite signs (direction change)",
+   "null = same statistic at a random other quarter-hour pivot of the same morning (08:00-11:45 NY, excluding 09:45 and 10:00)",
+   "rows with a missing M1 bar or a zero leg dropped"
+  ],
+  "params": {
+   "pivot": "10:00",
+   "leg_min": 30,
+   "null_pivots": [
+    "08:00",
+    "08:15",
+    "08:30",
+    "08:45",
+    "09:00",
+    "09:15",
+    "09:30",
+    "10:15",
+    "10:30",
+    "10:45",
+    "11:00",
+    "11:15",
+    "11:30",
+    "11:45"
+   ]
+  }
+ },
+ "params_source": {
+  "pivot": "corpus: yNgx9OAefuI '10 is where we get a new 4hour candle'; m0wTBdUe7gs 'when becomes the time where something can adjust, usually 10'",
+  "leg_min": "declared-before-run: 30 minutes = the smallest HTF candle (30m) the concept names as opening at 10:00",
+  "null_pivots": "corpus: measurable 'direction change at 9:45 and 10:00 vs other quarter-hours'; declared-before-run: the NY morning 08:00-12:00 quarter-hours"
+ },
+ "n": 2714,
+ "span": {
+  "start": "2016-01-04 15:00:00+00:00",
+  "end": "2026-07-22 14:00:00+00:00",
+  "years": 10.543
+ },
+ "avg_R": null,
+ "avg_R_gross": null,
+ "win_rate": null,
+ "pf": null,
+ "observed_rate": 0.5003684598378777,
+ "null_rate": 0.5114775239498895,
+ "lift": 0.9782804451968447,
+ "control": {
+  "rate": 0.5114775239498895,
+  "reps": 5,
+  "kind": "null_fn x5"
+ },
+ "diff": -0.01108756381326792,
+ "ci_lo": -0.03236121346106545,
+ "ci_hi": 0.012558953574063447,
+ "ci_method": "phase3_block",
+ "p": 0.3332697789967852,
+ "halves": {
+  "H1": {
+   "n": 1288,
+   "diff": -0.01077898550724643,
+   "ci_lo": -0.043644539337474066,
+   "ci_hi": 0.018261840062111793,
+   "ci_method": "iid",
+   "p": 0.49490504402325136,
+   "start": "2016-01-04 15:00:00+00:00",
+   "end": "2020-12-31 15:00:00+00:00"
+  },
+  "H2": {
+   "n": 1426,
+   "diff": -0.011407199625993458,
+   "ci_lo": -0.04171838475923325,
+   "ci_hi": 0.017136220196353545,
+   "ci_method": "iid",
+   "p": 0.4473977869686715,
+   "start": "2021-01-04 15:00:00+00:00",
+   "end": "2026-07-22 14:00:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 679,
+   "diff": -0.023294059891998065,
+   "ci_lo": -0.06622545409916543,
+   "ci_hi": 0.019026755031909603,
+   "ci_method": "iid",
+   "p": 0.2841381988973959,
+   "start": "2016-01-04 15:00:00+00:00",
+   "end": "2018-08-21 14:00:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 678,
+   "diff": 0.004547689282202616,
+   "ci_lo": -0.03849926253687264,
+   "ci_hi": 0.05165437561455311,
+   "ci_method": "block",
+   "p": 0.8432516673461508,
+   "start": "2018-08-22 14:00:00+00:00",
+   "end": "2021-04-09 14:00:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 684,
+   "diff": -0.009527290448343051,
+   "ci_lo": -0.05875791910331333,
+   "ci_hi": 0.042001096491228566,
+   "ci_method": "block",
+   "p": 0.710898505975877,
+   "start": "2021-04-12 14:00:00+00:00",
+   "end": "2023-12-01 15:00:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 673,
+   "diff": -0.016196136701337294,
+   "ci_lo": -0.059751114413075845,
+   "ci_hi": 0.02929049034175339,
+   "ci_method": "iid",
+   "p": 0.4758386300131371,
+   "start": "2023-12-04 15:00:00+00:00",
+   "end": "2026-07-22 14:00:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.032104586146253604,
+ "mde_threshold": 0.05,
+ "power_floor_n": 1119,
+ "verdict": "NULL",
+ "verdict_detail": "CI contains 0; powered (MDE 0.0321 <= 0.0500)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 2714,
+  "min_slack_min": 0.0,
+  "passed": true,
+  "no_detector_declaration": "pure clock rule: the 10:00 NY pivot and the null quarter-hours are fixed wall-clock times"
+ },
+ "settings": {
+  "reps": 5,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "mde_threshold": null,
+  "cluster": null,
+  "outcome_horizon": "1 days 00:00:00",
+  "null_kind": "null_fn x5"
+ },
+ "notes": "Reading a: is 10:00 NY (HTF candle opens) a point of direction change more often than other NY-morning quarter-hours? Gold is not an index; the corpus's 10:00 4H open is the futures grid, on the forex grid 10:00 opens 1h/30m/15m only.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/time_own_01b/macros-are-htf-opens.py",
+ "runtime_sec": 3.41,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:27:50+00:00",
+ "dropped": {
+  "nan_rows": 0
+ },
+ "null_kind": "null_fn x5",
+ "events_fp": "075ed37f4adceefb",
+ "predictors_probed": false,
+ "ci_components": {
+  "phase3_block": [
+   -0.03236121346106545,
+   0.012558953574063447
+  ],
+  "day_block": [
+   -0.031616617538685846,
+   0.010739069024810722
+  ]
+ },
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 2714,
+  "n_clusters": null,
+  "n_eff": 2714
+ },
+ "run_id": "9d41bddc8df8407ab848b07609a46d62",
+ "hyp_key": "3dbc5d587e98d1e1"
+}

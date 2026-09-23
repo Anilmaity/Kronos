@@ -1,0 +1,206 @@
+{
+ "concept_id": "seek-destroy-outside-in-entry",
+ "reading": null,
+ "testable": true,
+ "test_type": "rate",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "reference range = Asia range, 15m bars 20:00-00:00 NY of the trading day (>= 12 of 16 bars present); EQ = its midpoint",
+   "event: first 15m bar closing between 00:00 and 12:00 NY that trades beyond an Asia extreme and closes back inside, with no earlier post-Asia 15m close beyond that extreme (failure to displace); a bar sweeping both sides ends the day; one per day",
+   "outcome: Asia EQ touched from the next M1 open until 12:00 NY",
+   "null: same signed distance from the M1 open at matched random moments (+/-30d, NY time of day +/-30 min), same number of M1 bars"
+  ],
+  "params": {
+   "tf": "15min",
+   "asia": "20:00-00:00",
+   "trade_win": "00:00-12:00",
+   "min_asia_bars": 12,
+   "horizon_end": "12:00",
+   "null_tod_tol_min": 30
+  }
+ },
+ "params_source": {
+  "tf": "corpus: concept timeframes ltf 15m",
+  "asia": "session_window_fit: forex Asia killzone 20:00-00:00 NY (verbatim)",
+  "trade_win": "declared-before-run: London + NY AM, from midnight to 12:00 NY",
+  "min_asia_bars": "declared-before-run: skip stub Asia sessions (trap 6)",
+  "horizon_end": "session_window_fit: ny_am window ends 12:00 NY",
+  "null_tod_tol_min": "declared-before-run: hold NY clock fixed in the null (trap 9)"
+ },
+ "n": 1642,
+ "span": {
+  "start": "2016-01-06 06:00:00+00:00",
+  "end": "2026-07-21 04:15:00+00:00",
+  "years": 10.535
+ },
+ "avg_R": null,
+ "avg_R_gross": null,
+ "win_rate": null,
+ "pf": null,
+ "observed_rate": 0.7630937880633374,
+ "null_rate": 0.7633373934226554,
+ "lift": 0.999680868038934,
+ "control": {
+  "rate": 0.7633373934226554,
+  "reps": 5,
+  "kind": "null_fn x5"
+ },
+ "diff": -0.00024360535931788885,
+ "ci_lo": -0.02436358099878202,
+ "ci_hi": 0.02265834348355667,
+ "ci_method": "phase3_iid",
+ "p": 0.9837977719725626,
+ "halves": {
+  "H1": {
+   "n": 771,
+   "diff": 0.002334630350194433,
+   "ci_lo": -0.0394293125810628,
+   "ci_hi": 0.03738002594033399,
+   "ci_method": "block",
+   "p": 0.905159095168697,
+   "start": "2016-01-06 06:00:00+00:00",
+   "end": "2020-12-31 15:45:00+00:00"
+  },
+  "H2": {
+   "n": 871,
+   "diff": -0.0025258323765786628,
+   "ci_lo": -0.034225028702640686,
+   "ci_hi": 0.02962112514351312,
+   "ci_method": "iid",
+   "p": 0.8767604776364972,
+   "start": "2021-01-04 06:30:00+00:00",
+   "end": "2026-07-21 04:15:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 431,
+   "diff": 0.0013921113689094877,
+   "ci_lo": -0.055684454756382847,
+   "ci_hi": 0.049187935034801566,
+   "ci_method": "block",
+   "p": 0.95850124944806,
+   "start": "2016-01-06 06:00:00+00:00",
+   "end": "2018-08-22 09:30:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 380,
+   "diff": -0.004210526315789553,
+   "ci_lo": -0.0542236842105273,
+   "ci_hi": 0.04427631578947317,
+   "ci_method": "block",
+   "p": 0.8669270453446378,
+   "start": "2018-08-23 04:15:00+00:00",
+   "end": "2021-04-08 04:45:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 441,
+   "diff": -0.0009070294784581101,
+   "ci_lo": -0.04128117913832207,
+   "ci_hi": 0.03810657596371879,
+   "ci_method": "iid",
+   "p": 0.9642775805612153,
+   "start": "2021-04-14 04:15:00+00:00",
+   "end": "2023-11-29 07:30:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 390,
+   "diff": 0.002564102564102555,
+   "ci_lo": -0.046166666666666724,
+   "ci_hi": 0.051294871794871716,
+   "ci_method": "iid",
+   "p": 0.9178606995136289,
+   "start": "2023-12-05 08:30:00+00:00",
+   "end": "2026-07-21 04:15:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.033606718873625444,
+ "mde_threshold": 0.05,
+ "power_floor_n": 742,
+ "verdict": "NULL",
+ "verdict_detail": "CI contains 0; powered (MDE 0.0336 <= 0.0500)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 1645,
+  "min_slack_min": 0.0,
+  "passed": true,
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 126,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "eq",
+    "asia_hi",
+    "asia_lo"
+   ],
+   "ignored": [],
+   "lookback": "5D",
+   "recent": "1D",
+   "events_fp": "bc71ab099efa66ed",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "reps": 5,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "mde_threshold": null,
+  "cluster": null,
+  "outcome_horizon": "1 days 00:00:00",
+  "null_kind": "null_fn x5"
+ },
+ "notes": "The Seek & Destroy day classification is a hindsight/discretionary profile read and is not applied: the outside-in EQ-magnet claim is tested on every day with an unheld Asia excursion. No stop is stated, hence a rate test not a trade test. 3 events with no bar before 12:00 NY scored NaN.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/entry_own_04b/seek-destroy-outside-in-entry.py",
+ "runtime_sec": 0.59,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:17:47+00:00",
+ "dropped": {
+  "nan_rows": 3
+ },
+ "null_kind": "null_fn x5",
+ "events_fp": "bc71ab099efa66ed",
+ "predictors_probed": true,
+ "ci_components": {
+  "phase3_iid": [
+   -0.02436358099878202,
+   0.02265834348355667
+  ],
+  "day_block": [
+   -0.021805724725937545,
+   0.021683922046292416
+  ]
+ },
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 1642,
+  "n_clusters": null,
+  "n_eff": 1642
+ },
+ "run_id": "aa57d938f5fc46e981960e4943d33cce",
+ "hyp_key": "53bbb7513f0c5fa3"
+}

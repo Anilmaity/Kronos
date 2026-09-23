@@ -1,0 +1,278 @@
+{
+ "concept_id": "weekly-profile-framework",
+ "reading": "b",
+ "testable": true,
+ "test_type": "gate",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "baseline: every daily C2 at the week-to-date extreme, traded as in reading a (next-session entry, stop at the extreme, 2R, one session)",
+   "gate: the hourly CISD confirmation inside that daily candle is present (known at the daily close)"
+  ],
+  "params": {
+   "daily_open": "18:00 NY",
+   "c2_test": "low<prior low & close>prior low (mirror)",
+   "week_extreme": "C2 extreme = week-to-date extreme (Mon-based week)",
+   "h1_cisd": "phase-3 CISD (series_open, 2/2 swing, max_wait 3) on 1h, confirm and extreme inside the daily candle, extreme == daily wick extreme",
+   "rr": 2.0,
+   "max_hold": "23h",
+   "hold_basis": "bars",
+   "min_day_m1": 600,
+   "entry": "next session open after the C2 close"
+  }
+ },
+ "params_source": {
+  "daily_open": "method_spec: \u00a71.4 daily open 18:00 canon",
+  "c2_test": "method_spec: \u00a73.2 C2 test",
+  "week_extreme": "corpus: Qt7Ek4keMzs 'finding the high or the low' of the week; method_spec \u00a72.5 weekly profiles",
+  "h1_cisd": "phase3: locked CISD config; method_spec \u00a72.4 hourly CISD inside the daily candle",
+  "rr": "method_spec: \u00a75.3 2R floor / fixed target",
+  "max_hold": "declared-before-run: trade candle 3 = the next session only",
+  "hold_basis": "declared-before-run: one session of trading minutes (weekend-safe)",
+  "min_day_m1": "declared-before-run: README trap 6 stub-session floor",
+  "entry": "method_spec: \u00a72.5 trade the days after the confirmed extreme (candle 3)"
+ },
+ "n": 543,
+ "span": {
+  "start": "2016-01-08 23:00:00+00:00",
+  "end": "2026-07-20 22:00:00+00:00",
+  "years": 10.527
+ },
+ "avg_R": -0.04178825775186195,
+ "avg_R_gross": -0.0017882577518619335,
+ "win_rate": 0.429097605893186,
+ "pf": 0.8916271264915606,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "avg_R_gated": -0.06530876128316429,
+  "avg_R_complement": -0.03727016370740637,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": 0.010944787765646453,
+ "ci_lo": -0.14713673882792588,
+ "ci_hi": 0.15814720972578844,
+ "ci_method": "day_block",
+ "p": 0.8882380764519975,
+ "halves": {
+  "H1": {
+   "n": 431,
+   "diff": -0.007946336392193807,
+   "ci_lo": -0.21831292505730013,
+   "ci_hi": 0.21631932634257703,
+   "ci_method": "iid",
+   "p": 0.9428664116615686,
+   "start": "2016-01-08 23:00:00+00:00",
+   "end": "2020-12-21 23:00:00+00:00",
+   "n_gated": 265
+  },
+  "H2": {
+   "n": 464,
+   "diff": 0.028207941966160548,
+   "ci_lo": -0.17661072046352908,
+   "ci_hi": 0.22661210071178264,
+   "ci_method": "iid",
+   "p": 0.7839130064520471,
+   "start": "2021-01-06 23:00:00+00:00",
+   "end": "2026-07-20 22:00:00+00:00",
+   "n_gated": 278
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 235,
+   "diff": -0.07530302777541875,
+   "ci_lo": -0.33897811396874916,
+   "ci_hi": 0.19995540230278377,
+   "ci_method": "iid",
+   "p": 0.5838870040597466,
+   "start": "2016-01-08 23:00:00+00:00",
+   "end": "2018-08-16 22:00:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 221,
+   "diff": 0.10418440777166532,
+   "ci_lo": -0.21045770480758827,
+   "ci_hi": 0.40506042746434395,
+   "ci_method": "iid",
+   "p": 0.5070113193526915,
+   "start": "2018-08-22 22:00:00+00:00",
+   "end": "2021-04-05 22:00:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 257,
+   "diff": -0.10094796399959025,
+   "ci_lo": -0.394739913772124,
+   "ci_hi": 0.18299429712154275,
+   "ci_method": "iid",
+   "p": 0.49338672041531223,
+   "start": "2021-04-12 22:00:00+00:00",
+   "end": "2023-11-17 23:00:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 182,
+   "diff": 0.16325519840966024,
+   "ci_lo": -0.178950105682935,
+   "ci_hi": 0.5205517579024748,
+   "ci_method": "iid",
+   "p": 0.36026336864327846,
+   "start": "2023-12-04 23:00:00+00:00",
+   "end": "2026-07-20 22:00:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.21818740829139152,
+ "mde_threshold": 0.1,
+ "power_floor_n": 1676,
+ "verdict": "UNDERPOWERED",
+ "verdict_detail": "CI contains 0; MDE 0.2182 vs threshold 0.1000, effective n 352 (power floor n=2585, have 352)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 895,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "gate_mask_checked": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 4325.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 70,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "rr",
+    "h1_cisd",
+    "weekday"
+   ],
+   "ignored": [],
+   "lookback": "30D",
+   "recent": "1D",
+   "events_fp": "67b05c6b7a365c32",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "23h",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": null,
+  "entry_mode": "next_open",
+  "hold_basis": "bars",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "Tests the framework's confirmation step (measurable: candle-3 continuation with vs without the hourly CISD).",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/model_own_02b/weekly-profile-framework.py",
+ "runtime_sec": 0.35,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:11:57+00:00",
+ "n_events_in": 898,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 3,
+  "target_not_beyond_entry": 0,
+  "no_bars_in_hold": 0
+ },
+ "n_complement": 352,
+ "gate_firing_rate": 0.6067039106145251,
+ "events_fp": "67b05c6b7a365c32",
+ "mask_fp": "98a2335f332a6a60",
+ "mask_col": "h1_cisd",
+ "exit_mix": {
+  "stop": 0.26519337016574585,
+  "target": 0.08103130755064457,
+  "time": 0.6537753222836096
+ },
+ "gated_vs_own_control": {
+  "diff": 0.02352050353130234,
+  "ci_lo": -0.05757853287259452,
+  "ci_hi": 0.11024380561571853,
+  "p": 0.5827428810084758
+ },
+ "complement": {
+  "n": 352,
+  "avg_R": -0.024694447941750495,
+  "win_rate": 0.4346590909090909,
+  "pf": 0.9472093605341628,
+  "sd_R": 1.0724081483784038,
+  "exit_mix": {
+   "stop": 0.38636363636363635,
+   "target": 0.14204545454545456,
+   "time": 0.4715909090909091
+  },
+  "vs_own_control": {
+   "diff": 0.012575715765655877,
+   "ci_lo": -0.11001231646750986,
+   "ci_hi": 0.13801522759379217,
+   "p": 0.8424569663088923
+  }
+ },
+ "ci_components": {
+  "phase3_iid": [
+   -0.13756147843635927,
+   0.1641410290088855
+  ],
+  "day_block": [
+   -0.14713673882792588,
+   0.15814720972578844
+  ]
+ },
+ "diff_meaning": "mean(R-ctrl | gated) - mean(R-ctrl | complement)",
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_eff_gated": 543,
+  "n_eff_complement": 352,
+  "n_eff": 352
+ },
+ "ties": {
+  "real_ambiguous": 0.0,
+  "control_ambiguous": 0.000670391061452514,
+  "real_gap_stop": 0.00558659217877095,
+  "control_gap_stop": 0.004022346368715084,
+  "gated_excess": -0.0003683241252302026,
+  "complement_excess": -0.0011363636363636365,
+  "verdict_stop_first": "UNDERPOWERED"
+ },
+ "ctrl_overlap": 0.006480446927374301,
+ "exposure_bars": {
+  "real_mean": 1380.0,
+  "control_mean": 1379.4806703910615,
+  "hold_basis": "bars"
+ },
+ "run_id": "10d464f4a65d4194a15170be2a42a6a2",
+ "hyp_key": "b66c1b22e20154f9"
+}

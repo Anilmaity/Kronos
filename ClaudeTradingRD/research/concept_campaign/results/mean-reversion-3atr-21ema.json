@@ -1,0 +1,206 @@
+{
+ "concept_id": "mean-reversion-3atr-21ema",
+ "reading": null,
+ "testable": true,
+ "test_type": "rate",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "1h bars (UTC hourly), EMA21 of close (adjust=False), Wilder ATR14",
+   "trigger: first 1h close >= EMA+3*ATR (short: expect return down) or <= EMA-3*ATR (long)",
+   "decide at the trigger bar's close; target level = EMA value at that close",
+   "hit = price touches that level within 1440 M1 bars (one trading day)",
+   "null = same signed distance from the first open after a matched random moment (+/-30d), same side, same 1440-bar horizon"
+  ],
+  "params": {
+   "tf": "1h",
+   "ema_n": 21,
+   "atr_n": 14,
+   "k_atr": 3.0,
+   "horizon_m1": 1440,
+   "symmetric": true
+  }
+ },
+ "params_source": {
+  "ema_n": "corpus: kG8BuEPVppo 'looking for it to come back to say the 21 EMA'",
+  "k_atr": "corpus: kG8BuEPVppo 'overextended plus three ATR'",
+  "tf": "declared-before-run: timeframe unstated in the corpus; 1h chosen as the middle of the campaign's intraday grid",
+  "atr_n": "declared-before-run: ATR period unstated; Wilder's standard 14",
+  "horizon_m1": "declared-before-run: one trading day (1440 M1 bars)",
+  "symmetric": "declared-before-run: symmetry unstated; tested both sides pooled"
+ },
+ "n": 924,
+ "span": {
+  "start": "2016-01-14 19:00:00+00:00",
+  "end": "2026-07-22 02:00:00+00:00",
+  "years": 10.516
+ },
+ "avg_R": null,
+ "avg_R_gross": null,
+ "win_rate": null,
+ "pf": null,
+ "observed_rate": 0.2597402597402597,
+ "null_rate": 0.26233766233766237,
+ "lift": 0.9900990099009899,
+ "control": {
+  "rate": 0.26233766233766237,
+  "reps": 5,
+  "kind": "null_fn x5"
+ },
+ "diff": -0.0025974025974025983,
+ "ci_lo": -0.03614718614718526,
+ "ci_hi": 0.0320400432900439,
+ "ci_method": "phase3_block",
+ "p": 0.8813021288309678,
+ "halves": {
+  "H1": {
+   "n": 397,
+   "diff": 0.007052896725440794,
+   "ci_lo": -0.04335012594458549,
+   "ci_hi": 0.06403022670025119,
+   "ci_method": "block",
+   "p": 0.7968186456723921,
+   "start": "2016-01-14 19:00:00+00:00",
+   "end": "2020-12-28 02:00:00+00:00"
+  },
+  "H2": {
+   "n": 527,
+   "diff": -0.009867172675521785,
+   "ci_lo": -0.05124288425047439,
+   "ci_hi": 0.034924098671726744,
+   "ci_method": "iid",
+   "p": 0.6535184658258107,
+   "start": "2021-01-04 00:00:00+00:00",
+   "end": "2026-07-22 02:00:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 194,
+   "diff": 0.007216494845360799,
+   "ci_lo": -0.07319587628865981,
+   "ci_hi": 0.09693298969072137,
+   "ci_method": "block",
+   "p": 0.8679407103458389,
+   "start": "2016-01-14 19:00:00+00:00",
+   "end": "2018-08-16 01:00:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 226,
+   "diff": 0.007079646017699115,
+   "ci_lo": -0.05752212389380548,
+   "ci_hi": 0.07258849557522132,
+   "ci_method": "block",
+   "p": 0.8310983234522876,
+   "start": "2018-08-24 15:00:00+00:00",
+   "end": "2021-04-01 15:00:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 235,
+   "diff": 0.005106382978723345,
+   "ci_lo": -0.0621489361702128,
+   "ci_hi": 0.06978723404255321,
+   "ci_method": "iid",
+   "p": 0.8794119796005418,
+   "start": "2021-04-15 15:00:00+00:00",
+   "end": "2023-12-01 21:00:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 269,
+   "diff": -0.024535315985130063,
+   "ci_lo": -0.09146840148698918,
+   "ci_hi": 0.040167286245352686,
+   "ci_method": "block",
+   "p": 0.465006623361278,
+   "start": "2023-12-04 16:00:00+00:00",
+   "end": "2026-07-22 02:00:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.048733629592915904,
+ "mde_threshold": 0.05,
+ "power_floor_n": 878,
+ "verdict": "NULL",
+ "verdict_detail": "CI contains 0; powered (MDE 0.0487 <= 0.0500)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 924,
+  "min_slack_min": 0.0,
+  "passed": true,
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 99,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "level",
+    "close"
+   ],
+   "ignored": [],
+   "lookback": "45D",
+   "recent": "1D",
+   "events_fp": "7c38665b5e45afac",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "reps": 5,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "mde_threshold": null,
+  "cluster": null,
+  "outcome_horizon": "1 days 00:00:00",
+  "null_kind": "null_fn x5"
+ },
+ "notes": "Guest's non-ICT system; only trigger/target stated, so tested as a rate of reaching the EMA vs a same-distance matched null.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/model_guest_02b/mean-reversion-3atr-21ema.py",
+ "runtime_sec": 0.11,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:06:30+00:00",
+ "dropped": {
+  "nan_rows": 0
+ },
+ "null_kind": "null_fn x5",
+ "events_fp": "7c38665b5e45afac",
+ "predictors_probed": true,
+ "ci_components": {
+  "phase3_block": [
+   -0.03614718614718526,
+   0.0320400432900439
+  ],
+  "day_block": [
+   -0.03548209192963842,
+   0.030802142591922297
+  ]
+ },
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 704,
+  "n_clusters": null,
+  "n_eff": 704
+ },
+ "run_id": "3e50921d4d5944c0a106113e339fae86",
+ "hyp_key": "166cb8f8dc995042"
+}

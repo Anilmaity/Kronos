@@ -1,0 +1,261 @@
+{
+ "concept_id": "smt-divergence",
+ "reading": "b",
+ "testable": true,
+ "test_type": "trade",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "gold 1h bars (UTC hours) vs XAG_USD 1h (OANDA), compared on shared bar starts",
+   "shared level = a confirmed 2/2 swing extreme of one asset and the other asset's extreme on that same bar; SMT at bar j (<= 20 bars later) when one asset trades beyond its level and the other does not (first break wins; both beyond = none)",
+   "lows -> bullish, highs -> bearish (detectors.bias.smt_events)",
+   "reversal closure: the sweeping asset's bar-j close is back beyond the level it swept",
+   "decide at gold bar j close; enter next M1 open; one trade per bar/direction",
+   "stop 1.0 x ATR14(1h); target 1R; exit after 10h wall clock"
+  ],
+  "params": {
+   "tf": "1h",
+   "correlate": "XAG_USD H1",
+   "smt_lookback": 20,
+   "swing": "2/2",
+   "stop_atr": 1.0,
+   "atr_n": 14,
+   "rr": 1.0,
+   "max_hold": "10h",
+   "ctrl_tod_tol_min": 30,
+   "reclaim": "sweeping asset closes back beyond level"
+  }
+ },
+ "params_source": {
+  "tf": "declared-before-run: corpus prefers 15m ('i prefer the 15 minute chart', eHQ4nE-TQ2w) and calls SMT fractal; the campaign holds silver only at H1",
+  "correlate": "corpus: smt-requires-framework ambiguity 'they just need to be correlated' (silver is allowed); phase3 load_correlate",
+  "smt_lookback": "phase3: detectors.bias.smt_events default used for gate_smt",
+  "swing": "phase3: 2/2 swings (conjunction pre-registration \u00a71.8)",
+  "stop_atr": "declared-before-run: symmetric direction test, stop unspecified ('Per the entry model')",
+  "atr_n": "declared-before-run",
+  "rr": "declared-before-run: symmetric 1R barrier",
+  "max_hold": "phase3: 10 entry-TF bars (\u00a71.13)",
+  "ctrl_tod_tol_min": "declared-before-run: README trap 9, SMT is not a timing concept",
+  "reclaim": "corpus: live_streams_05 'Require a reversal closure on the asset that took the level before acting'"
+ },
+ "n": 4434,
+ "span": {
+  "start": "2016-01-04 21:00:00+00:00",
+  "end": "2026-07-21 21:00:00+00:00",
+  "years": 10.543
+ },
+ "avg_R": -0.07511964606414051,
+ "avg_R_gross": -0.035119646064140496,
+ "win_rate": 0.4794767704104646,
+ "pf": 0.8538749724140204,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "n": 21945,
+  "avg_R": -0.050353836206342796,
+  "win_rate": 0.4905445431761221,
+  "pf": 0.8980727376175046,
+  "sd_R": 0.959971300286575,
+  "exit_mix": {
+   "stop": 0.4579630895420369,
+   "target": 0.4483025746183641,
+   "time": 0.093734335839599
+  },
+  "avg_R_gross": -0.010353836206342783,
+  "reps": 5,
+  "fill_rate": 0.989851150202977
+ },
+ "diff": -0.024765809857797715,
+ "ci_lo": -0.05606301713722536,
+ "ci_hi": 0.006408195229770432,
+ "ci_method": "phase3_iid",
+ "p": 0.12018469350794826,
+ "halves": {
+  "H1": {
+   "n": 2139,
+   "diff": -0.03002728621032956,
+   "ci_lo": -0.07440935887295988,
+   "ci_hi": 0.015879713885465854,
+   "ci_method": "iid",
+   "p": 0.1923550213625981,
+   "start": "2016-01-04 21:00:00+00:00",
+   "end": "2020-12-31 16:00:00+00:00"
+  },
+  "H2": {
+   "n": 2295,
+   "diff": -0.018103526351130217,
+   "ci_lo": -0.06011615421550004,
+   "ci_hi": 0.024119691808571056,
+   "ci_method": "iid",
+   "p": 0.399535907467721,
+   "start": "2021-01-04 17:00:00+00:00",
+   "end": "2026-07-21 21:00:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 1125,
+   "diff": -0.038815729574680914,
+   "ci_lo": -0.09900839272366221,
+   "ci_hi": 0.027820409551824028,
+   "ci_method": "block",
+   "p": 0.23026092409681817,
+   "start": "2016-01-04 21:00:00+00:00",
+   "end": "2018-08-22 07:00:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 1138,
+   "diff": -0.014366993298462145,
+   "ci_lo": -0.07505507960725195,
+   "ci_hi": 0.04908231000162282,
+   "ci_method": "iid",
+   "p": 0.6500653781231336,
+   "start": "2018-08-22 19:00:00+00:00",
+   "end": "2021-04-12 02:00:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 1109,
+   "diff": -0.03454402622387027,
+   "ci_lo": -0.09692180210094539,
+   "ci_hi": 0.0287001197275458,
+   "ci_method": "iid",
+   "p": 0.28107047653362605,
+   "start": "2021-04-12 12:00:00+00:00",
+   "end": "2023-11-30 22:00:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 1062,
+   "diff": -0.006902501437132634,
+   "ci_lo": -0.07528876165838688,
+   "ci_hi": 0.05961086513968091,
+   "ci_method": "iid",
+   "p": 0.8410319744801665,
+   "start": "2023-12-05 03:00:00+00:00",
+   "end": "2026-07-21 21:00:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.04464837402605097,
+ "mde_threshold": 0.1,
+ "power_floor_n": 884,
+ "verdict": "NULL",
+ "verdict_detail": "CI contains 0; powered (MDE 0.0446 <= 0.1000)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 4434,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 300.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 324,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_dist",
+    "rr",
+    "swept_by"
+   ],
+   "ignored": [],
+   "lookback": "20D",
+   "recent": "1D",
+   "events_fp": "051aba2c6fbbc6af",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "10h",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": 30,
+  "entry_mode": "next_open",
+  "hold_basis": "clock",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "Hourly SMT only (no sub-hourly correlate data). Direct trade of the divergence in gold; the corpus's own execution says SMT is not an entry by itself \u2014 the confluence use is tested under smt-as-confirmation-not-signal (reading a) and smt-requires-framework.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/liquidity_own_02a/smt-divergence.py",
+ "runtime_sec": 1.18,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:10:09+00:00",
+ "n_events_in": 4454,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 0,
+  "target_not_beyond_entry": 0,
+  "no_bars_in_hold": 20
+ },
+ "events_fp": "051aba2c6fbbc6af",
+ "sd_R": 0.9700141977796023,
+ "exit_mix": {
+  "stop": 0.481957600360848,
+  "target": 0.4463238610735228,
+  "time": 0.07171853856562922
+ },
+ "trades_per_year": 420.5449233965204,
+ "ci_components": {
+  "phase3_iid": [
+   -0.05606301713722536,
+   0.006408195229770432
+  ],
+  "day_block": [
+   -0.05425711759156957,
+   0.007799972090086
+  ]
+ },
+ "diff_win": -0.011067772765657513,
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 2215,
+  "n_clusters": null,
+  "n_eff": 2215
+ },
+ "ties": {
+  "real_ambiguous": 0.0006765899864682003,
+  "control_ambiguous": 0.0009569377990430622,
+  "real_gap_stop": 0.005638249887235002,
+  "control_gap_stop": 0.0066985645933014355,
+  "verdict_stop_first": "NULL"
+ },
+ "ctrl_overlap": 0.04406470722260196,
+ "exposure_bars": {
+  "real_mean": 553.0139828597204,
+  "control_mean": 551.5199817726134,
+  "hold_basis": "clock"
+ },
+ "run_id": "00375621d51c48159f38efe7512dc713",
+ "hyp_key": "75b0aae3127c81f2"
+}

@@ -1,0 +1,261 @@
+{
+ "concept_id": "failure-to-manipulate",
+ "reading": null,
+ "testable": true,
+ "test_type": "trade",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "1h UTC bars; level = previous completed trading day low/high (18:00 NY roll, sessions >= 600 M1 bars)",
+   "bearish 1h expansion event (close beyond 2/2 swing, 4-bar window range/pre-range >= 1.5 and distance/pre-range >= 0.65) whose break bar opened above the PDL and whose window traded to/through it (mirror: bullish into PDH)",
+   "reversal branch = opposing expansion decided within the next 4 bars -> skipped; failure branch = none -> decide at the close of the 4th bar",
+   "trade the original direction: next M1 open, stop = extreme of the retracement since the expansion's low bar, 2R, 10h trading time; control NY clock +/-30 min"
+  ],
+  "params": {
+   "tf": "1h",
+   "level": "PDL/PDH",
+   "min_day_m1": 600,
+   "exp_n": 4,
+   "exp_r": 1.5,
+   "exp_d": 0.65,
+   "class_window": 4,
+   "rr": 2.0,
+   "max_hold": "10h",
+   "hold_basis": "bars",
+   "ctrl_tod_tol_min": 30
+  }
+ },
+ "params_source": {
+  "tf": "declared-before-run: 1h (concept ltf list 1H)",
+  "level": "method_spec: \u00a72.7 'previous day and previous week extremes always qualify'",
+  "min_day_m1": "declared-before-run: trap 6 stub sessions skipped",
+  "exp_n": "threshold_fits: \u00a72 displacement=aggressive, close-beyond gate (grade A) + N=4 window r>=1.5, d>=0.65 vs the pre-break 4-bar range (grade B); 2/2 fractal swings",
+  "exp_r": "threshold_fits: \u00a72 displacement=aggressive, close-beyond gate (grade A) + N=4 window r>=1.5, d>=0.65 vs the pre-break 4-bar range (grade B); 2/2 fractal swings",
+  "exp_d": "threshold_fits: \u00a72 displacement=aggressive, close-beyond gate (grade A) + N=4 window r>=1.5, d>=0.65 vs the pre-break 4-bar range (grade B); 2/2 fractal swings",
+  "class_window": "declared-before-run: one displacement window (N=4) to see whether price expands back out",
+  "rr": "phase3: \u00a71.12 2R",
+  "max_hold": "phase3: \u00a71.13 10 entry-TF bars",
+  "hold_basis": "declared-before-run: trading time (trap 7)",
+  "ctrl_tod_tol_min": "declared-before-run: trap 9, not a timing concept",
+  "branch": "corpus: i2HhHhWdaPQ 'It's really just phases of price.'"
+ },
+ "n": 1400,
+ "span": {
+  "start": "2016-01-06 15:00:00+00:00",
+  "end": "2026-07-22 08:00:00+00:00",
+  "years": 10.538
+ },
+ "avg_R": 0.04606452676711336,
+ "avg_R_gross": 0.08606452676711338,
+ "win_rate": 0.43214285714285716,
+ "pf": 1.0941400324529236,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "n": 6470,
+  "avg_R": -0.08341013603830816,
+  "win_rate": 0.3910355486862442,
+  "pf": 0.8443757639301328,
+  "sd_R": 1.2162873694771854,
+  "exit_mix": {
+   "stop": 0.44899536321483774,
+   "target": 0.1723338485316847,
+   "time": 0.3786707882534776
+  },
+  "avg_R_gross": -0.043410136038308136,
+  "reps": 5,
+  "fill_rate": 0.9242857142857143
+ },
+ "diff": 0.12947466280542153,
+ "ci_lo": 0.04419251306278449,
+ "ci_hi": 0.1981046502477694,
+ "ci_method": "day_block",
+ "p": 0.0009753594523364223,
+ "halves": {
+  "H1": {
+   "n": 678,
+   "diff": 0.1697869887979408,
+   "ci_lo": 0.05255671639735804,
+   "ci_hi": 0.28365898756779034,
+   "ci_method": "block",
+   "p": 0.003977940042515658,
+   "start": "2016-01-06 15:00:00+00:00",
+   "end": "2020-12-31 21:00:00+00:00"
+  },
+  "H2": {
+   "n": 722,
+   "diff": 0.07186658852028885,
+   "ci_lo": -0.03140467547749569,
+   "ci_hi": 0.1724478575051495,
+   "ci_method": "iid",
+   "p": 0.16699030068889884,
+   "start": "2021-01-06 20:00:00+00:00",
+   "end": "2026-07-22 08:00:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 342,
+   "diff": 0.03918310346526101,
+   "ci_lo": -0.10591984246670139,
+   "ci_hi": 0.1904714096294303,
+   "ci_method": "iid",
+   "p": 0.6043069717245004,
+   "start": "2016-01-06 15:00:00+00:00",
+   "end": "2018-08-20 03:00:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 367,
+   "diff": 0.26992113964816755,
+   "ci_lo": 0.11654886630355306,
+   "ci_hi": 0.42771805854807105,
+   "ci_method": "iid",
+   "p": 0.0006730971967970666,
+   "start": "2018-08-22 16:00:00+00:00",
+   "end": "2021-04-09 20:00:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 345,
+   "diff": 0.07398546241840573,
+   "ci_lo": -0.06745296027522114,
+   "ci_hi": 0.2231091348766239,
+   "ci_method": "iid",
+   "p": 0.31821809046674737,
+   "start": "2021-04-13 20:00:00+00:00",
+   "end": "2023-12-01 16:00:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 346,
+   "diff": 0.07883433069191059,
+   "ci_lo": -0.06352717010298059,
+   "ci_hi": 0.22967722237251884,
+   "ci_method": "iid",
+   "p": 0.2919024820636567,
+   "start": "2023-12-04 07:00:00+00:00",
+   "end": "2026-07-22 08:00:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.11000149361299391,
+ "mde_threshold": 0.1,
+ "power_floor_n": 1695,
+ "verdict": "UNDERPOWERED",
+ "verdict_detail": "CI excludes 0 in claimed direction but not powered: n=1400, effective n=1181, MDE=0.1100 vs 0.1000, floor 200; power floor n=1695",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 1400,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 4380.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 108,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "rr"
+   ],
+   "ignored": [],
+   "lookback": "30D",
+   "recent": "1D",
+   "events_fp": "630a3e0574b70a29",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "10h",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": 30,
+  "entry_mode": "next_open",
+  "hold_basis": "bars",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "Single-asset reading; the correlated-asset clause names no condition and is not traded.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/structure_own_01b/failure-to-manipulate.py",
+ "runtime_sec": 0.46,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:42:15+00:00",
+ "n_events_in": 1405,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 5,
+  "target_not_beyond_entry": 0,
+  "no_bars_in_hold": 0
+ },
+ "events_fp": "630a3e0574b70a29",
+ "sd_R": 1.1884832412065816,
+ "exit_mix": {
+  "stop": 0.41285714285714287,
+  "target": 0.20857142857142857,
+  "time": 0.37857142857142856
+ },
+ "trades_per_year": 132.8526890101325,
+ "ci_components": {
+  "phase3_block": [
+   0.05068733731260731,
+   0.19515395019692844
+  ],
+  "day_block": [
+   0.04419251306278449,
+   0.1981046502477694
+  ]
+ },
+ "diff_win": 0.04110730845661298,
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 1181,
+  "n_clusters": null,
+  "n_eff": 1181
+ },
+ "ties": {
+  "real_ambiguous": 0.005,
+  "control_ambiguous": 0.005255023183925811,
+  "real_gap_stop": 0.011428571428571429,
+  "control_gap_stop": 0.013292117465224112,
+  "verdict_stop_first": "UNDERPOWERED"
+ },
+ "ctrl_overlap": 0.019938176197836166,
+ "exposure_bars": {
+  "real_mean": 600.0,
+  "control_mean": 599.9177743431221,
+  "hold_basis": "bars"
+ },
+ "run_id": "719063eab6dc4a3ebe85d4dda7a39c92",
+ "hyp_key": "a67fb1de6ea11dbf"
+}

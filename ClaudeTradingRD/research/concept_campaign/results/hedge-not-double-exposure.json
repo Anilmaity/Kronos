@@ -1,0 +1,286 @@
+{
+ "concept_id": "hedge-not-double-exposure",
+ "reading": null,
+ "testable": true,
+ "test_type": "gate",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "swing book: 1D rung-0 CISD (series_open, 2/2, max_wait 3), entry next M1 open, protected-swing stop, 2R, time exit 14 calendar days; resolved on M1",
+   "intraday book: 15m rung-0 CISD, only signals fired while a swing is open (most recent open swing sets direction)",
+   "kept: intraday signal against the swing (hedge); complement: same direction (skipped by the rule)",
+   "claim +: kept beats skipped, control-adjusted"
+  ],
+  "params": {
+   "baseline_tf": "15min",
+   "level_rule": "series_open",
+   "swing": "2/2",
+   "max_wait": 3,
+   "min_series": 1,
+   "rr": 2.0,
+   "max_hold": "150min",
+   "swing_tf": "1D",
+   "swing_hold": "14D",
+   "swing_rr": 2.0,
+   "overlap_rule": "most recent open swing",
+   "grid4h": "n/a"
+  }
+ },
+ "params_source": {
+  "baseline_tf": "phase3: primary stack entry TF (README gate example)",
+  "level_rule": "phase3: meta/conjunction_preregistration.md \u00a71.8-1.13 (locked rung-0 config)",
+  "swing": "phase3: meta/conjunction_preregistration.md \u00a71.8-1.13 (locked rung-0 config)",
+  "max_wait": "phase3: meta/conjunction_preregistration.md \u00a71.8-1.13 (locked rung-0 config)",
+  "min_series": "phase3: meta/conjunction_preregistration.md \u00a71.8-1.13 (locked rung-0 config)",
+  "rr": "phase3: meta/conjunction_preregistration.md \u00a71.8-1.13 (locked rung-0 config)",
+  "max_hold": "phase3: 10 entry-TF bars (\u00a71.13), as in the concept_lab README examples",
+  "swing_tf": "corpus: NESSCPMzWR0 daily-chart swing setups ('six to eight times a year'); the rung-0 1D book stands in",
+  "swing_hold": "phase3: 10 entry-TF bars (\u00a71.13) -> ~10 trading days = 14 calendar days (declared-before-run)",
+  "swing_rr": "method_spec: \u00a75.3 2R floor",
+  "overlap_rule": "declared-before-run",
+  "grid4h": "declared-before-run: no 4h bars used"
+ },
+ "n": 12924,
+ "span": {
+  "start": "2016-01-21 00:30:00+00:00",
+  "end": "2026-07-23 02:15:00+00:00",
+  "years": 10.502
+ },
+ "avg_R": -0.058717126966885906,
+ "avg_R_gross": -0.01871712696688589,
+ "win_rate": 0.4083874961312287,
+ "pf": 0.8703312259782298,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "avg_R_gated": -0.05427580411868611,
+  "avg_R_complement": -0.028655510612591507,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": 0.00967580929760571,
+ "ci_lo": -0.022291971423493786,
+ "ci_hi": 0.041130689695800145,
+ "ci_method": "day_block",
+ "p": 0.5498217909968088,
+ "halves": {
+  "H1": {
+   "n": 12045,
+   "diff": -0.009750956392688345,
+   "ci_lo": -0.05274254781521737,
+   "ci_hi": 0.03173667498045013,
+   "ci_method": "block",
+   "p": 0.6509412303639607,
+   "start": "2016-01-21 00:30:00+00:00",
+   "end": "2020-12-31 19:15:00+00:00",
+   "n_gated": 5991
+  },
+  "H2": {
+   "n": 13884,
+   "diff": 0.026544616446124474,
+   "ci_lo": -0.012344479118103796,
+   "ci_hi": 0.06315714307852742,
+   "ci_method": "block",
+   "p": 0.16815524484255473,
+   "start": "2021-01-11 23:45:00+00:00",
+   "end": "2026-07-23 02:15:00+00:00",
+   "n_gated": 6933
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 6074,
+   "diff": -0.0413309127015894,
+   "ci_lo": -0.10403944190907398,
+   "ci_hi": 0.02283806543601193,
+   "ci_method": "block",
+   "p": 0.2016255520860345,
+   "start": "2016-01-21 00:30:00+00:00",
+   "end": "2018-08-22 08:45:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 6714,
+   "diff": 0.03306893309953702,
+   "ci_lo": -0.026215546035726213,
+   "ci_hi": 0.08683611889596628,
+   "ci_method": "block",
+   "p": 0.2515367438302008,
+   "start": "2018-08-22 11:45:00+00:00",
+   "end": "2021-04-12 08:15:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 6866,
+   "diff": -0.009116181719783558,
+   "ci_lo": -0.06623928808807228,
+   "ci_hi": 0.045744987066107176,
+   "ci_method": "block",
+   "p": 0.7496466630388907,
+   "start": "2021-04-12 09:30:00+00:00",
+   "end": "2023-11-30 22:00:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 6275,
+   "diff": 0.054928517504415665,
+   "ci_lo": -0.004250124116186493,
+   "ci_hi": 0.10902175654174895,
+   "ci_method": "iid",
+   "p": 0.057318216628847916,
+   "start": "2023-12-08 00:00:00+00:00",
+   "end": "2026-07-23 02:15:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.04532837747323346,
+ "mde_threshold": 0.1,
+ "power_floor_n": 2656,
+ "verdict": "NULL",
+ "verdict_detail": "CI contains 0; powered (MDE 0.0453 <= 0.1000)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 25929,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "gate_mask_checked": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 64.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 1971,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "rr",
+    "swing_dir",
+    "against_swing"
+   ],
+   "ignored": [],
+   "lookback": "60D",
+   "recent": "1D",
+   "events_fp": "e7da3b60c449086a",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "150min",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": null,
+  "entry_mode": "next_open",
+  "hold_basis": "clock",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "The concept's claim is about exposure, not edge; this measures the per-trade expectancy cost of its selection. The 1D rung-0 book fires ~35/yr, far more than his 6-8/yr swings.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/risk_own_01b/hedge-not-double-exposure.py",
+ "runtime_sec": 2.88,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:18:11+00:00",
+ "n_events_in": 25989,
+ "dropped": {
+  "no_bar_after_decision": 1,
+  "stop_not_beyond_entry": 7,
+  "target_not_beyond_entry": 0,
+  "no_bars_in_hold": 52
+ },
+ "n_complement": 13005,
+ "gate_firing_rate": 0.4984380423464075,
+ "events_fp": "e7da3b60c449086a",
+ "mask_fp": "c472aa1861dde924",
+ "mask_col": "against_swing",
+ "exit_mix": {
+  "stop": 0.35430207366140515,
+  "target": 0.12310430207366141,
+  "time": 0.5225936242649335
+ },
+ "gated_vs_own_control": {
+  "diff": -0.004441322848199793,
+  "ci_lo": -0.024712108896766356,
+  "ci_hi": 0.017138948280184738,
+  "p": 0.6774165423861729
+ },
+ "complement": {
+  "n": 13005,
+  "avg_R": -0.04277264275839701,
+  "win_rate": 0.4180699730872741,
+  "pf": 0.9043004787342259,
+  "sd_R": 1.0195703617130496,
+  "exit_mix": {
+   "stop": 0.3540176855055748,
+   "target": 0.12395232602845059,
+   "time": 0.5220299884659746
+  },
+  "vs_own_control": {
+   "diff": -0.014117132145805504,
+   "ci_lo": -0.03435075755628424,
+   "ci_hi": 0.006049425078806039,
+   "p": 0.17076502122365567
+  }
+ },
+ "ci_components": {
+  "phase3_block": [
+   -0.01753529980529226,
+   0.03634718073944436
+  ],
+  "day_block": [
+   -0.022291971423493786,
+   0.041130689695800145
+  ]
+ },
+ "diff_meaning": "mean(R-ctrl | gated) - mean(R-ctrl | complement)",
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_eff_gated": 2161,
+  "n_eff_complement": 2167,
+  "n_eff": 2161
+ },
+ "ties": {
+  "real_ambiguous": 0.00042423541208685256,
+  "control_ambiguous": 0.0003933819275714451,
+  "real_gap_stop": 0.008446141386092792,
+  "control_gap_stop": 0.0063095375834008255,
+  "gated_excess": -4.642525533890437e-05,
+  "complement_excess": 0.00010765090349865439,
+  "verdict_stop_first": "NULL"
+ },
+ "ctrl_overlap": 0.053353388098268346,
+ "exposure_bars": {
+  "real_mean": 143.34922287785878,
+  "control_mean": 143.06198465039145,
+  "hold_basis": "clock"
+ },
+ "run_id": "6b499c9c348746b09ae462235c1a333e",
+ "hyp_key": "c160984247feeec9"
+}

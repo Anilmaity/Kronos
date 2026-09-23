@@ -1,0 +1,282 @@
+{
+ "concept_id": "aligning-expansion-candles",
+ "reading": "b",
+ "testable": true,
+ "test_type": "gate",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "baseline: 15m CISD (series_open, 2/2 swing, max_wait 3) on UTC-aligned 15m bars; decide at confirming bar close; enter next M1 open; stop at protected swing; 2R target; 150min max hold",
+   "daily = 18:00 NY trading day; 4H = forex grid",
+   "gate: in-progress daily AND in-progress 4H candle each trade beyond their open in the trade direction at the decision, with opposing run (open->extreme against direction) <= 1.0 x body so far",
+   "running extremes from 15m bars closed by the decision"
+  ],
+  "params": {
+   "baseline_tf": "15min",
+   "level_rule": "series_open",
+   "swing": "2/2",
+   "max_wait": 3,
+   "rr": 2.0,
+   "max_hold": "150min",
+   "grid4h": "forex",
+   "day_open_hour": 18,
+   "layers": "D+4H",
+   "wick_body_cut": 1.0
+  }
+ },
+ "params_source": {
+  "baseline_tf": "corpus: Kf4c41_qO1s 'two expansion candles aligned' (daily + 4-hour is enough to execute on the 15-minute)",
+  "level_rule": "method_spec: \u00a74.2 carry first-candle-open as the default",
+  "swing": "phase3: locked config \u00a71.8-1.13",
+  "max_wait": "phase3: locked config max_wait=3",
+  "rr": "method_spec: \u00a75.3 2R; concept execution.targets '2R'",
+  "max_hold": "phase3: 10 entry-TF bars (\u00a71.13)",
+  "grid4h": "session_window_fit: forex grid for gold",
+  "day_open_hour": "method_spec: \u00a71.4 18:00 daily open is canon",
+  "layers": "corpus: Kf4c41_qO1s minimum two aligned expansion candles",
+  "wick_body_cut": "threshold_fits: small wick default opposing_run/body <= 1.0 (grade A)"
+ },
+ "n": 9457,
+ "span": {
+  "start": "2016-01-04 23:45:00+00:00",
+  "end": "2026-07-23 02:15:00+00:00",
+  "years": 10.546
+ },
+ "avg_R": -0.032485107241084686,
+ "avg_R_gross": 0.007514892758915339,
+ "win_rate": 0.42222692185682564,
+ "pf": 0.9250031564973799,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "avg_R_gated": -0.03412468430330356,
+  "avg_R_complement": -0.04271101606954763,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": 0.007535200207185941,
+ "ci_lo": -0.02126674515098372,
+ "ci_hi": 0.03833288742368344,
+ "ci_method": "day_block",
+ "p": 0.6201782586569489,
+ "halves": {
+  "H1": {
+   "n": 15637,
+   "diff": -0.022802213854912858,
+   "ci_lo": -0.06333331015253803,
+   "ci_hi": 0.014934020574452563,
+   "ci_method": "block",
+   "p": 0.25344475310386777,
+   "start": "2016-01-04 23:45:00+00:00",
+   "end": "2020-12-31 19:15:00+00:00",
+   "n_gated": 4439
+  },
+  "H2": {
+   "n": 17092,
+   "diff": 0.035062052243696344,
+   "ci_lo": -0.0016552943427815033,
+   "ci_hi": 0.07703501722487636,
+   "ci_method": "block",
+   "p": 0.08070625719098194,
+   "start": "2021-01-03 23:45:00+00:00",
+   "end": "2026-07-23 02:15:00+00:00",
+   "n_gated": 5018
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 8198,
+   "diff": 0.021237280610544827,
+   "ci_lo": -0.031851375278469235,
+   "ci_hi": 0.07897893178588433,
+   "ci_method": "iid",
+   "p": 0.45257093484060423,
+   "start": "2016-01-04 23:45:00+00:00",
+   "end": "2018-08-22 08:45:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 8264,
+   "diff": -0.056607406193849345,
+   "ci_lo": -0.1091522313831802,
+   "ci_hi": -0.00030878067487142397,
+   "ci_method": "block",
+   "p": 0.041481983855175444,
+   "start": "2018-08-22 11:45:00+00:00",
+   "end": "2021-04-12 08:15:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 8162,
+   "diff": 0.05970732623822727,
+   "ci_lo": 0.004840975105156841,
+   "ci_hi": 0.11712970160312797,
+   "ci_method": "block",
+   "p": 0.03712881764806864,
+   "start": "2021-04-12 09:30:00+00:00",
+   "end": "2023-12-01 17:00:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 8105,
+   "diff": 0.00827830091797335,
+   "ci_lo": -0.05266985317900965,
+   "ci_hi": 0.06334559094851117,
+   "ci_method": "block",
+   "p": 0.7797022298151576,
+   "start": "2023-12-04 04:00:00+00:00",
+   "end": "2026-07-23 02:15:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.042596046821956654,
+ "mde_threshold": 0.1,
+ "power_floor_n": 1716,
+ "verdict": "NULL",
+ "verdict_detail": "CI contains 0; powered (MDE 0.0426 <= 0.1000)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 32729,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "gate_mask_checked": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 64.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 2446,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "rr",
+    "c3_stack",
+    "exp_support"
+   ],
+   "ignored": [],
+   "lookback": "20D",
+   "recent": "1D",
+   "events_fp": "243980a199d27ab0",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "150min",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": null,
+  "entry_mode": "next_open",
+  "hold_basis": "clock",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "gate_test vs complement of the same 15m CISD book; claim '+'. mask_available_at = decision time (gate reads only bars closed by then).",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/model_own_02a/aligning-expansion-candles.py",
+ "runtime_sec": 2.38,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:10:29+00:00",
+ "n_events_in": 32813,
+ "dropped": {
+  "no_bar_after_decision": 1,
+  "stop_not_beyond_entry": 11,
+  "target_not_beyond_entry": 0,
+  "no_bars_in_hold": 72
+ },
+ "n_complement": 23272,
+ "gate_firing_rate": 0.28894863882183996,
+ "events_fp": "243980a199d27ab0",
+ "mask_fp": "4237b1417c1a6ed1",
+ "mask_col": "exp_support",
+ "exit_mix": {
+  "stop": 0.3335095696309612,
+  "target": 0.11969969334884213,
+  "time": 0.5467907370201966
+ },
+ "gated_vs_own_control": {
+  "diff": 0.0016395770622188721,
+  "ci_lo": -0.02102097705887115,
+  "ci_hi": 0.024379493649057515,
+  "p": 0.8874252429790218
+ },
+ "complement": {
+  "n": 23272,
+  "avg_R": -0.0486066392145147,
+  "win_rate": 0.41358714334822966,
+  "pf": 0.8925443031020356,
+  "sd_R": 1.0236200145980758,
+  "exit_mix": {
+   "stop": 0.3581986937091784,
+   "target": 0.12611722241320042,
+   "time": 0.5156840838776212
+  },
+  "vs_own_control": {
+   "diff": -0.005895623144967069,
+   "ci_lo": -0.02162896890850695,
+   "ci_hi": 0.008136923500110449,
+   "p": 0.4375092875895037
+  }
+ },
+ "ci_components": {
+  "phase3_block": [
+   -0.01886001824262726,
+   0.03607713399260381
+  ],
+  "day_block": [
+   -0.02126674515098372,
+   0.03833288742368344
+  ]
+ },
+ "diff_meaning": "mean(R-ctrl | gated) - mean(R-ctrl | complement)",
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_eff_gated": 2631,
+  "n_eff_complement": 2719,
+  "n_eff": 2631
+ },
+ "ties": {
+  "real_ambiguous": 0.0005194170307678206,
+  "control_ambiguous": 0.0003788688930306456,
+  "real_gap_stop": 0.008341226435271472,
+  "control_gap_stop": 0.006850194017537964,
+  "gated_excess": 0.00027492862429946073,
+  "complement_excess": 8.594018563080095e-05,
+  "verdict_stop_first": "NULL"
+ },
+ "ctrl_overlap": 0.06556876164869076,
+ "exposure_bars": {
+  "real_mean": 143.26322221882734,
+  "control_mean": 142.99830120076996,
+  "hold_basis": "clock"
+ },
+ "run_id": "ce92056830b94f8190bf039e7236adbc",
+ "hyp_key": "a49ffcf5217a7e18"
+}

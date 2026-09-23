@@ -1,0 +1,210 @@
+{
+ "concept_id": "daily-open-eighteen-hundred",
+ "reading": "a",
+ "testable": true,
+ "test_type": "rate",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "L = open of the trading day's first M1 bar, required to print in [18:00, 18:10) NY (the feed's daily candle open)",
+   "k = 0.10 x range of the previous trading day with >= 600 M1 bars",
+   "arm = first M1 bar from L's bar that trades >= k away (side s); both sides in one bar -> skip the day",
+   "touch = first later M1 bar back at L before 17:00 NY; decision = its close; one event per day",
+   "outcome from the next M1 open: 1 if L+s*k trades before L-s*k (same bar -> 0), 0 if the reverse, NaN if neither by 17:00 NY (horizon in M1 bars)",
+   "null: 5 random minutes within +/-30d (locked seed), same two target distances from that minute's open, same M1-bar horizon"
+  ],
+  "params": {
+   "level": "18:00",
+   "k_frac": 0.1,
+   "k_basis": "previous trading day range",
+   "min_prev_m1": 600,
+   "horizon": "to 17:00 NY, in M1 bars",
+   "tie": "same-bar -> not respected",
+   "tz": "America/New_York"
+  }
+ },
+ "params_source": {
+  "level": "corpus: sdZkE-naNiY 'I always use 1,800'",
+  "k_frac": "declared-before-run: symmetric respect/through distance of 10% of the prior day's range (corpus gives no distance)",
+  "k_basis": "declared-before-run: range-relative units (README trap 6)",
+  "min_prev_m1": "declared-before-run: skip stub sessions (README trap 6)",
+  "horizon": "declared-before-run: the rest of the trading day; M1-bar horizon (README trap 7)",
+  "tie": "declared-before-run: conservative, identical in real and null arms",
+  "tz": "method_spec: \u00a71.4 DST settled, America/New_York"
+ },
+ "n": 2367,
+ "span": {
+  "start": "2016-01-06 01:08:00+00:00",
+  "end": "2026-07-22 23:01:00+00:00",
+  "years": 10.541
+ },
+ "avg_R": null,
+ "avg_R_gross": null,
+ "win_rate": null,
+ "pf": null,
+ "observed_rate": 0.5057034220532319,
+ "null_rate": 0.4985917476411773,
+ "lift": 1.014263522101398,
+ "control": {
+  "rate": 0.4985917476411773,
+  "reps": 5,
+  "kind": "null_fn x5"
+ },
+ "diff": 0.007362008427306943,
+ "ci_lo": -0.015417123881541688,
+ "ci_hi": 0.02997331740883436,
+ "ci_method": "phase3_iid",
+ "p": 0.5249168347616328,
+ "halves": {
+  "H1": {
+   "n": 1135,
+   "diff": -0.0016152716593246241,
+   "ci_lo": -0.036206681350954506,
+   "ci_hi": 0.028591776798825318,
+   "ci_method": "iid",
+   "p": 0.9221590054165442,
+   "start": "2016-01-06 01:08:00+00:00",
+   "end": "2020-12-31 00:40:00+00:00"
+  },
+  "H2": {
+   "n": 1232,
+   "diff": 0.015151515151515083,
+   "ci_lo": -0.013666125541125534,
+   "ci_hi": 0.04393871753246749,
+   "ci_method": "iid",
+   "p": 0.30252246063349025,
+   "start": "2021-01-05 03:16:00+00:00",
+   "end": "2026-07-22 23:01:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 608,
+   "diff": -0.023739035087719185,
+   "ci_lo": -0.07110951206140348,
+   "ci_hi": 0.019060444078947344,
+   "ci_method": "iid",
+   "p": 0.3020725663960051,
+   "start": "2016-01-06 01:08:00+00:00",
+   "end": "2018-08-22 00:09:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 587,
+   "diff": 0.021919363997728536,
+   "ci_lo": -0.029560618966496345,
+   "ci_hi": 0.06400553662691658,
+   "ci_method": "block",
+   "p": 0.3584588738048169,
+   "start": "2018-08-24 00:50:00+00:00",
+   "end": "2021-04-08 03:12:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 605,
+   "diff": -0.004765840220385675,
+   "ci_lo": -0.05113016528925628,
+   "ci_hi": 0.0396232782369147,
+   "ci_method": "iid",
+   "p": 0.8369067560792839,
+   "start": "2021-04-12 09:42:00+00:00",
+   "end": "2023-12-01 11:56:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 567,
+   "diff": 0.0375367430922986,
+   "ci_lo": -0.007209729570840785,
+   "ci_hi": 0.08537845385067612,
+   "ci_method": "iid",
+   "p": 0.11201478533065236,
+   "start": "2023-12-03 23:07:00+00:00",
+   "end": "2026-07-22 23:01:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.03244069265111456,
+ "mde_threshold": 0.05,
+ "power_floor_n": 997,
+ "verdict": "NULL",
+ "verdict_detail": "CI contains 0; powered (MDE 0.0324 <= 0.0500)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 2372,
+  "min_slack_min": 0.0,
+  "passed": true,
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 199,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "level",
+    "side",
+    "k",
+    "day_end"
+   ],
+   "ignored": [],
+   "lookback": "10D",
+   "recent": "1D",
+   "events_fp": "5d5dcf5226db16ba",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "reps": 5,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "mde_threshold": null,
+  "cluster": null,
+  "outcome_horizon": "1 days 00:00:00",
+  "null_kind": "null_fn x5"
+ },
+ "notes": "",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/time_own_02a/daily-open-eighteen-hundred.py",
+ "runtime_sec": 0.74,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:37:55+00:00",
+ "dropped": {
+  "nan_rows": 5
+ },
+ "null_kind": "null_fn x5",
+ "events_fp": "5d5dcf5226db16ba",
+ "predictors_probed": true,
+ "ci_components": {
+  "phase3_iid": [
+   -0.015417123881541688,
+   0.02997331740883436
+  ],
+  "day_block": [
+   -0.013846113223489368,
+   0.028926031544852567
+  ]
+ },
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 2367,
+  "n_clusters": null,
+  "n_eff": 2367
+ },
+ "run_id": "a68fd164ad3c4297aab7aa168615b90b",
+ "hyp_key": "60afb021d3de419d"
+}

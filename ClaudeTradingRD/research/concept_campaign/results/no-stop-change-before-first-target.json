@@ -1,0 +1,262 @@
+{
+ "concept_id": "no-stop-change-before-first-target",
+ "reading": null,
+ "testable": true,
+ "test_type": "trade",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "base book: 1h bare CISD (series_open, 2/2 swings, max_wait=3), decide at the confirming 1h close, enter next M1 open, stop at the protected swing, 10h hold",
+   "first target T1 = nearest confirmed unbroken 1h 2/2 swing beyond entry (last 200 1h bars), at least 0.25x initial risk from entry",
+   "adverse structure shift = first 15m close (bars starting at/after entry) through the most recent confirmed 15m 2/2 swing low (long) / high (short) that lies between the original stop and price, while no stop/T1 touch has occurred on M1",
+   "event at that 15m close: keep the original bracket (stop = original stop, target = T1), max_hold = remainder of the 10h base hold (>= 15 min)",
+   "scored vs matched random entry with the same stop/target distances and hold"
+  ],
+  "params": {
+   "base_tf": "1h",
+   "level_rule": "series_open",
+   "swing": "2/2",
+   "max_wait": 3,
+   "base_hold": "10h",
+   "t1": "nearest unbroken 1h swing",
+   "t1_lookback_bars": 200,
+   "min_t1_R": 0.25,
+   "shift_tf": "15min",
+   "shift_swing": "2/2",
+   "min_remaining_hold": "15min"
+  }
+ },
+ "params_source": {
+  "base_tf": "phase3: meta/conjunction_preregistration.md \u00a71.8-1.13 (locked 1h rung-0 book)",
+  "level_rule": "phase3: locked config",
+  "swing": "phase3: locked config",
+  "max_wait": "phase3: locked config",
+  "base_hold": "phase3: 10 entry-TF bars (\u00a71.13)",
+  "t1": "declared-before-run: 'first target' is undefined in CrUfTskOveo; use the related t1-t2-partial-system corpus definition (nearest prior swing extreme)",
+  "t1_lookback_bars": "declared-before-run: 200 1h bars search window",
+  "min_t1_R": "declared-before-run: T1 closer than 0.25x initial risk is not a target",
+  "shift_tf": "declared-before-run: 15m, one step below the 1h entry TF (the phase-3 15m/1H stack pairing)",
+  "shift_swing": "phase3: 2/2 fractal swings as in the locked config",
+  "min_remaining_hold": "declared-before-run: drop shifts with <15 min of hold left"
+ },
+ "n": 3502,
+ "span": {
+  "start": "2016-01-05 16:45:00+00:00",
+  "end": "2026-07-23 00:00:00+00:00",
+  "years": 10.543
+ },
+ "avg_R": -0.06158847681052099,
+ "avg_R_gross": -0.021588476810520976,
+ "win_rate": 0.38349514563106796,
+ "pf": 0.8724589282989184,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "n": 17510,
+  "avg_R": -0.03380063322163878,
+  "win_rate": 0.39480296973158197,
+  "pf": 0.9302780803874829,
+  "sd_R": 1.4620577150196585,
+  "exit_mix": {
+   "stop": 0.41336379211878926,
+   "target": 0.16379211878926328,
+   "time": 0.4228440890919475
+  },
+  "avg_R_gross": 0.006199366778361238,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": -0.027787843588882206,
+ "ci_lo": -0.0729210574088392,
+ "ci_hi": 0.020983741807784388,
+ "ci_method": "phase3_iid",
+ "p": 0.24606277143406874,
+ "halves": {
+  "H1": {
+   "n": 1639,
+   "diff": -0.033296814728907546,
+   "ci_lo": -0.09889351390684305,
+   "ci_hi": 0.03210981364860037,
+   "ci_method": "block",
+   "p": 0.31909513026007874,
+   "start": "2016-01-05 16:45:00+00:00",
+   "end": "2020-12-31 07:45:00+00:00"
+  },
+  "H2": {
+   "n": 1863,
+   "diff": -0.02294125008458723,
+   "ci_lo": -0.0926489205059822,
+   "ci_hi": 0.039264268025083156,
+   "ci_method": "iid",
+   "p": 0.4954151091034196,
+   "start": "2021-01-05 06:45:00+00:00",
+   "end": "2026-07-23 00:00:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 818,
+   "diff": -0.06186126599801528,
+   "ci_lo": -0.16438207903199417,
+   "ci_hi": 0.03454289579660459,
+   "ci_method": "block",
+   "p": 0.22284006286567154,
+   "start": "2016-01-05 16:45:00+00:00",
+   "end": "2018-08-22 05:00:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 912,
+   "diff": 0.00815570017335536,
+   "ci_lo": -0.07347267576284691,
+   "ci_hi": 0.09450032035257672,
+   "ci_method": "iid",
+   "p": 0.8490530791427991,
+   "start": "2018-08-22 18:15:00+00:00",
+   "end": "2021-04-12 06:15:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 935,
+   "diff": -0.058438587813099095,
+   "ci_lo": -0.1548789883773893,
+   "ci_hi": 0.034134222972248815,
+   "ci_method": "iid",
+   "p": 0.22553051796614354,
+   "start": "2021-04-13 09:15:00+00:00",
+   "end": "2023-11-30 23:15:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 837,
+   "diff": 0.0005872979513244572,
+   "ci_lo": -0.08515762338954591,
+   "ci_hi": 0.0979274690852895,
+   "ci_method": "block",
+   "p": 0.9899674297534373,
+   "start": "2023-12-05 08:15:00+00:00",
+   "end": "2026-07-23 00:00:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.06711405845038593,
+ "mde_threshold": 0.1,
+ "power_floor_n": 1578,
+ "verdict": "NULL",
+ "verdict_detail": "CI contains 0; powered (MDE 0.0671 <= 0.1000)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 3502,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 198.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 258,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "target_px",
+    "max_hold"
+   ],
+   "ignored": [],
+   "lookback": "45D",
+   "recent": "1D",
+   "events_fp": "c7cb662cf11ea08c",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "per-row column",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": null,
+  "entry_mode": "next_open",
+  "hold_basis": "clock",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "Corpus: CrUfTskOveo 'if i'm not hitting my first target i'm not touching my stop'. Tested as: at an adverse 15m structure shift before T1, does the held original bracket beat random geometry. NEGATIVE would support moving the stop on the shift; NULL means the shift is uninformative (holding costs nothing vs reacting).",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/risk_guest_02a/no-stop-change-before-first-target.py",
+ "runtime_sec": 1.03,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:10:23+00:00",
+ "n_events_in": 3512,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 1,
+  "target_not_beyond_entry": 0,
+  "no_bars_in_hold": 9
+ },
+ "events_fp": "c7cb662cf11ea08c",
+ "sd_R": 1.255609222384356,
+ "exit_mix": {
+  "stop": 0.4066247858366648,
+  "target": 0.15876641918903484,
+  "time": 0.4346087949743004
+ },
+ "trades_per_year": 332.1489223578291,
+ "ci_components": {
+  "phase3_iid": [
+   -0.0729210574088392,
+   0.020983741807784388
+  ],
+  "day_block": [
+   -0.07395755775279154,
+   0.019309571047380014
+  ]
+ },
+ "diff_win": -0.011307824100514008,
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 2001,
+  "n_clusters": null,
+  "n_eff": 2001
+ },
+ "ties": {
+  "real_ambiguous": 0.0005711022272986865,
+  "control_ambiguous": 0.0001142204454597373,
+  "real_gap_stop": 0.0057110222729868645,
+  "control_gap_stop": 0.007195888063963449,
+  "verdict_stop_first": "NULL"
+ },
+ "ctrl_overlap": 0.007367218732153055,
+ "exposure_bars": {
+  "real_mean": 385.7552826956025,
+  "control_mean": 383.3069103369503,
+  "hold_basis": "clock"
+ },
+ "run_id": "e01f144f66a947109793bbbf0e7a9031",
+ "hyp_key": "86ca1c0a87603b3e"
+}

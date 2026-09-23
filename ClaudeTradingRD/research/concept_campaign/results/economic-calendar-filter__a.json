@@ -1,0 +1,286 @@
+{
+ "concept_id": "economic-calendar-filter",
+ "reading": "a",
+ "testable": true,
+ "test_type": "gate",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "baseline book: phase-3 bare 15min CISD (series_open level, 2/2 swings, max_wait 3), decide at the confirming 15min bar's close, enter next M1 open, stop at the protected swing, 2R, 150min hold",
+   "high-impact calendar = NFP dates only (rule-derived); CPI/FOMC days sit in the non-news arm",
+   "blocked = Monday session (session_date Monday), or NFP week before the 08:30 NY Friday release, or a trade whose 150-min hold spans that release",
+   "allowed = everything else (non-NFP weeks' other releases unmodelled -> allowed)"
+  ],
+  "params": {
+   "baseline": "bare CISD",
+   "baseline_tf": "15min",
+   "level_rule": "series_open",
+   "swing": "2/2",
+   "max_wait": 3,
+   "rr": 2.0,
+   "max_hold": "150min",
+   "events": "NFP only",
+   "release_time": "08:30 NY",
+   "nfp_rule": "3rd Friday after the Saturday ending the week containing the 12th of the prior month (+Jul/Jan and 2025-shutdown adjustments)",
+   "tz": "America/New_York",
+   "skip_monday": true
+  }
+ },
+ "params_source": {
+  "baseline": "phase3: meta/conjunction_preregistration.md \u00a71.8-1.13 (locked rung-0 config)",
+  "baseline_tf": "corpus: economic-calendar-filter timeframes are 1W/1D (a day filter); 15m = phase-3 entry TF (his favourite 15m stack)",
+  "level_rule": "phase3: meta/conjunction_preregistration.md \u00a71.8-1.13 (locked rung-0 config)",
+  "swing": "phase3: meta/conjunction_preregistration.md \u00a71.8-1.13 (locked rung-0 config)",
+  "max_wait": "phase3: meta/conjunction_preregistration.md \u00a71.8-1.13 (locked rung-0 config)",
+  "rr": "phase3: meta/conjunction_preregistration.md \u00a71.8-1.13 (locked rung-0 config)",
+  "max_hold": "phase3: 10 entry-TF bars (\u00a71.13)",
+  "events": "declared-before-run: only NFP is mechanically derivable; no calendar dataset; CPI/FOMC not typed from memory",
+  "release_time": "corpus: Zm2oKad3Tb8 'you can see we have high impact news at 8 30'",
+  "nfp_rule": "declared-before-run: BLS Employment Situation scheduling convention",
+  "tz": "method_spec: \u00a71.4 DST settled, America/New_York",
+  "skip_monday": "corpus: hKCMqh0ZsY0 'as well as skipping Mondays'; 'I avoid trading prior to the first high impact news event of the week'; 'with high impact news I'm going to avoid the day prior avoid the release'"
+ },
+ "n": 20886,
+ "span": {
+  "start": "2016-01-04 00:30:00+00:00",
+  "end": "2026-07-23 02:15:00+00:00",
+  "years": 10.549
+ },
+ "avg_R": -0.04835923331562588,
+ "avg_R_gross": -0.008359233315625866,
+ "win_rate": 0.41353059465670783,
+ "pf": 0.8924297569552174,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "avg_R_gated": -0.04086886380491752,
+  "avg_R_complement": -0.03896624188375304,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": -0.010388377933917413,
+ "ci_lo": -0.036399314728400946,
+ "ci_hi": 0.015340560248480711,
+ "ci_method": "phase3_block",
+ "p": 0.43125457780709286,
+ "halves": {
+  "H1": {
+   "n": 15651,
+   "diff": -0.025200698990188168,
+   "ci_lo": -0.06100325561573304,
+   "ci_hi": 0.010347834370537037,
+   "ci_method": "block",
+   "p": 0.16620823205338559,
+   "start": "2016-01-04 00:30:00+00:00",
+   "end": "2020-12-31 19:15:00+00:00",
+   "n_gated": 9974
+  },
+  "H2": {
+   "n": 17092,
+   "diff": 0.0032359768140855175,
+   "ci_lo": -0.0328936758205085,
+   "ci_hi": 0.04241163044301193,
+   "ci_method": "block",
+   "p": 0.86623327363416,
+   "start": "2021-01-03 23:45:00+00:00",
+   "end": "2026-07-23 02:15:00+00:00",
+   "n_gated": 10912
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 8212,
+   "diff": -0.018155620663987477,
+   "ci_lo": -0.07079686891104528,
+   "ci_hi": 0.032661803640985,
+   "ci_method": "iid",
+   "p": 0.4915187700594067,
+   "start": "2016-01-04 00:30:00+00:00",
+   "end": "2018-08-22 08:45:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 8264,
+   "diff": -0.02620747884710246,
+   "ci_lo": -0.07916984434842611,
+   "ci_hi": 0.029170466650812167,
+   "ci_method": "block",
+   "p": 0.343012861455896,
+   "start": "2018-08-22 11:45:00+00:00",
+   "end": "2021-04-12 08:15:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 8162,
+   "diff": 0.0165431979114756,
+   "ci_lo": -0.04089069979431949,
+   "ci_hi": 0.07407482702996103,
+   "ci_method": "block",
+   "p": 0.5727092169145676,
+   "start": "2021-04-12 09:30:00+00:00",
+   "end": "2023-12-01 17:00:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 8105,
+   "diff": -0.014333686241477472,
+   "ci_lo": -0.06599693088367321,
+   "ci_hi": 0.038272479392282684,
+   "ci_method": "block",
+   "p": 0.589980788167755,
+   "start": "2023-12-04 04:00:00+00:00",
+   "end": "2026-07-23 02:15:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.03697865308676767,
+ "mde_threshold": 0.1,
+ "power_floor_n": 1622,
+ "verdict": "NULL",
+ "verdict_detail": "CI contains 0; powered (MDE 0.0370 <= 0.1000)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 32743,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "gate_mask_checked": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 64.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 2346,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "rr",
+    "entry_ref",
+    "allowed"
+   ],
+   "ignored": [],
+   "lookback": "10D",
+   "recent": "1D",
+   "events_fp": "1738857d61f0d03b",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "150min",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": null,
+  "entry_mode": "next_open",
+  "hold_basis": "clock",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "Calendar restricted to NFP (only mechanically derivable red-folder release); unmodelled CPI/FOMC/other releases attenuate toward 0.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/time_own_02a/economic-calendar-filter.py",
+ "runtime_sec": 3.94,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:39:38+00:00",
+ "n_events_in": 32827,
+ "dropped": {
+  "no_bar_after_decision": 1,
+  "stop_not_beyond_entry": 11,
+  "target_not_beyond_entry": 0,
+  "no_bars_in_hold": 72
+ },
+ "n_complement": 11857,
+ "gate_firing_rate": 0.6378767980942491,
+ "events_fp": "1738857d61f0d03b",
+ "mask_fp": "fc9ddf5c6ca13113",
+ "mask_col": "allowed",
+ "exit_mix": {
+  "stop": 0.353873408024514,
+  "target": 0.12419802738676626,
+  "time": 0.5219285645887197
+ },
+ "gated_vs_own_control": {
+  "diff": -0.007490369510708361,
+  "ci_lo": -0.022454511688018323,
+  "ci_hi": 0.008037558414024813,
+  "p": 0.3355829805240585
+ },
+ "complement": {
+  "n": 11857,
+  "avg_R": -0.03606823346054398,
+  "win_rate": 0.42067976722611117,
+  "pf": 0.9183644194938095,
+  "sd_R": 1.0171911816662376,
+  "exit_mix": {
+   "stop": 0.34604031373871974,
+   "target": 0.12439908914565236,
+   "time": 0.5295605971156279
+  },
+  "vs_own_control": {
+   "diff": 0.0028980084232090586,
+   "ci_lo": -0.019058854232082832,
+   "ci_hi": 0.024198973911121587,
+   "p": 0.7928503699097469
+  }
+ },
+ "ci_components": {
+  "phase3_block": [
+   -0.036399314728400946,
+   0.015340560248480711
+  ],
+  "day_block": [
+   -0.036205918418051965,
+   0.015294793339121444
+  ]
+ },
+ "diff_meaning": "mean(R-ctrl | gated) - mean(R-ctrl | complement)",
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_eff_gated": 1813,
+  "n_eff_complement": 1033,
+  "n_eff": 1033
+ },
+ "ties": {
+  "real_ambiguous": 0.0005191949424304431,
+  "control_ambiguous": 0.00042146412973765386,
+  "real_gap_stop": 0.008337659957853587,
+  "control_gap_stop": 0.0071771065571267145,
+  "gated_excess": 0.00011490950876185007,
+  "complement_excess": 6.747069241798096e-05,
+  "verdict_stop_first": "NULL"
+ },
+ "ctrl_overlap": 0.06628592370888434,
+ "exposure_bars": {
+  "real_mean": 143.2580704272669,
+  "control_mean": 142.88333384234798,
+  "hold_basis": "clock"
+ },
+ "run_id": "e52bd6b0fa7143da880db767064d5d01",
+ "hyp_key": "0bc9ce8182f2310f"
+}

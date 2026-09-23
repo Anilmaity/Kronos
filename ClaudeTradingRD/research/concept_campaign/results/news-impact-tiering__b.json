@@ -1,0 +1,189 @@
+{
+ "concept_id": "news-impact-tiering",
+ "reading": "b",
+ "testable": true,
+ "test_type": "rate",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "high-impact events with derivable dates: NFP (BLS rule, 08:30 ET) and FOMC press conference (14:30 ET, published schedule); CPI dates unavailable",
+   "week = session-date Mon-Fri week (18:00 NY roll); weeks with < 0.5 x median M1 count skipped",
+   "hit = the week's high or low (first M1 printing it) falls on the event's NY date between the release time and 17:00 NY",
+   "null = same weekday and clock window in a random week with no NFP and no FOMC presser, within +/-13 weeks; cluster = week"
+  ],
+  "params": {
+   "events": "NFP + FOMC presser",
+   "window": "release -> 17:00 NY same day",
+   "null_weeks": 13,
+   "min_week_coverage": 0.5
+  }
+ },
+ "params_source": {
+  "events": "corpus: QmGJFxfSHxM yaml 'High impact - exactly three events: CPI; the FOMC press conference; non-farm payroll' (CPI not derivable)",
+  "window": "corpus: yaml measurable 'how often the weekly high or low is set on a high-impact-event day'; post-release part of the day declared-before-run",
+  "null_weeks": "declared-before-run: nearby non-event weeks (+/-13 weeks ~ one quarter) to match regime",
+  "min_week_coverage": "declared-before-run: README trap 6 stub guard"
+ },
+ "n": 195,
+ "span": {
+  "start": "2016-01-08 13:30:00+00:00",
+  "end": "2026-07-02 12:30:00+00:00",
+  "years": 10.478
+ },
+ "avg_R": null,
+ "avg_R_gross": null,
+ "win_rate": null,
+ "pf": null,
+ "observed_rate": 0.35384615384615387,
+ "null_rate": 0.2482051282051282,
+ "lift": 1.425619834710744,
+ "control": {
+  "rate": 0.2482051282051282,
+  "reps": 5,
+  "kind": "null_fn x5"
+ },
+ "diff": 0.10564102564102565,
+ "ci_lo": 0.033846153846153804,
+ "ci_hi": 0.17848717948717938,
+ "ci_method": "phase3_iid",
+ "p": 0.004196692623169711,
+ "halves": {
+  "H1": {
+   "n": 87,
+   "diff": 0.09655172413793106,
+   "ci_lo": -0.013850574712643648,
+   "ci_hi": 0.2183908045977011,
+   "ci_method": "iid",
+   "p": 0.10317217323442894,
+   "start": "2016-01-08 13:30:00+00:00",
+   "end": "2020-12-16 19:30:00+00:00"
+  },
+  "H2": {
+   "n": 108,
+   "diff": 0.11296296296296299,
+   "ci_lo": 0.011111111111111127,
+   "ci_hi": 0.2222685185185185,
+   "ci_method": "iid",
+   "p": 0.035989551737952756,
+   "start": "2021-01-08 13:30:00+00:00",
+   "end": "2026-07-02 12:30:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 42,
+   "diff": 0.12380952380952381,
+   "ci_lo": -0.047738095238095336,
+   "ci_hi": 0.3095238095238096,
+   "ci_method": "iid",
+   "p": 0.17431917637521777,
+   "start": "2016-01-08 13:30:00+00:00",
+   "end": "2018-08-03 12:30:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 51,
+   "diff": 0.06666666666666668,
+   "ci_lo": -0.07450980392156858,
+   "ci_hi": 0.20794117647058818,
+   "ci_method": "iid",
+   "p": 0.354852886581107,
+   "start": "2018-09-07 12:30:00+00:00",
+   "end": "2021-04-02 12:30:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 52,
+   "diff": 0.1192307692307692,
+   "ci_lo": -0.019326923076923113,
+   "ci_hi": 0.2730769230769231,
+   "ci_method": "iid",
+   "p": 0.109955716536169,
+   "start": "2021-04-28 18:30:00+00:00",
+   "end": "2023-11-03 12:30:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 50,
+   "diff": 0.11599999999999996,
+   "ci_lo": -0.04799999999999999,
+   "ci_hi": 0.272,
+   "ci_method": "iid",
+   "p": 0.1553243472471113,
+   "start": "2023-12-08 13:30:00+00:00",
+   "end": "2026-07-02 12:30:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.10337540072687883,
+ "mde_threshold": 0.05,
+ "power_floor_n": 834,
+ "verdict": "UNDERPOWERED",
+ "verdict_detail": "CI excludes 0 in claimed direction but not powered: n=195, effective n=180, MDE=0.1034 vs 0.0500, floor 200; power floor n=834",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 195,
+  "min_slack_min": 0.0,
+  "passed": true,
+  "no_detector_declaration": "pure calendar rule: event dates from the BLS NFP rule and the published FOMC schedule; outcomes are weekly extreme times from M1"
+ },
+ "settings": {
+  "reps": 5,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "mde_threshold": null,
+  "cluster": "array",
+  "outcome_horizon": "5 days 00:00:00",
+  "null_kind": "null_fn x5"
+ },
+ "notes": "per-kind observed rates: NFP 0.492, FOMC 0.101. FOMC calendar verified by 14:00 NY volatility spike on all 69 dates before testing. Medium/low tiers untested (no calendar).",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/time_guest_01b/news-impact-tiering.py",
+ "runtime_sec": 0.51,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:34:45+00:00",
+ "dropped": {
+  "nan_rows": 0
+ },
+ "null_kind": "null_fn x5",
+ "events_fp": "744c0e5357b9a971",
+ "predictors_probed": false,
+ "ci_components": {
+  "phase3_iid": [
+   0.033846153846153804,
+   0.17848717948717938
+  ],
+  "day_block": [
+   0.04102564102564121,
+   0.1743589743589746
+  ],
+  "day_block_5d": [
+   0.04205128205128217,
+   0.16720512820512823
+  ],
+  "cluster": [
+   0.035224126478012714,
+   0.17711955685490077
+  ]
+ },
+ "dependence": {
+  "day_block_mean_days": 5,
+  "n_days": 195,
+  "n_clusters": 180,
+  "n_eff": 180
+ },
+ "run_id": "26d4e6cf5fb243d18635a08c735d63f1",
+ "hyp_key": "ff2dcd04f23f4039"
+}

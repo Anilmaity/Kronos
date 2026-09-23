@@ -1,0 +1,266 @@
+{
+ "concept_id": "htf-wick-formation",
+ "reading": "a",
+ "testable": true,
+ "test_type": "trade",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "trading day (18:00 NY, >= 600 M1 bars) with lower wick > body and > upper wick (mirror); inside it a bearish 5m expansion then a later-breaking bullish 5m expansion, both decided before the day closes (mirror)",
+   "level = (low + close)/2 (mirror for upper wicks)",
+   "next trading day: first M1 touch of the level, unless the day's high was taken first; decide at the touching bar's close, enter next M1 open",
+   "stop = the wick extreme; target = the day's opposite extreme; 23h trading time; control NY clock +/-30 min"
+  ],
+  "params": {
+   "htf": "1D",
+   "ltf": "5min",
+   "large_wick": "wick>body & wick>other wick",
+   "exp_n": 4,
+   "exp_r": 1.5,
+   "exp_d": 0.65,
+   "level": "low-close mid",
+   "entry": "first touch next day",
+   "stop": "wick extreme",
+   "target": "candle opposite extreme",
+   "min_day_m1": 600,
+   "max_hold": "23h",
+   "hold_basis": "bars",
+   "ctrl_tod_tol_min": 30
+  }
+ },
+ "params_source": {
+  "htf": "corpus: htf-wick-formation timeframes htf 1D ('on the daily he shows an aggressive move lower followed by an aggressive move higher')",
+  "ltf": "corpus: htf-wick-formation timeframes.ltf [5m, 1m] \u2014 5m legs inside the daily candle",
+  "large_wick": "threshold_fits: \u00a71 reversal candle = wick > body (crossover 1.0, grade A); and the dominant wick",
+  "exp_n": "threshold_fits: \u00a72 displacement=aggressive, close-beyond gate (grade A) + N=4 window r>=1.5, d>=0.65 vs the pre-break 4-bar range (grade B); 2/2 fractal swings",
+  "exp_r": "threshold_fits: \u00a72 displacement=aggressive, close-beyond gate (grade A) + N=4 window r>=1.5, d>=0.65 vs the pre-break 4-bar range (grade B); 2/2 fractal swings",
+  "exp_d": "threshold_fits: \u00a72 displacement=aggressive, close-beyond gate (grade A) + N=4 window r>=1.5, d>=0.65 vs the pre-break 4-bar range (grade B); 2/2 fractal swings",
+  "level": "corpus: rTnu3ZEb2ZE 'distance from its low to its closing price' (a) vs half-wick-respect 0.5 of the wick (b)",
+  "entry": "corpus: execution.entry 'Inside the T-spot built from 0.5 of the wick' \u2014 first touch on the next trading day",
+  "stop": "corpus: execution.stop 'Beyond the wick extreme'",
+  "target": "method_spec: \u00a72.3 previous-candle engine \u2014 the prior day's opposite extreme as the HTF draw",
+  "min_day_m1": "declared-before-run: trap 6 stub sessions skipped",
+  "max_hold": "declared-before-run: 23h of trading time (one session)",
+  "hold_basis": "declared-before-run: trading time (trap 7)",
+  "ctrl_tod_tol_min": "declared-before-run: trap 9, not a timing concept"
+ },
+ "n": 587,
+ "span": {
+  "start": "2016-01-06 06:01:00+00:00",
+  "end": "2026-07-21 00:48:00+00:00",
+  "years": 10.535
+ },
+ "avg_R": -0.008114575126505858,
+ "avg_R_gross": 0.03188542487349418,
+ "win_rate": 0.3390119250425894,
+ "pf": 0.9877665357910792,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "n": 2935,
+  "avg_R": -0.02461153037692543,
+  "win_rate": 0.3420783645655877,
+  "pf": 0.9626887724829228,
+  "sd_R": 1.489021734832604,
+  "exit_mix": {
+   "stop": 0.6238500851788756,
+   "target": 0.2572402044293015,
+   "time": 0.11890971039182283
+  },
+  "avg_R_gross": 0.015388469623074594,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": 0.016496955250419575,
+ "ci_lo": -0.11371081396774134,
+ "ci_hi": 0.15960354399976423,
+ "ci_method": "phase3_iid",
+ "p": 0.8129651339372819,
+ "halves": {
+  "H1": {
+   "n": 279,
+   "diff": 0.08120820471711554,
+   "ci_lo": -0.14227785750694488,
+   "ci_hi": 0.28571866544338725,
+   "ci_method": "block",
+   "p": 0.4570165632661353,
+   "start": "2016-01-06 06:01:00+00:00",
+   "end": "2020-12-30 01:36:00+00:00"
+  },
+  "H2": {
+   "n": 308,
+   "diff": -0.04212135189636023,
+   "ci_lo": -0.23123232979008496,
+   "ci_hi": 0.16029482902574607,
+   "ci_method": "iid",
+   "p": 0.6732334442834407,
+   "start": "2021-01-15 13:50:00+00:00",
+   "end": "2026-07-21 00:48:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 142,
+   "diff": 0.1225906950006462,
+   "ci_lo": -0.16242037475178042,
+   "ci_hi": 0.4232099133020366,
+   "ci_method": "block",
+   "p": 0.4118950826077586,
+   "start": "2016-01-06 06:01:00+00:00",
+   "end": "2018-08-13 00:31:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 153,
+   "diff": 0.003034922635950149,
+   "ci_lo": -0.3124965248591952,
+   "ci_hi": 0.29098329701112335,
+   "ci_method": "block",
+   "p": 0.9842719495202532,
+   "start": "2018-09-04 06:12:00+00:00",
+   "end": "2021-04-12 02:35:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 145,
+   "diff": -0.026947981309381114,
+   "ci_lo": -0.287438395995034,
+   "ci_hi": 0.26044924087831883,
+   "ci_method": "block",
+   "p": 0.8471135878008386,
+   "start": "2021-05-02 22:02:00+00:00",
+   "end": "2023-11-24 10:20:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 147,
+   "diff": -0.029122801575071883,
+   "ci_lo": -0.3111689305871832,
+   "ci_hi": 0.24431062910077062,
+   "ci_method": "iid",
+   "p": 0.8371699154511011,
+   "start": "2023-12-06 07:43:00+00:00",
+   "end": "2026-07-21 00:48:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.19533864029298348,
+ "mde_threshold": 0.1,
+ "power_floor_n": 2240,
+ "verdict": "UNDERPOWERED",
+ "verdict_detail": "CI contains 0; MDE 0.1953 vs threshold 0.1000, effective n 587 (power floor n=2240, have 587)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 587,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 39.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 61,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "target_px"
+   ],
+   "ignored": [],
+   "lookback": "30D",
+   "recent": "1D",
+   "events_fp": "8ed439ebf6aac218",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "23h",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": 30,
+  "entry_mode": "next_open",
+  "hold_basis": "bars",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "RE-RUN ONCE after a spec bug: the first run built the lower-timeframe legs on 1h, outside the concept's own ltf list (5m, 1m); it returned n=29/26 (UNTESTABLE, n<30). Fixed to 5m legs and re-run once; nothing else changed.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/structure_own_01b/htf-wick-formation.py",
+ "runtime_sec": 0.22,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:43:51+00:00",
+ "n_events_in": 590,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 3,
+  "target_not_beyond_entry": 0,
+  "no_bars_in_hold": 0
+ },
+ "events_fp": "8ed439ebf6aac218",
+ "sd_R": 1.5282182452042217,
+ "exit_mix": {
+  "stop": 0.6286201022146508,
+  "target": 0.25894378194207834,
+  "time": 0.11243611584327087
+ },
+ "trades_per_year": 55.7177104989605,
+ "ci_components": {
+  "phase3_iid": [
+   -0.11371081396774134,
+   0.15960354399976423
+  ],
+  "day_block": [
+   -0.11499689835101443,
+   0.14958816373759573
+  ]
+ },
+ "diff_win": -0.0030664395229982877,
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 587,
+  "n_clusters": null,
+  "n_eff": 587
+ },
+ "ties": {
+  "real_ambiguous": 0.0,
+  "control_ambiguous": 0.0006814310051107325,
+  "real_gap_stop": 0.0034071550255536627,
+  "control_gap_stop": 0.012606473594548553,
+  "verdict_stop_first": "UNDERPOWERED"
+ },
+ "ctrl_overlap": 0.0,
+ "exposure_bars": {
+  "real_mean": 1380.0,
+  "control_mean": 1380.0,
+  "hold_basis": "bars"
+ },
+ "run_id": "8ab0eae290054f5aae85b543b6def328",
+ "hyp_key": "3ee1c130a9f8262e"
+}

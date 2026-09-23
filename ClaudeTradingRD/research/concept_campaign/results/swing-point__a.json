@@ -1,0 +1,244 @@
+{
+ "concept_id": "swing-point",
+ "reading": "a",
+ "testable": true,
+ "test_type": "trade",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "1h bars; swing low at i := low[i] < low[i-1] and low[i] < low[i+1] (mirror for highs), usable from the close of bar i+1",
+   "decide at that close, enter next M1 open away from the swing (long off a swing low, short off a swing high), stop = the swing extreme, 2.0R, exit after 10h"
+  ],
+  "params": {
+   "tf": "1h",
+   "swing": "strict 3-bar",
+   "rr": 2.0,
+   "max_hold": "10h"
+  }
+ },
+ "params_source": {
+  "tf": "corpus: swing-point.yaml timeframes htf includes 1H (phase-3 1h stack)",
+  "swing": "corpus: swing-point.yaml 'swing_low(i) := low[i] < low[i-1] AND low[i] < low[i+1]'",
+  "rr": "phase3: meta/conjunction_preregistration.md \u00a71.8-1.13 (locked config)",
+  "max_hold": "phase3: 10 entry-TF bars (\u00a71.13)"
+ },
+ "n": 28363,
+ "span": {
+  "start": "2016-01-04 01:00:00+00:00",
+  "end": "2026-07-23 04:00:00+00:00",
+  "years": 10.549
+ },
+ "avg_R": -0.03909202328604683,
+ "avg_R_gross": 0.0009079767139531978,
+ "win_rate": 0.37453724923315584,
+ "pf": 0.9340858990625922,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "n": 141815,
+  "avg_R": -0.038191650890320845,
+  "win_rate": 0.37613087473116386,
+  "pf": 0.9356552227195308,
+  "sd_R": 1.2682213136833838,
+  "exit_mix": {
+   "stop": 0.5447449141487148,
+   "target": 0.24305609420724184,
+   "time": 0.2121989916440433
+  },
+  "avg_R_gross": 0.0018083491096791884,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": -0.0009003723957259832,
+ "ci_lo": -0.016657406506885773,
+ "ci_hi": 0.01592410932300842,
+ "ci_method": "phase3_iid",
+ "p": 0.9137378370926491,
+ "halves": {
+  "H1": {
+   "n": 13681,
+   "diff": 0.02099206120449555,
+   "ci_lo": -7.7610872148602e-05,
+   "ci_hi": 0.043437305528863,
+   "ci_method": "iid",
+   "p": 0.058622314749305286,
+   "start": "2016-01-04 01:00:00+00:00",
+   "end": "2020-12-31 20:00:00+00:00"
+  },
+  "H2": {
+   "n": 14682,
+   "diff": -0.021300207846252542,
+   "ci_lo": -0.04366406122867974,
+   "ci_hi": 0.0012411589973859972,
+   "ci_method": "iid",
+   "p": 0.06297514699326695,
+   "start": "2021-01-04 01:00:00+00:00",
+   "end": "2026-07-23 04:00:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 7237,
+   "diff": 0.01923514720573037,
+   "ci_lo": -0.01270352860053722,
+   "ci_hi": 0.04993042115031637,
+   "ci_method": "iid",
+   "p": 0.22865674609945538,
+   "start": "2016-01-04 01:00:00+00:00",
+   "end": "2018-08-22 11:00:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 7168,
+   "diff": 0.021144984487101906,
+   "ci_lo": -0.013728482139870074,
+   "ci_hi": 0.0516152238558628,
+   "ci_method": "iid",
+   "p": 0.2046285953903871,
+   "start": "2018-08-22 14:00:00+00:00",
+   "end": "2021-04-12 07:00:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 7018,
+   "diff": -0.019582207910630367,
+   "ci_lo": -0.052248940932667624,
+   "ci_hi": 0.015875977640540846,
+   "ci_method": "iid",
+   "p": 0.2598414100674482,
+   "start": "2021-04-12 09:00:00+00:00",
+   "end": "2023-12-01 21:00:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 6940,
+   "diff": -0.02577540868509935,
+   "ci_lo": -0.05909362055188952,
+   "ci_hi": 0.005157862255281191,
+   "ci_method": "iid",
+   "p": 0.1158263819504805,
+   "start": "2023-12-04 01:00:00+00:00",
+   "end": "2026-07-23 04:00:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.023286112914904084,
+ "mde_threshold": 0.1,
+ "power_floor_n": 1538,
+ "verdict": "UNDERPOWERED",
+ "verdict_detail": "CI contains 0 but 23% of control draws are the concept's own trades (> 20%): the differential is attenuated, so NULL is not shown",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 28363,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 300.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 2108,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "rr"
+   ],
+   "ignored": [],
+   "lookback": "15D",
+   "recent": "1D",
+   "events_fp": "5644e1bc5d9e2a9a",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "10h",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": null,
+  "entry_mode": "next_open",
+  "hold_basis": "clock",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "The 'no reversal without a swing' premise is a tautology at the bar level; what is testable is whether a confirmed swing is a reversal point worth trading away from.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/structure_own_03a/swing-point.py",
+ "runtime_sec": 10.12,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:30:38+00:00",
+ "n_events_in": 28708,
+ "dropped": {
+  "no_bar_after_decision": 1,
+  "stop_not_beyond_entry": 77,
+  "target_not_beyond_entry": 0,
+  "no_bars_in_hold": 267
+ },
+ "events_fp": "5644e1bc5d9e2a9a",
+ "sd_R": 1.2663091945685574,
+ "exit_mix": {
+  "stop": 0.5415506117124422,
+  "target": 0.24256954482953144,
+  "time": 0.2158798434580263
+ },
+ "trades_per_year": 2688.7063976122504,
+ "ci_components": {
+  "phase3_iid": [
+   -0.016657406506885773,
+   0.01592410932300842
+  ],
+  "day_block": [
+   -0.015111357530967229,
+   0.013801330862101177
+  ]
+ },
+ "diff_win": -0.0015936254980080111,
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 2719,
+  "n_clusters": null,
+  "n_eff": 2719
+ },
+ "ties": {
+  "real_ambiguous": 0.0014455452526178471,
+  "control_ambiguous": 0.0021436378380284174,
+  "real_gap_stop": 0.011070761202975708,
+  "control_gap_stop": 0.010979092479638967,
+  "verdict_stop_first": "UNDERPOWERED"
+ },
+ "ctrl_overlap": 0.22800126925924621,
+ "exposure_bars": {
+  "real_mean": 545.3372351302753,
+  "control_mean": 548.4177132179248,
+  "hold_basis": "clock"
+ },
+ "run_id": "61761266aa1d4543bc53c22d6f01991c",
+ "hyp_key": "7ed57fb02747f68d"
+}

@@ -1,0 +1,261 @@
+{
+ "concept_id": "positional-entry-before-open",
+ "reading": "a",
+ "testable": true,
+ "test_type": "trade",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "15m setup: phase-3 bare 15m CISD (series_open, 2/2 swings, max_wait 3, min_series 1); its protected swing is formed before the decision by construction; stop = protected swing",
+   "all timeframes green: last CLOSED 1D, 4H (forex grid) and 1H candles all closed in the trade direction",
+   "target = previous completed trading day's high (long) / low (short); require reward >= 2 x risk measured from the confirming close, else no trade ('if 2R is not achievable, wait')",
+   "decision window 07:00-12:00 NY; pre-open = decided before 09:30 NY",
+   "enter next M1 open; exit at target, stop, or 16:00 NY the same day",
+   "trade_test on the pre-open subset only"
+  ],
+  "params": {
+   "tf": "15min",
+   "win_start": "07:00",
+   "open": "09:30",
+   "win_end": "12:00",
+   "exit_ny": "16:00",
+   "min_rr": 2.0,
+   "grid4h": "forex",
+   "green": "1D+4H+1H close direction",
+   "ctrl_tod_tol_min": 30
+  }
+ },
+ "params_source": {
+  "tf": "corpus: U4j-fZD-FJk 'Really only if uh it's a 15-minute valid setup'",
+  "open": "corpus: U4j-fZD-FJk 'I need a protected swing I can trust prior to the open' (09:30 equity open)",
+  "win_start": "session_window_fit: forex NY AM killzone start 07:00 (killzones.yaml) as the pre-open window start",
+  "win_end": "session_window_fit: NY AM session end 12:00 (SESSION_WINDOWS ny_am)",
+  "exit_ny": "declared-before-run: hold to the 16:00 NY equity close ('the day's framed objective')",
+  "min_rr": "corpus: wM1s7UivQ08 'if 2R is not achievable with that stop, do not take the pre-open entry'",
+  "grid4h": "session_window_fit: forex grid (carried as a knob, trap 8)",
+  "green": "declared-before-run: 'all timeframes green (daily, 4-hour, hourly supporting the same direction)' -> last closed candle of each closed in the trade direction",
+  "ctrl_tod_tol_min": "declared-before-run: control held within +/-30 min of the NY clock so the setup is judged against the same hours (trap 9); the timing question is reading b"
+ },
+ "n": 181,
+ "span": {
+  "start": "2016-01-18 13:15:00+00:00",
+  "end": "2026-06-22 13:15:00+00:00",
+  "years": 10.426
+ },
+ "avg_R": -0.1559033594584418,
+ "avg_R_gross": -0.11590335945844175,
+ "win_rate": 0.292817679558011,
+ "pf": 0.78607239453603,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "n": 905,
+  "avg_R": 0.032572297893723505,
+  "win_rate": 0.30165745856353593,
+  "pf": 1.04611278448187,
+  "sd_R": 2.0097133360505155,
+  "exit_mix": {
+   "stop": 0.6718232044198895,
+   "target": 0.16906077348066298,
+   "time": 0.1591160220994475
+  },
+  "avg_R_gross": 0.07257229789372349,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": -0.18847565735216532,
+ "ci_lo": -0.4576523811230682,
+ "ci_hi": 0.0873000538823455,
+ "ci_method": "phase3_iid",
+ "p": 0.17518354752045895,
+ "halves": {
+  "H1": {
+   "n": 78,
+   "diff": -0.5207000680053036,
+   "ci_lo": -0.8508174228603353,
+   "ci_hi": -0.15985172252608734,
+   "ci_method": "iid",
+   "p": 0.0031369268890876043,
+   "start": "2016-01-18 13:15:00+00:00",
+   "end": "2020-12-18 14:15:00+00:00"
+  },
+  "H2": {
+   "n": 103,
+   "diff": 0.06311176042399773,
+   "ci_lo": -0.32563669019548497,
+   "ci_hi": 0.47681199920233397,
+   "ci_method": "iid",
+   "p": 0.7578553689401689,
+   "start": "2021-01-26 14:00:00+00:00",
+   "end": "2026-06-22 13:15:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 47,
+   "diff": -0.34849251734780273,
+   "ci_lo": -0.8083043777415313,
+   "ci_hi": 0.20535479629189493,
+   "ci_method": "iid",
+   "p": 0.17776850767861613,
+   "start": "2016-01-18 13:15:00+00:00",
+   "end": "2018-08-07 13:00:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 34,
+   "diff": -0.7311131306341561,
+   "ci_lo": -1.128694108958947,
+   "ci_hi": -0.3019599896688223,
+   "ci_method": "iid",
+   "p": 0.0005271939433108192,
+   "start": "2018-08-31 13:00:00+00:00",
+   "end": "2021-03-01 13:15:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 43,
+   "diff": -0.011847116588561718,
+   "ci_lo": -0.6933706842497858,
+   "ci_hi": 0.7835458316301163,
+   "ci_method": "iid",
+   "p": 0.9749156237500594,
+   "start": "2021-04-26 11:00:00+00:00",
+   "end": "2023-10-23 12:30:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 57,
+   "diff": 0.1339004699907767,
+   "ci_lo": -0.24334779553403693,
+   "ci_hi": 0.5746571050806825,
+   "ci_method": "iid",
+   "p": 0.5210946196338625,
+   "start": "2023-12-06 12:00:00+00:00",
+   "end": "2026-06-22 13:15:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.38947923727799133,
+ "mde_threshold": 0.1,
+ "power_floor_n": 2746,
+ "verdict": "UNDERPOWERED",
+ "verdict_detail": "CI contains 0; MDE 0.3895 vs threshold 0.1000, effective n 159 (power floor n=2746, have 181)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 181,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 0.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 44,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "confirm_close",
+    "target_px",
+    "max_hold",
+    "pre_open"
+   ],
+   "ignored": [],
+   "lookback": "30D",
+   "recent": "1D",
+   "events_fp": "9ae586cc2b1e59f6",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "per-row column",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": 30,
+  "entry_mode": "next_open",
+  "hold_basis": "clock",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "Indices' 09:30 equity open applied to gold as a clock time.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/entry_own_03a/positional-entry-before-open.py",
+ "runtime_sec": 0.22,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:13:50+00:00",
+ "n_events_in": 181,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 0,
+  "target_not_beyond_entry": 0,
+  "no_bars_in_hold": 0
+ },
+ "events_fp": "9ae586cc2b1e59f6",
+ "sd_R": 1.6050159349921935,
+ "exit_mix": {
+  "stop": 0.6961325966850829,
+  "target": 0.1270718232044199,
+  "time": 0.17679558011049723
+ },
+ "trades_per_year": 17.360884978991596,
+ "ci_components": {
+  "phase3_iid": [
+   -0.4576523811230682,
+   0.0873000538823455
+  ],
+  "day_block": [
+   -0.4313689111610297,
+   0.08518300893906933
+  ]
+ },
+ "diff_win": -0.008839779005524906,
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 159,
+  "n_clusters": null,
+  "n_eff": 159
+ },
+ "ties": {
+  "real_ambiguous": 0.0,
+  "control_ambiguous": 0.0011049723756906078,
+  "real_gap_stop": 0.0,
+  "control_gap_stop": 0.0055248618784530384,
+  "verdict_stop_first": "UNDERPOWERED"
+ },
+ "ctrl_overlap": 0.004419889502762431,
+ "exposure_bars": {
+  "real_mean": 459.8453038674033,
+  "control_mean": 462.1270718232044,
+  "hold_basis": "clock"
+ },
+ "run_id": "490db15c215d4ae089786452b3bbe571",
+ "hyp_key": "d053978c4cc94dbf"
+}

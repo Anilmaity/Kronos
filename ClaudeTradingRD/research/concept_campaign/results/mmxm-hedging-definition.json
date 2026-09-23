@@ -1,0 +1,210 @@
+{
+ "concept_id": "mmxm-hedging-definition",
+ "reading": null,
+ "testable": true,
+ "test_type": "rate",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "daily bars (18:00 NY roll): original consolidation = 5 bars with range <= 1.5 x ATR14",
+   "breakout close beyond the consolidation, then a daily CISD (series_open 2/2 mw3) whose extreme is beyond it and the most extreme price since, within 40 bars of the consolidation",
+   "prediction at the CISD close: price trades back through the far side of the consolidation (CH for a buy model, CL for a sell model) within 20 x 1380 M1 bars",
+   "null: same signed distance from the entry price, same M1-bar horizon, matched random moments (sample_times reps 5, +/-30d)"
+  ],
+  "params": {
+   "cons_bars": 5,
+   "cons_atr": 1.5,
+   "atr_n": 14,
+   "lookback_bars": 40,
+   "horizon": "20 trading days (27600 M1 bars)",
+   "cisd": "series_open 2/2 max_wait 3"
+  }
+ },
+ "params_source": {
+  "cons_bars": "declared-before-run: source gives no size/duration test for the consolidation",
+  "cons_atr": "declared-before-run: a tight range = under 1.5 daily ATR over 5 days",
+  "atr_n": "declared-before-run: standard 14-bar ATR",
+  "lookback_bars": "declared-before-run: the sell side of the curve spans at most two months",
+  "horizon": "declared-before-run: one month to clear the consolidation",
+  "cisd": "phase3: locked CISD config as the reversal confirmation"
+ },
+ "n": 114,
+ "span": {
+  "start": "2016-07-14 22:00:00+00:00",
+  "end": "2026-07-03 22:00:00+00:00",
+  "years": 9.969
+ },
+ "avg_R": null,
+ "avg_R_gross": null,
+ "win_rate": null,
+ "pf": null,
+ "observed_rate": 0.6578947368421053,
+ "null_rate": 0.6210526315789473,
+ "lift": 1.0593220338983054,
+ "control": {
+  "rate": 0.6210526315789473,
+  "reps": 5,
+  "kind": "null_fn x5"
+ },
+ "diff": 0.0368421052631579,
+ "ci_lo": -0.05964912280701751,
+ "ci_hi": 0.12807017543859645,
+ "ci_method": "phase3_iid",
+ "p": 0.44169644485413356,
+ "halves": {
+  "H1": {
+   "n": 52,
+   "diff": 0.08461538461538454,
+   "ci_lo": -0.0692307692307691,
+   "ci_hi": 0.23461538461538467,
+   "ci_method": "iid",
+   "p": 0.27499773474671474,
+   "start": "2016-07-14 22:00:00+00:00",
+   "end": "2020-12-03 23:00:00+00:00"
+  },
+  "H2": {
+   "n": 62,
+   "diff": -0.003225806451612856,
+   "ci_lo": -0.17104838709677422,
+   "ci_hi": 0.15161290322580645,
+   "ci_method": "iid",
+   "p": 0.9687393188422987,
+   "start": "2021-01-11 23:00:00+00:00",
+   "end": "2026-07-03 22:00:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 22,
+   "diff": 0.1272727272727272,
+   "ci_lo": -0.12727272727272732,
+   "ci_hi": 0.3909090909090909,
+   "ci_method": "iid",
+   "p": 0.33565325474948643,
+   "start": "2016-07-14 22:00:00+00:00",
+   "end": "2018-08-21 22:00:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 35,
+   "diff": 0.040000000000000036,
+   "ci_lo": -0.14871428571428583,
+   "ci_hi": 0.21714285714285708,
+   "ci_method": "iid",
+   "p": 0.6682327511466083,
+   "start": "2018-09-17 22:00:00+00:00",
+   "end": "2021-04-06 22:00:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 27,
+   "diff": 0.08148148148148149,
+   "ci_lo": -0.14814814814814814,
+   "ci_hi": 0.31851851851851853,
+   "ci_method": "iid",
+   "p": 0.49370249518292914,
+   "start": "2021-04-14 22:00:00+00:00",
+   "end": "2023-11-16 23:00:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 30,
+   "diff": -0.07333333333333347,
+   "ci_lo": -0.29999999999999993,
+   "ci_hi": 0.14666666666666667,
+   "ci_method": "iid",
+   "p": 0.5198541349100421,
+   "start": "2023-12-07 23:00:00+00:00",
+   "end": "2026-07-03 22:00:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.13416357906967638,
+ "mde_threshold": 0.05,
+ "power_floor_n": 821,
+ "verdict": "UNDERPOWERED",
+ "verdict_detail": "CI contains 0; MDE 0.1342 vs threshold 0.0500, effective n 114 (power floor n=821, have 114)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 114,
+  "min_slack_min": 0.0,
+  "passed": true,
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 29,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "level",
+    "cons_end",
+    "extreme"
+   ],
+   "ignored": [],
+   "lookback": "150D",
+   "recent": "1D",
+   "events_fp": "7614a67d6557e637",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "reps": 5,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "mde_threshold": null,
+  "cluster": null,
+  "outcome_horizon": "28 days 00:00:00",
+  "null_kind": "null_fn x5"
+ },
+ "notes": "Hedging/facilitation mechanism unobservable; tested its price prediction (return through the original consolidation) on the daily chart the source prescribes. Invalidation (return to 50%) not applied: ambiguous direction in the source.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/model_guest_01a/mmxm-hedging-definition.py",
+ "runtime_sec": 0.11,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:20:50+00:00",
+ "dropped": {
+  "nan_rows": 0
+ },
+ "null_kind": "null_fn x5",
+ "events_fp": "7614a67d6557e637",
+ "predictors_probed": true,
+ "ci_components": {
+  "phase3_iid": [
+   -0.05964912280701751,
+   0.12807017543859645
+  ],
+  "day_block": [
+   -0.022807017543859498,
+   0.09828947368421036
+  ],
+  "day_block_28d": [
+   -0.012324561403508695,
+   0.08947368421052626
+  ]
+ },
+ "dependence": {
+  "day_block_mean_days": 28,
+  "n_days": 114,
+  "n_clusters": null,
+  "n_eff": 114
+ },
+ "run_id": "99fb2ab17d3c401f8f6d91f13234dffe",
+ "hyp_key": "7bffe4873b2913a7"
+}

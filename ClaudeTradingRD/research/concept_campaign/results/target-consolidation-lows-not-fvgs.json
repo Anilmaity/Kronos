@@ -1,0 +1,213 @@
+{
+ "concept_id": "target-consolidation-lows-not-fvgs",
+ "reading": null,
+ "testable": true,
+ "test_type": "rate",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "reversal = 1H CISD (series_open, 2/2 swing, max_wait 3, min_series 1); decide at confirm-bar close",
+   "leg = lowest low (bearish) / highest high (bullish) of the 72 1H bars before the extreme, to the extreme",
+   "consolidation = 4 consecutive 1H bars in the leg with combined range <= ATR14(1H); level = their low (high)",
+   "target = nearest consolidation low below the confirm bar's low not traded through since it formed",
+   "hit = M1 reaches target within 1,380 M1 bars; null = matched random moments +/-30d on the same minute grid, same signed distance from next M1 open"
+  ],
+  "params": {
+   "tf": "1h",
+   "level_rule": "series_open",
+   "swing": "2/2",
+   "max_wait": 3,
+   "min_series": 1,
+   "leg_bars": 72,
+   "consolidation_bars": 4,
+   "consolidation_range_atr": 1.0,
+   "atr_len": 14,
+   "horizon_m1_bars": 1380
+  }
+ },
+ "params_source": {
+  "level_rule": "phase3: meta/conjunction_preregistration.md \u00a71.8-1.13 (locked CISD config) as the reversal confirmation",
+  "swing": "phase3: meta/conjunction_preregistration.md \u00a71.8-1.13 (locked CISD config) as the reversal confirmation",
+  "max_wait": "phase3: meta/conjunction_preregistration.md \u00a71.8-1.13 (locked CISD config) as the reversal confirmation",
+  "min_series": "phase3: meta/conjunction_preregistration.md \u00a71.8-1.13 (locked CISD config) as the reversal confirmation",
+  "tf": "corpus: V8P6lNIisvc yaml timeframes htf 1D/1H - 1H analysis",
+  "leg_bars": "declared-before-run: yaml ambiguity 'how far back to enumerate' -> 3 trading days of 1H",
+  "consolidation_bars": "declared-before-run: consolidation not sized in corpus -> 4 bars",
+  "consolidation_range_atr": "declared-before-run: 4-bar range within one 1H ATR = sideways",
+  "atr_len": "declared-before-run: standard 14",
+  "horizon_m1_bars": "declared-before-run: one trading session"
+ },
+ "n": 1987,
+ "span": {
+  "start": "2016-01-15 05:00:00+00:00",
+  "end": "2026-07-21 02:00:00+00:00",
+  "years": 10.511
+ },
+ "avg_R": null,
+ "avg_R_gross": null,
+ "win_rate": null,
+ "pf": null,
+ "observed_rate": 0.47861097131353797,
+ "null_rate": 0.4928032209360846,
+ "lift": 0.9712009803921567,
+ "control": {
+  "rate": 0.4928032209360846,
+  "reps": 5,
+  "kind": "null_fn x5"
+ },
+ "diff": -0.01419224962254656,
+ "ci_lo": -0.0380573729240061,
+ "ci_hi": 0.011275792652240473,
+ "ci_method": "phase3_block",
+ "p": 0.259450184206549,
+ "halves": {
+  "H1": {
+   "n": 922,
+   "diff": -0.008242950108459879,
+   "ci_lo": -0.04751084598698482,
+   "ci_hi": 0.030591106290672382,
+   "ci_method": "iid",
+   "p": 0.6790845121043205,
+   "start": "2016-01-15 05:00:00+00:00",
+   "end": "2020-12-31 05:00:00+00:00"
+  },
+  "H2": {
+   "n": 1065,
+   "diff": -0.019342723004694806,
+   "ci_lo": -0.05672300469483572,
+   "ci_hi": 0.017107981220657265,
+   "ci_method": "iid",
+   "p": 0.3044353949304387,
+   "start": "2021-01-07 10:00:00+00:00",
+   "end": "2026-07-21 02:00:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 488,
+   "diff": -0.020491803278688492,
+   "ci_lo": -0.07545081967213114,
+   "ci_hi": 0.03442622950819674,
+   "ci_method": "iid",
+   "p": 0.46474429588943644,
+   "start": "2016-01-15 05:00:00+00:00",
+   "end": "2018-08-17 21:00:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 479,
+   "diff": 0.013361169102296455,
+   "ci_lo": -0.042202505219206675,
+   "ci_hi": 0.06764091858037569,
+   "ci_method": "iid",
+   "p": 0.6334949736742086,
+   "start": "2018-08-30 03:00:00+00:00",
+   "end": "2021-04-09 03:00:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 597,
+   "diff": -0.01507537688442212,
+   "ci_lo": -0.06701005025125632,
+   "ci_hi": 0.030829145728643245,
+   "ci_method": "iid",
+   "p": 0.5458469203093326,
+   "start": "2021-04-12 10:00:00+00:00",
+   "end": "2023-11-29 09:00:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 423,
+   "diff": -0.03687943262411353,
+   "ci_lo": -0.0940898345153664,
+   "ci_hi": 0.02600472813238769,
+   "ci_method": "iid",
+   "p": 0.22868335269841897,
+   "start": "2023-12-05 08:00:00+00:00",
+   "end": "2026-07-21 02:00:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.03525857022907788,
+ "mde_threshold": 0.05,
+ "power_floor_n": 989,
+ "verdict": "NULL",
+ "verdict_detail": "CI contains 0; powered (MDE 0.0353 <= 0.0500)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 1987,
+  "min_slack_min": 0.0,
+  "passed": true,
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 168,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "target_px"
+   ],
+   "ignored": [],
+   "lookback": "20D",
+   "recent": "1D",
+   "events_fp": "c1192226ca75cdbc",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "reps": 5,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "mde_threshold": null,
+  "cluster": null,
+  "outcome_horizon": "1 days 00:00:00",
+  "null_kind": "null_fn x5"
+ },
+ "notes": "Scores the positive half (consolidation lows are the draw) against a geometry-matched null; the FVG-vs-consolidation comparison is not scored head-to-head because target distance confounds it (trap 4).",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/liquidity_guest_01b/target-consolidation-lows-not-fvgs.py",
+ "runtime_sec": 0.5,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:14:05+00:00",
+ "dropped": {
+  "nan_rows": 0
+ },
+ "null_kind": "null_fn x5",
+ "events_fp": "c1192226ca75cdbc",
+ "predictors_probed": true,
+ "ci_components": {
+  "phase3_block": [
+   -0.0380573729240061,
+   0.011275792652240473
+  ],
+  "day_block": [
+   -0.03543006304770736,
+   0.007325171093896192
+  ]
+ },
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 1252,
+  "n_clusters": null,
+  "n_eff": 1252
+ },
+ "run_id": "3f295e7dacd34eebba99054dc83a8a45",
+ "hyp_key": "95355c77a20b1b09"
+}

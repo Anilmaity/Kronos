@@ -1,0 +1,265 @@
+{
+ "concept_id": "internal-external-liquidity-model",
+ "reading": null,
+ "testable": true,
+ "test_type": "trade",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "ladder daily / hourly / 5-minute; daily = 18:00 NY trading day",
+   "HTF level: previous day low (bull) / high (bear); draw = rotation away from the swept external liquidity",
+   "kill zone: raid 5m bar starts in forex London 02:00-05:00 or NY AM 07:00-10:00 NY",
+   "stop raid: 5m bar makes a new day low below PDL (mirror); deeper lows in the kill zone re-arm at the new extreme; a new low outside the kill zone disarms",
+   "MSS: within 12 5m bars of the raid low, a 5m close above the latest 2/2 swing high confirmed before the raid bar",
+   "FVG: latest bullish 5m FVG with middle bar after the raid bar and third bar <= the MSS bar",
+   "entry: first M1 bar trading back to the FVG top within 60 min of the FVG being known; decide at that M1 close; enter next M1 open",
+   "stop: raid low; target 2R fixed; hold to the daily candle close; one setup per side per day (the first MSS consumes it)"
+  ],
+  "params": {
+   "exec_tf": "5min",
+   "killzones": "fx_london 02-05, fx_ny_am 07-10 NY",
+   "htf_level": "PDH/PDL",
+   "mss_max_bars": 12,
+   "swing": "2/2",
+   "fvg_entry": "gap start (top for bull)",
+   "entry_wait_min": 60,
+   "rr": 2.0,
+   "max_hold": "to daily close",
+   "one_per_side_day": true,
+   "day_open_hour": 18
+  }
+ },
+ "params_source": {
+  "exec_tf": "corpus: mwmWNCTEYtY 'I personally prefer a daily hour and 5 minute setups'",
+  "killzones": "session_window_fit: killzones.yaml forex London / NY AM windows (the video uses London and New York)",
+  "htf_level": "corpus: mwmWNCTEYtY preconditions 'previous period high/low'",
+  "mss_max_bars": "declared-before-run: a V-shape MSS within one hour of the raid (method_spec \u00a74.2 'fast V-shape')",
+  "swing": "method_spec: \u00a71.1 three-candle fractal; phase3 2/2",
+  "fvg_entry": "corpus: mwmWNCTEYtY 'enter at the fair value gap (start of the gap)'",
+  "entry_wait_min": "declared-before-run: retrace into the FVG within 60 minutes",
+  "rr": "corpus: mwmWNCTEYtY 'then I will Target to R' (2R fixed)",
+  "max_hold": "method_spec: \u00a75.5 time-based exit at the HTF (daily) candle close",
+  "one_per_side_day": "declared-before-run: the first MSS after a raid consumes it",
+  "day_open_hour": "method_spec: \u00a71.4 18:00 canon"
+ },
+ "n": 227,
+ "span": {
+  "start": "2016-01-06 07:40:00+00:00",
+  "end": "2026-04-01 08:01:00+00:00",
+  "years": 10.234
+ },
+ "avg_R": -0.0010376362869235754,
+ "avg_R_gross": 0.03896236371307647,
+ "win_rate": 0.3700440528634361,
+ "pf": 0.9983808321104531,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "n": 1135,
+  "avg_R": -0.1250586555082002,
+  "win_rate": 0.32687224669603526,
+  "pf": 0.8071214840585227,
+  "sd_R": 1.2745865348789338,
+  "exit_mix": {
+   "stop": 0.6044052863436123,
+   "target": 0.24581497797356827,
+   "time": 0.14977973568281938
+  },
+  "avg_R_gross": -0.08505865550820019,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": 0.12402101922127662,
+ "ci_lo": -0.06250210165582226,
+ "ci_hi": 0.31580349009524983,
+ "ci_method": "day_block",
+ "p": 0.19876385314500672,
+ "halves": {
+  "H1": {
+   "n": 84,
+   "diff": -0.019445057340235702,
+   "ci_lo": -0.3133048369444238,
+   "ci_hi": 0.28010461655629276,
+   "ci_method": "iid",
+   "p": 0.8977931573705047,
+   "start": "2016-01-06 07:40:00+00:00",
+   "end": "2020-12-15 13:05:00+00:00"
+  },
+  "H2": {
+   "n": 143,
+   "diff": 0.208294798460207,
+   "ci_lo": -0.038653342196112876,
+   "ci_hi": 0.4285938526511412,
+   "ci_method": "iid",
+   "p": 0.08055578606720137,
+   "start": "2021-01-05 13:00:00+00:00",
+   "end": "2026-04-01 08:01:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 45,
+   "diff": -0.009874403634165703,
+   "ci_lo": -0.4151177861033325,
+   "ci_hi": 0.428871168580759,
+   "ci_method": "iid",
+   "p": 0.9634203081454575,
+   "start": "2016-01-06 07:40:00+00:00",
+   "end": "2018-06-22 08:50:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 46,
+   "diff": 0.07551219967822664,
+   "ci_lo": -0.3458855970322329,
+   "ci_hi": 0.48836258313246317,
+   "ci_method": "iid",
+   "p": 0.7227294315142434,
+   "start": "2018-08-28 07:48:00+00:00",
+   "end": "2021-04-08 12:33:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 73,
+   "diff": 0.27625475483645756,
+   "ci_lo": -0.03993199241447758,
+   "ci_hi": 0.6271087346239806,
+   "ci_method": "iid",
+   "p": 0.10449597199237975,
+   "start": "2021-04-26 13:33:00+00:00",
+   "end": "2023-10-06 13:50:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 63,
+   "diff": 0.07868192442075267,
+   "ci_lo": -0.2707001712485889,
+   "ci_hi": 0.446882951871905,
+   "ci_method": "iid",
+   "p": 0.6673307390657032,
+   "start": "2023-12-22 13:47:00+00:00",
+   "end": "2026-04-01 08:01:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.27037620876350976,
+ "mde_threshold": 0.1,
+ "power_floor_n": 1660,
+ "verdict": "UNDERPOWERED",
+ "verdict_detail": "CI contains 0; MDE 0.2704 vs threshold 0.1000, effective n 227 (power floor n=1660, have 227)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 227,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 0.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 32,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "rr",
+    "max_hold"
+   ],
+   "ignored": [],
+   "lookback": "10D",
+   "recent": "1D",
+   "events_fp": "11c0eeee1b68cfea",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "per-row column",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": null,
+  "entry_mode": "next_open",
+  "hold_basis": "clock",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "trade_test vs matched random entries.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/model_own_02a/internal-external-liquidity-model.py",
+ "runtime_sec": 0.49,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:23:19+00:00",
+ "n_events_in": 228,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 1,
+  "target_not_beyond_entry": 0,
+  "no_bars_in_hold": 0
+ },
+ "events_fp": "11c0eeee1b68cfea",
+ "sd_R": 1.3703197013767474,
+ "exit_mix": {
+  "stop": 0.6035242290748899,
+  "target": 0.3039647577092511,
+  "time": 0.09251101321585903
+ },
+ "trades_per_year": 22.18077849117175,
+ "ci_components": {
+  "phase3_iid": [
+   -0.061665148235533915,
+   0.3061047992985733
+  ],
+  "day_block": [
+   -0.06250210165582226,
+   0.31580349009524983
+  ]
+ },
+ "diff_win": 0.04317180616740085,
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 227,
+  "n_clusters": null,
+  "n_eff": 227
+ },
+ "ties": {
+  "real_ambiguous": 0.0,
+  "control_ambiguous": 0.001762114537444934,
+  "real_gap_stop": 0.00881057268722467,
+  "control_gap_stop": 0.009691629955947136,
+  "verdict_stop_first": "UNDERPOWERED"
+ },
+ "ctrl_overlap": 0.0,
+ "exposure_bars": {
+  "real_mean": 570.4713656387665,
+  "control_mean": 578.5559471365639,
+  "hold_basis": "clock"
+ },
+ "run_id": "5de8c7f068d74d0685164e77002ba338",
+ "hyp_key": "39d91e96c2123c81"
+}

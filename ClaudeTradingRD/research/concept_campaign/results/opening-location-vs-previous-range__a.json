@@ -1,0 +1,209 @@
+{
+ "concept_id": "opening-location-vs-previous-range",
+ "reading": "a",
+ "testable": true,
+ "test_type": "rate",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "forex 4H grid; leg = lowest low before the high -> high (bearish prev candle; bullish mirror); deviation k at base + dir*k*leg",
+   "new 4H candle opens between the 1.0 and 1.5 deviation of the previous candle's manipulation-leg projection (framework one)",
+   "outcome: M1 touch of the 2.0 deviation within 240 M1 bars",
+   "decision after the new candle's first M1 bar closes",
+   "null: same moment, same distance and horizon, opposite direction (mirror level)"
+  ],
+  "params": {
+   "grid4h": "forex",
+   "min_leg_frac": 0.1,
+   "open_band": [
+    1.0,
+    1.5
+   ],
+   "target": "2.0 dev",
+   "horizon_m1_bars": 240,
+   "null": "same-moment mirror level"
+  }
+ },
+ "params_source": {
+  "grid4h": "corpus: wWIHS_dxbEY 'forex ... 1am, 5am, 9am NY' 4H opens = forex grid; session_window_fit: forex grid for gold",
+  "min_leg_frac": "declared-before-run: a leg under 10% of the candle's range is no manipulation leg",
+  "open_band": "corpus: wWIHS_dxbEY 'opens at the 1 / 1.5 deviation' / 'at the 2 / 2.5 deviation' (declared-before-run: the closed band between the two named levels)",
+  "target": "corpus: wWIHS_dxbEY 'continuation to the 2 / 2.5' (first level of the band) / 'retracement to equilibrium of the previous range'",
+  "horizon_m1_bars": "declared-before-run: the developing 4H candle = 240 M1 bars of trading time",
+  "null": "declared-before-run: same-moment mirror null holds volatility (README trap 4)"
+ },
+ "n": 1323,
+ "span": {
+  "start": "2016-01-05 02:01:00+00:00",
+  "end": "2026-07-22 05:01:00+00:00",
+  "years": 10.543
+ },
+ "avg_R": null,
+ "avg_R_gross": null,
+ "win_rate": null,
+ "pf": null,
+ "observed_rate": 0.6666666666666666,
+ "null_rate": 0.6848072562358276,
+ "lift": 0.9735099337748344,
+ "control": {
+  "rate": 0.6848072562358276,
+  "reps": 1,
+  "kind": "null array x1"
+ },
+ "diff": -0.01814058956916098,
+ "ci_lo": -0.056866710016292635,
+ "ci_hi": 0.021724069575193173,
+ "ci_method": "day_block",
+ "p": 0.3655655021272418,
+ "halves": {
+  "H1": {
+   "n": 645,
+   "diff": -0.012403100775193798,
+   "ci_lo": -0.06825581395348843,
+   "ci_hi": 0.0480620155038759,
+   "ci_method": "block",
+   "p": 0.6759571158860449,
+   "start": "2016-01-05 02:01:00+00:00",
+   "end": "2020-12-30 23:01:00+00:00"
+  },
+  "H2": {
+   "n": 678,
+   "diff": -0.02359882005899705,
+   "ci_lo": -0.07230825958702072,
+   "ci_hi": 0.025073746312684334,
+   "ci_method": "iid",
+   "p": 0.3421499789756196,
+   "start": "2021-01-04 02:01:00+00:00",
+   "end": "2026-07-22 05:01:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 337,
+   "diff": -0.02670623145400597,
+   "ci_lo": -0.11275964391691395,
+   "ci_hi": 0.06528189910979232,
+   "ci_method": "block",
+   "p": 0.5565395419871798,
+   "start": "2016-01-05 02:01:00+00:00",
+   "end": "2018-08-16 22:01:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 342,
+   "diff": -0.0029239766081871066,
+   "ci_lo": -0.07017543859649122,
+   "ci_hi": 0.06725146198830412,
+   "ci_method": "block",
+   "p": 0.9335313230952014,
+   "start": "2018-08-28 17:01:00+00:00",
+   "end": "2021-04-08 05:01:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 310,
+   "diff": 0.009677419354838679,
+   "ci_lo": -0.06129032258064515,
+   "ci_hi": 0.08064516129032251,
+   "ci_method": "iid",
+   "p": 0.7892629631245964,
+   "start": "2021-04-13 13:01:00+00:00",
+   "end": "2023-11-28 14:01:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 334,
+   "diff": -0.050898203592814384,
+   "ci_lo": -0.1227544910179641,
+   "ci_hi": 0.021032934131736458,
+   "ci_method": "iid",
+   "p": 0.16526341120157317,
+   "start": "2023-12-06 06:01:00+00:00",
+   "end": "2026-07-22 05:01:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.05616907995295137,
+ "mde_threshold": 0.05,
+ "power_floor_n": 1670,
+ "verdict": "UNDERPOWERED",
+ "verdict_detail": "CI contains 0; MDE 0.0562 vs threshold 0.0500, effective n 1082 (power floor n=1670, have 1323)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 1323,
+  "min_slack_min": 0.0,
+  "passed": true,
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 129,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "open_dev",
+    "target_px"
+   ],
+   "ignored": [],
+   "lookback": "10D",
+   "recent": "1D",
+   "events_fp": "edfc958505353c5f",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "reps": 5,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "mde_threshold": null,
+  "cluster": null,
+  "outcome_horizon": "1 days 00:00:00",
+  "null_kind": "null array x1"
+ },
+ "notes": "",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/model_guest_02a/opening-location-vs-previous-range.py",
+ "runtime_sec": 0.4,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:11:55+00:00",
+ "dropped": {
+  "nan_rows": 0
+ },
+ "null_kind": "null array x1",
+ "events_fp": "edfc958505353c5f",
+ "predictors_probed": true,
+ "ci_components": {
+  "phase3_iid": [
+   -0.05444066515495082,
+   0.019652305366591016
+  ],
+  "day_block": [
+   -0.056866710016292635,
+   0.021724069575193173
+  ]
+ },
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 1082,
+  "n_clusters": null,
+  "n_eff": 1082
+ },
+ "run_id": "c3548274f8c142c69220352a64fd6d39",
+ "hyp_key": "aae02b7a8c88dac7"
+}

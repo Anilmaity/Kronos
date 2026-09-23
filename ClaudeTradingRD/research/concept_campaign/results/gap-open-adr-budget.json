@@ -1,0 +1,194 @@
+{
+ "concept_id": "gap-open-adr-budget",
+ "reading": null,
+ "testable": true,
+ "test_type": "rate",
+ "claim": "-",
+ "operationalization": {
+  "rules": [
+   "gap day: |first M1 open - previous real day close| >= 0.25 x ADR(20)",
+   "target = open - sign(gap) x ADR (a full ADR move from the open, against the gap)",
+   "observed: reached within the trading day, after the first M1 bar",
+   "null: same absolute distance and direction from the open of random non-gap days within +/-30d",
+   "claim -: the gap spends the budget, so gap days reach the ADR target less often"
+  ],
+  "params": {
+   "adr_lookback_days": 20,
+   "adr_stat": "mean H-L of completed real days",
+   "gap_cut_adr": 0.25,
+   "gap_ref": "previous real day's close",
+   "target_distance": "1.0 x ADR from the day open, against the gap",
+   "null": "random non-gap real day within +/-30 calendar days, same absolute distance, same direction, its own full day",
+   "null_window_days": 30,
+   "stub_day_min_n_m1": 600,
+   "day_roll": "18:00 NY",
+   "horizon": "rest of the trading day after the first M1 bar (horizon_bars)"
+  }
+ },
+ "params_source": {
+  "adr_lookback_days": "corpus: X4XSsv5CNqg (average-daily-range) 'a daily chart with at least the current month visible' -> ~20 trading days (declared-before-run, as in risk_own_01b)",
+  "adr_stat": "corpus: NESSCPMzWR0 'maybe an 80-point range, let's just give that for the average daily range'",
+  "gap_cut_adr": "declared-before-run: corpus gives no gap size ('large enough to be obvious'); 0.25 ADR",
+  "gap_ref": "declared-before-run: gap = open vs previous close (the corpus measures the budget from the open)",
+  "target_distance": "corpus: NESSCPMzWR0 'If we open right here, we could see 80 points ... with a gap up ... our 80 points become a lot harder to reach'",
+  "null": "declared-before-run: measurable 'hit rate of the far target on gap-open days vs non-gap days'",
+  "null_window_days": "phase3: locked +/-30-day regime window",
+  "stub_day_min_n_m1": "declared-before-run: skip data-hole stub days (README trap 6)",
+  "day_roll": "session_window_fit: settled 18:00 NY daily roll",
+  "horizon": "corpus: NESSCPMzWR0 'are we still looking for this low in one day? No'"
+ },
+ "n": 70,
+ "span": {
+  "start": "2016-06-19 22:01:00+00:00",
+  "end": "2026-07-12 22:05:00+00:00",
+  "years": 10.062
+ },
+ "avg_R": null,
+ "avg_R_gross": null,
+ "win_rate": null,
+ "pf": null,
+ "observed_rate": 0.15714285714285714,
+ "null_rate": 0.15428571428571428,
+ "lift": 1.0185185185185186,
+ "control": {
+  "rate": 0.15428571428571428,
+  "reps": 5,
+  "kind": "null_fn x5"
+ },
+ "diff": 0.0028571428571428636,
+ "ci_lo": -0.08864285714285723,
+ "ci_hi": 0.10285714285714292,
+ "ci_method": "day_block",
+ "p": 0.9533626564280533,
+ "halves": {
+  "H1": {
+   "n": 25,
+   "diff": 0.09599999999999997,
+   "ci_lo": -0.08000000000000002,
+   "ci_hi": 0.28019999999999984,
+   "ci_method": "iid",
+   "p": 0.296146052928067,
+   "start": "2016-06-19 22:01:00+00:00",
+   "end": "2020-05-31 22:02:00+00:00"
+  },
+  "H2": {
+   "n": 45,
+   "diff": -0.048888888888888926,
+   "ci_lo": -0.15555555555555556,
+   "ci_hi": 0.06677777777777766,
+   "ci_method": "iid",
+   "p": 0.38871328096473096,
+   "start": "2021-01-03 23:01:00+00:00",
+   "end": "2026-07-12 22:05:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 13,
+   "diff": 0.07692307692307696,
+   "ci_lo": -0.15423076923076925,
+   "ci_hi": 0.32346153846153813,
+   "ci_method": "iid",
+   "p": 0.5278912333640295,
+   "start": "2016-06-19 22:01:00+00:00",
+   "end": "2018-03-06 23:01:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 14,
+   "diff": 0.08571428571428569,
+   "ci_lo": -0.11464285714285716,
+   "ci_hi": 0.3142857142857143,
+   "ci_method": "iid",
+   "p": 0.4334316935128351,
+   "start": "2019-06-09 22:01:00+00:00",
+   "end": "2021-01-31 23:01:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 16,
+   "diff": 0.012499999999999983,
+   "ci_lo": -0.1875,
+   "ci_hi": 0.2125,
+   "ci_method": "iid",
+   "p": 0.9025048278137733,
+   "start": "2022-02-20 23:04:00+00:00",
+   "end": "2023-10-22 22:04:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 27,
+   "diff": -0.08148148148148149,
+   "ci_lo": -0.1927777777777778,
+   "ci_hi": 0.051851851851851816,
+   "ci_method": "iid",
+   "p": 0.1916704058596778,
+   "start": "2024-01-28 23:04:00+00:00",
+   "end": "2026-07-12 22:05:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.13686565862944433,
+ "mde_threshold": 0.03857142857142857,
+ "power_floor_n": 882,
+ "verdict": "UNDERPOWERED",
+ "verdict_detail": "CI contains 0; MDE 0.1369 vs threshold 0.0386, effective n 70 (power floor n=882, have 70)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 70,
+  "min_slack_min": 0.0,
+  "passed": true,
+  "no_detector_declaration": "pure level rule: daily open, previous close and ADR from completed days (build_bars 1D), outcome via touch"
+ },
+ "settings": {
+  "reps": 5,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "mde_threshold": null,
+  "cluster": null,
+  "outcome_horizon": "1 days 00:00:00",
+  "null_kind": "null_fn x5"
+ },
+ "notes": "The rule's substitution step (pull the target to the previous day's low) is a target choice, not a claim; the testable content is that a full-ADR move from a gapped open is harder than from an ordinary open.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/risk_own_02a/gap-open-adr-budget.py",
+ "runtime_sec": 0.04,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:21:34+00:00",
+ "dropped": {
+  "nan_rows": 0
+ },
+ "null_kind": "null_fn x5",
+ "events_fp": "b7fef9a630c342f1",
+ "predictors_probed": false,
+ "ci_components": {
+  "phase3_iid": [
+   -0.08571428571428572,
+   0.10292857142857102
+  ],
+  "day_block": [
+   -0.08864285714285723,
+   0.10285714285714292
+  ]
+ },
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 70,
+  "n_clusters": null,
+  "n_eff": 70
+ },
+ "run_id": "f2781f6c1d2e481f982e817b39435d21",
+ "hyp_key": "c3e757972b25c63a"
+}

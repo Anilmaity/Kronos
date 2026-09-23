@@ -1,0 +1,248 @@
+{
+ "concept_id": "new-york-intraday-time-levels",
+ "reading": "a",
+ "testable": true,
+ "test_type": "trade",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "1h bars on the hour, 18:00 NY roll; C1 = 07:00 NY hourly, C2 = 08:00 NY hourly",
+   "bullish C2 closure: C2.low < C1.low and C2.close >= C1.low (not also sweeping C1.high); bearish mirrored",
+   "decide at 09:00 NY (C2 close); enter next M1 open in the reversal direction; stop = C2 swept extreme; no target; exit at 10:00 NY (60 min)",
+   "control: same direction/stop distance/hold at the same NY clock (+/-30 min) on other days within +/-30 days"
+  ],
+  "params": {
+   "c2_hour": "08:00",
+   "c1_hour": "07:00",
+   "max_hold": "60min",
+   "target": "none (time exit 10:00)",
+   "ctrl_tod_tol_min": 30
+  }
+ },
+ "params_source": {
+  "c2_hour": "corpus: 8fseTcJMiBo 'I'm going to want to see a candle to closure at 8:00'",
+  "c1_hour": "corpus: 8fseTcJMiBo candle 2 closure on the HOURLY chart (C1 = the preceding hourly candle)",
+  "max_hold": "corpus: 8fseTcJMiBo 'anticipate the 9 to 10 a.m. candle to expand'; X4XSsv5CNqg 'the main TP final TP would be 10:00 a.m.'",
+  "target": "corpus: 'No target is given for the anticipated 09:30 expansion in this clip, only the entry and the stop'",
+  "ctrl_tod_tol_min": "declared-before-run: README trap 9, all events at 09:00 NY; hold the clock fixed so the test reads the C2 direction"
+ },
+ "n": 1198,
+ "span": {
+  "start": "2016-01-04 14:00:00+00:00",
+  "end": "2026-07-21 13:00:00+00:00",
+  "years": 10.541
+ },
+ "avg_R": -0.07577676022700174,
+ "avg_R_gross": -0.035776760227001714,
+ "win_rate": 0.41235392320534225,
+ "pf": 0.8223856956363859,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "n": 5990,
+  "avg_R": -0.056114736552694174,
+  "win_rate": 0.40968280467445745,
+  "pf": 0.8679637581111825,
+  "sd_R": 1.1743535753590397,
+  "exit_mix": {
+   "stop": 0.33005008347245407,
+   "target": 0.0,
+   "time": 0.6699499165275459
+  },
+  "avg_R_gross": -0.016114736552694162,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": -0.019662023674307562,
+ "ci_lo": -0.09020975417857079,
+ "ci_hi": 0.05108710768232942,
+ "ci_method": "day_block",
+ "p": 0.5854277878658487,
+ "halves": {
+  "H1": {
+   "n": 553,
+   "diff": -0.03784087060899992,
+   "ci_lo": -0.138219175805513,
+   "ci_hi": 0.07574024402212877,
+   "ci_method": "iid",
+   "p": 0.4881347265968071,
+   "start": "2016-01-04 14:00:00+00:00",
+   "end": "2020-12-30 14:00:00+00:00"
+  },
+  "H2": {
+   "n": 645,
+   "diff": -0.004076128550455027,
+   "ci_lo": -0.09675645282529721,
+   "ci_hi": 0.08708092819186491,
+   "ci_method": "iid",
+   "p": 0.9307394894382092,
+   "start": "2021-01-04 14:00:00+00:00",
+   "end": "2026-07-21 13:00:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 302,
+   "diff": 0.04330566068995597,
+   "ci_lo": -0.11508951184353877,
+   "ci_hi": 0.20290354747638678,
+   "ci_method": "iid",
+   "p": 0.5934573345545642,
+   "start": "2016-01-04 14:00:00+00:00",
+   "end": "2018-08-17 13:00:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 288,
+   "diff": -0.1364432397413484,
+   "ci_lo": -0.25864713984319265,
+   "ci_hi": -0.013825032504416655,
+   "ci_method": "iid",
+   "p": 0.02891540032484879,
+   "start": "2018-08-22 13:00:00+00:00",
+   "end": "2021-04-06 13:00:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 311,
+   "diff": -0.002760065659936216,
+   "ci_lo": -0.11819439119004625,
+   "ci_hi": 0.12113931574274127,
+   "ci_method": "iid",
+   "p": 0.9639433146304314,
+   "start": "2021-04-12 13:00:00+00:00",
+   "end": "2023-12-01 14:00:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 297,
+   "diff": 0.011853937964853012,
+   "ci_lo": -0.13182850428927403,
+   "ci_hi": 0.1535138441917386,
+   "ci_method": "iid",
+   "p": 0.8706404525298049,
+   "start": "2023-12-07 14:00:00+00:00",
+   "end": "2026-07-21 13:00:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.10098531624472953,
+ "mde_threshold": 0.1,
+ "power_floor_n": 1222,
+ "verdict": "UNDERPOWERED",
+ "verdict_detail": "CI contains 0; MDE 0.1010 vs threshold 0.1000, effective n 1198 (power floor n=1222, have 1198)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 1198,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 0.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 94,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "target_px"
+   ],
+   "ignored": [],
+   "lookback": "10D",
+   "recent": "1D",
+   "events_fp": "ccdaa2e9899d2fc1",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "60min",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": 30,
+  "entry_mode": "next_open",
+  "hold_basis": "clock",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "Reading a: the 8 a.m. hourly C2 reversal traded into the 9-10 candle. The corpus preconditions name index futures; gold is tested as the only instrument.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/time_own_01b/new-york-intraday-time-levels.py",
+ "runtime_sec": 0.45,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:34:33+00:00",
+ "n_events_in": 1198,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 0,
+  "target_not_beyond_entry": 0,
+  "no_bars_in_hold": 0
+ },
+ "events_fp": "ccdaa2e9899d2fc1",
+ "sd_R": 1.079364093815572,
+ "exit_mix": {
+  "stop": 0.32303839732888145,
+  "target": 0.0,
+  "time": 0.6769616026711185
+ },
+ "trades_per_year": 113.65441558441559,
+ "ci_components": {
+  "phase3_iid": [
+   -0.08742139040167832,
+   0.04561851583356632
+  ],
+  "day_block": [
+   -0.09020975417857079,
+   0.05108710768232942
+  ]
+ },
+ "diff_win": 0.0026711185308848084,
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 1198,
+  "n_clusters": null,
+  "n_eff": 1198
+ },
+ "ties": {
+  "real_ambiguous": 0.0,
+  "control_ambiguous": 0.0,
+  "real_gap_stop": 0.001669449081803005,
+  "control_gap_stop": 0.004006677796327212,
+  "verdict_stop_first": "UNDERPOWERED"
+ },
+ "ctrl_overlap": 0.22153589315525876,
+ "exposure_bars": {
+  "real_mean": 59.990818030050086,
+  "control_mean": 59.96393989983306,
+  "hold_basis": "clock"
+ },
+ "run_id": "0ff9d8c80a4142559c44308941dcc981",
+ "hyp_key": "15adbf39dfa946f5"
+}

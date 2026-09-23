@@ -1,0 +1,286 @@
+{
+ "concept_id": "economic-calendar-filter",
+ "reading": "b",
+ "testable": true,
+ "test_type": "gate",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "baseline book: phase-3 bare 15min CISD (series_open level, 2/2 swings, max_wait 3), decide at the confirming 15min bar's close, enter next M1 open, stop at the protected swing, 2R, 150min hold",
+   "high-impact calendar = NFP dates only (rule-derived); CPI/FOMC days sit in the non-news arm",
+   "baseline restricted to events decided in [08:30, 17:00) NY on Tue-Fri sessions",
+   "gate news_day = the session date is an NFP release day (post-release by construction)"
+  ],
+  "params": {
+   "baseline": "bare CISD",
+   "baseline_tf": "15min",
+   "level_rule": "series_open",
+   "swing": "2/2",
+   "max_wait": 3,
+   "rr": 2.0,
+   "max_hold": "150min",
+   "events": "NFP only",
+   "release_time": "08:30 NY",
+   "nfp_rule": "3rd Friday after the Saturday ending the week containing the 12th of the prior month (+Jul/Jan and 2025-shutdown adjustments)",
+   "tz": "America/New_York",
+   "window": "08:30-17:00 NY, Tue-Fri"
+  }
+ },
+ "params_source": {
+  "baseline": "phase3: meta/conjunction_preregistration.md \u00a71.8-1.13 (locked rung-0 config)",
+  "baseline_tf": "corpus: economic-calendar-filter timeframes are 1W/1D (a day filter); 15m = phase-3 entry TF (his favourite 15m stack)",
+  "level_rule": "phase3: meta/conjunction_preregistration.md \u00a71.8-1.13 (locked rung-0 config)",
+  "swing": "phase3: meta/conjunction_preregistration.md \u00a71.8-1.13 (locked rung-0 config)",
+  "max_wait": "phase3: meta/conjunction_preregistration.md \u00a71.8-1.13 (locked rung-0 config)",
+  "rr": "phase3: meta/conjunction_preregistration.md \u00a71.8-1.13 (locked rung-0 config)",
+  "max_hold": "phase3: 10 entry-TF bars (\u00a71.13)",
+  "events": "declared-before-run: only NFP is mechanically derivable; no calendar dataset; CPI/FOMC not typed from memory",
+  "release_time": "corpus: Zm2oKad3Tb8 'you can see we have high impact news at 8 30'",
+  "nfp_rule": "declared-before-run: BLS Employment Situation scheduling convention",
+  "tz": "method_spec: \u00a71.4 DST settled, America/New_York",
+  "window": "corpus: 0R61Y6Pn74Q 'this is where my interest lies post 8:30 or after CPI'; 'Thursday is our first red folder News day of the week'"
+ },
+ "n": 503,
+ "span": {
+  "start": "2016-01-05 14:00:00+00:00",
+  "end": "2026-07-22 16:45:00+00:00",
+  "years": 10.543
+ },
+ "avg_R": -0.03946874191212418,
+ "avg_R_gross": 0.0005312580878758369,
+ "win_rate": 0.4711729622266402,
+ "pf": 0.8865454086530375,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "avg_R_gated": -0.04018521146022794,
+  "avg_R_complement": -0.035421992061051955,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": 0.026720941381232377,
+ "ci_lo": -0.07250090339512422,
+ "ci_hi": 0.12219815702567288,
+ "ci_method": "phase3_block",
+ "p": 0.5905909775990574,
+ "halves": {
+  "H1": {
+   "n": 4462,
+   "diff": 0.03434444211751555,
+   "ci_lo": -0.10463010819558238,
+   "ci_hi": 0.16283591709201498,
+   "ci_method": "block",
+   "p": 0.6147215919362145,
+   "start": "2016-01-05 14:00:00+00:00",
+   "end": "2020-12-31 19:15:00+00:00",
+   "n_gated": 250
+  },
+  "H2": {
+   "n": 4745,
+   "diff": 0.01943417553801461,
+   "ci_lo": -0.11543978421910948,
+   "ci_hi": 0.15970890920582995,
+   "ci_method": "block",
+   "p": 0.7818795100472377,
+   "start": "2021-01-05 13:45:00+00:00",
+   "end": "2026-07-22 16:45:00+00:00",
+   "n_gated": 253
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 2327,
+   "diff": 0.1718789333877053,
+   "ci_lo": 0.009422108970430247,
+   "ci_hi": 0.34875918453671795,
+   "ci_method": "iid",
+   "p": 0.047089105931818864,
+   "start": "2016-01-05 14:00:00+00:00",
+   "end": "2018-08-21 20:30:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 2356,
+   "diff": -0.057501449154375134,
+   "ci_lo": -0.21125528872688043,
+   "ci_hi": 0.10157050133466879,
+   "ci_method": "block",
+   "p": 0.4711964255814673,
+   "start": "2018-08-22 13:30:00+00:00",
+   "end": "2021-04-09 20:30:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 2223,
+   "diff": 0.05862394981160744,
+   "ci_lo": -0.12411420307975074,
+   "ci_hi": 0.2855106303715093,
+   "ci_method": "block",
+   "p": 0.574793991099583,
+   "start": "2021-04-13 16:15:00+00:00",
+   "end": "2023-12-01 17:00:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 2301,
+   "diff": -0.05123673559097361,
+   "ci_lo": -0.22349464652017978,
+   "ci_hi": 0.11942619477574132,
+   "ci_method": "iid",
+   "p": 0.5580858017618632,
+   "start": "2023-12-05 14:30:00+00:00",
+   "end": "2026-07-22 16:45:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.13915203727951098,
+ "mde_threshold": 0.1,
+ "power_floor_n": 974,
+ "verdict": "UNDERPOWERED",
+ "verdict_detail": "CI contains 0; MDE 0.1392 vs threshold 0.1000, effective n 123 (power floor n=974, have 503)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 9207,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "gate_mask_checked": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 10.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 607,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "rr",
+    "entry_ref",
+    "news_day"
+   ],
+   "ignored": [],
+   "lookback": "10D",
+   "recent": "1D",
+   "events_fp": "aae4d6c323258441",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "150min",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": null,
+  "entry_mode": "next_open",
+  "hold_basis": "clock",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "Calendar restricted to NFP (only mechanically derivable red-folder release); unmodelled CPI/FOMC/other releases attenuate toward 0.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/time_own_02a/economic-calendar-filter.py",
+ "runtime_sec": 1.03,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:40:03+00:00",
+ "n_events_in": 9212,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 0,
+  "target_not_beyond_entry": 0,
+  "no_bars_in_hold": 5
+ },
+ "n_complement": 8704,
+ "gate_firing_rate": 0.0546323449549256,
+ "events_fp": "aae4d6c323258441",
+ "mask_fp": "56eea8ff8fca3d8c",
+ "mask_col": "news_day",
+ "exit_mix": {
+  "stop": 0.2345924453280318,
+  "target": 0.0536779324055666,
+  "time": 0.7117296222664016
+ },
+ "gated_vs_own_control": {
+  "diff": 0.0007164695481037542,
+  "ci_lo": -0.0924945590957843,
+  "ci_hi": 0.09885038531820661,
+  "p": 0.9882892879499201
+ },
+ "complement": {
+  "n": 8704,
+  "avg_R": -0.061426463894180564,
+  "win_rate": 0.4260110294117647,
+  "pf": 0.8378539045998443,
+  "sd_R": 0.8726735141059258,
+  "exit_mix": {
+   "stop": 0.2567784926470588,
+   "target": 0.07651654411764706,
+   "time": 0.6667049632352942
+  },
+  "vs_own_control": {
+   "diff": -0.02600447183312861,
+   "ci_lo": -0.0470940747581327,
+   "ci_hi": -0.005623638592081778,
+   "p": 0.013970074320016795
+  }
+ },
+ "ci_components": {
+  "phase3_block": [
+   -0.07250090339512422,
+   0.12219815702567288
+  ],
+  "day_block": [
+   -0.06009829100616147,
+   0.11754758510509143
+  ]
+ },
+ "diff_meaning": "mean(R-ctrl | gated) - mean(R-ctrl | complement)",
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_eff_gated": 123,
+  "n_eff_complement": 2050,
+  "n_eff": 123
+ },
+ "ties": {
+  "real_ambiguous": 0.0002172260236776366,
+  "control_ambiguous": 0.00028239383078092754,
+  "real_gap_stop": 0.006082328662973824,
+  "control_gap_stop": 0.0037797328119908765,
+  "gated_excess": 0.0015904572564612327,
+  "complement_excess": -0.00016084558823529412,
+  "verdict_stop_first": "UNDERPOWERED"
+ },
+ "ctrl_overlap": 0.019615509938090584,
+ "exposure_bars": {
+  "real_mean": 134.7193439774085,
+  "control_mean": 143.05200391006844,
+  "hold_basis": "clock"
+ },
+ "run_id": "d05e83b4e642437f89362efc66b1e3e2",
+ "hyp_key": "16df45846dff30f3"
+}

@@ -1,0 +1,207 @@
+{
+ "concept_id": "target-liquidity-and-imbalances",
+ "reading": "a",
+ "testable": true,
+ "test_type": "rate",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "5m 2/2 fractal swings, known 2 bars after the swing bar",
+   "equal highs: new swing high paired with the latest earlier confirmed swing high within 48 bars, |diff| <= 0.10 ATR14(5m), no high in between above the level; level = the higher of the two (mirror for lows)",
+   "hit = M1 trades to the level within 240 M1 bars of the confirmation close",
+   "null = random 5m closes +/-30d, same ATR-unit distance from next M1 open, same side"
+  ],
+  "params": {
+   "tf": "5min",
+   "swing": "2/2",
+   "eq_tol_atr": 0.1,
+   "eq_lookback_bars": 48,
+   "horizon_m1_bars": 240,
+   "atr_n": 14,
+   "null": "ATR-scaled distance"
+  }
+ },
+ "params_source": {
+  "horizon_m1_bars": "declared-before-run: 240 trading minutes (~one session); the corpus gives no time limit on a target",
+  "atr_n": "declared-before-run: ATR14 of the level's timeframe, used only to scale the null's distance (README trap 4: same geometry, same bars)",
+  "null": "declared-before-run: matched random bar closes +/-30d (locked reps/window/seed), same ATR-unit distance and side",
+  "tf": "corpus: pWAjzKndWXo (5-minute trading TF with a 15-minute gap); concept timeframes ltf 5m",
+  "swing": "phase3: 2/2 swings (\u00a71.8)",
+  "eq_tol_atr": "declared-before-run: 'Equal lows has no tolerance' (concept ambiguity); 0.10 ATR",
+  "eq_lookback_bars": "declared-before-run: pair within 4 hours of 5m bars"
+ },
+ "n": 22333,
+ "span": {
+  "start": "2016-01-04 02:00:00+00:00",
+  "end": "2026-07-23 00:40:00+00:00",
+  "years": 10.546
+ },
+ "avg_R": null,
+ "avg_R_gross": null,
+ "win_rate": null,
+ "pf": null,
+ "observed_rate": 0.7771907043388707,
+ "null_rate": 0.7712062866609949,
+ "lift": 1.0077598144379578,
+ "control": {
+  "rate": 0.7712062866609949,
+  "reps": 5,
+  "kind": "null_fn x5"
+ },
+ "diff": 0.005979370133859185,
+ "ci_lo": -8.392222128813518e-05,
+ "ci_hi": 0.012257354398108556,
+ "ci_method": "phase3_iid",
+ "p": 0.057536610161529264,
+ "halves": {
+  "H1": {
+   "n": 10922,
+   "diff": 0.006743270463285267,
+   "ci_lo": -0.0020816929133857546,
+   "ci_hi": 0.016087827321003553,
+   "ci_method": "iid",
+   "p": 0.1457228601273129,
+   "start": "2016-01-04 02:00:00+00:00",
+   "end": "2020-12-31 17:15:00+00:00"
+  },
+  "H2": {
+   "n": 11411,
+   "diff": 0.005258084304618271,
+   "ci_lo": -0.0033835772500218075,
+   "ci_hi": 0.013863815616510403,
+   "ci_method": "iid",
+   "p": 0.2320716849880847,
+   "start": "2021-01-04 05:15:00+00:00",
+   "end": "2026-07-23 00:40:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 6003,
+   "diff": 0.005872063968015984,
+   "ci_lo": -0.00596410128269192,
+   "ci_hi": 0.017887514576045344,
+   "ci_method": "iid",
+   "p": 0.3345183811540609,
+   "start": "2016-01-04 02:00:00+00:00",
+   "end": "2018-08-22 07:50:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 5485,
+   "diff": 0.010173199635369223,
+   "ci_lo": -0.0022324521422060367,
+   "ci_hi": 0.022829535095715534,
+   "ci_method": "iid",
+   "p": 0.11156837907657512,
+   "start": "2018-08-22 15:05:00+00:00",
+   "end": "2021-04-12 08:05:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 5599,
+   "diff": 0.0031791391319879736,
+   "ci_lo": -0.009465976067173715,
+   "ci_hi": 0.015431327022659905,
+   "ci_method": "block",
+   "p": 0.6166977140086454,
+   "start": "2021-04-12 12:50:00+00:00",
+   "end": "2023-12-01 12:45:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 5246,
+   "diff": 0.004727411361037048,
+   "ci_lo": -0.008693290125810018,
+   "ci_hi": 0.017439954250857793,
+   "ci_method": "iid",
+   "p": 0.4782617444967625,
+   "start": "2023-12-04 00:05:00+00:00",
+   "end": "2026-07-23 00:40:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.008820349623195244,
+ "mde_threshold": 0.05,
+ "power_floor_n": 695,
+ "verdict": "NULL",
+ "verdict_detail": "CI contains 0; powered (MDE 0.0088 <= 0.0500)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 22333,
+  "min_slack_min": 0.0,
+  "passed": true,
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 1618,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "side",
+    "level",
+    "atr"
+   ],
+   "ignored": [],
+   "lookback": "10D",
+   "recent": "1D",
+   "events_fp": "ea9689ec365130cb",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "reps": 5,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "mde_threshold": null,
+  "cluster": null,
+  "outcome_horizon": "1 days 00:00:00",
+  "null_kind": "null_fn x5"
+ },
+ "notes": "",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/risk_own_02b/target-liquidity-and-imbalances.py",
+ "runtime_sec": 3.6,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:22:35+00:00",
+ "dropped": {
+  "nan_rows": 0
+ },
+ "null_kind": "null_fn x5",
+ "events_fp": "ea9689ec365130cb",
+ "predictors_probed": true,
+ "ci_components": {
+  "phase3_iid": [
+   -8.392222128813518e-05,
+   0.012257354398108556
+  ],
+  "day_block": [
+   0.00012980803586620635,
+   0.01224239047545379
+  ]
+ },
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 2718,
+  "n_clusters": null,
+  "n_eff": 2718
+ },
+ "run_id": "08cb87a61bb44fc2a6aef9665ddddbf8",
+ "hyp_key": "8bab2b4c9b4587c6"
+}

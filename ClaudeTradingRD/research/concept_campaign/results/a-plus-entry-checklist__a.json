@@ -1,0 +1,261 @@
+{
+ "concept_id": "a-plus-entry-checklist",
+ "reading": "a",
+ "testable": true,
+ "test_type": "trade",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "step 1 (reading a, canonical 0xygpCMwxbQ, hard gate): the origin extreme runs the most recent confirmed 5m swing low/high",
+   "5m bars (UTC-aligned), swings = 2/2 fractals used only after confirmation; mirrored for shorts",
+   "MSS: first 5m close beyond the most recent confirmed swing high; displacement = the 4 bars ending at the break have range >= 1.5x and travel beyond the broken high >= 0.65x the range of the 4 bars before",
+   "origin = the extreme of the leg between that swing high and the break; displacement range origin -> leg extreme",
+   "PD array = the unmitigated 5m FVG formed in the leg whose near edge is in the discount (< 0.5 of the range); highest such gap",
+   "entry = first M1 bar trading into the gap's near edge within 120 M1 bars after the break bar closes (decide at that M1 close, enter next M1 open); stop = min(gap far edge, creating candle's low); target 2R; time exit 50min"
+  ],
+  "params": {
+   "tf": "5min",
+   "disp_n": 4,
+   "disp_r": 1.5,
+   "disp_d": 0.65,
+   "entry_win_m1": 120,
+   "rr": 2.0,
+   "max_hold": "50min",
+   "stop": "creating candle / gap far edge"
+  }
+ },
+ "params_source": {
+  "tf": "corpus: lpam8F-N3EM/0xygpCMwxbQ htf 15m/5m, ltf 1m -> 5m setup, M1 entry",
+  "disp_n": "threshold_fits: displacement magnitude N=4 (grade B)",
+  "disp_r": "threshold_fits: displacement range ratio r=1.5",
+  "disp_d": "threshold_fits: displacement distance d=0.65",
+  "entry_win_m1": "declared-before-run: the return into the gap must come within 2 hours of the break",
+  "rr": "method_spec: \u00a75.3 '2R is the floor' ('solid risk to reward' has no number in lpam8F-N3EM)",
+  "max_hold": "phase3: 10 setup-TF bars (\u00a71.13 convention)",
+  "stop": "corpus: lpam8F-N3EM 'stop above the fair value gap, or on the candle that created it'; 'i don't like using stops all the way to low'"
+ },
+ "n": 882,
+ "span": {
+  "start": "2016-01-05 00:11:00+00:00",
+  "end": "2026-07-23 01:31:00+00:00",
+  "years": 10.546
+ },
+ "avg_R": -0.10488448660225363,
+ "avg_R_gross": -0.06488448660225361,
+ "win_rate": 0.3412698412698413,
+ "pf": 0.842187601206339,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "n": 4410,
+  "avg_R": -0.08252773531209738,
+  "win_rate": 0.3566893424036281,
+  "pf": 0.867756940275876,
+  "sd_R": 1.2905792903329087,
+  "exit_mix": {
+   "stop": 0.572108843537415,
+   "target": 0.24217687074829933,
+   "time": 0.18571428571428572
+  },
+  "avg_R_gross": -0.04252773531209735,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": -0.022356751290156254,
+ "ci_lo": -0.12213031104367664,
+ "ci_hi": 0.07133409769785473,
+ "ci_method": "day_block",
+ "p": 0.6505581276889207,
+ "halves": {
+  "H1": {
+   "n": 435,
+   "diff": -0.0033820024264430426,
+   "ci_lo": -0.12875259754772916,
+   "ci_hi": 0.13900802775195825,
+   "ci_method": "block",
+   "p": 0.9605117447661414,
+   "start": "2016-01-05 00:11:00+00:00",
+   "end": "2020-12-30 20:17:00+00:00"
+  },
+  "H2": {
+   "n": 447,
+   "diff": -0.04082211092262885,
+   "ci_lo": -0.17621977066932054,
+   "ci_hi": 0.09038420454874559,
+   "ci_method": "iid",
+   "p": 0.5483628815824404,
+   "start": "2021-01-04 12:11:00+00:00",
+   "end": "2026-07-23 01:31:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 208,
+   "diff": -0.10630539065695305,
+   "ci_lo": -0.3018970256795622,
+   "ci_hi": 0.06883093988491495,
+   "ci_method": "iid",
+   "p": 0.2610001593654402,
+   "start": "2016-01-05 00:11:00+00:00",
+   "end": "2018-08-06 12:52:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 254,
+   "diff": 0.07574838051422444,
+   "ci_lo": -0.11637867303668449,
+   "ci_hi": 0.27783941955663377,
+   "ci_method": "block",
+   "p": 0.4513249683407619,
+   "start": "2018-08-24 12:27:00+00:00",
+   "end": "2021-04-12 07:37:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 210,
+   "diff": -0.12483805711325056,
+   "ci_lo": -0.3045744564183741,
+   "ci_hi": 0.0637437391748791,
+   "ci_method": "iid",
+   "p": 0.18397222807791996,
+   "start": "2021-04-15 12:31:00+00:00",
+   "end": "2023-12-01 13:19:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 210,
+   "diff": 0.04461319029475248,
+   "ci_lo": -0.15846004801468674,
+   "ci_hi": 0.23950460807617005,
+   "ci_method": "iid",
+   "p": 0.660344741055424,
+   "start": "2023-12-05 11:54:00+00:00",
+   "end": "2026-07-23 01:31:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.13826962780034308,
+ "mde_threshold": 0.1,
+ "power_floor_n": 1687,
+ "verdict": "UNDERPOWERED",
+ "verdict_detail": "CI contains 0; MDE 0.1383 vs threshold 0.1000, effective n 761 (power floor n=1687, have 882)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 882,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 1.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 79,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "stop_px",
+    "raid",
+    "htf_fvg",
+    "near_edge",
+    "entry_ref",
+    "eq",
+    "direction",
+    "available_at",
+    "rr"
+   ],
+   "ignored": [],
+   "lookback": "10D",
+   "recent": "1D",
+   "events_fp": "c4c43c9be07c7556",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "50min",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": null,
+  "entry_mode": "next_open",
+  "hold_basis": "clock",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "Partials ladder and the discretionary choice among FVG/OB/OTE/breaker are not tested; FVG is the first-preference PD array. Direction comes from the displacement leg (no daily bias filter).",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/entry_own_03a/a-plus-entry-checklist.py",
+ "runtime_sec": 0.74,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:21:06+00:00",
+ "n_events_in": 887,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 5,
+  "target_not_beyond_entry": 0,
+  "no_bars_in_hold": 0
+ },
+ "events_fp": "c4c43c9be07c7556",
+ "sd_R": 1.3210738929155519,
+ "exit_mix": {
+  "stop": 0.6224489795918368,
+  "target": 0.26077097505668934,
+  "time": 0.11678004535147392
+ },
+ "trades_per_year": 83.63200934579439,
+ "ci_components": {
+  "phase3_iid": [
+   -0.11341302705958056,
+   0.07396270942056522
+  ],
+  "day_block": [
+   -0.12213031104367664,
+   0.07133409769785473
+  ]
+ },
+ "diff_win": -0.015419501133786817,
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 761,
+  "n_clusters": null,
+  "n_eff": 761
+ },
+ "ties": {
+  "real_ambiguous": 0.030612244897959183,
+  "control_ambiguous": 0.027664399092970523,
+  "real_gap_stop": 0.02040816326530612,
+  "control_gap_stop": 0.018367346938775512,
+  "verdict_stop_first": "UNDERPOWERED"
+ },
+ "ctrl_overlap": 0.0,
+ "exposure_bars": {
+  "real_mean": 48.98412698412698,
+  "control_mean": 48.634467120181405,
+  "hold_basis": "clock"
+ },
+ "run_id": "8fe9dd135f774c3a8f1b94870cbcdc3f",
+ "hyp_key": "16a89fec60e9594f"
+}

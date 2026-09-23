@@ -1,0 +1,203 @@
+{
+ "concept_id": "broadening-formation-range-projection",
+ "reading": null,
+ "testable": true,
+ "test_type": "rate",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "range = previous trading day's high/low (18:00 NY roll; sessions with coverage < 0.5 skipped)",
+   "failed run (short case): today's running high has traded above PDH, today's low has not taken PDL, and a 15m candle closes back below PDH (first such close of the day); mirror for PDL (long case)",
+   "hit = the opposite side of the range (PDL for a failed buyside run, PDH for a failed sellside run) trades within the next 720 M1 bars (12 trading hours) from the 15m close",
+   "null = a level at the same distance in the same direction from the price at matched random moments (+/-30d, NY time-of-day within 30 min), same bar horizon"
+  ],
+  "params": {
+   "range": "1D previous trading day",
+   "ltf": "15min",
+   "min_coverage": 0.5,
+   "horizon_bars": 720,
+   "null_tod_tol_min": 30
+  }
+ },
+ "params_source": {
+  "range": "corpus: 1XWyy6Q-_8Q 'I essentially just look for a range'; yaml htf 1D first; method_spec \u00a72.3 previous-candle range",
+  "ltf": "corpus yaml ltf 15m (first listed); 'drop to a lower timeframe to find the entry'",
+  "min_coverage": "declared-before-run: README trap 6 stub-session guard",
+  "horizon_bars": "declared-before-run: same-session objective, 12 trading hours",
+  "null_tod_tol_min": "declared-before-run: README trap 9 (events cluster in session hours)"
+ },
+ "n": 2030,
+ "span": {
+  "start": "2016-01-06 07:15:00+00:00",
+  "end": "2026-07-21 02:45:00+00:00",
+  "years": 10.535
+ },
+ "avg_R": null,
+ "avg_R_gross": null,
+ "win_rate": null,
+ "pf": null,
+ "observed_rate": 0.10985221674876847,
+ "null_rate": 0.11389162561576355,
+ "lift": 0.9645328719723183,
+ "control": {
+  "rate": 0.11389162561576355,
+  "reps": 5,
+  "kind": "null_fn x5"
+ },
+ "diff": -0.004039408866995081,
+ "ci_lo": -0.01980295566502393,
+ "ci_hi": 0.01073891625615822,
+ "ci_method": "phase3_block",
+ "p": 0.6041498543159436,
+ "halves": {
+  "H1": {
+   "n": 964,
+   "diff": 0.005809128630705387,
+   "ci_lo": -0.01805497925311205,
+   "ci_hi": 0.030912863070539406,
+   "ci_method": "iid",
+   "p": 0.6419121628953035,
+   "start": "2016-01-06 07:15:00+00:00",
+   "end": "2020-12-30 23:30:00+00:00"
+  },
+  "H2": {
+   "n": 1066,
+   "diff": -0.01294559099437148,
+   "ci_lo": -0.03320825515947546,
+   "ci_hi": 0.008255159474671153,
+   "ci_method": "block",
+   "p": 0.22100167867615436,
+   "start": "2021-01-04 23:45:00+00:00",
+   "end": "2026-07-21 02:45:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 512,
+   "diff": 0.021093749999999994,
+   "ci_lo": -0.011337890625000008,
+   "ci_hi": 0.05274414062499999,
+   "ci_method": "iid",
+   "p": 0.196941445773044,
+   "start": "2016-01-06 07:15:00+00:00",
+   "end": "2018-08-22 00:45:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 507,
+   "diff": -0.014990138067061162,
+   "ci_lo": -0.044575936883629416,
+   "ci_hi": 0.016568047337277837,
+   "ci_method": "block",
+   "p": 0.33654482368383815,
+   "start": "2018-08-23 01:15:00+00:00",
+   "end": "2021-04-09 13:30:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 523,
+   "diff": -0.0049713193116634885,
+   "ci_lo": -0.035573613766730405,
+   "ci_hi": 0.02830783938814531,
+   "ci_method": "iid",
+   "p": 0.7603259674086578,
+   "start": "2021-04-12 14:45:00+00:00",
+   "end": "2023-12-01 10:00:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 488,
+   "diff": -0.0180327868852459,
+   "ci_lo": -0.04590163934426239,
+   "ci_hi": 0.01148565573770504,
+   "ci_method": "block",
+   "p": 0.2180397153888426,
+   "start": "2023-12-04 07:30:00+00:00",
+   "end": "2026-07-21 02:45:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.021828372930907173,
+ "mde_threshold": 0.028472906403940887,
+ "power_floor_n": 1194,
+ "verdict": "NULL",
+ "verdict_detail": "CI contains 0; powered (MDE 0.0218 <= 0.0285)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 2030,
+  "min_slack_min": 0.0,
+  "passed": true,
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 165,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "target_px"
+   ],
+   "ignored": [],
+   "lookback": "20D",
+   "recent": "1D",
+   "events_fp": "2ded3b5f44b72f5a",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "reps": 5,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "mde_threshold": null,
+  "cluster": null,
+  "outcome_horizon": "1 days 00:00:00",
+  "null_kind": "null_fn x5"
+ },
+ "notes": "Tested as the yaml's first measurable (hit rate of the opposite range extreme after a failed sweep and return) with a geometry-matched null, because no stop is stated: with a stop at the run's extreme the target/stop ratio has median ~7.5 (p90 ~28), so an R book would be a lottery-ticket book decided by the stop choice, not the claim. This choice was made after looking only at that geometry, before any outcome. Boundary expansion and the continuation branch are not modelled.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/structure_own_05a/broadening-formation-range-projection.py",
+ "runtime_sec": 2.83,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:26:48+00:00",
+ "dropped": {
+  "nan_rows": 0
+ },
+ "null_kind": "null_fn x5",
+ "events_fp": "2ded3b5f44b72f5a",
+ "predictors_probed": true,
+ "ci_components": {
+  "phase3_block": [
+   -0.01980295566502393,
+   0.01073891625615822
+  ],
+  "day_block": [
+   -0.018229064039408372,
+   0.01024876847290709
+  ]
+ },
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 2030,
+  "n_clusters": null,
+  "n_eff": 2030
+ },
+ "run_id": "cb1b04386839441084487499f1da0c18",
+ "hyp_key": "213699be4e25ccb8"
+}

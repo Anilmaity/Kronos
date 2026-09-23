@@ -1,0 +1,253 @@
+{
+ "concept_id": "fractal-model-c3",
+ "reading": "a",
+ "testable": true,
+ "test_type": "trade",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "4H bars on the forex grid; bars with < 60 M1 skipped",
+   "C3 closure (detectors.bias.daily_closures): previous candle took its prior candle's low (bullish case) and was NOT a C2 closure; this candle closes above candle 2's OPEN; mirror bearish",
+   "decide at the C3 close_time; enter next M1 open in the closure direction",
+   "stop = min(C2 low, C3 low) bullish / max(C2 high, C3 high) bearish; target 2R",
+   "time exit after 240 trading M1 bars (C4's duration)"
+  ],
+  "params": {
+   "tf": "4h",
+   "grid4h": "forex",
+   "min_m1": 60,
+   "c3_reference": "c2_open",
+   "rr": 2.0,
+   "max_hold": "240min",
+   "hold_basis": "bars"
+  }
+ },
+ "params_source": {
+  "tf": "corpus: fractal-model-c3 timeframes htf [1D, 4H]; 4H chosen for sample (declared-before-run)",
+  "grid4h": "session_window_fit: forex grid for gold (phase3 knob, primary)",
+  "min_m1": "declared-before-run: stub-bar guard (quarter of a full bar)",
+  "c3_reference": "method_spec: \u00a73.3 [P] Reading A (C2 opening price) vs Reading B (C2 extreme) \u2014 compute both",
+  "rr": "phase3: locked 2R fixed target (method_spec \u00a75.3 floor)",
+  "max_hold": "corpus: fractal-model-c3 'anticipate price to trade in that direction on the FOLLOWING candle'",
+  "hold_basis": "declared-before-run: README trap 7 \u2014 4H holds cross halts"
+ },
+ "n": 1968,
+ "span": {
+  "start": "2016-01-06 06:00:00+00:00",
+  "end": "2026-07-22 17:00:00+00:00",
+  "years": 10.541
+ },
+ "avg_R": -0.02234401535110842,
+ "avg_R_gross": 0.017655984648891593,
+ "win_rate": 0.4634146341463415,
+ "pf": 0.9183084302570879,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "n": 9840,
+  "avg_R": -0.043941551556255586,
+  "win_rate": 0.4375,
+  "pf": 0.8465446685063794,
+  "sd_R": 0.7119038105090457,
+  "exit_mix": {
+   "stop": 0.16239837398373982,
+   "target": 0.0407520325203252,
+   "time": 0.796849593495935
+  },
+  "avg_R_gross": -0.003941551556255574,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": 0.021597536205147167,
+ "ci_lo": -0.012193144348923914,
+ "ci_hi": 0.056448729130906046,
+ "ci_method": "phase3_iid",
+ "p": 0.21743797292412068,
+ "halves": {
+  "H1": {
+   "n": 956,
+   "diff": 0.031237352150905215,
+   "ci_lo": -0.014609846027154266,
+   "ci_hi": 0.08034721471414695,
+   "ci_method": "iid",
+   "p": 0.19722050566985158,
+   "start": "2016-01-06 06:00:00+00:00",
+   "end": "2020-12-31 18:00:00+00:00"
+  },
+  "H2": {
+   "n": 1012,
+   "diff": 0.012491148809747273,
+   "ci_lo": -0.03217954669273019,
+   "ci_hi": 0.06147681847688249,
+   "ci_method": "iid",
+   "p": 0.601107076684679,
+   "start": "2021-01-06 10:00:00+00:00",
+   "end": "2026-07-22 17:00:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 504,
+   "diff": 0.03627127145057832,
+   "ci_lo": -0.027293962068890173,
+   "ci_hi": 0.10012689179092119,
+   "ci_method": "iid",
+   "p": 0.26449235214169603,
+   "start": "2016-01-06 06:00:00+00:00",
+   "end": "2018-08-22 09:00:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 491,
+   "diff": 0.031400200326247886,
+   "ci_lo": -0.03386527955978485,
+   "ci_hi": 0.09566254527495406,
+   "ci_method": "iid",
+   "p": 0.34197461413722924,
+   "start": "2018-08-22 17:00:00+00:00",
+   "end": "2021-04-08 05:00:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 524,
+   "diff": 0.028450607619631026,
+   "ci_lo": -0.03708796912891139,
+   "ci_hi": 0.09320158689668784,
+   "ci_method": "iid",
+   "p": 0.39201275116908163,
+   "start": "2021-04-12 13:00:00+00:00",
+   "end": "2023-12-01 18:00:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 449,
+   "diff": -0.013591060829033889,
+   "ci_lo": -0.08896617228752411,
+   "ci_hi": 0.0646792927252517,
+   "ci_method": "block",
+   "p": 0.7287820045061056,
+   "start": "2023-12-07 18:00:00+00:00",
+   "end": "2026-07-22 17:00:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.04905856513512223,
+ "mde_threshold": 0.1,
+ "power_floor_n": 474,
+ "verdict": "NULL",
+ "verdict_detail": "CI contains 0; powered (MDE 0.0491 <= 0.1000)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 1968,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 4383.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 153,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "rr"
+   ],
+   "ignored": [],
+   "lookback": "10D",
+   "recent": "1D",
+   "events_fp": "c56c57f18a022eca",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "240min",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": null,
+  "entry_mode": "next_open",
+  "hold_basis": "bars",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "The C3-as-a-trade sense (candle after a confirmed C2) is the C2 test (fractal-model-c2); this tests the contested C3 CLOSURE sense. No LTF CISD required (the Shorts defining the closure do not state it).",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/model_own_01a/fractal-model-c3.py",
+ "runtime_sec": 1.02,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:19:29+00:00",
+ "n_events_in": 1968,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 0,
+  "target_not_beyond_entry": 0,
+  "no_bars_in_hold": 0
+ },
+ "events_fp": "c56c57f18a022eca",
+ "sd_R": 0.6970555589323327,
+ "exit_mix": {
+  "stop": 0.14939024390243902,
+  "target": 0.03201219512195122,
+  "time": 0.8185975609756098
+ },
+ "trades_per_year": 186.70441558441559,
+ "ci_components": {
+  "phase3_iid": [
+   -0.012193144348923914,
+   0.056448729130906046
+  ],
+  "day_block": [
+   -0.01173988550812906,
+   0.05608179435359451
+  ]
+ },
+ "diff_win": 0.025914634146341486,
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 1485,
+  "n_clusters": null,
+  "n_eff": 1485
+ },
+ "ties": {
+  "real_ambiguous": 0.0005081300813008131,
+  "control_ambiguous": 0.0003048780487804878,
+  "real_gap_stop": 0.0010162601626016261,
+  "control_gap_stop": 0.003353658536585366,
+  "verdict_stop_first": "NULL"
+ },
+ "ctrl_overlap": 0.015142276422764228,
+ "exposure_bars": {
+  "real_mean": 240.0,
+  "control_mean": 240.0,
+  "hold_basis": "bars"
+ },
+ "run_id": "52b590afce414e65b531e67f11b0dc52",
+ "hyp_key": "93340b09007f1c9e"
+}

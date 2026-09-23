@@ -1,0 +1,282 @@
+{
+ "concept_id": "entry-time-window",
+ "reading": "b",
+ "testable": true,
+ "test_type": "gate",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "baseline: 5m bare CISD (series_open, 2/2 swings, max_wait 3), decide at the confirming 5m close, enter next M1 open, stop = protected swing, 2R, 50 min exit",
+   "gate: entry time inside [('09:30', '10:00')] New York (DST-aware); complement = every other baseline entry of the day"
+  ],
+  "params": {
+   "baseline_tf": "5min",
+   "cisd": {
+    "level_rule": "series_open",
+    "left": 2,
+    "right": 2,
+    "max_wait": 3,
+    "min_series": 1
+   },
+   "rr": 2.0,
+   "max_hold": "50min",
+   "window": [
+    [
+     "09:30",
+     "10:00"
+    ]
+   ],
+   "tz": "America/New_York"
+  }
+ },
+ "params_source": {
+  "baseline_tf": "declared-before-run: 5m CISD book = finest phase-3 locked stack; corpus LTF for the NY window is 15m/5m (entry-time-window timeframes.ltf)",
+  "cisd": "phase3: locked CISD config (conjunction_preregistration 1.8-1.13: series_open, 2/2, max_wait 3)",
+  "rr": "phase3: 2R target (conjunction_preregistration locked config)",
+  "max_hold": "phase3: 10 entry-TF bars (conjunction_preregistration 1.13) = 50 min on 5m",
+  "window": "corpus: G1IIdQ3RAkY 'normally I want this move to occur from 9:30 to 10'",
+  "tz": "session_window_fit: America/New_York with DST (settled, 99.8% of 605 daily breaks resume at 18:00 NY)"
+ },
+ "n": 2361,
+ "span": {
+  "start": "2016-01-04 00:00:00+00:00",
+  "end": "2026-07-23 03:30:00+00:00",
+  "years": 10.549
+ },
+ "avg_R": -0.025099879991163396,
+ "avg_R_gross": 0.014900120008836627,
+ "win_rate": 0.4269377382465057,
+ "pf": 0.9445357977216764,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "avg_R_gated": -0.03183725197868474,
+  "avg_R_complement": -0.040116462004078736,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": 0.008496314298766943,
+ "ci_lo": -0.04011637184679596,
+ "ci_hi": 0.058967175199886125,
+ "ci_method": "phase3_block",
+ "p": 0.7367729305070622,
+ "halves": {
+  "H1": {
+   "n": 46551,
+   "diff": -0.018920060472663255,
+   "ci_lo": -0.08657389019126695,
+   "ci_hi": 0.0470220752688196,
+   "ci_method": "block",
+   "p": 0.5787947552320568,
+   "start": "2016-01-04 00:00:00+00:00",
+   "end": "2020-12-31 21:20:00+00:00",
+   "n_gated": 1118
+  },
+  "H2": {
+   "n": 51445,
+   "diff": 0.03316406404957593,
+   "ci_lo": -0.0349360160192432,
+   "ci_hi": 0.10388423326429455,
+   "ci_method": "block",
+   "p": 0.3490321992059203,
+   "start": "2021-01-03 23:05:00+00:00",
+   "end": "2026-07-23 03:30:00+00:00",
+   "n_gated": 1243
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 24560,
+   "diff": -0.023139459394132037,
+   "ci_lo": -0.11453996370180819,
+   "ci_hi": 0.061142732391132854,
+   "ci_method": "iid",
+   "p": 0.6056447420449333,
+   "start": "2016-01-04 00:00:00+00:00",
+   "end": "2018-08-22 10:55:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 24540,
+   "diff": -0.01713449085623282,
+   "ci_lo": -0.10917022606814612,
+   "ci_hi": 0.07726411492606268,
+   "ci_method": "iid",
+   "p": 0.7186481577517888,
+   "start": "2018-08-22 11:15:00+00:00",
+   "end": "2021-04-12 08:20:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 24733,
+   "diff": 0.03531533000648455,
+   "ci_lo": -0.05502770942185759,
+   "ci_hi": 0.1350108423361994,
+   "ci_method": "block",
+   "p": 0.4663382687990526,
+   "start": "2021-04-12 08:50:00+00:00",
+   "end": "2023-12-01 20:15:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 24163,
+   "diff": 0.03880644060700908,
+   "ci_lo": -0.06588137685456368,
+   "ci_hi": 0.16022141573341744,
+   "ci_method": "block",
+   "p": 0.501084403324908,
+   "start": "2023-12-03 23:10:00+00:00",
+   "end": "2026-07-23 03:30:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.07081532598373716,
+ "mde_threshold": 0.1,
+ "power_floor_n": 1184,
+ "verdict": "NULL",
+ "verdict_detail": "CI contains 0; powered (MDE 0.0708 <= 0.1000)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 97996,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "gate_mask_checked": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 46.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 7160,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "rr",
+    "in_window"
+   ],
+   "ignored": [],
+   "lookback": "10D",
+   "recent": "1D",
+   "events_fp": "bb4f96c89bd6d405",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "50min",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": null,
+  "entry_mode": "next_open",
+  "hold_basis": "clock",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "Gate on the whole-day 5m CISD book; the kill-zone-rejection / 'HTF candle already formed its wick' rider is not modelled (unquantified).",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/time_own_01a/entry-time-window.py",
+ "runtime_sec": 16.29,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:29:13+00:00",
+ "n_events_in": 98346,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 53,
+  "target_not_beyond_entry": 0,
+  "no_bars_in_hold": 297
+ },
+ "n_complement": 95635,
+ "gate_firing_rate": 0.024092820115106738,
+ "events_fp": "bb4f96c89bd6d405",
+ "mask_fp": "c24ad8fe369a74c6",
+ "mask_col": "in_window",
+ "exit_mix": {
+  "stop": 0.35747564591274883,
+  "target": 0.13426514188903008,
+  "time": 0.5082592121982211
+ },
+ "gated_vs_own_control": {
+  "diff": 0.006737371987521345,
+  "ci_lo": -0.040693873731636396,
+  "ci_hi": 0.05885560387781435,
+  "p": 0.7907819495067476
+ },
+ "complement": {
+  "n": 95635,
+  "avg_R": -0.041875404315324334,
+  "win_rate": 0.425252261201443,
+  "pf": 0.9055456085374894,
+  "sd_R": 1.007282400547522,
+  "exit_mix": {
+   "stop": 0.3459612066711978,
+   "target": 0.11561666753803523,
+   "time": 0.538422125790767
+  },
+  "vs_own_control": {
+   "diff": -0.0017589423112455982,
+   "ci_lo": -0.008959334612034891,
+   "ci_hi": 0.005419495642379404,
+   "p": 0.6315692118586537
+  }
+ },
+ "ci_components": {
+  "phase3_block": [
+   -0.04011637184679596,
+   0.058967175199886125
+  ],
+  "day_block": [
+   -0.03714527937155731,
+   0.05521490231609134
+  ]
+ },
+ "diff_meaning": "mean(R-ctrl | gated) - mean(R-ctrl | complement)",
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_eff_gated": 1919,
+  "n_eff_complement": 2723,
+  "n_eff": 1919
+ },
+ "ties": {
+  "real_ambiguous": 0.0002857259479978775,
+  "control_ambiguous": 0.0008633005428793012,
+  "real_gap_stop": 0.011684150373484631,
+  "control_gap_stop": 0.008055430833911588,
+  "gated_excess": -8.470986869970353e-05,
+  "complement_excess": -0.0005897422491765568,
+  "verdict_stop_first": "NULL"
+ },
+ "ctrl_overlap": 0.06630678803216458,
+ "exposure_bars": {
+  "real_mean": 48.69594677333769,
+  "control_mean": 48.68882811543328,
+  "hold_basis": "clock"
+ },
+ "run_id": "f3b3eed8052e4d3b85a36a3a10631973",
+ "hyp_key": "aff0b37658c7405e"
+}

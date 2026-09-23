@@ -1,0 +1,214 @@
+{
+ "concept_id": "low-expectation-target-selection",
+ "reading": null,
+ "testable": true,
+ "test_type": "rate",
+ "claim": "-",
+ "operationalization": {
+  "rules": [
+   "pools: untaken 15m fractal-2/2 swing highs/lows, tracked 7 days",
+   "swept-series extreme X: a 15m swing low (high) whose leg since the previous opposite swing took >= 2 pools",
+   "decision: first opposite 15m swing confirmed after X, within 24 bars, same trading day, X untouched; kept only on a low-expectation day: running day range >= 0.75 x mean range of the previous 5 sessions (sessions < 600 M1 bars are NaN)",
+   "hit: X traded in the remaining M1 bars of the trading day; null: same distance at matched random moments (same NY clock +/-30 min) with the same bar count; claim '-'"
+  ],
+  "params": {
+   "tf": "15min",
+   "left": 2,
+   "right": 2,
+   "pool_window": "7D",
+   "min_swept": 2,
+   "max_wait_bars": 24,
+   "adr_days": 5,
+   "spent_frac": 0.75,
+   "min_bars": 600,
+   "day_open_hour": 18,
+   "null_tod_tol_min": 30
+  }
+ },
+ "params_source": {
+  "tf": "corpus: source YAML timeframes.ltf ['15m','5m'] (live_streams_04)",
+  "left": "threshold_fits: short-term high/low = fractal 2/2",
+  "right": "threshold_fits: short-term high/low = fractal 2/2",
+  "pool_window": "declared-before-run: finite pool memory for the probe",
+  "min_swept": "declared-before-run: 'a run of previous lows' = at least 2",
+  "max_wait_bars": "declared-before-run: the turn must come within 6h",
+  "adr_days": "declared-before-run: ADR is eyeballed in the corpus (method_spec \u00a75.2, no lookback given); 5 sessions",
+  "spent_frac": "declared-before-run: 'most of the average daily range is already covered' = 75%",
+  "min_bars": "declared-before-run: README trap 6 stub-session guard",
+  "day_open_hour": "session_window_fit: settled 18:00 NY daily roll",
+  "null_tod_tol_min": "declared-before-run (of this second, corrected run): README trap 9 - events cluster 10:00-17:00 NY; see notes"
+ },
+ "n": 3455,
+ "span": {
+  "start": "2016-01-11 21:00:00+00:00",
+  "end": "2026-07-22 15:30:00+00:00",
+  "years": 10.524
+ },
+ "avg_R": null,
+ "avg_R_gross": null,
+ "win_rate": null,
+ "pf": null,
+ "observed_rate": 0.39044862518089724,
+ "null_rate": 0.39131693198263384,
+ "lift": 0.9977810650887574,
+ "control": {
+  "rate": 0.39131693198263384,
+  "reps": 5,
+  "kind": "null_fn x5"
+ },
+ "diff": -0.0008683068017366069,
+ "ci_lo": -0.019044862518089678,
+ "ci_hi": 0.016671490593342997,
+ "ci_method": "phase3_iid",
+ "p": 0.9240780616799491,
+ "halves": {
+  "H1": {
+   "n": 1674,
+   "diff": 0.0010752688172042668,
+   "ci_lo": -0.02724313022700114,
+   "ci_hi": 0.03202210274790917,
+   "ci_method": "iid",
+   "p": 0.9433018079582527,
+   "start": "2016-01-11 21:00:00+00:00",
+   "end": "2020-12-28 18:45:00+00:00"
+  },
+  "H2": {
+   "n": 1781,
+   "diff": -0.002695115103874157,
+   "ci_lo": -0.029202695115103896,
+   "ci_hi": 0.02651880965749581,
+   "ci_method": "iid",
+   "p": 0.8496245582343585,
+   "start": "2021-01-04 05:15:00+00:00",
+   "end": "2026-07-22 15:30:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 896,
+   "diff": -0.0011160714285715079,
+   "ci_lo": -0.04218749999999993,
+   "ci_hi": 0.03706473214285711,
+   "ci_method": "iid",
+   "p": 0.9559771543718019,
+   "start": "2016-01-11 21:00:00+00:00",
+   "end": "2018-08-17 21:00:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 865,
+   "diff": -0.00023121387283231432,
+   "ci_lo": -0.03931213872832374,
+   "ci_hi": 0.037000000000000026,
+   "ci_method": "iid",
+   "p": 0.9905239312153425,
+   "start": "2018-08-23 08:30:00+00:00",
+   "end": "2021-04-09 15:30:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 798,
+   "diff": -0.01578947368421052,
+   "ci_lo": -0.05538847117794493,
+   "ci_hi": 0.023565162907268174,
+   "ci_method": "iid",
+   "p": 0.43308506784559675,
+   "start": "2021-04-12 15:15:00+00:00",
+   "end": "2023-12-01 14:00:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 896,
+   "diff": 0.012053571428571386,
+   "ci_lo": -0.027243303571428585,
+   "ci_hi": 0.051562499999999956,
+   "ci_method": "iid",
+   "p": 0.5487967664286691,
+   "start": "2023-12-04 02:15:00+00:00",
+   "end": "2026-07-22 15:30:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.025526591083227322,
+ "mde_threshold": 0.05,
+ "power_floor_n": 901,
+ "verdict": "NULL",
+ "verdict_detail": "CI contains 0; powered (MDE 0.0255 <= 0.0500)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 3455,
+  "min_slack_min": 0.0,
+  "passed": true,
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 266,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "side",
+    "level"
+   ],
+   "ignored": [],
+   "lookback": "20D",
+   "recent": "1D",
+   "events_fp": "986f6e3c909520c9",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "reps": 5,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "mde_threshold": null,
+  "cluster": null,
+  "outcome_horizon": "1 days 00:00:00",
+  "null_kind": "null_fn x5"
+ },
+ "notes": "RE-RUN ONCE after a null-design bug found on seeing the first verdict. Run 1 drew null moments uniformly in +/-30d with no time-of-day match: n=3455, observed 39.0% vs null 41.2%, diff -0.021 [-0.039, -0.004], EDGE. The decisions cluster 10:00-17:00 NY (low-expectation needs the day's range spent), while the null windows of the same M1-bar count fell in any hour, often in more active hours. That confound favours the claimed '-' direction (README trap 9). Run 2 (this result) holds the NY clock within +/-30 min. Nothing else changed. Both runs are in the ledger.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/liquidity_own_01a/low-expectation-target-selection.py",
+ "runtime_sec": 0.55,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:21:53+00:00",
+ "dropped": {
+  "nan_rows": 0
+ },
+ "null_kind": "null_fn x5",
+ "events_fp": "986f6e3c909520c9",
+ "predictors_probed": true,
+ "ci_components": {
+  "phase3_iid": [
+   -0.019044862518089678,
+   0.016671490593342997
+  ],
+  "day_block": [
+   -0.01670087350079155,
+   0.013927471933989839
+  ]
+ },
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 1605,
+  "n_clusters": null,
+  "n_eff": 1605
+ },
+ "run_id": "5440ccace283497da6e529e57413b816",
+ "hyp_key": "0649dad09cbebb8e"
+}

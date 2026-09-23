@@ -1,0 +1,276 @@
+{
+ "concept_id": "gold-correlated-assets",
+ "reading": null,
+ "testable": true,
+ "test_type": "gate",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "1h bars (UTC hours); C2 = sweeps prior 1h high/low, closes back inside, closes in the reversal direction",
+   "enter next M1 open after C2 close, reversal direction; stop at C2 extreme; 2R; 10 bars trading time",
+   "reversal SMT vs a correlate = that correlate did not take its own prior-hour extreme on the C2 hour",
+   "keep C2s where SMT vs {XAU/EUR or XAU/GBP} disagrees with SMT vs XAG/USD",
+   "gate = SMT vs gold-euro/gold-pound (complement = silver-only SMT)"
+  ],
+  "params": {
+   "tf": "1h",
+   "rr": 2.0,
+   "max_hold": "10h",
+   "hold_basis": "bars",
+   "eg_family": "SMT if XAU_EUR or XAU_GBP diverges",
+   "ag_family": "XAG_USD",
+   "divergence_tolerance": "none (strict)"
+  }
+ },
+ "params_source": {
+  "tf": "declared-before-run: 1H is in the concept's timeframe lists and the finest TF the H1 correlate data supports",
+  "rr": "phase3: locked 2R target (\u00a71.13)",
+  "max_hold": "phase3: 10 entry-TF bars (\u00a71.13)",
+  "hold_basis": "declared-before-run: trading-time holds (trap 7)",
+  "eg_family": "corpus: W7Fu3Rx5iMs 'generally, I use the gold euro gold pound' (no ranking between the two given)",
+  "ag_family": "corpus: W7Fu3Rx5iMs \u2014 viewer asserted silver is the correlation; he names gold-euro/gold-pound instead",
+  "divergence_tolerance": "declared-before-run: no tolerance given in the corpus"
+ },
+ "n": 4289,
+ "span": {
+  "start": "2016-01-04 02:00:00+00:00",
+  "end": "2026-07-23 03:00:00+00:00",
+  "years": 10.549
+ },
+ "avg_R": -0.05815871357469063,
+ "avg_R_gross": -0.018158713574690604,
+ "win_rate": 0.3497318722312893,
+ "pf": 0.911162066819687,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "avg_R_gated": -0.04024734785574721,
+  "avg_R_complement": -0.042764582666477764,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": 0.022359778597658933,
+ "ci_lo": -0.045893731529590046,
+ "ci_hi": 0.09174531505575398,
+ "ci_method": "day_block",
+ "p": 0.5242542867743651,
+ "halves": {
+  "H1": {
+   "n": 3476,
+   "diff": 0.03250302854478448,
+   "ci_lo": -0.06372698907208772,
+   "ci_hi": 0.13140258520449882,
+   "ci_method": "iid",
+   "p": 0.5137895831989869,
+   "start": "2016-01-04 02:00:00+00:00",
+   "end": "2020-12-31 15:00:00+00:00",
+   "n_gated": 2187
+  },
+  "H2": {
+   "n": 3882,
+   "diff": 0.005711798196623791,
+   "ci_lo": -0.08806922925482685,
+   "ci_hi": 0.09989299358889892,
+   "ci_method": "block",
+   "p": 0.9051812228405376,
+   "start": "2021-01-04 20:00:00+00:00",
+   "end": "2026-07-23 03:00:00+00:00",
+   "n_gated": 2102
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 1834,
+   "diff": 0.06362906257653698,
+   "ci_lo": -0.07364547422746842,
+   "ci_hi": 0.21057891047701946,
+   "ci_method": "iid",
+   "p": 0.38018752419833074,
+   "start": "2016-01-04 02:00:00+00:00",
+   "end": "2018-08-22 06:00:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 1821,
+   "diff": -0.00167905647918254,
+   "ci_lo": -0.14437774046371277,
+   "ci_hi": 0.12878724427630248,
+   "ci_method": "block",
+   "p": 0.9807772106123434,
+   "start": "2018-08-22 18:00:00+00:00",
+   "end": "2021-04-12 08:00:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 2008,
+   "diff": 0.014444047445841018,
+   "ci_lo": -0.11020997508153588,
+   "ci_hi": 0.15112299625496453,
+   "ci_method": "block",
+   "p": 0.8284756358356672,
+   "start": "2021-04-12 13:00:00+00:00",
+   "end": "2023-12-01 02:00:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 1695,
+   "diff": -0.003454489593892482,
+   "ci_lo": -0.14633510276244485,
+   "ci_hi": 0.12881167666223098,
+   "ci_method": "block",
+   "p": 0.9607479524544756,
+   "start": "2023-12-04 04:00:00+00:00",
+   "end": "2026-07-23 03:00:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.09837106404194187,
+ "mde_threshold": 0.1,
+ "power_floor_n": 2970,
+ "verdict": "NULL",
+ "verdict_detail": "CI contains 0; powered (MDE 0.0984 <= 0.1000)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 7358,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "gate_mask_checked": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 4385.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 560,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "rr",
+    "eg_smt"
+   ],
+   "ignored": [],
+   "lookback": "10D",
+   "recent": "1D",
+   "events_fp": "4b40a833c8b8a535",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "10h",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": null,
+  "entry_mode": "next_open",
+  "hold_basis": "bars",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "7387 C2s where the two correlate choices disagree; EG-SMT on 58.3%. Not tested: 'chart gold as GC1! futures' (only spot XAU/USD exists here) and 'stand aside when the correlation is behaving oddly' (no threshold). Correlates are OANDA spot crosses.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/liquidity_own_02b/gold-correlated-assets.py",
+ "runtime_sec": 1.57,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:09:56+00:00",
+ "n_events_in": 7387,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 29,
+  "target_not_beyond_entry": 0,
+  "no_bars_in_hold": 0
+ },
+ "n_complement": 3069,
+ "gate_firing_rate": 0.58290296276162,
+ "events_fp": "4b40a833c8b8a535",
+ "mask_fp": "9a4732c2fec27cfc",
+ "mask_col": "eg_smt",
+ "exit_mix": {
+  "stop": 0.6148286313826067,
+  "target": 0.2835159710888319,
+  "time": 0.10165539752856144
+ },
+ "gated_vs_own_control": {
+  "diff": -0.017911365718943417,
+  "ci_lo": -0.06104316351248743,
+  "ci_hi": 0.0280738924975318,
+  "p": 0.43078188110223903
+ },
+ "complement": {
+  "n": 3069,
+  "avg_R": -0.08303572698308011,
+  "win_rate": 0.3437601824698599,
+  "pf": 0.8746618550201389,
+  "sd_R": 1.3300717685227181,
+  "exit_mix": {
+   "stop": 0.6226783968719453,
+   "target": 0.2701205604431411,
+   "time": 0.10720104268491365
+  },
+  "vs_own_control": {
+   "diff": -0.04027114431660234,
+   "ci_lo": -0.09034020360123977,
+   "ci_hi": 0.012927495653322308,
+   "p": 0.1263516714834766
+  }
+ },
+ "ci_components": {
+  "phase3_iid": [
+   -0.04323592427173109,
+   0.08962917393352964
+  ],
+  "day_block": [
+   -0.045893731529590046,
+   0.09174531505575398
+  ]
+ },
+ "diff_meaning": "mean(R-ctrl | gated) - mean(R-ctrl | complement)",
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_eff_gated": 2118,
+  "n_eff_complement": 1828,
+  "n_eff": 1828
+ },
+ "ties": {
+  "real_ambiguous": 0.0008154389779831476,
+  "control_ambiguous": 0.0013047023647730362,
+  "real_gap_stop": 0.016172873063332427,
+  "control_gap_stop": 0.0154661592824137,
+  "gated_excess": -0.0005129400792725577,
+  "complement_excess": -0.00045617464972303693,
+  "verdict_stop_first": "NULL"
+ },
+ "ctrl_overlap": 0.06170154933405817,
+ "exposure_bars": {
+  "real_mean": 599.8477847241098,
+  "control_mean": 599.968034792063,
+  "hold_basis": "bars"
+ },
+ "run_id": "03086b80035c4879a0a141a3a73feed6",
+ "hyp_key": "3e9d4a664aeb7c35"
+}

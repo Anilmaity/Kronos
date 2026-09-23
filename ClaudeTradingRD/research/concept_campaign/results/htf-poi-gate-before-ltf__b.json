@@ -1,0 +1,281 @@
+{
+ "concept_id": "htf-poi-gate-before-ltf",
+ "reading": "b",
+ "testable": true,
+ "test_type": "gate",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "baseline: 5min CISD (series_open, 2/2, max_wait 3, min_series 1), decide at the confirming close, enter next M1 open, stop at the protected swing, 2R, hold 50min",
+   "POIs marked at the 18:00 NY day open: unfilled 1h three-bar FVGs formed in the last 24 1h bars (near edge) + previous day's high/low; only levels on the far side of the day's open price",
+   "tagged = an M1 bar after the day open trades to the level; known at that bar's close; gate = any marked POI tagged before the CISD decision the same day",
+   "bias = previous day's candle direction; baseline keeps only bias-aligned CISDs; POIs kept: aligned ones (support for bullish, resistance for bearish), the 2 nearest to the day's open"
+  ],
+  "params": {
+   "htf": "1h",
+   "ltf": "5min",
+   "fvg_lookback_bars": 24,
+   "poi_cap": 2,
+   "bias_aligned": true,
+   "rr": 2.0,
+   "max_hold": "50min",
+   "grid4h": "forex",
+   "tag_edge": "near",
+   "pdx_min_coverage": 0.5
+  }
+ },
+ "params_source": {
+  "htf": "corpus: htf-poi-gate-before-ltf 'drop only to the paired timeframe: 4H POI -> 15m -> 1m, or 1H POI -> 5m'",
+  "ltf": "corpus: htf-poi-gate-before-ltf (paired timeframe rule)",
+  "fvg_lookback_bars": "declared-before-run: POIs from the last ~5 trading days (30 4H bars) / last day (24 1H bars)",
+  "poi_cap": "corpus: htf-poi-gate-before-ltf 'Mark at most one or two points of interest before the session' (reading b); none in reading a",
+  "bias_aligned": "corpus: 'Each must be in line with the daily bias' (reading b); bias = previous-candle direction, method_spec \u00a72.3",
+  "rr": "phase3: meta/conjunction_preregistration.md \u00a71.8-1.13 (locked rung-0 config)",
+  "max_hold": "phase3: 10 entry-TF bars (\u00a71.13)",
+  "grid4h": "phase3: forex 4H grid (locked default, carried as a knob)",
+  "tag_edge": "declared-before-run: 'Reached' undefined; near edge",
+  "pdx_min_coverage": "declared-before-run: README trap 6"
+ },
+ "n": 19434,
+ "span": {
+  "start": "2016-01-05 00:20:00+00:00",
+  "end": "2026-07-23 03:30:00+00:00",
+  "years": 10.546
+ },
+ "avg_R": -0.03852345232918954,
+ "avg_R_gross": 0.0014765476708104791,
+ "win_rate": 0.4300710095708552,
+ "pf": 0.9106426534992927,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "avg_R_gated": -0.037143436828854404,
+  "avg_R_complement": -0.0423991002974767,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": -0.0024804698826884596,
+ "ci_lo": -0.02475063097800685,
+ "ci_hi": 0.021134066394396127,
+ "ci_method": "day_block",
+ "p": 0.8321800182102475,
+ "halves": {
+  "H1": {
+   "n": 23208,
+   "diff": 0.0023773874758279447,
+   "ci_lo": -0.02865903527533742,
+   "ci_hi": 0.03436142251498113,
+   "ci_method": "block",
+   "p": 0.8824409482950013,
+   "start": "2016-01-05 00:20:00+00:00",
+   "end": "2020-12-31 20:10:00+00:00",
+   "n_gated": 9177
+  },
+  "H2": {
+   "n": 25705,
+   "diff": -0.006906428376547891,
+   "ci_lo": -0.03888185823628506,
+   "ci_hi": 0.026496479486366263,
+   "ci_method": "block",
+   "p": 0.6788061114340254,
+   "start": "2021-01-03 23:05:00+00:00",
+   "end": "2026-07-23 03:30:00+00:00",
+   "n_gated": 10257
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 12250,
+   "diff": 0.002500657685711333,
+   "ci_lo": -0.04215236488464418,
+   "ci_hi": 0.043251793960807555,
+   "ci_method": "block",
+   "p": 0.908622205285624,
+   "start": "2016-01-05 00:20:00+00:00",
+   "end": "2018-08-22 08:50:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 12223,
+   "diff": -0.009395246274013697,
+   "ci_lo": -0.05227259545954549,
+   "ci_hi": 0.03667953586068765,
+   "ci_method": "block",
+   "p": 0.6788534700115627,
+   "start": "2018-08-22 11:15:00+00:00",
+   "end": "2021-04-12 08:20:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 12399,
+   "diff": 0.009337863697831336,
+   "ci_lo": -0.03717023323448231,
+   "ci_hi": 0.05506678552673498,
+   "ci_method": "block",
+   "p": 0.6914821349430902,
+   "start": "2021-04-12 10:00:00+00:00",
+   "end": "2023-12-01 14:20:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 12041,
+   "diff": -0.013040955745689177,
+   "ci_lo": -0.062137320101080744,
+   "ci_hi": 0.03339749703312337,
+   "ci_method": "block",
+   "p": 0.5925884765865637,
+   "start": "2023-12-03 23:10:00+00:00",
+   "end": "2026-07-23 03:30:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.03279393904379458,
+ "mde_threshold": 0.1,
+ "power_floor_n": 2091,
+ "verdict": "NULL",
+ "verdict_detail": "CI contains 0; powered (MDE 0.0328 <= 0.1000)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 48913,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "gate_mask_checked": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 18.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 3579,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "rr",
+    "tagged"
+   ],
+   "ignored": [],
+   "lookback": "20D",
+   "recent": "1D",
+   "events_fp": "d9a9dbe09b4aaeee",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "50min",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": null,
+  "entry_mode": "next_open",
+  "hold_basis": "clock",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "Gate stamp = decision time: POIs are fixed at the day open and the tag is an M1 bar closed before the CISD decision.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/risk_own_02b/htf-poi-gate-before-ltf.py",
+ "runtime_sec": 9.27,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:29:43+00:00",
+ "n_events_in": 49065,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 23,
+  "target_not_beyond_entry": 0,
+  "no_bars_in_hold": 129
+ },
+ "n_complement": 29479,
+ "gate_firing_rate": 0.39731768650461025,
+ "events_fp": "d9a9dbe09b4aaeee",
+ "mask_fp": "02b7e52ec53b541f",
+ "mask_col": "tagged",
+ "exit_mix": {
+  "stop": 0.33127508490274776,
+  "target": 0.10728619944427292,
+  "time": 0.5614387156529793
+ },
+ "gated_vs_own_control": {
+  "diff": -0.0013800155003351397,
+  "ci_lo": -0.018928713651633334,
+  "ci_hi": 0.014487739182235011,
+  "p": 0.8713978543821879
+ },
+ "complement": {
+  "n": 29479,
+  "avg_R": -0.04129864591512337,
+  "win_rate": 0.4218257064350894,
+  "pf": 0.9091016031516385,
+  "sd_R": 1.0283639201749948,
+  "exit_mix": {
+   "stop": 0.3590013229756776,
+   "target": 0.12415617897486346,
+   "time": 0.5168424980494589
+  },
+  "vs_own_control": {
+   "diff": 0.0011004543823533303,
+   "ci_lo": -0.014120071395521527,
+   "ci_hi": 0.01682610321458634,
+   "p": 0.8891390461834728
+  }
+ },
+ "ci_components": {
+  "phase3_block": [
+   -0.02526086377513227,
+   0.0204029459284589
+  ],
+  "day_block": [
+   -0.02475063097800685,
+   0.021134066394396127
+  ]
+ },
+ "diff_meaning": "mean(R-ctrl | gated) - mean(R-ctrl | complement)",
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_eff_gated": 1638,
+  "n_eff_complement": 2392,
+  "n_eff": 1638
+ },
+ "ties": {
+  "real_ambiguous": 0.0003066669392595016,
+  "control_ambiguous": 0.0008954674626377446,
+  "real_gap_stop": 0.01185778831803406,
+  "control_gap_stop": 0.008259562897389243,
+  "gated_excess": -0.0003910672018112586,
+  "complement_excess": -0.000719156009362597,
+  "verdict_stop_first": "NULL"
+ },
+ "ctrl_overlap": 0.03397869686995277,
+ "exposure_bars": {
+  "real_mean": 48.714881524339134,
+  "control_mean": 48.697769509128456,
+  "hold_basis": "clock"
+ },
+ "run_id": "1b99f414cc16463283651a246c69085b",
+ "hyp_key": "23478049c6720235"
+}

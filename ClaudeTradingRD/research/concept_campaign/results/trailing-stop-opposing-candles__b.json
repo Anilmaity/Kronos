@@ -1,0 +1,263 @@
+{
+ "concept_id": "trailing-stop-opposing-candles",
+ "reading": "b",
+ "testable": true,
+ "test_type": "trade",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "parents: 15m rung-0 CISD, entry next M1 open, protected-swing stop, 2R target, 150min hold",
+   "parent alive = no hit of the stop currently in force / target on M1 up to the bar close",
+   "opposing candle = most recent candle after entry closing against the position; trail when a 15m bar closes beyond it; its extreme becomes the stop (never loosened)",
+   "event per trail: decide at that close, stop = opposing candle extreme, target = parent target, hold = parent remaining; clustered by parent",
+   "claim +: trailed levels hold better than random stops of the same distance"
+  ],
+  "params": {
+   "tf": "15min",
+   "level_rule": "series_open",
+   "swing": "2/2",
+   "max_wait": 3,
+   "min_series": 1,
+   "rr": 2.0,
+   "parent_hold": "150min",
+   "trail_level": "opposing candle extreme",
+   "grid4h": "n/a"
+  }
+ },
+ "params_source": {
+  "tf": "corpus: concept timeframes ltf 15m; phase3 primary stack entry TF",
+  "level_rule": "phase3: meta/conjunction_preregistration.md \u00a71.8-1.13 (locked rung-0 config)",
+  "swing": "phase3: meta/conjunction_preregistration.md \u00a71.8-1.13 (locked rung-0 config)",
+  "max_wait": "phase3: meta/conjunction_preregistration.md \u00a71.8-1.13 (locked rung-0 config)",
+  "min_series": "phase3: meta/conjunction_preregistration.md \u00a71.8-1.13 (locked rung-0 config)",
+  "rr": "phase3: meta/conjunction_preregistration.md \u00a71.8-1.13 (locked rung-0 config)",
+  "parent_hold": "phase3: 10 entry-TF bars (\u00a71.13), as in the concept_lab README examples",
+  "trail_level": "corpus: u8bnmaih_hA variant 'that candle's high becomes the level that should not be hit'",
+  "grid4h": "declared-before-run: no 4h bars used"
+ },
+ "n": 20249,
+ "span": {
+  "start": "2016-01-04 01:00:00+00:00",
+  "end": "2026-07-23 04:00:00+00:00",
+  "years": 10.549
+ },
+ "avg_R": -0.05148391865994424,
+ "avg_R_gross": -0.011483918659944217,
+ "win_rate": 0.4204652081584276,
+ "pf": 0.8840146388218579,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "n": 101245,
+  "avg_R": -0.03682171011615458,
+  "win_rate": 0.4216603289051311,
+  "pf": 0.9166086249525273,
+  "sd_R": 1.149838400399439,
+  "exit_mix": {
+   "stop": 0.35731147217146525,
+   "target": 0.1098918465109388,
+   "time": 0.5327966813175959
+  },
+  "avg_R_gross": 0.0031782898838454325,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": -0.014662208543789662,
+ "ci_lo": -0.032830423120496194,
+ "ci_hi": 0.003734360959973856,
+ "ci_method": "phase3_block",
+ "p": 0.11598251345098272,
+ "halves": {
+  "H1": {
+   "n": 9564,
+   "diff": -0.016323212713248325,
+   "ci_lo": -0.04206327042226284,
+   "ci_hi": 0.00916271906814919,
+   "ci_method": "block",
+   "p": 0.21163253362533535,
+   "start": "2016-01-04 01:00:00+00:00",
+   "end": "2020-12-31 18:15:00+00:00"
+  },
+  "H2": {
+   "n": 10685,
+   "diff": -0.01317546601906313,
+   "ci_lo": -0.038512557355083625,
+   "ci_hi": 0.012110929947213989,
+   "ci_method": "block",
+   "p": 0.3076261580393529,
+   "start": "2021-01-04 01:15:00+00:00",
+   "end": "2026-07-23 04:00:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 4885,
+   "diff": -0.003076570766330007,
+   "ci_lo": -0.03943129666628322,
+   "ci_hi": 0.03347494045678641,
+   "ci_method": "block",
+   "p": 0.8686157214139496,
+   "start": "2016-01-04 01:00:00+00:00",
+   "end": "2018-08-22 08:45:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 5180,
+   "diff": -0.030564675779904377,
+   "ci_lo": -0.06696218863120221,
+   "ci_hi": 0.005013634066120319,
+   "ci_method": "block",
+   "p": 0.0959915481753291,
+   "start": "2018-08-22 14:15:00+00:00",
+   "end": "2021-04-12 03:30:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 5110,
+   "diff": -0.015796298530897483,
+   "ci_lo": -0.05304827433585746,
+   "ci_hi": 0.019381743358174996,
+   "ci_method": "block",
+   "p": 0.3926070397228664,
+   "start": "2021-04-12 11:30:00+00:00",
+   "end": "2023-12-01 17:45:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 5074,
+   "diff": -0.008439477054963285,
+   "ci_lo": -0.045628604533344726,
+   "ci_hi": 0.026759781609076737,
+   "ci_method": "block",
+   "p": 0.6476645919842241,
+   "start": "2023-12-04 12:15:00+00:00",
+   "end": "2026-07-23 04:00:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.026132967393300004,
+ "mde_threshold": 0.1,
+ "power_floor_n": 1383,
+ "verdict": "NULL",
+ "verdict_detail": "CI contains 0; powered (MDE 0.0261 <= 0.1000)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 20249,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 69.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 1523,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "target_px",
+    "max_hold",
+    "parent"
+   ],
+   "ignored": [],
+   "lookback": "20D",
+   "recent": "1D",
+   "events_fp": "00008865dddeaf54",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "per-row column",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": null,
+  "entry_mode": "next_open",
+  "hold_basis": "clock",
+  "mde_threshold": null,
+  "cluster": "column:parent",
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "Tests the trail's premise (the level holds) per trail event, not the whole managed P&L path, which the static-stop harness cannot resolve.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/risk_own_01b/trailing-stop-opposing-candles.py",
+ "runtime_sec": 6.2,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:21:39+00:00",
+ "n_events_in": 20441,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 38,
+  "target_not_beyond_entry": 14,
+  "no_bars_in_hold": 140
+ },
+ "events_fp": "00008865dddeaf54",
+ "sd_R": 1.0752002538876502,
+ "exit_mix": {
+  "stop": 0.34544915798311027,
+  "target": 0.1181292903353252,
+  "time": 0.5364215516815645
+ },
+ "trades_per_year": 1919.529522450039,
+ "ci_components": {
+  "phase3_block": [
+   -0.032830423120496194,
+   0.003734360959973856
+  ],
+  "day_block": [
+   -0.032521113429467355,
+   0.003986448851467451
+  ],
+  "cluster": [
+   -0.03258140804373812,
+   0.0036375596209996326
+  ]
+ },
+ "diff_win": -0.0011951207467035263,
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 2716,
+  "n_clusters": 16749,
+  "n_eff": 2716
+ },
+ "ties": {
+  "real_ambiguous": 0.00039508123857968295,
+  "control_ambiguous": 0.00028643389797027014,
+  "real_gap_stop": 0.011161044989876042,
+  "control_gap_stop": 0.007565805718800929,
+  "verdict_stop_first": "NULL"
+ },
+ "ctrl_overlap": 0.037078374240703246,
+ "exposure_bars": {
+  "real_mean": 68.97160353597708,
+  "control_mean": 69.05600276556866,
+  "hold_basis": "clock"
+ },
+ "run_id": "410f34b2d483414e95b4b7871dd0f031",
+ "hyp_key": "42301914cfc57974"
+}

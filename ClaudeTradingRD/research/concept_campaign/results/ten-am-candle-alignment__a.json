@@ -1,0 +1,200 @@
+{
+ "concept_id": "ten-am-candle-alignment",
+ "reading": "a",
+ "testable": true,
+ "test_type": "rate",
+ "claim": "-",
+ "operationalization": {
+  "rules": [
+   "objective at 09:30 NY = previous trading day's high/low (18:00 roll, min_coverage 0.5) untaken this trading day, nearer to the 09:29 close",
+   "row at 10:00 NY if the 09:30-09:59 M1 bars did not reach it",
+   "hit = reached within the next 120 M1 bars (10:00-12:00)",
+   "null = same signed distance/side/120 bars at 10:00 NY on a random other day within +/-30 days; claim '-' (consolidation: reached less often)"
+  ],
+  "params": {
+   "horizon_bars": 120,
+   "pd_min_coverage": 0.5,
+   "target_choice": "nearer untaken previous-day extreme",
+   "null_tod_tol_min": 0
+  }
+ },
+ "params_source": {
+  "horizon_bars": "session_window_fit: NY a.m. window ends 12:00 (08:30-12:00); declared-before-run",
+  "pd_min_coverage": "declared-before-run: README trap 6, skip stub sessions",
+  "target_choice": "corpus: tDiwwMRWF2k previous day low as the 9:30 target; declared-before-run: nearer untaken one",
+  "null_tod_tol_min": "declared-before-run: clock-fixed null so 10:00-12:00 volatility cancels (README trap 9)"
+ },
+ "n": 2508,
+ "span": {
+  "start": "2016-01-05 15:00:00+00:00",
+  "end": "2026-07-22 14:00:00+00:00",
+  "years": 10.541
+ },
+ "avg_R": null,
+ "avg_R_gross": null,
+ "win_rate": null,
+ "pf": null,
+ "observed_rate": 0.08014354066985646,
+ "null_rate": 0.08118022328548644,
+ "lift": 0.9872298624754422,
+ "control": {
+  "rate": 0.08118022328548644,
+  "reps": 5,
+  "kind": "null_fn x5"
+ },
+ "diff": -0.0010366826156299885,
+ "ci_lo": -0.012599681020733652,
+ "ci_hi": 0.010289074960127577,
+ "ci_method": "phase3_iid",
+ "p": 0.8590824824593029,
+ "halves": {
+  "H1": {
+   "n": 1194,
+   "diff": -0.00804020100502513,
+   "ci_lo": -0.024790619765494133,
+   "ci_hi": 0.008207705192629824,
+   "ci_method": "iid",
+   "p": 0.33952239585885435,
+   "start": "2016-01-05 15:00:00+00:00",
+   "end": "2020-12-31 15:00:00+00:00"
+  },
+  "H2": {
+   "n": 1314,
+   "diff": 0.005327245053272436,
+   "ci_lo": -0.014159056316590564,
+   "ci_hi": 0.023915525114155217,
+   "ci_method": "iid",
+   "p": 0.5833755086562951,
+   "start": "2021-01-04 15:00:00+00:00",
+   "end": "2026-07-22 14:00:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 624,
+   "diff": -0.008974358974358977,
+   "ci_lo": -0.028213141025641028,
+   "ci_hi": 0.012508012820512804,
+   "ci_method": "iid",
+   "p": 0.3876450364944614,
+   "start": "2016-01-05 15:00:00+00:00",
+   "end": "2018-08-21 14:00:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 632,
+   "diff": -0.005379746835443039,
+   "ci_lo": -0.03007911392405064,
+   "ci_hi": 0.01994462025316456,
+   "ci_method": "iid",
+   "p": 0.6733430720196697,
+   "start": "2018-08-22 14:00:00+00:00",
+   "end": "2021-04-09 14:00:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 624,
+   "diff": 0.008333333333333331,
+   "ci_lo": -0.01955128205128205,
+   "ci_hi": 0.03814903846153844,
+   "ci_method": "iid",
+   "p": 0.5713032407431164,
+   "start": "2021-04-12 14:00:00+00:00",
+   "end": "2023-12-01 15:00:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 628,
+   "diff": 0.0019108280254776927,
+   "ci_lo": -0.022300955414012735,
+   "ci_hi": 0.025804140127388537,
+   "ci_method": "iid",
+   "p": 0.8762638454148877,
+   "start": "2023-12-04 15:00:00+00:00",
+   "end": "2026-07-22 14:00:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.01635866664506111,
+ "mde_threshold": 0.02029505582137161,
+ "power_floor_n": 1630,
+ "verdict": "NULL",
+ "verdict_detail": "CI contains 0; powered (MDE 0.0164 <= 0.0203)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 2508,
+  "min_slack_min": 0.0,
+  "passed": true,
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 174,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "target_px"
+   ],
+   "ignored": [],
+   "lookback": "10D",
+   "recent": "1D",
+   "events_fp": "71980746541d475c",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "reps": 5,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "mde_threshold": null,
+  "cluster": null,
+  "outcome_horizon": "1 days 00:00:00",
+  "null_kind": "null_fn x5"
+ },
+ "notes": "Reading a: the 10:00 deadline. Claim '-' = after an unmet 9:30 objective the target is reached less often than a clock-matched null at the same distance.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/time_own_01b/ten-am-candle-alignment.py",
+ "runtime_sec": 0.64,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:40:45+00:00",
+ "dropped": {
+  "nan_rows": 0
+ },
+ "null_kind": "null_fn x5",
+ "events_fp": "71980746541d475c",
+ "predictors_probed": true,
+ "ci_components": {
+  "phase3_iid": [
+   -0.012599681020733652,
+   0.010289074960127577
+  ],
+  "day_block": [
+   -0.010448564593301186,
+   0.009332137161084659
+  ]
+ },
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 2508,
+  "n_clusters": null,
+  "n_eff": 2508
+ },
+ "run_id": "f894758872fb475ba8174a67aefbdb74",
+ "hyp_key": "1ef7095c77b30b6c"
+}

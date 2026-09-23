@@ -1,0 +1,308 @@
+{
+ "concept_id": "timeframe-alignment-ladder",
+ "reading": null,
+ "testable": true,
+ "test_type": "gate",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "ladder ($niper pairs, each skipping one rung): 1D->{4h,[1h],15m}, 4h->{1h,[15m],5m}, 1h->{15m,[5m],1m}; [] = paired",
+   "level = previous completed HTF bar's low (bull) / high (bear); tag = first M1 of the current HTF bar beyond it",
+   "reaction on LTF X from the LTF bar containing the tag: running extreme; CISD level = open of the first candle of the contiguous opposing-close run (<=10, ending <=2 bars before the extreme bar); confirm = first later LTF close through it; must close within one HTF period after the current HTF bar closes",
+   "entry next M1 open; stop = running extreme; target = previous HTF bar's opposite extreme; hold one HTF period",
+   "gate: paired LTF (pass) vs the two mismatched LTFs (complement); cluster = HTF level"
+  ],
+  "params": {
+   "ladder": {
+    "1D": [
+     [
+      "4h",
+      "1h",
+      "15min"
+     ],
+     "1h",
+     "24h"
+    ],
+    "4h": [
+     [
+      "1h",
+      "15min",
+      "5min"
+     ],
+     "15min",
+     "4h"
+    ],
+    "1h": [
+     [
+      "15min",
+      "5min",
+      "1min"
+     ],
+     "5min",
+     "1h"
+    ]
+   },
+   "run_max": 10,
+   "turn_gap": 2,
+   "grid4h": "forex",
+   "level_rule": "series_open"
+  }
+ },
+ "params_source": {
+  "ladder": "corpus: 5aRB_ZY3474 $niper pairs 'daily -> 1H; 4H -> 15m; 1H -> 5m' (concept yaml detection_rules); hold = one HTF period declared-before-run",
+  "run_max": "phase3: detectors/cisd.py _run_into_extreme max_len=10",
+  "turn_gap": "phase3: detectors/cisd.py turn candle within 2 bars of the run",
+  "grid4h": "session_window_fit: forex 4H grid (concept_lab default)",
+  "level_rule": "phase3: meta/conjunction_preregistration.md CISD series_open level (locked config)"
+ },
+ "n": 54104,
+ "span": {
+  "start": "2016-01-03 23:35:00+00:00",
+  "end": "2026-07-23 04:00:00+00:00",
+  "years": 10.549
+ },
+ "avg_R": -0.04479494684636259,
+ "avg_R_gross": -0.004794946846362575,
+ "win_rate": 0.48680319384888365,
+ "pf": 0.8897255338344259,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "avg_R_gated": -0.04570134823121729,
+  "avg_R_complement": -0.035246460670235714,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": -0.00648618848604082,
+ "ci_lo": -0.02308724996156646,
+ "ci_hi": 0.01075739333948509,
+ "ci_method": "phase3_block",
+ "p": 0.45250926197762953,
+ "halves": {
+  "H1": {
+   "n": 69721,
+   "diff": -0.009966584936130153,
+   "ci_lo": -0.03776497304491651,
+   "ci_hi": 0.02256480024688834,
+   "ci_method": "block",
+   "p": 0.5172572715919815,
+   "start": "2016-01-03 23:35:00+00:00",
+   "end": "2020-12-31 21:20:00+00:00",
+   "n_gated": 24910
+  },
+  "H2": {
+   "n": 80753,
+   "diff": -0.00332305380306674,
+   "ci_lo": -0.024064074927243887,
+   "ci_hi": 0.01694666850388245,
+   "ci_method": "block",
+   "p": 0.7507676644111267,
+   "start": "2021-01-03 23:06:00+00:00",
+   "end": "2026-07-23 04:00:00+00:00",
+   "n_gated": 29194
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 36074,
+   "diff": -0.014457717381310194,
+   "ci_lo": -0.044777375952977365,
+   "ci_hi": 0.015607300934684019,
+   "ci_method": "block",
+   "p": 0.34796887158587675,
+   "start": "2016-01-03 23:35:00+00:00",
+   "end": "2018-08-22 09:28:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 37541,
+   "diff": -0.006361151147917632,
+   "ci_lo": -0.05225867286278174,
+   "ci_hi": 0.04766414405783293,
+   "ci_method": "block",
+   "p": 0.8029391193689036,
+   "start": "2018-08-22 11:28:00+00:00",
+   "end": "2021-04-12 08:40:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 38785,
+   "diff": 9.568754588981307e-05,
+   "ci_lo": -0.03237907342060911,
+   "ci_hi": 0.029648258942169128,
+   "ci_method": "block",
+   "p": 0.9951751055469745,
+   "start": "2021-04-12 08:50:00+00:00",
+   "end": "2023-12-01 20:15:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 38074,
+   "diff": -0.005208560870296935,
+   "ci_lo": -0.0338951966196365,
+   "ci_hi": 0.023196991211873463,
+   "ci_method": "block",
+   "p": 0.7206293427453627,
+   "start": "2023-12-03 23:37:00+00:00",
+   "end": "2026-07-23 04:00:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.02418887413303931,
+ "mde_threshold": 0.1,
+ "power_floor_n": 3166,
+ "verdict": "NULL",
+ "verdict_detail": "CI contains 0; powered (MDE 0.0242 <= 0.1000)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 150474,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "gate_mask_checked": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 213.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 12012,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "target_px",
+    "max_hold",
+    "htf",
+    "ltf",
+    "paired",
+    "level_id"
+   ],
+   "ignored": [],
+   "lookback": "10D",
+   "recent": "1D",
+   "events_fp": "8663b4f9f5d45652",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "per-row column",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": null,
+  "entry_mode": "next_open",
+  "hold_basis": "clock",
+  "mde_threshold": null,
+  "cluster": "column:level_id",
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "Per HTF->LTF point estimates (diagnostic only, no CI): {'1D->15min': {'n': 2440, 'avg_R': -0.0311, 'diff_vs_ctrl': 0.0186}, '1D->1h': {'n': 1994, 'avg_R': -0.0451, 'diff_vs_ctrl': 0.0355}, '1D->4h': {'n': 980, 'avg_R': -0.0085, 'diff_vs_ctrl': 0.0062}, '1h->15min': {'n': 17780, 'avg_R': -0.0457, 'diff_vs_ctrl': -0.005}, '1h->1min': {'n': 56496, 'avg_R': -0.0206, 'diff_vs_ctrl': 0.0082}, '1h->5min': {'n': 40738, 'avg_R': -0.0417, 'diff_vs_ctrl': 0.0013}, '4h->15min': {'n': 11372, 'avg_R': -0.0559, 'diff_vs_ctrl': -0.0067}, '4h->1h': {'n': 4186, 'avg_R': -0.0292, 'diff_vs_ctrl': 0.0176}, '4h->5min': {'n': 14488, 'avg_R': -0.0345, 'diff_vs_ctrl': 0.0146}}. Monthly/weekly rungs not tested (too few levels). Stop/target from the concept's execution block.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/time_guest_01a/timeframe-alignment-ladder.py",
+ "runtime_sec": 18.79,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:41:46+00:00",
+ "n_events_in": 164933,
+ "dropped": {
+  "no_bar_after_decision": 1,
+  "stop_not_beyond_entry": 49,
+  "target_not_beyond_entry": 14019,
+  "no_bars_in_hold": 390
+ },
+ "n_complement": 96370,
+ "gate_firing_rate": 0.3595571327937052,
+ "events_fp": "8663b4f9f5d45652",
+ "mask_fp": "66df86b1d53fc70c",
+ "mask_col": "paired",
+ "exit_mix": {
+  "stop": 0.3338200502735472,
+  "target": 0.3120102025728227,
+  "time": 0.35416974715363003
+ },
+ "gated_vs_own_control": {
+  "diff": 0.0009064013848546978,
+  "ci_lo": -0.009063085578098923,
+  "ci_hi": 0.010794481351783531,
+  "p": 0.8579960781409551
+ },
+ "complement": {
+  "n": 96370,
+  "avg_R": -0.027853870799340194,
+  "win_rate": 0.41655079381550275,
+  "pf": 0.9466192408470917,
+  "sd_R": 1.5159779932328021,
+  "exit_mix": {
+   "stop": 0.4646881809691813,
+   "target": 0.26591262841133134,
+   "time": 0.2693991906194874
+  },
+  "vs_own_control": {
+   "diff": 0.00739258987089552,
+   "ci_lo": -0.008384312367566007,
+   "ci_hi": 0.021037259111370603,
+   "p": 0.3246545887706314
+  }
+ },
+ "ci_components": {
+  "phase3_block": [
+   -0.02308724996156646,
+   0.01075739333948509
+  ],
+  "day_block": [
+   -0.020366146023461672,
+   0.009005673012249674
+  ],
+  "cluster": [
+   -0.020791584111057866,
+   0.009378710097282635
+  ]
+ },
+ "diff_meaning": "mean(R-ctrl | gated) - mean(R-ctrl | complement)",
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_eff_gated": 2720,
+  "n_eff_complement": 2722,
+  "n_eff": 2720
+ },
+ "ties": {
+  "real_ambiguous": 0.0005648816406821112,
+  "control_ambiguous": 0.0005927934393981684,
+  "real_gap_stop": 0.012380876430479684,
+  "control_gap_stop": 0.010125337267567818,
+  "gated_excess": -5.914534969688009e-05,
+  "complement_excess": -1.0376673238559755e-05,
+  "verdict_stop_first": "NULL"
+ },
+ "ctrl_overlap": 0.014355968472958783,
+ "exposure_bars": {
+  "real_mean": 134.53542804737032,
+  "control_mean": 133.45173651262013,
+  "hold_basis": "clock"
+ },
+ "run_id": "788571d16b924c85863a89639011a72f",
+ "hyp_key": "9981551161418195"
+}

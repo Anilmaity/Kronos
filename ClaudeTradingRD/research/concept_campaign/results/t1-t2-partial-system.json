@@ -1,0 +1,262 @@
+{
+ "concept_id": "t1-t2-partial-system",
+ "reading": null,
+ "testable": true,
+ "test_type": "trade",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "base book: 1h bare CISD (series_open, 2/2 swings, max_wait=3), decide at the confirming 1h close, enter next M1 open, stop at the protected swing, 10h hold",
+   "T1 = nearest confirmed unbroken 1h 2/2 swing high above entry (long) / low below entry (short), last 200 1h bars, at least 0.25x initial risk from entry",
+   "T2 = prior completed NY trading day's high (long) / low (short) at the decision; keep only trades with T2 beyond T1",
+   "scan M1 from entry within the 10h hold: first of stop / T1 (stop wins ties); keep trades that reach T1 first",
+   "event (the runner) at the close of the T1 M1 bar: same direction, stop = original entry price (break even), target = T2, hold 10h; scored vs matched random entry",
+   "the 20% partial at T1 is identical under any variant and is not scored"
+  ],
+  "params": {
+   "base_tf": "1h",
+   "level_rule": "series_open",
+   "swing": "2/2",
+   "max_wait": 3,
+   "base_hold": "10h",
+   "t1": "nearest unbroken 1h swing",
+   "t1_lookback_bars": 200,
+   "min_t1_R": 0.25,
+   "t2": "prior trading day high/low (18:00 NY roll)",
+   "be_stop": "entry price",
+   "runner_hold": "10h"
+  }
+ },
+ "params_source": {
+  "base_tf": "phase3: meta/conjunction_preregistration.md \u00a71.8-1.13 (locked 1h rung-0 book)",
+  "level_rule": "phase3: locked config",
+  "swing": "phase3: locked config",
+  "max_wait": "phase3: locked config",
+  "base_hold": "phase3: 10 entry-TF bars (\u00a71.13)",
+  "t1": "corpus: V8P6lNIisvc 'my T1 is where I'm going to move stops break even'; yaml: 'T1 := the nearest prior swing low (for a short: high) that the model's structure targets'",
+  "t1_lookback_bars": "declared-before-run: 200 1h bars (~8 sessions) search window",
+  "min_t1_R": "declared-before-run: T1 closer than 0.25x initial risk is not a structural target (would make the break-even runner's R unit ~0); set after seeing only the T1-distance distribution, no outcomes",
+  "t2": "declared-before-run: prior day high/low as the higher-timeframe liquidity objective (yaml: 'T2 := the higher-timeframe liquidity objective')",
+  "be_stop": "corpus: V8P6lNIisvc 'move stops break even' (yaml: 'move the stop to the entry price')",
+  "runner_hold": "declared-before-run: 10h, same as the phase-3 base hold"
+ },
+ "n": 1134,
+ "span": {
+  "start": "2016-01-06 01:21:00+00:00",
+  "end": "2026-07-22 12:57:00+00:00",
+  "years": 10.541
+ },
+ "avg_R": 0.0048401134196606795,
+ "avg_R_gross": 0.044840113419660675,
+ "win_rate": 0.41887125220458554,
+ "pf": 1.0086766366754463,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "n": 5670,
+  "avg_R": -0.027275918921977903,
+  "win_rate": 0.4229276895943563,
+  "pf": 0.9495790221864531,
+  "sd_R": 1.5066778428106418,
+  "exit_mix": {
+   "stop": 0.49858906525573193,
+   "target": 0.33174603174603173,
+   "time": 0.16966490299823633
+  },
+  "avg_R_gross": 0.012724081078022111,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": 0.03211603234163858,
+ "ci_lo": -0.07050367548262515,
+ "ci_hi": 0.13210817342556017,
+ "ci_method": "day_block",
+ "p": 0.534370459407381,
+ "halves": {
+  "H1": {
+   "n": 571,
+   "diff": 0.00922797283920358,
+   "ci_lo": -0.1291431777254178,
+   "ci_hi": 0.14241642394236176,
+   "ci_method": "iid",
+   "p": 0.8940315700846274,
+   "start": "2016-01-06 01:21:00+00:00",
+   "end": "2020-12-30 14:55:00+00:00"
+  },
+  "H2": {
+   "n": 563,
+   "diff": 0.05532932181924137,
+   "ci_lo": -0.09527261782944729,
+   "ci_hi": 0.2295846613615466,
+   "ci_method": "block",
+   "p": 0.5043649040978238,
+   "start": "2021-01-12 05:40:00+00:00",
+   "end": "2026-07-22 12:57:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 304,
+   "diff": 0.023730064926081956,
+   "ci_lo": -0.16779760576630132,
+   "ci_hi": 0.22473948914695588,
+   "ci_method": "block",
+   "p": 0.8126788177639869,
+   "start": "2016-01-06 01:21:00+00:00",
+   "end": "2018-08-22 06:08:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 302,
+   "diff": 0.004710556896353576,
+   "ci_lo": -0.15435531115426107,
+   "ci_hi": 0.18325850190393816,
+   "ci_method": "iid",
+   "p": 0.9563832076257746,
+   "start": "2018-08-23 01:01:00+00:00",
+   "end": "2021-04-12 05:29:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 277,
+   "diff": 0.05532188269236875,
+   "ci_lo": -0.19612839502026558,
+   "ci_hi": 0.29906788475626,
+   "ci_method": "block",
+   "p": 0.6614421657361105,
+   "start": "2021-04-12 11:27:00+00:00",
+   "end": "2023-11-30 10:20:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 251,
+   "diff": 0.04963701692989772,
+   "ci_lo": -0.1696506613784336,
+   "ci_hi": 0.2812470164206362,
+   "ci_method": "block",
+   "p": 0.6660868205150219,
+   "start": "2023-12-06 07:44:00+00:00",
+   "end": "2026-07-22 12:57:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.14480733236004292,
+ "mde_threshold": 0.1,
+ "power_floor_n": 2378,
+ "verdict": "UNDERPOWERED",
+ "verdict_detail": "CI contains 0; MDE 0.1448 vs threshold 0.1000, effective n 932 (power floor n=2378, have 1134)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 1134,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 1.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 103,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "target_px"
+   ],
+   "ignored": [],
+   "lookback": "45D",
+   "recent": "1D",
+   "events_fp": "3736ef3460c9d18e",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "10h",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": null,
+  "entry_mode": "next_open",
+  "hold_basis": "clock",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "Management concept tested as the post-T1 runner leg vs a matched random control of the same geometry. A NULL means the break-even runner is random geometry (no momentum after T1), i.e. the scheme reduces variance but does not add expectancy.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/risk_guest_02a/t1-t2-partial-system.py",
+ "runtime_sec": 1.15,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:09:23+00:00",
+ "n_events_in": 1172,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 7,
+  "target_not_beyond_entry": 31,
+  "no_bars_in_hold": 0
+ },
+ "events_fp": "3736ef3460c9d18e",
+ "sd_R": 1.5999798842680217,
+ "exit_mix": {
+  "stop": 0.5167548500881834,
+  "target": 0.35008818342151676,
+  "time": 0.13315696649029982
+ },
+ "trades_per_year": 107.58272727272728,
+ "ci_components": {
+  "phase3_iid": [
+   -0.06158946021677654,
+   0.1376885762196557
+  ],
+  "day_block": [
+   -0.07050367548262515,
+   0.13210817342556017
+  ]
+ },
+ "diff_win": -0.0040564373897707395,
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 932,
+  "n_clusters": null,
+  "n_eff": 932
+ },
+ "ties": {
+  "real_ambiguous": 0.0008818342151675485,
+  "control_ambiguous": 0.0010582010582010583,
+  "real_gap_stop": 0.012345679012345678,
+  "control_gap_stop": 0.008465608465608466,
+  "verdict_stop_first": "UNDERPOWERED"
+ },
+ "ctrl_overlap": 0.0001763668430335097,
+ "exposure_bars": {
+  "real_mean": 554.4779541446209,
+  "control_mean": 547.1239858906525,
+  "hold_basis": "clock"
+ },
+ "run_id": "63b9111fac0c49c0a89725d7ab6db7b3",
+ "hyp_key": "96dfc1e106e52488"
+}

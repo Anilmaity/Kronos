@@ -1,0 +1,199 @@
+{
+ "concept_id": "buyside-sellside-liquidity",
+ "reading": "a",
+ "testable": true,
+ "test_type": "rate",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "pool := 15m fractal-2/2 swing high (buyside) / swing low (sellside), known at the close of the 2nd right-hand bar (untaken by construction)",
+   "hit := any M1 high >= swing high (low <= swing low) within the next 360 M1 bars from the first M1 bar at/after the confirmation",
+   "null := level at the same signed distance from the first M1 open, at matched random moments (+/-30d, 15m grid), same 360-bar horizon"
+  ],
+  "params": {
+   "tf": "15min",
+   "left": 2,
+   "right": 2,
+   "horizon_m1_bars": 360
+  }
+ },
+ "params_source": {
+  "tf": "corpus: source YAML timeframes.htf ['15m'] (education_ict_03 / the_foundation_01)",
+  "left": "threshold_fits: short-term high/low = fractal 2/2 (displacement_windows)",
+  "right": "threshold_fits: short-term high/low = fractal 2/2 (displacement_windows)",
+  "horizon_m1_bars": "declared-before-run: 'within N bars' has no N in the corpus; N = 24 x 15m bars = 360 trading minutes"
+ },
+ "n": 67889,
+ "span": {
+  "start": "2016-01-03 23:45:00+00:00",
+  "end": "2026-07-23 04:00:00+00:00",
+  "years": 10.549
+ },
+ "avg_R": null,
+ "avg_R_gross": null,
+ "win_rate": null,
+ "pf": null,
+ "observed_rate": 0.6982869095140597,
+ "null_rate": 0.6947340511717656,
+ "lift": 1.005113983309587,
+ "control": {
+  "rate": 0.6947340511717656,
+  "reps": 5,
+  "kind": "null_fn x5"
+ },
+ "diff": 0.0035528583422940185,
+ "ci_lo": -0.00020968050793676859,
+ "ci_hi": 0.007465495146436353,
+ "ci_method": "phase3_block",
+ "p": 0.06959391563060952,
+ "halves": {
+  "H1": {
+   "n": 32776,
+   "diff": 0.0014888943129117704,
+   "ci_lo": -0.004632352941176454,
+   "ci_hi": 0.00692686721991699,
+   "ci_method": "iid",
+   "p": 0.6136224964891506,
+   "start": "2016-01-03 23:45:00+00:00",
+   "end": "2020-12-31 21:45:00+00:00"
+  },
+  "H2": {
+   "n": 35113,
+   "diff": 0.005479452054794498,
+   "ci_lo": -0.0006276877509754058,
+   "ci_hi": 0.011016147865463052,
+   "ci_method": "iid",
+   "p": 0.06508526633064944,
+   "start": "2021-01-03 23:30:00+00:00",
+   "end": "2026-07-23 04:00:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 17438,
+   "diff": -0.00411744466108499,
+   "ci_lo": -0.01165299919715564,
+   "ci_hi": 0.004037446954926097,
+   "ci_method": "iid",
+   "p": 0.30364090233369473,
+   "start": "2016-01-03 23:45:00+00:00",
+   "end": "2018-08-22 10:45:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 17078,
+   "diff": 0.0086661201545849,
+   "ci_lo": 0.0008071788265791691,
+   "ci_hi": 0.01678211734396022,
+   "ci_method": "block",
+   "p": 0.03346237669594176,
+   "start": "2018-08-22 11:30:00+00:00",
+   "end": "2021-04-12 08:00:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 16784,
+   "diff": 0.005767397521448947,
+   "ci_lo": -0.002372497616777819,
+   "ci_hi": 0.013120829361296429,
+   "ci_method": "iid",
+   "p": 0.1445114841731971,
+   "start": "2021-04-12 09:00:00+00:00",
+   "end": "2023-12-01 21:45:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 16589,
+   "diff": 0.004111157996262715,
+   "ci_lo": -0.003958647296401291,
+   "ci_hi": 0.01262613780215815,
+   "ci_method": "iid",
+   "p": 0.3311995868997394,
+   "start": "2023-12-04 00:30:00+00:00",
+   "end": "2026-07-23 04:00:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.0054854724335898315,
+ "mde_threshold": 0.05,
+ "power_floor_n": 818,
+ "verdict": "NULL",
+ "verdict_detail": "CI contains 0; powered (MDE 0.0055 <= 0.0500)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 67889,
+  "min_slack_min": 0.0,
+  "passed": true,
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 4922,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "level",
+    "side"
+   ],
+   "ignored": [],
+   "lookback": "20D",
+   "recent": "1D",
+   "events_fp": "d7461b9907f589df",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "reps": 5,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "mde_threshold": null,
+  "cluster": null,
+  "outcome_horizon": "1 days 00:00:00",
+  "null_kind": "null_fn x5"
+ },
+ "notes": "The rate_test ran twice: the first run's write_result was refused on a params_source schema error (keys/prefixes only). The detector, null and test are unchanged between runs, and the run is deterministic, so the numbers match the first run (diff +0.0036, CI [-0.0002, +0.0075], NULL).",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/liquidity_own_01a/buyside-sellside-liquidity.py",
+ "runtime_sec": 8.36,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:10:03+00:00",
+ "dropped": {
+  "nan_rows": 0
+ },
+ "null_kind": "null_fn x5",
+ "events_fp": "d7461b9907f589df",
+ "predictors_probed": true,
+ "ci_components": {
+  "phase3_block": [
+   -0.00020968050793676859,
+   0.007465495146436353
+  ],
+  "day_block": [
+   -0.0002915734584294882,
+   0.007031685519601023
+  ]
+ },
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 2723,
+  "n_clusters": null,
+  "n_eff": 2723
+ },
+ "run_id": "f458bb1a3c5f4a8a812934543bf5f62d",
+ "hyp_key": "716f3b4f1f3487ba"
+}

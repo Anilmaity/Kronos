@@ -1,0 +1,262 @@
+{
+ "concept_id": "sons-model",
+ "reading": null,
+ "testable": true,
+ "test_type": "trade",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "draw: nearer untaken 1H old high/low (3-candle fractal, formed within 72h); 15m fallback",
+   "stop raid on 15m against the draw (untaken 15m 3-candle swing within 12h taken), then an up-close (long) candle closing back beyond the deepest raided level within 3 candles",
+   "entry: first 1m FVG after that close (within 30 min), then the first 1m bar trading back into the gap (within 30 min); decide at its close, enter next M1 open",
+   "stop at the raided extreme; target fixed 1:1; 150 min max hold"
+  ],
+  "params": {
+   "draw_tf": "1h",
+   "raid_tf": "15min",
+   "entry_tf": "1min",
+   "swing": "1/1 fractal",
+   "draw_lookback": "72h",
+   "raid_lookback": "12h",
+   "close_back_wait": 3,
+   "fvg_wait": "30min",
+   "fill_wait": "30min",
+   "rr": 1.0,
+   "max_hold": "150min",
+   "draw_rule": "nearer untaken extreme"
+  }
+ },
+ "params_source": {
+  "draw_tf": "corpus: AdmnWLjf8rY 'I want to look for a four hour or one hour draw on liquidity'",
+  "raid_tf": "corpus: AdmnWLjf8rY 'looking for a stop rate on the 15 minute chart in the opposite direction'",
+  "entry_tf": "corpus: sons-model ladder '15-minute stop raid + candle close -> 1-minute FVG entry'",
+  "swing": "method_spec: \u00a71.1 three-candle fractal",
+  "draw_lookback": "method_spec: \u00a71.1 relevant-swing look-back, hourly chart -> three days",
+  "raid_lookback": "method_spec: \u00a71.1 three higher-timeframe candles (15m -> three 4H candles)",
+  "close_back_wait": "method_spec: \u00a74.2 closure within 1-3 candles ('I prefer 1, 2, maybe three')",
+  "fvg_wait": "declared-before-run: two 15m candles for the first 1m gap to form",
+  "fill_wait": "declared-before-run: two 15m candles for the retrace into the gap",
+  "rr": "corpus: q40pRwjuPYQ 'then I'm targeting a fixed one: one'",
+  "max_hold": "phase3: 10 structure-TF bars (15m) (\u00a71.13 convention)",
+  "draw_rule": "method_spec: \u00a72.2 / detectors.bias.draw_on_liquidity 'proximity' default"
+ },
+ "n": 15957,
+ "span": {
+  "start": "2016-01-04 09:05:00+00:00",
+  "end": "2026-07-22 23:40:00+00:00",
+  "years": 10.546
+ },
+ "avg_R": -0.024497159336123373,
+ "avg_R_gross": 0.01550284066387666,
+ "win_rate": 0.5028514131729022,
+ "pf": 0.9475122346130557,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "n": 79785,
+  "avg_R": -0.05190174284365907,
+  "win_rate": 0.4865325562449082,
+  "pf": 0.8878928865097395,
+  "sd_R": 0.9187582270492087,
+  "exit_mix": {
+   "stop": 0.41201980322115683,
+   "target": 0.4017923168515385,
+   "time": 0.18618787992730462
+  },
+  "avg_R_gross": -0.011901742843659044,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": 0.027404583507535694,
+ "ci_lo": 0.011653889436966448,
+ "ci_hi": 0.043426506415322176,
+ "ci_method": "phase3_iid",
+ "p": 0.0007221612182121374,
+ "halves": {
+  "H1": {
+   "n": 7285,
+   "diff": 0.05512346109947272,
+   "ci_lo": 0.0321744496656118,
+   "ci_hi": 0.07887939534546257,
+   "ci_method": "iid",
+   "p": 3.7191349061431887e-06,
+   "start": "2016-01-04 09:05:00+00:00",
+   "end": "2020-12-31 21:26:00+00:00"
+  },
+  "H2": {
+   "n": 8672,
+   "diff": 0.004119064220489896,
+   "ci_lo": -0.018180931082291584,
+   "ci_hi": 0.025010983317040002,
+   "ci_method": "iid",
+   "p": 0.7085307670802253,
+   "start": "2021-01-04 00:19:00+00:00",
+   "end": "2026-07-22 23:40:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 3659,
+   "diff": 0.0619603795920283,
+   "ci_lo": 0.02541595551357941,
+   "ci_hi": 0.09327326481765327,
+   "ci_method": "block",
+   "p": 0.0003445437759638807,
+   "start": "2016-01-04 09:05:00+00:00",
+   "end": "2018-08-22 08:24:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 4056,
+   "diff": 0.0420568246648964,
+   "ci_lo": 0.008959788776263938,
+   "ci_hi": 0.07101603346844305,
+   "ci_method": "iid",
+   "p": 0.007892886858402443,
+   "start": "2018-08-22 12:51:00+00:00",
+   "end": "2021-04-12 07:58:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 4194,
+   "diff": 0.014440204591800364,
+   "ci_lo": -0.016082286586351916,
+   "ci_hi": 0.045479758634651674,
+   "ci_method": "block",
+   "p": 0.35784886804517246,
+   "start": "2021-04-12 11:23:00+00:00",
+   "end": "2023-12-01 16:03:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 4048,
+   "diff": -0.005079740315295171,
+   "ci_lo": -0.03720006614425566,
+   "ci_hi": 0.027236128214772712,
+   "ci_method": "iid",
+   "p": 0.7573046188943127,
+   "start": "2023-12-04 06:08:00+00:00",
+   "end": "2026-07-22 23:40:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.022707990334849708,
+ "mde_threshold": 0.1,
+ "power_floor_n": 823,
+ "verdict": "EDGE",
+ "verdict_detail": "CI excludes 0 in claimed direction; halves agree (H1 +0.0551, H2 +0.0041); powered",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 15957,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 60.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 1171,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "rr"
+   ],
+   "ignored": [],
+   "lookback": "10D",
+   "recent": "1D",
+   "events_fp": "755745d3bd0dcfbb",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "150min",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": null,
+  "entry_mode": "next_open",
+  "hold_basis": "clock",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "Sub-minute data does not exist, so the 5m/30s base version is replaced by the concept's own 15m/1m ladder. The NQ 12-handle stop cap has no gold equivalent and is not applied.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/model_own_04a/sons-model.py",
+ "runtime_sec": 4.23,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:20:26+00:00",
+ "n_events_in": 15965,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 7,
+  "target_not_beyond_entry": 0,
+  "no_bars_in_hold": 1
+ },
+ "events_fp": "755745d3bd0dcfbb",
+ "sd_R": 0.9416299807201974,
+ "exit_mix": {
+  "stop": 0.42088111800463746,
+  "target": 0.43936830231246476,
+  "time": 0.13975057968289778
+ },
+ "trades_per_year": 1513.0566588785045,
+ "ci_components": {
+  "phase3_iid": [
+   0.011653889436966448,
+   0.043426506415322176
+  ],
+  "day_block": [
+   0.012509222122329723,
+   0.04333038130909752
+  ]
+ },
+ "diff_win": 0.016318856927993952,
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 2717,
+  "n_clusters": null,
+  "n_eff": 2717
+ },
+ "ties": {
+  "real_ambiguous": 0.003948110547095319,
+  "control_ambiguous": 0.006229241085417058,
+  "real_gap_stop": 0.011029642163313907,
+  "control_gap_stop": 0.011017108479037413,
+  "verdict_stop_first": "EDGE"
+ },
+ "ctrl_overlap": 0.002168327379833302,
+ "exposure_bars": {
+  "real_mean": 143.46437300244406,
+  "control_mean": 142.66898539825783,
+  "hold_basis": "clock"
+ },
+ "run_id": "c38c4b7dbfd74fe59621450512a1b3d4",
+ "hyp_key": "fb0aba77c20acda2"
+}

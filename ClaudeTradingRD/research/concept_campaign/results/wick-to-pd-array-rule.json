@@ -1,0 +1,214 @@
+{
+ "concept_id": "wick-to-pd-array-rule",
+ "reading": null,
+ "testable": true,
+ "test_type": "rate",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "4H candles (forex grid); outcome = the next candle's high and low (2 rows/candle, cluster = candle).",
+   "PD arrays on 4H and 1D: 3-bar FVGs; order blocks = last opposing-close bar within 10 bars before a close beyond the most recent confirmed 2/2 swing; zone = bar range.",
+   "Active: formed within the last 60 4H / 20 1D bars and not closed through the far edge; all fixed at the prior 4H close.",
+   "Hit = extreme inside any active zone. Null = same %-offset from open applied at a random other 4H candle within +/-30d against its own arrays."
+  ],
+  "params": {
+   "swing_left_right": [
+    2,
+    2
+   ],
+   "ob_lookback_bars": 10,
+   "active_4h_bars": 60,
+   "active_1d_bars": 20,
+   "tolerance": "inside [lo, hi]",
+   "grid4h": "forex",
+   "null": "4H-close grid, +/-30d, 5 reps"
+  }
+ },
+ "params_source": {
+  "swing_left_right": "declared-before-run: fractal 2/2",
+  "ob_lookback_bars": "declared-before-run: 10 bars",
+  "active_4h_bars": "declared-before-run: 60 4H bars (~10 trading days)",
+  "active_1d_bars": "declared-before-run: 20 daily bars (~1 month)",
+  "tolerance": "declared-before-run: the extreme must lie inside the zone (corpus leaves tolerance open)",
+  "grid4h": "session_window_fit: forex grid (carried as a knob)",
+  "null": "declared-before-run: locked reps/window of the harness"
+ },
+ "n": 32590,
+ "span": {
+  "start": "2016-01-01 14:00:00+00:00",
+  "end": "2026-07-23 01:00:00+00:00",
+  "years": 10.554
+ },
+ "avg_R": null,
+ "avg_R_gross": null,
+ "win_rate": null,
+ "pf": null,
+ "observed_rate": 0.5999079472230746,
+ "null_rate": 0.5955200981896287,
+ "lift": 1.0073680956306679,
+ "control": {
+  "rate": 0.5955200981896287,
+  "reps": 5,
+  "kind": "null_fn x5"
+ },
+ "diff": 0.004387849033445912,
+ "ci_lo": -0.010550935869838319,
+ "ci_hi": 0.019573642221596018,
+ "ci_method": "phase3_block",
+ "p": 0.5680239857993175,
+ "halves": {
+  "H1": {
+   "n": 15462,
+   "diff": 0.005238649592549494,
+   "ci_lo": -0.019032466692553835,
+   "ci_hi": 0.02852250679082961,
+   "ci_method": "block",
+   "p": 0.6658731506850264,
+   "start": "2016-01-01 14:00:00+00:00",
+   "end": "2020-12-31 22:00:00+00:00"
+  },
+  "H2": {
+   "n": 17128,
+   "diff": 0.003619803829986057,
+   "ci_lo": -0.016412599252697495,
+   "ci_hi": 0.025005546473604836,
+   "ci_method": "block",
+   "p": 0.7319082369565676,
+   "start": "2021-01-04 02:00:00+00:00",
+   "end": "2026-07-23 01:00:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 8144,
+   "diff": 0.0066797642436148275,
+   "ci_lo": -0.022986861493133965,
+   "ci_hi": 0.03856642927307233,
+   "ci_method": "block",
+   "p": 0.6705519146926516,
+   "start": "2016-01-01 14:00:00+00:00",
+   "end": "2018-08-22 09:00:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 8146,
+   "diff": 0.0039283083722072565,
+   "ci_lo": -0.029196538178268613,
+   "ci_hi": 0.036452860299518254,
+   "ci_method": "block",
+   "p": 0.8145506953995748,
+   "start": "2018-08-22 13:00:00+00:00",
+   "end": "2021-04-12 05:00:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 8208,
+   "diff": 0.007017543859649145,
+   "ci_lo": -0.022916666666679474,
+   "ci_hi": 0.03726425438594786,
+   "ci_method": "block",
+   "p": 0.647604333775196,
+   "start": "2021-04-12 09:00:00+00:00",
+   "end": "2023-12-01 22:00:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 8092,
+   "diff": -0.00012357884330205238,
+   "ci_lo": -0.031397676717757304,
+   "ci_hi": 0.030464656450811065,
+   "ci_method": "block",
+   "p": 0.9937521363448565,
+   "start": "2023-12-04 02:00:00+00:00",
+   "end": "2026-07-23 01:00:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.021530131704534133,
+ "mde_threshold": 0.05,
+ "power_floor_n": 6043,
+ "verdict": "NULL",
+ "verdict_detail": "CI contains 0; powered (MDE 0.0215 <= 0.0500)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 32592,
+  "min_slack_min": 0.0,
+  "passed": true,
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 100,
+   "events_compared": 1278,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "side",
+    "zones",
+    "qid"
+   ],
+   "ignored": [],
+   "lookback": "90D",
+   "recent": "1D",
+   "events_fp": "1a1a9ea9a0614429",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "reps": 5,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "mde_threshold": null,
+  "cluster": "column:qid",
+  "outcome_horizon": "1 days 00:00:00",
+  "null_kind": "null_fn x5"
+ },
+ "notes": "Breakers and 1W/1M arrays not modelled (1D is the highest array TF used). The null keeps each extreme's distance from its candle open and swaps only the arrays, so zone density near price cancels.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/structure_guest_01b/wick-to-pd-array-rule.py",
+ "runtime_sec": 6.45,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:24:17+00:00",
+ "dropped": {
+  "nan_rows": 2
+ },
+ "null_kind": "null_fn x5",
+ "events_fp": "1a1a9ea9a0614429",
+ "predictors_probed": true,
+ "ci_components": {
+  "phase3_block": [
+   -0.010550935869838319,
+   0.019573642221596018
+  ],
+  "day_block": [
+   -0.007826671377475997,
+   0.016511478972976588
+  ],
+  "cluster": [
+   -0.002142528382946307,
+   0.010452899662468538
+  ]
+ },
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 2742,
+  "n_clusters": 16295,
+  "n_eff": 2742
+ },
+ "run_id": "5672a5a704954a58ac44bf7839ebec91",
+ "hyp_key": "7aa1536df2e2996f"
+}

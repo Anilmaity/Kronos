@@ -1,0 +1,254 @@
+{
+ "concept_id": "old-high-low-three-outcomes",
+ "reading": null,
+ "testable": true,
+ "test_type": "trade",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "old high/low = previous trading day's high/low (18:00 NY roll), read at the 15m bar start; first interaction per level per day, the bar must open back inside",
+   "displacement = a 15m close beyond the level",
+   "branch 3 (no close beyond) -> fade at that close, stop = the bar's extreme",
+   "branch 2 (close beyond, then a close back inside within 3 bars) -> fade at that close, stop = extreme since the break",
+   "branch 1 (close beyond, no close back inside for 3 bars) -> continue at the 3rd bar's close, stop = the retracement extreme of those bars",
+   "2R, hold 150 min, next M1 open"
+  ],
+  "params": {
+   "tf": "15min",
+   "k_bars": 3,
+   "level": "PDH/PDL",
+   "rr": 2.0,
+   "max_hold": "150min",
+   "displacement": "close beyond"
+  }
+ },
+ "params_source": {
+  "tf": "declared-before-run: 15m from the concept's ltf list (15m/5m/1m) under 1D levels (htf 1D/4H)",
+  "k_bars": "declared-before-run: 'how many candles may pass before displacement back in no longer counts is not stated'; 3 bars",
+  "level": "declared-before-run: old high/low = previous day high/low (the method's marked daily levels, method_spec 2.4)",
+  "rr": "phase3: 2R primary target ('opposite side of the range' is a narrative target)",
+  "max_hold": "phase3: 10 entry-TF bars",
+  "displacement": "threshold_fits: displacement = aggressive = a candle closes beyond the reference level (grade A, no knob)"
+ },
+ "n": 2561,
+ "span": {
+  "start": "2016-01-06 07:15:00+00:00",
+  "end": "2026-07-22 01:00:00+00:00",
+  "years": 10.538
+ },
+ "avg_R": -0.014825145695166925,
+ "avg_R_gross": 0.025174854304833107,
+ "win_rate": 0.39593908629441626,
+ "pf": 0.9735559361346217,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "n": 12805,
+  "avg_R": -0.0659141587716554,
+  "win_rate": 0.38328777821163607,
+  "pf": 0.8764068548113579,
+  "sd_R": 1.1536076572070748,
+  "exit_mix": {
+   "stop": 0.4664584146817649,
+   "target": 0.18750488090589612,
+   "time": 0.3460367044123389
+  },
+  "avg_R_gross": -0.02591415877165538,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": 0.051089013076488485,
+ "ci_lo": 0.000597216788841316,
+ "ci_hi": 0.1030263326039252,
+ "ci_method": "day_block",
+ "p": 0.05056425410838807,
+ "halves": {
+  "H1": {
+   "n": 1214,
+   "diff": 0.037994188083308685,
+   "ci_lo": -0.04221610342361736,
+   "ci_hi": 0.11190410537132524,
+   "ci_method": "iid",
+   "p": 0.33386771799810633,
+   "start": "2016-01-06 07:15:00+00:00",
+   "end": "2020-12-30 23:30:00+00:00"
+  },
+  "H2": {
+   "n": 1347,
+   "diff": 0.06289088207553847,
+   "ci_lo": -0.012454218494394287,
+   "ci_hi": 0.12925239607721833,
+   "ci_method": "iid",
+   "p": 0.08191080156613594,
+   "start": "2021-01-04 23:45:00+00:00",
+   "end": "2026-07-22 01:00:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 645,
+   "diff": 0.03842499807628703,
+   "ci_lo": -0.06697042014952628,
+   "ci_hi": 0.1515061621506613,
+   "ci_method": "block",
+   "p": 0.4905558321313419,
+   "start": "2016-01-06 07:15:00+00:00",
+   "end": "2018-08-22 00:45:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 635,
+   "diff": 0.05429384003996009,
+   "ci_lo": -0.053955933068399936,
+   "ci_hi": 0.15819744155703594,
+   "ci_method": "iid",
+   "p": 0.3157741995806274,
+   "start": "2018-08-23 01:15:00+00:00",
+   "end": "2021-04-09 13:30:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 658,
+   "diff": 0.07700113323197386,
+   "ci_lo": -0.0277010269105428,
+   "ci_hi": 0.1895175025416087,
+   "ci_method": "block",
+   "p": 0.1646615244164633,
+   "start": "2021-04-12 14:45:00+00:00",
+   "end": "2023-12-01 10:00:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 623,
+   "diff": 0.03356581803799108,
+   "ci_lo": -0.06630536879987374,
+   "ci_hi": 0.13707628951195153,
+   "ci_method": "iid",
+   "p": 0.5176712220988711,
+   "start": "2023-12-04 00:00:00+00:00",
+   "end": "2026-07-22 01:00:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.07320641461547299,
+ "mde_threshold": 0.1,
+ "power_floor_n": 1373,
+ "verdict": "EDGE",
+ "verdict_detail": "CI excludes 0 in claimed direction; halves agree (H1 +0.0380, H2 +0.0629); powered",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 2561,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 64.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 205,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "rr",
+    "branch",
+    "side"
+   ],
+   "ignored": [],
+   "lookback": "10D",
+   "recent": "1D",
+   "events_fp": "c482e1958e577362",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "150min",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": null,
+  "entry_mode": "next_open",
+  "hold_basis": "clock",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "One book of every branch-directed trade. Branch 3's 'return to premium/discount before trusting' refinement is not applied. Branch counts: {3: 1227, 1: 727, 2: 610}",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/structure_own_05b/old-high-low-three-outcomes.py",
+ "runtime_sec": 2.71,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:29:43+00:00",
+ "n_events_in": 2564,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 3,
+  "target_not_beyond_entry": 0,
+  "no_bars_in_hold": 0
+ },
+ "events_fp": "c482e1958e577362",
+ "sd_R": 1.2363811278577914,
+ "exit_mix": {
+  "stop": 0.5060523233112065,
+  "target": 0.22374072627879735,
+  "time": 0.2702069504099961
+ },
+ "trades_per_year": 243.0255261106781,
+ "ci_components": {
+  "phase3_iid": [
+   -0.0003923988169964305,
+   0.10088142991728868
+  ],
+  "day_block": [
+   0.000597216788841316,
+   0.1030263326039252
+  ]
+ },
+ "diff_win": 0.0126513080827802,
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 2265,
+  "n_clusters": null,
+  "n_eff": 2265
+ },
+ "ties": {
+  "real_ambiguous": 0.003904724716907458,
+  "control_ambiguous": 0.006638032018742679,
+  "real_gap_stop": 0.009371339320577899,
+  "control_gap_stop": 0.009918000780944944,
+  "verdict_stop_first": "EDGE"
+ },
+ "ctrl_overlap": 0.006794221007418977,
+ "exposure_bars": {
+  "real_mean": 147.60601327606403,
+  "control_mean": 143.3983600156189,
+  "hold_basis": "clock"
+ },
+ "run_id": "386804a0589544ef9167bbed364e8773",
+ "hyp_key": "b0498a4736485dd0"
+}

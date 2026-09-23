@@ -1,0 +1,276 @@
+{
+ "concept_id": "no-news-judas-swing",
+ "reading": null,
+ "testable": true,
+ "test_type": "gate",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "each NY trading day: Judas leg = M1 bars 09:30-09:44 NY (>= 10 present); direction = opposite sign(09:44 close - 09:30 open); decide 09:45 NY, enter the next M1 open",
+   "stop at the Judas leg's extreme on the move side (its high for a short, low for a long); target 2R; time exit 375 min (16:00 NY)",
+   "gate (pass) = no-news day; news day = derived NFP Friday OR 08:30 NY 5m candle range >= 3x the median range of the prior 288 5m bars (known 08:35 NY)",
+   "claim '+': the 09:30 fade does better on no-news days than on news days"
+  ],
+  "params": {
+   "judas_min": 15,
+   "min_cover": 10,
+   "rr": 2.0,
+   "max_hold": "375min",
+   "spike_mult": 3.0,
+   "median_bars": 288,
+   "nfp_rule": "BLS reference-week rule"
+  }
+ },
+ "params_source": {
+  "judas_min": "declared-before-run: the corpus gives no duration for the swing; first 15 minutes (three 5m bars) off 09:30",
+  "min_cover": "declared-before-run: 2/3 of the leg's M1 bars present",
+  "rr": "declared-before-run: no target size stated ('opposite end of the range'); 2R as in the phase-3 books",
+  "max_hold": "corpus: concept measurable 'range of the 09:30-to-close leg' -> exit 16:00 NY",
+  "spike_mult": "declared-before-run: same 3x 08:30 footprint proxy as entry_own_04a/ignore-news-wick-in-range-fib",
+  "median_bars": "declared-before-run: prior 24h of 5m bars (288)",
+  "nfp_rule": "declared-before-run: BLS Employment Situation schedule (as risk_guest_02b/pre-event-avoidance-rule)"
+ },
+ "n": 1685,
+ "span": {
+  "start": "2016-01-04 14:45:00+00:00",
+  "end": "2026-07-22 13:45:00+00:00",
+  "years": 10.543
+ },
+ "avg_R": -0.01724353470368839,
+ "avg_R_gross": 0.022756465296311635,
+ "win_rate": 0.34183976261127597,
+ "pf": 0.9747814068511743,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "avg_R_gated": -0.0763472546738065,
+  "avg_R_complement": -0.059357269429797826,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": 0.019709970440433135,
+ "ci_lo": -0.10079136501434786,
+ "ci_hi": 0.14012196103199315,
+ "ci_method": "phase3_iid",
+ "p": 0.7484353521659872,
+ "halves": {
+  "H1": {
+   "n": 1264,
+   "diff": 0.030684756741665885,
+   "ci_lo": -0.14983090334301166,
+   "ci_hi": 0.20454976472364342,
+   "ci_method": "iid",
+   "p": 0.7342972845535074,
+   "start": "2016-01-04 14:45:00+00:00",
+   "end": "2020-12-31 14:45:00+00:00",
+   "n_gated": 827
+  },
+  "H2": {
+   "n": 1393,
+   "diff": 0.017245254778372868,
+   "ci_lo": -0.14215399860321318,
+   "ci_hi": 0.17958181638621803,
+   "ci_method": "iid",
+   "p": 0.833581226528943,
+   "start": "2021-01-04 14:45:00+00:00",
+   "end": "2026-07-22 13:45:00+00:00",
+   "n_gated": 858
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 671,
+   "diff": 0.09309278358935087,
+   "ci_lo": -0.12797240524080328,
+   "ci_hi": 0.31460431826263346,
+   "ci_method": "iid",
+   "p": 0.40963947389467686,
+   "start": "2016-01-04 14:45:00+00:00",
+   "end": "2018-08-21 13:45:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 659,
+   "diff": -0.055193884085947345,
+   "ci_lo": -0.31011429041133454,
+   "ci_hi": 0.189666972455497,
+   "ci_method": "iid",
+   "p": 0.6650863399913994,
+   "start": "2018-08-22 13:45:00+00:00",
+   "end": "2021-04-09 13:45:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 669,
+   "diff": -0.03639944749143986,
+   "ci_lo": -0.27111193418482404,
+   "ci_hi": 0.18366077747530432,
+   "ci_method": "iid",
+   "p": 0.7537138031812001,
+   "start": "2021-04-12 13:45:00+00:00",
+   "end": "2023-12-01 14:45:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 658,
+   "diff": 0.11057936532413701,
+   "ci_lo": -0.14398689317592972,
+   "ci_hi": 0.3706435408176774,
+   "ci_method": "iid",
+   "p": 0.3996309948560742,
+   "start": "2023-12-04 14:45:00+00:00",
+   "end": "2026-07-22 13:45:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.17218151980126634,
+ "mde_threshold": 0.1,
+ "power_floor_n": 2882,
+ "verdict": "UNDERPOWERED",
+ "verdict_detail": "CI contains 0; MDE 0.1722 vs threshold 0.1000, effective n 972 (power floor n=4996, have 972)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 2657,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "gate_mask_checked": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 1.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 194,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "rr",
+    "news_known_at",
+    "no_news"
+   ],
+   "ignored": [],
+   "lookback": "10D",
+   "recent": "1D",
+   "events_fp": "7248cdf239e9000a",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "375min",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": null,
+  "entry_mode": "next_open",
+  "hold_basis": "clock",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "Gold, not NASDAQ. No calendar data: news days are NFP (derived) plus an observed 08:30 volatility injection, which is his own mechanism ('no volatility injection apart from the 930'). 10:00/14:00 releases are in the no-news arm (attenuation toward 0).",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/time_guest_01a/no-news-judas-swing.py",
+ "runtime_sec": 1.62,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:34:29+00:00",
+ "n_events_in": 2716,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 59,
+  "target_not_beyond_entry": 0,
+  "no_bars_in_hold": 0
+ },
+ "n_complement": 972,
+ "gate_firing_rate": 0.6341738803161461,
+ "events_fp": "7248cdf239e9000a",
+ "mask_fp": "9b0289a68739cae4",
+ "mask_col": "no_news",
+ "exit_mix": {
+  "stop": 0.655786350148368,
+  "target": 0.33827893175074186,
+  "time": 0.005934718100890208
+ },
+ "gated_vs_own_control": {
+  "diff": 0.05910371997011811,
+  "ci_lo": -0.01943413440598701,
+  "ci_hi": 0.1321332775134332,
+  "p": 0.12636955908831812
+ },
+ "complement": {
+  "n": 972,
+  "avg_R": -0.019963519900112876,
+  "win_rate": 0.3425925925925926,
+  "pf": 0.9707488911232539,
+  "sd_R": 1.4157062169413177,
+  "exit_mix": {
+   "stop": 0.6553497942386831,
+   "target": 0.3343621399176955,
+   "time": 0.0102880658436214
+  },
+  "vs_own_control": {
+   "diff": 0.039393749529684954,
+   "ci_lo": -0.052785376787178095,
+   "ci_hi": 0.13062364492653117,
+   "p": 0.399817662730109
+  }
+ },
+ "ci_components": {
+  "phase3_iid": [
+   -0.10079136501434786,
+   0.14012196103199315
+  ],
+  "day_block": [
+   -0.10045668268187428,
+   0.13962313842728796
+  ]
+ },
+ "diff_meaning": "mean(R-ctrl | gated) - mean(R-ctrl | complement)",
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_eff_gated": 1685,
+  "n_eff_complement": 972,
+  "n_eff": 972
+ },
+ "ties": {
+  "real_ambiguous": 0.05871283402333459,
+  "control_ambiguous": 0.031990967256304105,
+  "real_gap_stop": 0.004516371847948814,
+  "control_gap_stop": 0.01881821603312006,
+  "gated_excess": 0.022433234421364984,
+  "complement_excess": 0.034156378600823045,
+  "verdict_stop_first": "UNDERPOWERED"
+ },
+ "ctrl_overlap": 0.004968009032743696,
+ "exposure_bars": {
+  "real_mean": 369.1543093714716,
+  "control_mean": 348.1888596161084,
+  "hold_basis": "clock"
+ },
+ "run_id": "14be330ffa2d453ca1bc9abda719b4ae",
+ "hyp_key": "d4f05c35153950ab"
+}

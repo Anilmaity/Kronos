@@ -1,0 +1,258 @@
+{
+ "concept_id": "order-block",
+ "reading": "b",
+ "testable": true,
+ "test_type": "trade",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "1h bars; 2/2 swing extreme that exceeds the most recent swing confirmed before it (raid of a short-term high/low)",
+   "block = the contiguous opposing-close run (<= 10 candles) into that extreme (detectors.cisd run)",
+   "validation = a close through the run's opening price within 3 bars of the run end / swing confirmation",
+   "entry = first M1 retest of the block's opening price (open of the first run candle) within 24 x 1h after the validating close, cancelled if price trades beyond the extreme first; decide at that M1 close",
+   "stop = the extreme; 2R; hold 10h"
+  ],
+  "params": {
+   "tf": "1h",
+   "swing": "2/2",
+   "max_wait": 3,
+   "level_rule": "series_open",
+   "level": "block open",
+   "wait_h": 24,
+   "rr": 2.0,
+   "max_hold": "10h",
+   "raid": "swept last confirmed swing"
+  }
+ },
+ "params_source": {
+  "tf": "corpus: YAML ltf [1H, 5m, 1m] under htf [1W, 1D, 4H]; method_spec \u00a71.2 hourly structure TF",
+  "swing": "phase3: 2/2 fractal swings (\u00a71.8)",
+  "max_wait": "phase3: CISD max_wait 3 (the OB validation close is the CISD close, detectors/blocks.py)",
+  "raid": "corpus: YAML 'Price raids the short-term high ... into the important level'; method_spec \u00a74.1 a high taken out is a POI",
+  "level": "corpus: YAML 'Mark the block's opening price; that is the level expected to support price'",
+  "wait_h": "declared-before-run: the retest must come within 24 x 1h of validation",
+  "rr": "phase3: 2R (YAML targets 'opposing liquidity' not mechanically defined)",
+  "max_hold": "phase3: 10 structure-TF bars",
+  "stop": "corpus: YAML execution 'Beyond the block's extreme (the swept high/low)'",
+  "level_rule": "corpus: YAML 'Alternative validation used in the propulsion-block video: ... closes beyond the OPENING PRICE'"
+ },
+ "n": 2605,
+ "span": {
+  "start": "2016-01-05 16:01:00+00:00",
+  "end": "2026-07-22 22:05:00+00:00",
+  "years": 10.543
+ },
+ "avg_R": 0.004605290833504988,
+ "avg_R_gross": 0.044605290833505014,
+ "win_rate": 0.42687140115163147,
+ "pf": 1.0093897309874968,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "n": 13025,
+  "avg_R": -0.04841339752046619,
+  "win_rate": 0.4024568138195777,
+  "pf": 0.9041023951577349,
+  "sd_R": 1.1146350099210267,
+  "exit_mix": {
+   "stop": 0.43339731285988486,
+   "target": 0.16276391554702496,
+   "time": 0.40383877159309023
+  },
+  "avg_R_gross": -0.008413397520466165,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": 0.05301868835397117,
+ "ci_lo": 0.005683234023142492,
+ "ci_hi": 0.10046400232805076,
+ "ci_method": "phase3_block",
+ "p": 0.02832622420206463,
+ "halves": {
+  "H1": {
+   "n": 1255,
+   "diff": 0.057343277871483134,
+   "ci_lo": -0.015408293195361536,
+   "ci_hi": 0.1265583515737151,
+   "ci_method": "block",
+   "p": 0.11334390514050646,
+   "start": "2016-01-05 16:01:00+00:00",
+   "end": "2020-12-31 05:27:00+00:00"
+  },
+  "H2": {
+   "n": 1350,
+   "diff": 0.04899842180250637,
+   "ci_lo": -0.019027914835473905,
+   "ci_hi": 0.11946475759294775,
+   "ci_method": "iid",
+   "p": 0.165483712946691,
+   "start": "2021-01-05 03:16:00+00:00",
+   "end": "2026-07-22 22:05:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 663,
+   "diff": 0.06119158639137551,
+   "ci_lo": -0.037639526942623694,
+   "ci_hi": 0.15964932145592883,
+   "ci_method": "iid",
+   "p": 0.22405565131071928,
+   "start": "2016-01-05 16:01:00+00:00",
+   "end": "2018-08-22 05:03:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 650,
+   "diff": 0.03920348877669966,
+   "ci_lo": -0.06147816775179046,
+   "ci_hi": 0.15062782798135027,
+   "ci_method": "block",
+   "p": 0.46874708170824547,
+   "start": "2018-08-22 14:16:00+00:00",
+   "end": "2021-04-07 19:06:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 714,
+   "diff": 0.04065168087062552,
+   "ci_lo": -0.05251422488118976,
+   "ci_hi": 0.1334530398819058,
+   "ci_method": "iid",
+   "p": 0.3915111111112886,
+   "start": "2021-04-12 13:00:00+00:00",
+   "end": "2023-12-01 16:01:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 578,
+   "diff": 0.07445690923552169,
+   "ci_lo": -0.029445486838581662,
+   "ci_hi": 0.1699016963560121,
+   "ci_method": "iid",
+   "p": 0.14316455468459793,
+   "start": "2023-12-06 07:47:00+00:00",
+   "end": "2026-07-22 22:05:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.0677401163418069,
+ "mde_threshold": 0.1,
+ "power_floor_n": 1196,
+ "verdict": "EDGE",
+ "verdict_detail": "CI excludes 0 in claimed direction; halves agree (H1 +0.0573, H2 +0.0490); powered",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 2605,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 3.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 208,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "rr"
+   ],
+   "ignored": [],
+   "lookback": "20D",
+   "recent": "1D",
+   "events_fp": "2c6801cb6855cd8a",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "10h",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": null,
+  "entry_mode": "next_open",
+  "hold_basis": "clock",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "the 'important level' is taken as the raided short-term swing itself (a POI per \u00a74.1); HTF PD-array confluence and the 0.5 mean-threshold refinement are not modelled",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/structure_own_02b/order-block.py",
+ "runtime_sec": 1.45,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:33:08+00:00",
+ "n_events_in": 2605,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 0,
+  "target_not_beyond_entry": 0,
+  "no_bars_in_hold": 0
+ },
+ "events_fp": "2c6801cb6855cd8a",
+ "sd_R": 1.1422095453630257,
+ "exit_mix": {
+  "stop": 0.4195777351247601,
+  "target": 0.18157389635316698,
+  "time": 0.39884836852207295
+ },
+ "trades_per_year": 247.07251363282265,
+ "ci_components": {
+  "phase3_block": [
+   0.005683234023142492,
+   0.10046400232805076
+  ],
+  "day_block": [
+   0.01006639353180057,
+   0.09668865043045242
+  ]
+ },
+ "diff_win": 0.02441458733205376,
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 1755,
+  "n_clusters": null,
+  "n_eff": 1755
+ },
+ "ties": {
+  "real_ambiguous": 0.0011516314779270633,
+  "control_ambiguous": 0.000690978886756238,
+  "real_gap_stop": 0.005758157389635317,
+  "control_gap_stop": 0.007216890595009597,
+  "verdict_stop_first": "EDGE"
+ },
+ "ctrl_overlap": 0.00038387715930902113,
+ "exposure_bars": {
+  "real_mean": 544.521689059501,
+  "control_mean": 543.9782725527831,
+  "hold_basis": "clock"
+ },
+ "run_id": "a485e396ffd94901a39c8c00741bea99",
+ "hyp_key": "af8a687c46e59111"
+}

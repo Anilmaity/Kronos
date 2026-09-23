@@ -1,0 +1,252 @@
+{
+ "concept_id": "orderflow-tight-stop-profile",
+ "reading": null,
+ "testable": true,
+ "test_type": "trade",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "entries: bare 5m CISD (series_open, 2/2 swings, max_wait 3), decide at the confirming 5m close, enter next M1 open -- a proxy for the order-flow-confirmed ICT POI entry",
+   "stop = 0.0625% of price (2.5 ES points at ES 4000)",
+   "target = 3.2R (8 points / 2.5 points); runners not modelled (no exit rule stated)",
+   "exit after 50 minutes if neither hit"
+  ],
+  "params": {
+   "entry_tf": "5min",
+   "stop_frac": 0.000625,
+   "rr": 3.2,
+   "max_hold": "50min",
+   "level_rule": "series_open",
+   "swing": "2/2",
+   "max_wait": 3
+  }
+ },
+ "params_source": {
+  "entry_tf": "declared-before-run: concept LTF list 5m/1m/15s; 5m CISD as the ICT-POI entry proxy",
+  "stop_frac": "corpus: 8Z2AbZLjunU 'two and a half point stop loss' (ES points, ES~4000 -> % of price, declared-before-run)",
+  "rr": "corpus: 8Z2AbZLjunU 'then i go for eight points' (8/2.5)",
+  "max_hold": "phase3: 10 entry-TF bars (\u00a71.13)",
+  "level_rule": "phase3: locked CISD config",
+  "swing": "phase3: locked CISD config",
+  "max_wait": "phase3: locked CISD config"
+ },
+ "n": 97999,
+ "span": {
+  "start": "2016-01-04 00:00:00+00:00",
+  "end": "2026-07-23 03:30:00+00:00",
+  "years": 10.549
+ },
+ "avg_R": -0.05047234740672943,
+ "avg_R_gross": -0.010472347406729416,
+ "win_rate": 0.3435137093235645,
+ "pf": 0.91875138715354,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "n": 489995,
+  "avg_R": -0.03716883836071486,
+  "win_rate": 0.3517546097409157,
+  "pf": 0.9394106567031661,
+  "sd_R": 1.4318771109228414,
+  "exit_mix": {
+   "stop": 0.5593444831069705,
+   "target": 0.11007459259788366,
+   "time": 0.33058092429514585
+  },
+  "avg_R_gross": 0.002831161639285147,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": -0.013303509046014565,
+ "ci_lo": -0.023541814273546503,
+ "ci_hi": -0.0030186513200955033,
+ "ci_method": "day_block",
+ "p": 0.011054453792981167,
+ "halves": {
+  "H1": {
+   "n": 46554,
+   "diff": -0.01744362822648713,
+   "ci_lo": -0.031215522778298897,
+   "ci_hi": -0.0029765280434746106,
+   "ci_method": "block",
+   "p": 0.015461057799983172,
+   "start": "2016-01-04 00:00:00+00:00",
+   "end": "2020-12-31 21:20:00+00:00"
+  },
+  "H2": {
+   "n": 51445,
+   "diff": -0.009557000963057616,
+   "ci_lo": -0.023258874052607348,
+   "ci_hi": 0.004287163056835527,
+   "ci_method": "block",
+   "p": 0.17382825581269948,
+   "start": "2021-01-03 23:05:00+00:00",
+   "end": "2026-07-23 03:30:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 24562,
+   "diff": -0.002675879304363721,
+   "ci_lo": -0.022539118415320556,
+   "ci_hi": 0.016921518774394833,
+   "ci_method": "block",
+   "p": 0.7903812036839555,
+   "start": "2016-01-04 00:00:00+00:00",
+   "end": "2018-08-22 10:55:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 24541,
+   "diff": -0.03478086676220721,
+   "ci_lo": -0.05403132486214307,
+   "ci_hi": -0.0152155950838333,
+   "ci_method": "block",
+   "p": 0.0004439876424085296,
+   "start": "2018-08-22 11:15:00+00:00",
+   "end": "2021-04-12 08:20:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 24733,
+   "diff": -0.009250223409044238,
+   "ci_lo": -0.028830827645477224,
+   "ci_hi": 0.010650997598994153,
+   "ci_method": "block",
+   "p": 0.35840814606979676,
+   "start": "2021-04-12 08:50:00+00:00",
+   "end": "2023-12-01 20:15:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 24163,
+   "diff": -0.0064421888316591736,
+   "ci_lo": -0.02965428480735323,
+   "ci_hi": 0.01965514312833608,
+   "ci_method": "block",
+   "p": 0.6085589077716742,
+   "start": "2023-12-03 23:10:00+00:00",
+   "end": "2026-07-23 03:30:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.014667969789992066,
+ "mde_threshold": 0.1,
+ "power_floor_n": 2109,
+ "verdict": "NEGATIVE",
+ "verdict_detail": "CI excludes 0 against the claim (+)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 97999,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 46.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 6816,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_dist",
+    "rr"
+   ],
+   "ignored": [],
+   "lookback": "5D",
+   "recent": "1D",
+   "events_fp": "464086564ae57ea7",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "50min",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": null,
+  "entry_mode": "next_open",
+  "hold_basis": "clock",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "Order-flow confirmation (footprint/DOM) is not in OHLC; this tests the stated tight-stop/3.2R profile on a CISD proxy entry. Runners untested (no exit rule).",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/risk_guest_02b/orderflow-tight-stop-profile.py",
+ "runtime_sec": 17.56,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:18:39+00:00",
+ "n_events_in": 98346,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 0,
+  "target_not_beyond_entry": 0,
+  "no_bars_in_hold": 347
+ },
+ "events_fp": "464086564ae57ea7",
+ "sd_R": 1.4354984365777081,
+ "exit_mix": {
+  "stop": 0.5650261737364667,
+  "target": 0.11266441494300962,
+  "time": 0.32230941132052365
+ },
+ "trades_per_year": 9289.938943680248,
+ "ci_components": {
+  "phase3_block": [
+   -0.02342899687966355,
+   -0.0030987676887292933
+  ],
+  "day_block": [
+   -0.023541814273546503,
+   -0.0030186513200955033
+  ]
+ },
+ "diff_win": -0.008240900417351205,
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 2723,
+  "n_clusters": null,
+  "n_eff": 2723
+ },
+ "ties": {
+  "real_ambiguous": 0.0005612302166348636,
+  "control_ambiguous": 0.0005326584965152706,
+  "real_gap_stop": 0.015694037694262187,
+  "control_gap_stop": 0.013436871804814335,
+  "verdict_stop_first": "NEGATIVE"
+ },
+ "ctrl_overlap": 0.06634149328054367,
+ "exposure_bars": {
+  "real_mean": 48.69547648445392,
+  "control_mean": 48.68169471117052,
+  "hold_basis": "clock"
+ },
+ "run_id": "8113bafc5d8e48bfa784a54d94f2dce8",
+ "hyp_key": "ce67903dea151e37"
+}

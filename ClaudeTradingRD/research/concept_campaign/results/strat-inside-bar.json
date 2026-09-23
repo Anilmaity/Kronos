@@ -1,0 +1,252 @@
+{
+ "concept_id": "strat-inside-bar",
+ "reading": null,
+ "testable": true,
+ "test_type": "trade",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "daily bars (18:00 NY roll); inside bar: high <= prev high and low >= prev low",
+   "next day: first M1 trading beyond one side of the inside bar (not both in the same minute) -> trade the break",
+   "target = mother candle's extreme on the break side; stop = inside bar's opposite extreme",
+   "hold one trading day of M1 bars"
+  ],
+  "params": {
+   "tf": "1D",
+   "containment": "wicks",
+   "target": "mother candle extreme",
+   "stop": "inside bar far side",
+   "max_hold": "23h",
+   "hold_basis": "bars",
+   "grid4h": "n/a (1D)"
+  }
+ },
+ "params_source": {
+  "tf": "declared-before-run: lowest htf in the concept's list (1D, alias 'inside day')",
+  "containment": "corpus: V8P6lNIisvc concept formula 'inside_bar := candle.high <= prev.high AND candle.low >= prev.low'",
+  "target": "corpus: V8P6lNIisvc 'a break of the inside bar's extreme ... puts the preceding candles' extremes in play'",
+  "stop": "declared-before-run: inside bar's opposite extreme (the consolidation's far side)",
+  "max_hold": "declared-before-run: the breakout candle's trading day",
+  "hold_basis": "declared-before-run: one trading day of bars across weekends",
+  "grid4h": "declared-before-run: not used"
+ },
+ "n": 367,
+ "span": {
+  "start": "2016-01-06 07:06:00+00:00",
+  "end": "2026-07-16 12:17:00+00:00",
+  "years": 10.524
+ },
+ "avg_R": 0.009066396952655114,
+ "avg_R_gross": 0.04906639695265511,
+ "win_rate": 0.662125340599455,
+ "pf": 1.0451313879910795,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "n": 1835,
+  "avg_R": -0.04451711874152459,
+  "win_rate": 0.6326975476839237,
+  "pf": 0.8106372990917096,
+  "sd_R": 0.5755451077479639,
+  "exit_mix": {
+   "stop": 0.18365122615803814,
+   "target": 0.6365122615803814,
+   "time": 0.17983651226158037
+  },
+  "avg_R_gross": -0.004517118741524589,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": 0.053583515694179705,
+ "ci_lo": -0.010341047243415164,
+ "ci_hi": 0.12025015862415483,
+ "ci_method": "day_block",
+ "p": 0.10774654916123882,
+ "halves": {
+  "H1": {
+   "n": 174,
+   "diff": 0.0018168926891370257,
+   "ci_lo": -0.09842218589703713,
+   "ci_hi": 0.0947038318969009,
+   "ci_method": "iid",
+   "p": 0.9705823339469355,
+   "start": "2016-01-06 07:06:00+00:00",
+   "end": "2020-12-30 14:56:00+00:00"
+  },
+  "H2": {
+   "n": 193,
+   "diff": 0.10025394265209384,
+   "ci_lo": 0.013254554075042203,
+   "ci_hi": 0.1856630618181832,
+   "ci_method": "iid",
+   "p": 0.022643200372859034,
+   "start": "2021-01-08 04:39:00+00:00",
+   "end": "2026-07-16 12:17:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 85,
+   "diff": -0.05305539809206797,
+   "ci_lo": -0.19745955950325075,
+   "ci_hi": 0.10747658315750241,
+   "ci_method": "iid",
+   "p": 0.49522466111172203,
+   "start": "2016-01-06 07:06:00+00:00",
+   "end": "2018-08-15 01:00:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 98,
+   "diff": 0.07902954943045175,
+   "ci_lo": -0.032559906026359095,
+   "ci_hi": 0.19076981068270354,
+   "ci_method": "iid",
+   "p": 0.16539831188573026,
+   "start": "2018-08-29 23:23:00+00:00",
+   "end": "2021-04-08 05:41:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 83,
+   "diff": 0.09838763621365262,
+   "ci_lo": -0.0378104931077076,
+   "ci_hi": 0.21892731012489391,
+   "ci_method": "iid",
+   "p": 0.13304453762684834,
+   "start": "2021-05-03 02:22:00+00:00",
+   "end": "2023-11-24 13:36:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 101,
+   "diff": 0.08181969750170587,
+   "ci_lo": -0.026525498056052033,
+   "ci_hi": 0.2006514200835672,
+   "ci_method": "iid",
+   "p": 0.15801021957202935,
+   "start": "2023-12-07 13:39:00+00:00",
+   "end": "2026-07-16 12:17:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.09333394988134887,
+ "mde_threshold": 0.1,
+ "power_floor_n": 320,
+ "verdict": "NULL",
+ "verdict_detail": "CI contains 0; powered (MDE 0.0933 <= 0.1000)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 367,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 0.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 59,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "target_px"
+   ],
+   "ignored": [],
+   "lookback": "10D",
+   "recent": "1D",
+   "events_fp": "b647274a9fcb1e51",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "23h",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": null,
+  "entry_mode": "next_open",
+  "hold_basis": "bars",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/structure_guest_01a/strat-inside-bar.py",
+ "runtime_sec": 0.51,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:19:09+00:00",
+ "n_events_in": 391,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 0,
+  "target_not_beyond_entry": 24,
+  "no_bars_in_hold": 0
+ },
+ "events_fp": "b647274a9fcb1e51",
+ "sd_R": 0.568430768587952,
+ "exit_mix": {
+  "stop": 0.1444141689373297,
+  "target": 0.667574931880109,
+  "time": 0.1880108991825613
+ },
+ "trades_per_year": 34.87168314255984,
+ "ci_components": {
+  "phase3_iid": [
+   -0.009603421420230036,
+   0.11898425605147636
+  ],
+  "day_block": [
+   -0.010341047243415164,
+   0.12025015862415483
+  ]
+ },
+ "diff_win": 0.029427792915531326,
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 367,
+  "n_clusters": null,
+  "n_eff": 367
+ },
+ "ties": {
+  "real_ambiguous": 0.0,
+  "control_ambiguous": 0.0,
+  "real_gap_stop": 0.005449591280653951,
+  "control_gap_stop": 0.0016348773841961854,
+  "verdict_stop_first": "NULL"
+ },
+ "ctrl_overlap": 0.0,
+ "exposure_bars": {
+  "real_mean": 1380.0,
+  "control_mean": 1380.0,
+  "hold_basis": "bars"
+ },
+ "run_id": "9d4f07aebf1d4cc89582d99639736168",
+ "hyp_key": "e622a5f8c427cf34"
+}

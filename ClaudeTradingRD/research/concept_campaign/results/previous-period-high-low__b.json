@@ -1,0 +1,200 @@
+{
+ "concept_id": "previous-period-high-low",
+ "reading": "b",
+ "testable": true,
+ "test_type": "rate",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "candle 2 = day D-1: trades beyond D-2's high (low), does not take D-2's other side, and closes back inside D-2's range",
+   "decision at D-1's close; level = candle 1's (D-2's) OPPOSITE extreme",
+   "hit = day D trades to that level; row kept only if the level is still beyond day D's first open",
+   "claim: the opposite previous-candle extreme is reached more often than an equal-distance level"
+  ],
+  "params": {
+   "min_day_bars": 600,
+   "day_open_hour": 18,
+   "horizon": "next session (M1 bars)",
+   "null": "distance-matched, clock-matched +/-30min, +/-30d, 5 reps"
+  }
+ },
+ "params_source": {
+  "min_day_bars": "declared-before-run: drop stub sessions <=600 M1 bars (README trap 6; example_rate uses the same cut)",
+  "day_open_hour": "session_window_fit: settled 18:00 NY daily roll",
+  "horizon": "declared-before-run: the next real session, counted in M1 bars (trading time)",
+  "null": "declared-before-run: same signed distance from the next session's first open, random other session open +/-30d, NY clock +/-30min, same bar count, 5 reps"
+ },
+ "n": 866,
+ "span": {
+  "start": "2016-01-08 23:00:00+00:00",
+  "end": "2026-07-20 22:00:00+00:00",
+  "years": 10.527
+ },
+ "avg_R": null,
+ "avg_R_gross": null,
+ "win_rate": null,
+ "pf": null,
+ "observed_rate": 0.2921478060046189,
+ "null_rate": 0.3133949191685912,
+ "lift": 0.9322033898305085,
+ "control": {
+  "rate": 0.3133949191685912,
+  "reps": 5,
+  "kind": "null_fn x5"
+ },
+ "diff": -0.02124711316397232,
+ "ci_lo": -0.05311778290993069,
+ "ci_hi": 0.011547344110854507,
+ "ci_method": "phase3_iid",
+ "p": 0.19775419837663347,
+ "halves": {
+  "H1": {
+   "n": 421,
+   "diff": -0.018527315914489362,
+   "ci_lo": -0.06937054631828986,
+   "ci_hi": 0.0365795724465558,
+   "ci_method": "iid",
+   "p": 0.4930466915192044,
+   "start": "2016-01-08 23:00:00+00:00",
+   "end": "2020-12-23 23:00:00+00:00"
+  },
+  "H2": {
+   "n": 445,
+   "diff": -0.023820224719101113,
+   "ci_lo": -0.07056179775280905,
+   "ci_hi": 0.03282022471910115,
+   "ci_method": "iid",
+   "p": 0.3664252851654476,
+   "start": "2021-01-11 23:00:00+00:00",
+   "end": "2026-07-20 22:00:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 230,
+   "diff": -0.030434782608695643,
+   "ci_lo": -0.10176086956521745,
+   "ci_hi": 0.04004347826086945,
+   "ci_method": "iid",
+   "p": 0.4001713646468981,
+   "start": "2016-01-08 23:00:00+00:00",
+   "end": "2018-08-16 22:00:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 214,
+   "diff": -0.02149532710280383,
+   "ci_lo": -0.09158878504672899,
+   "ci_hi": 0.04488317757009342,
+   "ci_method": "iid",
+   "p": 0.5369595917985137,
+   "start": "2018-08-22 22:00:00+00:00",
+   "end": "2021-04-09 22:00:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 232,
+   "diff": 0.0034482758620689724,
+   "ci_lo": -0.07155172413793104,
+   "ci_hi": 0.07071120689655173,
+   "ci_method": "iid",
+   "p": 0.9243035785673885,
+   "start": "2021-04-12 22:00:00+00:00",
+   "end": "2023-11-30 23:00:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 190,
+   "diff": -0.03999999999999998,
+   "ci_lo": -0.11789473684210514,
+   "ci_hi": 0.03897368421052628,
+   "ci_method": "iid",
+   "p": 0.3175305226776125,
+   "start": "2023-12-07 23:00:00+00:00",
+   "end": "2026-07-20 22:00:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.046216371801861285,
+ "mde_threshold": 0.05,
+ "power_floor_n": 740,
+ "verdict": "NULL",
+ "verdict_detail": "CI contains 0; powered (MDE 0.0462 <= 0.0500)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 869,
+  "min_slack_min": 0.0,
+  "passed": true,
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 74,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "level",
+    "side"
+   ],
+   "ignored": [],
+   "lookback": "20D",
+   "recent": "1D",
+   "events_fp": "6cd7f661305afff9",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "reps": 5,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "mde_threshold": null,
+  "cluster": null,
+  "outcome_horizon": "1 days 00:00:00",
+  "null_kind": "null_fn x5"
+ },
+ "notes": "Reversal-case reading ('price trades beyond the level but the period closes back inside the previous range -> expect the opposite level to become the draw'); first target = candle 1's extreme per A4NasIa371c. Horizon limited to the next day ('next period').",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/liquidity_own_01b/previous-period-high-low.py",
+ "runtime_sec": 0.21,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:07:33+00:00",
+ "dropped": {
+  "nan_rows": 3
+ },
+ "null_kind": "null_fn x5",
+ "events_fp": "6cd7f661305afff9",
+ "predictors_probed": true,
+ "ci_components": {
+  "phase3_iid": [
+   -0.05311778290993069,
+   0.011547344110854507
+  ],
+  "day_block": [
+   -0.049197459584295195,
+   0.008083140877598984
+  ]
+ },
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 866,
+  "n_clusters": null,
+  "n_eff": 866
+ },
+ "run_id": "83797463a3414d64be6269371830b2eb",
+ "hyp_key": "e045e5fe860864d0"
+}

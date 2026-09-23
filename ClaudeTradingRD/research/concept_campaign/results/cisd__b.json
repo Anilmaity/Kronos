@@ -1,0 +1,255 @@
+{
+ "concept_id": "cisd",
+ "reading": "b",
+ "testable": true,
+ "test_type": "trade",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "15min bars (UTC-aligned); CISD via detectors.cisd.cisd_events level_rule=series_extreme, swing 2/2, max_wait 3, min_series 1",
+   "POI gate (detectors.poi.poi_gate, timeframe 15min => required) evaluated on bars up to the confirming bar only; keep passes",
+   "decide at confirming bar close; enter next M1 open; stop at protected swing; 2R; time exit 150min"
+  ],
+  "params": {
+   "tf": "15min",
+   "swing": "2/2",
+   "max_wait": 3,
+   "min_series": 1,
+   "poi_gate": "on",
+   "stop": "protected_swing",
+   "rr": 2.0,
+   "max_hold": "150min",
+   "level_rule": "series_extreme"
+  }
+ },
+ "params_source": {
+  "tf": "method_spec: \u00a71.3 favourite stack Daily/4H/15m \u2014 15m is the CISD entry TF",
+  "swing": "phase3: meta/conjunction_preregistration.md \u00a71.8 swing left=2,right=2",
+  "max_wait": "phase3: \u00a71.8 max_wait=3 ('I prefer 1, 2, maybe three', v-shape-reversal-speed)",
+  "min_series": "phase3: \u00a71.8 min_series=1 (dedicated model video accepts one candle)",
+  "poi_gate": "method_spec: \u00a74.2 point 2 / \u00a74.1 \u2014 POI required as part of his definition; phase3 poi_gate defaults (range lookback 40, fvg polarity any, both-when-both)",
+  "stop": "method_spec: \u00a75.1 / cisd.yaml execution.stop \u2014 protected swing (the extreme)",
+  "rr": "phase3: \u00a71.12 2R fixed ('minimum 2R', risk-reward-minimum)",
+  "max_hold": "phase3: \u00a71.13 10 entry-TF bars",
+  "level_rule": "method_spec: \u00a74.2 [P] \u2014 reading a first-candle open (default); reading b the series' far extreme, per hourly-cisd-confirmation.yaml 'close above the high of that series'"
+ },
+ "n": 22440,
+ "span": {
+  "start": "2016-01-04 00:30:00+00:00",
+  "end": "2026-07-23 02:15:00+00:00",
+  "years": 10.549
+ },
+ "avg_R": -0.05043839012344439,
+ "avg_R_gross": -0.010438390123444378,
+ "win_rate": 0.4197860962566845,
+ "pf": 0.8811988291681251,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "n": 112200,
+  "avg_R": -0.04227616490444177,
+  "win_rate": 0.42650623885918004,
+  "pf": 0.8979093401709477,
+  "sd_R": 0.9682575981567085,
+  "exit_mix": {
+   "stop": 0.32367201426024955,
+   "target": 0.1094741532976827,
+   "time": 0.5668538324420678
+  },
+  "avg_R_gross": -0.002276164904441758,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": -0.008162225219002624,
+ "ci_lo": -0.023176143136694433,
+ "ci_hi": 0.00624717364015127,
+ "ci_method": "phase3_iid",
+ "p": 0.2768537577866482,
+ "halves": {
+  "H1": {
+   "n": 10622,
+   "diff": -0.014933966499412768,
+   "ci_lo": -0.03486851452101213,
+   "ci_hi": 0.004178416820820818,
+   "ci_method": "iid",
+   "p": 0.13381568469385327,
+   "start": "2016-01-04 00:30:00+00:00",
+   "end": "2020-12-31 19:15:00+00:00"
+  },
+  "H2": {
+   "n": 11818,
+   "diff": -0.0020757946994124504,
+   "ci_lo": -0.02197407764702216,
+   "ci_hi": 0.016831378268779333,
+   "ci_method": "iid",
+   "p": 0.833912653741136,
+   "start": "2021-01-03 23:45:00+00:00",
+   "end": "2026-07-23 02:15:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 5495,
+   "diff": -0.019619934744072948,
+   "ci_lo": -0.04777867919578418,
+   "ci_hi": 0.00878529861159605,
+   "ci_method": "block",
+   "p": 0.17393220484985095,
+   "start": "2016-01-04 00:30:00+00:00",
+   "end": "2018-08-22 06:15:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 5701,
+   "diff": -0.010890475747910633,
+   "ci_lo": -0.03918056613365323,
+   "ci_hi": 0.015720781721178606,
+   "ci_method": "block",
+   "p": 0.43681997712746556,
+   "start": "2018-08-22 11:45:00+00:00",
+   "end": "2021-04-12 08:15:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 5662,
+   "diff": -0.005139383556069417,
+   "ci_lo": -0.03522368090998988,
+   "ci_hi": 0.022871678283093288,
+   "ci_method": "block",
+   "p": 0.7287604206830876,
+   "start": "2021-04-12 09:30:00+00:00",
+   "end": "2023-12-01 09:00:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 5582,
+   "diff": 0.002837155040767765,
+   "ci_lo": -0.022675745735445643,
+   "ci_hi": 0.03111462953840419,
+   "ci_method": "iid",
+   "p": 0.8362009917800245,
+   "start": "2023-12-04 04:00:00+00:00",
+   "end": "2026-07-23 02:15:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.02102893801423375,
+ "mde_threshold": 0.1,
+ "power_floor_n": 993,
+ "verdict": "NULL",
+ "verdict_detail": "CI contains 0; powered (MDE 0.0210 <= 0.1000)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 22440,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 64.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 1660,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "rr"
+   ],
+   "ignored": [],
+   "lookback": "10D",
+   "recent": "1D",
+   "events_fp": "2f5d13666ef8a722",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "150min",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": null,
+  "entry_mode": "next_open",
+  "hold_basis": "clock",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "Phase-3 R0 (bare CISD, POI off) was NULL on 15m; this is the POI-on corpus definition as a standalone trade book.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/entry_own_01a/cisd.py",
+ "runtime_sec": 5.76,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:16:33+00:00",
+ "n_events_in": 22498,
+ "dropped": {
+  "no_bar_after_decision": 1,
+  "stop_not_beyond_entry": 6,
+  "target_not_beyond_entry": 0,
+  "no_bars_in_hold": 51
+ },
+ "events_fp": "2f5d13666ef8a722",
+ "sd_R": 0.9681220800705516,
+ "exit_mix": {
+  "stop": 0.3205882352941177,
+  "target": 0.10459001782531194,
+  "time": 0.5748217468805704
+ },
+ "trades_per_year": 2127.2281339216197,
+ "ci_components": {
+  "phase3_iid": [
+   -0.023176143136694433,
+   0.00624717364015127
+  ],
+  "day_block": [
+   -0.022676429559141283,
+   0.006296746287528085
+  ]
+ },
+ "diff_win": -0.006720142602495538,
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 2722,
+  "n_clusters": null,
+  "n_eff": 2722
+ },
+ "ties": {
+  "real_ambiguous": 0.0005347593582887701,
+  "control_ambiguous": 0.0002762923351158645,
+  "real_gap_stop": 0.006639928698752228,
+  "control_gap_stop": 0.005686274509803921,
+  "verdict_stop_first": "NULL"
+ },
+ "ctrl_overlap": 0.045659536541889485,
+ "exposure_bars": {
+  "real_mean": 143.58382352941177,
+  "control_mean": 143.04397504456327,
+  "hold_basis": "clock"
+ },
+ "run_id": "14b0f7aad4dc458f80f50e0feeedb13a",
+ "hyp_key": "9116b493b23b2b6d"
+}

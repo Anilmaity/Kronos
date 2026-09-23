@@ -3,6 +3,12 @@
 Sessions of **2026-08-14** (corpus) and **2026-08-25** (phase 2: fitting and
 backtesting). Everything below is verified state, not intention.
 
+> **PHASE 4 (2026-09-23): all 471 non-psychology concepts were tested one by one. None is
+> tradeable.** 43 raw EDGEs led to 5 that survived verification and BH, and the deep dive found 0 tradeable
+> (2 artefacts, 3 descriptive only). Read
+> [Phase 4 — the 471-concept campaign](#phase-4--the-471-concept-campaign) and
+> `meta/concept_campaign_2026-09-23.md` before testing any concept again.
+
 > **PHASE 2 IS DONE AND IT CHANGED THE HEADLINE.** The corpus phase ended
 > believing the C2 small-wick asymmetry was the project's one surviving
 > falsifiable edge. **It is a geometric artefact.** Read
@@ -413,3 +419,50 @@ cancels exactly in the differential, so that "test" was guaranteed to pass.
 4. **Do not import outside definitions into `concepts/`.** `meta/external_crossref.md`
    is deliberately a separate second opinion — the library's whole value is that
    every claim traces to a specific video.
+
+## Phase 4 — the 471-concept campaign
+
+Run on **2026-09-23**. Full record: [`meta/concept_campaign_2026-09-23.md`](meta/concept_campaign_2026-09-23.md).
+The per-reading table is `concept_campaign/concept_verdicts.csv` (663 rows), built by
+`concept_campaign/build_concept_verdicts.py`. Everything below is verified state.
+
+**The question:** phase 3 refuted the conjunction. Does any *single* concept have a tradeable edge on
+XAUUSD when it is tested on its own terms? **No.**
+
+### Verified state
+
+| | |
+|---|---|
+| roster | 471 concepts (the 505-concept library minus 34 psychology), 61 batches, 663 readings |
+| harness | `python/concept_lab`, rules `concept_lab-rules-2`, locked before any result; symmetric look-ahead probe on every scored frame; false-EDGE rate on noise 2.1% |
+| verdicts (readings) | NULL 311 (powered) · UNDERPOWERED 223 · UNTESTABLE 59 · EDGE 43 · NEGATIVE 27 |
+| funnel | 43 raw EDGE → 9 upheld by two adversarial verifiers → 5 pass BH over 864 hypotheses (612 written + 252 ledger-only) → deep dive: **2 ARTEFACT, 3 DESCRIPTIVE_ONLY, 0 tradeable** |
+| ARTEFACT | `cheat-code-entry`, `aggressive-run-hammer-signature`. The matched control copies stop *distance* but not *placement*. Against a stop at a fresh structural extreme, 60–85% of the effect goes. The rest is ≤ +0.03R and period-bound. Median stops of 0.44 / 0.59 pt make both deeply net-negative at a 0.25–0.35 pt spread. |
+| DESCRIPTIVE_ONLY | `point-of-interest a`: CISDs off a non-extreme HL/LH lose ~0.08R; it is a negative filter, and the gated book nets −0.009R at 0.30 pt. `daily-profile-session-windows`: a volatility-only null explains 83% of the +12pp, and the residual decays to +0.2pp. `fvg-three-levels`: the leg extreme is reached first +1–2pp more often, against structural controls too, but every trade version is net-negative. |
+| robust NEGATIVEs | on gold **09:30 NY, not 08:30, is the volatility step** (57.4% vs 73.6%, Holm). **Entering while the hour is already a "2"** costs −0.044R (Holm). Big-range days are followed by big days. Two-sided rotation is rarer than chance. V-shaped sweeps do worse than lethargic ones. PDH/PDL are reached slightly *less* often than equidistant levels. |
+| why EDGEs died (34) | generic stop geometry or limit-fill emulation 10 · time of day not held 7 · rate null not vol/state-matched 5 · tested another claim 5 · knife-edge parameter or grid 4 · lucky control seed 3 |
+
+### What to do next
+
+1. **Change the harness before testing anything else.** Add a structural control (stop at a fresh extreme at matched distance), a
+   volatility-matched rate null, a native limit-order entry, a realistic spread in pt (not a flat 0.04R) and management legs
+   (partials, BE, trail). Section 3 of the report shows these gaps produced 22 of the 34 false EDGEs. Version the change as rules-3 and re-run
+   calibration and the noise-book false-EDGE check before any concept.
+2. **Then re-test only the short list:**
+   - The 4 verifier-upheld but BH-failing candidates: `balanced-price-range-overlap a`, `intraday-reversal`, `no-shorting-below-lows b`, `inversion-fair-value-gap b`.
+   - The two strongest UNDERPOWERED leads: `failure-to-manipulate` (+0.129R, q 0.017) and `htf-two-entry-opportunities a` (+0.23R, q 0.021).
+   Give each a structural control and spread in pt, and run the two-lens verification before believing anything.
+3. **Other instruments, not more gold.** The rare weekly, TGIF and MMXM setups (n < 30 in 10.5 years), the SMT concepts
+   (tested only on XAG H1) and the ES/NQ concepts all need data this workspace does not hold. An economic calendar would unlock the ~7
+   news concepts.
+4. **Use the descriptive findings as context, not signals.** Extremes form in the 08:00–11:00 NY volatility block. Avoid 1h
+   CISDs off a non-extreme HL/LH. Do not chase an hour that is already a 2.
+
+### What not to redo
+
+- **Do not re-run the 311 powered NULLs, or any concept, on the same harness and data** expecting a different answer.
+- **Do not re-derive the 5 deep-dive verdicts.** Their scripts and outputs are in `concept_campaign/deepdive/<concept>/`.
+- **Do not trust a raw `diff` for trading decisions.** Cost cancels in it. Any setup with a stop under ~1–2 pt is net-negative
+  on XAUUSD whatever its diff says.
+- **Do not treat BH/Holm survival as confirmation.** 5 of 8 Holm-surviving EDGEs were refuted as systematic confounds.
+- **Do not edit `concept_lab`, `results/` or `tests/`.** They are the audit trail. New work goes in a new folder with its own ledger.

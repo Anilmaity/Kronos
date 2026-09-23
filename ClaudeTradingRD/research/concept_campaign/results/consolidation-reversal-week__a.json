@@ -1,0 +1,258 @@
+{
+ "concept_id": "consolidation-reversal-week",
+ "reading": "a",
+ "testable": true,
+ "test_type": "trade",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "daily candles on the 18:00 NY roll; sessions < 600 M1 bars skipped",
+   "consolidation: Tue close inside Mon range and Wed close inside Tue range",
+   "Thursday sweeps the Mon-Wed external high (bearish) / low (bullish) and closes back inside",
+   "one-sided Thursday only; Thursday close inside the Mon-Wed range",
+   "confirmation: 1h CISD (phase-3 locked config) in the reversal direction with extreme and confirming close inside Thursday's session",
+   "enter at the Thursday close (Friday trade); stop beyond Thursday's extreme; target the other side of the Mon-Wed range; exit after 23h of trading time"
+  ],
+  "params": {
+   "consolidation": "Tue close in Mon range & Wed close in Tue range",
+   "sweep_levels": "Mon-Wed external",
+   "cisd": "1h series_open 2/2 max_wait 3",
+   "entry_day": "Friday",
+   "stop": "Thursday extreme",
+   "target": "opposite side of Mon-Wed range",
+   "max_hold": "23h",
+   "hold_basis": "bars",
+   "min_m1_per_session": 600
+  }
+ },
+ "params_source": {
+  "consolidation": "corpus: McJflkKuvrI 'consolidation Monday, Tuesday and Wednesday' / 'no expansion through Wednesday' (declared-before-run: expansion = a close beyond the previous day's range)",
+  "sweep_levels": "corpus: wGYde-h84cs 'I'm marking out the external high and low'",
+  "cisd": "phase3: meta/conjunction_preregistration.md \u00a71.8-1.13 (locked 1h CISD); corpus: McJflkKuvrI hourly change in state of delivery",
+  "entry_day": "corpus: McJflkKuvrI Friday is the continuation day he prefers",
+  "stop": "corpus: YAML execution.stop 'beyond the Thursday extreme'",
+  "target": "corpus: McJflkKuvrI 'the other side of the consolidation range'",
+  "max_hold": "declared-before-run: the Friday session (18:00-17:00 NY = 23h)",
+  "hold_basis": "declared-before-run: trading-time hold so weekend-straddling controls get the same exposure (README trap 7)",
+  "min_m1_per_session": "declared-before-run: drop stub sessions (trap 6)"
+ },
+ "n": 23,
+ "span": {
+  "start": "2016-11-17 23:00:00+00:00",
+  "end": "2025-06-19 22:00:00+00:00",
+  "years": 8.583
+ },
+ "avg_R": -0.1003204731348247,
+ "avg_R_gross": -0.06032047313482466,
+ "win_rate": 0.391304347826087,
+ "pf": 0.8151213790003763,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "n": 115,
+  "avg_R": 0.014135909365334787,
+  "win_rate": 0.46956521739130436,
+  "pf": 1.0318822614495151,
+  "sd_R": 1.223514415550832,
+  "exit_mix": {
+   "stop": 0.3652173913043478,
+   "target": 0.22608695652173913,
+   "time": 0.40869565217391307
+  },
+  "avg_R_gross": 0.05413590936533479,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": -0.11445638250015949,
+ "ci_lo": -0.6336149429662713,
+ "ci_hi": 0.485629270022289,
+ "ci_method": "day_block",
+ "p": 0.6885228437319142,
+ "halves": {
+  "H1": {
+   "n": 16,
+   "diff": -0.11492750483544431,
+   "ci_lo": -0.7753994878267497,
+   "ci_hi": 0.5740897414156861,
+   "ci_method": "iid",
+   "p": 0.7385036194018688,
+   "start": "2016-11-17 23:00:00+00:00",
+   "end": "2020-06-18 22:00:00+00:00"
+  },
+  "H2": {
+   "n": 7,
+   "diff": -0.11337953144807972,
+   "ci_lo": -0.807244652642916,
+   "ci_hi": 0.7078082932917228,
+   "ci_method": "iid",
+   "p": 0.7692552354083089,
+   "start": "2021-06-10 22:00:00+00:00",
+   "end": "2025-06-19 22:00:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 8,
+   "diff": 0.021703728395979033,
+   "ci_lo": -0.8926692658981821,
+   "ci_hi": 0.9997409551941929,
+   "ci_method": "iid",
+   "p": 0.9641415974846455,
+   "start": "2016-11-17 23:00:00+00:00",
+   "end": "2018-06-14 22:00:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 8,
+   "diff": -0.2515587380668677,
+   "ci_lo": -1.0375142361728942,
+   "ci_hi": 0.6373648731374071,
+   "ci_method": "iid",
+   "p": 0.5560261611497849,
+   "start": "2018-12-13 23:00:00+00:00",
+   "end": "2020-06-18 22:00:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 5,
+   "diff": -0.13675988794333227,
+   "ci_lo": -0.8473588629559538,
+   "ci_hi": 0.8739455982366244,
+   "ci_method": "iid",
+   "p": 0.7554635647436134,
+   "start": "2021-06-10 22:00:00+00:00",
+   "end": "2023-10-26 22:00:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 2,
+   "diff": -0.05492864020994853,
+   "ci_lo": -1.1472503299604058,
+   "ci_hi": 1.0373930495405088,
+   "ci_method": "iid",
+   "p": 0.9214884073052194,
+   "start": "2025-06-05 22:00:00+00:00",
+   "end": "2025-06-19 22:00:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.7999273962291031,
+ "mde_threshold": 0.1,
+ "power_floor_n": 1472,
+ "verdict": "UNTESTABLE",
+ "verdict_detail": "n=23 (other arm None) below N_MIN_ANY=30",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 23,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 5.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 20,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "target_px"
+   ],
+   "ignored": [],
+   "lookback": "20D",
+   "recent": "1D",
+   "events_fp": "2d04f2b17fc0b280",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "23h",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": null,
+  "entry_mode": "next_open",
+  "hold_basis": "bars",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "HTF PD-array non-engagement precondition and the weekly bias are not operationalised (no rule in the unit).",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/model_guest_02a/consolidation-reversal-week.py",
+ "runtime_sec": 0.56,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:14:10+00:00",
+ "n_events_in": 23,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 0,
+  "target_not_beyond_entry": 0,
+  "no_bars_in_hold": 0
+ },
+ "events_fp": "2d04f2b17fc0b280",
+ "sd_R": 1.1870309733733593,
+ "exit_mix": {
+  "stop": 0.43478260869565216,
+  "target": 0.21739130434782608,
+  "time": 0.34782608695652173
+ },
+ "trades_per_year": 2.6796650717703345,
+ "ci_components": {
+  "phase3_iid": [
+   -0.6035720637182296,
+   0.41803440591815266
+  ],
+  "day_block": [
+   -0.6336149429662713,
+   0.485629270022289
+  ]
+ },
+ "diff_win": -0.07826086956521738,
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 23,
+  "n_clusters": null,
+  "n_eff": 23
+ },
+ "ties": {
+  "real_ambiguous": 0.0,
+  "control_ambiguous": 0.0,
+  "real_gap_stop": 0.0,
+  "control_gap_stop": 0.0,
+  "verdict_stop_first": "UNTESTABLE"
+ },
+ "ctrl_overlap": 0.008695652173913044,
+ "exposure_bars": {
+  "real_mean": 1380.0,
+  "control_mean": 1380.0,
+  "hold_basis": "bars"
+ },
+ "run_id": "cb7b892a56834d9aae1e7945e0e934c4",
+ "hyp_key": "3cdbdd09a8934abb"
+}

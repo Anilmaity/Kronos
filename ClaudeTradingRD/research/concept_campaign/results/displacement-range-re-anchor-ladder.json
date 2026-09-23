@@ -1,0 +1,258 @@
+{
+ "concept_id": "displacement-range-re-anchor-ladder",
+ "reading": null,
+ "testable": true,
+ "test_type": "trade",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "15m bars; displacement leg = fired break of the latest 2/2 swing (close beyond + threshold_fits magnitude gate N=4, r=1.5, d=0.65); leg start = extreme between the broken swing and the break; leg end = the 4-bar window extreme",
+   "PD array in discount (long) = highest bullish FVG stamped inside the leg whose bottom is below the leg 50%; limit at min(gap top, 50%); bearish mirrors in premium",
+   "order live from the leg's grade until the next fired leg (same direction = re-anchor to the new leg; opposite = abandon) or 24 bars; fill = first M1 touch, decide at that M1 close",
+   "stop at the leg start; target 2R; exit 150 min"
+  ],
+  "params": {
+   "tf": "15min",
+   "swing": "2/2",
+   "disp_N": 4,
+   "disp_r": 1.5,
+   "disp_d": 0.65,
+   "pd_array": "FVG in discount",
+   "eq": 0.5,
+   "order_life_bars": 24,
+   "rr": 2.0,
+   "max_hold": "150min"
+  }
+ },
+ "params_source": {
+  "tf": "corpus: YmdC_LKT-Pk timeframes htf 15m (ladder yaml)",
+  "swing": "phase3: locked 2/2 fractal",
+  "disp_N": "threshold_fits: displacement magnitude gate default N=4",
+  "disp_r": "threshold_fits: displacement magnitude gate default r=1.5",
+  "disp_d": "threshold_fits: displacement magnitude gate default d=0.65",
+  "pd_array": "corpus: YmdC_LKT-Pk 'draw out your OTE from where your displacement range started to where it ended' (PD array: order block / FVG per yaml; FVG chosen)",
+  "eq": "method_spec: discount = below the leg's 0.5 (EQ)",
+  "order_life_bars": "declared-before-run: an unfilled order lives 24 bars",
+  "rr": "method_spec: \u00a75.3 2R floor/fixed target stands in for the HTF objective",
+  "max_hold": "phase3: 10 entry-TF bars (\u00a71.13)"
+ },
+ "n": 4863,
+ "span": {
+  "start": "2016-01-04 11:50:00+00:00",
+  "end": "2026-07-23 02:54:00+00:00",
+  "years": 10.546
+ },
+ "avg_R": -0.043907690852217435,
+ "avg_R_gross": -0.003907690852217416,
+ "win_rate": 0.4131194735759819,
+ "pf": 0.9134327886880157,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "n": 24315,
+  "avg_R": -0.03680557331094483,
+  "win_rate": 0.4129138391939132,
+  "pf": 0.9213910863420954,
+  "sd_R": 1.0691047787227408,
+  "exit_mix": {
+   "stop": 0.38906025087394613,
+   "target": 0.14896154637055314,
+   "time": 0.4619782027555007
+  },
+  "avg_R_gross": 0.0031944266890551955,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": -0.007102117541272608,
+ "ci_lo": -0.039075257908494816,
+ "ci_hi": 0.026933400133503975,
+ "ci_method": "phase3_iid",
+ "p": 0.6732004504185721,
+ "halves": {
+  "H1": {
+   "n": 2419,
+   "diff": -0.0037919369203576678,
+   "ci_lo": -0.0538762107939035,
+   "ci_hi": 0.043715569280804875,
+   "ci_method": "iid",
+   "p": 0.8789431194681308,
+   "start": "2016-01-04 11:50:00+00:00",
+   "end": "2020-12-31 14:46:00+00:00"
+  },
+  "H2": {
+   "n": 2444,
+   "diff": -0.01037843788578701,
+   "ci_lo": -0.0586691165390452,
+   "ci_hi": 0.03681941965030666,
+   "ci_method": "iid",
+   "p": 0.6700726456988286,
+   "start": "2021-01-04 10:29:00+00:00",
+   "end": "2026-07-23 02:54:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 1239,
+   "diff": -0.07143683940387538,
+   "ci_lo": -0.13097053471388106,
+   "ci_hi": -0.00991713897246235,
+   "ci_method": "iid",
+   "p": 0.020708671330868636,
+   "start": "2016-01-04 11:50:00+00:00",
+   "end": "2018-08-22 08:51:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 1306,
+   "diff": 0.05597621887048067,
+   "ci_lo": -0.008954470615953244,
+   "ci_hi": 0.11823291872062591,
+   "ci_method": "iid",
+   "p": 0.08449276206141773,
+   "start": "2018-08-22 13:18:00+00:00",
+   "end": "2021-04-12 06:01:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 1166,
+   "diff": 0.003799783329671347,
+   "ci_lo": -0.06664263049684023,
+   "ci_hi": 0.0757775006194801,
+   "ci_method": "iid",
+   "p": 0.9167058550857718,
+   "start": "2021-04-12 12:16:00+00:00",
+   "end": "2023-12-01 13:54:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 1152,
+   "diff": -0.020453856587718436,
+   "ci_lo": -0.08785858642327535,
+   "ci_hi": 0.047111614240458406,
+   "ci_method": "iid",
+   "p": 0.552485621584466,
+   "start": "2023-12-04 00:05:00+00:00",
+   "end": "2026-07-23 02:54:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.04717659769276201,
+ "mde_threshold": 0.1,
+ "power_floor_n": 1083,
+ "verdict": "NULL",
+ "verdict_detail": "CI contains 0; powered (MDE 0.0472 <= 0.1000)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 4863,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 64.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 362,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "rr"
+   ],
+   "ignored": [],
+   "lookback": "20D",
+   "recent": "1D",
+   "events_fp": "e6628a7a79e1da61",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "150min",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": null,
+  "entry_mode": "next_open",
+  "hold_basis": "clock",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "The internal-liquidity-sweep expectation and the 'failure to displace lower' confirmation are not applied (no threshold in the corpus); the ltf 1m refinement is not applied. The book is every fill the loop produces, first leg or re-anchored.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/entry_own_03b/displacement-range-re-anchor-ladder.py",
+ "runtime_sec": 1.4,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:22:00+00:00",
+ "n_events_in": 5117,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 251,
+  "target_not_beyond_entry": 0,
+  "no_bars_in_hold": 3
+ },
+ "events_fp": "e6628a7a79e1da61",
+ "sd_R": 1.1178495607806593,
+ "exit_mix": {
+  "stop": 0.43738433066008636,
+  "target": 0.16142298992391527,
+  "time": 0.40119267941599834
+ },
+ "trades_per_year": 461.11390186915884,
+ "ci_components": {
+  "phase3_iid": [
+   -0.039075257908494816,
+   0.026933400133503975
+  ],
+  "day_block": [
+   -0.03954905953238899,
+   0.02513218290263206
+  ]
+ },
+ "diff_win": 0.00020563438206866458,
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 2404,
+  "n_clusters": null,
+  "n_eff": 2404
+ },
+ "ties": {
+  "real_ambiguous": 0.003701418877236274,
+  "control_ambiguous": 0.0024676125848241827,
+  "real_gap_stop": 0.006374665844129138,
+  "control_gap_stop": 0.00818424840633354,
+  "verdict_stop_first": "NULL"
+ },
+ "ctrl_overlap": 0.0008636644046884639,
+ "exposure_bars": {
+  "real_mean": 145.72321612173556,
+  "control_mean": 142.58515319761463,
+  "hold_basis": "clock"
+ },
+ "run_id": "70a6e98f4aea4f59841b870a1a9d2d54",
+ "hyp_key": "33f3d2e266e2f588"
+}

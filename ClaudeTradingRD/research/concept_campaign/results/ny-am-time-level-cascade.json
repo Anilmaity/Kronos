@@ -1,0 +1,208 @@
+{
+ "concept_id": "ny-am-time-level-cascade",
+ "reading": null,
+ "testable": true,
+ "test_type": "rate",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "time levels = 30m candles opening 08:30, 09:30, 10:00 New York (DST-aware), 18:00 trading-day roll",
+   "bias = prior trading day's candle direction (close vs open), doji skipped",
+   "opposing run = open to extreme against the bias; 'made' when opposing_run/|body| > 1.0",
+   "expansion = candle closes with the bias and opposing_run/|body| <= 1.0",
+   "branch 1: 8:30 made an opposing run -> predict 9:30 expands (decided at 09:00 NY)",
+   "branch 2: 8:30 did not, 9:30 did -> predict 10:00 expands (decided at 10:00 NY)",
+   "null: same slot, same direction, expansion rate on random trading days within +/-30 days"
+  ],
+  "params": {
+   "slot_tf": "30min",
+   "bias_rule": "prior-day candle direction",
+   "run_cut": 1.0,
+   "expansion_cut": 1.0,
+   "null_window_days": 30,
+   "day_open_hour": 18
+  }
+ },
+ "params_source": {
+  "slot_tf": "corpus: concept timeframes htf 1H/30m; B_7pMkbHyC4 '8:30 and 9:30 are the most important time levels'",
+  "bias_rule": "declared-before-run: concept precondition 'a directional bias is already held' gives no rule; method_spec \u00a72.4 previous-candle bias",
+  "run_cut": "threshold_fits: large wick / reversal candle opposing_run/|close-open| > 1.0 (grade A)",
+  "expansion_cut": "threshold_fits: small wick / expansion candle opposing_run/|close-open| <= 1.0 (grade A)",
+  "null_window_days": "declared-before-run: matches the locked +/-30 day control window",
+  "day_open_hour": "session_window_fit: settled 18:00 NY daily roll"
+ },
+ "n": 2404,
+ "span": {
+  "start": "2016-01-05 14:00:00+00:00",
+  "end": "2026-07-22 13:00:00+00:00",
+  "years": 10.541
+ },
+ "avg_R": null,
+ "avg_R_gross": null,
+ "win_rate": null,
+ "pf": null,
+ "observed_rate": 0.32321131447587353,
+ "null_rate": 0.3342762063227954,
+ "lift": 0.9668989547038325,
+ "control": {
+  "rate": 0.3342762063227954,
+  "reps": 5,
+  "kind": "null_fn x5"
+ },
+ "diff": -0.011064891846921832,
+ "ci_lo": -0.030948419301165323,
+ "ci_hi": 0.009819051580698046,
+ "ci_method": "day_block",
+ "p": 0.2873621442897496,
+ "halves": {
+  "H1": {
+   "n": 1140,
+   "diff": -0.021052631578947434,
+   "ci_lo": -0.05070614035087719,
+   "ci_hi": 0.008074561403508781,
+   "ci_method": "iid",
+   "p": 0.16033559453629173,
+   "start": "2016-01-05 14:00:00+00:00",
+   "end": "2020-12-31 14:00:00+00:00"
+  },
+  "H2": {
+   "n": 1264,
+   "diff": -0.0020569620253164667,
+   "ci_lo": -0.029758702531645614,
+   "ci_hi": 0.025486550632911352,
+   "ci_method": "iid",
+   "p": 0.8839594546469547,
+   "start": "2021-01-04 15:00:00+00:00",
+   "end": "2026-07-22 13:00:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 599,
+   "diff": -0.013689482470784664,
+   "ci_lo": -0.05475792988313849,
+   "ci_hi": 0.0293906510851419,
+   "ci_method": "iid",
+   "p": 0.5236671629671241,
+   "start": "2016-01-05 14:00:00+00:00",
+   "end": "2018-08-21 14:00:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 602,
+   "diff": -0.028571428571428525,
+   "ci_lo": -0.06777408637873755,
+   "ci_hi": 0.010963455149501592,
+   "ci_method": "iid",
+   "p": 0.15490403241054748,
+   "start": "2018-08-22 13:00:00+00:00",
+   "end": "2021-04-09 13:00:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 606,
+   "diff": -0.013531353135313562,
+   "ci_lo": -0.053803630363036335,
+   "ci_hi": 0.0267326732673267,
+   "ci_method": "iid",
+   "p": 0.510146916842598,
+   "start": "2021-04-13 13:00:00+00:00",
+   "end": "2023-12-01 15:00:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 597,
+   "diff": 0.01172529313232834,
+   "ci_lo": -0.031155778894472526,
+   "ci_hi": 0.053936348408709506,
+   "ci_method": "block",
+   "p": 0.5890952744489898,
+   "start": "2023-12-04 14:00:00+00:00",
+   "end": "2026-07-22 13:00:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.02913664100732595,
+ "mde_threshold": 0.05,
+ "power_floor_n": 817,
+ "verdict": "NULL",
+ "verdict_detail": "CI contains 0; powered (MDE 0.0291 <= 0.0500)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 2404,
+  "min_slack_min": 0.0,
+  "passed": true,
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 189,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "tday",
+    "decision_time",
+    "direction",
+    "slot",
+    "available_at"
+   ],
+   "ignored": [],
+   "lookback": "20D",
+   "recent": "1D",
+   "events_fp": "36941fb0d6157523",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "reps": 5,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "mde_threshold": null,
+  "cluster": null,
+  "outcome_horizon": "1 days 00:00:00",
+  "null_kind": "null_fn x5"
+ },
+ "notes": "Both cascade branches pooled (one-manipulates-next-expands). London-set-extreme precondition not gated (hindsight in the source). Null is the unconditional same-slot same-direction expansion rate, the concept's own stated comparison.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/time_own_03b/ny-am-time-level-cascade.py",
+ "runtime_sec": 1.2,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:32:22+00:00",
+ "dropped": {
+  "nan_rows": 0
+ },
+ "null_kind": "null_fn x5",
+ "events_fp": "36941fb0d6157523",
+ "predictors_probed": true,
+ "ci_components": {
+  "phase3_iid": [
+   -0.03120424292845255,
+   0.009319883527454234
+  ],
+  "day_block": [
+   -0.030948419301165323,
+   0.009819051580698046
+  ]
+ },
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 2404,
+  "n_clusters": null,
+  "n_eff": 2404
+ },
+ "run_id": "9c80c786f8cf4070a38e7f908701140e",
+ "hyp_key": "47a429b07323e000"
+}

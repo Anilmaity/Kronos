@@ -1,0 +1,209 @@
+{
+ "concept_id": "intraday-bias-three-inputs",
+ "reading": "a",
+ "testable": true,
+ "test_type": "rate",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "1H bars; displacement = close beyond the most recent confirmed 2/2 swing, N=4 window from the break with win_range/pre_range>=1.5 and distance/pre_range>=0.65",
+   "imbalance = same-direction 3-bar FVG inside the window",
+   "draw = nearest confirmed, untaken 1H swing on the far side of the window close (<=120 bars)",
+   "decide at the 4th window bar's close; hit = draw traded through before the NY trading day ends",
+   "null = same signed distance from first price after a matched random moment (+/-30d, NY time of day +/-30 min), same M1-bar horizon"
+  ],
+  "params": {
+   "tf": "1h",
+   "N": 4,
+   "r": 1.5,
+   "d": 0.65,
+   "swing": "2/2",
+   "draw_lookback_bars": 120,
+   "horizon": "rest of NY trading day",
+   "null_tod_tol_min": 30
+  }
+ },
+ "params_source": {
+  "tf": "corpus: xdm_OexQWJY 'how to use the four hour and one hour chart as your daily time frame'",
+  "N": "threshold_fits: displacement magnitude default N=4",
+  "r": "threshold_fits: displacement magnitude default r=1.5",
+  "d": "threshold_fits: displacement magnitude default d=0.65",
+  "swing": "method_spec: \u00a74.2 / threshold_fits \u00a72 fractal 2/2 short-term high/low",
+  "draw_lookback_bars": "declared-before-run: five trading days of 1H structure",
+  "horizon": "corpus: intraday-bias-three-inputs yaml measurable 'reached the same session'",
+  "null_tod_tol_min": "declared-before-run: README trap 9 \u2014 hold NY clock fixed in the null"
+ },
+ "n": 1641,
+ "span": {
+  "start": "2016-01-06 05:00:00+00:00",
+  "end": "2026-07-21 04:00:00+00:00",
+  "years": 10.535
+ },
+ "avg_R": null,
+ "avg_R_gross": null,
+ "win_rate": null,
+ "pf": null,
+ "observed_rate": 0.4253503960999391,
+ "null_rate": 0.42413162705667273,
+ "lift": 1.002873563218391,
+ "control": {
+  "rate": 0.42413162705667273,
+  "reps": 5,
+  "kind": "null_fn x5"
+ },
+ "diff": 0.0012187690432663434,
+ "ci_lo": -0.025350396099939054,
+ "ci_hi": 0.028519195612431436,
+ "ci_method": "phase3_iid",
+ "p": 0.9293313368018128,
+ "halves": {
+  "H1": {
+   "n": 793,
+   "diff": -0.007818411097099576,
+   "ci_lo": -0.05044136191677179,
+   "ci_hi": 0.0327994955863808,
+   "ci_method": "iid",
+   "p": 0.7127391148463562,
+   "start": "2016-01-06 05:00:00+00:00",
+   "end": "2020-12-30 05:00:00+00:00"
+  },
+  "H2": {
+   "n": 848,
+   "diff": 0.009669811320754673,
+   "ci_lo": -0.03090801886792451,
+   "ci_hi": 0.052358490566037696,
+   "ci_method": "iid",
+   "p": 0.6489476583250418,
+   "start": "2021-01-06 16:00:00+00:00",
+   "end": "2026-07-21 04:00:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 420,
+   "diff": -0.025714285714285745,
+   "ci_lo": -0.08714285714285713,
+   "ci_hi": 0.03380952380952379,
+   "ci_method": "iid",
+   "p": 0.40463579570385083,
+   "start": "2016-01-06 05:00:00+00:00",
+   "end": "2018-08-22 10:00:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 414,
+   "diff": 0.014492753623188304,
+   "ci_lo": -0.04347826086956519,
+   "ci_hi": 0.07586956521739127,
+   "ci_method": "iid",
+   "p": 0.634068495101975,
+   "start": "2018-08-23 04:00:00+00:00",
+   "end": "2021-04-12 05:00:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 420,
+   "diff": 0.019047619047619035,
+   "ci_lo": -0.038619047619047636,
+   "ci_hi": 0.08001190476190477,
+   "ci_method": "iid",
+   "p": 0.5290928797185005,
+   "start": "2021-04-13 16:00:00+00:00",
+   "end": "2023-12-01 12:00:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 387,
+   "diff": -0.003100775193798422,
+   "ci_lo": -0.06255813953488366,
+   "ci_hi": 0.051718346253229956,
+   "ci_method": "iid",
+   "p": 0.915294170178182,
+   "start": "2023-12-04 03:00:00+00:00",
+   "end": "2026-07-21 04:00:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.038500768406333354,
+ "mde_threshold": 0.05,
+ "power_floor_n": 973,
+ "verdict": "NULL",
+ "verdict_detail": "CI contains 0; powered (MDE 0.0385 <= 0.0500)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 1657,
+  "min_slack_min": 0.0,
+  "passed": true,
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 127,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "draw"
+   ],
+   "ignored": [],
+   "lookback": "12D",
+   "recent": "1D",
+   "events_fp": "20be32c2ee97abc8",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "reps": 5,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "mde_threshold": null,
+  "cluster": null,
+  "outcome_horizon": "1 days 00:00:00",
+  "null_kind": "null_fn x5"
+ },
+ "notes": "Reading a = the named three-input procedure. The London/Asia narrative construction (reading b) has no session bounds or rule and was not run.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/model_own_04b/intraday-bias-three-inputs.py",
+ "runtime_sec": 0.55,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:17:33+00:00",
+ "dropped": {
+  "nan_rows": 16
+ },
+ "null_kind": "null_fn x5",
+ "events_fp": "20be32c2ee97abc8",
+ "predictors_probed": true,
+ "ci_components": {
+  "phase3_iid": [
+   -0.025350396099939054,
+   0.028519195612431436
+  ],
+  "day_block": [
+   -0.02150613375292934,
+   0.021384982781626954
+  ]
+ },
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 1364,
+  "n_clusters": null,
+  "n_eff": 1364
+ },
+ "run_id": "0174c67ec2114777becff2bf95f2fea0",
+ "hyp_key": "a2a403556b03f4e5"
+}

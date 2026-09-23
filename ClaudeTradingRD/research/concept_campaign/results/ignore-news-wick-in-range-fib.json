@@ -1,0 +1,266 @@
+{
+ "concept_id": "ignore-news-wick-in-range-fib",
+ "reading": null,
+ "testable": true,
+ "test_type": "trade",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "release proxy: the 08:30 NY 5m candle with range >= 3x the prior-24h median 5m range",
+   "bearish: its upper wick >= half its range and its high tops the prior hour; bullish mirror on the lower wick",
+   "adjusted anchor = spike body extreme (wick excluded); reversal extreme L tracked on M1 until 12:00 NY; once the adjusted range >= the spike range, enter on the first M1 touch of its 0.5 (premium for shorts)",
+   "cancel if the excluded wick trades first; stop at the wick extreme; target L; 6h"
+  ],
+  "params": {
+   "spike_tf": "5min",
+   "spike_clock_ny": "08:30",
+   "spike_mult": 3.0,
+   "median_bars": 288,
+   "wick_share": 0.5,
+   "extreme_lookback_bars": 12,
+   "adjusted_anchor": "spike body",
+   "min_range_spike_mult": 1.0,
+   "fib_level": 0.5,
+   "cutoff_ny": "12:00",
+   "stop": "excluded wick extreme",
+   "target": "reversal low/high",
+   "max_hold": "6h"
+  }
+ },
+ "params_source": {
+  "spike_tf": "corpus: concept timeframes.ltf [5m] (0R61Y6Pn74Q)",
+  "spike_clock_ny": "corpus: 0R61Y6Pn74Q release at 8:30 (CPI)",
+  "spike_mult": "declared-before-run: no calendar in the data; a >=3x median 5m range at 08:30 NY marks a release footprint",
+  "median_bars": "declared-before-run: prior 24h of 5m candles",
+  "wick_share": "threshold_fits: 0.5-of-range is the corpus's large-wick ceiling (3eVxTV_7L2U 'a mechanical way to measure wick size')",
+  "extreme_lookback_bars": "declared-before-run: the spike must top the prior hour",
+  "adjusted_anchor": "corpus: 0R61Y6Pn74Q anchor on the body, ignoring the wick",
+  "min_range_spike_mult": "declared-before-run: the reversal leg must be at least the spike's own size before the fib is drawn",
+  "fib_level": "method_spec: \u00a73.7 EQ 0.5 premium/discount divide",
+  "cutoff_ny": "session_window_fit: NY AM block ends 12:00 NY",
+  "stop": "corpus: invalidation 'Price trades back above the excluded wick'",
+  "target": "declared-before-run: the reversal low (range extreme drawn to)",
+  "max_hold": "declared-before-run: 6h (through the NY session)"
+ },
+ "n": 65,
+ "span": {
+  "start": "2016-02-01 16:23:00+00:00",
+  "end": "2026-05-26 13:12:00+00:00",
+  "years": 10.311
+ },
+ "avg_R": 0.09454195801644973,
+ "avg_R_gross": 0.13454195801644975,
+ "win_rate": 0.7230769230769231,
+ "pf": 1.4073898661422495,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "n": 325,
+  "avg_R": -0.06112662415866571,
+  "win_rate": 0.5692307692307692,
+  "pf": 0.7927685687355642,
+  "sd_R": 0.6188068951500287,
+  "exit_mix": {
+   "stop": 0.21846153846153846,
+   "target": 0.49846153846153846,
+   "time": 0.28307692307692306
+  },
+  "avg_R_gross": -0.02112662415866569,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": 0.15566858217511542,
+ "ci_lo": -0.037768742376219216,
+ "ci_hi": 0.3238085097423396,
+ "ci_method": "day_block",
+ "p": 0.09148173694606944,
+ "halves": {
+  "H1": {
+   "n": 28,
+   "diff": -0.0429593712112891,
+   "ci_lo": -0.3262368487684638,
+   "ci_hi": 0.2151179639970908,
+   "ci_method": "iid",
+   "p": 0.7557496532001615,
+   "start": "2016-02-01 16:23:00+00:00",
+   "end": "2020-10-02 13:33:00+00:00"
+  },
+  "H2": {
+   "n": 37,
+   "diff": 0.3059816279810431,
+   "ci_lo": 0.08111931405071193,
+   "ci_hi": 0.5130635134650124,
+   "ci_method": "iid",
+   "p": 0.005489565781449882,
+   "start": "2021-04-30 12:41:00+00:00",
+   "end": "2026-05-26 13:12:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 16,
+   "diff": -0.1774248054095828,
+   "ci_lo": -0.5087212597747122,
+   "ci_hi": 0.16793772374988572,
+   "ci_method": "iid",
+   "p": 0.3040283697473377,
+   "start": "2016-02-01 16:23:00+00:00",
+   "end": "2018-07-31 13:26:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 12,
+   "diff": 0.1363278743864358,
+   "ci_lo": -0.25200940857847226,
+   "ci_hi": 0.4686241012062761,
+   "ci_method": "iid",
+   "p": 0.45835189191476583,
+   "start": "2018-09-14 13:35:00+00:00",
+   "end": "2020-10-02 13:33:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 19,
+   "diff": 0.40655804899413694,
+   "ci_lo": 0.052243511635728,
+   "ci_hi": 0.6741965046180739,
+   "ci_method": "iid",
+   "p": 0.010395829025229527,
+   "start": "2021-04-30 12:41:00+00:00",
+   "end": "2023-11-30 14:12:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 18,
+   "diff": 0.19981762802277747,
+   "ci_lo": -0.10940333728846893,
+   "ci_hi": 0.44801012973540516,
+   "ci_method": "iid",
+   "p": 0.15996538149082326,
+   "start": "2023-12-07 13:45:00+00:00",
+   "end": "2026-05-26 13:12:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.25842041126178156,
+ "mde_threshold": 0.1,
+ "power_floor_n": 435,
+ "verdict": "UNDERPOWERED",
+ "verdict_detail": "CI contains 0; MDE 0.2584 vs threshold 0.1000, effective n 65 (power floor n=435, have 65)",
+ "sanity_flags": [
+  "differential 15.4pp outside +/-15pp"
+ ],
+ "lookahead": {
+  "rows_checked": 65,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 0.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 24,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "target_px"
+   ],
+   "ignored": [],
+   "lookback": "20D",
+   "recent": "1D",
+   "events_fp": "f0e7394f9b6e7c54",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "6h",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": null,
+  "entry_mode": "next_open",
+  "hold_basis": "clock",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "Stated once in one trade. No economic calendar exists in the certified data, so scheduled releases are proxied by the 08:30 NY clock plus a >=3x range footprint (weekly claims and other 08:30 data qualify, not only CPI).",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/entry_own_04a/ignore-news-wick-in-range-fib.py",
+ "runtime_sec": 0.62,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:15:01+00:00",
+ "n_events_in": 65,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 0,
+  "target_not_beyond_entry": 0,
+  "no_bars_in_hold": 0
+ },
+ "events_fp": "f0e7394f9b6e7c54",
+ "sd_R": 0.6269831482741797,
+ "exit_mix": {
+  "stop": 0.18461538461538463,
+  "target": 0.6461538461538462,
+  "time": 0.16923076923076924
+ },
+ "trades_per_year": 6.304102496016994,
+ "ci_components": {
+  "phase3_iid": [
+   -0.01106596094820787,
+   0.32235825692677844
+  ],
+  "day_block": [
+   -0.037768742376219216,
+   0.3238085097423396
+  ]
+ },
+ "diff_win": 0.15384615384615385,
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 65,
+  "n_clusters": null,
+  "n_eff": 65
+ },
+ "ties": {
+  "real_ambiguous": 0.0,
+  "control_ambiguous": 0.003076923076923077,
+  "real_gap_stop": 0.0,
+  "control_gap_stop": 0.0,
+  "verdict_stop_first": "UNDERPOWERED"
+ },
+ "ctrl_overlap": 0.0,
+ "exposure_bars": {
+  "real_mean": 357.0769230769231,
+  "control_mean": 334.1384615384615,
+  "hold_basis": "clock"
+ },
+ "run_id": "85a2e42147f540cdbad0c289915eef0e",
+ "hyp_key": "7c2705f038ef7c0f"
+}

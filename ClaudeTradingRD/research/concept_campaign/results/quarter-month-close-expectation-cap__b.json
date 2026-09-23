@@ -1,0 +1,180 @@
+{
+ "concept_id": "quarter-month-close-expectation-cap",
+ "reading": "b",
+ "testable": true,
+ "test_type": "rate",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "unit: one 18:00-NY trading session; outcome = range < median range of the prior 20 complete sessions (stubs < 600 M1 bars dropped)",
+   "closing week = Mon-Fri week containing the month's last weekday; reading a: quarter-end months only; reading b: every month",
+   "null per row = small-day rate of sessions within +/-30 days outside such weeks"
+  ],
+  "params": {
+   "closing": "month",
+   "trail_sessions": 20,
+   "min_m1": 600,
+   "null_window_days": 30
+  }
+ },
+ "params_source": {
+  "closing": "declared-before-run: concept ambiguity 'whether month-end alone triggers the same dampener'",
+  "trail_sessions": "declared-before-run: 20-session trailing median range (ATR-style unit, trap 6)",
+  "min_m1": "declared-before-run: drop stub sessions (README trap 6)",
+  "null_window_days": "declared-before-run: +/-30 days, the locked control regime window"
+ },
+ "n": 610,
+ "span": {
+  "start": "2016-02-28 23:00:00+00:00",
+  "end": "2026-07-02 22:00:00+00:00",
+  "years": 10.338
+ },
+ "avg_R": null,
+ "avg_R_gross": null,
+ "win_rate": null,
+ "pf": null,
+ "observed_rate": 0.4819672131147541,
+ "null_rate": 0.516808220063711,
+ "lift": 0.9325842631824591,
+ "control": {
+  "rate": 0.516808220063711,
+  "reps": 1,
+  "kind": "null array x1"
+ },
+ "diff": -0.034841006948956865,
+ "ci_lo": -0.07429700320883201,
+ "ci_hi": 0.00448625856187168,
+ "ci_method": "day_block",
+ "p": 0.08299905120373725,
+ "halves": {
+  "H1": {
+   "n": 289,
+   "diff": -0.055306758025530034,
+   "ci_lo": -0.11379706233989405,
+   "ci_hi": 0.0030881699070544866,
+   "ci_method": "iid",
+   "p": 0.06362506020050374,
+   "start": "2016-02-28 23:00:00+00:00",
+   "end": "2020-12-30 23:00:00+00:00"
+  },
+  "H2": {
+   "n": 321,
+   "diff": -0.01641545535665262,
+   "ci_lo": -0.07399022733061729,
+   "ci_hi": 0.035898183702958365,
+   "ci_method": "iid",
+   "p": 0.5581642306125625,
+   "start": "2021-01-24 23:00:00+00:00",
+   "end": "2026-07-02 22:00:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 147,
+   "diff": -0.08315866613849593,
+   "ci_lo": -0.16488029851439004,
+   "ci_hi": -0.006831087030647414,
+   "ci_method": "iid",
+   "p": 0.03916046737198138,
+   "start": "2016-02-28 23:00:00+00:00",
+   "end": "2018-08-02 22:00:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 156,
+   "diff": -0.04684381886144062,
+   "ci_lo": -0.1291954196514129,
+   "ci_hi": 0.02764593738890132,
+   "ci_method": "iid",
+   "p": 0.24169318372828857,
+   "start": "2018-08-26 22:00:00+00:00",
+   "end": "2021-03-31 22:00:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 159,
+   "diff": -0.001505792080440882,
+   "ci_lo": -0.07772584123355777,
+   "ci_hi": 0.07430264967301764,
+   "ci_method": "iid",
+   "p": 0.9690294387664248,
+   "start": "2021-04-25 22:00:00+00:00",
+   "end": "2023-11-30 23:00:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 148,
+   "diff": -0.010011038063040323,
+   "ci_lo": -0.08410128853755718,
+   "ci_hi": 0.07567964815203113,
+   "ci_method": "block",
+   "p": 0.8059901916427321,
+   "start": "2023-12-25 23:00:00+00:00",
+   "end": "2026-07-02 22:00:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.05630664757818942,
+ "mde_threshold": 0.05,
+ "power_floor_n": 774,
+ "verdict": "UNDERPOWERED",
+ "verdict_detail": "CI contains 0; MDE 0.0563 vs threshold 0.0500, effective n 610 (power floor n=774, have 610)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 610,
+  "min_slack_min": 0.0,
+  "passed": true,
+  "no_detector_declaration": "pure calendar rule: closing week from the calendar (last weekday of month/quarter); outcome from bars('1D')"
+ },
+ "settings": {
+  "reps": 5,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "mde_threshold": null,
+  "cluster": null,
+  "outcome_horizon": "1 days 00:00:00",
+  "null_kind": "null array x1"
+ },
+ "notes": "Day-level rows (weekly effect measured on its sessions). The 'tag the draw then close back into the monthly FVG' clause is not tested.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/time_guest_01c/quarter-month-close-expectation-cap.py",
+ "runtime_sec": 0.17,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:35:37+00:00",
+ "dropped": {
+  "nan_rows": 0
+ },
+ "null_kind": "null array x1",
+ "events_fp": "a9c8ac42fa465f82",
+ "predictors_probed": false,
+ "ci_components": {
+  "phase3_iid": [
+   -0.07318437033828802,
+   0.00360918940066328
+  ],
+  "day_block": [
+   -0.07429700320883201,
+   0.00448625856187168
+  ]
+ },
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 610,
+  "n_clusters": null,
+  "n_eff": 610
+ },
+ "run_id": "1a0bd34582ae4dceb806310f7062895d",
+ "hyp_key": "e168b18cf5bd2620"
+}

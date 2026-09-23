@@ -1,0 +1,281 @@
+{
+ "concept_id": "v-shape-reversal-speed",
+ "reading": "a",
+ "testable": true,
+ "test_type": "gate",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "15min bars; extreme = bar whose low (high) is below (above) the 2 prior bars AND the lowest low (highest high) of the prior 20 bars (POI: short-term range liquidity taken)",
+   "opposing series = contiguous down-close (up-close) candles ending at the extreme (or <=2 bars before it), <=10 long; level = OPEN of its first candle",
+   "closure = first close beyond the level within 10 candles after the extreme, no new extreme before it; decide at that close, enter next M1 open",
+   "stop = the extreme (protected swing), target 2.0R, exit after 150min",
+   "gate: k (candles from extreme to closing candle) <= 3"
+  ],
+  "params": {
+   "tf": "15min",
+   "poi_lookback": 20,
+   "left": 2,
+   "max_k": 10,
+   "rr": 2.0,
+   "max_hold": "150min",
+   "level": "series first-candle open",
+   "fast_k": 3
+  }
+ },
+ "params_source": {
+  "tf": "corpus yaml timeframes ltf 15m (PQiRV0JMhIQ counts candles on the chart in use)",
+  "poi_lookback": "phase3: lookback 20 knob (backtest_conjunction)",
+  "left": "phase3: fractal 2/2 swing knob",
+  "max_k": "declared-before-run: closures up to 10 candles form the slow arm (the rejected example is 6 candles)",
+  "rr": "phase3: 2R target convention",
+  "max_hold": "phase3: 15m book 150-min exit",
+  "level": "method_spec: \u00a74.2 first-candle-open default",
+  "fast_k": "corpus: PQiRV0JMhIQ 'It only takes a couple candles. Now, I prefer 1 2 maybe three.'"
+ },
+ "n": 6912,
+ "span": {
+  "start": "2016-01-04 12:00:00+00:00",
+  "end": "2026-07-23 01:45:00+00:00",
+  "years": 10.546
+ },
+ "avg_R": -0.04769180757386405,
+ "avg_R_gross": -0.007691807573864029,
+ "win_rate": 0.4231770833333333,
+ "pf": 0.8940998544614244,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "avg_R_gated": -0.041409707371872884,
+  "avg_R_complement": -0.04342081838625699,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": 0.0007356471064315622,
+ "ci_lo": -0.03943292609901041,
+ "ci_hi": 0.043606269695413105,
+ "ci_method": "day_block",
+ "p": 0.9722976083046444,
+ "halves": {
+  "H1": {
+   "n": 4629,
+   "diff": -0.04422824035425364,
+   "ci_lo": -0.10181375805139867,
+   "ci_hi": 0.01277957629276576,
+   "ci_method": "iid",
+   "p": 0.13029782982528393,
+   "start": "2016-01-04 12:00:00+00:00",
+   "end": "2020-12-31 19:15:00+00:00",
+   "n_gated": 3016
+  },
+  "H2": {
+   "n": 5534,
+   "diff": 0.04468027201464384,
+   "ci_lo": -0.017396023042077803,
+   "ci_hi": 0.09967458170694309,
+   "ci_method": "block",
+   "p": 0.13464069042640034,
+   "start": "2021-01-04 05:30:00+00:00",
+   "end": "2026-07-23 01:45:00+00:00",
+   "n_gated": 3896
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 2361,
+   "diff": -0.06689483195100634,
+   "ci_lo": -0.14689122899816634,
+   "ci_hi": 0.013640591976345809,
+   "ci_method": "iid",
+   "p": 0.10237147971290718,
+   "start": "2016-01-04 12:00:00+00:00",
+   "end": "2018-08-22 07:30:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 2528,
+   "diff": -0.020726434395000104,
+   "ci_lo": -0.09606216767142041,
+   "ci_hi": 0.05962806646999002,
+   "ci_method": "block",
+   "p": 0.6017784327202755,
+   "start": "2018-08-22 13:15:00+00:00",
+   "end": "2021-04-12 07:45:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 2693,
+   "diff": 0.07526724177845835,
+   "ci_lo": -0.010046967518343523,
+   "ci_hi": 0.15469787320547487,
+   "ci_method": "iid",
+   "p": 0.07330872673732465,
+   "start": "2021-04-12 12:30:00+00:00",
+   "end": "2023-12-01 13:30:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 2581,
+   "diff": 0.024095887219393125,
+   "ci_lo": -0.06184114704960518,
+   "ci_hi": 0.10889114365140487,
+   "ci_method": "block",
+   "p": 0.5801062563899886,
+   "start": "2023-12-05 09:15:00+00:00",
+   "end": "2026-07-23 01:45:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.059348377151243595,
+ "mde_threshold": 0.1,
+ "power_floor_n": 1146,
+ "verdict": "NULL",
+ "verdict_detail": "CI contains 0; powered (MDE 0.0593 <= 0.1000)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 10163,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "gate_mask_checked": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 64.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 739,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "rr",
+    "k",
+    "approach",
+    "fast_abs",
+    "fast_rel"
+   ],
+   "ignored": [],
+   "lookback": "10D",
+   "recent": "1D",
+   "events_fp": "b84e882fc136f433",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "150min",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": null,
+  "entry_mode": "next_open",
+  "hold_basis": "clock",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "gate verdict known at the closing candle's close (k and the approach length are both fixed then). Control-adjusted R per trade, so the tighter stops of fast closures are matched.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/structure_own_02a/v-shape-reversal-speed.py",
+ "runtime_sec": 2.37,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:20:14+00:00",
+ "n_events_in": 10178,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 2,
+  "target_not_beyond_entry": 0,
+  "no_bars_in_hold": 13
+ },
+ "n_complement": 3251,
+ "gate_firing_rate": 0.6801141395257306,
+ "events_fp": "b84e882fc136f433",
+ "mask_fp": "dbcdde16f558aee3",
+ "mask_col": "fast_abs",
+ "exit_mix": {
+  "stop": 0.3576388888888889,
+  "target": 0.1205150462962963,
+  "time": 0.5218460648148148
+ },
+ "gated_vs_own_control": {
+  "diff": -0.006282100201991166,
+  "ci_lo": -0.03270388858903872,
+  "ci_hi": 0.019951142762429774,
+  "p": 0.6400178544911299
+ },
+ "complement": {
+  "n": 3251,
+  "avg_R": -0.050438565694679714,
+  "win_rate": 0.4367886804060289,
+  "pf": 0.8510036895640133,
+  "sd_R": 0.799204705341373,
+  "exit_mix": {
+   "stop": 0.21870193786527223,
+   "target": 0.05352199323285143,
+   "time": 0.7277760689018763
+  },
+  "vs_own_control": {
+   "diff": -0.007017747308422723,
+   "ci_lo": -0.038564568654705644,
+   "ci_hi": 0.022971190439145518,
+   "p": 0.6548447896469896
+  }
+ },
+ "ci_components": {
+  "phase3_iid": [
+   -0.03998814614645137,
+   0.04146527564474014
+  ],
+  "day_block": [
+   -0.03943292609901041,
+   0.043606269695413105
+  ]
+ },
+ "diff_meaning": "mean(R-ctrl | gated) - mean(R-ctrl | complement)",
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_eff_gated": 2556,
+  "n_eff_complement": 1984,
+  "n_eff": 1984
+ },
+ "ties": {
+  "real_ambiguous": 0.0004919807143559973,
+  "control_ambiguous": 0.00031486765718783825,
+  "real_gap_stop": 0.006100560858014366,
+  "control_gap_stop": 0.00535275017219325,
+  "gated_excess": 0.00023148148148148146,
+  "complement_excess": 6.15195324515534e-05,
+  "verdict_stop_first": "NULL"
+ },
+ "ctrl_overlap": 0.0212142084030306,
+ "exposure_bars": {
+  "real_mean": 145.83479287611925,
+  "control_mean": 142.8899340745843,
+  "hold_basis": "clock"
+ },
+ "run_id": "57bd0f5d66654c65beeb71512ba498cc",
+ "hyp_key": "b49e4827adb7eecd"
+}

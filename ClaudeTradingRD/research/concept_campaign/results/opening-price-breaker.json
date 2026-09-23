@@ -1,0 +1,251 @@
+{
+ "concept_id": "opening-price-breaker",
+ "reading": null,
+ "testable": true,
+ "test_type": "trade",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "daily PO3; opening price = NY midnight open; 15m working bars between 00:00 and 17:00 NY",
+   "first 15m close back through the midnight open after price traded beyond it (manipulation extreme L2 since 00:00)",
+   "breaker = the day's last confirmed 2/2 opposite swing formed before L2; the crossing close must also clear it; zone = that swing bar's range",
+   "trade only zones overlapping the midnight open; limit at the zone edge on the first retracement before 17:00 NY, not if L2 traded first",
+   "stop beyond L2; target open + 2.0 x (open - L2); exit at 17:00 NY"
+  ],
+  "params": {
+   "tf": "15min",
+   "anchor": "00:00 NY",
+   "swing": "2/2",
+   "sd": 2.0,
+   "max_hold": "to 17:00 NY"
+  }
+ },
+ "params_source": {
+  "tf": "corpus: wWIHS_dxbEY timeframes ltf 15m/5m -> 15m",
+  "anchor": "corpus: wWIHS_dxbEY 'the midnight open for a daily PO3'",
+  "swing": "phase3: 2/2 fractal swings (\u00a71.8)",
+  "sd": "corpus: wWIHS_dxbEY targets '2 and 2.5 deviation' -> first target 2.0; leg = open to manipulation extreme (declared-before-run)",
+  "max_hold": "declared-before-run: the daily PO3 candle ends at the 17:00 NY close",
+  "hold_basis": "declared-before-run: README trap 7 - first (clock) run showed exposure_bars real 848 vs control 765 (>10%), so hold in trading bars"
+ },
+ "n": 304,
+ "span": {
+  "start": "2016-02-01 08:11:00+00:00",
+  "end": "2026-07-14 04:49:00+00:00",
+  "years": 10.445
+ },
+ "avg_R": 0.03878963483089901,
+ "avg_R_gross": 0.07878963483089904,
+ "win_rate": 0.48026315789473684,
+ "pf": 1.0731111883326958,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "n": 1520,
+  "avg_R": -0.057885718422660604,
+  "win_rate": 0.4625,
+  "pf": 0.8965616581970325,
+  "sd_R": 1.2689518444487216,
+  "exit_mix": {
+   "stop": 0.5111842105263158,
+   "target": 0.4125,
+   "time": 0.07631578947368421
+  },
+  "avg_R_gross": -0.017885718422660575,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": 0.09667535325355961,
+ "ci_lo": -0.05122856346071008,
+ "ci_hi": 0.24747613092070878,
+ "ci_method": "day_block",
+ "p": 0.20455551417284162,
+ "halves": {
+  "H1": {
+   "n": 160,
+   "diff": 0.13697606213380303,
+   "ci_lo": -0.0808185183655606,
+   "ci_hi": 0.34381427445026286,
+   "ci_method": "iid",
+   "p": 0.20606064377673008,
+   "start": "2016-02-01 08:11:00+00:00",
+   "end": "2020-12-17 06:14:00+00:00"
+  },
+  "H2": {
+   "n": 144,
+   "diff": 0.05189678783106693,
+   "ci_lo": -0.15949730340245766,
+   "ci_hi": 0.27266142133302596,
+   "ci_method": "iid",
+   "p": 0.6378309217428029,
+   "start": "2021-01-19 07:01:00+00:00",
+   "end": "2026-07-14 04:49:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 91,
+   "diff": 0.08275345993923526,
+   "ci_lo": -0.17758303753055027,
+   "ci_hi": 0.36910593373498113,
+   "ci_method": "iid",
+   "p": 0.5529350670431543,
+   "start": "2016-02-01 08:11:00+00:00",
+   "end": "2018-08-10 05:03:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 75,
+   "diff": 0.29018536926478355,
+   "ci_lo": -0.06423495869258522,
+   "ci_hi": 0.6410057270088677,
+   "ci_method": "iid",
+   "p": 0.10675913278008771,
+   "start": "2018-08-30 07:31:00+00:00",
+   "end": "2021-02-26 08:38:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 68,
+   "diff": -0.06210451047334388,
+   "ci_lo": -0.38385923648482706,
+   "ci_hi": 0.22483945035399558,
+   "ci_method": "iid",
+   "p": 0.6891979789809526,
+   "start": "2021-04-14 04:31:00+00:00",
+   "end": "2023-11-09 06:03:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 70,
+   "diff": 0.06168495074200474,
+   "ci_lo": -0.220488410493563,
+   "ci_hi": 0.37315882146004203,
+   "ci_method": "iid",
+   "p": 0.683777706994141,
+   "start": "2023-12-20 06:01:00+00:00",
+   "end": "2026-07-14 04:49:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.21348519442412395,
+ "mde_threshold": 0.1,
+ "power_floor_n": 1386,
+ "verdict": "UNDERPOWERED",
+ "verdict_detail": "CI contains 0; MDE 0.2135 vs threshold 0.1000, effective n 304 (power floor n=1386, have 304)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 304,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 1.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 43,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "target_px",
+    "max_hold"
+   ],
+   "ignored": [],
+   "lookback": "5D",
+   "recent": "1D",
+   "events_fp": "9a5a9cf6d0c0d291",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "per-row column",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": null,
+  "entry_mode": "next_open",
+  "hold_basis": "bars",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "Stop not stated by the guest: beyond the manipulation extreme (declared). First run used hold_basis=clock: UNDERPOWERED, diff +0.080 [-0.068,+0.228], but exposure_bars differed 848 vs 765 (trap 7), so re-run once with hold_basis=bars as the README directs.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/entry_guest_02b/opening-price-breaker.py",
+ "runtime_sec": 0.67,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:13:53+00:00",
+ "n_events_in": 311,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 0,
+  "target_not_beyond_entry": 7,
+  "no_bars_in_hold": 0
+ },
+ "events_fp": "9a5a9cf6d0c0d291",
+ "sd_R": 1.218523001516019,
+ "exit_mix": {
+  "stop": 0.5032894736842105,
+  "target": 0.45394736842105265,
+  "time": 0.04276315789473684
+ },
+ "trades_per_year": 29.10511140235911,
+ "ci_components": {
+  "phase3_iid": [
+   -0.05189810163854514,
+   0.2412891600915707
+  ],
+  "day_block": [
+   -0.05122856346071008,
+   0.24747613092070878
+  ]
+ },
+ "diff_win": 0.017763157894736814,
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 304,
+  "n_clusters": null,
+  "n_eff": 304
+ },
+ "ties": {
+  "real_ambiguous": 0.0,
+  "control_ambiguous": 0.002631578947368421,
+  "real_gap_stop": 0.009868421052631578,
+  "control_gap_stop": 0.017763157894736842,
+  "verdict_stop_first": "UNDERPOWERED"
+ },
+ "ctrl_overlap": 0.0,
+ "exposure_bars": {
+  "real_mean": 860.125,
+  "control_mean": 860.125,
+  "hold_basis": "bars"
+ },
+ "run_id": "1cad049e76aa4765959f1eb88979435e",
+ "hyp_key": "a2a800158668626f"
+}

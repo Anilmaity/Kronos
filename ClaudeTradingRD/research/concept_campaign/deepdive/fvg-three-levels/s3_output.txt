@@ -1,0 +1,84 @@
+  return np.nanmean(np.vstack(X), 0)
+=== ties: race tie share obs 0.00003; hard-stop same-bar ties obs 0.0012
+   base      race-tie 0.00012  hard-tie 0.0055
+   tod       race-tie 0.00006  hard-tie 0.0036
+   sstop     race-tie 0.00004  hard-tie 0.0020
+   sstop_rd  race-tie 0.00004  hard-tie 0.0020
+   sboth     race-tie 0.00004  hard-tie 0.0008
+
+=== 1. HIT RATE (the campaign statistic) vs each control
+  base      n= 34784 obs 0.3981 ctrl 0.3885  diff +0.964pp [+0.448,+1.465] p=0.0005
+  tod       n= 34784 obs 0.3981 ctrl 0.3880  diff +1.015pp [+0.511,+1.542] p=0.0010
+  sstop     n= 32593 obs 0.4043 ctrl 0.3938  diff +1.053pp [+0.521,+1.612] p=0.0005
+  sstop_rd  n= 32639 obs 0.4045 ctrl 0.3967  diff +0.781pp [+0.254,+1.316] p=0.0010
+  sboth     n= 29125 obs 0.3906 ctrl 0.3725  diff +1.803pp [+1.231,+2.394] p=0.0005
+
+=== 1b. invalidation-first rate vs control
+  base      obs 0.5419 ctrl 0.5369  diff +0.502pp [-0.030,+1.037] p=0.0600
+  tod       obs 0.5419 ctrl 0.5461  diff -0.417pp [-0.948,+0.112] p=0.1250
+  sstop     obs 0.5345 ctrl 0.5410  diff -0.643pp [-1.231,-0.086] p=0.0240
+  sstop_rd  obs 0.5341 ctrl 0.5376  diff -0.348pp [-0.884,+0.180] p=0.2100
+  sboth     obs 0.5449 ctrl 0.5573  diff -1.238pp [-1.854,-0.637] p=0.0005
+
+=== 2. TRADE: entry next M1 open, target = leg extreme, stop variants; R in units of dn
+  R_close   base      obs +0.2884R ctrl -0.1054R diff +0.394R [+0.009,+0.786] p=0.0440
+  R_close   tod       obs +0.2884R ctrl -0.1502R diff +0.439R [+0.043,+0.844] p=0.0310
+  R_close   sstop     obs +0.0431R ctrl +0.0708R diff -0.028R [-0.309,+0.188] p=0.8970
+  R_close   sstop_rd  obs +0.0272R ctrl +0.0906R diff -0.063R [-0.343,+0.143] p=0.6440
+  R_close   sboth     obs +0.0786R ctrl -0.0276R diff +0.106R [-0.056,+0.244] p=0.2040
+  R_close50 base      obs +0.2885R ctrl -0.1049R diff +0.393R [+0.008,+0.785] p=0.0440
+  R_close50 tod       obs +0.2885R ctrl -0.1500R diff +0.438R [+0.043,+0.844] p=0.0310
+  R_close50 sstop     obs +0.0432R ctrl +0.0709R diff -0.028R [-0.309,+0.188] p=0.8950
+  R_close50 sstop_rd  obs +0.0272R ctrl +0.0907R diff -0.063R [-0.344,+0.143] p=0.6440
+  R_close50 sboth     obs +0.0787R ctrl -0.0275R diff +0.106R [-0.056,+0.244] p=0.2050
+  R_hard    base      obs +0.1742R ctrl +0.1214R diff +0.053R [-0.042,+0.163] p=0.3250
+  R_hard    tod       obs +0.1742R ctrl +0.1250R diff +0.049R [-0.044,+0.161] p=0.3820
+  R_hard    sstop     obs +0.0676R ctrl +0.0922R diff -0.025R [-0.071,+0.023] p=0.3330
+  R_hard    sstop_rd  obs +0.0605R ctrl +0.0828R diff -0.022R [-0.064,+0.021] p=0.3310
+  R_hard    sboth     obs +0.0642R ctrl +0.0493R diff +0.015R [-0.026,+0.058] p=0.4980
+  R_hard50  base      obs +0.1792R ctrl +0.1517R diff +0.028R [-0.067,+0.138] p=0.6350
+  R_hard50  tod       obs +0.1792R ctrl +0.1494R diff +0.030R [-0.061,+0.140] p=0.6430
+  R_hard50  sstop     obs +0.0696R ctrl +0.1014R diff -0.032R [-0.079,+0.016] p=0.1980
+  R_hard50  sstop_rd  obs +0.0629R ctrl +0.0883R diff -0.025R [-0.067,+0.018] p=0.2650
+  R_hard50  sboth     obs +0.0658R ctrl +0.0511R diff +0.015R [-0.027,+0.058] p=0.4970
+
+=== 3. BLOCKS / HALVES (hit diff vs tod and sboth; R_hard50 diff vs sstop)
+  B1: n= 7663 | hit/tod +1.164pp [+0.116,+2.248] | hit/sstop -0.034pp [-1.119,+1.110] | hit/sboth +1.014pp [-0.233,+2.225] | R_hard50/sstop -0.035R [-0.134,+0.074]
+  B2: n= 8889 | hit/tod +1.136pp [+0.087,+2.192] | hit/sstop +1.538pp [+0.446,+2.654] | hit/sboth +2.212pp [+1.038,+3.422] | R_hard50/sstop -0.049R [-0.159,+0.049]
+  B3: n= 9357 | hit/tod +0.509pp [-0.545,+1.603] | hit/sstop +0.384pp [-0.663,+1.481] | hit/sboth +1.498pp [+0.377,+2.645] | R_hard50/sstop -0.023R [-0.105,+0.055]
+  B4: n= 8881 | hit/tod +1.299pp [+0.280,+2.364] | hit/sstop +2.202pp [+1.218,+3.289] | hit/sboth +2.386pp [+1.338,+3.519] | R_hard50/sstop -0.020R [-0.109,+0.069]
+  H1: n=15655 | hit/tod +1.129pp [+0.380,+1.886] | hit/sstop +0.826pp [+0.025,+1.649] | hit/sboth +1.681pp [+0.801,+2.546] | R_hard50/sstop -0.034R [-0.109,+0.045]
+  H2: n=19135 | hit/tod +0.921pp [+0.212,+1.668] | hit/sstop +1.238pp [+0.521,+2.001] | hit/sboth +1.901pp [+1.145,+2.700] | R_hard50/sstop -0.030R [-0.086,+0.029]
+
+=== 4. COST REALISM: net avg R of the concept trade itself (spread in points / dn)
+   dn (points) quantiles: [0.12  0.28  0.655 1.425 2.995]
+  R_close   spread 0.00 all      n= 34784 net +0.2884R [-0.0842,+0.6634]   diff vs sstop -0.0277 [-0.3086,+0.1883]
+  R_close   spread 0.00 dn>=1pt  n= 12443 net +0.0209R [-0.0227,+0.0680]   diff vs sstop +0.0318 [-0.0147,+0.0844]
+  R_close   spread 0.00 dn>=2pt  n=  5907 net +0.0088R [-0.0441,+0.0619]   diff vs sstop +0.0096 [-0.0515,+0.0696]
+  R_close   spread 0.00 dn>=3pt  n=  3477 net +0.0009R [-0.0645,+0.0683]   diff vs sstop +0.0041 [-0.0668,+0.0776]
+  R_close   spread 0.25 all      n= 34784 net -1.0672R [-1.4629,-0.6886]   diff vs sstop -0.0191 [-0.2999,+0.1966]
+  R_close   spread 0.25 dn>=1pt  n= 12443 net -0.1110R [-0.1547,-0.0637]   diff vs sstop +0.0347 [-0.0119,+0.0873]
+  R_close   spread 0.25 dn>=2pt  n=  5907 net -0.0640R [-0.1166,-0.0107]   diff vs sstop +0.0116 [-0.0495,+0.0716]
+  R_close   spread 0.25 dn>=3pt  n=  3477 net -0.0500R [-0.1148,+0.0174]   diff vs sstop +0.0057 [-0.0652,+0.0792]
+  R_close   spread 0.35 all      n= 34784 net -1.6095R [-2.0188,-1.2258]   diff vs sstop -0.0156 [-0.2963,+0.2003]
+  R_close   spread 0.35 dn>=1pt  n= 12443 net -0.1637R [-0.2071,-0.1165]   diff vs sstop +0.0358 [-0.0107,+0.0884]
+  R_close   spread 0.35 dn>=2pt  n=  5907 net -0.0931R [-0.1456,-0.0397]   diff vs sstop +0.0124 [-0.0486,+0.0724]
+  R_close   spread 0.35 dn>=3pt  n=  3477 net -0.0703R [-0.1352,-0.0029]   diff vs sstop +0.0064 [-0.0646,+0.0798]
+  R_hard50  spread 0.00 all      n= 34784 net +0.1792R [+0.0981,+0.2835]   diff vs sstop -0.0317 [-0.0785,+0.0159]
+  R_hard50  spread 0.00 dn>=1pt  n= 12443 net +0.0322R [+0.0049,+0.0613]   diff vs sstop +0.0260 [-0.0059,+0.0606]
+  R_hard50  spread 0.00 dn>=2pt  n=  5907 net +0.0324R [-0.0039,+0.0723]   diff vs sstop +0.0169 [-0.0269,+0.0622]
+  R_hard50  spread 0.00 dn>=3pt  n=  3477 net +0.0167R [-0.0291,+0.0641]   diff vs sstop +0.0057 [-0.0460,+0.0601]
+  R_hard50  spread 0.25 all      n= 34784 net -1.1765R [-1.2850,-1.0566]   diff vs sstop -0.0231 [-0.0700,+0.0234]
+  R_hard50  spread 0.25 dn>=1pt  n= 12443 net -0.0996R [-0.1271,-0.0704]   diff vs sstop +0.0289 [-0.0030,+0.0634]
+  R_hard50  spread 0.25 dn>=2pt  n=  5907 net -0.0404R [-0.0774,-0.0003]   diff vs sstop +0.0189 [-0.0250,+0.0643]
+  R_hard50  spread 0.25 dn>=3pt  n=  3477 net -0.0341R [-0.0798,+0.0133]   diff vs sstop +0.0073 [-0.0445,+0.0616]
+  R_hard50  spread 0.35 all      n= 34784 net -1.7187R [-1.8500,-1.5795]   diff vs sstop -0.0196 [-0.0665,+0.0266]
+  R_hard50  spread 0.35 dn>=1pt  n= 12443 net -0.1524R [-0.1800,-0.1231]   diff vs sstop +0.0300 [-0.0018,+0.0645]
+  R_hard50  spread 0.35 dn>=2pt  n=  5907 net -0.0695R [-0.1064,-0.0294]   diff vs sstop +0.0197 [-0.0242,+0.0652]
+  R_hard50  spread 0.35 dn>=3pt  n=  3477 net -0.0544R [-0.1002,-0.0071]   diff vs sstop +0.0080 [-0.0439,+0.0623]
+
+=== 5. hit diff by stop-size bucket (does it live where it is tradeable?)
+  dn<0.3  n=  9317 vs tod -0.052pp [-1.101,+0.981] p=0.9140 | vs sstop -0.700pp [-1.961,+0.574] p=0.2590
+  0.3-1   n= 13024 vs tod +1.058pp [+0.251,+1.882] p=0.0120 | vs sstop +1.234pp [+0.401,+2.115] p=0.0050
+  1-2     n=  6539 vs tod +1.145pp [+0.006,+2.326] p=0.0500 | vs sstop +2.227pp [+1.077,+3.379] p=0.0005
+  >=2     n=  5910 vs tod +2.458pp [+1.241,+3.718] p=0.0005 | vs sstop +1.563pp [+0.342,+2.812] p=0.0120

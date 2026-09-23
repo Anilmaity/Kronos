@@ -1,0 +1,257 @@
+{
+ "concept_id": "decoupling-realignment",
+ "reading": "a",
+ "testable": true,
+ "test_type": "trade",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "trading day = 18:00 NY roll; gold sessions with <= 600 M1 bars and silver days with < 18 H1 bars dropped; silver = XAG_USD H1 (OANDA) aggregated to the same day, its 17:00-NY (gold halt) hour dropped so the silver day is complete at gold's last M1 close",
+   "z = day's close-to-close return / mean |return| of the 20 prior days (per asset)",
+   "leader |z| >= 1.0; the other |z| <= 0.25 or opposite sign with |z| < 1.0",
+   "gold is the leader -> at the day's close trade gold against its own move (enter next M1 open); target = the day's opposite extreme, stop = the day's extreme in the move's direction",
+   "exit after one session: 23h of trading time (hold_basis bars)"
+  ],
+  "params": {
+   "tf": "1D",
+   "correlate": "XAG_USD H1 -> 1D",
+   "z_lookback": 20,
+   "lead_z": 1.0,
+   "flat_z": 0.25,
+   "max_hold": "23h",
+   "hold_basis": "bars",
+   "min_gold_m1": 600,
+   "min_xag_h1": 18
+  }
+ },
+ "params_source": {
+  "tf": "corpus: xraklBJHW5k daily divergence / percent change (yaml htf 1D)",
+  "correlate": "method_spec: \u00a72.6 silver is the method's sanctioned gold correlate; campaign holds no ES/NQ/YM",
+  "z_lookback": "phase3: lookback 20 knob",
+  "lead_z": "declared-before-run: 'strongly directional' = at least a typical day's move (example: YM -0.63%, about one typical day then)",
+  "flat_z": "declared-before-run: 'roughly flat' = a quarter of a typical day's move",
+  "max_hold": "corpus: xraklBJHW5k 'the next session YM was the asset that came back'",
+  "hold_basis": "declared-before-run: README trap 7 - a Friday-close decision must hold a full session of trading time",
+  "min_gold_m1": "declared-before-run: README trap 6 stub-session guard",
+  "min_xag_h1": "declared-before-run: stub-session guard for the correlate"
+ },
+ "n": 80,
+ "span": {
+  "start": "2016-04-13 22:00:00+00:00",
+  "end": "2026-06-01 22:00:00+00:00",
+  "years": 10.133
+ },
+ "avg_R": -0.15535496559952783,
+ "avg_R_gross": -0.11535496559952782,
+ "win_rate": 0.2875,
+ "pf": 0.7793342586482994,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "n": 400,
+  "avg_R": -0.3220950506055793,
+  "win_rate": 0.2225,
+  "pf": 0.5758512675372726,
+  "sd_R": 1.449460542167547,
+  "exit_mix": {
+   "stop": 0.7025,
+   "target": 0.1175,
+   "time": 0.18
+  },
+  "avg_R_gross": -0.28209505060557927,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": 0.16674008500605147,
+ "ci_lo": -0.22986105981758104,
+ "ci_hi": 0.602734499504616,
+ "ci_method": "phase3_iid",
+ "p": 0.4324383483195646,
+ "halves": {
+  "H1": {
+   "n": 30,
+   "diff": 0.34394824045783234,
+   "ci_lo": -0.3974850196901128,
+   "ci_hi": 1.2648600374004355,
+   "ci_method": "iid",
+   "p": 0.41733440842543595,
+   "start": "2016-04-13 22:00:00+00:00",
+   "end": "2020-07-28 22:00:00+00:00"
+  },
+  "H2": {
+   "n": 50,
+   "diff": 0.06041519173498289,
+   "ci_lo": -0.35377818171172093,
+   "ci_hi": 0.5092439785093197,
+   "ci_method": "iid",
+   "p": 0.7837684097665232,
+   "start": "2021-02-11 23:00:00+00:00",
+   "end": "2026-06-01 22:00:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 13,
+   "diff": 0.257979401890821,
+   "ci_lo": -0.44310576667272356,
+   "ci_hi": 1.0472600789216795,
+   "ci_method": "iid",
+   "p": 0.4974345422557494,
+   "start": "2016-04-13 22:00:00+00:00",
+   "end": "2018-06-20 22:00:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 19,
+   "diff": 0.21375442809247736,
+   "ci_lo": -0.8566157427160346,
+   "ci_hi": 1.6429936060769483,
+   "ci_method": "iid",
+   "p": 0.7374642897190744,
+   "start": "2018-10-30 22:00:00+00:00",
+   "end": "2021-02-17 23:00:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 21,
+   "diff": 0.24217097971508855,
+   "ci_lo": -0.32956490920025816,
+   "ci_hi": 0.8137241375661939,
+   "ci_method": "iid",
+   "p": 0.4063593452176229,
+   "start": "2021-07-30 22:00:00+00:00",
+   "end": "2023-10-18 22:00:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 27,
+   "diff": 0.031057402523315347,
+   "ci_lo": -0.5620309910543893,
+   "ci_hi": 0.6450140521886637,
+   "ci_method": "block",
+   "p": 0.9196614526759465,
+   "start": "2024-03-05 23:00:00+00:00",
+   "end": "2026-06-01 22:00:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.5950586924207989,
+ "mde_threshold": 0.1,
+ "power_floor_n": 2833,
+ "verdict": "UNDERPOWERED",
+ "verdict_detail": "CI contains 0; MDE 0.5951 vs threshold 0.1000, effective n 80 (power floor n=2833, have 80)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 80,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "entry_delay_min": {
+   "median": 3.0,
+   "max": 2885.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 28,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "target_px"
+   ],
+   "ignored": [],
+   "lookback": "60D",
+   "recent": "1D",
+   "events_fp": "07e935c881243b30",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "23h",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": null,
+  "entry_mode": "next_open",
+  "hold_basis": "bars",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "Transfer ES/NQ/YM -> XAU/XAG. The corpus admits it cannot say in advance which asset realigns (he inferred it after the fact), so each branch is a separate reading; both targets are the previous day's extreme as in the worked example. Stop is unstated; the decoupling day's other extreme is used.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/structure_own_05a/decoupling-realignment.py",
+ "runtime_sec": 0.82,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:32:32+00:00",
+ "n_events_in": 86,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 5,
+  "target_not_beyond_entry": 1,
+  "no_bars_in_hold": 0
+ },
+ "events_fp": "07e935c881243b30",
+ "sd_R": 1.7048970933660716,
+ "exit_mix": {
+  "stop": 0.65,
+  "target": 0.1375,
+  "time": 0.2125
+ },
+ "trades_per_year": 7.895163469332613,
+ "ci_components": {
+  "phase3_iid": [
+   -0.22986105981758104,
+   0.602734499504616
+  ],
+  "day_block": [
+   -0.19424250615212627,
+   0.561035288573968
+  ]
+ },
+ "diff_win": 0.06499999999999997,
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 80,
+  "n_clusters": null,
+  "n_eff": 80
+ },
+ "ties": {
+  "real_ambiguous": 0.0,
+  "control_ambiguous": 0.0,
+  "real_gap_stop": 0.0,
+  "control_gap_stop": 0.01,
+  "verdict_stop_first": "UNDERPOWERED"
+ },
+ "ctrl_overlap": 0.0025,
+ "exposure_bars": {
+  "real_mean": 1380.0,
+  "control_mean": 1380.0,
+  "hold_basis": "bars"
+ },
+ "run_id": "b3948ac027a845cda67e4c09934d9991",
+ "hyp_key": "628789e1b0259966"
+}

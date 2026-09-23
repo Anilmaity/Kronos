@@ -1,0 +1,199 @@
+{
+ "concept_id": "failure-swing",
+ "reading": "b",
+ "testable": true,
+ "test_type": "rate",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "15min bars; swings = strict 3-bar swings, confirmed at the close of the next bar",
+   "decision = close of the bar confirming the newest swing; level must be untaken at that close",
+   "hit = level traded through (M1 high >= / low <=) within 300 M1 bars",
+   "null = same signed distance from the first M1 open after a matched random moment (+/-30 d, locked reps/seed), same side, same M1-bar horizon",
+   "reading b: new swing high below the previous swing high, nothing between traded through the previous one (failed to sweep); level = the new swing"
+  ],
+  "params": {
+   "tf": "15min",
+   "swing": "3-bar strict",
+   "horizon_m1_bars": 300
+  }
+ },
+ "params_source": {
+  "tf": "corpus: failure-swing.yaml timeframes ltf ['1H','15m']",
+  "swing": "corpus: swing-point.yaml 'Swing high := high[i] > high[i-1] AND high[i] > high[i+1]'",
+  "horizon_m1_bars": "declared-before-run: 20 bars of 15m (an intraday target; yaml 'use the first failure swing as a target')"
+ },
+ "n": 59067,
+ "span": {
+  "start": "2016-01-04 01:45:00+00:00",
+  "end": "2026-07-23 03:45:00+00:00",
+  "years": 10.549
+ },
+ "avg_R": null,
+ "avg_R_gross": null,
+ "win_rate": null,
+ "pf": null,
+ "observed_rate": 0.7571571266527841,
+ "null_rate": 0.7482689149609765,
+ "lift": 1.0118783655369021,
+ "control": {
+  "rate": 0.7482689149609765,
+  "reps": 5,
+  "kind": "null_fn x5"
+ },
+ "diff": 0.008888211691807646,
+ "ci_lo": 0.0044272192403493026,
+ "ci_hi": 0.01330082562526593,
+ "ci_method": "day_block",
+ "p": 8.623391386936076e-05,
+ "halves": {
+  "H1": {
+   "n": 28682,
+   "diff": 0.007377449271319891,
+   "ci_lo": 0.0010450805384336654,
+   "ci_hi": 0.013445889408105495,
+   "ci_method": "block",
+   "p": 0.019699063543946876,
+   "start": "2016-01-04 01:45:00+00:00",
+   "end": "2020-12-31 22:00:00+00:00"
+  },
+  "H2": {
+   "n": 30385,
+   "diff": 0.01031429981898968,
+   "ci_lo": 0.003935165377789288,
+   "ci_hi": 0.016819154188046602,
+   "ci_method": "block",
+   "p": 0.0017004381835283528,
+   "start": "2021-01-03 23:15:00+00:00",
+   "end": "2026-07-23 03:45:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 15305,
+   "diff": -0.0008101927474680748,
+   "ci_lo": -0.009122508983965725,
+   "ci_hi": 0.007618752041828527,
+   "ci_method": "block",
+   "p": 0.8495404751025061,
+   "start": "2016-01-04 01:45:00+00:00",
+   "end": "2018-08-22 10:30:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 14906,
+   "diff": 0.017362136052596178,
+   "ci_lo": 0.008988997719048852,
+   "ci_hi": 0.02574869180197329,
+   "ci_method": "block",
+   "p": 4.88978839984534e-05,
+   "start": "2018-08-22 12:15:00+00:00",
+   "end": "2021-04-12 08:30:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 14499,
+   "diff": 0.007945375543141009,
+   "ci_lo": -0.00037278432994389266,
+   "ci_hi": 0.01692668459893773,
+   "ci_method": "block",
+   "p": 0.0718035554700296,
+   "start": "2021-04-12 09:15:00+00:00",
+   "end": "2023-12-01 21:30:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 14357,
+   "diff": 0.011381207773211721,
+   "ci_lo": 0.0019220589259545562,
+   "ci_hi": 0.0206181653548758,
+   "ci_method": "block",
+   "p": 0.01702134644929455,
+   "start": "2023-12-04 01:30:00+00:00",
+   "end": "2026-07-23 03:45:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.0063419946855877585,
+ "mde_threshold": 0.05,
+ "power_floor_n": 951,
+ "verdict": "EDGE",
+ "verdict_detail": "CI excludes 0 in claimed direction; halves agree (H1 +0.0074, H2 +0.0103); powered",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 59067,
+  "min_slack_min": 0.0,
+  "passed": true,
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 4307,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "level",
+    "above"
+   ],
+   "ignored": [],
+   "lookback": "10D",
+   "recent": "1D",
+   "events_fp": "328bb2feee7be0c8",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "reps": 5,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "mde_threshold": null,
+  "cluster": null,
+  "outcome_horizon": "1 days 00:00:00",
+  "null_kind": "null_fn x5"
+ },
+ "notes": "The null asks whether ANY level at this distance is taken; a swing just formed sits close to price, which the matched distance absorbs.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/structure_own_03a/failure-swing.py",
+ "runtime_sec": 11.78,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:25:08+00:00",
+ "dropped": {
+  "nan_rows": 0
+ },
+ "null_kind": "null_fn x5",
+ "events_fp": "328bb2feee7be0c8",
+ "predictors_probed": true,
+ "ci_components": {
+  "phase3_block": [
+   0.0044852455685676085,
+   0.01328694533324603
+  ],
+  "day_block": [
+   0.0044272192403493026,
+   0.01330082562526593
+  ]
+ },
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 2720,
+  "n_clusters": null,
+  "n_eff": 2720
+ },
+ "run_id": "ce731c94f5034ea19aba2a238a1134ee",
+ "hyp_key": "6ff7c14bc57e8ace"
+}

@@ -1,0 +1,269 @@
+{
+ "concept_id": "killzone-execution-sequence",
+ "reading": null,
+ "testable": true,
+ "test_type": "trade",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "15m bars; CISD (detectors.cisd, series_open, 2/2 swings, max_wait 3): a close through the opening price of the opposing-close series that made the swing extreme",
+   "kill zone: the swing-extreme bar starts, and the confirming bar closes, inside London 02:00-05:00 or New York 07:00-10:00 NY (Asia skipped)",
+   "sweep of opposing liquidity: the extreme trades beyond that day's Asia range (20:00-00:00) high/low, the previous day's high/low or the current week's Monday high/low, which the day had not traded beyond before the extreme bar",
+   "entry = next M1 open after the CISD close (his entry 2, close through the order block turned breaker); stop = the swept extreme; target = nearest of Asia / Monday / previous-day opposite extreme beyond the entry close (no target -> no trade); time exit 150 min"
+  ],
+  "params": {
+   "tf": "15min",
+   "killzones": {
+    "london": [
+     "02:00",
+     "05:00"
+    ],
+    "ny": [
+     "07:00",
+     "10:00"
+    ]
+   },
+   "cisd": {
+    "level_rule": "series_open",
+    "left": 2,
+    "right": 2,
+    "max_wait": 3
+   },
+   "liquidity": [
+    "asia",
+    "pdh/pdl",
+    "monday"
+   ],
+   "max_hold": "150min",
+   "day_open_hour": 18
+  }
+ },
+ "params_source": {
+  "tf": "corpus: JABOO4LYNjQ 'Entry 1 at the M15/M5 balanced price range'; M15 entry walkthrough (t_talks_02)",
+  "killzones": "session_window_fit: forex kill zones London 02:00-05:00, NY AM 07:00-10:00 (killzones.yaml); he trades EURUSD and never states clock times",
+  "cisd": "phase3: locked CISD config (conjunction_preregistration 1.8-1.13: series_open, 2/2, max_wait 3)",
+  "liquidity": "corpus: JABOO4LYNjQ 'opposing liquidity (session highs/lows, previous day high/low, Monday high/low) is swept'",
+  "max_hold": "phase3: 10 entry-TF bars (conjunction_preregistration 1.13) = 150 min on 15m",
+  "day_open_hour": "session_window_fit: 18:00 NY daily roll"
+ },
+ "n": 193,
+ "span": {
+  "start": "2016-02-03 14:15:00+00:00",
+  "end": "2026-06-05 07:15:00+00:00",
+  "years": 10.333
+ },
+ "avg_R": 0.03350778124494429,
+ "avg_R_gross": 0.07350778124494428,
+ "win_rate": 0.5906735751295337,
+ "pf": 1.160402718732946,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "n": 965,
+  "avg_R": -0.03699501267490457,
+  "win_rate": 0.5212435233160622,
+  "pf": 0.8440610742621092,
+  "sd_R": 0.6019415410527313,
+  "exit_mix": {
+   "stop": 0.15129533678756477,
+   "target": 0.33471502590673574,
+   "time": 0.5139896373056995
+  },
+  "avg_R_gross": 0.00300498732509544,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": 0.07050279391984886,
+ "ci_lo": -0.054671550581158274,
+ "ci_hi": 0.18873892657793123,
+ "ci_method": "phase3_block",
+ "p": 0.2562118542951919,
+ "halves": {
+  "H1": {
+   "n": 90,
+   "diff": 0.03194211540698225,
+   "ci_lo": -0.0994492408259922,
+   "ci_hi": 0.1705899433244107,
+   "ci_method": "iid",
+   "p": 0.6428796191369458,
+   "start": "2016-02-03 14:15:00+00:00",
+   "end": "2020-11-02 08:45:00+00:00"
+  },
+  "H2": {
+   "n": 103,
+   "diff": 0.10419659067866432,
+   "ci_lo": -0.0528649854144581,
+   "ci_hi": 0.25348365845533094,
+   "ci_method": "iid",
+   "p": 0.18244570260702572,
+   "start": "2021-02-10 15:00:00+00:00",
+   "end": "2026-06-05 07:15:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 56,
+   "diff": 0.11573811425952203,
+   "ci_lo": -0.055297178683289094,
+   "ci_hi": 0.2802823387065297,
+   "ci_method": "iid",
+   "p": 0.17639288750813864,
+   "start": "2016-02-03 14:15:00+00:00",
+   "end": "2018-08-09 07:15:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 35,
+   "diff": -0.10796356696374962,
+   "ci_lo": -0.31529080211290533,
+   "ci_hi": 0.08252635071786744,
+   "ci_method": "iid",
+   "p": 0.2874061882428759,
+   "start": "2018-10-25 07:00:00+00:00",
+   "end": "2021-02-10 15:00:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 67,
+   "diff": -0.0016013935608105087,
+   "ci_lo": -0.159693545184456,
+   "ci_hi": 0.17252711674092322,
+   "ci_method": "iid",
+   "p": 0.984924776882574,
+   "start": "2021-04-14 08:00:00+00:00",
+   "end": "2023-11-23 08:30:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 35,
+   "diff": 0.3146206582943752,
+   "ci_lo": 0.09289662587569607,
+   "ci_hi": 0.5581014394662898,
+   "ci_method": "iid",
+   "p": 0.008023731074172686,
+   "start": "2024-01-05 14:30:00+00:00",
+   "end": "2026-06-05 07:15:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.1739662416380474,
+ "mde_threshold": 0.1,
+ "power_floor_n": 585,
+ "verdict": "UNDERPOWERED",
+ "verdict_detail": "CI contains 0; MDE 0.1740 vs threshold 0.1000, effective n 189 (power floor n=585, have 193)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 193,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 0.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 27,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "target_px",
+    "kz"
+   ],
+   "ignored": [],
+   "lookback": "20D",
+   "recent": "1D",
+   "events_fp": "c1f93c0e3671ad4b",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "150min",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": null,
+  "entry_mode": "next_open",
+  "hold_basis": "clock",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "Not modelled: daily bias with confirmed draw, H1 POI refinement, the BPR entry 1 and the break-even move of entry 1 on the breaker close (so the tested book is entry 2 alone). 'Order block turned breaker close' operationalised as the phase-3 CISD close through the opening price of the series that made the swept extreme.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/entry_guest_01b/killzone-execution-sequence.py",
+ "runtime_sec": 0.6,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:19:45+00:00",
+ "n_events_in": 193,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 0,
+  "target_not_beyond_entry": 0,
+  "no_bars_in_hold": 0
+ },
+ "events_fp": "c1f93c0e3671ad4b",
+ "sd_R": 0.6425597564222228,
+ "exit_mix": {
+  "stop": 0.13989637305699482,
+  "target": 0.41968911917098445,
+  "time": 0.44041450777202074
+ },
+ "trades_per_year": 18.678656597774246,
+ "ci_components": {
+  "phase3_block": [
+   -0.054671550581158274,
+   0.18873892657793123
+  ],
+  "day_block": [
+   -0.028651930587808787,
+   0.1717552086167941
+  ]
+ },
+ "diff_win": 0.0694300518134715,
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 189,
+  "n_clusters": null,
+  "n_eff": 189
+ },
+ "ties": {
+  "real_ambiguous": 0.0,
+  "control_ambiguous": 0.0,
+  "real_gap_stop": 0.0,
+  "control_gap_stop": 0.002072538860103627,
+  "verdict_stop_first": "UNDERPOWERED"
+ },
+ "ctrl_overlap": 0.0010362694300518134,
+ "exposure_bars": {
+  "real_mean": 149.65284974093265,
+  "control_mean": 143.38031088082903,
+  "hold_basis": "clock"
+ },
+ "run_id": "658b8131ca74430ba74f4740543872db",
+ "hyp_key": "f973fb03c3692ea2"
+}

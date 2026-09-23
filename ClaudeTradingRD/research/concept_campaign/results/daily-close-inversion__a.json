@@ -1,0 +1,261 @@
+{
+ "concept_id": "daily-close-inversion",
+ "reading": "a",
+ "testable": true,
+ "test_type": "trade",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "daily bars, 18:00 NY roll; daily 3-bar FVG known at its third bar's close",
+   "inversion = first daily close beyond the gap within 40 trading days: the ENTIRE gap (reading a)",
+   "bullish gap inverted -> short level; bearish gap inverted -> long level",
+   "entry: first M1 in a forex kill zone (London 02-05 / NY AM 07-10 NY) within 5 trading days that trades back to the level and closes inside the array; decide at that M1 close",
+   "invalidated by a completed daily close back beyond the array's far side before the touch",
+   "stop = far side of the array; target = inversion day's low (short) / high (long); max_hold 5D"
+  ],
+  "params": {
+   "age_cap_days": 40,
+   "retest_days": 5,
+   "killzones": [
+    "fx_london",
+    "fx_ny_am"
+   ],
+   "level": "gap_low/high",
+   "stop": "array far side",
+   "target": "inversion-day extreme",
+   "max_hold": "5D",
+   "grid4h": "n/a (1D)"
+  }
+ },
+ "params_source": {
+  "age_cap_days": "declared-before-run: a gap older than ~2 months is not the current daily PD array",
+  "retest_days": "declared-before-run: one trading week to return to the level",
+  "killzones": "session_window_fit: forex London 02:00-05:00 and NY AM 07:00-10:00 NY (killzones.yaml, verbatim-verified)",
+  "level": "corpus: JABOO4LYNjQ ambiguity - close below the entire gap vs below its mean threshold; one reading each",
+  "stop": "corpus: JABOO4LYNjQ execution 'Above/below the inversion level'",
+  "target": "corpus: JABOO4LYNjQ targets 'old daily highs or lows' (nearest: the inversion day's extreme)",
+  "max_hold": "declared-before-run: daily-timeframe setup, one trading week",
+  "grid4h": "declared-before-run: not used"
+ },
+ "n": 278,
+ "span": {
+  "start": "2016-01-15 07:01:00+00:00",
+  "end": "2026-07-08 08:18:00+00:00",
+  "years": 10.478
+ },
+ "avg_R": -0.13464962002522174,
+ "avg_R_gross": -0.09464962002522173,
+ "win_rate": 0.38848920863309355,
+ "pf": 0.7863959964438787,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "n": 1390,
+  "avg_R": 0.03405327407912774,
+  "win_rate": 0.35251798561151076,
+  "pf": 1.0507819530543066,
+  "sd_R": 3.1415664029370194,
+  "exit_mix": {
+   "stop": 0.6359712230215827,
+   "target": 0.3410071942446043,
+   "time": 0.02302158273381295
+  },
+  "avg_R_gross": 0.07405327407912776,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": -0.16870289410434947,
+ "ci_lo": -0.4110612109249311,
+ "ci_hi": 0.05574567855346565,
+ "ci_method": "phase3_iid",
+ "p": 0.15658451885739652,
+ "halves": {
+  "H1": {
+   "n": 124,
+   "diff": -0.2819056391303507,
+   "ci_lo": -0.6356727019794841,
+   "ci_hi": 0.06699815955674489,
+   "ci_method": "iid",
+   "p": 0.11580170406031111,
+   "start": "2016-01-15 07:01:00+00:00",
+   "end": "2020-12-23 12:12:00+00:00"
+  },
+  "H2": {
+   "n": 154,
+   "diff": -0.07755263187562109,
+   "ci_lo": -0.35910419069715516,
+   "ci_hi": 0.19221411409992933,
+   "ci_method": "iid",
+   "p": 0.5813547520826536,
+   "start": "2021-01-06 12:44:00+00:00",
+   "end": "2026-07-08 08:18:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 61,
+   "diff": -0.24507598220529786,
+   "ci_lo": -0.8261256359952547,
+   "ci_hi": 0.29272156663007964,
+   "ci_method": "iid",
+   "p": 0.3905424955890035,
+   "start": "2016-01-15 07:01:00+00:00",
+   "end": "2018-07-05 06:01:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 69,
+   "diff": -0.3795832367656338,
+   "ci_lo": -0.7199969206311243,
+   "ci_hi": -0.0034496544217332186,
+   "ci_method": "iid",
+   "p": 0.0378440487656356,
+   "start": "2018-08-23 06:01:00+00:00",
+   "end": "2021-04-05 06:10:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 71,
+   "diff": -0.0968595155919905,
+   "ci_lo": -0.5143758926999689,
+   "ci_hi": 0.3210599482680655,
+   "ci_method": "iid",
+   "p": 0.6494890287925873,
+   "start": "2021-04-20 08:29:00+00:00",
+   "end": "2023-11-20 08:21:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 77,
+   "diff": 0.014525964900962113,
+   "ci_lo": -0.33602797219279773,
+   "ci_hi": 0.38876742406382697,
+   "ci_method": "iid",
+   "p": 0.9373817153719045,
+   "start": "2023-12-12 07:19:00+00:00",
+   "end": "2026-07-08 08:18:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.33362836752596836,
+ "mde_threshold": 0.1,
+ "power_floor_n": 3095,
+ "verdict": "UNDERPOWERED",
+ "verdict_detail": "CI contains 0; MDE 0.3336 vs threshold 0.1000, effective n 264 (power floor n=3095, have 278)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 278,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 0.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 49,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "target_px",
+    "gap_lo",
+    "gap_hi"
+   ],
+   "ignored": [],
+   "lookback": "100D",
+   "recent": "1D",
+   "events_fp": "2631303359da9886",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "5D",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": null,
+  "entry_mode": "next_open",
+  "hold_basis": "clock",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "LTF confirmation (1H/15m) not modelled: entry is a kill-zone touch of the inversion level. Reading a = close through entire gap, b = close through MT.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/structure_guest_01a/daily-close-inversion.py",
+ "runtime_sec": 0.77,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:16:19+00:00",
+ "n_events_in": 281,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 3,
+  "target_not_beyond_entry": 0,
+  "no_bars_in_hold": 0
+ },
+ "events_fp": "2631303359da9886",
+ "sd_R": 1.36445539771866,
+ "exit_mix": {
+  "stop": 0.6007194244604317,
+  "target": 0.3669064748201439,
+  "time": 0.03237410071942446
+ },
+ "trades_per_year": 26.532401358766656,
+ "ci_components": {
+  "phase3_iid": [
+   -0.4110612109249311,
+   0.05574567855346565
+  ],
+  "day_block": [
+   -0.34602396548453873,
+   0.004558476109552615
+  ]
+ },
+ "diff_win": 0.03597122302158279,
+ "dependence": {
+  "day_block_mean_days": 7,
+  "n_days": 264,
+  "n_clusters": null,
+  "n_eff": 264
+ },
+ "ties": {
+  "real_ambiguous": 0.0,
+  "control_ambiguous": 0.0007194244604316547,
+  "real_gap_stop": 0.007194244604316547,
+  "control_gap_stop": 0.017266187050359712,
+  "verdict_stop_first": "UNDERPOWERED"
+ },
+ "ctrl_overlap": 0.0,
+ "exposure_bars": {
+  "real_mean": 4550.23381294964,
+  "control_mean": 4583.702877697841,
+  "hold_basis": "clock"
+ },
+ "run_id": "4473b4338dd644ca83b49da90b7272e5",
+ "hyp_key": "3a8b77d9ba3dfcc2"
+}

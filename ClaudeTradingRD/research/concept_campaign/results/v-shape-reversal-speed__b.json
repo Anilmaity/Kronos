@@ -1,0 +1,281 @@
+{
+ "concept_id": "v-shape-reversal-speed",
+ "reading": "b",
+ "testable": true,
+ "test_type": "gate",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "15min bars; extreme = bar whose low (high) is below (above) the 2 prior bars AND the lowest low (highest high) of the prior 20 bars (POI: short-term range liquidity taken)",
+   "opposing series = contiguous down-close (up-close) candles ending at the extreme (or <=2 bars before it), <=10 long; level = OPEN of its first candle",
+   "closure = first close beyond the level within 10 candles after the extreme, no new extreme before it; decide at that close, enter next M1 open",
+   "stop = the extreme (protected swing), target 2.0R, exit after 150min",
+   "gate: k <= approach (length of the opposing series into the extreme)"
+  ],
+  "params": {
+   "tf": "15min",
+   "poi_lookback": 20,
+   "left": 2,
+   "max_k": 10,
+   "rr": 2.0,
+   "max_hold": "150min",
+   "level": "series first-candle open",
+   "relative": "k <= approach"
+  }
+ },
+ "params_source": {
+  "tf": "corpus yaml timeframes ltf 15m (PQiRV0JMhIQ counts candles on the chart in use)",
+  "poi_lookback": "phase3: lookback 20 knob (backtest_conjunction)",
+  "left": "phase3: fractal 2/2 swing knob",
+  "max_k": "declared-before-run: closures up to 10 candles form the slow arm (the rejected example is 6 candles)",
+  "rr": "phase3: 2R target convention",
+  "max_hold": "phase3: 15m book 150-min exit",
+  "level": "method_spec: \u00a74.2 first-candle-open default",
+  "relative": "corpus: PQiRV0JMhIQ 'candles down and we have six candles up and we can't even get back'"
+ },
+ "n": 5483,
+ "span": {
+  "start": "2016-01-04 12:00:00+00:00",
+  "end": "2026-07-23 01:45:00+00:00",
+  "years": 10.546
+ },
+ "avg_R": -0.05086369026521262,
+ "avg_R_gross": -0.010863690265212594,
+ "win_rate": 0.4245850811599489,
+ "pf": 0.886279836157164,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "avg_R_gated": -0.044122157846869826,
+  "avg_R_complement": -0.03962888599438454,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": -0.0004866711264471463,
+ "ci_lo": -0.04227487784307373,
+ "ci_hi": 0.042885233520038896,
+ "ci_method": "day_block",
+ "p": 0.9821276693949894,
+ "halves": {
+  "H1": {
+   "n": 4629,
+   "diff": 0.0005902878575755463,
+   "ci_lo": -0.055210510751482554,
+   "ci_hi": 0.05481400646294993,
+   "ci_method": "iid",
+   "p": 0.9832212147015783,
+   "start": "2016-01-04 12:00:00+00:00",
+   "end": "2020-12-31 19:15:00+00:00",
+   "n_gated": 2365
+  },
+  "H2": {
+   "n": 5534,
+   "diff": 0.0011076716858613271,
+   "ci_lo": -0.0586253827519288,
+   "ci_hi": 0.055401486361046734,
+   "ci_method": "iid",
+   "p": 0.9696249457087449,
+   "start": "2021-01-04 05:30:00+00:00",
+   "end": "2026-07-23 01:45:00+00:00",
+   "n_gated": 3118
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 2361,
+   "diff": 0.026108435625268378,
+   "ci_lo": -0.0529497568239116,
+   "ci_hi": 0.10092932447467752,
+   "ci_method": "iid",
+   "p": 0.5059939707877943,
+   "start": "2016-01-04 12:00:00+00:00",
+   "end": "2018-08-22 07:30:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 2528,
+   "diff": -0.024049520102218225,
+   "ci_lo": -0.09871592166315638,
+   "ci_hi": 0.05745917262296387,
+   "ci_method": "iid",
+   "p": 0.5460878954203856,
+   "start": "2018-08-22 13:15:00+00:00",
+   "end": "2021-04-12 07:45:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 2693,
+   "diff": 0.014232128060086783,
+   "ci_lo": -0.07120966549304593,
+   "ci_hi": 0.09549014870780591,
+   "ci_method": "iid",
+   "p": 0.7378763402204692,
+   "start": "2021-04-12 12:30:00+00:00",
+   "end": "2023-12-01 13:30:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 2581,
+   "diff": -0.009487456468599116,
+   "ci_lo": -0.08855556184034657,
+   "ci_hi": 0.07267960476243598,
+   "ci_method": "iid",
+   "p": 0.8175806725042251,
+   "start": "2023-12-05 09:15:00+00:00",
+   "end": "2026-07-23 01:45:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.06086420224892547,
+ "mde_threshold": 0.1,
+ "power_floor_n": 1734,
+ "verdict": "NULL",
+ "verdict_detail": "CI contains 0; powered (MDE 0.0609 <= 0.1000)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 10163,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "gate_mask_checked": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 64.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 739,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "rr",
+    "k",
+    "approach",
+    "fast_abs",
+    "fast_rel"
+   ],
+   "ignored": [],
+   "lookback": "10D",
+   "recent": "1D",
+   "events_fp": "b84e882fc136f433",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "150min",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": null,
+  "entry_mode": "next_open",
+  "hold_basis": "clock",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "gate verdict known at the closing candle's close (k and the approach length are both fixed then). Control-adjusted R per trade, so the tighter stops of fast closures are matched.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/structure_own_02a/v-shape-reversal-speed.py",
+ "runtime_sec": 1.76,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:20:16+00:00",
+ "n_events_in": 10178,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 2,
+  "target_not_beyond_entry": 0,
+  "no_bars_in_hold": 13
+ },
+ "n_complement": 4680,
+ "gate_firing_rate": 0.5395060513627866,
+ "events_fp": "b84e882fc136f433",
+ "mask_fp": "1edabfcd2aa9d91e",
+ "mask_col": "fast_rel",
+ "exit_mix": {
+  "stop": 0.35363851905890936,
+  "target": 0.11617727521429874,
+  "time": 0.5301842057267919
+ },
+ "gated_vs_own_control": {
+  "diff": -0.006741532418342792,
+  "ci_lo": -0.03692620773157136,
+  "ci_hi": 0.023044928894748722,
+  "p": 0.6594659123342463
+ },
+ "complement": {
+  "n": 4680,
+  "avg_R": -0.045883747286280196,
+  "win_rate": 0.430982905982906,
+  "pf": 0.8780566993935353,
+  "sd_R": 0.8846651934016666,
+  "exit_mix": {
+   "stop": 0.2658119658119658,
+   "target": 0.07905982905982906,
+   "time": 0.6551282051282051
+  },
+  "vs_own_control": {
+   "diff": -0.006254861291895654,
+   "ci_lo": -0.034688025832485966,
+   "ci_hi": 0.02259713885032752,
+   "p": 0.6686440613037197
+  }
+ },
+ "ci_components": {
+  "phase3_iid": [
+   -0.039709627402354244,
+   0.04019157231546308
+  ],
+  "day_block": [
+   -0.04227487784307373,
+   0.042885233520038896
+  ]
+ },
+ "diff_meaning": "mean(R-ctrl | gated) - mean(R-ctrl | complement)",
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_eff_gated": 2414,
+  "n_eff_complement": 2335,
+  "n_eff": 2335
+ },
+ "ties": {
+  "real_ambiguous": 0.0004919807143559973,
+  "control_ambiguous": 0.00031486765718783825,
+  "real_gap_stop": 0.006100560858014366,
+  "control_gap_stop": 0.00535275017219325,
+  "gated_excess": -4.0496918643996226e-20,
+  "complement_excess": 0.0003846153846153846,
+  "verdict_stop_first": "NULL"
+ },
+ "ctrl_overlap": 0.0212142084030306,
+ "exposure_bars": {
+  "real_mean": 145.83479287611925,
+  "control_mean": 142.8899340745843,
+  "hold_basis": "clock"
+ },
+ "run_id": "b6551c20524b4beb9840060e9290a169",
+ "hyp_key": "c5fd5d88731e86d8"
+}

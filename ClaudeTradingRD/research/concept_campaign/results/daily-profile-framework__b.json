@@ -1,0 +1,286 @@
+{
+ "concept_id": "daily-profile-framework",
+ "reading": "b",
+ "testable": true,
+ "test_type": "gate",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "baseline: 15m bare CISD (series_open, swing 2/2, max_wait 3) decided inside NY a.m. 08:30-12:00 NY; enter next M1 open, stop protected swing, 2R, 150 min",
+   "Asia 20:00-00:00 and London 02:00-05:00 NY high/low of the same 18:00 trading day; days with < 60 M1 bars in either window dropped",
+   "daily bias: previous-candle engine on the last completed day",
+   "gate: bias exists, London ran counter to it beyond the Asia extreme, not S&D, and the NY entry is in the bias direction"
+  ],
+  "params": {
+   "baseline_tf": "15min",
+   "level_rule": "series_open",
+   "swing": "2/2",
+   "max_wait": 3,
+   "rr": 2.0,
+   "max_hold": "150min",
+   "asia": "20:00-00:00",
+   "london": "02:00-05:00",
+   "ny_am": "08:30-12:00",
+   "min_window_bars": 60,
+   "bias_rule": "previous-candle engine (\u00a72.3)"
+  }
+ },
+ "params_source": {
+  "baseline_tf": "corpus: daily-profile-framework.yaml timeframes ltf ['30m','15m','5m']",
+  "level_rule": "phase3: meta/conjunction_preregistration.md \u00a71.8-1.13 (locked config)",
+  "swing": "phase3: meta/conjunction_preregistration.md \u00a71.8-1.13 (locked config)",
+  "max_wait": "phase3: meta/conjunction_preregistration.md \u00a71.8-1.13 (locked config)",
+  "rr": "phase3: meta/conjunction_preregistration.md \u00a71.8-1.13 (locked config)",
+  "max_hold": "phase3: 10 entry-TF bars (\u00a71.13)",
+  "asia": "session_window_fit: killzones.yaml forex Asia 20:00-00:00",
+  "london": "method_spec: \u00a72.5 daily-profile-session-windows London 02:00-05:00",
+  "ny_am": "method_spec: \u00a72.5 daily-profile-session-windows NY a.m. 08:30-12:00",
+  "min_window_bars": "declared-before-run: profile not evaluable on holiday/stub windows",
+  "bias_rule": "method_spec: \u00a72.3/\u00a72.4 previous-candle engine is the mechanical daily bias"
+ },
+ "n": 780,
+ "span": {
+  "start": "2016-01-04 14:00:00+00:00",
+  "end": "2026-07-22 15:45:00+00:00",
+  "years": 10.546
+ },
+ "avg_R": -0.05410037626417326,
+ "avg_R_gross": -0.014100376264173247,
+ "win_rate": 0.43974358974358974,
+ "pf": 0.8588646291781447,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "avg_R_gated": -0.0474947711924647,
+  "avg_R_complement": -0.042673023610691405,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": 0.002976919887000399,
+ "ci_lo": -0.07493274500579591,
+ "ci_hi": 0.08283947729846702,
+ "ci_method": "day_block",
+ "p": 0.9410398024030678,
+ "halves": {
+  "H1": {
+   "n": 2480,
+   "diff": -0.038708481719402846,
+   "ci_lo": -0.13616727008410603,
+   "ci_hi": 0.07228528852538041,
+   "ci_method": "iid",
+   "p": 0.46666938792037005,
+   "start": "2016-01-04 14:00:00+00:00",
+   "end": "2020-12-31 16:00:00+00:00",
+   "n_gated": 368
+  },
+  "H2": {
+   "n": 2684,
+   "diff": 0.0407232142204233,
+   "ci_lo": -0.0539232376027891,
+   "ci_hi": 0.1490930871837934,
+   "ci_method": "block",
+   "p": 0.4316907961095068,
+   "start": "2021-01-04 14:00:00+00:00",
+   "end": "2026-07-22 15:45:00+00:00",
+   "n_gated": 412
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 1295,
+   "diff": -0.06715321434815268,
+   "ci_lo": -0.21467937592891773,
+   "ci_hi": 0.06824046478230271,
+   "ci_method": "iid",
+   "p": 0.3521509470337679,
+   "start": "2016-01-04 14:00:00+00:00",
+   "end": "2018-08-21 14:45:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 1317,
+   "diff": -0.021708751690472983,
+   "ci_lo": -0.17745102486823308,
+   "ci_hi": 0.13136059544695614,
+   "ci_method": "iid",
+   "p": 0.7828845098028688,
+   "start": "2018-08-22 13:30:00+00:00",
+   "end": "2021-04-08 15:45:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 1256,
+   "diff": 0.10397444463479669,
+   "ci_lo": -0.02585753831796106,
+   "ci_hi": 0.24063973233995722,
+   "ci_method": "iid",
+   "p": 0.126173297475451,
+   "start": "2021-04-12 13:00:00+00:00",
+   "end": "2023-12-01 17:00:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 1296,
+   "diff": 0.00030149869500912044,
+   "ci_lo": -0.14515072683387595,
+   "ci_hi": 0.14240857494147857,
+   "ci_method": "block",
+   "p": 0.9967207468438053,
+   "start": "2023-12-04 14:15:00+00:00",
+   "end": "2026-07-22 15:45:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.11276030871594797,
+ "mde_threshold": 0.1,
+ "power_floor_n": 992,
+ "verdict": "UNDERPOWERED",
+ "verdict_detail": "CI contains 0; MDE 0.1128 vs threshold 0.1000, effective n 573 (power floor n=992, have 780)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 5164,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "gate_mask_checked": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 5.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 382,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "rr",
+    "london_end",
+    "bias",
+    "not_sd",
+    "ldn_counter_cont"
+   ],
+   "ignored": [],
+   "lookback": "15D",
+   "recent": "1D",
+   "events_fp": "3b0bb67c97a2abd5",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "150min",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": null,
+  "entry_mode": "next_open",
+  "hold_basis": "clock",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "'Relevant HTF PD array' (London Reversal vs NY Reversal discriminator) is undefined [GAP]; reading b pools both London-counter profiles, which share the NY-direction claim.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/model_own_01b/daily-profile-framework.py",
+ "runtime_sec": 1.39,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:20:00+00:00",
+ "n_events_in": 5164,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 0,
+  "target_not_beyond_entry": 0,
+  "no_bars_in_hold": 0
+ },
+ "n_complement": 4384,
+ "gate_firing_rate": 0.15104570100697134,
+ "events_fp": "3b0bb67c97a2abd5",
+ "mask_fp": "2e2d53cfd0a69d4f",
+ "mask_col": "ldn_counter_cont",
+ "exit_mix": {
+  "stop": 0.2794871794871795,
+  "target": 0.08076923076923077,
+  "time": 0.6397435897435897
+ },
+ "gated_vs_own_control": {
+  "diff": -0.006605605071708556,
+  "ci_lo": -0.07251041693336617,
+  "ci_hi": 0.059560243202233694,
+  "p": 0.8445648476333962
+ },
+ "complement": {
+  "n": 4384,
+  "avg_R": -0.05225554856940035,
+  "win_rate": 0.4386405109489051,
+  "pf": 0.8653029906827332,
+  "sd_R": 0.896160426491347,
+  "exit_mix": {
+   "stop": 0.2785127737226277,
+   "target": 0.08188868613138686,
+   "time": 0.6395985401459854
+  },
+  "vs_own_control": {
+   "diff": -0.009582524958708948,
+   "ci_lo": -0.03846690154983699,
+   "ci_hi": 0.01873577065528755,
+   "p": 0.5113984222909285
+  }
+ },
+ "ci_components": {
+  "phase3_iid": [
+   -0.06583708324863985,
+   0.07558052834422527
+  ],
+  "day_block": [
+   -0.07493274500579591,
+   0.08283947729846702
+  ]
+ },
+ "diff_meaning": "mean(R-ctrl | gated) - mean(R-ctrl | complement)",
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_eff_gated": 573,
+  "n_eff_complement": 2363,
+  "n_eff": 573
+ },
+ "ties": {
+  "real_ambiguous": 0.0,
+  "control_ambiguous": 0.00011618900077459334,
+  "real_gap_stop": 0.0019364833462432224,
+  "control_gap_stop": 0.0022850503485670024,
+  "gated_excess": -0.0002564102564102564,
+  "complement_excess": -9.124087591240877e-05,
+  "verdict_stop_first": "UNDERPOWERED"
+ },
+ "ctrl_overlap": 0.01018590240123935,
+ "exposure_bars": {
+  "real_mean": 149.45487993803252,
+  "control_mean": 143.0766460108443,
+  "hold_basis": "clock"
+ },
+ "run_id": "57b11eef118640a6a00888e9b7cad510",
+ "hyp_key": "4155f1ae2a7d0daa"
+}

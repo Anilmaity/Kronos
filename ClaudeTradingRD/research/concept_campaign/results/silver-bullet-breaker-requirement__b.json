@@ -1,0 +1,274 @@
+{
+ "concept_id": "silver-bullet-breaker-requirement",
+ "reading": "b",
+ "testable": true,
+ "test_type": "gate",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "1h; structural Silver Bullet = first close through the most recent confirmed 2/2 swing (<=48 bars old) after a lower low than the swing before it (sweep)",
+   "dealing range = reversal extreme to the extreme of the 120 bars ending at it ('original consolidation')",
+   "enter with the model at the breaker close; stop beyond the reversal extreme; target the original consolidation; max_hold 48h",
+   "gate: breaker bar is the 10:00-11:00 NY hour (time-window Silver Bullet)"
+  ],
+  "params": {
+   "tf": "1h",
+   "max_age": 48,
+   "range_n": 120,
+   "max_hold": "48h",
+   "swing": "2/2",
+   "gate": "in_sb_window"
+  }
+ },
+ "params_source": {
+  "tf": "corpus: wB-fQiT_UDo timeframes ltf 1H",
+  "max_age": "declared-before-run: breaker swing within 48 1h bars",
+  "range_n": "declared-before-run: original consolidation = extreme of the prior 5 trading days (120 1h bars)",
+  "max_hold": "declared-before-run: 48h for the leg to the draw",
+  "swing": "phase3: 2/2 fractal swings (\u00a71.8)",
+  "gate": "method_spec: silver-bullet-window 10:00-11:00 NY (the conflicting definition, reading b)"
+ },
+ "n": 167,
+ "span": {
+  "start": "2016-01-12 05:00:00+00:00",
+  "end": "2026-07-17 16:00:00+00:00",
+  "years": 10.511
+ },
+ "avg_R": -0.03769481652914153,
+ "avg_R_gross": 0.002305183470858495,
+ "win_rate": 0.47305389221556887,
+ "pf": 0.8989789495844849,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "avg_R_gated": -0.05282961267757671,
+  "avg_R_complement": -0.04860722234413086,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": -0.006595974819360841,
+ "ci_lo": -0.17618889099607013,
+ "ci_hi": 0.17288843543149698,
+ "ci_method": "day_block",
+ "p": 0.9409556234739188,
+ "halves": {
+  "H1": {
+   "n": 769,
+   "diff": -0.03969336793840144,
+   "ci_lo": -0.3017227157699352,
+   "ci_hi": 0.22522825926991594,
+   "ci_method": "iid",
+   "p": 0.7677842544445459,
+   "start": "2016-01-12 05:00:00+00:00",
+   "end": "2020-12-30 17:00:00+00:00",
+   "n_gated": 73
+  },
+  "H2": {
+   "n": 951,
+   "diff": 0.019884316155448573,
+   "ci_lo": -0.1941139854052532,
+   "ci_hi": 0.2557309478478516,
+   "ci_method": "iid",
+   "p": 0.8624384066535231,
+   "start": "2021-01-06 03:00:00+00:00",
+   "end": "2026-07-17 16:00:00+00:00",
+   "n_gated": 94
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 407,
+   "diff": -0.09972359432731757,
+   "ci_lo": -0.40043122664038344,
+   "ci_hi": 0.22478273684109143,
+   "ci_method": "iid",
+   "p": 0.5318129951667567,
+   "start": "2016-01-12 05:00:00+00:00",
+   "end": "2018-08-22 09:00:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 391,
+   "diff": 0.0425177815039991,
+   "ci_lo": -0.38109968313714676,
+   "ci_hi": 0.4769676751448912,
+   "ci_method": "iid",
+   "p": 0.8459919435612566,
+   "start": "2018-08-30 06:00:00+00:00",
+   "end": "2021-04-09 13:00:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 492,
+   "diff": 0.08765430272998607,
+   "ci_lo": -0.2041152325964475,
+   "ci_hi": 0.37928758648866656,
+   "ci_method": "iid",
+   "p": 0.5558908305371546,
+   "start": "2021-04-12 14:00:00+00:00",
+   "end": "2023-12-01 12:00:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 430,
+   "diff": -0.06039426826091901,
+   "ci_lo": -0.3651269085007035,
+   "ci_hi": 0.29486498848870407,
+   "ci_method": "iid",
+   "p": 0.7198171594406277,
+   "start": "2023-12-07 15:00:00+00:00",
+   "end": "2026-07-17 16:00:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.2494866746428954,
+ "mde_threshold": 0.1,
+ "power_floor_n": 1040,
+ "verdict": "UNDERPOWERED",
+ "verdict_detail": "CI contains 0; MDE 0.2495 vs threshold 0.1000, effective n 167 (power floor n=1040, have 167)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 1720,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "gate_mask_checked": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 64.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 158,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "target_px",
+    "below50",
+    "in_sb_window"
+   ],
+   "ignored": [],
+   "lookback": "20D",
+   "recent": "1D",
+   "events_fp": "b72588bc0f9c5648",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "48h",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": null,
+  "entry_mode": "next_open",
+  "hold_basis": "clock",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "Contested: a = guest's structural SB graded by dealing-range position; b = time-window SB as a gate on the same structural book.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/entry_guest_02b/silver-bullet-breaker-requirement.py",
+ "runtime_sec": 0.45,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:14:53+00:00",
+ "n_events_in": 1721,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 0,
+  "target_not_beyond_entry": 0,
+  "no_bars_in_hold": 1
+ },
+ "n_complement": 1553,
+ "gate_firing_rate": 0.09709302325581395,
+ "events_fp": "b72588bc0f9c5648",
+ "mask_fp": "31361c9e6eaa324e",
+ "mask_col": "in_sb_window",
+ "exit_mix": {
+  "stop": 0.2874251497005988,
+  "target": 0.30538922155688625,
+  "time": 0.40718562874251496
+ },
+ "gated_vs_own_control": {
+  "diff": 0.01513479614843518,
+  "ci_lo": -0.1349104093755515,
+  "ci_hi": 0.16592006500153766,
+  "p": 0.8436618180850769
+ },
+ "complement": {
+  "n": 1553,
+  "avg_R": -0.026876451376334858,
+  "win_rate": 0.4475209272376046,
+  "pf": 0.9444902298342144,
+  "sd_R": 1.192656376240723,
+  "exit_mix": {
+   "stop": 0.42949130714745654,
+   "target": 0.26658081133290407,
+   "time": 0.3039278815196394
+  },
+  "vs_own_control": {
+   "diff": 0.021730770967796003,
+   "ci_lo": -0.04857522912238023,
+   "ci_hi": 0.08736667151526148,
+   "p": 0.5309124846231459
+  }
+ },
+ "ci_components": {
+  "phase3_iid": [
+   -0.17157902816522466,
+   0.1674559404676513
+  ],
+  "day_block": [
+   -0.17618889099607013,
+   0.17288843543149698
+  ]
+ },
+ "diff_meaning": "mean(R-ctrl | gated) - mean(R-ctrl | complement)",
+ "dependence": {
+  "day_block_mean_days": 4,
+  "n_eff_gated": 167,
+  "n_eff_complement": 1167,
+  "n_eff": 167
+ },
+ "ties": {
+  "real_ambiguous": 0.0,
+  "control_ambiguous": 0.0003488372093023256,
+  "real_gap_stop": 0.0034883720930232558,
+  "control_gap_stop": 0.004302325581395349,
+  "gated_excess": -0.0011976047904191617,
+  "complement_excess": -0.00025756600128783,
+  "verdict_stop_first": "UNDERPOWERED"
+ },
+ "ctrl_overlap": 0.013372093023255814,
+ "exposure_bars": {
+  "real_mean": 2137.3058139534883,
+  "control_mean": 2172.431860465116,
+  "hold_basis": "clock"
+ },
+ "run_id": "ff2a1cd02908428892a069dfb30c1f30",
+ "hyp_key": "49be3627e125fdd3"
+}

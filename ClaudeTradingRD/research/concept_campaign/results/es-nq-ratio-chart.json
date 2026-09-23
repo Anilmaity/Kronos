@@ -1,0 +1,284 @@
+{
+ "concept_id": "es-nq-ratio-chart",
+ "reading": null,
+ "testable": true,
+ "test_type": "gate",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "baseline: gold 1h CISD (series_open, 2/2 swings, max_wait 3), decide at the confirming bar's close, enter next M1 open; stop at the protected swing, 2R, 10h wall clock",
+   "ratio chart: XAU/XAG built from joined 1h bars, one candle per trading day (18:00 NY roll): open = first gold open / first silver open, close = last gold close / last silver close; available at the gold daily bar's close_time",
+   "ratio bullish = the most recent completed ratio day closed above its open (gold strong); bearish = closed below (gold weak); flat days dropped",
+   "gate: long when the ratio is bullish, short when bearish",
+   "claim: ratio-aligned gold setups beat ratio-opposed ones (control-adjusted R)"
+  ],
+  "params": {
+   "tf": "1h",
+   "level_rule": "series_open",
+   "left": 2,
+   "right": 2,
+   "max_wait": 3,
+   "min_series": 1,
+   "rr": 2.0,
+   "max_hold": "10h",
+   "pair": "XAU/XAG (transfer of ES/NQ)",
+   "ratio_tf": "1D",
+   "ratio_read": "prior completed day closure"
+  }
+ },
+ "params_source": {
+  "tf": "phase3: meta/conjunction_preregistration.md locked rung-0 config",
+  "level_rule": "phase3: meta/conjunction_preregistration.md locked rung-0 config",
+  "left": "phase3: meta/conjunction_preregistration.md locked rung-0 config",
+  "right": "phase3: meta/conjunction_preregistration.md locked rung-0 config",
+  "max_wait": "phase3: meta/conjunction_preregistration.md locked rung-0 config",
+  "min_series": "phase3: meta/conjunction_preregistration.md locked rung-0 config",
+  "rr": "phase3: meta/conjunction_preregistration.md locked rung-0 config",
+  "max_hold": "phase3: meta/conjunction_preregistration.md locked rung-0 config",
+  "pair": "declared-before-run: ES/NQ absent from the dataset; gold/silver is the correlated pair available (yaml of relative-strength-asset-selection names gold with a correlated metal)",
+  "ratio_tf": "corpus: c_mh19e3mhI he works the ratio on the daily (yaml timeframes htf 1D) and applies it to lower-timeframe setups",
+  "ratio_read": "declared-before-run: 'bullish/bearish' undefined in the corpus (yaml ambiguity); read with his daily-closure framework (method_spec daily bias = previous candle closure)"
+ },
+ "n": 3984,
+ "span": {
+  "start": "2016-01-05 04:00:00+00:00",
+  "end": "2026-07-22 19:00:00+00:00",
+  "years": 10.543
+ },
+ "avg_R": -0.021260450244967245,
+ "avg_R_gross": 0.018739549755032777,
+ "win_rate": 0.42043172690763053,
+ "pf": 0.9514962953731496,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "avg_R_gated": -0.024631557350102345,
+  "avg_R_complement": -0.03491867858436851,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": -0.015814145228133368,
+ "ci_lo": -0.06975592877738843,
+ "ci_hi": 0.041548839701618705,
+ "ci_method": "day_block",
+ "p": 0.5775669941957748,
+ "halves": {
+  "H1": {
+   "n": 3798,
+   "diff": -0.045362146257048666,
+   "ci_lo": -0.12424650809241172,
+   "ci_hi": 0.03225008932181847,
+   "ci_method": "block",
+   "p": 0.2558597342815961,
+   "start": "2016-01-05 04:00:00+00:00",
+   "end": "2020-12-31 05:00:00+00:00",
+   "n_gated": 1876
+  },
+  "H2": {
+   "n": 4192,
+   "diff": 0.01090840819741104,
+   "ci_lo": -0.05533179534988375,
+   "ci_hi": 0.08138914144757957,
+   "ci_method": "block",
+   "p": 0.7544667053610669,
+   "start": "2021-01-04 00:00:00+00:00",
+   "end": "2026-07-22 19:00:00+00:00",
+   "n_gated": 2108
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 1975,
+   "diff": -0.07244119387962446,
+   "ci_lo": -0.17877062969600901,
+   "ci_hi": 0.04035916397565169,
+   "ci_method": "block",
+   "p": 0.19501942962213345,
+   "start": "2016-01-05 04:00:00+00:00",
+   "end": "2018-08-22 11:00:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 2028,
+   "diff": 0.0008887232277433646,
+   "ci_lo": -0.09954431135970179,
+   "ci_hi": 0.09968568694947083,
+   "ci_method": "iid",
+   "p": 0.9860489202846857,
+   "start": "2018-08-22 16:00:00+00:00",
+   "end": "2021-04-12 05:00:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 2067,
+   "diff": -0.008674895039459413,
+   "ci_lo": -0.11897319364566995,
+   "ci_hi": 0.10297672573784195,
+   "ci_method": "block",
+   "p": 0.8782326121807943,
+   "start": "2021-04-12 10:00:00+00:00",
+   "end": "2023-12-01 16:00:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 1920,
+   "diff": 0.017796043121946672,
+   "ci_lo": -0.08178049018917975,
+   "ci_hi": 0.1154457768254261,
+   "ci_method": "iid",
+   "p": 0.7235626696336172,
+   "start": "2023-12-04 09:00:00+00:00",
+   "end": "2026-07-22 19:00:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.07954987178317031,
+ "mde_threshold": 0.1,
+ "power_floor_n": 2522,
+ "verdict": "NULL",
+ "verdict_detail": "CI contains 0; powered (MDE 0.0795 <= 0.1000)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 7990,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "gate_mask_checked": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 300.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 572,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "rr",
+    "ratio_aligned"
+   ],
+   "ignored": [],
+   "lookback": "20D",
+   "recent": "1D",
+   "events_fp": "21b8ac3217143709",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "10h",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": null,
+  "entry_mode": "next_open",
+  "hold_basis": "clock",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "gate firing rate 0.498 of 8029. Tested as a TRANSFER of the device to gold/silver: the named instruments (ES, NQ) are not in the data, so this does not test the ES/NQ claim itself.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/structure_own_04b/es-nq-ratio-chart.py",
+ "runtime_sec": 1.51,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:33:51+00:00",
+ "n_events_in": 8029,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 1,
+  "target_not_beyond_entry": 0,
+  "no_bars_in_hold": 38
+ },
+ "n_complement": 4006,
+ "gate_firing_rate": 0.4986232790988736,
+ "events_fp": "21b8ac3217143709",
+ "mask_fp": "772ef4528adaadbb",
+ "mask_col": "ratio_aligned",
+ "exit_mix": {
+  "stop": 0.34789156626506024,
+  "target": 0.1350401606425703,
+  "time": 0.5170682730923695
+ },
+ "gated_vs_own_control": {
+  "diff": 0.0033711071051351,
+  "ci_lo": -0.03443675603934268,
+  "ci_hi": 0.04168194598974435,
+  "p": 0.8621768329203687
+ },
+ "complement": {
+  "n": 4006,
+  "avg_R": -0.015733426251100028,
+  "win_rate": 0.42336495257114326,
+  "pf": 0.9639614351030945,
+  "sd_R": 1.0338127429181383,
+  "exit_mix": {
+   "stop": 0.3469795307039441,
+   "target": 0.13604593110334498,
+   "time": 0.5169745381927109
+  },
+  "vs_own_control": {
+   "diff": 0.01918525233326848,
+   "ci_lo": -0.019367950121513385,
+   "ci_hi": 0.05669953497379961,
+   "p": 0.32282998289481424
+  }
+ },
+ "ci_components": {
+  "phase3_block": [
+   -0.0703513602901698,
+   0.03891553685302209
+  ],
+  "day_block": [
+   -0.06975592877738843,
+   0.041548839701618705
+  ]
+ },
+ "diff_meaning": "mean(R-ctrl | gated) - mean(R-ctrl | complement)",
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_eff_gated": 2282,
+  "n_eff_complement": 2268,
+  "n_eff": 2268
+ },
+ "ties": {
+  "real_ambiguous": 0.00025031289111389235,
+  "control_ambiguous": 0.00017521902377972467,
+  "real_gap_stop": 0.0037546933667083854,
+  "control_gap_stop": 0.004055068836045056,
+  "gated_excess": 5.0200803212851394e-05,
+  "complement_excess": 9.98502246630055e-05,
+  "verdict_stop_first": "NULL"
+ },
+ "ctrl_overlap": 0.06610763454317897,
+ "exposure_bars": {
+  "real_mean": 549.6733416770963,
+  "control_mean": 547.5603754693367,
+  "hold_basis": "clock"
+ },
+ "run_id": "7d3df0732dd945fb8be5cdadab13c582",
+ "hyp_key": "1f0e614ce2fb0fe3"
+}

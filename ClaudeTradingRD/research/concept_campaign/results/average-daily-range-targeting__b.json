@@ -1,0 +1,201 @@
+{
+ "concept_id": "average-daily-range-targeting",
+ "reading": "b",
+ "testable": true,
+ "test_type": "rate",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "completed real trading days (18:00 NY roll, n_m1>=600)",
+   "big day: range > 1.5 x ADR20 of the 20 real days before it",
+   "outcome: next real day's range < that ADR20",
+   "null: same outcome on matched random real days within +/-30 days (daily close grid)",
+   "claim +: next-day range after a big day falls below ADR more often than on a random day"
+  ],
+  "params": {
+   "big_mult": 1.5,
+   "adr_lookback_days": 20,
+   "stub_day_min_n_m1": 600,
+   "day_roll": "18:00 NY"
+  }
+ },
+ "params_source": {
+  "big_mult": "declared-before-run: the concept's measurable 'next-day range conditional on a >1.5x ADR day' (corpus example ~1,000 vs 700-800 on YM)",
+  "adr_lookback_days": "corpus: X4XSsv5CNqg variants 'current month visible' -> 20 trading days (declared-before-run)",
+  "stub_day_min_n_m1": "declared-before-run: skip data-hole stub days (README trap 6)",
+  "day_roll": "session_window_fit: settled 18:00 NY daily roll"
+ },
+ "n": 334,
+ "span": {
+  "start": "2016-02-05 23:00:00+00:00",
+  "end": "2026-06-17 22:00:00+00:00",
+  "years": 10.36
+ },
+ "avg_R": null,
+ "avg_R_gross": null,
+ "win_rate": null,
+ "pf": null,
+ "observed_rate": 0.4311377245508982,
+ "null_rate": 0.5622754491017964,
+ "lift": 0.7667731629392972,
+ "control": {
+  "rate": 0.5622754491017964,
+  "reps": 5,
+  "kind": "null_fn x5"
+ },
+ "diff": -0.13113772455089817,
+ "ci_lo": -0.1958083832335326,
+ "ci_hi": -0.05748502994011982,
+ "ci_method": "phase3_block",
+ "p": 0.00020216522553059515,
+ "halves": {
+  "H1": {
+   "n": 162,
+   "diff": -0.07777777777777772,
+   "ci_lo": -0.18765432098765455,
+   "ci_hi": 0.032160493827160554,
+   "ci_method": "block",
+   "p": 0.16544156759664547,
+   "start": "2016-02-05 23:00:00+00:00",
+   "end": "2020-12-21 23:00:00+00:00"
+  },
+  "H2": {
+   "n": 172,
+   "diff": -0.1813953488372092,
+   "ci_lo": -0.2639825581395349,
+   "ci_hi": -0.10113372093023264,
+   "ci_method": "iid",
+   "p": 1.2633399140940788e-05,
+   "start": "2021-01-04 23:00:00+00:00",
+   "end": "2026-06-17 22:00:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 75,
+   "diff": 0.03199999999999992,
+   "ci_lo": -0.08533333333333337,
+   "ci_hi": 0.15473333333333333,
+   "ci_method": "block",
+   "p": 0.6013139461289289,
+   "start": "2016-02-05 23:00:00+00:00",
+   "end": "2018-08-16 22:00:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 92,
+   "diff": -0.17391304347826064,
+   "ci_lo": -0.28695652173913044,
+   "ci_hi": -0.06733695652173924,
+   "ci_method": "iid",
+   "p": 0.001908426074123621,
+   "start": "2018-08-24 22:00:00+00:00",
+   "end": "2021-02-26 23:00:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 80,
+   "diff": -0.15750000000000014,
+   "ci_lo": -0.27749999999999997,
+   "ci_hi": -0.040000000000000036,
+   "ci_method": "iid",
+   "p": 0.009335119203535679,
+   "start": "2021-04-15 22:00:00+00:00",
+   "end": "2023-12-01 23:00:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 87,
+   "diff": -0.20229885057471253,
+   "ci_lo": -0.3057471264367815,
+   "ci_hi": -0.08729885057471272,
+   "ci_method": "iid",
+   "p": 0.0002832720336499423,
+   "start": "2023-12-04 23:00:00+00:00",
+   "end": "2026-06-17 22:00:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.09886014022107698,
+ "mde_threshold": 0.05,
+ "power_floor_n": 1306,
+ "verdict": "NEGATIVE",
+ "verdict_detail": "CI excludes 0 against the claim (+)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 334,
+  "min_slack_min": 0.0,
+  "passed": true,
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 36,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "range",
+    "adr_prev"
+   ],
+   "ignored": [],
+   "lookback": "60D",
+   "recent": "1D",
+   "events_fp": "911ece8de0cbd334",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "reps": 5,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "mde_threshold": null,
+  "cluster": null,
+  "outcome_horizon": "1 days 00:00:00",
+  "null_kind": "null_fn x5"
+ },
+ "notes": "corollary 'after a very large range day expect a smaller range'; volatility clustering is the obvious counter-hypothesis.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/risk_own_01b/average-daily-range-targeting.py",
+ "runtime_sec": 0.16,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:13:30+00:00",
+ "dropped": {
+  "nan_rows": 0
+ },
+ "null_kind": "null_fn x5",
+ "events_fp": "911ece8de0cbd334",
+ "predictors_probed": true,
+ "ci_components": {
+  "phase3_block": [
+   -0.1958083832335326,
+   -0.05748502994011982
+  ],
+  "day_block": [
+   -0.18682634730538927,
+   -0.07423652694610777
+  ]
+ },
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 334,
+  "n_clusters": null,
+  "n_eff": 334
+ },
+ "run_id": "608b484bd2084f77838c4e0452b15a71",
+ "hyp_key": "2f0b96c669bbfd0f"
+}

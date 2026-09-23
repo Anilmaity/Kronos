@@ -1,0 +1,247 @@
+{
+ "concept_id": "swing-point",
+ "reading": "b",
+ "testable": true,
+ "test_type": "trade",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "1h bars; swing low at i := low[i] < low[i-1] and low[i] < low[i+1] (mirror for highs), usable from the close of bar i+1",
+   "decide at that close, enter next M1 open away from the swing (long off a swing low, short off a swing high), stop = the swing extreme, 2.0R, exit after 10h",
+   "reading b: only swings whose extreme takes out the most recent earlier confirmed same-side swing (a sweep of liquidity)"
+  ],
+  "params": {
+   "tf": "1h",
+   "swing": "strict 3-bar",
+   "rr": 2.0,
+   "max_hold": "10h",
+   "sweep_ref": "last confirmed same-side swing"
+  }
+ },
+ "params_source": {
+  "tf": "corpus: swing-point.yaml timeframes htf includes 1H (phase-3 1h stack)",
+  "swing": "corpus: swing-point.yaml 'swing_low(i) := low[i] < low[i-1] AND low[i] < low[i+1]'",
+  "rr": "phase3: meta/conjunction_preregistration.md \u00a71.8-1.13 (locked config)",
+  "max_hold": "phase3: 10 entry-TF bars (\u00a71.13)",
+  "sweep_ref": "corpus: swing-point.yaml 'A genuine swing point is one whose sweep takes out a prior extreme (liquidity)'"
+ },
+ "n": 13868,
+ "span": {
+  "start": "2016-01-04 10:00:00+00:00",
+  "end": "2026-07-23 04:00:00+00:00",
+  "years": 10.546
+ },
+ "avg_R": -0.027790459452054224,
+ "avg_R_gross": 0.012209540547945805,
+ "win_rate": 0.38397750216325355,
+ "pf": 0.9518171520616486,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "n": 69340,
+  "avg_R": -0.044475897570894596,
+  "win_rate": 0.37842515142774735,
+  "pf": 0.9238146816990405,
+  "sd_R": 1.2472543103520821,
+  "exit_mix": {
+   "stop": 0.5318863570810499,
+   "target": 0.23132391116238823,
+   "time": 0.23678973175656187
+  },
+  "avg_R_gross": -0.004475897570894563,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": 0.016685438118840372,
+ "ci_lo": -0.006267395436768092,
+ "ci_hi": 0.03802718488018933,
+ "ci_method": "phase3_iid",
+ "p": 0.13978084035063099,
+ "halves": {
+  "H1": {
+   "n": 6620,
+   "diff": 0.03502799588566135,
+   "ci_lo": 0.003577642871529808,
+   "ci_hi": 0.07027379741560788,
+   "ci_method": "iid",
+   "p": 0.03952320397758493,
+   "start": "2016-01-04 10:00:00+00:00",
+   "end": "2020-12-31 20:00:00+00:00"
+  },
+  "H2": {
+   "n": 7248,
+   "diff": -6.78362211644426e-05,
+   "ci_lo": -0.029387955766620958,
+   "ci_hi": 0.02966565111011075,
+   "ci_method": "iid",
+   "p": 0.9964072094248808,
+   "start": "2021-01-04 01:00:00+00:00",
+   "end": "2026-07-23 04:00:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 3506,
+   "diff": 0.023965314611935653,
+   "ci_lo": -0.02162019082381791,
+   "ci_hi": 0.06960091065116279,
+   "ci_method": "iid",
+   "p": 0.30308939914316085,
+   "start": "2016-01-04 10:00:00+00:00",
+   "end": "2018-08-22 11:00:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 3459,
+   "diff": 0.03369926760726135,
+   "ci_lo": -0.00857699344767243,
+   "ci_hi": 0.0782143843949925,
+   "ci_method": "iid",
+   "p": 0.12800265554116413,
+   "start": "2018-08-22 14:00:00+00:00",
+   "end": "2021-04-12 07:00:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 3497,
+   "diff": 0.010514821296724236,
+   "ci_lo": -0.035128823509149205,
+   "ci_hi": 0.05651716621298429,
+   "ci_method": "iid",
+   "p": 0.6528941879283823,
+   "start": "2021-04-12 09:00:00+00:00",
+   "end": "2023-12-01 20:00:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 3406,
+   "diff": -0.0017512724384996445,
+   "ci_lo": -0.04809514566166148,
+   "ci_hi": 0.042854172693540984,
+   "ci_method": "iid",
+   "p": 0.9398327458090199,
+   "start": "2023-12-04 01:00:00+00:00",
+   "end": "2026-07-23 04:00:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.0316574773305232,
+ "mde_threshold": 0.1,
+ "power_floor_n": 1390,
+ "verdict": "NULL",
+ "verdict_detail": "CI contains 0; powered (MDE 0.0317 <= 0.1000)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 13868,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 300.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 1034,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "rr"
+   ],
+   "ignored": [],
+   "lookback": "15D",
+   "recent": "1D",
+   "events_fp": "6316cf123eaa4565",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "10h",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": null,
+  "entry_mode": "next_open",
+  "hold_basis": "clock",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "The 'no reversal without a swing' premise is a tautology at the bar level; what is testable is whether a confirmed swing is a reversal point worth trading away from.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/structure_own_03a/swing-point.py",
+ "runtime_sec": 6.08,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:30:53+00:00",
+ "n_events_in": 13974,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 18,
+  "target_not_beyond_entry": 0,
+  "no_bars_in_hold": 88
+ },
+ "events_fp": "6316cf123eaa4565",
+ "sd_R": 1.2506872520543546,
+ "exit_mix": {
+  "stop": 0.5232189212575714,
+  "target": 0.23464089991346987,
+  "time": 0.24214017882895875
+ },
+ "trades_per_year": 1314.9758566978192,
+ "ci_components": {
+  "phase3_iid": [
+   -0.006267395436768092,
+   0.03802718488018933
+  ],
+  "day_block": [
+   -0.0020239505416530194,
+   0.03706720324986888
+  ]
+ },
+ "diff_win": 0.005552350735506195,
+ "dependence": {
+  "day_block_mean_days": 2,
+  "n_days": 2719,
+  "n_clusters": null,
+  "n_eff": 2719
+ },
+ "ties": {
+  "real_ambiguous": 0.0012258436688779926,
+  "control_ambiguous": 0.0018171329679838478,
+  "real_gap_stop": 0.007787712719930776,
+  "control_gap_stop": 0.009821171041246034,
+  "verdict_stop_first": "NULL"
+ },
+ "ctrl_overlap": 0.11048456879146236,
+ "exposure_bars": {
+  "real_mean": 546.3456879146236,
+  "control_mean": 548.4286270550908,
+  "hold_basis": "clock"
+ },
+ "run_id": "5827476666a24fc0a18c03658ba6685d",
+ "hyp_key": "4a273054cd4c6d23"
+}

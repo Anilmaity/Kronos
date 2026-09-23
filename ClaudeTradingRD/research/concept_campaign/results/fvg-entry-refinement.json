@@ -1,0 +1,280 @@
+{
+ "concept_id": "fvg-entry-refinement",
+ "reading": null,
+ "testable": true,
+ "test_type": "gate",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "1H three-candle FVGs, size >= 0.25 ATR14(1H), known at the 3rd candle close",
+   "unrefined row: first M1 touch of the near edge within 48h; refined row: first M1 touch of the gap's 0.5; decide at that M1 close, enter next M1 open",
+   "stop at the far edge; common target = near edge + 2 x gap size; drop a row whose deciding candle closed beyond the far edge",
+   "gate_test: refined rows vs unrefined rows on control-adjusted R, clustered by gap"
+  ],
+  "params": {
+   "gap_tf": "1h",
+   "min_gap_atr": 0.25,
+   "atr_n": 14,
+   "return_window": "48h",
+   "refined_level": 0.5,
+   "target_gap_mult": 2.0,
+   "max_hold": "10h"
+  }
+ },
+ "params_source": {
+  "gap_tf": "corpus: fwUUkJ5q6tc examples (daily gap -> hourly; 5m -> 1m); concept timeframes.htf [1D, 1H, 5m]; 1H chosen",
+  "min_gap_atr": "declared-before-run: drop sub-quarter-ATR gaps (M1 noise stop)",
+  "atr_n": "declared-before-run: ATR14 yardstick (trap 6: ATR units)",
+  "return_window": "declared-before-run: 48h for the first return",
+  "refined_level": "corpus: fwUUkJ5q6tc 'throw a 0.5 fib on there and your entry would be here'",
+  "target_gap_mult": "method_spec: \u00a75.3 2R normal; target inherited from the parent model and held fixed for both entries",
+  "max_hold": "phase3: 10 entry-TF bars (\u00a71.13) at 1H"
+ },
+ "n": 4492,
+ "span": {
+  "start": "2016-01-04 15:50:00+00:00",
+  "end": "2026-07-22 17:40:00+00:00",
+  "years": 10.546
+ },
+ "avg_R": 0.06239267980407906,
+ "avg_R_gross": 0.10239267980407907,
+ "win_rate": 0.22039180765805877,
+ "pf": 1.0774223089647548,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "avg_R_gated": 0.00497837713081067,
+  "avg_R_complement": -0.038735481928310736,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": -0.028825791575587775,
+ "ci_lo": -0.15813992240384234,
+ "ci_hi": 0.09971750647879639,
+ "ci_method": "phase3_iid",
+ "p": 0.6612359615232665,
+ "halves": {
+  "H1": {
+   "n": 4346,
+   "diff": -0.103085315131078,
+   "ci_lo": -0.3083460643091522,
+   "ci_hi": 0.15794348307793604,
+   "ci_method": "iid",
+   "p": 0.3861606359078959,
+   "start": "2016-01-04 15:50:00+00:00",
+   "end": "2020-12-31 07:39:00+00:00",
+   "n_gated": 2018
+  },
+  "H2": {
+   "n": 5299,
+   "diff": 0.03237835352556673,
+   "ci_lo": -0.09767850516085969,
+   "ci_hi": 0.16582553362485133,
+   "ci_method": "block",
+   "p": 0.6300435610579866,
+   "start": "2021-01-04 04:41:00+00:00",
+   "end": "2026-07-22 17:40:00+00:00",
+   "n_gated": 2474
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 2213,
+   "diff": -0.10055038617417575,
+   "ci_lo": -0.4987771155525275,
+   "ci_hi": 0.3379967103460678,
+   "ci_method": "block",
+   "p": 0.6376153015188317,
+   "start": "2016-01-04 15:50:00+00:00",
+   "end": "2018-08-22 08:51:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 2369,
+   "diff": -0.09255268879657799,
+   "ci_lo": -0.2543296871032095,
+   "ci_hi": 0.08328780764671756,
+   "ci_method": "iid",
+   "p": 0.2825590040841829,
+   "start": "2018-08-22 14:16:00+00:00",
+   "end": "2021-04-09 14:25:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 2461,
+   "diff": 0.10358337855238595,
+   "ci_lo": -0.12314817074018243,
+   "ci_hi": 0.33622991900742644,
+   "ci_method": "iid",
+   "p": 0.37675596474851314,
+   "start": "2021-04-13 12:40:00+00:00",
+   "end": "2023-12-01 19:54:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 2602,
+   "diff": -0.0345723276988692,
+   "ci_lo": -0.20554834171408265,
+   "ci_hi": 0.12006674357684234,
+   "ci_method": "iid",
+   "p": 0.6772635768845744,
+   "start": "2023-12-04 01:07:00+00:00",
+   "end": "2026-07-22 17:40:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.18429152395048262,
+ "mde_threshold": 0.1,
+ "power_floor_n": 15257,
+ "verdict": "UNDERPOWERED",
+ "verdict_detail": "CI contains 0; MDE 0.1843 vs threshold 0.1000, effective n 2211 (power floor n=15257, have 4492)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 9645,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "gate_mask_checked": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 2.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 748,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "target_px",
+    "refined",
+    "gap_id"
+   ],
+   "ignored": [],
+   "lookback": "20D",
+   "recent": "1D",
+   "events_fp": "da7602e04377ee02",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "10h",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": null,
+  "entry_mode": "next_open",
+  "hold_basis": "clock",
+  "mde_threshold": null,
+  "cluster": "column:gap_id",
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "Only refinement method 1 (0.5 of the gap) is operationalised; methods 2-3 have no lookback/ratio. Baseline book = every 1H FVG's first near-edge touch (no parent model).",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/entry_own_04a/fvg-entry-refinement.py",
+ "runtime_sec": 4.03,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:12:23+00:00",
+ "n_events_in": 9692,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 22,
+  "target_not_beyond_entry": 22,
+  "no_bars_in_hold": 3
+ },
+ "n_complement": 5153,
+ "gate_firing_rate": 0.46573354069466044,
+ "events_fp": "da7602e04377ee02",
+ "mask_fp": "3161705751c19d0c",
+ "mask_col": "refined",
+ "exit_mix": {
+  "stop": 0.7715939447907391,
+  "target": 0.1678539626001781,
+  "time": 0.060552092609082814
+ },
+ "gated_vs_own_control": {
+  "diff": 0.057414302673268386,
+  "ci_lo": -0.03692120276536311,
+  "ci_hi": 0.16574306597022406,
+  "p": 0.26678094580893646
+ },
+ "complement": {
+  "n": 5153,
+  "avg_R": 0.047504612320545446,
+  "win_rate": 0.37201630118377643,
+  "pf": 1.0763146726342114,
+  "sd_R": 2.5365055960736416,
+  "exit_mix": {
+   "stop": 0.5841257519891325,
+   "target": 0.3052590723850184,
+   "time": 0.11061517562584902
+  },
+  "vs_own_control": {
+   "diff": 0.08624009424885618,
+   "ci_lo": 0.023568814673713717,
+   "ci_hi": 0.1714005366164263,
+   "p": 0.022210115237393656
+  }
+ },
+ "ci_components": {
+  "phase3_iid": [
+   -0.15813992240384234,
+   0.09971750647879639
+  ],
+  "day_block": [
+   -0.10391514347649206,
+   0.04523124655491909
+  ],
+  "cluster": [
+   -0.1045385190362255,
+   0.04417206719683862
+  ]
+ },
+ "diff_meaning": "mean(R-ctrl | gated) - mean(R-ctrl | complement)",
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_eff_gated": 2211,
+  "n_eff_complement": 2350,
+  "n_eff": 2211
+ },
+ "ties": {
+  "real_ambiguous": 0.0007257646448937273,
+  "control_ambiguous": 0.00045619491964748576,
+  "real_gap_stop": 0.01026438569206843,
+  "control_gap_stop": 0.019097978227060653,
+  "gated_excess": 0.0002671415850400712,
+  "complement_excess": 0.0002716863962740152,
+  "verdict_stop_first": "UNDERPOWERED"
+ },
+ "ctrl_overlap": 0.0012649040953862105,
+ "exposure_bars": {
+  "real_mean": 547.4068429237947,
+  "control_mean": 545.3614307931571,
+  "hold_basis": "clock"
+ },
+ "run_id": "abb525157f374bf3aaa52cd7138bbb1d",
+ "hyp_key": "3543ed3d072c2de7"
+}

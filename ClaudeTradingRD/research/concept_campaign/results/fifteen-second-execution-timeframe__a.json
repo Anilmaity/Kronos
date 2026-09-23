@@ -1,0 +1,256 @@
+{
+ "concept_id": "fifteen-second-execution-timeframe",
+ "reading": "a",
+ "testable": true,
+ "test_type": "trade",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "HTF POI = first 1h bar trading into a same-direction 1h FVG within 120 bars of it forming and closing on the respecting side; decide at its close",
+   "M1 within 120 min: first close through the most recent confirmed 2/2 M1 swing high (long) = displacement through the intermediate-term swing; its FVG = a same-direction M1 FVG completing on that bar or the next two",
+   "entry = first M1 within 30 bars trading to the FVG midpoint; decide at its close, enter next open",
+   "stop = extreme of the move from the POI bar's start to entry; target = nearest untaken confirmed 1h swing high (low for shorts) within 120 1h bars beyond the entry; 8h max hold"
+  ],
+  "params": {
+   "poi": "1h FVG first touch",
+   "poi_within_bars": 120,
+   "ltf_window_min": 120,
+   "entry_wait_min": 30,
+   "fvg_entry": "midpoint",
+   "target": "nearest untaken 1h swing high/low",
+   "target_lookback_1h": 120,
+   "swing": "2/2",
+   "max_hold": "8h"
+  }
+ },
+ "params_source": {
+  "poi": "corpus: V8P6lNIisvc preconditions 'weekly or daily fair value gap, hourly optimal trade entry' (1h FVG chosen for sample size)",
+  "poi_within_bars": "declared-before-run: FVG counts as a live POI for 120 1h bars",
+  "ltf_window_min": "declared-before-run: the 1m displacement must come within 2 hours of the POI reaction",
+  "entry_wait_min": "declared-before-run: the retrace to the FVG midpoint must come within 30 minutes",
+  "fvg_entry": "corpus: V8P6lNIisvc 'Enter at the bottom or the midpoint of that fair value gap; the midpoint is preferred'",
+  "target": "corpus: V8P6lNIisvc 'higher-timeframe liquidity pool' (relatively equal highs/lows approximated by the nearest untaken 1h swing)",
+  "target_lookback_1h": "declared-before-run: swing targets from the last 120 1h bars",
+  "swing": "phase3: meta/conjunction_preregistration.md \u00a71.8 left=2,right=2",
+  "max_hold": "declared-before-run: one 8h session for the HTF target to be reached"
+ },
+ "n": 3878,
+ "span": {
+  "start": "2016-01-05 17:16:00+00:00",
+  "end": "2026-07-22 22:08:00+00:00",
+  "years": 10.543
+ },
+ "avg_R": 0.010496339544544039,
+ "avg_R_gross": 0.05049633954454401,
+ "win_rate": 0.27333677153171737,
+ "pf": 1.0141412182600977,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "n": 19390,
+  "avg_R": -0.006964964222505157,
+  "win_rate": 0.27333677153171737,
+  "pf": 0.9904993664660408,
+  "sd_R": 3.8140203641018195,
+  "exit_mix": {
+   "stop": 0.6924187725631769,
+   "target": 0.17127385250128932,
+   "time": 0.13630737493553377
+  },
+  "avg_R_gross": 0.03303503577749484,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": 0.017461303767049196,
+ "ci_lo": -0.08572672939442601,
+ "ci_hi": 0.11027852404359499,
+ "ci_method": "phase3_iid",
+ "p": 0.726931433342547,
+ "halves": {
+  "H1": {
+   "n": 1688,
+   "diff": -0.061258136633467256,
+   "ci_lo": -0.22365426913562136,
+   "ci_hi": 0.0726955955554772,
+   "ci_method": "iid",
+   "p": 0.41777710227540954,
+   "start": "2016-01-05 17:16:00+00:00",
+   "end": "2020-12-31 04:27:00+00:00"
+  },
+  "H2": {
+   "n": 2190,
+   "diff": 0.07813637929036964,
+   "ci_lo": -0.0563485193493668,
+   "ci_hi": 0.21009792636363292,
+   "ci_method": "iid",
+   "p": 0.25033626907253004,
+   "start": "2021-01-05 03:56:00+00:00",
+   "end": "2026-07-22 22:08:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 761,
+   "diff": -0.01946007756998617,
+   "ci_lo": -0.17448169988353446,
+   "ci_hi": 0.1432206818157144,
+   "ci_method": "iid",
+   "p": 0.8102484370085301,
+   "start": "2016-01-05 17:16:00+00:00",
+   "end": "2018-08-21 13:05:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 1017,
+   "diff": -0.08828346032515304,
+   "ci_lo": -0.3045670802960876,
+   "ci_hi": 0.0988860431039957,
+   "ci_method": "iid",
+   "p": 0.3910265660821345,
+   "start": "2018-08-23 10:14:00+00:00",
+   "end": "2021-04-12 04:06:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 1037,
+   "diff": 0.14534891337134212,
+   "ci_lo": -0.07487675362905628,
+   "ci_hi": 0.37568316699039567,
+   "ci_method": "iid",
+   "p": 0.20603131098347072,
+   "start": "2021-04-15 02:34:00+00:00",
+   "end": "2023-12-01 14:34:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 1063,
+   "diff": 0.02030245627843383,
+   "ci_lo": -0.1473016840069346,
+   "ci_hi": 0.17870745359982376,
+   "ci_method": "iid",
+   "p": 0.8071406956008337,
+   "start": "2023-12-04 02:21:00+00:00",
+   "end": "2026-07-22 22:08:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.1400855775802918,
+ "mde_threshold": 0.1,
+ "power_floor_n": 7611,
+ "verdict": "UNDERPOWERED",
+ "verdict_detail": "CI contains 0; MDE 0.1401 vs threshold 0.1000, effective n 2050 (power floor n=7611, have 3878)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 3878,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 3.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 347,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "target_px"
+   ],
+   "ignored": [],
+   "lookback": "15D",
+   "recent": "1D",
+   "events_fp": "89239ddd435a08d6",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "8h",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": null,
+  "entry_mode": "next_open",
+  "hold_basis": "clock",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "Tests the 1-minute execution step (the worked ES example's own chart). The payoff claim is tested as the book's net R against a matched random entry with the same stop and target distances; the win rate is not the verdict statistic (matched geometry cancels it).",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/entry_guest_02a/fifteen-second-execution-timeframe.py",
+ "runtime_sec": 2.13,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:16:57+00:00",
+ "n_events_in": 3880,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 2,
+  "target_not_beyond_entry": 0,
+  "no_bars_in_hold": 0
+ },
+ "events_fp": "89239ddd435a08d6",
+ "sd_R": 2.605740899180012,
+ "exit_mix": {
+  "stop": 0.7026817947395565,
+  "target": 0.1776689014956163,
+  "time": 0.11964930376482723
+ },
+ "trades_per_year": 367.8108283562711,
+ "ci_components": {
+  "phase3_iid": [
+   -0.08572672939442601,
+   0.11027852404359499
+  ],
+  "day_block": [
+   -0.07657530970719216,
+   0.11481700427359572
+  ]
+ },
+ "diff_win": 0.0,
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 2050,
+  "n_clusters": null,
+  "n_eff": 2050
+ },
+ "ties": {
+  "real_ambiguous": 0.0,
+  "control_ambiguous": 0.0005157297576070139,
+  "real_gap_stop": 0.015214027849406911,
+  "control_gap_stop": 0.01970087674058793,
+  "verdict_stop_first": "UNDERPOWERED"
+ },
+ "ctrl_overlap": 0.0012377514182568335,
+ "exposure_bars": {
+  "real_mean": 446.354306343476,
+  "control_mean": 441.24832387828775,
+  "hold_basis": "clock"
+ },
+ "run_id": "194d7b46f9924eaf8e9ab87cc338e273",
+ "hyp_key": "1037f98f083e5776"
+}

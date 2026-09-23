@@ -1,0 +1,265 @@
+{
+ "concept_id": "keep-it-simple-c3-stack",
+ "reading": "b",
+ "testable": true,
+ "test_type": "trade",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "daily = 18:00 NY trading day; 4H forex grid; 1H/15m/5m UTC-aligned",
+   "C2 closure: bull low<prev low & close>prev low (mirror) \u2014 method_spec \u00a73.2",
+   "CISD everywhere: series_open, 2/2 swing, max_wait 3 (detectors.cisd)",
+   "day filter: previous daily candle is a C2 in the direction AND a 1H CISD in the same direction confirmed inside that daily candle -> today = daily C3, trade that side only",
+   "first CISD per C3 candle; enter next M1 open; stop = protected swing; 2R; hold to the close of the structure-TF C3 candle",
+   "route b (1H): a 1H C2 closure in the direction, closing inside today, whose sweep is at a POI: it took out a confirmed, still-untaken 1H 2/2 swing extreme, or traded into a still-untouched same-side 1H FVG, both from the prior 72 1H bars; trade the next 1H candle; entry = 5m CISD inside it"
+  ],
+  "params": {
+   "level_rule": "series_open",
+   "max_wait": 3,
+   "rr": 2.0,
+   "max_hold": "to C3 candle close",
+   "one_per_c3": true,
+   "grid4h": "forex",
+   "day_open_hour": 18,
+   "day_bias": "D C2 + H1 CISD inside it",
+   "structure_tf": "1h",
+   "entry_tf": "5min",
+   "poi": true,
+   "poi_lookback_bars": 72
+  }
+ },
+ "params_source": {
+  "level_rule": "method_spec: \u00a74.2 first-candle-open default",
+  "max_wait": "phase3: locked config max_wait=3",
+  "rr": "corpus: q3nauvjT3q0 (concept execution.targets '2R minimum'); method_spec \u00a75.3",
+  "max_hold": "method_spec: \u00a75.5 time-based exit at the HTF (C3) candle close",
+  "one_per_c3": "declared-before-run: one entry per C3 candle ('enter on a continuation inside candle 3')",
+  "grid4h": "session_window_fit: forex grid for gold",
+  "day_open_hour": "method_spec: \u00a71.4 18:00 canon",
+  "day_bias": "corpus: q3nauvjT3q0 'Daily candle 2 closure + hourly CISD' / method_spec \u00a72.4",
+  "structure_tf": "corpus: q3nauvjT3q0 hourly route; method_spec \u00a71.2 1H->5m pair",
+  "entry_tf": "method_spec: \u00a71.2 pairing 1H->5m",
+  "poi": "corpus: q3nauvjT3q0 hourly requires a point of interest; method_spec \u00a74.1 (FVG or a high/low taken out)",
+  "poi_lookback_bars": "method_spec: \u00a71.1 relevant-swing look-back = three HTF candles (hourly chart -> three days)"
+ },
+ "n": 897,
+ "span": {
+  "start": "2016-01-11 21:40:00+00:00",
+  "end": "2026-07-20 15:25:00+00:00",
+  "years": 10.519
+ },
+ "avg_R": -0.040704144961894735,
+ "avg_R_gross": -0.0007041449618947145,
+ "win_rate": 0.4358974358974359,
+ "pf": 0.8904961641295039,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "n": 4485,
+  "avg_R": -0.05557261552912745,
+  "win_rate": 0.4211817168338908,
+  "pf": 0.847753710352868,
+  "sd_R": 0.8660743987373517,
+  "exit_mix": {
+   "stop": 0.2588628762541806,
+   "target": 0.08115942028985507,
+   "time": 0.6599777034559643
+  },
+  "avg_R_gross": -0.01557261552912743,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": 0.014868470567232714,
+ "ci_lo": -0.052394641111030496,
+ "ci_hi": 0.09266865875738141,
+ "ci_method": "phase3_block",
+ "p": 0.6878469496708407,
+ "halves": {
+  "H1": {
+   "n": 433,
+   "diff": 0.00504912068828884,
+   "ci_lo": -0.08830640893561856,
+   "ci_hi": 0.10879788384727877,
+   "ci_method": "block",
+   "p": 0.9200150147225976,
+   "start": "2016-01-11 21:40:00+00:00",
+   "end": "2020-12-29 09:05:00+00:00"
+  },
+  "H2": {
+   "n": 464,
+   "diff": 0.024031786294781622,
+   "ci_lo": -0.06599251697200695,
+   "ci_hi": 0.11297277008693492,
+   "ci_method": "iid",
+   "p": 0.5986276083887676,
+   "start": "2021-01-15 03:05:00+00:00",
+   "end": "2026-07-20 15:25:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 243,
+   "diff": 0.04307432110040979,
+   "ci_lo": -0.07777939962592384,
+   "ci_hi": 0.16397497771566175,
+   "ci_method": "iid",
+   "p": 0.4849090248201889,
+   "start": "2016-01-11 21:40:00+00:00",
+   "end": "2018-08-17 15:15:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 212,
+   "diff": -0.06976745432391977,
+   "ci_lo": -0.2276818099601421,
+   "ci_hi": 0.09370789513350787,
+   "ci_method": "block",
+   "p": 0.3948026107963842,
+   "start": "2018-08-23 10:35:00+00:00",
+   "end": "2021-04-06 13:05:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 243,
+   "diff": 0.04128134852818638,
+   "ci_lo": -0.10428787016279129,
+   "ci_hi": 0.18017284405986195,
+   "ci_method": "block",
+   "p": 0.5694473541203807,
+   "start": "2021-04-15 13:05:00+00:00",
+   "end": "2023-11-14 14:10:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 199,
+   "diff": 0.038338144199647595,
+   "ci_lo": -0.08476858324347182,
+   "ci_hi": 0.16499729202926144,
+   "ci_method": "iid",
+   "p": 0.5473774811524665,
+   "start": "2023-12-05 07:40:00+00:00",
+   "end": "2026-07-20 15:25:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.10367720145927292,
+ "mde_threshold": 0.1,
+ "power_floor_n": 965,
+ "verdict": "UNDERPOWERED",
+ "verdict_detail": "CI contains 0; MDE 0.1037 vs threshold 0.1000, effective n 632 (power floor n=965, have 897)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 897,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 1.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 86,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "rr",
+    "max_hold"
+   ],
+   "ignored": [],
+   "lookback": "20D",
+   "recent": "1D",
+   "events_fp": "fcb70b46388701f0",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "per-row column",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": null,
+  "entry_mode": "next_open",
+  "hold_basis": "clock",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "1H route of the stated model; trade_test vs matched random entries.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/model_own_02a/keep-it-simple-c3-stack.py",
+ "runtime_sec": 0.79,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:22:04+00:00",
+ "n_events_in": 901,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 0,
+  "target_not_beyond_entry": 0,
+  "no_bars_in_hold": 4
+ },
+ "events_fp": "fcb70b46388701f0",
+ "sd_R": 0.8802164891969262,
+ "exit_mix": {
+  "stop": 0.24303232998885171,
+  "target": 0.0802675585284281,
+  "time": 0.6767001114827201
+ },
+ "trades_per_year": 85.2757027589797,
+ "ci_components": {
+  "phase3_block": [
+   -0.052394641111030496,
+   0.09266865875738141
+  ],
+  "day_block": [
+   -0.049870468832447654,
+   0.07624354136199193
+  ]
+ },
+ "diff_win": 0.01471571906354513,
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 632,
+  "n_clusters": null,
+  "n_eff": 632
+ },
+ "ties": {
+  "real_ambiguous": 0.0,
+  "control_ambiguous": 0.0002229654403567447,
+  "real_gap_stop": 0.002229654403567447,
+  "control_gap_stop": 0.004459308807134894,
+  "verdict_stop_first": "UNDERPOWERED"
+ },
+ "ctrl_overlap": 0.0004459308807134894,
+ "exposure_bars": {
+  "real_mean": 37.474916387959865,
+  "control_mean": 36.78929765886288,
+  "hold_basis": "clock"
+ },
+ "run_id": "134035ca2dd849a6aec675d76d116b53",
+ "hyp_key": "55edd98570c3e432"
+}

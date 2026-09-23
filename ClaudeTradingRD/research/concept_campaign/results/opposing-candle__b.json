@@ -1,0 +1,262 @@
+{
+ "concept_id": "opposing-candle",
+ "reading": "b",
+ "testable": true,
+ "test_type": "trade",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "1h UTC bars; live expansion = latest 1h expansion event (close beyond 2/2 swing, 4-bar window range/pre-range >= 1.5, distance/pre-range >= 0.65) decided 1..24 bars before, its origin not traded through since",
+   "at the close of each qualifying opposing candle (bull leg: down-close with close > low; mirror) enter with the trend at the next M1 open",
+   "stop = extreme of the contiguous opposing series ending at that candle; target = the leg's extreme since the expansion's break; 10h trading time; NY clock +/-30 min control; clustered by expansion leg"
+  ],
+  "params": {
+   "tf": "1h",
+   "exp_n": 4,
+   "exp_r": 1.5,
+   "exp_d": 0.65,
+   "max_age": 24,
+   "max_hold": "10h",
+   "hold_basis": "bars",
+   "ctrl_tod_tol_min": 30,
+   "cluster": "expansion leg"
+  }
+ },
+ "params_source": {
+  "tf": "declared-before-run: 1h (concept ltf list 1H)",
+  "exp_n": "threshold_fits: \u00a72 displacement=aggressive, close-beyond gate (grade A) + N=4 window r>=1.5, d>=0.65 vs the pre-break 4-bar range (grade B); 2/2 fractal swings",
+  "exp_r": "threshold_fits: \u00a72 displacement=aggressive, close-beyond gate (grade A) + N=4 window r>=1.5, d>=0.65 vs the pre-break 4-bar range (grade B); 2/2 fractal swings",
+  "exp_d": "threshold_fits: \u00a72 displacement=aggressive, close-beyond gate (grade A) + N=4 window r>=1.5, d>=0.65 vs the pre-break 4-bar range (grade B); 2/2 fractal swings",
+  "max_age": "declared-before-run: a leg counts as live for 24 bars after it prints",
+  "stop": "corpus: opposing-candle execution.stop 'Beyond the opposing candle extreme'",
+  "target": "corpus: opposing-candle execution.targets 'next relevant level' -> the leg's own extreme",
+  "max_hold": "phase3: \u00a71.13 10 entry-TF bars",
+  "hold_basis": "declared-before-run: trading time (trap 7)",
+  "ctrl_tod_tol_min": "declared-before-run: trap 9, not a timing concept",
+  "cluster": "declared-before-run: one cluster per expansion leg (widens CI only)"
+ },
+ "n": 15488,
+ "span": {
+  "start": "2016-01-04 11:00:00+00:00",
+  "end": "2026-07-23 04:00:00+00:00",
+  "years": 10.546
+ },
+ "avg_R": 0.09508500406490675,
+ "avg_R_gross": 0.13508500406490662,
+ "win_rate": 0.17200413223140495,
+ "pf": 1.1086871620494179,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "n": 74926,
+  "avg_R": 0.05649827662743754,
+  "win_rate": 0.1756800042708806,
+  "pf": 1.0649597010465084,
+  "sd_R": 9.996779656472468,
+  "exit_mix": {
+   "stop": 0.8192082855083682,
+   "target": 0.13979126071056777,
+   "time": 0.041000453781063984
+  },
+  "avg_R_gross": 0.09649827662743751,
+  "reps": 5,
+  "fill_rate": 0.9675361570247933
+ },
+ "diff": 0.03858672743746921,
+ "ci_lo": -0.0832021160088367,
+ "ci_hi": 0.1698147368444311,
+ "ci_method": "phase3_block",
+ "p": 0.549963582777133,
+ "halves": {
+  "H1": {
+   "n": 7342,
+   "diff": 0.11443833590505427,
+   "ci_lo": -0.1059870816296122,
+   "ci_hi": 0.3197087576550943,
+   "ci_method": "block",
+   "p": 0.29198335567040157,
+   "start": "2016-01-04 11:00:00+00:00",
+   "end": "2020-12-31 18:00:00+00:00"
+  },
+  "H2": {
+   "n": 8146,
+   "diff": -0.013369673163468217,
+   "ci_lo": -0.14911407663100174,
+   "ci_hi": 0.14293450767665278,
+   "ci_method": "block",
+   "p": 0.8575842727480835,
+   "start": "2021-01-04 05:00:00+00:00",
+   "end": "2026-07-23 04:00:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 3882,
+   "diff": 0.2994482053266421,
+   "ci_lo": 0.02217127300566805,
+   "ci_hi": 0.6140848272242092,
+   "ci_method": "block",
+   "p": 0.04735783884363712,
+   "start": "2016-01-04 11:00:00+00:00",
+   "end": "2018-08-20 18:00:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 3873,
+   "diff": -0.13441016531064112,
+   "ci_lo": -0.46564936730895196,
+   "ci_hi": 0.15219853805830325,
+   "ci_method": "iid",
+   "p": 0.39379044347931486,
+   "start": "2018-08-22 14:00:00+00:00",
+   "end": "2021-04-12 07:00:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 3854,
+   "diff": 0.08926249035315649,
+   "ci_lo": -0.08922790806960307,
+   "ci_hi": 0.2701264461581458,
+   "ci_method": "block",
+   "p": 0.33020662220249347,
+   "start": "2021-04-12 10:00:00+00:00",
+   "end": "2023-12-01 09:00:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 3879,
+   "diff": -0.06350903828594745,
+   "ci_lo": -0.25341811058843405,
+   "ci_hi": 0.15941505089218913,
+   "ci_method": "block",
+   "p": 0.5464886093950827,
+   "start": "2023-12-04 01:00:00+00:00",
+   "end": "2026-07-23 04:00:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.18083194887786774,
+ "mde_threshold": 0.1,
+ "power_floor_n": 50647,
+ "verdict": "UNDERPOWERED",
+ "verdict_detail": "CI contains 0; MDE 0.1808 vs threshold 0.1000, effective n 2274 (power floor n=50647, have 15488)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 15488,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 4384.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 1248,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "target_px",
+    "e_id"
+   ],
+   "ignored": [],
+   "lookback": "30D",
+   "recent": "1D",
+   "events_fp": "e267ccf541293215",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "10h",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": 30,
+  "entry_mode": "next_open",
+  "hold_basis": "bars",
+  "mde_threshold": null,
+  "cluster": "column:e_id",
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/structure_own_01b/opposing-candle.py",
+ "runtime_sec": 1.56,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:45:20+00:00",
+ "n_events_in": 15733,
+ "dropped": {
+  "no_bar_after_decision": 1,
+  "stop_not_beyond_entry": 231,
+  "target_not_beyond_entry": 13,
+  "no_bars_in_hold": 0
+ },
+ "events_fp": "e267ccf541293215",
+ "sd_R": 6.121265240899425,
+ "exit_mix": {
+  "stop": 0.8237345041322314,
+  "target": 0.1415289256198347,
+  "time": 0.03473657024793388
+ },
+ "trades_per_year": 1468.5856697819313,
+ "ci_components": {
+  "phase3_block": [
+   -0.0832021160088367,
+   0.1698147368444311
+  ],
+  "day_block": [
+   -0.0755336898911804,
+   0.1743326353591802
+  ],
+  "cluster": [
+   -0.0742586943161694,
+   0.16695477159891545
+  ]
+ },
+ "diff_win": -0.0036758720394756417,
+ "dependence": {
+  "day_block_mean_days": 3,
+  "n_days": 2274,
+  "n_clusters": 2314,
+  "n_eff": 2274
+ },
+ "ties": {
+  "real_ambiguous": 0.00019369834710743802,
+  "control_ambiguous": 0.0004270880602194165,
+  "real_gap_stop": 0.026020144628099172,
+  "control_gap_stop": 0.026132450684675547,
+  "verdict_stop_first": "UNDERPOWERED"
+ },
+ "ctrl_overlap": 0.1268451538851667,
+ "exposure_bars": {
+  "real_mean": 599.8822314049587,
+  "control_mean": 599.9694632036943,
+  "hold_basis": "bars"
+ },
+ "run_id": "2065f97d422444718fe7434037cd00ae",
+ "hyp_key": "5ac3090754e54ead"
+}

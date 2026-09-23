@@ -1,0 +1,281 @@
+{
+ "concept_id": "wick-vs-body-marking-rule",
+ "reading": null,
+ "testable": true,
+ "test_type": "gate",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "1h order blocks from phase-3 CISD (series_open, 2/2, max_wait 3); block candle = last opposing-close candle of the series; valid from the CISD close",
+   "wick dominant := relevant-side wick (bullish close-low, bearish high-close) > body",
+   "levels: body mean threshold (open+close)/2 and 0.5 of the wick (close+extreme)/2",
+   "each level: first M1 touch within 24h, next M1 open, block direction, stop = protected swing, 2R, hold 10h; skip if the touch minute reaches the stop",
+   "gate: row's level is the rule-prescribed one; clustered by block"
+  ],
+  "params": {
+   "tf": "1h",
+   "window": "24h",
+   "wick_cut": "wick > body",
+   "rr": 2.0,
+   "max_hold": "10h",
+   "block_candle": "series_end"
+  }
+ },
+ "params_source": {
+  "tf": "declared-before-run: 1h from the concept's htf list (1D/4H/1H), phase-3 rung-0 blocks",
+  "window": "declared-before-run: retest eligibility not stated; 24h",
+  "wick_cut": "threshold_fits: wick vs body crossover 1.0 (grade A); the concept's own ambiguity note 'wick_span > body_span is the reading the words support'",
+  "rr": "phase3: 2R primary target",
+  "max_hold": "phase3: 10 entry-TF bars",
+  "block_candle": "declared-before-run: the block's candle = the opposing candle nearest the extreme (blocks.order_blocks series)"
+ },
+ "n": 4551,
+ "span": {
+  "start": "2016-01-04 16:32:00+00:00",
+  "end": "2026-07-22 23:01:00+00:00",
+  "years": 10.546
+ },
+ "avg_R": -0.018159853571503536,
+ "avg_R_gross": 0.021840146428496483,
+ "win_rate": 0.3550867941111844,
+ "pf": 0.9723456025572618,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "avg_R_gated": -0.04216396398193545,
+  "avg_R_complement": -0.04761864980122126,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": 0.028178577045739762,
+ "ci_lo": -0.03627197440816758,
+ "ci_hi": 0.09077026475460749,
+ "ci_method": "phase3_block",
+ "p": 0.3845962320980475,
+ "halves": {
+  "H1": {
+   "n": 4047,
+   "diff": 0.059161748240120736,
+   "ci_lo": -0.037864950584540535,
+   "ci_hi": 0.14917180613057718,
+   "ci_method": "iid",
+   "p": 0.2150066111568542,
+   "start": "2016-01-04 16:32:00+00:00",
+   "end": "2020-12-31 13:59:00+00:00",
+   "n_gated": 2155
+  },
+  "H2": {
+   "n": 4444,
+   "diff": 6.752718166013524e-05,
+   "ci_lo": -0.09127878388093115,
+   "ci_hi": 0.08774862695455123,
+   "ci_method": "iid",
+   "p": 0.9988202850398605,
+   "start": "2021-01-05 03:19:00+00:00",
+   "end": "2026-07-22 23:01:00+00:00",
+   "n_gated": 2396
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 2080,
+   "diff": 0.02825417355429402,
+   "ci_lo": -0.10610127531301562,
+   "ci_hi": 0.16494132324295366,
+   "ci_method": "iid",
+   "p": 0.6828161154668941,
+   "start": "2016-01-04 16:32:00+00:00",
+   "end": "2018-08-22 09:00:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 2193,
+   "diff": 0.06371358206209432,
+   "ci_lo": -0.060996142646343295,
+   "ci_hi": 0.19174133142668992,
+   "ci_method": "iid",
+   "p": 0.3230595857335558,
+   "start": "2018-08-22 23:35:00+00:00",
+   "end": "2021-04-12 06:55:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 2250,
+   "diff": -0.0692269100132213,
+   "ci_lo": -0.18283308511308455,
+   "ci_hi": 0.05743655900417102,
+   "ci_method": "iid",
+   "p": 0.2587221713703244,
+   "start": "2021-04-12 09:31:00+00:00",
+   "end": "2023-12-01 15:03:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 1968,
+   "diff": 0.10132918213170984,
+   "ci_lo": -0.03793477484866947,
+   "ci_hi": 0.2346661795990789,
+   "ci_method": "block",
+   "p": 0.14509257767640552,
+   "start": "2023-12-05 08:03:00+00:00",
+   "end": "2026-07-22 23:01:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.09079749209802915,
+ "mde_threshold": 0.1,
+ "power_floor_n": 3249,
+ "verdict": "NULL",
+ "verdict_detail": "CI contains 0; powered (MDE 0.0908 <= 0.1000)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 8491,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "gate_mask_checked": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 213.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 624,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "rr",
+    "block_id",
+    "wick_dom",
+    "is_wick_level",
+    "rule_level"
+   ],
+   "ignored": [],
+   "lookback": "20D",
+   "recent": "1D",
+   "events_fp": "53aadcc394981786",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "10h",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": null,
+  "entry_mode": "next_open",
+  "hold_basis": "clock",
+  "mde_threshold": null,
+  "cluster": "column:block_id",
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "Same blocks, two candidate levels each; the rule's choice vs the other choice. wick-dominant share and counts in stdout.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/structure_own_05b/wick-vs-body-marking-rule.py",
+ "runtime_sec": 3.23,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:35:25+00:00",
+ "n_events_in": 8501,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 5,
+  "target_not_beyond_entry": 0,
+  "no_bars_in_hold": 5
+ },
+ "n_complement": 3940,
+ "gate_firing_rate": 0.5359792721705335,
+ "events_fp": "53aadcc394981786",
+ "mask_fp": "6396930064b37026",
+ "mask_col": "rule_level",
+ "exit_mix": {
+  "stop": 0.6244781366732586,
+  "target": 0.3098220171390903,
+  "time": 0.06569984618765107
+ },
+ "gated_vs_own_control": {
+  "diff": 0.024004110410431913,
+  "ci_lo": -0.018085590574179,
+  "ci_hi": 0.0685994638990141,
+  "p": 0.277711713377318
+ },
+ "complement": {
+  "n": 3940,
+  "avg_R": -0.051793116436529105,
+  "win_rate": 0.3416243654822335,
+  "pf": 0.9226417832478416,
+  "sd_R": 1.3704364288896587,
+  "exit_mix": {
+   "stop": 0.6355329949238578,
+   "target": 0.3017766497461929,
+   "time": 0.06269035532994924
+  },
+  "vs_own_control": {
+   "diff": -0.004174466635307843,
+   "ci_lo": -0.051005241601067675,
+   "ci_hi": 0.043836501608836134,
+   "p": 0.8630162144928312
+  }
+ },
+ "ci_components": {
+  "phase3_block": [
+   -0.03627197440816758,
+   0.09077026475460749
+  ],
+  "day_block": [
+   -0.026466552670151144,
+   0.08005050959628535
+  ],
+  "cluster": [
+   -0.023981870760361776,
+   0.07660013859359774
+  ]
+ },
+ "diff_meaning": "mean(R-ctrl | gated) - mean(R-ctrl | complement)",
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_eff_gated": 2243,
+  "n_eff_complement": 2107,
+  "n_eff": 2107
+ },
+ "ties": {
+  "real_ambiguous": 0.006595218466611707,
+  "control_ambiguous": 0.0038158049699682016,
+  "real_gap_stop": 0.00741962077493817,
+  "control_gap_stop": 0.016417383111529855,
+  "gated_excess": 0.0024170511975390024,
+  "complement_excess": 0.003197969543147208,
+  "verdict_stop_first": "NULL"
+ },
+ "ctrl_overlap": 0.0016016959133199858,
+ "exposure_bars": {
+  "real_mean": 550.7079260393358,
+  "control_mean": 544.0762454363444,
+  "hold_basis": "clock"
+ },
+ "run_id": "32ea8740417a4826a2b69c70d298f349",
+ "hyp_key": "34c8e52bf4fdf264"
+}

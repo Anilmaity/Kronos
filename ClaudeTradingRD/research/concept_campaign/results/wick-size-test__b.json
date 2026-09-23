@@ -1,0 +1,281 @@
+{
+ "concept_id": "wick-size-test",
+ "reading": "b",
+ "testable": true,
+ "test_type": "gate",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "4h candles (forex grid 17/21/01/05/09/13 NY) with >= 120 M1 bars and a non-zero body",
+   "direction = sign(close - open); decide at the candle close, enter next M1 open",
+   "stop = 1 x ATR(20) of 4h bars known at the close; target = 1 x ATR (rr 1); hold 3 candles = 720 trading minutes",
+   "opposing run = open -> extreme against the close direction; time_share_to_extreme = (M1 start of that extreme (first occurrence) - first M1 start + 1 min) / (traded span first..last M1 + 1 min)",
+   "gate shallow_b: time_share_to_extreme <= 0.25 (time axis only)"
+  ],
+  "params": {
+   "tf": "4h",
+   "grid4h": "forex",
+   "atr_n": 20,
+   "k_atr": 1.0,
+   "rr": 1.0,
+   "max_hold": "720min",
+   "hold_basis": "bars",
+   "min_m1": 120,
+   "cut_time": 0.25
+  }
+ },
+ "params_source": {
+  "tf": "corpus: YAML timeframes htf [1D, 4H, 1H]; threshold_fits \u00a71: wick separation lives on 4h/1D (4h chosen for n)",
+  "grid4h": "session_window_fit: forex 4H grid for gold (17/21/01/05/09/13 NY); carried as a knob per Conjunction Test",
+  "atr_n": "threshold_fits: \u00a71 barrier test, symmetric +/-1 ATR(20) from the close",
+  "k_atr": "threshold_fits: \u00a71 +/-1 ATR(20)",
+  "rr": "threshold_fits: \u00a71 symmetric barrier (rr 1)",
+  "max_hold": "threshold_fits: \u00a71 'over the next 3 candles' (3 x 4h)",
+  "hold_basis": "declared-before-run: 3 candles = trading time so Friday candles are not cut by the weekend (README trap 7)",
+  "min_m1": "declared-before-run: drop stub 4h candles with < half their M1 bars (README trap 6)",
+  "cut_time": "threshold_fits: small wick, time axis default 0.25 (grade C)"
+ },
+ "n": 10147,
+ "span": {
+  "start": "2016-01-06 22:00:00+00:00",
+  "end": "2026-07-23 01:00:00+00:00",
+  "years": 10.541
+ },
+ "avg_R": -0.025517480825989907,
+ "avg_R_gross": 0.014482519174010113,
+ "win_rate": 0.4914753129003646,
+ "pf": 0.9362895533066409,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "avg_R_gated": -0.03415024275964584,
+  "avg_R_complement": -0.049874392732575566,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": 0.014764449390259508,
+ "ci_lo": -0.015327030659720362,
+ "ci_hi": 0.04589541029820931,
+ "ci_method": "phase3_iid",
+ "p": 0.344489022725271,
+ "halves": {
+  "H1": {
+   "n": 7673,
+   "diff": -0.0034296852281616194,
+   "ci_lo": -0.050827660227862004,
+   "ci_hi": 0.0416683777958566,
+   "ci_method": "block",
+   "p": 0.8844360756839212,
+   "start": "2016-01-06 22:00:00+00:00",
+   "end": "2020-12-31 22:00:00+00:00",
+   "n_gated": 4904
+  },
+  "H2": {
+   "n": 8511,
+   "diff": 0.030752327156748534,
+   "ci_lo": -0.007817738074733694,
+   "ci_hi": 0.07200696188939074,
+   "ci_method": "iid",
+   "p": 0.13100631169337706,
+   "start": "2021-01-04 02:00:00+00:00",
+   "end": "2026-07-23 01:00:00+00:00",
+   "n_gated": 5243
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 4048,
+   "diff": 0.01607564232841117,
+   "ci_lo": -0.047795568557738664,
+   "ci_hi": 0.07593402068672805,
+   "ci_method": "iid",
+   "p": 0.6105426337964404,
+   "start": "2016-01-06 22:00:00+00:00",
+   "end": "2018-08-22 09:00:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 4039,
+   "diff": -0.024874318597708632,
+   "ci_lo": -0.08480155224722569,
+   "ci_hi": 0.035878693206428294,
+   "ci_method": "block",
+   "p": 0.41911014200218455,
+   "start": "2018-08-22 13:00:00+00:00",
+   "end": "2021-04-12 05:00:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 4077,
+   "diff": 0.00802884957154837,
+   "ci_lo": -0.05344846300942209,
+   "ci_hi": 0.06745196875771796,
+   "ci_method": "iid",
+   "p": 0.794618784837046,
+   "start": "2021-04-12 09:00:00+00:00",
+   "end": "2023-12-01 22:00:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 4020,
+   "diff": 0.06170805277297958,
+   "ci_lo": 0.001112720968871968,
+   "ci_hi": 0.12386443548752218,
+   "ci_method": "block",
+   "p": 0.048772821820581604,
+   "start": "2023-12-04 02:00:00+00:00",
+   "end": "2026-07-23 01:00:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.04375587313111909,
+ "mde_threshold": 0.1,
+ "power_floor_n": 1156,
+ "verdict": "NULL",
+ "verdict_detail": "CI contains 0; powered (MDE 0.0438 <= 0.1000)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 16184,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "gate_mask_checked": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 4385.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 1186,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_dist",
+    "rr",
+    "shallow_a",
+    "shallow_b"
+   ],
+   "ignored": [],
+   "lookback": "20D",
+   "recent": "1D",
+   "events_fp": "6145ae0faf273f59",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "720min",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": null,
+  "entry_mode": "next_open",
+  "hold_basis": "bars",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "gate firing rate 0.627. Same baseline as candle-type-wick-to-body (range/body axes already tested there and in small-wick-expansion-rule); this concept adds the time axis.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/structure_own_04a/wick-size-test.py",
+ "runtime_sec": 2.91,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:25:07+00:00",
+ "n_events_in": 16184,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 0,
+  "target_not_beyond_entry": 0,
+  "no_bars_in_hold": 0
+ },
+ "n_complement": 6037,
+ "gate_firing_rate": 0.6269772614928324,
+ "events_fp": "6145ae0faf273f59",
+ "mask_fp": "d013eba21d5b4de6",
+ "mask_col": "shallow_b",
+ "exit_mix": {
+  "stop": 0.31575835222233173,
+  "target": 0.3403961762097172,
+  "time": 0.34384547156795114
+ },
+ "gated_vs_own_control": {
+  "diff": 0.00863276193365593,
+  "ci_lo": -0.009516144073359533,
+  "ci_hi": 0.0273546011280722,
+  "p": 0.3587259216560914
+ },
+ "complement": {
+  "n": 6037,
+  "avg_R": -0.056006080189179144,
+  "win_rate": 0.47821765777704156,
+  "pf": 0.8699963584194238,
+  "sd_R": 0.8688724326591533,
+  "exit_mix": {
+   "stop": 0.35332118601954615,
+   "target": 0.345204571807189,
+   "time": 0.30147424217326485
+  },
+  "vs_own_control": {
+   "diff": -0.006131687456603578,
+   "ci_lo": -0.029748389658950797,
+   "ci_hi": 0.018049864910429304,
+   "p": 0.6150635433789411
+  }
+ },
+ "ci_components": {
+  "phase3_iid": [
+   -0.015327030659720362,
+   0.04589541029820931
+  ],
+  "day_block": [
+   -0.014847001589679621,
+   0.044388011133150836
+  ]
+ },
+ "diff_meaning": "mean(R-ctrl | gated) - mean(R-ctrl | complement)",
+ "dependence": {
+  "day_block_mean_days": 2,
+  "n_eff_gated": 2709,
+  "n_eff_complement": 2568,
+  "n_eff": 2568
+ },
+ "ties": {
+  "real_ambiguous": 0.0003707365299060801,
+  "control_ambiguous": 0.00027187345526445873,
+  "real_gap_stop": 0.005437469105289174,
+  "control_gap_stop": 0.005252100840336135,
+  "gated_excess": 2.1882783573965834e-20,
+  "complement_excess": 0.00026503230081166145,
+  "verdict_stop_first": "NULL"
+ },
+ "ctrl_overlap": 0.12261492832427089,
+ "exposure_bars": {
+  "real_mean": 719.9379634206624,
+  "control_mean": 719.9108749382106,
+  "hold_basis": "bars"
+ },
+ "run_id": "1f099fdbcfa349d39107c93bfbbbd9f2",
+ "hyp_key": "d8106ccaf2490f6a"
+}

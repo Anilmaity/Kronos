@@ -1,0 +1,269 @@
+{
+ "concept_id": "poi-density-by-timeframe",
+ "reading": null,
+ "testable": true,
+ "test_type": "gate",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "baseline: 1h bare CISD (series_open close-through, fractal 2/2, within 3 bars), decide at the confirming bar close, stop = protected swing, 2R, 10h (phase-3 rung 0)",
+   "gate: detectors.poi.poi_gate (method spec \u00a74.1 search order FVG -> swing taken -> CISD level + 50% body hold; both FVG and swing tagged when both exist; range from the last opposing swing, lookback 40), timeframe 1h => required, evaluated on bars <= the confirming bar"
+  ],
+  "params": {
+   "tf": "1h",
+   "cisd": "series_open 2/2 max_wait 3",
+   "rr": 2.0,
+   "max_hold": "10h",
+   "poi_gate": "detectors.poi defaults (lookback 40, polarity any, body_hold_bars 5 truncated at decision)"
+  }
+ },
+ "params_source": {
+  "tf": "corpus: c7nk7ypJHN4 'you're going to want a point of interest here' (the hourly)",
+  "cisd": "phase3: rung-0 locked config",
+  "rr": "phase3: rung-0 locked 2R",
+  "max_hold": "phase3: 10 entry-TF bars",
+  "poi_gate": "method_spec: \u00a74.1 point-of-interest gate as implemented in detectors/poi.py"
+ },
+ "n": 6424,
+ "span": {
+  "start": "2016-01-04 15:00:00+00:00",
+  "end": "2026-07-22 19:00:00+00:00",
+  "years": 10.546
+ },
+ "avg_R": 0.0019493324697189103,
+ "avg_R_gross": 0.04194933246971892,
+ "win_rate": 0.43088418430884184,
+ "pf": 1.0046207978827235,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "avg_R_gated": -0.02799781023019856,
+  "avg_R_complement": -0.03789072860891004,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": 0.09571444376385149,
+ "ci_lo": 0.03232273791596075,
+ "ci_hi": 0.1593466942221306,
+ "ci_method": "phase3_iid",
+ "p": 0.0031396450302770083,
+ "halves": {
+  "H1": {
+   "n": 3803,
+   "diff": 0.06237355276221161,
+   "ci_lo": -0.044411742553003196,
+   "ci_hi": 0.16069922678880724,
+   "ci_method": "block",
+   "p": 0.233246792399286,
+   "start": "2016-01-04 15:00:00+00:00",
+   "end": "2020-12-31 05:00:00+00:00",
+   "n_gated": 3080
+  },
+  "H2": {
+   "n": 4192,
+   "diff": 0.12434372700015324,
+   "ci_lo": 0.043981373931907874,
+   "ci_hi": 0.20971172090393123,
+   "ci_method": "iid",
+   "p": 0.0032711944304460077,
+   "start": "2021-01-04 00:00:00+00:00",
+   "end": "2026-07-22 19:00:00+00:00",
+   "n_gated": 3344
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 1976,
+   "diff": -0.004863077211576396,
+   "ci_lo": -0.14542018054861844,
+   "ci_hi": 0.1234578994531965,
+   "ci_method": "iid",
+   "p": 0.9434789516815997,
+   "start": "2016-01-04 15:00:00+00:00",
+   "end": "2018-08-22 11:00:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 2032,
+   "diff": 0.10259424102586968,
+   "ci_lo": -0.05524260377919951,
+   "ci_hi": 0.23810381565990896,
+   "ci_method": "block",
+   "p": 0.1703918563988416,
+   "start": "2018-08-22 16:00:00+00:00",
+   "end": "2021-04-12 05:00:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 2067,
+   "diff": 0.17327201312264318,
+   "ci_lo": 0.04022829701251914,
+   "ci_hi": 0.3001872474830778,
+   "ci_method": "iid",
+   "p": 0.008981084213705888,
+   "start": "2021-04-12 10:00:00+00:00",
+   "end": "2023-12-01 16:00:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 1920,
+   "diff": 0.10488300529523925,
+   "ci_lo": -0.013347886022335432,
+   "ci_hi": 0.2346457944385255,
+   "ci_method": "iid",
+   "p": 0.09734977669463452,
+   "start": "2023-12-04 09:00:00+00:00",
+   "end": "2026-07-22 19:00:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.09078442528230644,
+ "mde_threshold": 0.1,
+ "power_floor_n": 1295,
+ "verdict": "EDGE",
+ "verdict_detail": "CI excludes 0 in claimed direction; halves agree (H1 +0.0624, H2 +0.1243); powered",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 7995,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "gate_mask_checked": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 300.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 588,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "rr",
+    "poi_ok"
+   ],
+   "ignored": [],
+   "lookback": "30D",
+   "recent": "1D",
+   "events_fp": "f5b14e39bf51db6a",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "10h",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": null,
+  "entry_mode": "next_open",
+  "hold_basis": "clock",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "Tests the hourly half of the density claim (POI required on 1h). The 4h half ('acceptable without') is a permission, not a directional claim, and was not run.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/entry_own_02b/poi-density-by-timeframe.py",
+ "runtime_sec": 1.89,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:17:50+00:00",
+ "n_events_in": 8034,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 1,
+  "target_not_beyond_entry": 0,
+  "no_bars_in_hold": 38
+ },
+ "n_complement": 1571,
+ "gate_firing_rate": 0.8035021888680425,
+ "events_fp": "f5b14e39bf51db6a",
+ "mask_fp": "da694ebfcf84e458",
+ "mask_col": "poi_ok",
+ "exit_mix": {
+  "stop": 0.3312577833125778,
+  "target": 0.1349626400996264,
+  "time": 0.5337795765877957
+ },
+ "gated_vs_own_control": {
+  "diff": 0.02994714269991747,
+  "ci_lo": 0.0023747400343440347,
+  "ci_hi": 0.058900182434486394,
+  "p": 0.03782230197753015
+ },
+ "complement": {
+  "n": 1571,
+  "avg_R": -0.10365802967284408,
+  "win_rate": 0.38446849140674727,
+  "pf": 0.7933353192215368,
+  "sd_R": 1.055255259849742,
+  "exit_mix": {
+   "stop": 0.4137492043284532,
+   "target": 0.13749204328453216,
+   "time": 0.4487587523870146
+  },
+  "vs_own_control": {
+   "diff": -0.06576730106393405,
+   "ci_lo": -0.12568918586068817,
+   "ci_hi": -0.0077970871748403925,
+   "p": 0.028759206864529385
+  }
+ },
+ "ci_components": {
+  "phase3_iid": [
+   0.03232273791596075,
+   0.1593466942221306
+  ],
+  "day_block": [
+   0.03371962598123429,
+   0.1565309472569072
+  ]
+ },
+ "diff_meaning": "mean(R-ctrl | gated) - mean(R-ctrl | complement)",
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_eff_gated": 2645,
+  "n_eff_complement": 1220,
+  "n_eff": 1220
+ },
+ "ties": {
+  "real_ambiguous": 0.0002501563477173233,
+  "control_ambiguous": 2.5015634771732333e-05,
+  "real_gap_stop": 0.00375234521575985,
+  "control_gap_stop": 0.004352720450281426,
+  "gated_excess": 0.0002801992528019925,
+  "complement_excess": 0.0,
+  "verdict_stop_first": "EDGE"
+ },
+ "ctrl_overlap": 0.06574108818011257,
+ "exposure_bars": {
+  "real_mean": 549.6661663539712,
+  "control_mean": 548.2028267667292,
+  "hold_basis": "clock"
+ },
+ "run_id": "bbe1cde4e9814a74940cad9e1be21fa9",
+ "hyp_key": "d4bdfdfa4b174ae7"
+}

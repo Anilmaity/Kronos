@@ -1,0 +1,209 @@
+{
+ "concept_id": "broadening-formation",
+ "reading": "b",
+ "testable": true,
+ "test_type": "rate",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "range = latest confirmed 1H 2/2 swing high and swing low, both untaken, price between them",
+   "a 1H bar trades beyond one side; a 1H close back inside within 3 bars (that bar included) = failed side -> event at that close (beyond = breakout, no event)",
+   "hit = the opposite swing traded within 1,440 M1 bars",
+   "null = same distance from the next M1 open, same side, same 1,440-bar horizon, 5 matched random moments (+/-30d, NY time +/-30min)"
+  ],
+  "params": {
+   "tf": "1h",
+   "swing": "2/2",
+   "fail_bars": 3,
+   "horizon_bars": 1440,
+   "null_tod_tol_min": 30,
+   "null_reps": 5
+  }
+ },
+ "params_source": {
+  "tf": "corpus: dSccSI7uqvE concept timeframes htf 1D/1H",
+  "swing": "phase3: swing_points left=2 right=2",
+  "fail_bars": "declared-before-run: 'fail to break out' is unquantified; 3 1H bars to close back inside",
+  "horizon_bars": "declared-before-run: one trading day of M1 bars",
+  "null_tod_tol_min": "declared-before-run: hold NY time of day (+/-30 min) fixed in the null (trap 9)",
+  "null_reps": "phase3: locked reps=5, +/-30-day window"
+ },
+ "n": 4691,
+ "span": {
+  "start": "2016-01-06 03:00:00+00:00",
+  "end": "2026-07-22 13:00:00+00:00",
+  "years": 10.541
+ },
+ "avg_R": null,
+ "avg_R_gross": null,
+ "win_rate": null,
+ "pf": null,
+ "observed_rate": 0.5371988914943508,
+ "null_rate": 0.5461095715199318,
+ "lift": 0.9836833476461863,
+ "control": {
+  "rate": 0.5461095715199318,
+  "reps": 5,
+  "kind": "null_fn x5"
+ },
+ "diff": -0.0089572505770259,
+ "ci_lo": -0.02460551008992411,
+ "ci_hi": 0.006646913660682615,
+ "ci_method": "phase3_iid",
+ "p": 0.2612295569360161,
+ "halves": {
+  "H1": {
+   "n": 2307,
+   "diff": 0.001733853489380155,
+   "ci_lo": -0.021512787169484158,
+   "ci_hi": 0.024969657563935842,
+   "ci_method": "iid",
+   "p": 0.8837491139869015,
+   "start": "2016-01-06 03:00:00+00:00",
+   "end": "2020-12-31 15:00:00+00:00"
+  },
+  "H2": {
+   "n": 2384,
+   "diff": -0.019211409395973322,
+   "ci_lo": -0.043372483221476466,
+   "ci_hi": 0.0034458892617449137,
+   "ci_method": "iid",
+   "p": 0.10772576541468495,
+   "start": "2021-01-04 07:00:00+00:00",
+   "end": "2026-07-22 13:00:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 1222,
+   "diff": 0.006382978723404209,
+   "ci_lo": -0.02945990180032732,
+   "ci_hi": 0.04009819967266781,
+   "ci_method": "iid",
+   "p": 0.7190632352179269,
+   "start": "2016-01-06 03:00:00+00:00",
+   "end": "2018-08-22 09:00:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 1212,
+   "diff": -0.013696369636963746,
+   "ci_lo": -0.04505775577557759,
+   "ci_hi": 0.01832095709570958,
+   "ci_method": "iid",
+   "p": 0.3969334478917651,
+   "start": "2018-08-22 19:00:00+00:00",
+   "end": "2021-04-12 06:00:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 1167,
+   "diff": -0.015766923736075578,
+   "ci_lo": -0.04987146529562991,
+   "ci_hi": 0.015599828620394114,
+   "ci_method": "iid",
+   "p": 0.34516727262552654,
+   "start": "2021-04-12 12:00:00+00:00",
+   "end": "2023-12-01 16:00:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 1090,
+   "diff": -0.013394495412843987,
+   "ci_lo": -0.050844036697247706,
+   "ci_hi": 0.020036697247706407,
+   "ci_method": "iid",
+   "p": 0.4588402972778099,
+   "start": "2023-12-05 09:00:00+00:00",
+   "end": "2026-07-22 13:00:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.02233620658168812,
+ "mde_threshold": 0.05,
+ "power_floor_n": 937,
+ "verdict": "NULL",
+ "verdict_detail": "CI contains 0; powered (MDE 0.0223 <= 0.0500)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 4784,
+  "min_slack_min": 0.0,
+  "passed": true,
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 334,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "failed_side",
+    "target",
+    "close"
+   ],
+   "ignored": [],
+   "lookback": "20D",
+   "recent": "1D",
+   "events_fp": "db68d8fe50c9227b",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "reps": 5,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "mde_threshold": null,
+  "cluster": null,
+  "outcome_horizon": "2 days 00:00:00",
+  "null_kind": "null_fn x5"
+ },
+ "notes": "Earlier framing (one high taking out another, range-bound on 1H).",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/structure_own_03b/broadening-formation.py",
+ "runtime_sec": 1.27,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:33:48+00:00",
+ "dropped": {
+  "nan_rows": 93
+ },
+ "null_kind": "null_fn x5",
+ "events_fp": "db68d8fe50c9227b",
+ "predictors_probed": true,
+ "ci_components": {
+  "phase3_iid": [
+   -0.02460551008992411,
+   0.006646913660682615
+  ],
+  "day_block": [
+   -0.024144838097200427,
+   0.005724296180863808
+  ],
+  "day_block_2d": [
+   -0.023693161352009825,
+   0.006943434632616689
+  ]
+ },
+ "dependence": {
+  "day_block_mean_days": 2,
+  "n_days": 2431,
+  "n_clusters": null,
+  "n_eff": 2431
+ },
+ "run_id": "5ac11e92e3384315862edb81d714259a",
+ "hyp_key": "f4191572883f8528"
+}

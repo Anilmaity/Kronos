@@ -1,0 +1,209 @@
+{
+ "concept_id": "deviation-close-continuation",
+ "reading": "a",
+ "testable": true,
+ "test_type": "rate",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "previous 4H candle's manipulation leg projected in its direction (deviation k at base + dir*k*leg)",
+   "trigger: 15m close inside the current 4H candle beyond the 2.5 deviation, 4th deviation not yet touched",
+   "outcome: M1 touch of the 4th deviation within 240 M1 bars of the decision",
+   "null: same distance from the entry price, same horizon, matched random moments"
+  ],
+  "params": {
+   "grid4h": "forex",
+   "leg": "low-before-high to high (bearish) / high-before-low to low (bullish) inside the previous 4H candle",
+   "min_leg_frac": 0.1,
+   "trigger_dev": 2.5,
+   "target_dev": 4.0,
+   "horizon_m1_bars": 240,
+   "null": "same signed distance, same bars, +/-30d, tod +/-30min",
+   "trigger_tf": "15min"
+  }
+ },
+ "params_source": {
+  "grid4h": "corpus: wWIHS_dxbEY 'forex ... 1am, 5am, 9am NY' 4H opens = forex grid; session_window_fit: forex grid for gold",
+  "leg": "corpus: wWIHS_dxbEY 'project standard deviations from the previous candle's manipulation leg'; method_spec \u00a7targets (AM Trades construction: the leg that took the high, anchored high to low)",
+  "min_leg_frac": "declared-before-run: a leg under 10% of the candle's range is no manipulation leg",
+  "trigger_dev": "corpus: wWIHS_dxbEY 'body close beyond the 2.5 deviation'",
+  "target_dev": "corpus: wWIHS_dxbEY 'continuation to the 4th deviation'",
+  "horizon_m1_bars": "declared-before-run: one 4H candle of trading time",
+  "null": "declared-before-run: geometry-matched touch null (README \u00a72 rate example) with time-of-day held (README trap 9)",
+  "trigger_tf": "corpus: wWIHS_dxbEY; the unit leaves the close's timeframe open (executing candle vs 4H) -> one reading each"
+ },
+ "n": 2823,
+ "span": {
+  "start": "2016-01-04 10:15:00+00:00",
+  "end": "2026-07-22 00:15:00+00:00",
+  "years": 10.543
+ },
+ "avg_R": null,
+ "avg_R_gross": null,
+ "win_rate": null,
+ "pf": null,
+ "observed_rate": 0.6262840949344669,
+ "null_rate": 0.5982996811902231,
+ "lift": 1.0467732386027235,
+ "control": {
+  "rate": 0.5982996811902231,
+  "reps": 5,
+  "kind": "null_fn x5"
+ },
+ "diff": 0.027984413744243763,
+ "ci_lo": 0.008428976266383306,
+ "ci_hi": 0.047396386822529224,
+ "ci_method": "phase3_iid",
+ "p": 0.004876311112347876,
+ "halves": {
+  "H1": {
+   "n": 1292,
+   "diff": 0.0365325077399381,
+   "ci_lo": 0.0044814241486068225,
+   "ci_hi": 0.0659481424148607,
+   "ci_method": "iid",
+   "p": 0.019817034059379766,
+   "start": "2016-01-04 10:15:00+00:00",
+   "end": "2020-12-31 01:15:00+00:00"
+  },
+  "H2": {
+   "n": 1531,
+   "diff": 0.020770738079686435,
+   "ci_lo": -0.008367080339647292,
+   "ci_hi": 0.05110385369039842,
+   "ci_method": "iid",
+   "p": 0.1709777831062125,
+   "start": "2021-01-03 23:15:00+00:00",
+   "end": "2026-07-22 00:15:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 664,
+   "diff": 0.035240963855421636,
+   "ci_lo": -0.013260542168674666,
+   "ci_hi": 0.07710843373493981,
+   "ci_method": "iid",
+   "p": 0.12635258973474664,
+   "start": "2016-01-04 10:15:00+00:00",
+   "end": "2018-08-20 13:45:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 700,
+   "diff": 0.02114285714285713,
+   "ci_lo": -0.023142857142857135,
+   "ci_hi": 0.06257857142857146,
+   "ci_method": "iid",
+   "p": 0.3336265228050481,
+   "start": "2018-08-23 02:15:00+00:00",
+   "end": "2021-04-12 02:00:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 716,
+   "diff": 0.038268156424581035,
+   "ci_lo": -0.0008379888268155195,
+   "ci_hi": 0.0779539106145252,
+   "ci_method": "iid",
+   "p": 0.056928961757996124,
+   "start": "2021-04-12 18:00:00+00:00",
+   "end": "2023-11-29 18:30:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 743,
+   "diff": 0.018034993270524935,
+   "ci_lo": -0.01992597577388955,
+   "ci_hi": 0.05518169582772536,
+   "ci_method": "iid",
+   "p": 0.346571443899629,
+   "start": "2023-12-04 14:45:00+00:00",
+   "end": "2026-07-22 00:15:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.027850132171545004,
+ "mde_threshold": 0.05,
+ "power_floor_n": 876,
+ "verdict": "EDGE",
+ "verdict_detail": "CI excludes 0 in claimed direction; halves agree (H1 +0.0365, H2 +0.0208); powered",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 2823,
+  "min_slack_min": 0.0,
+  "passed": true,
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 226,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "trigger_px",
+    "target_px"
+   ],
+   "ignored": [],
+   "lookback": "10D",
+   "recent": "1D",
+   "events_fp": "4afcbe56cbb010ed",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "reps": 5,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "mde_threshold": null,
+  "cluster": null,
+  "outcome_horizon": "1 days 00:00:00",
+  "null_kind": "null_fn x5"
+ },
+ "notes": "Re-written once (deterministic re-run, identical result) only to attach this note. Post-verdict diagnostic, not a test: at the SAME decision moments, a target at the same distance in the OPPOSITE direction is touched within 240 bars 62.5% of the time vs 62.6% for the -4 target (n=2,823). The +2.8pp over the random-moment null is therefore post-displacement VOLATILITY (any level that far is reached more often after a strong 15m close), not directional continuation to the 4th deviation. Treat this EDGE as a null-design artefact.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/model_guest_02a/deviation-close-continuation.py",
+ "runtime_sec": 0.7,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:11:15+00:00",
+ "dropped": {
+  "nan_rows": 0
+ },
+ "null_kind": "null_fn x5",
+ "events_fp": "4afcbe56cbb010ed",
+ "predictors_probed": true,
+ "ci_components": {
+  "phase3_iid": [
+   0.008428976266383306,
+   0.047396386822529224
+  ],
+  "day_block": [
+   0.009705546592272902,
+   0.04517439246400919
+  ]
+ },
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 1867,
+  "n_clusters": null,
+  "n_eff": 1867
+ },
+ "run_id": "b34de68631734573866c800c90b953eb",
+ "hyp_key": "98465d5270c53fb5"
+}

@@ -1,0 +1,254 @@
+{
+ "concept_id": "consolidation-external-liquidity-only",
+ "reading": null,
+ "testable": true,
+ "test_type": "trade",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "daily candles on the 18:00 NY roll; the current day qualifies when every day between a mother candle (2-5 days back; furthest qualifying) and today is inside the mother (high <= mother high, low >= mother low); mother must be a full session",
+   "external high/low = the mother's high/low; internal structure ignored",
+   "on the current day, the first 1H bar to trade beyond an external level: an hourly close beyond = range broken on that side, no trade; a close back inside = manipulation, fade at that close (next M1 open)",
+   "stop = that bar's extreme (the run); target = the opposing external level; time exit 24h of trading time (1,440 M1 bars)"
+  ],
+  "params": {
+   "tf": "1h",
+   "htf": "1D",
+   "max_mother_back": 5,
+   "min_m1": 600,
+   "max_hold": "24h",
+   "hold_basis": "bars",
+   "day_open_hour": 18
+  }
+ },
+ "params_source": {
+  "tf": "corpus: QmGJFxfSHxM concept timeframes ltf 1H (hourly close as the run/return test)",
+  "htf": "corpus: QmGJFxfSHxM 'the week has remained internal to a prior daily range'",
+  "max_mother_back": "declared-before-run: a mother up to 4 inside days back (one week)",
+  "min_m1": "declared-before-run: stub sessions excluded (README trap 6)",
+  "max_hold": "declared-before-run: one trading day for a range-to-range objective",
+  "hold_basis": "declared-before-run: trading-time hold (README trap 7) - a 24h hold straddles halts and weekends differently for real and control entries",
+  "day_open_hour": "session_window_fit: 18:00 NY daily roll"
+ },
+ "n": 146,
+ "span": {
+  "start": "2016-01-06 09:00:00+00:00",
+  "end": "2026-07-16 14:00:00+00:00",
+  "years": 10.524
+ },
+ "avg_R": 0.32750092369727785,
+ "avg_R_gross": 0.367500923697278,
+ "win_rate": 0.2054794520547945,
+ "pf": 1.4078751640147391,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "n": 730,
+  "avg_R": -0.2260747295794232,
+  "win_rate": 0.2054794520547945,
+  "pf": 0.7220492944771609,
+  "sd_R": 2.0653092039284706,
+  "exit_mix": {
+   "stop": 0.7547945205479452,
+   "target": 0.07123287671232877,
+   "time": 0.17397260273972603
+  },
+  "avg_R_gross": -0.18607472957942317,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": 0.5535756532767011,
+ "ci_lo": -0.21424749889297887,
+ "ci_hi": 1.67841476935269,
+ "ci_method": "day_block",
+ "p": 0.2515797159452286,
+ "halves": {
+  "H1": {
+   "n": 71,
+   "diff": 1.4467839520696602,
+   "ci_lo": -0.06789800835556575,
+   "ci_hi": 3.6573381336558284,
+   "ci_method": "iid",
+   "p": 0.1279095959668514,
+   "start": "2016-01-06 09:00:00+00:00",
+   "end": "2020-12-21 11:00:00+00:00"
+  },
+  "H2": {
+   "n": 75,
+   "diff": -0.29199486958063353,
+   "ci_lo": -0.6429319641365586,
+   "ci_hi": 0.0895154756220874,
+   "ci_method": "iid",
+   "p": 0.11812212993518252,
+   "start": "2021-01-14 03:00:00+00:00",
+   "end": "2026-07-16 14:00:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 37,
+   "diff": 0.9861244589198548,
+   "ci_lo": -0.21457586346370236,
+   "ci_hi": 2.7714057565238686,
+   "ci_method": "iid",
+   "p": 0.1954715370463694,
+   "start": "2016-01-06 09:00:00+00:00",
+   "end": "2018-08-15 01:00:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 38,
+   "diff": 1.7448748474270361,
+   "ci_lo": -0.4589462050363222,
+   "ci_hi": 5.3213334194937705,
+   "ci_method": "iid",
+   "p": 0.23669171960644914,
+   "start": "2018-09-26 19:00:00+00:00",
+   "end": "2021-04-08 06:00:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 35,
+   "diff": -0.10855722392359313,
+   "ci_lo": -0.5743704412360766,
+   "ci_hi": 0.35662781157668966,
+   "ci_method": "iid",
+   "p": 0.6476167718799498,
+   "start": "2021-06-03 08:00:00+00:00",
+   "end": "2023-10-05 13:00:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 36,
+   "diff": -0.5047305824038297,
+   "ci_lo": -1.071441774106702,
+   "ci_hi": 0.10553668310876935,
+   "ci_method": "iid",
+   "p": 0.09276179964641387,
+   "start": "2023-12-19 16:00:00+00:00",
+   "end": "2026-07-16 14:00:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 1.3526917384153594,
+ "mde_threshold": 0.1,
+ "power_floor_n": 26715,
+ "verdict": "UNDERPOWERED",
+ "verdict_detail": "CI contains 0; MDE 1.3527 vs threshold 0.1000, effective n 139 (power floor n=26715, have 146)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 146,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 0.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 41,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "target_px",
+    "ext_hi",
+    "ext_lo"
+   ],
+   "ignored": [],
+   "lookback": "20D",
+   "recent": "1D",
+   "events_fp": "442d79ffd9561b49",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "24h",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": null,
+  "entry_mode": "next_open",
+  "hold_basis": "bars",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "'Daily is consolidating' is read by eye in the corpus; the inside-day chain is the declared mechanical proxy ('the week has remained internal to a prior daily range'). 'Decisively beyond' = any 1H close beyond the level. The news trigger, the 'draw is lower' condition and the worked example's SMT + LTF CISD entry are not modelled: both external levels are faded at the 1H close back inside. Stop not stated - the run extreme is used.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/entry_guest_01b/consolidation-external-liquidity-only.py",
+ "runtime_sec": 0.49,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:18:09+00:00",
+ "n_events_in": 147,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 0,
+  "target_not_beyond_entry": 1,
+  "no_bars_in_hold": 0
+ },
+ "events_fp": "442d79ffd9561b49",
+ "sd_R": 5.8923154855495365,
+ "exit_mix": {
+  "stop": 0.7671232876712328,
+  "target": 0.11643835616438356,
+  "time": 0.11643835616438356
+ },
+ "trades_per_year": 13.872658688865766,
+ "ci_components": {
+  "phase3_iid": [
+   -0.22432125093375704,
+   1.6121476841660403
+  ],
+  "day_block": [
+   -0.21424749889297887,
+   1.67841476935269
+  ]
+ },
+ "diff_win": 0.0,
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 139,
+  "n_clusters": null,
+  "n_eff": 139
+ },
+ "ties": {
+  "real_ambiguous": 0.0,
+  "control_ambiguous": 0.0,
+  "real_gap_stop": 0.00684931506849315,
+  "control_gap_stop": 0.02054794520547945,
+  "verdict_stop_first": "UNDERPOWERED"
+ },
+ "ctrl_overlap": 0.0027397260273972603,
+ "exposure_bars": {
+  "real_mean": 1440.0,
+  "control_mean": 1439.7589041095891,
+  "hold_basis": "bars"
+ },
+ "run_id": "0e7360472c97473e9164f4230022752f",
+ "hyp_key": "8906b166cde0992a"
+}

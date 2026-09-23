@@ -1,0 +1,273 @@
+{
+ "concept_id": "less-trades-more-capital",
+ "reading": null,
+ "testable": true,
+ "test_type": "gate",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "baseline: 1h bare CISD (series_open, 2/2 swings, max_wait 3), decide at the confirming close, enter next M1 open, stop at protected swing, 2R, 10h",
+   "week = trading week by session date (Mon-Fri, Sunday-evening open counts as Monday)",
+   "in decision order per week: taken if < 3 taken so far and < 2 of the taken are known winners (own M1 resolution: 2R target before stop within 10h, target-hit close <= this decision)",
+   "gate taken=True vs the rest (4th+ signals / after two wins)"
+  ],
+  "params": {
+   "cap": 3,
+   "win_stop": 2,
+   "tf": "1h",
+   "max_wait": 3,
+   "rr": 2.0,
+   "max_hold": "10h"
+  }
+ },
+ "params_source": {
+  "cap": "corpus: G44VpidBD_U '0 to 3 trades a week'",
+  "win_stop": "corpus: t_talks_02 / G44VpidBD_U week ended after two winners",
+  "tf": "phase3: rung-0 1h stack",
+  "max_wait": "phase3: locked CISD config",
+  "rr": "phase3: locked 2R target",
+  "max_hold": "phase3: 10 entry-TF bars"
+ },
+ "n": 1637,
+ "span": {
+  "start": "2016-01-04 15:00:00+00:00",
+  "end": "2026-07-22 19:00:00+00:00",
+  "years": 10.546
+ },
+ "avg_R": -0.03828649022057244,
+ "avg_R_gross": 0.0017135097794275674,
+ "win_rate": 0.4111178985949908,
+ "pf": 0.915073539824524,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "avg_R_gated": -0.019331170137199746,
+  "avg_R_complement": -0.0326736618510219,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": -0.037843315319187526,
+ "ci_lo": -0.10294204555991211,
+ "ci_hi": 0.0309388779838366,
+ "ci_method": "phase3_block",
+ "p": 0.2678521126638214,
+ "halves": {
+  "H1": {
+   "n": 3803,
+   "diff": -0.005887064115125486,
+   "ci_lo": -0.09111482340140242,
+   "ci_hi": 0.08941402394775509,
+   "ci_method": "block",
+   "p": 0.8982841004701385,
+   "start": "2016-01-04 15:00:00+00:00",
+   "end": "2020-12-31 05:00:00+00:00",
+   "n_gated": 775
+  },
+  "H2": {
+   "n": 4192,
+   "diff": -0.06660054147739193,
+   "ci_lo": -0.1628962526133531,
+   "ci_hi": 0.021937854860369126,
+   "ci_method": "block",
+   "p": 0.15781687859629462,
+   "start": "2021-01-04 00:00:00+00:00",
+   "end": "2026-07-22 19:00:00+00:00",
+   "n_gated": 862
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 1976,
+   "diff": -0.010737561097513282,
+   "ci_lo": -0.12639646604119603,
+   "ci_hi": 0.11669916743909767,
+   "ci_method": "block",
+   "p": 0.8625385116972136,
+   "start": "2016-01-04 15:00:00+00:00",
+   "end": "2018-08-22 11:00:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 2032,
+   "diff": -0.010933727375243257,
+   "ci_lo": -0.13625412952420649,
+   "ci_hi": 0.11593423835309839,
+   "ci_method": "block",
+   "p": 0.8650494245342122,
+   "start": "2018-08-22 16:00:00+00:00",
+   "end": "2021-04-12 05:00:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 2067,
+   "diff": -0.17982828309825166,
+   "ci_lo": -0.29702843654921035,
+   "ci_hi": -0.054128557491250666,
+   "ci_method": "block",
+   "p": 0.003706985333278491,
+   "start": "2021-04-12 10:00:00+00:00",
+   "end": "2023-12-01 16:00:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 1920,
+   "diff": 0.04903040593608936,
+   "ci_lo": -0.06572502452473451,
+   "ci_hi": 0.1827788195184532,
+   "ci_method": "iid",
+   "p": 0.43927905213466517,
+   "start": "2023-12-04 09:00:00+00:00",
+   "end": "2026-07-22 19:00:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.0956851215599657,
+ "mde_threshold": 0.1,
+ "power_floor_n": 1499,
+ "verdict": "NULL",
+ "verdict_detail": "CI contains 0; powered (MDE 0.0957 <= 0.1000)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 7995,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "gate_mask_checked": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 300.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 588,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "rr",
+    "taken"
+   ],
+   "ignored": [],
+   "lookback": "30D",
+   "recent": "1D",
+   "events_fp": "68099859c6c362bb",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "10h",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": null,
+  "entry_mode": "next_open",
+  "hold_basis": "clock",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "The concept's mechanism is discretionary A+ selection, which a mechanical book cannot reproduce; what is testable is its measurable (trades 1-3 of a week vs 4+). The speakers frame the number as personal, not an edge claim.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/risk_guest_01b/less-trades-more-capital.py",
+ "runtime_sec": 1.27,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:23:45+00:00",
+ "n_events_in": 8034,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 1,
+  "target_not_beyond_entry": 0,
+  "no_bars_in_hold": 38
+ },
+ "n_complement": 6358,
+ "gate_firing_rate": 0.20475297060662914,
+ "events_fp": "68099859c6c362bb",
+ "mask_fp": "9e1abb6fb66c622a",
+ "mask_col": "taken",
+ "exit_mix": {
+  "stop": 0.35613927916921195,
+  "target": 0.12828344532681735,
+  "time": 0.5155772755039707
+ },
+ "gated_vs_own_control": {
+  "diff": -0.018955320083372695,
+  "ci_lo": -0.07919591378572009,
+  "ci_hi": 0.043026854960977294,
+  "p": 0.5432306338323591
+ },
+ "complement": {
+  "n": 6358,
+  "avg_R": -0.013785666615207083,
+  "win_rate": 0.42450456118276186,
+  "pf": 0.9682432131306923,
+  "sd_R": 1.0336199135260127,
+  "exit_mix": {
+   "stop": 0.34523435042466183,
+   "target": 0.13730732934885184,
+   "time": 0.5174583202264863
+  },
+  "vs_own_control": {
+   "diff": 0.018887995235814817,
+   "ci_lo": -0.009552727267761317,
+   "ci_hi": 0.048124534658415825,
+   "p": 0.19925131245065236
+  }
+ },
+ "ci_components": {
+  "phase3_block": [
+   -0.10294204555991211,
+   0.0309388779838366
+  ],
+  "day_block": [
+   -0.10443683474615086,
+   0.02590531245098049
+  ]
+ },
+ "diff_meaning": "mean(R-ctrl | gated) - mean(R-ctrl | complement)",
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_eff_gated": 739,
+  "n_eff_complement": 2277,
+  "n_eff": 739
+ },
+ "ties": {
+  "real_ambiguous": 0.0002501563477173233,
+  "control_ambiguous": 2.5015634771732333e-05,
+  "real_gap_stop": 0.00375234521575985,
+  "control_gap_stop": 0.004352720450281426,
+  "gated_excess": 0.0,
+  "complement_excess": 0.00028310789556464295,
+  "verdict_stop_first": "NULL"
+ },
+ "ctrl_overlap": 0.06574108818011257,
+ "exposure_bars": {
+  "real_mean": 549.6661663539712,
+  "control_mean": 548.2028267667292,
+  "hold_basis": "clock"
+ },
+ "run_id": "21967ce782e446d6b72cfb46add245ef",
+ "hyp_key": "8e67b121f1629180"
+}

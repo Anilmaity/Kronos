@@ -1,0 +1,255 @@
+{
+ "concept_id": "seek-and-destroy-profile",
+ "reading": "b",
+ "testable": true,
+ "test_type": "trade",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "only on days flagged Seek & Destroy by recognition A",
+   "NY 08:30-12:00, 15m: first bar per side that trades beyond London's high (low) and closes back inside -> short (long) at that close, if the close is on the far side of London's EQ",
+   "stop at the highest high (lowest low) since 08:30; target London range EQ; exit after 150 min"
+  ],
+  "params": {
+   "asia_window": "20:00-00:00",
+   "london_window": "02:00-05:00",
+   "ny_window": "08:30-12:00",
+   "recognition": "London high>Asia high & London low<Asia low & London close inside Asia range",
+   "min_cov": 0.5,
+   "tf": "15min",
+   "max_hold": "150min",
+   "target": "London range EQ",
+   "entry": "outside-in"
+  }
+ },
+ "params_source": {
+  "asia_window": "session_window_fit: Asia 20:00-00:00 (killzones.yaml, SESSION_WINDOWS)",
+  "london_window": "method_spec: \u00a72.5 daily-profile session windows, London 02:00-05:00",
+  "ny_window": "method_spec: \u00a72.5 New York a.m. 08:30-12:00",
+  "recognition": "corpus: 4WCiIyCiBrQ 'London will take both sides of the Asia range' + Tjk9bXERZy0 'if London session took Asia high and low then I'm anticipating New York'; 'failed to displace' = London's close back inside Asia (threshold_fits: displacement = a close beyond the level)",
+  "min_cov": "declared-before-run: both windows need >= 50% of nominal minutes (trap 6)",
+  "tf": "corpus: PlZD45uLPjE \u2014 ltf 15m/5m/1m; phase3 15m primary entry TF",
+  "max_hold": "phase3: 10 entry-TF bars (\u00a71.13)",
+  "target": "corpus: PlZD45uLPjE target ladder \u2014 'equilibrium (0.5) of the range, as first target'; method_spec \u00a72.5 seek-destroy-target-ladder",
+  "entry": "corpus: PlZD45uLPjE 'the first thing I do is identify deviations from the range' \u2014 outside-in only (seek-destroy-outside-in-entry)"
+ },
+ "n": 118,
+ "span": {
+  "start": "2016-03-14 12:45:00+00:00",
+  "end": "2025-10-10 13:45:00+00:00",
+  "years": 9.574
+ },
+ "avg_R": -0.15069775612460257,
+ "avg_R_gross": -0.11069775612460256,
+ "win_rate": 0.4661016949152542,
+ "pf": 0.7046771907090734,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "n": 590,
+  "avg_R": -0.06265235726292348,
+  "win_rate": 0.5101694915254237,
+  "pf": 0.8416172968220603,
+  "sd_R": 0.9754689911748844,
+  "exit_mix": {
+   "stop": 0.3288135593220339,
+   "target": 0.39661016949152544,
+   "time": 0.2745762711864407
+  },
+  "avg_R_gross": -0.022652357262923473,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": -0.08804539886167909,
+ "ci_lo": -0.3108430488471766,
+ "ci_hi": 0.1420269483983021,
+ "ci_method": "day_block",
+ "p": 0.44600111437096956,
+ "halves": {
+  "H1": {
+   "n": 58,
+   "diff": -0.09351843033461402,
+   "ci_lo": -0.417938300454457,
+   "ci_hi": 0.28672867850505274,
+   "ci_method": "iid",
+   "p": 0.6029066296640702,
+   "start": "2016-03-14 12:45:00+00:00",
+   "end": "2020-11-17 14:00:00+00:00"
+  },
+  "H2": {
+   "n": 60,
+   "diff": -0.08275480177117535,
+   "ci_lo": -0.32231839162227605,
+   "ci_hi": 0.1799620867616268,
+   "ci_method": "iid",
+   "p": 0.5183829280102537,
+   "start": "2021-01-21 14:30:00+00:00",
+   "end": "2025-10-10 13:45:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 26,
+   "diff": 0.12227659203474292,
+   "ci_lo": -0.4038283164203254,
+   "ci_hi": 0.7788967990852952,
+   "ci_method": "iid",
+   "p": 0.6852837603922547,
+   "start": "2016-03-14 12:45:00+00:00",
+   "end": "2018-08-09 12:45:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 35,
+   "diff": -0.1695583063266891,
+   "ci_lo": -0.5680849014519972,
+   "ci_hi": 0.2236444539380238,
+   "ci_method": "iid",
+   "p": 0.40118910181476014,
+   "start": "2018-08-29 13:15:00+00:00",
+   "end": "2021-03-16 14:45:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 42,
+   "diff": -0.14696002243501743,
+   "ci_lo": -0.39589207984124,
+   "ci_hi": 0.09930481820676244,
+   "ci_method": "iid",
+   "p": 0.2446994881926405,
+   "start": "2021-07-21 14:00:00+00:00",
+   "end": "2023-09-20 13:00:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 15,
+   "diff": -0.09744578632510661,
+   "ci_lo": -0.7188952933267864,
+   "ci_hi": 0.7112758139684562,
+   "ci_method": "iid",
+   "p": 0.7894019851064293,
+   "start": "2023-12-14 13:45:00+00:00",
+   "end": "2025-10-10 13:45:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.32366762635256935,
+ "mde_threshold": 0.1,
+ "power_floor_n": 1237,
+ "verdict": "UNDERPOWERED",
+ "verdict_detail": "CI contains 0; MDE 0.3237 vs threshold 0.1000, effective n 98 (power floor n=1237, have 118)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 118,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 0.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 26,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "target_px"
+   ],
+   "ignored": [],
+   "lookback": "10D",
+   "recent": "1D",
+   "events_fp": "9d03eefe3e73e65c",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "150min",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": null,
+  "entry_mode": "next_open",
+  "hold_basis": "clock",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/model_own_03a/seek-and-destroy-profile.py",
+ "runtime_sec": 0.11,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:18:29+00:00",
+ "n_events_in": 118,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 0,
+  "target_not_beyond_entry": 0,
+  "no_bars_in_hold": 0
+ },
+ "events_fp": "9d03eefe3e73e65c",
+ "sd_R": 1.1240862783283,
+ "exit_mix": {
+  "stop": 0.4661016949152542,
+  "target": 0.4661016949152542,
+  "time": 0.06779661016949153
+ },
+ "trades_per_year": 12.32470689162139,
+ "ci_components": {
+  "phase3_iid": [
+   -0.2851181843216896,
+   0.13426955794659012
+  ],
+  "day_block": [
+   -0.3108430488471766,
+   0.1420269483983021
+  ]
+ },
+ "diff_win": -0.04406779661016946,
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 98,
+  "n_clusters": null,
+  "n_eff": 98
+ },
+ "ties": {
+  "real_ambiguous": 0.0,
+  "control_ambiguous": 0.0,
+  "real_gap_stop": 0.01694915254237288,
+  "control_gap_stop": 0.011864406779661017,
+  "verdict_stop_first": "UNDERPOWERED"
+ },
+ "ctrl_overlap": 0.0,
+ "exposure_bars": {
+  "real_mean": 149.82203389830508,
+  "control_mean": 141.50677966101694,
+  "hold_basis": "clock"
+ },
+ "run_id": "462488a816e54c2ba29e0d437bd1ba8d",
+ "hyp_key": "ef1662a1291ec3d9"
+}

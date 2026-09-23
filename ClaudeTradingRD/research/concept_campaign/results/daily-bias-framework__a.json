@@ -1,0 +1,251 @@
+{
+ "concept_id": "daily-bias-framework",
+ "reading": "a",
+ "testable": true,
+ "test_type": "trade",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "candles: 1D (18:00 NY roll); bias-source candle skipped if it has fewer than the stub-filter M1 bars",
+   "previous-candle engine (detectors.bias.previous_candle_state): took one side and closed outside -> same direction; took one side and closed back inside -> opposite; both sides -> no bias; inside bar -> last resolved side (trend); 3 inside bars -> none",
+   "decide at the biased candle's close_time; enter next M1 open in the bias direction",
+   "target = that candle's bias-side extreme (high if bullish), stop = its opposite extreme",
+   "time exit after 1380min of trading bars (one candle of the same timeframe)"
+  ],
+  "params": {
+   "timeframe": "1D (18:00 NY roll)",
+   "stub_filter_min_m1": 600,
+   "range_lookback": 3,
+   "max_hold": "1380min",
+   "hold_basis": "bars",
+   "grid4h": "forex"
+  }
+ },
+ "params_source": {
+  "timeframe": "corpus: daily-bias-framework definition 'read off a single daily closure' (a) / 'He runs this candle-by-candle on the 4-hour' (b)",
+  "stub_filter_min_m1": "declared-before-run: README trap 6 stub sessions; example_rate uses n_m1>600 (1D); 60 M1 for 4H",
+  "range_lookback": "method_spec: \u00a72.3 range-bound state, detectors.bias default 3",
+  "max_hold": "declared-before-run: the bias is for the NEXT candle only (one candle of trading bars)",
+  "hold_basis": "declared-before-run: README trap 7 \u2014 daily/4H exits cross the 17:00 halt and weekends",
+  "grid4h": "session_window_fit: forex grid for gold (carried as knob per phase3)"
+ },
+ "n": 2331,
+ "span": {
+  "start": "2016-01-06 23:00:00+00:00",
+  "end": "2026-07-22 22:00:00+00:00",
+  "years": 10.538
+ },
+ "avg_R": -0.03253764805549005,
+ "avg_R_gross": 0.007462351944509956,
+ "win_rate": 0.5967395967395968,
+ "pf": 0.8968200859792295,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "n": 11655,
+  "avg_R": -0.059563462552458195,
+  "win_rate": 0.595023595023595,
+  "pf": 0.8171624085300185,
+  "sd_R": 0.8849986380407738,
+  "exit_mix": {
+   "stop": 0.27927927927927926,
+   "target": 0.5973401973401974,
+   "time": 0.12338052338052338
+  },
+  "avg_R_gross": -0.019563462552458173,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": 0.027025814496968142,
+ "ci_lo": -0.013863836576427604,
+ "ci_hi": 0.07442134315864123,
+ "ci_method": "day_block",
+ "p": 0.23015240026213488,
+ "halves": {
+  "H1": {
+   "n": 1117,
+   "diff": 0.0026858871208433333,
+   "ci_lo": -0.052470448894448074,
+   "ci_hi": 0.05626646411051045,
+   "ci_method": "iid",
+   "p": 0.9228651325146653,
+   "start": "2016-01-06 23:00:00+00:00",
+   "end": "2020-12-30 23:00:00+00:00"
+  },
+  "H2": {
+   "n": 1214,
+   "diff": 0.04942095360663158,
+   "ci_lo": -0.011773872611075306,
+   "ci_hi": 0.12185611634391687,
+   "ci_method": "iid",
+   "p": 0.14713554680351307,
+   "start": "2021-01-04 23:00:00+00:00",
+   "end": "2026-07-22 22:00:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 582,
+   "diff": -0.03928051982644288,
+   "ci_lo": -0.1105225953700141,
+   "ci_hi": 0.04002850762535323,
+   "ci_method": "iid",
+   "p": 0.3064239627673002,
+   "start": "2016-01-06 23:00:00+00:00",
+   "end": "2018-08-21 22:00:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 592,
+   "diff": 0.04399304673347513,
+   "ci_lo": -0.03496207589832903,
+   "ci_hi": 0.12487183310267731,
+   "ci_method": "iid",
+   "p": 0.2806190002139936,
+   "start": "2018-08-22 22:00:00+00:00",
+   "end": "2021-04-09 22:00:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 589,
+   "diff": 0.03852515279051836,
+   "ci_lo": -0.03595628756234101,
+   "ci_hi": 0.12351015093754689,
+   "ci_method": "iid",
+   "p": 0.3436352388148125,
+   "start": "2021-04-12 22:00:00+00:00",
+   "end": "2023-12-01 23:00:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 568,
+   "diff": 0.06535781244998215,
+   "ci_lo": -0.04640581324464287,
+   "ci_hi": 0.18662909214130605,
+   "ci_method": "iid",
+   "p": 0.2715948579972825,
+   "start": "2023-12-05 23:00:00+00:00",
+   "end": "2026-07-22 22:00:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.0630976985465225,
+ "mde_threshold": 0.1,
+ "power_floor_n": 929,
+ "verdict": "NULL",
+ "verdict_detail": "CI contains 0; powered (MDE 0.0631 <= 0.1000)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 2331,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "entry_delay_min": {
+   "median": 3.0,
+   "max": 4325.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 156,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "target_px"
+   ],
+   "ignored": [],
+   "lookback": "20D",
+   "recent": "1D",
+   "events_fp": "df103dd0bead2b48",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "1380min",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": null,
+  "entry_mode": "next_open",
+  "hold_basis": "bars",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "Stop/target are the biased candle's own extremes; the matched control shares direction and both distances, so geometry cancels. RE-RUN NOTE (reading a): the first locked run used ctrl_tod_tol_min=30; because the book fires at the same 18:00 NY reopen almost every day, 45% of control draws were the concept's own trades (ctrl_overlap), making the verdict UNDERPOWERED by construction (diff -0.018 [-0.074,+0.025]). Treated as an operationalisation bug (a time-of-day match on a once-per-day fixed-clock event), fixed by dropping the time-of-day match, re-run once. Both runs are in the ledger.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/model_own_01a/daily-bias-framework.py",
+ "runtime_sec": 1.8,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:11:39+00:00",
+ "n_events_in": 2418,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 13,
+  "target_not_beyond_entry": 74,
+  "no_bars_in_hold": 0
+ },
+ "events_fp": "df103dd0bead2b48",
+ "sd_R": 1.0053835554020984,
+ "exit_mix": {
+  "stop": 0.265980265980266,
+  "target": 0.5911625911625912,
+  "time": 0.14285714285714285
+ },
+ "trades_per_year": 221.19972720187062,
+ "ci_components": {
+  "phase3_block": [
+   -0.013948081565048584,
+   0.07253887198740354
+  ],
+  "day_block": [
+   -0.013863836576427604,
+   0.07442134315864123
+  ]
+ },
+ "diff_win": 0.001716001716001725,
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 2331,
+  "n_clusters": null,
+  "n_eff": 2331
+ },
+ "ties": {
+  "real_ambiguous": 0.0,
+  "control_ambiguous": 0.0003432003432003432,
+  "real_gap_stop": 0.002574002574002574,
+  "control_gap_stop": 0.006091806091806092,
+  "verdict_stop_first": "NULL"
+ },
+ "ctrl_overlap": 0.011411411411411412,
+ "exposure_bars": {
+  "real_mean": 1379.5641355641355,
+  "control_mean": 1379.703474903475,
+  "hold_basis": "bars"
+ },
+ "run_id": "6bd8f1e7d5f945b484d81f294b2612a6",
+ "hyp_key": "370ee541f2f1926d"
+}

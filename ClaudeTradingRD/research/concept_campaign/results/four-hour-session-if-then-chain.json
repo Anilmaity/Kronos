@@ -1,0 +1,254 @@
+{
+ "concept_id": "four-hour-session-if-then-chain",
+ "reading": null,
+ "testable": true,
+ "test_type": "trade",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "4H bars on the futures grid (18/22/02/06/10/14 NY); candles with <60 M1 or not contiguous with the previous 4H candle skipped",
+   "manipulation: the 02:00 / 06:00 / 10:00 NY candle sweeps exactly one side of the previous 4H candle and closes back on the inside of the swept level",
+   "decide at its close; trade away from the sweep (swept low -> long) into the next chain candle (06:00 / 10:00 / 14:00)",
+   "stop = the swept extreme of the manipulation candle; target = previous candle's opposite extreme, required beyond the close (open draw on liquidity)",
+   "max hold 4h = the continuation candle"
+  ],
+  "params": {
+   "grid4h": "futures",
+   "chain_pairs": "02->06, 06->10, 10->14",
+   "manipulation": "one-sided sweep of prior 4H candle, close back inside",
+   "stop": "swept extreme",
+   "target": "prior 4H opposite extreme",
+   "max_hold": "4h",
+   "min_bar_m1": 60
+  }
+ },
+ "params_source": {
+  "grid4h": "corpus: J_EeS2_2CAM - the stated 2am/6am/10am/14:00 candles are the futures grid (README trap 8: grid recorded)",
+  "chain_pairs": "corpus: J_EeS2_2CAM yaml definition (18:00-22:00 link garbled in transcript -> omitted)",
+  "manipulation": "corpus: yaml detection rule 'manipulated (swept a prior high or low)'; close-back-inside declared-before-run to separate manipulation from expansion",
+  "stop": "declared-before-run: no stop stated; the manipulation extreme is the level traded away from",
+  "target": "corpus: yaml 'continuation requires a draw on liquidity still to be open' - nearest open draw = prior candle's opposite extreme",
+  "max_hold": "corpus: the continuation is the next 4H candle",
+  "min_bar_m1": "declared-before-run: stub-bar guard"
+ },
+ "n": 2360,
+ "span": {
+  "start": "2016-01-04 19:00:00+00:00",
+  "end": "2026-07-22 18:00:00+00:00",
+  "years": 10.543
+ },
+ "avg_R": -0.033888944567336536,
+ "avg_R_gross": 0.006111055432663486,
+ "win_rate": 0.47711864406779664,
+ "pf": 0.9110323611046155,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "n": 11800,
+  "avg_R": -0.04343598904993942,
+  "win_rate": 0.4640677966101695,
+  "pf": 0.8920122432219101,
+  "sd_R": 1.0405877791655893,
+  "exit_mix": {
+   "stop": 0.31805084745762713,
+   "target": 0.2519491525423729,
+   "time": 0.43
+  },
+  "avg_R_gross": -0.0034359890499393963,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": 0.009547044482602886,
+ "ci_lo": -0.03347887392130239,
+ "ci_hi": 0.051460548947070466,
+ "ci_method": "day_block",
+ "p": 0.6595075704298137,
+ "halves": {
+  "H1": {
+   "n": 1118,
+   "diff": 0.0493350825316677,
+   "ci_lo": -0.013701264600040855,
+   "ci_hi": 0.11044628663154409,
+   "ci_method": "block",
+   "p": 0.1192941971574048,
+   "start": "2016-01-04 19:00:00+00:00",
+   "end": "2020-12-31 15:00:00+00:00"
+  },
+  "H2": {
+   "n": 1242,
+   "diff": -0.026268596853028736,
+   "ci_lo": -0.0864736784999259,
+   "ci_hi": 0.03410903068808035,
+   "ci_method": "iid",
+   "p": 0.39313543349089036,
+   "start": "2021-01-05 15:00:00+00:00",
+   "end": "2026-07-22 18:00:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 581,
+   "diff": 0.10987267517130708,
+   "ci_lo": 0.02108456085879951,
+   "ci_hi": 0.20779453227568445,
+   "ci_method": "block",
+   "p": 0.021068836003553932,
+   "start": "2016-01-04 19:00:00+00:00",
+   "end": "2018-08-21 10:00:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 598,
+   "diff": 0.00019168691090235696,
+   "ci_lo": -0.0794390906867285,
+   "ci_hi": 0.08941704018495958,
+   "ci_method": "iid",
+   "p": 0.9964494768947295,
+   "start": "2018-08-22 14:00:00+00:00",
+   "end": "2021-04-08 18:00:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 576,
+   "diff": -0.012145961573530636,
+   "ci_lo": -0.09378389733125798,
+   "ci_hi": 0.06967039425721233,
+   "ci_method": "iid",
+   "p": 0.770835643930692,
+   "start": "2021-04-13 10:00:00+00:00",
+   "end": "2023-12-01 15:00:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 605,
+   "diff": -0.056898436697442295,
+   "ci_lo": -0.14325409647297915,
+   "ci_hi": 0.027217051593804362,
+   "ci_method": "iid",
+   "p": 0.19075094697013173,
+   "start": "2023-12-05 19:00:00+00:00",
+   "end": "2026-07-22 18:00:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.060706475480338,
+ "mde_threshold": 0.1,
+ "power_floor_n": 870,
+ "verdict": "NULL",
+ "verdict_detail": "CI contains 0; powered (MDE 0.0607 <= 0.1000)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 2360,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 2.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 174,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "target_px",
+    "chain_hour"
+   ],
+   "ignored": [],
+   "lookback": "20D",
+   "recent": "1D",
+   "events_fp": "827f50efbfe113d8",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "4h",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": null,
+  "entry_mode": "next_open",
+  "hold_basis": "clock",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "The 'large opposing wick in the candle in play -> wait' clause concerns the continuation candle's own future wick and is not applied. Index-futures concept applied to XAUUSD with the stated clock.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/time_guest_01b/four-hour-session-if-then-chain.py",
+ "runtime_sec": 1.64,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:32:50+00:00",
+ "n_events_in": 2381,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 1,
+  "target_not_beyond_entry": 0,
+  "no_bars_in_hold": 20
+ },
+ "events_fp": "827f50efbfe113d8",
+ "sd_R": 0.9438842027512963,
+ "exit_mix": {
+  "stop": 0.298728813559322,
+  "target": 0.2711864406779661,
+  "time": 0.4300847457627119
+ },
+ "trades_per_year": 223.83536743702933,
+ "ci_components": {
+  "phase3_iid": [
+   -0.032638325610377085,
+   0.05128317327473922
+  ],
+  "day_block": [
+   -0.03347887392130239,
+   0.051460548947070466
+  ]
+ },
+ "diff_win": 0.013050847457627135,
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 1771,
+  "n_clusters": null,
+  "n_eff": 1771
+ },
+ "ties": {
+  "real_ambiguous": 0.000847457627118644,
+  "control_ambiguous": 0.0002542372881355932,
+  "real_gap_stop": 0.00211864406779661,
+  "control_gap_stop": 0.004661016949152543,
+  "verdict_stop_first": "NULL"
+ },
+ "ctrl_overlap": 0.022372881355932205,
+ "exposure_bars": {
+  "real_mean": 214.0,
+  "control_mean": 227.52830508474577,
+  "hold_basis": "clock"
+ },
+ "run_id": "ca1ac323cc91448188310ef5c29c0127",
+ "hyp_key": "cfe80af63343696f"
+}

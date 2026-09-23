@@ -1,0 +1,252 @@
+{
+ "concept_id": "volume-imbalance",
+ "reading": null,
+ "testable": true,
+ "test_type": "trade",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "15m bars; VI at boundary i/i+1: |open[i+1] - close[i]| >= 0.10 x ATR(20) (known at i+1 close) AND the two candles' high/low ranges overlap (a no-overlap boundary is a GAP, excluded); zone = [min, max] of close[i], open[i+1]",
+   "polarity: close[i+1] above the zone -> support (long); below -> resistance (short); inside -> dropped",
+   "entry: first M1 bar within 16 bars after i+1's close touching the zone's near edge; decide at that M1 close, enter next M1 open; skip if that minute already reached the stop",
+   "stop = far edge -/+ 0.25 x ATR(20); target 2R; max hold 150 min; one trade per decision minute and direction"
+  ],
+  "params": {
+   "tf": "15min",
+   "atr_n": 20,
+   "min_size_atr": 0.1,
+   "retest_bars": 16,
+   "stop_buf_atr": 0.25,
+   "rr": 2.0,
+   "max_hold": "150min"
+  }
+ },
+ "params_source": {
+  "tf": "corpus: volume-imbalance.yaml timeframes ltf [15m, 5m, 1m] (fractal)",
+  "atr_n": "threshold_fits: ATR(20) is the campaign's scale unit (\u00a71 barrier test)",
+  "min_size_atr": "declared-before-run: corpus gives no minimum size; 0.10 ATR floor so tick-level boundary noise is excluded",
+  "retest_bars": "declared-before-run: no expiry given; 16 bars (4h) for the first return",
+  "stop_buf_atr": "declared-before-run: stop beyond the far edge by 0.25 ATR (no stop rule given for a VI)",
+  "rr": "phase3: meta/conjunction_preregistration.md \u00a71.8-1.16 (locked rung-0 CISD: series_open, 2/2, max_wait 3, stop = protected swing, 2R, 10 entry-TF bars)",
+  "max_hold": "phase3: meta/conjunction_preregistration.md \u00a71.8-1.16 (locked rung-0 CISD: series_open, 2/2, max_wait 3, stop = protected swing, 2R, 10 entry-TF bars)"
+ },
+ "n": 14958,
+ "span": {
+  "start": "2016-01-04 23:31:00+00:00",
+  "end": "2026-07-21 22:16:00+00:00",
+  "years": 10.541
+ },
+ "avg_R": -0.04087713012221589,
+ "avg_R_gross": -0.00087713012221587,
+ "win_rate": 0.33914961893301243,
+ "pf": 0.9407614973753416,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "n": 74790,
+  "avg_R": -0.07973120027427202,
+  "win_rate": 0.3262601952132638,
+  "pf": 0.8864160046635364,
+  "sd_R": 1.3937130898505665,
+  "exit_mix": {
+   "stop": 0.6679636315015376,
+   "target": 0.3130766145206578,
+   "time": 0.01895975397780452
+  },
+  "avg_R_gross": -0.039731200274271995,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": 0.038854070152056136,
+ "ci_lo": 0.013069866376795929,
+ "ci_hi": 0.06352934871228519,
+ "ci_method": "day_block",
+ "p": 0.002541422377575172,
+ "halves": {
+  "H1": {
+   "n": 14015,
+   "diff": 0.0390394575713644,
+   "ci_lo": 0.011455233979484938,
+   "ci_hi": 0.0654148333851029,
+   "ci_method": "block",
+   "p": 0.004567598129993788,
+   "start": "2016-01-04 23:31:00+00:00",
+   "end": "2020-12-30 23:29:00+00:00"
+  },
+  "H2": {
+   "n": 943,
+   "diff": 0.03609881598280358,
+   "ci_lo": -0.0586827911094896,
+   "ci_hi": 0.13210858368673786,
+   "ci_method": "iid",
+   "p": 0.4582856468598767,
+   "start": "2021-01-04 23:46:00+00:00",
+   "end": "2026-07-21 22:16:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 10896,
+   "diff": 0.04739903681747347,
+   "ci_lo": 0.017362800987961016,
+   "ci_hi": 0.07573568943186049,
+   "ci_method": "iid",
+   "p": 0.0014575841045089495,
+   "start": "2016-01-04 23:31:00+00:00",
+   "end": "2018-08-22 09:33:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 3164,
+   "diff": 0.01374541862960995,
+   "ci_lo": -0.040306651010720014,
+   "ci_hi": 0.07060680746804997,
+   "ci_method": "iid",
+   "p": 0.6271134927433792,
+   "start": "2018-08-22 22:16:00+00:00",
+   "end": "2021-04-11 22:16:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 504,
+   "diff": 0.012282231017274867,
+   "ci_lo": -0.12567594600814866,
+   "ci_hi": 0.14207075179797138,
+   "ci_method": "iid",
+   "p": 0.857296080777265,
+   "start": "2021-04-12 22:18:00+00:00",
+   "end": "2023-12-01 15:17:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 394,
+   "diff": 0.038168850747391694,
+   "ci_lo": -0.12413197598122667,
+   "ci_hi": 0.19992153597840484,
+   "ci_method": "block",
+   "p": 0.6442884141293075,
+   "start": "2023-12-05 23:18:00+00:00",
+   "end": "2026-07-21 22:16:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.036063552396592924,
+ "mde_threshold": 0.1,
+ "power_floor_n": 1946,
+ "verdict": "EDGE",
+ "verdict_detail": "CI excludes 0 in claimed direction; halves agree (H1 +0.0390, H2 +0.0361); powered",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 14958,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 60.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 1206,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "rr"
+   ],
+   "ignored": [],
+   "lookback": "15D",
+   "recent": "1D",
+   "events_fp": "05eff10afe245a76",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "150min",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": null,
+  "entry_mode": "next_open",
+  "hold_basis": "clock",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "CAVEAT (found after the first locked run; this identical re-run only attaches this note): events are concentrated in 2016-2018 (1,567/5,807/5,638 vs ~150-250 a year after 2020; H2 n=943). The M1 feed's 15m open-vs-previous-close discontinuity has a median of ~0.10 in 2016-2018 against 0.02-0.05 later while the 15m range was ~1.0, so in that era most VIs are a FEED property, not market-made. The EDGE label is the locked rule's output; read it as feed-regime-dependent until reproduced post-2019 (H2 +0.036 with CI spanning 0).",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/structure_own_04a/volume-imbalance.py",
+ "runtime_sec": 3.58,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:33:05+00:00",
+ "n_events_in": 15009,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 46,
+  "target_not_beyond_entry": 0,
+  "no_bars_in_hold": 5
+ },
+ "events_fp": "05eff10afe245a76",
+ "sd_R": 1.4107148301144772,
+ "exit_mix": {
+  "stop": 0.6553683647546463,
+  "target": 0.32684850915897845,
+  "time": 0.017783126086375185
+ },
+ "trades_per_year": 1419.0674025974026,
+ "ci_components": {
+  "phase3_iid": [
+   0.014777379347452803,
+   0.0638634212870656
+  ],
+  "day_block": [
+   0.013069866376795929,
+   0.06352934871228519
+  ]
+ },
+ "diff_win": 0.012889423719748605,
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 1734,
+  "n_clusters": null,
+  "n_eff": 1734
+ },
+ "ties": {
+  "real_ambiguous": 0.011298301912020324,
+  "control_ambiguous": 0.013183580692605964,
+  "real_gap_stop": 0.047198823372108574,
+  "control_gap_stop": 0.03872175424521995,
+  "verdict_stop_first": "EDGE"
+ },
+ "ctrl_overlap": 0.007166733520524134,
+ "exposure_bars": {
+  "real_mean": 142.01698087979676,
+  "control_mean": 141.62932210188526,
+  "hold_basis": "clock"
+ },
+ "run_id": "12866c51f6bb4318ae71f17b45c5c9bc",
+ "hyp_key": "89061db1599fe88a"
+}

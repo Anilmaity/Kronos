@@ -1,0 +1,251 @@
+{
+ "concept_id": "failure-to-displace",
+ "reading": "b",
+ "testable": true,
+ "test_type": "trade",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "trading-day bars (18:00 NY): day takes the previous day's high, closes back inside its range, does not take its low -> short (bullish mirror)",
+   "decide at the day's close, enter next M1 open, stop = the day's high, target = previous day's low, exit after 1380 trading minutes",
+   "skip days (either side) with fewer than 50% of the median M1 count"
+  ],
+  "params": {
+   "tf": "1D",
+   "max_hold": "1380min",
+   "hold_basis": "bars",
+   "min_coverage": 0.5,
+   "level": "previous period high/low",
+   "one_sided": true,
+   "target": "opposite previous-period level"
+  }
+ },
+ "params_source": {
+  "level": "corpus yaml: 'bearish_failure_to_displace := high[i] > level AND close[i] < level AND close[i] inside the previous period's range'",
+  "one_sided": "method_spec: \u00a72.3 'Both sides taken -> no bias'",
+  "target": "corpus yaml execution: targets 'the opposite previous-period level or swing point'",
+  "tf": "corpus yaml: 'He prefers the failure to be measured against a HIGHER-timeframe low/high' / 'At the daily scale the same failure appears'",
+  "max_hold": "declared-before-run: one trading day (the next-day model)",
+  "hold_basis": "declared-before-run: trading time across the daily halt",
+  "min_coverage": "declared-before-run: README trap 6 stub sessions"
+ },
+ "n": 857,
+ "span": {
+  "start": "2016-01-08 23:00:00+00:00",
+  "end": "2026-07-20 22:00:00+00:00",
+  "years": 10.527
+ },
+ "avg_R": -0.021265970419331565,
+ "avg_R_gross": 0.01873402958066846,
+ "win_rate": 0.46674445740956827,
+ "pf": 0.9527598295990571,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "n": 4285,
+  "avg_R": -0.056762232797842344,
+  "win_rate": 0.452975495915986,
+  "pf": 0.8809466392088116,
+  "sd_R": 1.186212499411076,
+  "exit_mix": {
+   "stop": 0.4114352392065344,
+   "target": 0.28424737456242705,
+   "time": 0.3043173862310385
+  },
+  "avg_R_gross": -0.016762232797842332,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": 0.03549626237851078,
+ "ci_lo": -0.05720539925327596,
+ "ci_hi": 0.13024671353176676,
+ "ci_method": "day_block",
+ "p": 0.45791499715176137,
+ "halves": {
+  "H1": {
+   "n": 417,
+   "diff": 0.030141058712248966,
+   "ci_lo": -0.08352956899507386,
+   "ci_hi": 0.14880161121739383,
+   "ci_method": "iid",
+   "p": 0.6110714306515019,
+   "start": "2016-01-08 23:00:00+00:00",
+   "end": "2020-12-23 23:00:00+00:00"
+  },
+  "H2": {
+   "n": 440,
+   "diff": 0.04057153494403619,
+   "ci_lo": -0.09590002749257129,
+   "ci_hi": 0.18416069512497094,
+   "ci_method": "iid",
+   "p": 0.5701246665589956,
+   "start": "2021-01-11 23:00:00+00:00",
+   "end": "2026-07-20 22:00:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 229,
+   "diff": -0.04027859059532695,
+   "ci_lo": -0.18826189628242243,
+   "ci_hi": 0.1006455894213066,
+   "ci_method": "iid",
+   "p": 0.5847193521619938,
+   "start": "2016-01-08 23:00:00+00:00",
+   "end": "2018-08-16 22:00:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 211,
+   "diff": 0.07384442876415831,
+   "ci_lo": -0.08456495574467122,
+   "ci_hi": 0.25511310793238723,
+   "ci_method": "iid",
+   "p": 0.3941174764264198,
+   "start": "2018-08-22 22:00:00+00:00",
+   "end": "2021-04-09 22:00:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 230,
+   "diff": 0.039840632985719854,
+   "ci_lo": -0.12402192451157705,
+   "ci_hi": 0.20390505821893404,
+   "ci_method": "iid",
+   "p": 0.6339023920402361,
+   "start": "2021-04-12 22:00:00+00:00",
+   "end": "2023-11-30 23:00:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 187,
+   "diff": 0.07967686657091257,
+   "ci_lo": -0.1467353433268987,
+   "ci_hi": 0.3602883886380155,
+   "ci_method": "iid",
+   "p": 0.5378932684190652,
+   "start": "2023-12-07 23:00:00+00:00",
+   "end": "2026-07-20 22:00:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.1339726207718315,
+ "mde_threshold": 0.1,
+ "power_floor_n": 1539,
+ "verdict": "UNDERPOWERED",
+ "verdict_detail": "CI contains 0; MDE 0.1340 vs threshold 0.1000, effective n 857 (power floor n=1539, have 857)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 857,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "entry_delay_min": {
+   "median": 3.0,
+   "max": 4325.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 66,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "target_px"
+   ],
+   "ignored": [],
+   "lookback": "60D",
+   "recent": "1D",
+   "events_fp": "8f9a377fa410691b",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "1380min",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": null,
+  "entry_mode": "next_open",
+  "hold_basis": "bars",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "The premium/discount retrace preference ('a lot of times') and the broadening-formation branch are not modelled.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/structure_own_02a/failure-to-displace.py",
+ "runtime_sec": 0.44,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:24:52+00:00",
+ "n_events_in": 867,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 7,
+  "target_not_beyond_entry": 3,
+  "no_bars_in_hold": 0
+ },
+ "events_fp": "8f9a377fa410691b",
+ "sd_R": 1.2527710888876311,
+ "exit_mix": {
+  "stop": 0.38156359393232203,
+  "target": 0.2812135355892649,
+  "time": 0.3372228704784131
+ },
+ "trades_per_year": 81.4094278283485,
+ "ci_components": {
+  "phase3_iid": [
+   -0.05234483994142537,
+   0.12540466718183027
+  ],
+  "day_block": [
+   -0.05720539925327596,
+   0.13024671353176676
+  ]
+ },
+ "diff_win": 0.013768961493582255,
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 857,
+  "n_clusters": null,
+  "n_eff": 857
+ },
+ "ties": {
+  "real_ambiguous": 0.0,
+  "control_ambiguous": 0.0007001166861143524,
+  "real_gap_stop": 0.003500583430571762,
+  "control_gap_stop": 0.007701283547257876,
+  "verdict_stop_first": "UNDERPOWERED"
+ },
+ "ctrl_overlap": 0.0030338389731621937,
+ "exposure_bars": {
+  "real_mean": 1380.0,
+  "control_mean": 1379.7918319719954,
+  "hold_basis": "bars"
+ },
+ "run_id": "1a80ce1b23f84465a93543a47caa5078",
+ "hyp_key": "d45a5af74c7bdf7a"
+}

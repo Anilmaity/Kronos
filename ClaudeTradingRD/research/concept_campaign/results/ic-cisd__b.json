@@ -1,0 +1,277 @@
+{
+ "concept_id": "ic-cisd",
+ "reading": "b",
+ "testable": true,
+ "test_type": "gate",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "4H forex-grid candle k; direction from k-1/k-2 (bullish C2 or close above prior high; mirror)",
+   "15m CISD (series_open, 2/2, mw3, ms1) aligned with k, POI gate passed, extreme inside k beyond k's open",
+   "decide at confirm close; next M1 open; stop protected swing; 2R; 150min",
+   "gate: early (<=2h into the 4H candle) vs late"
+  ],
+  "params": {
+   "pairing": "4H/15m",
+   "grid4h": "forex",
+   "htf_direction": "prev_candle_engine",
+   "cisd": "phase3+poi",
+   "wick_side": true,
+   "early": "2h",
+   "rr": 2.0,
+   "max_hold": "150min"
+  }
+ },
+ "params_source": {
+  "pairing": "method_spec: \u00a71.3 favourite stack \u2014 4H candle / 15m CISD",
+  "grid4h": "session_window_fit: forex grid (default for gold)",
+  "htf_direction": "method_spec: \u00a72.3 previous-candle engine (C2 closure / close beyond prior extreme) with phase3 \u00a71.7 C2 rule",
+  "cisd": "phase3: \u00a71.8 series_open, 2/2, max_wait 3, min_series 1; POI gate per ic-cisd.yaml 'if no FVG or high/low exists, the CISD level itself is used'",
+  "wick_side": "corpus: ic-cisd.yaml 'the candle opens with a short-term bearish trend while it forms its lower wick' => extreme beyond the 4H open",
+  "early": "declared-before-run: first half (2h) of the 4H candle ('early' never quantified)",
+  "rr": "corpus: ic-cisd.yaml targets '2R'",
+  "max_hold": "phase3: \u00a71.13 10 entry-TF bars"
+ },
+ "n": 2550,
+ "span": {
+  "start": "2016-01-04 05:00:00+00:00",
+  "end": "2026-07-21 18:45:00+00:00",
+  "years": 10.543
+ },
+ "avg_R": -0.030240525459896004,
+ "avg_R_gross": 0.009759474540104012,
+ "win_rate": 0.4258823529411765,
+ "pf": 0.9282734628747284,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "avg_R_gated": -0.032545192472491984,
+  "avg_R_complement": -0.0360768428602149,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": 0.021020824346495208,
+ "ci_lo": -0.03475199734624958,
+ "ci_hi": 0.07791566148933554,
+ "ci_method": "phase3_block",
+ "p": 0.4645620063488959,
+ "halves": {
+  "H1": {
+   "n": 3057,
+   "diff": 0.010171287758546577,
+   "ci_lo": -0.0716612744285161,
+   "ci_hi": 0.08834656435032673,
+   "ci_method": "iid",
+   "p": 0.8032217309732402,
+   "start": "2016-01-04 05:00:00+00:00",
+   "end": "2020-12-31 16:00:00+00:00",
+   "n_gated": 1215
+  },
+  "H2": {
+   "n": 3346,
+   "diff": 0.03106204682558291,
+   "ci_lo": -0.04146719524803154,
+   "ci_hi": 0.10983925411066575,
+   "ci_method": "block",
+   "p": 0.420974938782571,
+   "start": "2021-01-04 11:15:00+00:00",
+   "end": "2026-07-21 18:45:00+00:00",
+   "n_gated": 1335
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 1608,
+   "diff": -0.008922732590339578,
+   "ci_lo": -0.1194928183717118,
+   "ci_hi": 0.09983973360488038,
+   "ci_method": "iid",
+   "p": 0.873300362220611,
+   "start": "2016-01-04 05:00:00+00:00",
+   "end": "2018-08-22 08:00:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 1624,
+   "diff": 0.003947583090983035,
+   "ci_lo": -0.11042919813805506,
+   "ci_hi": 0.11125265255227353,
+   "ci_method": "iid",
+   "p": 0.9443498013346436,
+   "start": "2018-08-22 19:00:00+00:00",
+   "end": "2021-04-12 08:15:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 1573,
+   "diff": -0.01687320585419308,
+   "ci_lo": -0.12074036462013436,
+   "ci_hi": 0.09733970199738468,
+   "ci_method": "block",
+   "p": 0.7616679974489844,
+   "start": "2021-04-12 18:30:00+00:00",
+   "end": "2023-11-30 11:45:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 1598,
+   "diff": 0.10922870376263649,
+   "ci_lo": -0.0013026529459801255,
+   "ci_hi": 0.22200939400544228,
+   "ci_method": "block",
+   "p": 0.055192742115964824,
+   "start": "2023-12-04 05:30:00+00:00",
+   "end": "2026-07-21 18:45:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.08052393385258422,
+ "mde_threshold": 0.1,
+ "power_floor_n": 1654,
+ "verdict": "NULL",
+ "verdict_detail": "CI contains 0; powered (MDE 0.0805 <= 0.1000)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 6403,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "gate_mask_checked": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 64.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 436,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "rr",
+    "early"
+   ],
+   "ignored": [],
+   "lookback": "10D",
+   "recent": "1D",
+   "events_fp": "d1158a0a4cb5bac0",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "150min",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": null,
+  "entry_mode": "next_open",
+  "hold_basis": "clock",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/entry_own_01a/ic-cisd.py",
+ "runtime_sec": 0.55,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:45:17+00:00",
+ "n_events_in": 6423,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 1,
+  "target_not_beyond_entry": 0,
+  "no_bars_in_hold": 19
+ },
+ "n_complement": 3853,
+ "gate_firing_rate": 0.3982508199281587,
+ "events_fp": "d1158a0a4cb5bac0",
+ "mask_fp": "7ac73fac519d9d65",
+ "mask_col": "early",
+ "exit_mix": {
+  "stop": 0.3219607843137255,
+  "target": 0.11529411764705882,
+  "time": 0.5627450980392157
+ },
+ "gated_vs_own_control": {
+  "diff": 0.0023046670125959796,
+  "ci_lo": -0.03880687264665825,
+  "ci_hi": 0.046020133814887,
+  "p": 0.9151851637764268
+ },
+ "complement": {
+  "n": 3853,
+  "avg_R": -0.05479300019411413,
+  "win_rate": 0.4168180638463535,
+  "pf": 0.8759725488638936,
+  "sd_R": 1.0011691658534494,
+  "exit_mix": {
+   "stop": 0.34362834155203736,
+   "target": 0.11705164806644174,
+   "time": 0.5393200103815209
+  },
+  "vs_own_control": {
+   "diff": -0.018716157333899232,
+   "ci_lo": -0.056004449247502426,
+   "ci_hi": 0.018752208662372337,
+   "p": 0.32639681124044345
+  }
+ },
+ "ci_components": {
+  "phase3_block": [
+   -0.03475199734624958,
+   0.07791566148933554
+  ],
+  "day_block": [
+   -0.033664375857358986,
+   0.07756440415412959
+  ]
+ },
+ "diff_meaning": "mean(R-ctrl | gated) - mean(R-ctrl | complement)",
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_eff_gated": 1741,
+  "n_eff_complement": 2137,
+  "n_eff": 1741
+ },
+ "ties": {
+  "real_ambiguous": 0.00031235358425737937,
+  "control_ambiguous": 0.00028111822583164143,
+  "real_gap_stop": 0.008121193190691864,
+  "control_gap_stop": 0.006340777760424801,
+  "gated_excess": 0.0001568627450980392,
+  "complement_excess": -5.190760446405399e-05,
+  "verdict_stop_first": "NULL"
+ },
+ "ctrl_overlap": 0.013743557707324692,
+ "exposure_bars": {
+  "real_mean": 141.8464782133375,
+  "control_mean": 142.80468530376385,
+  "hold_basis": "clock"
+ },
+ "run_id": "0e299a24270346bca0df2dfec1275e11",
+ "hyp_key": "b0c2fe09ef91304e"
+}

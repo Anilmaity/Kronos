@@ -1,0 +1,261 @@
+{
+ "concept_id": "smt-break-reversal-trigger",
+ "reading": null,
+ "testable": true,
+ "test_type": "trade",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "4H forex-grid bars of gold (from certified M1) and OANDA XAG_USD H1 aggregated into the same buckets",
+   "SMT: confirmed fractal(2/2) swing at bar p in either asset; each asset's level = its own extreme at p; first asset to trade beyond its level within 20 bars while the other has not -> SMT (sweeper/held)",
+   "break: the HELD asset later trades beyond its own level within W=20 bars of the SMT -> decision at that 4H bar's close",
+   "trade gold in the SMT's reversal direction (short at highs, long at lows)",
+   "stop = gold's extreme from swing bar p through the break bar; target 2R; max_hold 40h",
+   "two-asset form of 'all markets break the SMT and the lagging asset is the trigger'; triad arrangement not testable (no third gold-triad series)"
+  ],
+  "params": {
+   "tf": "4h",
+   "grid4h": "forex",
+   "fractal": [
+    2,
+    2
+   ],
+   "smt_lookback": 20,
+   "catch_up_window_bars": 20,
+   "rr": 2.0,
+   "max_hold": "40h",
+   "correlate": "XAG_USD H1 (m3_scalper/xag_h1_full.parquet)"
+  }
+ },
+ "params_source": {
+  "tf": "corpus: 3eVxTV_7L2U timeframes htf 1W/1D/4H \u2014 4H chosen as the only one with sample",
+  "grid4h": "phase3: forex grid locked for gold (method_spec \u00a71.4)",
+  "fractal": "phase3: smt_events left=2 right=2",
+  "smt_lookback": "phase3: smt_events lookback=20",
+  "catch_up_window_bars": "declared-before-run: no limit stated (ambiguity); 20 bars = SMT lookback",
+  "rr": "phase3: bare-CISD book target 2R",
+  "max_hold": "declared-before-run: ten 4H bars",
+  "correlate": "phase3: load_correlate() XAG H1 full file"
+ },
+ "n": 1273,
+ "span": {
+  "start": "2016-01-07 18:00:00+00:00",
+  "end": "2026-07-16 13:00:00+00:00",
+  "years": 10.519
+ },
+ "avg_R": -0.09128156292264321,
+ "avg_R_gross": -0.05128156292264319,
+ "win_rate": 0.33935585231736054,
+ "pf": 0.8599464237125783,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "n": 6365,
+  "avg_R": -0.05155619572496431,
+  "win_rate": 0.35051060487038493,
+  "pf": 0.9201163110976972,
+  "sd_R": 1.3343522592973396,
+  "exit_mix": {
+   "stop": 0.6073841319717204,
+   "target": 0.28012568735271015,
+   "time": 0.11249018067556953
+  },
+  "avg_R_gross": -0.011556195724964281,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": -0.0397253671976789,
+ "ci_lo": -0.1162308728983874,
+ "ci_hi": 0.03897311053003198,
+ "ci_method": "phase3_iid",
+ "p": 0.31570239168893616,
+ "halves": {
+  "H1": {
+   "n": 589,
+   "diff": -0.06330196329415558,
+   "ci_lo": -0.1782191467690609,
+   "ci_hi": 0.05454831641531701,
+   "ci_method": "iid",
+   "p": 0.28640611986201586,
+   "start": "2016-01-07 18:00:00+00:00",
+   "end": "2020-12-30 22:00:00+00:00"
+  },
+  "H2": {
+   "n": 684,
+   "diff": -0.019423298336823977,
+   "ci_lo": -0.12284853932709987,
+   "ci_hi": 0.08410723716191562,
+   "ci_method": "iid",
+   "p": 0.7129517606045319,
+   "start": "2021-01-04 02:00:00+00:00",
+   "end": "2026-07-16 13:00:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 322,
+   "diff": -0.030605954500245502,
+   "ci_lo": -0.19834415613411038,
+   "ci_hi": 0.12979863851167472,
+   "ci_method": "iid",
+   "p": 0.7146541769558203,
+   "start": "2016-01-07 18:00:00+00:00",
+   "end": "2018-08-20 09:00:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 296,
+   "diff": -0.06904427645250115,
+   "ci_lo": -0.24105132712960434,
+   "ci_hi": 0.09396469493915958,
+   "ci_method": "iid",
+   "p": 0.41916679992033007,
+   "start": "2018-08-22 13:00:00+00:00",
+   "end": "2021-04-01 17:00:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 342,
+   "diff": -0.07165487752574008,
+   "ci_lo": -0.21037202175589467,
+   "ci_hi": 0.08150438902455086,
+   "ci_method": "iid",
+   "p": 0.3358829445399262,
+   "start": "2021-04-12 17:00:00+00:00",
+   "end": "2023-12-01 18:00:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 313,
+   "diff": 0.013507344569256473,
+   "ci_lo": -0.14528890671647474,
+   "ci_hi": 0.1799052747191851,
+   "ci_method": "block",
+   "p": 0.8706608832739771,
+   "start": "2023-12-04 18:00:00+00:00",
+   "end": "2026-07-16 13:00:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.11092478022895023,
+ "mde_threshold": 0.1,
+ "power_floor_n": 1567,
+ "verdict": "UNDERPOWERED",
+ "verdict_detail": "CI contains 0; MDE 0.1109 vs threshold 0.1000, effective n 1108 (power floor n=1567, have 1273)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 1273,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 64.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 109,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "rr",
+    "breaker",
+    "smt_time"
+   ],
+   "ignored": [],
+   "lookback": "45D",
+   "recent": "1D",
+   "events_fp": "eea4b9eea4b8f530",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "40h",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": null,
+  "entry_mode": "next_open",
+  "hold_basis": "clock",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "breaker counts {'silver': 646, 'gold': 643}; the concept's gold triad (GC/XAUEUR/XAUGBP) is not available in full, silver used as the phase-3 correlate.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/liquidity_guest_01a/smt-break-reversal-trigger.py",
+ "runtime_sec": 0.59,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:09:59+00:00",
+ "n_events_in": 1289,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 1,
+  "target_not_beyond_entry": 0,
+  "no_bars_in_hold": 15
+ },
+ "events_fp": "eea4b9eea4b8f530",
+ "sd_R": 1.3075541858861621,
+ "exit_mix": {
+  "stop": 0.6087981146897093,
+  "target": 0.2608012568735271,
+  "time": 0.13040062843676356
+ },
+ "trades_per_year": 121.02114783966685,
+ "ci_components": {
+  "phase3_iid": [
+   -0.1162308728983874,
+   0.03897311053003198
+  ],
+  "day_block": [
+   -0.11677850996798071,
+   0.03328164074843105
+  ]
+ },
+ "diff_win": -0.011154752553024394,
+ "dependence": {
+  "day_block_mean_days": 4,
+  "n_days": 1108,
+  "n_clusters": null,
+  "n_eff": 1108
+ },
+ "ties": {
+  "real_ambiguous": 0.00864100549882168,
+  "control_ambiguous": 0.007855459544383346,
+  "real_gap_stop": 0.0054988216810683424,
+  "control_gap_stop": 0.009426551453260016,
+  "verdict_stop_first": "UNDERPOWERED"
+ },
+ "ctrl_overlap": 0.009269442262372349,
+ "exposure_bars": {
+  "real_mean": 1795.1421838177534,
+  "control_mean": 1891.3084053417124,
+  "hold_basis": "clock"
+ },
+ "run_id": "863524572a9846c492dda840a79e8a3c",
+ "hyp_key": "05ae9edb3d4f049c"
+}

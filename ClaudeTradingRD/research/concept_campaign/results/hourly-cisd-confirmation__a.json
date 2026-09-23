@@ -1,0 +1,252 @@
+{
+ "concept_id": "hourly-cisd-confirmation",
+ "reading": "a",
+ "testable": true,
+ "test_type": "trade",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "1H bars; per NY trading day (18:00 roll) track the running low/high",
+   "series = consecutive opposing-close 1H candles that made the extreme, inside the day",
+   "fire on the first 1H close through the series' series_extreme after the extreme; a new extreme re-arms",
+   "decide at that bar's close, next M1 open entry; stop at the day's extreme; 2R; 10h"
+  ],
+  "params": {
+   "tf": "1h",
+   "day_open_hour": 18,
+   "series_rule": "run<=10,<=2 bars back",
+   "level_kind": "series_extreme",
+   "stop": "day_extreme",
+   "rr": 2.0,
+   "max_hold": "10h"
+  }
+ },
+ "params_source": {
+  "tf": "corpus: hourly-cisd-confirmation.yaml 'On the 1H chart ... inside the candidate daily candle' (1D/1H pairing, method_spec \u00a71.2)",
+  "day_open_hour": "session_window_fit: 18:00 NY daily candle (settled)",
+  "series_rule": "phase3: detectors.cisd run rule (extreme bar or run ending <=2 bars before it, max 10 candles), restricted to the day",
+  "level_kind": "corpus: reading a 'close above the high of that series of down-close candles'; reading b method_spec \u00a74.2 first-candle open",
+  "stop": "corpus: execution.stop 'Beyond the confirmed extreme'",
+  "rr": "phase3: \u00a71.12 2R",
+  "max_hold": "phase3: \u00a71.13 10 entry-TF bars"
+ },
+ "n": 4970,
+ "span": {
+  "start": "2016-01-05 02:00:00+00:00",
+  "end": "2026-07-22 17:00:00+00:00",
+  "years": 10.543
+ },
+ "avg_R": -0.03441745901043684,
+ "avg_R_gross": 0.00558254098956318,
+ "win_rate": 0.41770623742454727,
+ "pf": 0.9257291216904826,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "n": 24850,
+  "avg_R": -0.048136518067617776,
+  "win_rate": 0.42088531187122735,
+  "pf": 0.8938730557393134,
+  "sd_R": 1.0279091406933833,
+  "exit_mix": {
+   "stop": 0.3717907444668008,
+   "target": 0.12748490945674043,
+   "time": 0.5007243460764588
+  },
+  "avg_R_gross": -0.008136518067617764,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": 0.013719059057180932,
+ "ci_lo": -0.018167100813396123,
+ "ci_hi": 0.04546134494585815,
+ "ci_method": "phase3_iid",
+ "p": 0.3980082946417742,
+ "halves": {
+  "H1": {
+   "n": 2287,
+   "diff": 0.008084017543132468,
+   "ci_lo": -0.03738740374783116,
+   "ci_hi": 0.05777311793523602,
+   "ci_method": "block",
+   "p": 0.7391318003237064,
+   "start": "2016-01-05 02:00:00+00:00",
+   "end": "2020-12-31 16:00:00+00:00"
+  },
+  "H2": {
+   "n": 2683,
+   "diff": 0.018522391126740687,
+   "ci_lo": -0.02464324461621006,
+   "ci_hi": 0.0642953720998992,
+   "ci_method": "iid",
+   "p": 0.4142909855009948,
+   "start": "2021-01-05 10:00:00+00:00",
+   "end": "2026-07-22 17:00:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 1186,
+   "diff": -0.027602093545901197,
+   "ci_lo": -0.09152748346433377,
+   "ci_hi": 0.04279228847807919,
+   "ci_method": "block",
+   "p": 0.42051556160938935,
+   "start": "2016-01-05 02:00:00+00:00",
+   "end": "2018-08-22 09:00:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 1230,
+   "diff": 0.04997342446076196,
+   "ci_lo": -0.014286832867427665,
+   "ci_hi": 0.11492300407104866,
+   "ci_method": "iid",
+   "p": 0.1294995627243943,
+   "start": "2018-08-22 15:00:00+00:00",
+   "end": "2021-04-12 07:00:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 1358,
+   "diff": 0.025443860492549215,
+   "ci_lo": -0.040402050659237375,
+   "ci_hi": 0.09337178989446246,
+   "ci_method": "iid",
+   "p": 0.4559256801883783,
+   "start": "2021-04-12 14:00:00+00:00",
+   "end": "2023-12-01 16:00:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 1196,
+   "diff": 0.004096765739137989,
+   "ci_lo": -0.0614252174948548,
+   "ci_hi": 0.06922369460317021,
+   "ci_method": "iid",
+   "p": 0.9021724939193503,
+   "start": "2023-12-04 08:00:00+00:00",
+   "end": "2026-07-22 17:00:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.04547545240944232,
+ "mde_threshold": 0.1,
+ "power_floor_n": 1028,
+ "verdict": "NULL",
+ "verdict_detail": "CI contains 0; powered (MDE 0.0455 <= 0.1000)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 4970,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 64.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 387,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "rr"
+   ],
+   "ignored": [],
+   "lookback": "10D",
+   "recent": "1D",
+   "events_fp": "c6e28610c45eec19",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "10h",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": null,
+  "entry_mode": "next_open",
+  "hold_basis": "clock",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/entry_own_01a/hourly-cisd-confirmation.py",
+ "runtime_sec": 0.99,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:40:29+00:00",
+ "n_events_in": 4976,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 0,
+  "target_not_beyond_entry": 0,
+  "no_bars_in_hold": 6
+ },
+ "events_fp": "c6e28610c45eec19",
+ "sd_R": 1.0592905601548803,
+ "exit_mix": {
+  "stop": 0.3814889336016097,
+  "target": 0.14245472837022133,
+  "time": 0.476056338028169
+ },
+ "trades_per_year": 471.3821085432355,
+ "ci_components": {
+  "phase3_iid": [
+   -0.018167100813396123,
+   0.04546134494585815
+  ],
+  "day_block": [
+   -0.01728419049719132,
+   0.04374968047826855
+  ]
+ },
+ "diff_win": -0.0031790744466800858,
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 2490,
+  "n_clusters": null,
+  "n_eff": 2490
+ },
+ "ties": {
+  "real_ambiguous": 0.00020120724346076458,
+  "control_ambiguous": 0.00020120724346076458,
+  "real_gap_stop": 0.0058350100603621734,
+  "control_gap_stop": 0.004225352112676056,
+  "verdict_stop_first": "NULL"
+ },
+ "ctrl_overlap": 0.043903420523138836,
+ "exposure_bars": {
+  "real_mean": 563.6372233400402,
+  "control_mean": 548.2550100603622,
+  "hold_basis": "clock"
+ },
+ "run_id": "dd6e4f336ce441d7b145b9e6b62a0c77",
+ "hyp_key": "0ad9aa345aea4f83"
+}

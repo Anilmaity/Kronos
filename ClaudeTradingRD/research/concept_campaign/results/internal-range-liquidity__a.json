@@ -1,0 +1,203 @@
+{
+ "concept_id": "internal-range-liquidity",
+ "reading": "a",
+ "testable": true,
+ "test_type": "rate",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "gold 1h bars; ERL purge at bar j = high above an untaken confirmed 2/2 swing high from the last 50 bars (sell-side mirror); bars purging both sides skipped",
+   "IRL = nearest untouched 3-bar FVG on the opposite side of the close (bullish gap below after a buy-side purge, bearish gap above after a sell-side purge), formed within the last 50 bars; none -> no event",
+   "hit = gold reaches the gap's near edge within 600 M1 bars after bar j's close",
+   "null = same signed distance from the first M1 open at matched random moments (+/-30d, 5 reps), same side, same horizon"
+  ],
+  "params": {
+   "tf": "1h",
+   "swing": "2/2",
+   "range_bars": 50,
+   "reach": "near_edge",
+   "horizon_bars": 600
+  }
+ },
+ "params_source": {
+  "tf": "corpus: concept timeframes htf includes 1H (3OivsP1j_UE examples use 4H/hourly/daily gaps)",
+  "swing": "phase3: 2/2 swings (\u00a71.8)",
+  "range_bars": "declared-before-run: the corpus bounds 'the current range' by no number",
+  "reach": "corpus: 'Reaching' is ambiguous (near edge / CE / fill); reading a near edge",
+  "horizon_bars": "phase3: 10 entry-TF bars (\u00a71.13), as trading minutes"
+ },
+ "n": 6277,
+ "span": {
+  "start": "2016-01-04 06:00:00+00:00",
+  "end": "2026-07-22 14:00:00+00:00",
+  "years": 10.546
+ },
+ "avg_R": null,
+ "avg_R_gross": null,
+ "win_rate": null,
+ "pf": null,
+ "observed_rate": 0.490998884817588,
+ "null_rate": 0.472837342679624,
+ "lift": 1.0384097035040432,
+ "control": {
+  "rate": 0.472837342679624,
+  "reps": 5,
+  "kind": "null_fn x5"
+ },
+ "diff": 0.018161542137964004,
+ "ci_lo": 0.003915086824916945,
+ "ci_hi": 0.031610642026447,
+ "ci_method": "phase3_block",
+ "p": 0.010154639723497226,
+ "halves": {
+  "H1": {
+   "n": 2914,
+   "diff": 0.021276595744680882,
+   "ci_lo": 0.0006846259437199895,
+   "ci_hi": 0.042966712422786595,
+   "ci_method": "iid",
+   "p": 0.04854902892460984,
+   "start": "2016-01-04 06:00:00+00:00",
+   "end": "2020-12-31 21:00:00+00:00"
+  },
+  "H2": {
+   "n": 3363,
+   "diff": 0.01546238477549805,
+   "ci_lo": -0.004580731489741337,
+   "ci_hi": 0.03705025275052032,
+   "ci_method": "iid",
+   "p": 0.14541438780212626,
+   "start": "2021-01-04 07:00:00+00:00",
+   "end": "2026-07-22 14:00:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 1538,
+   "diff": 0.02678803641092331,
+   "ci_lo": -0.0036475942782835,
+   "ci_hi": 0.05605656697009105,
+   "ci_method": "iid",
+   "p": 0.07861292144687214,
+   "start": "2016-01-04 06:00:00+00:00",
+   "end": "2018-08-22 10:00:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 1550,
+   "diff": 0.009419354838709648,
+   "ci_lo": -0.021293548387096784,
+   "ci_hi": 0.03871935483870971,
+   "ci_method": "iid",
+   "p": 0.5383868367908642,
+   "start": "2018-08-23 02:00:00+00:00",
+   "end": "2021-04-12 06:00:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 1576,
+   "diff": 0.024492385786802018,
+   "ci_lo": -0.006598984771573559,
+   "ci_hi": 0.05266497461928932,
+   "ci_method": "iid",
+   "p": 0.10522946920083165,
+   "start": "2021-04-12 12:00:00+00:00",
+   "end": "2023-12-01 16:00:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 1613,
+   "diff": 0.012151270923744517,
+   "ci_lo": -0.01798822070675759,
+   "ci_hi": 0.041540607563546175,
+   "ci_method": "iid",
+   "p": 0.42362277393678505,
+   "start": "2023-12-04 00:00:00+00:00",
+   "end": "2026-07-22 14:00:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.019794101325146425,
+ "mde_threshold": 0.05,
+ "power_floor_n": 984,
+ "verdict": "EDGE",
+ "verdict_detail": "CI excludes 0 in claimed direction; halves agree (H1 +0.0213, H2 +0.0155); powered",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 6277,
+  "min_slack_min": 0.0,
+  "passed": true,
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 520,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "near_edge",
+    "ce"
+   ],
+   "ignored": [],
+   "lookback": "20D",
+   "recent": "1D",
+   "events_fp": "36f287b2126f1375",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "reps": 5,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "mde_threshold": null,
+  "cluster": null,
+  "outcome_horizon": "1 days 00:00:00",
+  "null_kind": "null_fn x5"
+ },
+ "notes": "The 'fails to displace' qualifier of the rotation (method spec \u00a72.2) is not applied; the concept's own rule is 'immediately after external range liquidity has been taken'.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/liquidity_own_02a/internal-range-liquidity.py",
+ "runtime_sec": 2.15,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:14:52+00:00",
+ "dropped": {
+  "nan_rows": 0
+ },
+ "null_kind": "null_fn x5",
+ "events_fp": "36f287b2126f1375",
+ "predictors_probed": true,
+ "ci_components": {
+  "phase3_block": [
+   0.003915086824916945,
+   0.031610642026447
+  ],
+  "day_block": [
+   0.005702316881658006,
+   0.031513717529349054
+  ]
+ },
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 2472,
+  "n_clusters": null,
+  "n_eff": 2472
+ },
+ "run_id": "64e79e69cf834198974f104d78e7ec64",
+ "hyp_key": "31fd405e7a15da09"
+}

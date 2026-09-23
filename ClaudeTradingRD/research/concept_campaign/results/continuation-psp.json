@@ -1,0 +1,257 @@
+{
+ "concept_id": "continuation-psp",
+ "reading": null,
+ "testable": true,
+ "test_type": "trade",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "gold 1H (certified M1) and OANDA XAG_USD H1, inner-joined on hour labels",
+   "reversal: 1H SMT at bar j (fractal 2/2, lookback 20); gold extreme R from swing bar p..j not exceeded on j+1, j+2 (swing formed), confirmed at close of j+2",
+   "draw: most recent confirmed gold fractal swing on the opposite side before p, still unmet at j+2",
+   "within 24 bars (setup dies when gold meets the draw or breaks R): PSP bar m (opposite-colour closes) then bar m+1 where either asset exceeds its bar-m extreme in the draw direction",
+   "enter with the draw at close of m+1; stop R; target the draw; first PSP per setup; max_hold 24h"
+  ],
+  "params": {
+   "tf": "1h",
+   "fractal": [
+    2,
+    2
+   ],
+   "smt_lookback": 20,
+   "psp_scan_bars": 24,
+   "max_hold": "24h",
+   "draw": "prior opposite-side 1H fractal swing",
+   "stop": "reversal extreme R"
+  }
+ },
+ "params_source": {
+  "tf": "corpus: 3eVxTV_7L2U timeframes htf 4H/1H; 1H is the finest the correlate supports",
+  "fractal": "phase3: swing_points left=2 right=2",
+  "smt_lookback": "phase3: smt_events lookback=20",
+  "psp_scan_bars": "declared-before-run: one trading day of 1H bars",
+  "max_hold": "declared-before-run: 24h, the draw can be a day away",
+  "draw": "declared-before-run: draw on liquidity is unquantified in the corpus (ambiguity); range extreme the reversal came from",
+  "stop": "declared-before-run: the confirmed reversal extreme (low/high of the move)"
+ },
+ "n": 793,
+ "span": {
+  "start": "2016-01-08 07:00:00+00:00",
+  "end": "2026-07-22 00:00:00+00:00",
+  "years": 10.533
+ },
+ "avg_R": 0.018979998841480914,
+ "avg_R_gross": 0.05897999884148093,
+ "win_rate": 0.4703656998738966,
+ "pf": 1.0393075339353635,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "n": 3965,
+  "avg_R": -0.024426092177983964,
+  "win_rate": 0.4459016393442623,
+  "pf": 0.9529339341452054,
+  "sd_R": 1.5219736759260485,
+  "exit_mix": {
+   "stop": 0.4733921815889029,
+   "target": 0.32156368221941994,
+   "time": 0.20504413619167716
+  },
+  "avg_R_gross": 0.015573907822016045,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": 0.04340609101946488,
+ "ci_lo": -0.06054197480345964,
+ "ci_hi": 0.1454050687900894,
+ "ci_method": "phase3_block",
+ "p": 0.40870358060478557,
+ "halves": {
+  "H1": {
+   "n": 396,
+   "diff": 0.026432163958294883,
+   "ci_lo": -0.12328035777958568,
+   "ci_hi": 0.1652911413028671,
+   "ci_method": "block",
+   "p": 0.7195561741440686,
+   "start": "2016-01-08 07:00:00+00:00",
+   "end": "2020-12-30 08:00:00+00:00"
+  },
+  "H2": {
+   "n": 397,
+   "diff": 0.06033726259685359,
+   "ci_lo": -0.08037374543989671,
+   "ci_hi": 0.2070695961460999,
+   "ci_method": "iid",
+   "p": 0.4106032487072336,
+   "start": "2021-01-05 07:00:00+00:00",
+   "end": "2026-07-22 00:00:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 200,
+   "diff": 0.06223065519040641,
+   "ci_lo": -0.1772858918933616,
+   "ci_hi": 0.30935514953339294,
+   "ci_method": "block",
+   "p": 0.6161794774477762,
+   "start": "2016-01-08 07:00:00+00:00",
+   "end": "2018-08-17 04:00:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 211,
+   "diff": -0.056772851452919715,
+   "ci_lo": -0.22023725800273045,
+   "ci_hi": 0.11085154839667898,
+   "ci_method": "block",
+   "p": 0.5014802316761324,
+   "start": "2018-08-24 09:00:00+00:00",
+   "end": "2021-04-09 09:00:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 193,
+   "diff": 0.06379434794924478,
+   "ci_lo": -0.12885324188520456,
+   "ci_hi": 0.306650159918884,
+   "ci_method": "block",
+   "p": 0.5658275016110413,
+   "start": "2021-04-19 21:00:00+00:00",
+   "end": "2023-11-30 00:00:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 189,
+   "diff": 0.1145061462577576,
+   "ci_lo": -0.10103621883446451,
+   "ci_hi": 0.3261503546905645,
+   "ci_method": "iid",
+   "p": 0.29338465626145654,
+   "start": "2023-12-05 08:00:00+00:00",
+   "end": "2026-07-22 00:00:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.14719100660166032,
+ "mde_threshold": 0.1,
+ "power_floor_n": 1719,
+ "verdict": "UNDERPOWERED",
+ "verdict_detail": "CI contains 0; MDE 0.1472 vs threshold 0.1000, effective n 697 (power floor n=1719, have 793)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 793,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 184.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 80,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "target_px",
+    "smt_time"
+   ],
+   "ignored": [],
+   "lookback": "20D",
+   "recent": "1D",
+   "events_fp": "b1605c0b2e3fb9cf",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "24h",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": null,
+  "entry_mode": "next_open",
+  "hold_basis": "clock",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "Continuation PSP traded with the draw; control = matched random entries at the same stop/target distances.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/liquidity_guest_01a/continuation-psp.py",
+ "runtime_sec": 0.97,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:12:23+00:00",
+ "n_events_in": 802,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 0,
+  "target_not_beyond_entry": 2,
+  "no_bars_in_hold": 7
+ },
+ "events_fp": "b1605c0b2e3fb9cf",
+ "sd_R": 1.2960689450806049,
+ "exit_mix": {
+  "stop": 0.43883984867591425,
+  "target": 0.3316519546027743,
+  "time": 0.22950819672131148
+ },
+ "trades_per_year": 75.29068105016896,
+ "ci_components": {
+  "phase3_block": [
+   -0.06054197480345964,
+   0.1454050687900894
+  ],
+  "day_block": [
+   -0.0529229497104358,
+   0.1466988282520501
+  ]
+ },
+ "diff_win": 0.02446406052963429,
+ "dependence": {
+  "day_block_mean_days": 2,
+  "n_days": 697,
+  "n_clusters": null,
+  "n_eff": 697
+ },
+ "ties": {
+  "real_ambiguous": 0.0,
+  "control_ambiguous": 0.0005044136191677175,
+  "real_gap_stop": 0.0025220680958385876,
+  "control_gap_stop": 0.00807061790668348,
+  "verdict_stop_first": "UNDERPOWERED"
+ },
+ "ctrl_overlap": 0.00807061790668348,
+ "exposure_bars": {
+  "real_mean": 1213.9911727616645,
+  "control_mean": 1224.6464060529634,
+  "hold_basis": "clock"
+ },
+ "run_id": "074650c30f6940beac785509c61560cb",
+ "hyp_key": "c6a33b3ae85dfce3"
+}

@@ -1,0 +1,263 @@
+{
+ "concept_id": "breaker-continuation",
+ "reading": "b",
+ "testable": true,
+ "test_type": "trade",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "15m 2/2 swings: L1 (swing low) within 20 bars before H (swing high); after H a low below L1 BEFORE any close above H; then a close above H within 20 bars = breaker (mirror bearish)",
+   "HTF gate: previous trading day closed in the trade direction",
+   "entry at the close of the first bar (<=10 bars after the break) that trades back into the body zone and closes beyond its far side; stop = far side of the zone",
+   "target 2R, max hold 150 min, next-M1-open entry"
+  ],
+  "params": {
+   "tf": "15min",
+   "htf_gate": "prior trading day close vs open",
+   "swing": "2/2",
+   "l1_lookback_bars": 20,
+   "max_bars_H_to_break": 20,
+   "retest_window_bars": 10,
+   "zone": "bodies of up-close (down-close) candles L1..H",
+   "rr": 2.0,
+   "max_hold": "150min"
+  }
+ },
+ "params_source": {
+  "tf": "phase3: 15m entry TF (YAML ltf 15m/5m/1m)",
+  "htf_gate": "corpus: xP-o11jRCyg / YAML 'Establish the trend direction first via the higher timeframe closure' (1D is the YAML htf); declared-before-run: closure = prior day close beyond its open",
+  "swing": "phase3: locked 2/2 fractal swings",
+  "l1_lookback_bars": "declared-before-run: L1 must lie within 20 bars before H",
+  "max_bars_H_to_break": "declared-before-run: YAML gives no bar limit (ambiguity); 20 bars",
+  "retest_window_bars": "declared-before-run: retest must come within 10 bars of the break",
+  "zone": "corpus: 8FtjVWZcZN8 'with these wicks kind of everywhere, I will focus on the bodies'",
+  "rr": "corpus: YAML execution targets '2R' (xP-o11jRCyg)",
+  "max_hold": "phase3: 10 entry-TF bars (s1.13)"
+ },
+ "n": 3797,
+ "span": {
+  "start": "2016-01-05 01:15:00+00:00",
+  "end": "2026-07-23 00:15:00+00:00",
+  "years": 10.543
+ },
+ "avg_R": -0.05817200909044369,
+ "avg_R_gross": -0.018172009090443673,
+ "win_rate": 0.37529628654200686,
+ "pf": 0.9019734816663753,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "n": 18985,
+  "avg_R": -0.05747685087112028,
+  "win_rate": 0.3770871740848038,
+  "pf": 0.8995534171126778,
+  "sd_R": 1.2185354963316046,
+  "exit_mix": {
+   "stop": 0.5138793784566763,
+   "target": 0.21595996839610218,
+   "time": 0.2701606531472215
+  },
+  "avg_R_gross": -0.01747685087112026,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": -0.0006951582193234079,
+ "ci_lo": -0.04570206491123676,
+ "ci_hi": 0.0446736352163546,
+ "ci_method": "day_block",
+ "p": 0.9759461643773006,
+ "halves": {
+  "H1": {
+   "n": 1691,
+   "diff": 0.01486508289448258,
+   "ci_lo": -0.05285388393815527,
+   "ci_hi": 0.08497512151029578,
+   "ci_method": "block",
+   "p": 0.6724626222907201,
+   "start": "2016-01-05 01:15:00+00:00",
+   "end": "2020-12-31 21:15:00+00:00"
+  },
+  "H2": {
+   "n": 2106,
+   "diff": -0.013189159987341437,
+   "ci_lo": -0.07232849081174265,
+   "ci_hi": 0.04141136121993216,
+   "ci_method": "iid",
+   "p": 0.6494323310141916,
+   "start": "2021-01-04 07:15:00+00:00",
+   "end": "2026-07-23 00:15:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 870,
+   "diff": -0.01771691725381773,
+   "ci_lo": -0.1139443447038424,
+   "ci_hi": 0.08803611385772488,
+   "ci_method": "block",
+   "p": 0.7309663218727698,
+   "start": "2016-01-05 01:15:00+00:00",
+   "end": "2018-08-22 09:15:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 933,
+   "diff": 0.04383815899220605,
+   "ci_lo": -0.044508160390148634,
+   "ci_hi": 0.12985734034331375,
+   "ci_method": "iid",
+   "p": 0.3243638170844171,
+   "start": "2018-08-22 17:45:00+00:00",
+   "end": "2021-04-12 00:00:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 1036,
+   "diff": -0.0019514081196400912,
+   "ci_lo": -0.08164515678903064,
+   "ci_hi": 0.08105395042568074,
+   "ci_method": "iid",
+   "p": 0.9625008766587378,
+   "start": "2021-04-12 13:45:00+00:00",
+   "end": "2023-11-30 13:45:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 958,
+   "diff": -0.027249625548779396,
+   "ci_lo": -0.11446712609279923,
+   "ci_hi": 0.06058509373274015,
+   "ci_method": "iid",
+   "p": 0.5417304435500452,
+   "start": "2023-12-05 09:30:00+00:00",
+   "end": "2026-07-23 00:15:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.0645918001151955,
+ "mde_threshold": 0.1,
+ "power_floor_n": 1585,
+ "verdict": "NULL",
+ "verdict_detail": "CI contains 0; powered (MDE 0.0646 <= 0.1000)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 3797,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 64.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 286,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "rr",
+    "reading",
+    "setup_time",
+    "prior_day_ok"
+   ],
+   "ignored": [],
+   "lookback": "20D",
+   "recent": "1D",
+   "events_fp": "5e395202eee67c31",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "150min",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": null,
+  "entry_mode": "next_open",
+  "hold_basis": "clock",
+  "mde_threshold": null,
+  "cluster": "column:setup_time",
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "SMT substitute for the sweep not modelled (needs a correlated asset rule the corpus leaves open). Cluster = the H swing the breaker is built on.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/entry_own_02a/breaker-continuation.py",
+ "runtime_sec": 1.27,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:10:10+00:00",
+ "n_events_in": 3824,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 19,
+  "target_not_beyond_entry": 0,
+  "no_bars_in_hold": 8
+ },
+ "events_fp": "5e395202eee67c31",
+ "sd_R": 1.2492821411209667,
+ "exit_mix": {
+  "stop": 0.5417434816960759,
+  "target": 0.2280747958914933,
+  "time": 0.23018172241243087
+ },
+ "trades_per_year": 360.1283432874578,
+ "ci_components": {
+  "phase3_block": [
+   -0.04487076652794298,
+   0.043140900672379905
+  ],
+  "day_block": [
+   -0.04570206491123676,
+   0.0446736352163546
+  ],
+  "cluster": [
+   -0.044840026337014706,
+   0.04434345196777469
+  ]
+ },
+ "diff_win": -0.0017908875427969373,
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 2099,
+  "n_clusters": 3797,
+  "n_eff": 2099
+ },
+ "ties": {
+  "real_ambiguous": 0.014748485646563076,
+  "control_ambiguous": 0.01316829075585989,
+  "real_gap_stop": 0.011588095865156703,
+  "control_gap_stop": 0.012062154332367658,
+  "verdict_stop_first": "NULL"
+ },
+ "ctrl_overlap": 0.008585725572820647,
+ "exposure_bars": {
+  "real_mean": 146.1103502765341,
+  "control_mean": 143.18551488016854,
+  "hold_basis": "clock"
+ },
+ "run_id": "8b9ad9e93e73496d9645b197e71f9720",
+ "hyp_key": "e0d7a5492a956331"
+}

@@ -1,0 +1,253 @@
+{
+ "concept_id": "daily-wick-as-balanced-price-range",
+ "reading": null,
+ "testable": true,
+ "test_type": "trade",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "daily candles (18:00 NY roll), wick day >= 600 M1 bars",
+   "large upper wick: upper wick > body and > lower wick; band = body top -> high; EQ = midpoint (bullish mirror on the lower wick)",
+   "next trading day: first H1 bearish FVG (3 bars inside the day) overlapping [base, EQ], with no H1 close above EQ first",
+   "short at next M1 open after the FVG bar close; stop = wick EQ; target = the wick day's low; hold 10h"
+  ],
+  "params": {
+   "wick_rule": "wick > body and wick > other wick",
+   "base": "body edge",
+   "search": "next trading day",
+   "target": "wick day's opposite extreme",
+   "max_hold": "10h",
+   "min_m1": 600
+  }
+ },
+ "params_source": {
+  "wick_rule": "threshold_fits: large wick / reversal candle = wick larger than body (crossover 1.0, grade A; TND1aTpnq5c 'the wick is larger than the body')",
+  "base": "declared-before-run: ambiguity 'body edge or open/close' -> body edge",
+  "search": "declared-before-run: refinement window not stated; the next session",
+  "target": "corpus: JABOO4LYNjQ targets 'prior session lows, daily lows' -> the wick day's low (declared-before-run)",
+  "max_hold": "phase3: 10 entry-TF bars (conjunction_preregistration 1.13) on H1",
+  "min_m1": "declared-before-run: stub-session filter as in the concept_lab rate example"
+ },
+ "n": 174,
+ "span": {
+  "start": "2016-01-11 12:00:00+00:00",
+  "end": "2026-07-15 17:00:00+00:00",
+  "years": 10.508
+ },
+ "avg_R": 0.11749025942828539,
+ "avg_R_gross": 0.15749025942828543,
+ "win_rate": 0.5747126436781609,
+ "pf": 1.317120679255288,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "n": 870,
+  "avg_R": 0.00017343234998611512,
+  "win_rate": 0.5298850574712644,
+  "pf": 1.0004693197944372,
+  "sd_R": 0.9610887089556304,
+  "exit_mix": {
+   "stop": 0.30344827586206896,
+   "target": 0.38850574712643676,
+   "time": 0.3080459770114943
+  },
+  "avg_R_gross": 0.040173432349986125,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": 0.11731682707829928,
+ "ci_lo": -0.053929927010259684,
+ "ci_hi": 0.2907654975197605,
+ "ci_method": "phase3_iid",
+ "p": 0.18215649430392797,
+ "halves": {
+  "H1": {
+   "n": 80,
+   "diff": 0.1755343851854002,
+   "ci_lo": -0.07031430972105986,
+   "ci_hi": 0.41311916190961545,
+   "ci_method": "iid",
+   "p": 0.1546424392171422,
+   "start": "2016-01-11 12:00:00+00:00",
+   "end": "2020-12-11 20:00:00+00:00"
+  },
+  "H2": {
+   "n": 94,
+   "diff": 0.06776996911480915,
+   "ci_lo": -0.19429874562354738,
+   "ci_hi": 0.31255676898567347,
+   "ci_method": "block",
+   "p": 0.60019468468803,
+   "start": "2021-01-12 20:00:00+00:00",
+   "end": "2026-07-15 17:00:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 40,
+   "diff": 0.017660297415924186,
+   "ci_lo": -0.29559496901935556,
+   "ci_hi": 0.36807411675062784,
+   "ci_method": "iid",
+   "p": 0.9169236149850633,
+   "start": "2016-01-11 12:00:00+00:00",
+   "end": "2018-07-20 06:00:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 48,
+   "diff": 0.17026574300102443,
+   "ci_lo": -0.13957736121960743,
+   "ci_hi": 0.5073391704238286,
+   "ci_method": "iid",
+   "p": 0.3022085719218654,
+   "start": "2018-09-03 11:00:00+00:00",
+   "end": "2021-04-08 05:00:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 44,
+   "diff": 0.15985474868318206,
+   "ci_lo": -0.27301073545539295,
+   "ci_hi": 0.5819698618766149,
+   "ci_method": "block",
+   "p": 0.46361669393029986,
+   "start": "2021-04-12 11:00:00+00:00",
+   "end": "2023-10-24 10:00:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 42,
+   "diff": 0.10715122402090296,
+   "ci_lo": -0.21385691835607742,
+   "ci_hi": 0.42805775879465574,
+   "ci_method": "block",
+   "p": 0.5128981658085138,
+   "start": "2024-01-10 16:00:00+00:00",
+   "end": "2026-07-15 17:00:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.24635491543006316,
+ "mde_threshold": 0.1,
+ "power_floor_n": 1057,
+ "verdict": "UNDERPOWERED",
+ "verdict_detail": "CI contains 0; MDE 0.2464 vs threshold 0.1000, effective n 174 (power floor n=1057, have 174)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 174,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 64.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 35,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "target_px",
+    "wick_day",
+    "eq_px",
+    "base_px"
+   ],
+   "ignored": [],
+   "lookback": "10D",
+   "recent": "1D",
+   "events_fp": "bfb7de0c2ee605e6",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "10h",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": null,
+  "entry_mode": "next_open",
+  "hold_basis": "clock",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "Stop at the wick EQ is the concept's own stop; entry is the H1 FVG refinement inside the near half. Target distance is often large relative to the stop, so many trades time out; the matched control shares stop and target distance.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/structure_guest_02a/daily-wick-as-balanced-price-range.py",
+ "runtime_sec": 0.58,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:23:13+00:00",
+ "n_events_in": 186,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 0,
+  "target_not_beyond_entry": 10,
+  "no_bars_in_hold": 2
+ },
+ "events_fp": "bfb7de0c2ee605e6",
+ "sd_R": 1.0559488682471103,
+ "exit_mix": {
+  "stop": 0.3218390804597701,
+  "target": 0.47126436781609193,
+  "time": 0.20689655172413793
+ },
+ "trades_per_year": 16.55901511203752,
+ "ci_components": {
+  "phase3_iid": [
+   -0.053929927010259684,
+   0.2907654975197605
+  ],
+  "day_block": [
+   -0.0453348127064364,
+   0.2846179686675876
+  ]
+ },
+ "diff_win": 0.04482758620689653,
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 174,
+  "n_clusters": null,
+  "n_eff": 174
+ },
+ "ties": {
+  "real_ambiguous": 0.0,
+  "control_ambiguous": 0.0011494252873563218,
+  "real_gap_stop": 0.0,
+  "control_gap_stop": 0.0034482758620689655,
+  "verdict_stop_first": "UNDERPOWERED"
+ },
+ "ctrl_overlap": 0.0022988505747126436,
+ "exposure_bars": {
+  "real_mean": 573.5229885057471,
+  "control_mean": 548.6402298850575,
+  "hold_basis": "clock"
+ },
+ "run_id": "0d52ca3d49434aa6a240141571af0aed",
+ "hyp_key": "415ca6d2a8b7080e"
+}

@@ -1,0 +1,263 @@
+{
+ "concept_id": "clean-day-criteria",
+ "reading": null,
+ "testable": true,
+ "test_type": "trade",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "daily = 18:00 NY trading day; 4H = forex grid; execution = UTC-aligned 15m bars",
+   "1. previous closed daily candle is a C2 closure in the direction (bull: low<prev low & close>prev low; mirror) -> today is candle 3",
+   "2. the 4H candle in progress (starting inside today) is a C4: 4H k-2 is a C2 and 4H k-1 closes beyond k-2's open in the direction (C3 Reading A)",
+   "3. not already expanded: the day's running high (bull) is still below the previous day high = the C2 day's extreme / the day's objective (mirror bear)",
+   "4. a 15m CISD (series_open, 2/2 swing, max_wait 3) in the direction confirms inside that 4H candle -> new protected swing",
+   "enter next M1 open; stop = protected swing; target = previous day high/low; require target >= 2R from the confirming close; hold to the daily candle close; first qualifying setup per trading day"
+  ],
+  "params": {
+   "exec_tf": "15min",
+   "level_rule": "series_open",
+   "max_wait": 3,
+   "swing": "2/2",
+   "c3_reading": "A (close beyond C2 open)",
+   "not_expanded": "prev-day extreme untouched",
+   "min_rr": 2.0,
+   "max_hold": "to daily close",
+   "one_per_day": true,
+   "grid4h": "forex",
+   "day_open_hour": 18
+  }
+ },
+ "params_source": {
+  "exec_tf": "corpus: i2HhHhWdaPQ 'Trade a C3 on the daily. Trade the C4 on the 4hour.' (daily / 4-hour / 15-minute stack)",
+  "level_rule": "method_spec: \u00a74.2 first-candle-open default",
+  "max_wait": "phase3: locked config max_wait=3 (\u00a74.2 1-3 candles)",
+  "swing": "method_spec: \u00a71.1 three-candle fractal; phase3 2/2",
+  "c3_reading": "method_spec: \u00a73.3 Reading A (this unit's Shorts)",
+  "not_expanded": "declared-before-run: the day's objective (previous-day extreme, concept execution.targets) not yet reached = move not spent",
+  "min_rr": "method_spec: \u00a75.3 2R is the floor; skip if not reachable",
+  "max_hold": "method_spec: \u00a75.5 time-based exit at the HTF candle close",
+  "one_per_day": "method_spec: \u00a75.5 one trade per day cap",
+  "grid4h": "session_window_fit: forex grid for gold",
+  "day_open_hour": "method_spec: \u00a71.4 18:00 canon"
+ },
+ "n": 174,
+ "span": {
+  "start": "2016-02-29 07:45:00+00:00",
+  "end": "2026-07-10 01:30:00+00:00",
+  "years": 10.357
+ },
+ "avg_R": 0.28758556896854026,
+ "avg_R_gross": 0.32758556896854024,
+ "win_rate": 0.3448275862068966,
+ "pf": 1.467439079529663,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "n": 870,
+  "avg_R": -0.06559489008379896,
+  "win_rate": 0.2885057471264368,
+  "pf": 0.9057995179077994,
+  "sd_R": 1.7381374849895055,
+  "exit_mix": {
+   "stop": 0.6505747126436782,
+   "target": 0.12528735632183907,
+   "time": 0.22413793103448276
+  },
+  "avg_R_gross": -0.025594890083798956,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": 0.3531804590523392,
+ "ci_lo": 0.031208426883459713,
+ "ci_hi": 0.6681021122021059,
+ "ci_method": "day_block",
+ "p": 0.02972458530232653,
+ "halves": {
+  "H1": {
+   "n": 86,
+   "diff": 0.4630576464647671,
+   "ci_lo": 0.05395100235616109,
+   "ci_hi": 0.8740313406469392,
+   "ci_method": "iid",
+   "p": 0.0268711883016183,
+   "start": "2016-02-29 07:45:00+00:00",
+   "end": "2020-11-17 19:15:00+00:00"
+  },
+  "H2": {
+   "n": 88,
+   "diff": 0.2458004804447393,
+   "ci_lo": -0.21709980187423494,
+   "ci_hi": 0.7221386087866045,
+   "ci_method": "iid",
+   "p": 0.30496105795180073,
+   "start": "2021-01-07 17:00:00+00:00",
+   "end": "2026-07-10 01:30:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 46,
+   "diff": 0.6380698179052922,
+   "ci_lo": 0.06475428116820078,
+   "ci_hi": 1.2360351365815687,
+   "ci_method": "iid",
+   "p": 0.03272593941730165,
+   "start": "2016-02-29 07:45:00+00:00",
+   "end": "2018-07-25 01:00:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 46,
+   "diff": 0.21868206513087116,
+   "ci_lo": -0.31551452306588473,
+   "ci_hi": 0.8347819460763962,
+   "ci_method": "iid",
+   "p": 0.4561418787837114,
+   "start": "2018-10-01 18:45:00+00:00",
+   "end": "2021-03-23 01:00:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 46,
+   "diff": 0.25056797212401466,
+   "ci_lo": -0.3579681530773155,
+   "ci_hi": 1.0047386848175441,
+   "ci_method": "iid",
+   "p": 0.47104642899892096,
+   "start": "2021-04-12 15:30:00+00:00",
+   "end": "2023-10-11 01:30:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 36,
+   "diff": 0.2921301816038567,
+   "ci_lo": -0.3782004695779228,
+   "ci_hi": 0.9914762108204652,
+   "ci_method": "iid",
+   "p": 0.4031222203753812,
+   "start": "2023-12-08 12:15:00+00:00",
+   "end": "2026-07-10 01:30:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.45518994108653005,
+ "mde_threshold": 0.1,
+ "power_floor_n": 3606,
+ "verdict": "UNDERPOWERED",
+ "verdict_detail": "CI excludes 0 in claimed direction but not powered: n=174, effective n=174, MDE=0.4552 vs 0.1000, floor 200; power floor n=3606",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 174,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 0.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 27,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "target_px",
+    "max_hold"
+   ],
+   "ignored": [],
+   "lookback": "20D",
+   "recent": "1D",
+   "events_fp": "b3bb804737b2bdbb",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "per-row column",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": null,
+  "entry_mode": "next_open",
+  "hold_basis": "clock",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "trade_test vs matched random entries (same stop/target distance, same per-row hold). BUG FIX + ONE RE-RUN: the first run (n=171, diff +0.469R [+0.138,+0.840], UNDERPOWERED) located the 4H/daily candle with start < t <= close, so a CISD closing exactly at a 4H close was checked against the candle that had just ended rather than the one the entry trades inside. Fixed to the candle AFTER the last closed 4H bar (the one the entry trades inside) and re-run once; the fix also had to avoid requiring that candle's bar to exist yet (probe).",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/model_own_02a/clean-day-criteria.py",
+ "runtime_sec": 0.85,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:16:47+00:00",
+ "n_events_in": 182,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 1,
+  "target_not_beyond_entry": 0,
+  "no_bars_in_hold": 7
+ },
+ "events_fp": "b3bb804737b2bdbb",
+ "sd_R": 2.0338413576361773,
+ "exit_mix": {
+  "stop": 0.5574712643678161,
+  "target": 0.1896551724137931,
+  "time": 0.25287356321839083
+ },
+ "trades_per_year": 16.799762093576526,
+ "ci_components": {
+  "phase3_iid": [
+   0.05779080511236447,
+   0.6849380984289305
+  ],
+  "day_block": [
+   0.031208426883459713,
+   0.6681021122021059
+  ]
+ },
+ "diff_win": 0.05632183908045979,
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 174,
+  "n_clusters": null,
+  "n_eff": 174
+ },
+ "ties": {
+  "real_ambiguous": 0.0,
+  "control_ambiguous": 0.0,
+  "real_gap_stop": 0.005747126436781609,
+  "control_gap_stop": 0.011494252873563218,
+  "verdict_stop_first": "UNDERPOWERED"
+ },
+ "ctrl_overlap": 0.0,
+ "exposure_bars": {
+  "real_mean": 619.2528735632184,
+  "control_mean": 613.3827586206896,
+  "hold_basis": "clock"
+ },
+ "run_id": "69b208b98e0e48698c762638dcc0f8b3",
+ "hyp_key": "d586b96b3b34a958"
+}

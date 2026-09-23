@@ -1,0 +1,180 @@
+{
+ "concept_id": "est-timezone-anchor",
+ "reading": "a",
+ "testable": true,
+ "test_type": "rate",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "T = 08:30 on the America/New_York clock, every weekday with data",
+   "outcome = summed M1 high-low over [T, T+15m) > over [T-15m, T); both blocks fully traded (15 consecutive M1 bars each) else dropped",
+   "null = same comparison at sample_times matched moments (+/-30d, 5 reps, same minute-of-hour grid), same completeness rule"
+  ],
+  "params": {
+   "level": "08:30",
+   "block_min": 15,
+   "weekdays_only": true,
+   "clock": "America/New_York"
+  }
+ },
+ "params_source": {
+  "level": "corpus: EYzP7c24AwM '8:30 is when the news embargo lifts or there's high impact news' / 'we don't really have the 930 open with Forex'",
+  "block_min": "declared-before-run: 15-minute blocks either side of the level",
+  "weekdays_only": "declared-before-run: Mon-Fri calendar dates (no Saturday session; Sunday 08:30 is closed)",
+  "clock": "corpus: JPVhmPZiLKY 'I'm always in New York local time'"
+ },
+ "n": 2682,
+ "span": {
+  "start": "2016-01-04 13:30:00+00:00",
+  "end": "2026-07-22 12:30:00+00:00",
+  "years": 10.543
+ },
+ "avg_R": null,
+ "avg_R_gross": null,
+ "win_rate": null,
+ "pf": null,
+ "observed_rate": 0.6592095451155854,
+ "null_rate": 0.5555431270196372,
+ "lift": 1.1866037271527325,
+ "control": {
+  "rate": 0.5555431270196372,
+  "reps": 5,
+  "kind": "null_fn x5"
+ },
+ "diff": 0.10116962392994333,
+ "ci_lo": 0.08030387770321117,
+ "ci_hi": 0.12855223092220275,
+ "ci_method": "phase3_block",
+ "p": 2.043426859806972e-16,
+ "halves": {
+  "H1": {
+   "n": 1256,
+   "diff": 0.10307855626326967,
+   "ci_lo": 0.07295149946921396,
+   "ci_hi": 0.133216560509553,
+   "ci_method": "block",
+   "p": 2.01789281078057e-11,
+   "start": "2016-01-04 13:30:00+00:00",
+   "end": "2020-12-31 13:30:00+00:00"
+  },
+  "H2": {
+   "n": 1426,
+   "diff": 0.1041841982234688,
+   "ci_lo": 0.06408280738662976,
+   "ci_hi": 0.14321353436185086,
+   "ci_method": "block",
+   "p": 2.4561968900645813e-07,
+   "start": "2021-01-04 13:30:00+00:00",
+   "end": "2026-07-22 12:30:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 665,
+   "diff": 0.1011027568922307,
+   "ci_lo": 0.05328132832080128,
+   "ci_hi": 0.14646240601503727,
+   "ci_method": "block",
+   "p": 2.107597542192871e-05,
+   "start": "2016-01-04 13:30:00+00:00",
+   "end": "2018-08-21 12:30:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 660,
+   "diff": 0.0982828282828283,
+   "ci_lo": 0.05671148989898954,
+   "ci_hi": 0.1385126262626259,
+   "ci_method": "block",
+   "p": 2.48040036108112e-06,
+   "start": "2018-08-22 12:30:00+00:00",
+   "end": "2021-04-09 12:30:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 683,
+   "diff": 0.10795510004880438,
+   "ci_lo": 0.050851634943874506,
+   "ci_hi": 0.16618411420204976,
+   "ci_method": "block",
+   "p": 0.00024332481691207429,
+   "start": "2021-04-12 12:30:00+00:00",
+   "end": "2023-12-01 13:30:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 674,
+   "diff": 0.10712166172106818,
+   "ci_lo": 0.053846439169136444,
+   "ci_hi": 0.15816394658753558,
+   "ci_method": "block",
+   "p": 5.6902867651065136e-05,
+   "start": "2023-12-04 13:30:00+00:00",
+   "end": "2026-07-22 12:30:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.034483251389573616,
+ "mde_threshold": 0.05,
+ "power_floor_n": 1276,
+ "verdict": "EDGE",
+ "verdict_detail": "CI excludes 0 in claimed direction; halves agree (H1 +0.1031, H2 +0.1042); powered",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 2688,
+  "min_slack_min": 0.0,
+  "passed": true,
+  "no_detector_declaration": "pure clock rule: a fixed wall-clock time on a stated timezone; no detector"
+ },
+ "settings": {
+  "reps": 5,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "mde_threshold": null,
+  "cluster": null,
+  "outcome_horizon": "1 days 00:00:00",
+  "null_kind": "null_fn x5"
+ },
+ "notes": "The concept is a clock convention; its decidable consequence tested here is that 08:30 on the stated clock is a real volatility event on gold. The DST question was already settled empirically (session_window_fit: the venue break resumes at 18:00 NY on 99.8% of 605 occasions DST-aware). Compare readings a vs b: they coincide in winter.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/time_own_01a/est-timezone-anchor.py",
+ "runtime_sec": 0.86,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:34:39+00:00",
+ "dropped": {
+  "nan_rows": 6
+ },
+ "null_kind": "null_fn x5",
+ "events_fp": "4e5d171acbc5c83c",
+ "predictors_probed": false,
+ "ci_components": {
+  "phase3_block": [
+   0.08030387770321117,
+   0.12855223092220275
+  ],
+  "day_block": [
+   0.08289678100920024,
+   0.12259554436987631
+  ]
+ },
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 2682,
+  "n_clusters": null,
+  "n_eff": 2682
+ },
+ "run_id": "acf000523153426f96ec8032ad43a930",
+ "hyp_key": "7da159f96247c908"
+}

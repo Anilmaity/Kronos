@@ -4,8 +4,11 @@ Builds `<vault>/50 Research/TTrades Library/` from the research folder:
   Playlists/    one note per playlist (16) - its videos in order
   Videos/       one note per video (443) - playlists, study unit, every concept citing it
   Study Units/  one note per unit (32) - the full study note, IDs turned into wikilinks
-  Concepts/     one note per concept (505), by category - every field of the YAML
-  Reports/      the written reports (meta/*.md, concepts/INDEX.md, RESUME.md, ...)
+  Concepts/     one note per concept (505), by category - every field of the YAML, plus a
+                "Campaign test (2026-09-23)" section and a `campaign_verdict` frontmatter field
+                from concept_campaign/concept_verdicts.csv
+  Reports/      the written reports (meta/*.md incl. the concept campaign report,
+                concepts/INDEX.md, RESUME.md, ...)
   TTrades Library.md - map of contents
 
 The output folder is owned by this script: it is deleted and rebuilt on every run, so
@@ -15,6 +18,7 @@ never hand-edit notes inside it. Transcripts are linked, not copied.
 """
 import argparse
 import collections
+import csv
 import glob
 import json
 import os
@@ -27,10 +31,16 @@ HERE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))  # research/
 OUT_NAME = "TTrades Library"
 MARKER = ".generated-by-export_obsidian"
 
+CAMPAIGN_REPORT = "meta/concept_campaign_2026-09-23.md"
+CAMPAIGN_CSV = "concept_campaign/concept_verdicts.csv"
 REPORT_FILES = [
-    "RESUME.md", "README.md", "concepts/INDEX.md", "concepts/_SCHEMA.md",
-    *sorted(os.path.relpath(p, HERE) for p in glob.glob(os.path.join(HERE, "meta", "*.md"))),
+    "RESUME.md", "README.md", "concepts/INDEX.md", "concepts/_SCHEMA.md", CAMPAIGN_REPORT,
+    *sorted(os.path.relpath(p, HERE) for p in glob.glob(os.path.join(HERE, "meta", "*.md"))
+            if os.path.relpath(p, HERE) != CAMPAIGN_REPORT),
 ]
+# concept-level campaign verdict: the most informative reading wins, after verification and deep dive
+CAMPAIGN_RANK = ["ARTEFACT", "DESCRIPTIVE_ONLY", "EDGE_CANDIDATE", "NEGATIVE", "NULL", "EDGE_REFUTED",
+                 "UNDERPOWERED", "UNTESTABLE"]
 SECTION_ORDER = [
     ("definition", "Definition"), ("timeframes", "Timeframes"),
     ("preconditions", "Preconditions"), ("detection_rules", "Detection rules"),
@@ -102,16 +112,18 @@ class Linker:
         self.targets = targets  # token -> note name
         self.files = files      # repo-relative .md path / basename -> note name
 
+    pipe = "|"  # "\\|" while rendering a table row, so the alias does not split the cell
+
     def _code(self, m):
         tok = m.group(1)
         note = self.targets.get(tok)
-        return f"[[{note}|{tok}]]" if note else m.group(0)
+        return f"[[{note}{self.pipe}{tok}]]" if note else m.group(0)
 
     def _mdlink(self, m):
         text, path, anchor = m.group(1), m.group(2), m.group(3) or ""
         key = os.path.normpath(path).lstrip("./")
         note = self.files.get(key) or self.files.get(os.path.basename(path))
-        return f"[[{note}{anchor}|{text}]]" if note else m.group(0)
+        return f"[[{note}{anchor}{self.pipe}{text}]]" if note else m.group(0)
 
     def __call__(self, text):
         out, fenced = [], False
@@ -119,6 +131,7 @@ class Linker:
             if line.lstrip().startswith("```"):
                 fenced = not fenced
             elif not fenced:
+                self.pipe = "\\|" if line.lstrip().startswith("|") else "|"
                 line = re.sub(r"(?<!\[\[)`([A-Za-z0-9_.-]+)`", self._code, line)
                 line = re.sub(r"\[([^\]]+)\]\((?!https?:)([^)#\s]+\.md)(#[^)]*)?\)", self._mdlink, line)
             out.append(line)
@@ -145,6 +158,24 @@ def main():
         d = yaml.safe_load(open(f))
         d["_file"] = os.path.relpath(f, HERE)
         concepts.append(d)
+
+    campaign = collections.defaultdict(list)  # concept id -> reading rows
+    with open(os.path.join(HERE, CAMPAIGN_CSV), encoding="utf-8") as fh:
+        for row in csv.DictReader(fh):
+            campaign[row["concept_id"]].append(row)
+
+    def reading_class(r):
+        if r["deepdive_label"]:
+            return r["deepdive_label"]
+        if r["verdict"] == "EDGE":
+            return "EDGE_CANDIDATE" if r["verified"] == "upheld" else "EDGE_REFUTED"
+        return r["verdict"]
+
+    def campaign_verdict(cid):
+        rows = campaign.get(cid)
+        if not rows:
+            return "not_tested"
+        return min((reading_class(r) for r in rows), key=CAMPAIGN_RANK.index)
 
     # ---- note names --------------------------------------------------------------
     videos = {}  # id -> {title, duration, url, playlists: [..]}
@@ -260,6 +291,47 @@ def main():
              link(note)]
         write(f"Study Units/{uid}.md", "\n".join(b))
 
+    report_note = rname.get(CAMPAIGN_REPORT, "Report - concept_campaign_2026-09-23")
+
+    def num(x, pct=False, nd=3):
+        if x in ("", None):
+            return "–"
+        v = float(x) * (100 if pct else 1)
+        return f"{v:+.{2 if pct else nd}f}"
+
+    def campaign_section(cid, cv):
+        rows = campaign.get(cid)
+        b = ["## Campaign test (2026-09-23)", ""]
+        if not rows:
+            b += ["_Not tested: psychology concepts were outside the 471-concept campaign roster._", ""]
+            return b
+        b += [f"Concept verdict **{cv}** — from [[{report_note}]] (one row per reading in "
+              f"`research/{CAMPAIGN_CSV}`).", "",
+              "| reading | test | verdict | n | diff [95% CI] | p | q_BH | Holm | verification | deep dive |",
+              "|---|---|---|---:|---|---:|---:|:---:|---|---|"]
+        for r in rows:
+            rate = r["test_type"] == "rate"
+            unit = "pp" if rate else ("R" if r["test_type"] in ("trade", "gate") else "")
+            diff = (f"{num(r['diff'], rate)} [{num(r['ci_lo'], rate)}, {num(r['ci_hi'], rate)}] {unit}"
+                    if r["diff"] not in ("", None) and r["ci_lo"] not in ("", None) else "–")
+            n = f"{int(float(r['n'])):,}" if r["n"] not in ("", None) else "–"
+            p = r["p"] or "–"
+            q = r["q_bh"] or "–"
+            holm = {"reject": "✓", "keep": "–"}.get(r["holm"], "–")
+            ver = r["verified"].replace("_", " ") or ("not sent" if r["verdict"] != "EDGE" else "")
+            b.append(f"| {r['reading'] or '–'} | {r['test_type']} | **{r['verdict']}** | {n} | {diff} | {p} | {q} | "
+                     f"{holm} | {ver} | {r['deepdive_label'] or '–'} |")
+        b.append("")
+        for r in rows:
+            b.append(f"- **{('reading ' + r['reading']) if r['reading'] else 'result'}:** {r['summary']}")
+            b.append(f"  - result `ClaudeTradingRD/research/{r['result_path']}` · script "
+                     f"`ClaudeTradingRD/research/{r['script']}`")
+        dd = os.path.join("concept_campaign", "deepdive", cid)
+        if os.path.isdir(os.path.join(HERE, dd)):
+            b.append(f"- **deep dive:** `ClaudeTradingRD/research/{dd}/`")
+        b.append("")
+        return b
+
     # ---- concepts ----------------------------------------------------------------
     for c in concepts:
         fm = {"tags": [TAG, "ttrades/concept", f"ttrades/{c['category']}", f"ttrades/{c['status']}"],
@@ -268,8 +340,13 @@ def main():
               "draft_count": c.get("draft_count"), "source": f"research/{c['_file']}"}
         if c.get("voice_playlist"):
             fm["voice_playlist"] = c["voice_playlist"]
+        cv = campaign_verdict(c["id"])
+        fm["campaign_verdict"] = cv
+        fm["tags"].append(f"ttrades/campaign/{cv.lower().replace('_', '-')}")
         b = [frontmatter(fm), f"# {c['name']}", "",
-             f"`{c['id']}` · **{c['category']}** · status **{c['status']}** · voice **{c.get('voice')}**", ""]
+             f"`{c['id']}` · **{c['category']}** · status **{c['status']}** · voice **{c.get('voice')}**"
+             f" · campaign **{cv}**", ""]
+        b += campaign_section(c["id"], cv)
         for key, title in SECTION_ORDER:
             val = c.get(key)
             if val in (None, [], {}, ""):
@@ -326,13 +403,28 @@ def main():
          f"| concepts | {len(concepts)} — " + " · ".join(f"{k} {v}" for k, v in st.most_common()) + " |",
          "| voice | " + " · ".join(f"{k} {v}" for k, v in vo.most_common()) + " |", "",
          "> [!important] Phase 2 changed the headline — read [[Report - RESUME]] before acting on any finding.", "",
+         f"> [!warning] Phase 4 (2026-09-23): all {len(campaign)} campaign concepts were tested one at a time — "
+         f"none is tradeable. See [[{report_note}]].", "",
          "## Start here", "", "- [[Report - RESUME]] — project state, the authority",
+         f"- [[{report_note}]] — the 471-concept campaign: every verdict, verification and deep dive",
          "- [[Report - ttrades_method_spec]] — the method as buildable rules",
          "- [[Report - concepts INDEX]] — all 505 concepts in one table", "",
          "## Playlists", ""]
     for p in sorted(playlists, key=lambda p: -p["video_count"]):
         b.append(f"- [[{pname[p['title']]}]] — {p['video_count']} videos")
-    b += ["", "## Study units", ""]
+    cvs = collections.Counter(campaign_verdict(c["id"]) for c in concepts)
+    b += ["", "## Campaign verdicts (2026-09-23)", "",
+          "Concept-level verdict after two-lens verification, BH over 864 hypotheses and the deep dives "
+          f"(frontmatter `campaign_verdict`, tag `ttrades/campaign/...`). Detail: [[{report_note}]].", "",
+          "| campaign_verdict | concepts |", "|---|---:|"]
+    b += [f"| {k} | {cvs[k]} |" for k in CAMPAIGN_RANK + ["not_tested"] if cvs[k]]
+    b.append("")
+    for k in ("ARTEFACT", "DESCRIPTIVE_ONLY", "EDGE_CANDIDATE"):
+        xs = sorted((c for c in concepts if campaign_verdict(c["id"]) == k), key=lambda c: cname[c["id"]])
+        if xs:
+            b.append(f"**{k}** ({len(xs)}): " + " · ".join(f"[[{cname[c['id']]}]]" for c in xs))
+            b.append("")
+    b += ["## Study units", ""]
     for u in units:
         b.append(f"- [[{u['unit_id']}]] — {u['playlist']} ({u['batch']}/{u['of']}), {u['n_videos']} videos, "
                  f"{len(unit_concepts[u['unit_id']])} concepts")

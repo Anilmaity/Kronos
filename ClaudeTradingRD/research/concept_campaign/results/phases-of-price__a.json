@@ -1,0 +1,280 @@
+{
+ "concept_id": "phases-of-price",
+ "reading": "a",
+ "testable": true,
+ "test_type": "gate",
+ "claim": "-",
+ "operationalization": {
+  "rules": [
+   "18:00-NY daily candles; stub sessions (<600 M1) dropped",
+   "expansion day = previous-candle continuation closure (takes prior high/low and closes beyond it)",
+   "baseline: every expansion day d -> trade d's direction at the next session open; stop = EQ of d; target = d's extreme in the trade direction; max hold 23h of trading bars",
+   "gate: d, d-1 and d-2 are all expansion closures in the same direction (3+ days of expansion)",
+   "claim '-': continuation trades after 3+ expansion days are worse than other continuation trades"
+  ],
+  "params": {
+   "tf": "1D",
+   "day_open": "18:00 NY",
+   "stub_min_m1": 600,
+   "streak": 3,
+   "stop": "EQ of expansion day",
+   "target": "expansion day extreme",
+   "max_hold": "23h",
+   "hold_basis": "bars",
+   "grid4h": "n/a (1D)"
+  }
+ },
+ "params_source": {
+  "tf": "corpus: iEaMbuFZb24 'I use the daily candles to tell me what is happening'",
+  "day_open": "method_spec: \u00a71.4 daily open 18:00 canon [P]",
+  "stub_min_m1": "declared-before-run: README trap 6 stub sessions",
+  "streak": "corpus: AArNO58yBiw 'three days of expansion lower so we can get a new phase'",
+  "stop": "method_spec: \u00a72.4 continuation branch respects the EQ of the previous day",
+  "target": "method_spec: \u00a72.3 continuation closure -> next candle reaches the candle's extreme",
+  "max_hold": "declared-before-run: one trading session (next-candle read)",
+  "hold_basis": "declared-before-run: trading-time hold so Friday decisions are not emptied by the weekend (trap 7)",
+  "grid4h": "declared-before-run: not used"
+ },
+ "n": 124,
+ "span": {
+  "start": "2016-01-06 23:00:00+00:00",
+  "end": "2026-07-21 22:00:00+00:00",
+  "years": 10.535
+ },
+ "avg_R": -0.024737316559890296,
+ "avg_R_gross": 0.015262683440109719,
+ "win_rate": 0.6129032258064516,
+ "pf": 0.9351483293885829,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "avg_R_gated": -0.0785091026600718,
+  "avg_R_complement": -0.03551298598102748,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": 0.05228342430669503,
+ "ci_lo": -0.1698652424809397,
+ "ci_hi": 0.2661633426403406,
+ "ci_method": "phase3_block",
+ "p": 0.6383323667602543,
+ "halves": {
+  "H1": {
+   "n": 552,
+   "diff": 0.2095143703268993,
+   "ci_lo": -0.07750700672910532,
+   "ci_hi": 0.5431637369656629,
+   "ci_method": "iid",
+   "p": 0.18576367026591425,
+   "start": "2016-01-06 23:00:00+00:00",
+   "end": "2020-12-30 23:00:00+00:00",
+   "n_gated": 54
+  },
+  "H2": {
+   "n": 598,
+   "diff": -0.06112102174675443,
+   "ci_lo": -0.31188339306934243,
+   "ci_hi": 0.1975786124579676,
+   "ci_method": "iid",
+   "p": 0.6381546864809633,
+   "start": "2021-01-04 23:00:00+00:00",
+   "end": "2026-07-21 22:00:00+00:00",
+   "n_gated": 70
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 286,
+   "diff": -0.04713607602513982,
+   "ci_lo": -0.4259595679635774,
+   "ci_hi": 0.40291497312731056,
+   "ci_method": "iid",
+   "p": 0.8236002947253528,
+   "start": "2016-01-06 23:00:00+00:00",
+   "end": "2018-08-21 22:00:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 293,
+   "diff": 0.41444322758450974,
+   "ci_lo": 0.03037083159623403,
+   "ci_hi": 0.85880577368991,
+   "ci_method": "iid",
+   "p": 0.049875264654057685,
+   "start": "2018-08-23 22:00:00+00:00",
+   "end": "2021-04-08 22:00:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 290,
+   "diff": -0.3328536346776953,
+   "ci_lo": -0.8048651291098577,
+   "ci_hi": 0.0726329692189027,
+   "ci_method": "iid",
+   "p": 0.13703810561330565,
+   "start": "2021-04-13 22:00:00+00:00",
+   "end": "2023-12-01 23:00:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 281,
+   "diff": 0.23545676368527632,
+   "ci_lo": -0.05790755138598679,
+   "ci_hi": 0.5475401340996432,
+   "ci_method": "iid",
+   "p": 0.12739681768400402,
+   "start": "2023-12-04 23:00:00+00:00",
+   "end": "2026-07-21 22:00:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.3116310155816643,
+ "mde_threshold": 0.1,
+ "power_floor_n": 1205,
+ "verdict": "UNDERPOWERED",
+ "verdict_detail": "CI contains 0; MDE 0.3116 vs threshold 0.1000, effective n 124 (power floor n=1205, have 124)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 1150,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "gate_mask_checked": true,
+  "entry_delay_min": {
+   "median": 3.0,
+   "max": 4325.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 214,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "target_px",
+    "three_exp"
+   ],
+   "ignored": [],
+   "lookback": "60D",
+   "recent": "3D",
+   "events_fp": "d76f27b8a4908954",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "23h",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": null,
+  "entry_mode": "next_open",
+  "hold_basis": "bars",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "Reading a: the 3-days-of-expansion exhaustion rule as a gate on the mechanical daily continuation book.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/structure_own_01a/phases-of-price.py",
+ "runtime_sec": 0.9,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:22:25+00:00",
+ "n_events_in": 1296,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 88,
+  "target_not_beyond_entry": 58,
+  "no_bars_in_hold": 0
+ },
+ "n_complement": 1026,
+ "gate_firing_rate": 0.10782608695652174,
+ "events_fp": "d76f27b8a4908954",
+ "mask_fp": "989010bb0fe089b1",
+ "mask_col": "three_exp",
+ "exit_mix": {
+  "stop": 0.3629032258064516,
+  "target": 0.6129032258064516,
+  "time": 0.024193548387096774
+ },
+ "gated_vs_own_control": {
+  "diff": 0.053771786100181504,
+  "ci_lo": -0.14042933332972365,
+  "ci_hi": 0.23859699813235374,
+  "p": 0.578133500999449
+ },
+ "complement": {
+  "n": 1026,
+  "avg_R": -0.03402462418754098,
+  "win_rate": 0.5984405458089669,
+  "pf": 0.9096541483981556,
+  "sd_R": 1.1675553581647202,
+  "exit_mix": {
+   "stop": 0.34990253411306044,
+   "target": 0.6062378167641326,
+   "time": 0.043859649122807015
+  },
+  "vs_own_control": {
+   "diff": 0.0014883617934864993,
+   "ci_lo": -0.08855219944092933,
+   "ci_hi": 0.08696918070716142,
+   "p": 0.9734834711617302
+  }
+ },
+ "ci_components": {
+  "phase3_block": [
+   -0.1698652424809397,
+   0.2661633426403406
+  ],
+  "day_block": [
+   -0.14765581285301949,
+   0.2641369541454896
+  ]
+ },
+ "diff_meaning": "mean(R-ctrl | gated) - mean(R-ctrl | complement)",
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_eff_gated": 124,
+  "n_eff_complement": 1026,
+  "n_eff": 124
+ },
+ "ties": {
+  "real_ambiguous": 0.0026086956521739132,
+  "control_ambiguous": 0.0005217391304347826,
+  "real_gap_stop": 0.008695652173913044,
+  "control_gap_stop": 0.00817391304347826,
+  "gated_excess": 0.0,
+  "complement_excess": 0.0023391812865497076,
+  "verdict_stop_first": "UNDERPOWERED"
+ },
+ "ctrl_overlap": 0.006434782608695652,
+ "exposure_bars": {
+  "real_mean": 1380.0,
+  "control_mean": 1379.8135652173912,
+  "hold_basis": "bars"
+ },
+ "run_id": "e95523fac9974361a4bd39063e408085",
+ "hyp_key": "f43664c37d2c8c47"
+}

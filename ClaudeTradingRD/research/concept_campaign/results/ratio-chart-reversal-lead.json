@@ -1,0 +1,257 @@
+{
+ "concept_id": "ratio-chart-reversal-lead",
+ "reading": null,
+ "testable": true,
+ "test_type": "trade",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "ratio line = gold 1h close / XAG_USD 1h close (OANDA) on shared, consecutive bar starts",
+   "ratio high reversal at bar j: ratio close at j-1 above the highest ratio close of the 20 bars before j-1, ratio close at j back below it -> long gold; mirror (ratio low swept and reclaimed) -> short gold",
+   "decide at bar j close, enter next M1 open, stop 1.0 x ATR14(1h gold), 1R, exit after 10h"
+  ],
+  "params": {
+   "tf": "1h",
+   "correlate": "XAG_USD H1",
+   "ratio": "XAU/XAG closes",
+   "range_lookback": 20,
+   "stop_atr": 1.0,
+   "atr_n": 14,
+   "rr": 1.0,
+   "max_hold": "10h",
+   "ctrl_tod_tol_min": 30,
+   "direction_map": "ratio high reversal -> long numerator"
+  }
+ },
+ "params_source": {
+  "tf": "declared-before-run: silver is held only at H1 (yaml ltf lists 1H first)",
+  "correlate": "method_spec: \u00a72.6 silver is the method's sanctioned gold correlate; campaign holds no ES/NQ",
+  "ratio": "corpus: c_mh19e3mhI 'reversals on the es and Q comparison chart' (numerator/denominator comparison)",
+  "range_lookback": "phase3: lookback 20 knob",
+  "stop_atr": "declared-before-run: same book as smt-divergence (liquidity_own_02a), 'smt without an smt'",
+  "atr_n": "declared-before-run: smt-divergence book",
+  "rr": "declared-before-run: smt-divergence book (1R = does the direction come true)",
+  "max_hold": "phase3: 10 entry-TF bars (\u00a71.13)",
+  "ctrl_tod_tol_min": "declared-before-run: README trap 9",
+  "direction_map": "corpus: c_mh19e3mhI example - ratio high at 10:00, instruments' low at 10:05"
+ },
+ "n": 3643,
+ "span": {
+  "start": "2016-01-04 22:00:00+00:00",
+  "end": "2026-07-22 15:00:00+00:00",
+  "years": 10.543
+ },
+ "avg_R": -0.032963490128701596,
+ "avg_R_gross": 0.007036509871298421,
+ "win_rate": 0.5039802360691737,
+ "pf": 0.9314875605722853,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "n": 17675,
+  "avg_R": -0.038429732665492565,
+  "win_rate": 0.4947666195190948,
+  "pf": 0.9186665002441916,
+  "sd_R": 0.9404928542914518,
+  "exit_mix": {
+   "stop": 0.4293069306930693,
+   "target": 0.43224893917963225,
+   "time": 0.13844413012729845
+  },
+  "avg_R_gross": 0.0015702673345074597,
+  "reps": 5,
+  "fill_rate": 0.9703541037606368
+ },
+ "diff": 0.005466242536790969,
+ "ci_lo": -0.024962063202426797,
+ "ci_hi": 0.04407410531349649,
+ "ci_method": "phase3_block",
+ "p": 0.7562738606153472,
+ "halves": {
+  "H1": {
+   "n": 1630,
+   "diff": 0.03120817738588933,
+   "ci_lo": -0.024554907709781384,
+   "ci_hi": 0.08326733008814047,
+   "ci_method": "block",
+   "p": 0.25654801748926565,
+   "start": "2016-01-04 22:00:00+00:00",
+   "end": "2020-12-31 20:00:00+00:00"
+  },
+  "H2": {
+   "n": 2013,
+   "diff": -0.008774629918626528,
+   "ci_lo": -0.052863880399002854,
+   "ci_hi": 0.03715622092515356,
+   "ci_method": "iid",
+   "p": 0.7023934802264632,
+   "start": "2021-01-04 04:00:00+00:00",
+   "end": "2026-07-22 15:00:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 864,
+   "diff": 0.04140990413544963,
+   "ci_lo": -0.0394792746948218,
+   "ci_hi": 0.12683843983195148,
+   "ci_method": "block",
+   "p": 0.3290711584990597,
+   "start": "2016-01-04 22:00:00+00:00",
+   "end": "2018-08-22 09:00:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 860,
+   "diff": 0.026385880257772457,
+   "ci_lo": -0.042702257714204724,
+   "ci_hi": 0.09543651133837093,
+   "ci_method": "iid",
+   "p": 0.4540107486712244,
+   "start": "2018-08-24 17:00:00+00:00",
+   "end": "2021-04-09 04:00:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 978,
+   "diff": 0.017174500577845322,
+   "ci_lo": -0.04785716761017188,
+   "ci_hi": 0.0826075621371552,
+   "ci_method": "iid",
+   "p": 0.6058383215183347,
+   "start": "2021-04-12 09:00:00+00:00",
+   "end": "2023-12-01 18:00:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 941,
+   "diff": -0.04483047182167592,
+   "ci_lo": -0.11470533484799131,
+   "ci_hi": 0.023790859466939245,
+   "ci_method": "iid",
+   "p": 0.20449115383814456,
+   "start": "2023-12-04 21:00:00+00:00",
+   "end": "2026-07-22 15:00:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.04934036905057515,
+ "mde_threshold": 0.1,
+ "power_floor_n": 887,
+ "verdict": "NULL",
+ "verdict_detail": "CI contains 0; powered (MDE 0.0493 <= 0.1000)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 3643,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 300.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 299,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_dist",
+    "rr"
+   ],
+   "ignored": [],
+   "lookback": "20D",
+   "recent": "1D",
+   "events_fp": "c6f53b07e57e97a6",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "10h",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": 30,
+  "entry_mode": "next_open",
+  "hold_basis": "clock",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "Transfer test: ES/NQ -> XAU/XAG (the only correlate held, H1 only), so the claimed minutes-scale lead cannot be resolved; what is tested is whether a failed sweep on the ratio line predicts the instrument's reversal direction over the next 10h against a matched random entry. The lead/lag distribution itself is not measured.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/structure_own_05a/ratio-chart-reversal-lead.py",
+ "runtime_sec": 2.44,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:30:14+00:00",
+ "n_events_in": 3666,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 0,
+  "target_not_beyond_entry": 0,
+  "no_bars_in_hold": 23
+ },
+ "events_fp": "c6f53b07e57e97a6",
+ "sd_R": 0.9545846499799762,
+ "exit_mix": {
+  "stop": 0.44304144935492723,
+  "target": 0.44770793302223444,
+  "time": 0.10925061762283832
+ },
+ "trades_per_year": 345.5221371072449,
+ "ci_components": {
+  "phase3_block": [
+   -0.024962063202426797,
+   0.04407410531349649
+  ],
+  "day_block": [
+   -0.022864850039151667,
+   0.04585519124824027
+  ]
+ },
+ "diff_win": 0.009213616550078962,
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 2113,
+  "n_clusters": null,
+  "n_eff": 2113
+ },
+ "ties": {
+  "real_ambiguous": 0.0,
+  "control_ambiguous": 0.0008486562942008486,
+  "real_gap_stop": 0.005764479824320615,
+  "control_gap_stop": 0.005940594059405941,
+  "verdict_stop_first": "NULL"
+ },
+ "ctrl_overlap": 0.03173974540311174,
+ "exposure_bars": {
+  "real_mean": 536.5424101015647,
+  "control_mean": 534.1294483734088,
+  "hold_basis": "clock"
+ },
+ "run_id": "8c3d0ccea6994071b4952337f77b5c77",
+ "hyp_key": "fd895a30e3826975"
+}

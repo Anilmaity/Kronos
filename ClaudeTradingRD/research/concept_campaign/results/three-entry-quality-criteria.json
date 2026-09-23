@@ -1,0 +1,285 @@
+{
+ "concept_id": "three-entry-quality-criteria",
+ "reading": null,
+ "testable": true,
+ "test_type": "gate",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "baseline book: phase-3 bare 15m CISD (series_open, 2/2 swings, max_wait 3, min_series 1), decide at confirming bar close, enter next M1 open, stop = protected swing, 2R, hold 150min",
+   "C1 targets not hit: long -> today's running high (M1 closed by t) < PDH; short -> running low > PDL",
+   "C2 range not created: today's running high-low < 0.5 x mean range of last 5 completed days (>=600 M1 bars)",
+   "C3 near daily open: |confirm close - today's 18:00 NY open| <= 0.25 x that expected range",
+   "gate: score = C1+C2+C3 >= 2 (3/3 good, 2/3 acceptable) vs <= 1 (poor / low probability)"
+  ],
+  "params": {
+   "tf": "15min",
+   "n_days": 5,
+   "bulk": 0.5,
+   "near_open": 0.25,
+   "min_score": 2,
+   "max_hold": "150min",
+   "day_open_hour": 18,
+   "target_ref": "gold's own PDH/PDL",
+   "min_day_m1": 600
+  }
+ },
+ "params_source": {
+  "tf": "phase3: primary entry TF 15m (concept ltf 15m/5m)",
+  "max_hold": "phase3: meta/conjunction_preregistration.md \u00a71.8-1.13 (locked primary config) \u2014 10 entry-TF bars",
+  "n_days": "declared-before-run: 'the last several daily candles' -> 5 (one trading week)",
+  "bulk": "declared-before-run: 'bulk of the expected range' -> half",
+  "near_open": "declared-before-run: 'around the daily open', no tolerance in corpus -> a quarter of the expected range",
+  "min_score": "corpus: 0AYGNc9czYc grading '3/3 good, 2/3 acceptable, 1/3 poor, 0/3 low probability'",
+  "day_open_hour": "session_window_fit: settled 18:00 NY daily roll",
+  "target_ref": "declared-before-run: correlated-asset targets replaced by gold's own PDH/PDL (single instrument)",
+  "min_day_m1": "declared-before-run: skip stub days (trap 6)"
+ },
+ "n": 19763,
+ "span": {
+  "start": "2016-01-10 23:15:00+00:00",
+  "end": "2026-07-23 02:15:00+00:00",
+  "years": 10.53
+ },
+ "avg_R": -0.03557869032463334,
+ "avg_R_gross": 0.00442130967536669,
+ "win_rate": 0.4161311541769974,
+ "pf": 0.924019508090097,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "avg_R_gated": -0.03929733376001572,
+  "avg_R_complement": -0.0391427323233115,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": 0.021024536706785005,
+ "ci_lo": -0.006676319901014733,
+ "ci_hi": 0.04568425498611951,
+ "ci_method": "day_block",
+ "p": 0.11549131175135693,
+ "halves": {
+  "H1": {
+   "n": 15582,
+   "diff": 0.018715407581856327,
+   "ci_lo": -0.01867705861318728,
+   "ci_hi": 0.055612991416917425,
+   "ci_method": "block",
+   "p": 0.3233868597945981,
+   "start": "2016-01-10 23:15:00+00:00",
+   "end": "2020-12-31 19:15:00+00:00",
+   "n_gated": 9437
+  },
+  "H2": {
+   "n": 17092,
+   "diff": 0.02310667936964145,
+   "ci_lo": -0.011897480663186718,
+   "ci_hi": 0.060597134292604826,
+   "ci_method": "block",
+   "p": 0.21150999625113376,
+   "start": "2021-01-03 23:45:00+00:00",
+   "end": "2026-07-23 02:15:00+00:00",
+   "n_gated": 10326
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 8143,
+   "diff": -0.020185793225521824,
+   "ci_lo": -0.07178150982907089,
+   "ci_hi": 0.02663210887825228,
+   "ci_method": "block",
+   "p": 0.42138343900348196,
+   "start": "2016-01-10 23:15:00+00:00",
+   "end": "2018-08-22 08:45:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 8264,
+   "diff": 0.05454995931449501,
+   "ci_lo": 0.003945539918419305,
+   "ci_hi": 0.10490004540069395,
+   "ci_method": "block",
+   "p": 0.034166452891551576,
+   "start": "2018-08-22 11:45:00+00:00",
+   "end": "2021-04-12 08:15:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 8162,
+   "diff": 0.03882014191239036,
+   "ci_lo": -0.013668145594023967,
+   "ci_hi": 0.09480074198956251,
+   "ci_method": "block",
+   "p": 0.16064347458432687,
+   "start": "2021-04-12 09:30:00+00:00",
+   "end": "2023-12-01 17:00:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 8105,
+   "diff": 0.010347702210734791,
+   "ci_lo": -0.040139115325303835,
+   "ci_hi": 0.06218993078982,
+   "ci_method": "block",
+   "p": 0.6918170750658846,
+   "start": "2023-12-04 04:00:00+00:00",
+   "end": "2026-07-23 02:15:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.03742226928534708,
+ "mde_threshold": 0.1,
+ "power_floor_n": 1809,
+ "verdict": "NULL",
+ "verdict_detail": "CI contains 0; powered (MDE 0.0374 <= 0.1000)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 32674,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "gate_mask_checked": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 64.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 2435,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "rr",
+    "confirm_close",
+    "c1",
+    "c2",
+    "c3",
+    "score",
+    "quality"
+   ],
+   "ignored": [],
+   "lookback": "30D",
+   "recent": "1D",
+   "events_fp": "b417afa052fbd376",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "150min",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": null,
+  "entry_mode": "next_open",
+  "hold_basis": "clock",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "Filter concept tested as a gate on the phase-3 15m CISD book (the directional idea). Correlated-asset targets are replaced by gold's own previous-day extremes. Rows lacking any daily context are dropped before scoring (never-evaluated != failed).",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/entry_own_03a/three-entry-quality-criteria.py",
+ "runtime_sec": 7.62,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:09:13+00:00",
+ "n_events_in": 32757,
+ "dropped": {
+  "no_bar_after_decision": 1,
+  "stop_not_beyond_entry": 10,
+  "target_not_beyond_entry": 0,
+  "no_bars_in_hold": 72
+ },
+ "n_complement": 12911,
+ "gate_firing_rate": 0.6048540123645713,
+ "events_fp": "b417afa052fbd376",
+ "mask_fp": "aecaf56409047c43",
+ "mask_col": "quality",
+ "exit_mix": {
+  "stop": 0.3827860142690887,
+  "target": 0.13914891463846582,
+  "time": 0.4780650710924455
+ },
+ "gated_vs_own_control": {
+  "diff": 0.0037186434353823836,
+  "ci_lo": -0.014353911048392603,
+  "ci_hi": 0.0213898631240696,
+  "p": 0.6834101728113611
+ },
+ "complement": {
+  "n": 12911,
+  "avg_R": -0.056448625594714114,
+  "win_rate": 0.41592440554565874,
+  "pf": 0.8635751466655408,
+  "sd_R": 0.9473784732459154,
+  "exit_mix": {
+   "stop": 0.30222291069630547,
+   "target": 0.10161877468825033,
+   "time": 0.5961583146154442
+  },
+  "vs_own_control": {
+   "diff": -0.01730589327140261,
+   "ci_lo": -0.0360977353643565,
+   "ci_hi": 0.0007989223949990968,
+   "p": 0.06597539509845686
+  }
+ },
+ "ci_components": {
+  "phase3_block": [
+   -0.0032400956822237707,
+   0.046898820725524384
+  ],
+  "day_block": [
+   -0.006676319901014733,
+   0.04568425498611951
+  ]
+ },
+ "diff_meaning": "mean(R-ctrl | gated) - mean(R-ctrl | complement)",
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_eff_gated": 2681,
+  "n_eff_complement": 2465,
+  "n_eff": 2465
+ },
+ "ties": {
+  "real_ambiguous": 0.0005202913631633715,
+  "control_ambiguous": 0.0003366591173410051,
+  "real_gap_stop": 0.008355267184917671,
+  "control_gap_stop": 0.006647487298769664,
+  "gated_excess": 0.00033395739513231794,
+  "complement_excess": -4.647200061962666e-05,
+  "verdict_stop_first": "NULL"
+ },
+ "ctrl_overlap": 0.065985186998837,
+ "exposure_bars": {
+  "real_mean": 143.26387953724674,
+  "control_mean": 142.95607516679928,
+  "hold_basis": "clock"
+ },
+ "run_id": "2dc505eadbf44b70ab68e5aa64a5a6c0",
+ "hyp_key": "3c8205b266651e24"
+}

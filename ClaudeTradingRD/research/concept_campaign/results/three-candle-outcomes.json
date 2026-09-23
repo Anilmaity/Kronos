@@ -1,0 +1,182 @@
+{
+ "concept_id": "three-candle-outcomes",
+ "reading": null,
+ "testable": true,
+ "test_type": "rate",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "at each NY trading-day close (18:00 NY roll) take that day's high (PDH) and low (PDL)",
+   "hit = the next session trades to PDH or PDL (M1 high >= PDH or M1 low <= PDL) within the next session's M1-bar count (= the next candle is NOT an inside/consolidation candle)",
+   "null = the same two distances above/below the first price at matched random moments (+/-30d), same bar count; hit if either is touched"
+  ],
+  "params": {
+   "tf": "1D",
+   "day_open_hour": 18,
+   "min_session_bars": 600,
+   "take_out": "wick (any trade through)",
+   "horizon": "next session, M1 bars"
+  }
+ },
+ "params_source": {
+  "tf": "corpus: YESqIoA7Wyg 'there are three ways a Candlestick can form' (daily/weekly/monthly; daily is the first listed)",
+  "day_open_hour": "session_window_fit: settled 18:00 NY daily roll",
+  "min_session_bars": "declared-before-run: stub-session filter as in concept_lab example_rate",
+  "take_out": "declared-before-run: yaml ambiguity (wick vs close) - the classification's own rules use high>PH / low<PL, i.e. a wick",
+  "horizon": "declared-before-run: one candle of the same timeframe"
+ },
+ "n": 2717,
+ "span": {
+  "start": "2016-01-04 23:00:00+00:00",
+  "end": "2026-07-21 22:00:00+00:00",
+  "years": 10.541
+ },
+ "avg_R": null,
+ "avg_R_gross": null,
+ "win_rate": null,
+ "pf": null,
+ "observed_rate": 0.8465218991534781,
+ "null_rate": 0.8643356643356642,
+ "lift": 0.9793902231306423,
+ "control": {
+  "rate": 0.8643356643356642,
+  "reps": 5,
+  "kind": "null_fn x5"
+ },
+ "diff": -0.017813765182186247,
+ "ci_lo": -0.0324622745675377,
+ "ci_hi": -0.00272175193227832,
+ "ci_method": "phase3_iid",
+ "p": 0.018878048984104157,
+ "halves": {
+  "H1": {
+   "n": 1290,
+   "diff": -0.020155038759689936,
+   "ci_lo": -0.043414728682170486,
+   "ci_hi": 0.0021744186046511035,
+   "ci_method": "iid",
+   "p": 0.0830944659373464,
+   "start": "2016-01-04 23:00:00+00:00",
+   "end": "2020-12-31 23:00:00+00:00"
+  },
+  "H2": {
+   "n": 1427,
+   "diff": -0.015697266993693115,
+   "ci_lo": -0.037291520672740074,
+   "ci_hi": 0.004355290819901887,
+   "ci_method": "iid",
+   "p": 0.139548138763992,
+   "start": "2021-01-04 23:00:00+00:00",
+   "end": "2026-07-21 22:00:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 680,
+   "diff": -0.022647058823529354,
+   "ci_lo": -0.053529411764705825,
+   "ci_hi": 0.007948529411764911,
+   "ci_method": "iid",
+   "p": 0.14873580480916915,
+   "start": "2016-01-04 23:00:00+00:00",
+   "end": "2018-08-21 22:00:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 679,
+   "diff": -0.017083946980854248,
+   "ci_lo": -0.04890279823269519,
+   "ci_hi": 0.015022091310751166,
+   "ci_method": "iid",
+   "p": 0.29482201572268824,
+   "start": "2018-08-22 22:00:00+00:00",
+   "end": "2021-04-09 22:00:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 685,
+   "diff": -0.014014598540145973,
+   "ci_lo": -0.043525547445255365,
+   "ci_hi": 0.01521897810218994,
+   "ci_method": "iid",
+   "p": 0.3496998257034126,
+   "start": "2021-04-12 22:00:00+00:00",
+   "end": "2023-12-01 23:00:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 673,
+   "diff": -0.01753343239227334,
+   "ci_lo": -0.05171619613670127,
+   "ci_hi": 0.014561664190193113,
+   "ci_method": "iid",
+   "p": 0.2997383083214558,
+   "start": "2023-12-04 23:00:00+00:00",
+   "end": "2026-07-21 22:00:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.021255646049392524,
+ "mde_threshold": 0.033916083916083944,
+ "power_floor_n": 1068,
+ "verdict": "NEGATIVE",
+ "verdict_detail": "CI excludes 0 against the claim (+)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 2717,
+  "min_slack_min": 0.0,
+  "passed": true,
+  "no_detector_declaration": "pure level rule: the prior trading day's high and low from bars('1D') at that bar's close_time; no detector"
+ },
+ "settings": {
+  "reps": 5,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "mde_threshold": null,
+  "cluster": null,
+  "outcome_horizon": "1 days 00:00:00",
+  "null_kind": "null_fn x5"
+ },
+ "notes": "The three-way classification is exhaustive by construction and carries no probability; what is tested is the use it is put to - previous-candle extremes as the candidate draws - against an equal-distance null (either side).",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/structure_own_05a/three-candle-outcomes.py",
+ "runtime_sec": 1.08,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:25:10+00:00",
+ "dropped": {
+  "nan_rows": 0
+ },
+ "null_kind": "null_fn x5",
+ "events_fp": "70d9947fc26f653e",
+ "predictors_probed": false,
+ "ci_components": {
+  "phase3_iid": [
+   -0.0324622745675377,
+   -0.00272175193227832
+  ],
+  "day_block": [
+   -0.03113912403385568,
+   -0.00419212366580285
+  ]
+ },
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 2717,
+  "n_clusters": null,
+  "n_eff": 2717
+ },
+ "run_id": "aeaf51dfd90b4a96b195aef5bbda7d1f",
+ "hyp_key": "0d5c48a4f481d112"
+}

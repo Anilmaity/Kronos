@@ -1,0 +1,205 @@
+{
+ "concept_id": "daily-phases-of-price-delivery",
+ "reading": null,
+ "testable": true,
+ "test_type": "rate",
+ "claim": "-",
+ "operationalization": {
+  "rules": [
+   "daily candles (18:00 NY roll), stub sessions < 600 M1 bars skipped",
+   "expansion day: range >= 1.5 x mean range of the 20 days ending two days earlier, and opposing_run/|body| <= 1.0; direction = sign(close-open)",
+   "event = expansion day; hit = the next trading day is a same-direction expansion day",
+   "null = next day of a random day within +/-21 trading days is an expansion day in the event's direction (5 seeded reps)"
+  ],
+  "params": {
+   "r_mult": 1.5,
+   "bench_n": 20,
+   "wick_body": 1.0,
+   "min_m1": 600,
+   "null_win_days": 21
+  }
+ },
+ "params_source": {
+  "r_mult": "threshold_fits: displacement magnitude r=1.5 (range vs pre-range, grade B)",
+  "bench_n": "threshold_fits: trailing 20-window convention (displacement_fire_rate trailing median of 20)",
+  "wick_body": "threshold_fits: small wick / expansion candle opposing_run/|body| <= 1.0 (grade A; 'Candles that support expansion will have a small wick and a large body')",
+  "min_m1": "declared-before-run: stub-session filter as in the concept_lab rate example",
+  "null_win_days": "declared-before-run: +/-21 trading days ~ the locked +/-30 calendar day control window"
+ },
+ "n": 280,
+ "span": {
+  "start": "2016-02-05 23:00:00+00:00",
+  "end": "2026-06-17 22:00:00+00:00",
+  "years": 10.36
+ },
+ "avg_R": null,
+ "avg_R_gross": null,
+ "win_rate": null,
+ "pf": null,
+ "observed_rate": 0.11428571428571428,
+ "null_rate": 0.07857142857142857,
+ "lift": 1.4545454545454546,
+ "control": {
+  "rate": 0.07857142857142857,
+  "reps": 5,
+  "kind": "null_fn x5"
+ },
+ "diff": 0.03571428571428571,
+ "ci_lo": -0.0035714285714284616,
+ "ci_hi": 0.07642857142857153,
+ "ci_method": "day_block_2d",
+ "p": 0.08012386028269602,
+ "halves": {
+  "H1": {
+   "n": 134,
+   "diff": 0.019402985074626858,
+   "ci_lo": -0.034328358208955245,
+   "ci_hi": 0.07313432835820897,
+   "ci_method": "block",
+   "p": 0.47909134276574694,
+   "start": "2016-02-05 23:00:00+00:00",
+   "end": "2020-12-09 23:00:00+00:00"
+  },
+  "H2": {
+   "n": 146,
+   "diff": 0.0506849315068493,
+   "ci_lo": -0.008219178082191789,
+   "ci_hi": 0.10825342465753421,
+   "ci_method": "iid",
+   "p": 0.08804161901906717,
+   "start": "2021-01-04 23:00:00+00:00",
+   "end": "2026-06-17 22:00:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 66,
+   "diff": -0.012121212121212123,
+   "ci_lo": -0.06363636363636364,
+   "ci_hi": 0.04545454545454544,
+   "ci_method": "iid",
+   "p": 0.6631650283901364,
+   "start": "2016-02-05 23:00:00+00:00",
+   "end": "2018-08-15 22:00:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 74,
+   "diff": 0.04594594594594595,
+   "ci_lo": -0.032432432432432434,
+   "ci_hi": 0.13243243243243244,
+   "ci_method": "iid",
+   "p": 0.27464021035826724,
+   "start": "2018-08-24 22:00:00+00:00",
+   "end": "2021-02-26 23:00:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 69,
+   "diff": 0.05217391304347825,
+   "ci_lo": -0.02905797101449276,
+   "ci_hi": 0.14210144927536225,
+   "ci_method": "iid",
+   "p": 0.23212703593649123,
+   "start": "2021-04-15 22:00:00+00:00",
+   "end": "2023-12-01 23:00:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 71,
+   "diff": 0.05352112676056338,
+   "ci_lo": -0.02253521126760566,
+   "ci_hi": 0.14091549295774639,
+   "ci_method": "iid",
+   "p": 0.19929557303625953,
+   "start": "2023-12-13 23:00:00+00:00",
+   "end": "2026-06-17 22:00:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.057176254257731256,
+ "mde_threshold": 0.019642857142857142,
+ "power_floor_n": 2373,
+ "verdict": "UNDERPOWERED",
+ "verdict_detail": "CI contains 0; MDE 0.0572 vs threshold 0.0196, effective n 280 (power floor n=2373, have 280)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 280,
+  "min_slack_min": 0.0,
+  "passed": true,
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 34,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction"
+   ],
+   "ignored": [],
+   "lookback": "60D",
+   "recent": "1D",
+   "events_fp": "c3c16a2e9cb374bc",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "reps": 5,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "mde_threshold": null,
+  "cluster": null,
+  "outcome_horizon": "2 days 00:00:00",
+  "null_kind": "null_fn x5"
+ },
+ "notes": "Benchmark skips the prior day so an expansion day does not raise its successor's threshold (that would bias toward the claim). Only the back-to-back frequency claim is tested; the weekly 'opening days' trade rules need an undefined real-time phase classifier.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/structure_guest_02a/daily-phases-of-price-delivery.py",
+ "runtime_sec": 0.38,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:22:22+00:00",
+ "dropped": {
+  "nan_rows": 0
+ },
+ "null_kind": "null_fn x5",
+ "events_fp": "c3c16a2e9cb374bc",
+ "predictors_probed": true,
+ "ci_components": {
+  "phase3_iid": [
+   -0.0028571428571428636,
+   0.07642857142857143
+  ],
+  "day_block": [
+   -0.0014285714285712943,
+   0.07787500000000004
+  ],
+  "day_block_2d": [
+   -0.0035714285714284616,
+   0.07642857142857153
+  ]
+ },
+ "dependence": {
+  "day_block_mean_days": 2,
+  "n_days": 280,
+  "n_clusters": null,
+  "n_eff": 280
+ },
+ "run_id": "e73d9c8b84564ba397631d130f0b4e52",
+ "hyp_key": "19d452855bdd7772"
+}

@@ -1,0 +1,258 @@
+{
+ "concept_id": "new-period-open-new-participants",
+ "reading": null,
+ "testable": true,
+ "test_type": "trade",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "period = trading day (18:00 NY open); first bars = first 1h candle (18:00-19:00 NY); decide at its close",
+   "previous-period direction = prior trading-day colour (close vs open); new direction = first-hour close vs day open",
+   "skip if the first hour is an inside bar (a 1) of the preceding 1h candle; skip prior-day stubs (<600 M1) or zero-colour candles",
+   "trade the new-period direction (flip = reversal candidate, same colour = confirmation); enter next M1 open",
+   "stop 0.5 x prior-day range; no target; exit after 21h (16:00 NY, same session)"
+  ],
+  "params": {
+   "period": "1D (18:00 NY)",
+   "first_bars": "first 1h candle",
+   "inside_check": "vs preceding 1h candle",
+   "stop": "0.5 x prior-day range",
+   "target": "none",
+   "max_hold": "21h",
+   "min_day_m1": 600,
+   "min_hour_m1": 30,
+   "hold_basis": "bars"
+  }
+ },
+ "params_source": {
+  "period": "corpus: 1XWyy6Q-_8Q 'every single time frame that opens' - yaml: for day trading the relevant opens are the hour and the day",
+  "first_bars": "declared-before-run: 'how quickly after the open' is unbounded (yaml ambiguity); first hourly candle = the LTF named in the yaml",
+  "inside_check": "declared-before-run: yaml invalidation 'prints a 1', applied on the hour fractal ('every hour is like a new day', 1XWyy6Q-_8Q)",
+  "stop": "declared-before-run: no stop given; half the prior-day range (ATR units)",
+  "target": "declared-before-run: no target given; hold for the rest of the period",
+  "max_hold": "declared-before-run: to 16:00 NY, before the 17:00 halt",
+  "min_day_m1": "declared-before-run: stub-session guard (README trap 6)",
+  "min_hour_m1": "declared-before-run: stub-hour guard",
+  "hold_basis": "declared-before-run: README trap 7 - first clock-basis run showed exposure_bars real 1243 vs control 1090 (>10%), so rerun on trading-time basis as the README prescribes"
+ },
+ "n": 2364,
+ "span": {
+  "start": "2016-01-05 00:00:00+00:00",
+  "end": "2026-07-22 23:00:00+00:00",
+  "years": 10.543
+ },
+ "avg_R": -0.027367762122167228,
+ "avg_R_gross": 0.012632237877832788,
+ "win_rate": 0.4010152284263959,
+ "pf": 0.9455756837724534,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "n": 11820,
+  "avg_R": -0.02732431291607858,
+  "win_rate": 0.4194585448392555,
+  "pf": 0.9443817923512622,
+  "sd_R": 1.2599402559635322,
+  "exit_mix": {
+   "stop": 0.41607445008460237,
+   "target": 0.0,
+   "time": 0.5839255499153976
+  },
+  "avg_R_gross": 0.012675687083921434,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": -4.344920608864711e-05,
+ "ci_lo": -0.05695139750410602,
+ "ci_hi": 0.05488452709420107,
+ "ci_method": "day_block",
+ "p": 0.9987848818819752,
+ "halves": {
+  "H1": {
+   "n": 1154,
+   "diff": -0.017580231022797724,
+   "ci_lo": -0.09526905198082349,
+   "ci_hi": 0.0624977331771055,
+   "ci_method": "iid",
+   "p": 0.662253143842476,
+   "start": "2016-01-05 00:00:00+00:00",
+   "end": "2020-12-31 00:00:00+00:00"
+  },
+  "H2": {
+   "n": 1210,
+   "diff": 0.016681712956293414,
+   "ci_lo": -0.06037062338202053,
+   "ci_hi": 0.09684134631866943,
+   "ci_method": "iid",
+   "p": 0.6774522002471841,
+   "start": "2021-01-04 00:00:00+00:00",
+   "end": "2026-07-22 23:00:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 617,
+   "diff": 0.024550039887048278,
+   "ci_lo": -0.07635407391890542,
+   "ci_hi": 0.14411602729157497,
+   "ci_method": "iid",
+   "p": 0.6624766656515085,
+   "start": "2016-01-05 00:00:00+00:00",
+   "end": "2018-08-20 23:00:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 602,
+   "diff": -0.05556567928194442,
+   "ci_lo": -0.16320069223960829,
+   "ci_hi": 0.055842589690126274,
+   "ci_method": "iid",
+   "p": 0.32003522767444714,
+   "start": "2018-08-23 23:00:00+00:00",
+   "end": "2021-04-11 23:00:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 560,
+   "diff": 0.05137649889955342,
+   "ci_lo": -0.06365217341331822,
+   "ci_hi": 0.17002881268704487,
+   "ci_method": "block",
+   "p": 0.3887836824717531,
+   "start": "2021-04-13 23:00:00+00:00",
+   "end": "2023-12-01 00:00:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 585,
+   "diff": -0.018069041007729436,
+   "ci_lo": -0.12927754683739565,
+   "ci_hi": 0.10248391655437482,
+   "ci_method": "iid",
+   "p": 0.7598992434480436,
+   "start": "2023-12-04 00:00:00+00:00",
+   "end": "2026-07-22 23:00:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.07992949074976587,
+ "mde_threshold": 0.1,
+ "power_floor_n": 1511,
+ "verdict": "NULL",
+ "verdict_detail": "CI contains 0; powered (MDE 0.0799 <= 0.1000)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 2364,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 2825.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 189,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_dist",
+    "rr",
+    "flip"
+   ],
+   "ignored": [],
+   "lookback": "20D",
+   "recent": "1D",
+   "events_fp": "8e342af5d7b4fe27",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "21h",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": null,
+  "entry_mode": "next_open",
+  "hold_basis": "bars",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "Rerun once with hold_basis=bars per README trap 7 (clock run: NULL, diff +0.004 [-0.052,+0.061], exposure 1243 vs 1090). flip share 0.509. Hourly/monthly/quarterly opens not separately tested; day open is the day-trading reading.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/time_guest_01b/new-period-open-new-participants.py",
+ "runtime_sec": 2.39,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:26:32+00:00",
+ "n_events_in": 2364,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 0,
+  "target_not_beyond_entry": 0,
+  "no_bars_in_hold": 0
+ },
+ "events_fp": "8e342af5d7b4fe27",
+ "sd_R": 1.2649098650996455,
+ "exit_mix": {
+  "stop": 0.4242808798646362,
+  "target": 0.0,
+  "time": 0.5757191201353637
+ },
+ "trades_per_year": 224.21474941573618,
+ "ci_components": {
+  "phase3_iid": [
+   -0.052587475029102215,
+   0.055659523926599994
+  ],
+  "day_block": [
+   -0.05695139750410602,
+   0.05488452709420107
+  ]
+ },
+ "diff_win": -0.018443316412859567,
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 2364,
+  "n_clusters": null,
+  "n_eff": 2364
+ },
+ "ties": {
+  "real_ambiguous": 0.0,
+  "control_ambiguous": 0.0,
+  "real_gap_stop": 0.004653130287648054,
+  "control_gap_stop": 0.005922165820642978,
+  "verdict_stop_first": "NULL"
+ },
+ "ctrl_overlap": 0.020558375634517765,
+ "exposure_bars": {
+  "real_mean": 1259.5972927241962,
+  "control_mean": 1259.8998307952622,
+  "hold_basis": "bars"
+ },
+ "run_id": "b794feca987d46beaed7310bbe051675",
+ "hyp_key": "546d1eb9d69e7017"
+}

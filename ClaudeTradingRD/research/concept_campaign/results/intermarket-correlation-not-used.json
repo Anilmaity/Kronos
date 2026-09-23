@@ -1,0 +1,272 @@
+{
+ "concept_id": "intermarket-correlation-not-used",
+ "reading": null,
+ "testable": true,
+ "test_type": "gate",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "baseline: bare 1h CISD (series_open level, 2/2 swings, max_wait 3), stop at the protected swing, 2R, 10h hold",
+   "dollar proxy: EURUSD inverted; daily candles on the 17:00 NY roll from H1, complete days only (>= 18 H1 bars), read as-of close",
+   "gate: gold trade direction == direction implied by the last completed EURUSD day (EURUSD up -> gold long); doji / missing days dropped",
+   "claim '+' = the dollar filter helps (mainstream ICT); the concept predicts NULL"
+  ],
+  "params": {
+   "baseline": "cisd_1h_mw3",
+   "rr": 2.0,
+   "max_hold": "10h",
+   "proxy": "EURUSD inverted",
+   "dollar_tf": "1D (17:00 NY roll)"
+  }
+ },
+ "params_source": {
+  "baseline": "phase3: rung-0 1h CISD locked config (conjunction_preregistration 1.8-1.13)",
+  "rr": "phase3: 2R primary target",
+  "max_hold": "phase3: 10 entry-TF bars",
+  "proxy": "declared-before-run: no DXY series in the campaign data; EURUSD (~57% of DXY) inverted, per fetch_correlated.py",
+  "dollar_tf": "declared-before-run: he rejects the dollar as a DAILY-bias input ('do not derive bias from DXY against gold'); last completed day"
+ },
+ "n": 3969,
+ "span": {
+  "start": "2016-01-04 15:00:00+00:00",
+  "end": "2026-07-22 19:00:00+00:00",
+  "years": 10.546
+ },
+ "avg_R": -0.023512671514010743,
+ "avg_R_gross": 0.016487328485989276,
+ "win_rate": 0.41572184429327286,
+ "pf": 0.9461608629467071,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "avg_R_gated": -0.03925046009552751,
+  "avg_R_complement": -0.032420725763715644,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": -0.002737541758746024,
+ "ci_lo": -0.05739505281914808,
+ "ci_hi": 0.053594758476893586,
+ "ci_method": "day_block",
+ "p": 0.9229771484173288,
+ "halves": {
+  "H1": {
+   "n": 3800,
+   "diff": -0.006435961408275528,
+   "ci_lo": -0.08220783610123342,
+   "ci_hi": 0.06983642731932861,
+   "ci_method": "block",
+   "p": 0.8682130697212244,
+   "start": "2016-01-04 15:00:00+00:00",
+   "end": "2020-12-31 05:00:00+00:00",
+   "n_gated": 1900
+  },
+  "H2": {
+   "n": 4189,
+   "diff": 0.0005406587529182497,
+   "ci_lo": -0.06736234325226029,
+   "ci_hi": 0.07227330937275747,
+   "ci_method": "block",
+   "p": 0.9878904390650934,
+   "start": "2021-01-04 00:00:00+00:00",
+   "end": "2026-07-22 19:00:00+00:00",
+   "n_gated": 2069
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 1976,
+   "diff": -0.038195352209165846,
+   "ci_lo": -0.14063960133950518,
+   "ci_hi": 0.0724374716007094,
+   "ci_method": "iid",
+   "p": 0.4822609486270091,
+   "start": "2016-01-04 15:00:00+00:00",
+   "end": "2018-08-22 11:00:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 2029,
+   "diff": 0.01790426093687043,
+   "ci_lo": -0.08013771162244845,
+   "ci_hi": 0.11790920893125606,
+   "ci_method": "block",
+   "p": 0.7230558385008075,
+   "start": "2018-08-22 16:00:00+00:00",
+   "end": "2021-04-12 05:00:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 2064,
+   "diff": 0.056856329287204826,
+   "ci_lo": -0.041361971799423886,
+   "ci_hi": 0.15494149811286684,
+   "ci_method": "block",
+   "p": 0.2562296122795988,
+   "start": "2021-04-12 10:00:00+00:00",
+   "end": "2023-12-01 16:00:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 1920,
+   "diff": -0.051090339052193096,
+   "ci_lo": -0.14870608143777755,
+   "ci_hi": 0.050929216431702194,
+   "ci_method": "block",
+   "p": 0.31577326591351734,
+   "start": "2023-12-04 09:00:00+00:00",
+   "end": "2026-07-22 19:00:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.07932477088350115,
+ "mde_threshold": 0.1,
+ "power_floor_n": 2498,
+ "verdict": "NULL",
+ "verdict_detail": "CI contains 0; powered (MDE 0.0793 <= 0.1000)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 7989,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "gate_mask_checked": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 300.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 591,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "rr",
+    "usd_avail",
+    "agree"
+   ],
+   "ignored": [],
+   "lookback": "20D",
+   "recent": "1D",
+   "events_fp": "ee07ffc2a94a2f16",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "10h",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": null,
+  "entry_mode": "next_open",
+  "hold_basis": "clock",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "Concept asserts no usable dollar-gold correlation, so NULL supports it and EDGE/NEGATIVE contradict it. Proxy caveat: EURUSD-inverted, not DXY. The weekly dollar gate was already tested under dollar-gate-for-fx (reading a).",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/structure_own_05b/intermarket-correlation-not-used.py",
+ "runtime_sec": 7.2,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:28:31+00:00",
+ "n_events_in": 8028,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 1,
+  "target_not_beyond_entry": 0,
+  "no_bars_in_hold": 38
+ },
+ "n_complement": 4020,
+ "gate_firing_rate": 0.49680811115283513,
+ "events_fp": "ee07ffc2a94a2f16",
+ "mask_fp": "b53e2d16806f4674",
+ "mask_col": "agree",
+ "exit_mix": {
+  "stop": 0.3439153439153439,
+  "target": 0.1363063744016125,
+  "time": 0.5197782816830436
+ },
+ "gated_vs_own_control": {
+  "diff": 0.015737788581516768,
+  "ci_lo": -0.017504690171637374,
+  "ci_hi": 0.051866994618714725,
+  "p": 0.37385148451532585
+ },
+ "complement": {
+  "n": 4020,
+  "avg_R": -0.013945395423452868,
+  "win_rate": 0.42786069651741293,
+  "pf": 0.9681904384974975,
+  "sd_R": 1.035863486847697,
+  "exit_mix": {
+   "stop": 0.35124378109452736,
+   "target": 0.13482587064676618,
+   "time": 0.5139303482587064
+  },
+  "vs_own_control": {
+   "diff": 0.018475330340262774,
+   "ci_lo": -0.017313567904455148,
+   "ci_hi": 0.052318932911030416,
+   "p": 0.29831211988232215
+  }
+ },
+ "ci_components": {
+  "phase3_block": [
+   -0.05301077475467749,
+   0.048909891109555036
+  ],
+  "day_block": [
+   -0.05739505281914808,
+   0.053594758476893586
+  ]
+ },
+ "diff_meaning": "mean(R-ctrl | gated) - mean(R-ctrl | complement)",
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_eff_gated": 2275,
+  "n_eff_complement": 2281,
+  "n_eff": 2275
+ },
+ "ties": {
+  "real_ambiguous": 0.00025034422330704717,
+  "control_ambiguous": 0.00010013768932281887,
+  "real_gap_stop": 0.003755163349605708,
+  "control_gap_stop": 0.004080610839904869,
+  "gated_excess": 0.0005039052658100278,
+  "complement_excess": -0.00019900497512437813,
+  "verdict_stop_first": "NULL"
+ },
+ "ctrl_overlap": 0.06559018650644637,
+ "exposure_bars": {
+  "real_mean": 549.6531480786081,
+  "control_mean": 548.025810489423,
+  "hold_basis": "clock"
+ },
+ "run_id": "80c4ee7f98cf442d944582cd962308ee",
+ "hyp_key": "d63bc597d65267e9"
+}

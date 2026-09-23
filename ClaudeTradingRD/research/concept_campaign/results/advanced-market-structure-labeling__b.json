@@ -1,0 +1,249 @@
+{
+ "concept_id": "advanced-market-structure-labeling",
+ "reading": "b",
+ "testable": true,
+ "test_type": "trade",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "5min bars; STH/STL = strict 3-bar swing (high[i] > both neighbours; mirror)",
+   "ITH = STH whose previous and next STH are both lower (ITL mirror: both higher)",
+   "confirmed at the close of the bar after the right-hand STH (that STH is itself confirmed only then); ITH not traded through before the decision",
+   "decide at that close, enter next M1 open AWAY from the ITH/ITL (short off an ITH, long off an ITL), stop = the ITH/ITL extreme, target 2R, exit after 50min",
+   "reading b: the ITH bar must SWEEP the previous STH (high above it, close back below it; mirror for lows)"
+  ],
+  "params": {
+   "tf": "5min",
+   "swing": "3-bar strict (1/1)",
+   "rr": 2.0,
+   "max_hold": "50min",
+   "sweep": "close back inside the swept STH"
+  }
+ },
+ "params_source": {
+  "tf": "corpus: advanced-market-structure-labeling.yaml timeframes ltf 5m; 'Asia highs swept, London up-close candle order block, 5-minute execution'",
+  "swing": "corpus: yaml detection_rules 'Short-term low = a low with a higher low immediately either side'",
+  "rr": "corpus: propulsion/structure trades target 2R; phase3: meta/conjunction_preregistration.md \u00a71.8-1.13 (locked config)",
+  "max_hold": "phase3: 10 entry-TF bars (\u00a71.13) -> 50 min on 5m",
+  "sweep": "corpus: yaml definition 'He explicitly declines an earlier entry because the highs there were failure swings rather than sweeps'"
+ },
+ "n": 39854,
+ "span": {
+  "start": "2016-01-04 02:10:00+00:00",
+  "end": "2026-07-23 02:20:00+00:00",
+  "years": 10.549
+ },
+ "avg_R": -0.0320580528644772,
+ "avg_R_gross": 0.007941947135522823,
+ "win_rate": 0.4184774426657299,
+ "pf": 0.9297175005777799,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "n": 199270,
+  "avg_R": -0.04035650650580715,
+  "win_rate": 0.41231996788277214,
+  "pf": 0.9123543637816555,
+  "sd_R": 1.0563712415719047,
+  "exit_mix": {
+   "stop": 0.3802479048527124,
+   "target": 0.14634415617002058,
+   "time": 0.473407938977267
+  },
+  "avg_R_gross": -0.0003565065058071344,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": 0.008298453641329952,
+ "ci_lo": -0.003157958878807123,
+ "ci_hi": 0.019484425978141293,
+ "ci_method": "phase3_iid",
+ "p": 0.1508154777377811,
+ "halves": {
+  "H1": {
+   "n": 19727,
+   "diff": 0.012169032884709705,
+   "ci_lo": -0.002683853453537066,
+   "ci_hi": 0.027304331884525475,
+   "ci_method": "block",
+   "p": 0.11168066346858427,
+   "start": "2016-01-04 02:10:00+00:00",
+   "end": "2020-12-31 17:30:00+00:00"
+  },
+  "H2": {
+   "n": 20127,
+   "diff": 0.004504797520986533,
+   "ci_lo": -0.011781518695876927,
+   "ci_hi": 0.02054082667809766,
+   "ci_method": "iid",
+   "p": 0.5848430519111634,
+   "start": "2021-01-04 03:15:00+00:00",
+   "end": "2026-07-23 02:20:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 11022,
+   "diff": 0.020282116430669222,
+   "ci_lo": -0.0010259005772932281,
+   "ci_hi": 0.04324326473639764,
+   "ci_method": "iid",
+   "p": 0.07250524080652057,
+   "start": "2016-01-04 02:10:00+00:00",
+   "end": "2018-08-22 10:45:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 9717,
+   "diff": 0.003735283409097727,
+   "ci_lo": -0.020537044296747357,
+   "ci_hi": 0.026573925937433233,
+   "ci_method": "iid",
+   "p": 0.7559534366379119,
+   "start": "2018-08-22 13:00:00+00:00",
+   "end": "2021-04-12 07:45:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 9506,
+   "diff": 0.0069290310699571395,
+   "ci_lo": -0.01642511042949232,
+   "ci_hi": 0.03065832962733395,
+   "ci_method": "iid",
+   "p": 0.5640232769419304,
+   "start": "2021-04-12 10:45:00+00:00",
+   "end": "2023-12-01 17:35:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 9609,
+   "diff": 0.000521798926580587,
+   "ci_lo": -0.02172339567240582,
+   "ci_hi": 0.024427107243842994,
+   "ci_method": "iid",
+   "p": 0.9646489162698225,
+   "start": "2023-12-04 00:20:00+00:00",
+   "end": "2026-07-23 02:20:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.016182584419778587,
+ "mde_threshold": 0.1,
+ "power_floor_n": 1044,
+ "verdict": "NULL",
+ "verdict_detail": "CI contains 0; powered (MDE 0.0162 <= 0.1000)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 39854,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 6.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 2896,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "rr"
+   ],
+   "ignored": [],
+   "lookback": "5D",
+   "recent": "1D",
+   "events_fp": "10b1499d508983f7",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "50min",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": null,
+  "entry_mode": "next_open",
+  "hold_basis": "clock",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "Long-term (HTF-reaction) points and the 'rebalanced' intermediate-term variant are not tested; the ITH-stop trade is the operational use the corpus narrates.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/structure_own_03a/advanced-market-structure-labeling.py",
+ "runtime_sec": 4.41,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:23:28+00:00",
+ "n_events_in": 39978,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 21,
+  "target_not_beyond_entry": 0,
+  "no_bars_in_hold": 103
+ },
+ "events_fp": "10b1499d508983f7",
+ "sd_R": 1.047239413465702,
+ "exit_mix": {
+  "stop": 0.3667135042906609,
+  "target": 0.13659858483464646,
+  "time": 0.4966879108746926
+ },
+ "trades_per_year": 3778.0102517518817,
+ "ci_components": {
+  "phase3_iid": [
+   -0.003157958878807123,
+   0.019484425978141293
+  ],
+  "day_block": [
+   -0.0018737300663614772,
+   0.018910466416568173
+  ]
+ },
+ "diff_win": 0.00615747478295775,
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 2720,
+  "n_clusters": null,
+  "n_eff": 2720
+ },
+ "ties": {
+  "real_ambiguous": 0.000953480202740001,
+  "control_ambiguous": 0.0027450193205198975,
+  "real_gap_stop": 0.012746524815576855,
+  "control_gap_stop": 0.009715461434234957,
+  "verdict_stop_first": "NULL"
+ },
+ "ctrl_overlap": 0.026727555577859188,
+ "exposure_bars": {
+  "real_mean": 48.65346012947258,
+  "control_mean": 48.69986952376173,
+  "hold_basis": "clock"
+ },
+ "run_id": "a61a46f86bc04c4eba748a25b4fb2b9e",
+ "hyp_key": "86c9e7151ed41beb"
+}

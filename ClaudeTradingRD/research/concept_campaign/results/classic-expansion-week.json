@@ -1,0 +1,262 @@
+{
+ "concept_id": "classic-expansion-week",
+ "reading": null,
+ "testable": true,
+ "test_type": "trade",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "daily candles on the 18:00 NY roll (DST-aware); stub days (<50% of median M1 count) dropped",
+   "candidate = Monday or Tuesday session that is a daily C2 closure (bullish: low<prev low, close>prev low; bearish mirrored) and is the week's extreme so far",
+   "an hourly CISD (close through the first open of the opposing series into the day's extreme, anywhere inside the daily candle) in the same direction; two-sided -> the side with the CISD, both -> skip",
+   "enter at the first M1 open after the candidate day closes (C3 open); stop at the candidate's extreme; target 2R; hold to Friday 17:00 NY (trading-minute hold, hold_basis='bars')"
+  ],
+  "params": {
+   "days": "Mon,Tue",
+   "rr": 2.0,
+   "cisd_scope": "range",
+   "cisd_level_rule": "series_open",
+   "day_open_hour": 18,
+   "min_coverage": 0.5,
+   "exit": "Friday 17:00 NY",
+   "hold_basis": "bars",
+   "ctrl_tod_tol_min": 30
+  }
+ },
+ "params_source": {
+  "days": "corpus: Qt7Ek4keMzs 'We want to see the weekly candle open low then reach for its high' \u2014 method_spec \u00a72.5 weekly profiles: Classic Expansion extreme forms Monday or Tuesday",
+  "rr": "method_spec: \u00a75.3 '2R is the floor'",
+  "cisd_scope": "method_spec: \u00a72.4 [P] scope default 'range' (detectors.bias default)",
+  "cisd_level_rule": "method_spec: \u00a74.2 'carry first-candle-open as the sensible default'",
+  "day_open_hour": "session_window_fit: settled 18:00 NY daily roll / method_spec \u00a71.4",
+  "min_coverage": "declared-before-run: drop stub sessions (README trap 6)",
+  "exit": "corpus: Qt7Ek4keMzs \u2014 classic-expansion definition 'Friday then caps off the weekly range'; trade C3 and C4",
+  "hold_basis": "declared-before-run: week-end exit measured in trading minutes so the control's exposure matches (README trap 7)",
+  "ctrl_tod_tol_min": "declared-before-run: every entry sits at the 18:00 reopen; hold the NY clock fixed (README trap 9)"
+ },
+ "n": 335,
+ "span": {
+  "start": "2016-01-19 23:00:00+00:00",
+  "end": "2026-07-14 22:00:00+00:00",
+  "years": 10.48
+ },
+ "avg_R": -0.11140647917910623,
+ "avg_R_gross": -0.07140647917910622,
+ "win_rate": 0.3522388059701492,
+ "pf": 0.818488417689288,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "n": 1080,
+  "avg_R": -0.1262615488240228,
+  "win_rate": 0.35555555555555557,
+  "pf": 0.7919364616555877,
+  "sd_R": 1.2018224866160083,
+  "exit_mix": {
+   "stop": 0.5564814814814815,
+   "target": 0.19537037037037036,
+   "time": 0.24814814814814815
+  },
+  "avg_R_gross": -0.08626154882402275,
+  "reps": 5,
+  "fill_rate": 0.6447761194029851
+ },
+ "diff": 0.014855069644916563,
+ "ci_lo": -0.1329777452608673,
+ "ci_hi": 0.20940731617958977,
+ "ci_method": "cluster",
+ "p": 0.8649519256635937,
+ "halves": {
+  "H1": {
+   "n": 170,
+   "diff": 0.024538443695005893,
+   "ci_lo": -0.17790565375906084,
+   "ci_hi": 0.21930116668384378,
+   "ci_method": "iid",
+   "p": 0.8086535958494165,
+   "start": "2016-01-19 23:00:00+00:00",
+   "end": "2020-12-21 23:00:00+00:00"
+  },
+  "H2": {
+   "n": 165,
+   "diff": 0.05599608260335857,
+   "ci_lo": -0.36282234223667664,
+   "ci_hi": 0.4705688755669261,
+   "ci_method": "iid",
+   "p": 0.7922558240957983,
+   "start": "2021-01-11 23:00:00+00:00",
+   "end": "2026-07-14 22:00:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 93,
+   "diff": 0.11606272021435539,
+   "ci_lo": -0.1629938487448247,
+   "ci_hi": 0.37831734908655856,
+   "ci_method": "iid",
+   "p": 0.40064317147955697,
+   "start": "2016-01-19 23:00:00+00:00",
+   "end": "2018-07-31 22:00:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 86,
+   "diff": -0.09114644821101248,
+   "ci_lo": -0.35352636447016117,
+   "ci_hi": 0.20551188201704057,
+   "ci_method": "iid",
+   "p": 0.5227506992235917,
+   "start": "2018-08-28 22:00:00+00:00",
+   "end": "2021-03-16 22:00:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 89,
+   "diff": 0.10248964308425743,
+   "ci_lo": -0.36535504200593727,
+   "ci_hi": 0.5900343348347881,
+   "ci_method": "iid",
+   "p": 0.6741119817302724,
+   "start": "2021-04-13 22:00:00+00:00",
+   "end": "2023-11-13 23:00:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 67,
+   "diff": null,
+   "ci_lo": null,
+   "ci_hi": null,
+   "ci_method": "n/a",
+   "p": null,
+   "start": "2023-12-04 23:00:00+00:00",
+   "end": "2026-07-14 22:00:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.24470369158710645,
+ "mde_threshold": 0.1,
+ "power_floor_n": 2006,
+ "verdict": "UNDERPOWERED",
+ "verdict_detail": "CI contains 0; MDE 0.2447 vs threshold 0.1000, effective n 175 (power floor n=2006, have 335)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 335,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 1440.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 42,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "rr",
+    "max_hold",
+    "week"
+   ],
+   "ignored": [],
+   "lookback": "30D",
+   "recent": "1D",
+   "events_fp": "5e67337dd639f444",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "per-row column",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": 30,
+  "entry_mode": "next_open",
+  "hold_basis": "bars",
+  "mde_threshold": null,
+  "cluster": "column:week",
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "Weekly trades clustered by week id. Hold is the trading-minute span to Friday 17:00 NY with hold_basis='bars'.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/model_own_03a/classic-expansion-week.py",
+ "runtime_sec": 0.91,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:09:15+00:00",
+ "n_events_in": 335,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 0,
+  "target_not_beyond_entry": 0,
+  "no_bars_in_hold": 0
+ },
+ "events_fp": "5e67337dd639f444",
+ "sd_R": 1.2284795091523673,
+ "exit_mix": {
+  "stop": 0.5611940298507463,
+  "target": 0.208955223880597,
+  "time": 0.2298507462686567
+ },
+ "trades_per_year": 31.96414576802508,
+ "ci_components": {
+  "phase3_iid": [
+   -0.12254432320364653,
+   0.16470149737486847
+  ],
+  "day_block": [
+   -0.1293129587401421,
+   0.1813028362506329
+  ],
+  "cluster": [
+   -0.1329777452608673,
+   0.20940731617958977
+  ]
+ },
+ "diff_win": -0.0033167495854063422,
+ "dependence": {
+  "day_block_mean_days": 4,
+  "n_days": 216,
+  "n_clusters": 175,
+  "n_eff": 175
+ },
+ "ties": {
+  "real_ambiguous": 0.0,
+  "control_ambiguous": 0.0,
+  "real_gap_stop": 0.0,
+  "control_gap_stop": 0.004629629629629629,
+  "verdict_stop_first": "UNDERPOWERED"
+ },
+ "ctrl_overlap": 0.06574074074074074,
+ "exposure_bars": {
+  "real_mean": 4811.462686567164,
+  "control_mean": 4798.055555555556,
+  "hold_basis": "bars"
+ },
+ "run_id": "f781e38bb44443ff968cb589a28b0b18",
+ "hyp_key": "d5ac86b22fa9e3b3"
+}

@@ -1,0 +1,276 @@
+{
+ "concept_id": "fair-value-gap-not-an-entry",
+ "reading": null,
+ "testable": true,
+ "test_type": "gate",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "1h FVGs (3-bar, wicks), known at the 3rd bar's close; direction = the gap's polarity (retracement into it)",
+   "first return = first M1 bar within 24h trading to the gap's near edge",
+   "limit arm: decide at that M1 close, enter next open, stop = gap far edge, 2R (return bars that also trade through the far edge are dropped: cannot be entered next-open; this favours the limit arm)",
+   "validated arm: first 5m CISD (series_open, 2/2, max_wait 3) in the gap's direction whose swing extreme bar starts at/after the touch's 5m bar, whose extreme is at/inside the gap (not beyond the near edge), confirmed within 12 5m bars of the touch, with no 5m close beyond the far edge first; enter on the CISD close, stop = protected swing, 2R",
+   "gate_test on the union book, mask = validated, max hold 10h"
+  ],
+  "params": {
+   "htf": "1h",
+   "ltf": "5min",
+   "return_wait_h": 24,
+   "valid_wait_5m": 12,
+   "cisd": "series_open 2/2 max_wait 3",
+   "rr": 2.0,
+   "max_hold": "10h"
+  }
+ },
+ "params_source": {
+  "htf": "method_spec: \u00a71.2 pairing 1-hour -> 5-minute (playbook); YAML ltf [1H, 15m, 5m]",
+  "ltf": "method_spec: \u00a71.2 pairing 1-hour -> 5-minute",
+  "return_wait_h": "declared-before-run: a gap not revisited within 24h is dropped",
+  "valid_wait_5m": "declared-before-run: the validating reaction must come within one 1h candle (12 x 5m) of the touch",
+  "cisd": "phase3: rung-0 CISD config (series_open, 2/2, max_wait=3); method_spec \u00a74.2 'validates those candles as an order block'",
+  "rr": "corpus: YAML execution targets [2R]",
+  "max_hold": "phase3: 10 structure-TF (1h) bars"
+ },
+ "n": 3155,
+ "span": {
+  "start": "2016-01-04 01:19:00+00:00",
+  "end": "2026-07-22 20:45:00+00:00",
+  "years": 10.546
+ },
+ "avg_R": 0.022121851609965573,
+ "avg_R_gross": 0.062121851609965584,
+ "win_rate": 0.3746434231378764,
+ "pf": 1.0347796214295277,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "avg_R_gated": -0.02796193343734407,
+  "avg_R_complement": -0.03694624200684509,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": 0.017852022150665836,
+ "ci_lo": -0.041799595255438776,
+ "ci_hi": 0.07954184891647156,
+ "ci_method": "phase3_iid",
+ "p": 0.5641363937356206,
+ "halves": {
+  "H1": {
+   "n": 5020,
+   "diff": 0.06609724374647796,
+   "ci_lo": -0.03072900946593068,
+   "ci_hi": 0.15784523871904413,
+   "ci_method": "iid",
+   "p": 0.16944922348822364,
+   "start": "2016-01-04 01:19:00+00:00",
+   "end": "2020-12-31 07:36:00+00:00",
+   "n_gated": 1445
+  },
+  "H2": {
+   "n": 6224,
+   "diff": -0.02308140000395571,
+   "ci_lo": -0.10511029746683558,
+   "ci_hi": 0.0601185302421936,
+   "ci_method": "iid",
+   "p": 0.5839744034524921,
+   "start": "2021-01-04 04:41:00+00:00",
+   "end": "2026-07-22 20:45:00+00:00",
+   "n_gated": 1710
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 2566,
+   "diff": 0.06939804825423207,
+   "ci_lo": -0.05827112745180581,
+   "ci_hi": 0.21769741716391056,
+   "ci_method": "block",
+   "p": 0.32425694596488996,
+   "start": "2016-01-04 01:19:00+00:00",
+   "end": "2018-08-22 08:43:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 2737,
+   "diff": 0.052044611025395676,
+   "ci_lo": -0.0823111220494297,
+   "ci_hi": 0.17461579205283637,
+   "ci_method": "iid",
+   "p": 0.4271701488450657,
+   "start": "2018-08-22 13:18:00+00:00",
+   "end": "2021-04-12 03:35:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 3020,
+   "diff": -0.004438049817437898,
+   "ci_lo": -0.11392582670647708,
+   "ci_hi": 0.121122394272372,
+   "ci_method": "iid",
+   "p": 0.94099932424526,
+   "start": "2021-04-12 12:36:00+00:00",
+   "end": "2023-12-01 20:15:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 2921,
+   "diff": -0.042680475351285184,
+   "ci_lo": -0.16710614997893625,
+   "ci_hi": 0.07023762127991587,
+   "ci_method": "iid",
+   "p": 0.4808704615107461,
+   "start": "2023-12-04 01:07:00+00:00",
+   "end": "2026-07-22 20:45:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.08672311579966811,
+ "mde_threshold": 0.1,
+ "power_floor_n": 2373,
+ "verdict": "NULL",
+ "verdict_detail": "CI contains 0; powered (MDE 0.0867 <= 0.1000)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 11244,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "gate_mask_checked": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 212.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 868,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "rr",
+    "validated"
+   ],
+   "ignored": [],
+   "lookback": "20D",
+   "recent": "1D",
+   "events_fp": "b8e86b8440da8b7a",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "10h",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": null,
+  "entry_mode": "next_open",
+  "hold_basis": "clock",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "Union book of gap-limit and CISD-validated entries at the same 1h gaps; mask = validated. Control adjustment removes the stop-size difference between arms.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/entry_own_02b/fair-value-gap-not-an-entry.py",
+ "runtime_sec": 2.39,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:15:10+00:00",
+ "n_events_in": 11282,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 35,
+  "target_not_beyond_entry": 0,
+  "no_bars_in_hold": 3
+ },
+ "n_complement": 8089,
+ "gate_firing_rate": 0.2805940946282462,
+ "events_fp": "b8e86b8440da8b7a",
+ "mask_fp": "c37fb2b2da571262",
+ "mask_col": "validated",
+ "exit_mix": {
+  "stop": 0.6025356576862123,
+  "target": 0.31695721077654515,
+  "time": 0.08050713153724247
+ },
+ "gated_vs_own_control": {
+  "diff": 0.05008378504730964,
+  "ci_lo": -0.0014030002276108039,
+  "ci_hi": 0.10300061649941979,
+  "p": 0.06004801336606152
+ },
+ "complement": {
+  "n": 8089,
+  "avg_R": -0.0047144791102012975,
+  "win_rate": 0.35776981085424653,
+  "pf": 0.9927426345972824,
+  "sd_R": 1.3815555914897328,
+  "exit_mix": {
+   "stop": 0.6146618865125479,
+   "target": 0.3145011744344171,
+   "time": 0.07083693905303498
+  },
+  "vs_own_control": {
+   "diff": 0.03223176289664379,
+   "ci_lo": -0.0020786846341818927,
+   "ci_hi": 0.06668189237073724,
+   "p": 0.06613905596039532
+  }
+ },
+ "ci_components": {
+  "phase3_iid": [
+   -0.041799595255438776,
+   0.07954184891647156
+  ],
+  "day_block": [
+   -0.037479888390131035,
+   0.07592431190177944
+  ]
+ },
+ "diff_meaning": "mean(R-ctrl | gated) - mean(R-ctrl | complement)",
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_eff_gated": 1964,
+  "n_eff_complement": 2619,
+  "n_eff": 1964
+ },
+ "ties": {
+  "real_ambiguous": 0.008804695837780149,
+  "control_ambiguous": 0.008822483102098898,
+  "real_gap_stop": 0.013607257203842048,
+  "control_gap_stop": 0.018036286019210247,
+  "gated_excess": -0.0005071315372424723,
+  "complement_excess": 0.00017307454567931752,
+  "verdict_stop_first": "NULL"
+ },
+ "ctrl_overlap": 0.0016542155816435431,
+ "exposure_bars": {
+  "real_mean": 552.031305585201,
+  "control_mean": 545.4805585200996,
+  "hold_basis": "clock"
+ },
+ "run_id": "c2aa26472fbb4e3e966a4de9aa1435df",
+ "hyp_key": "2d14eda95a46093c"
+}

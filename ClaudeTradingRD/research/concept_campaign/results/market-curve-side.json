@@ -1,0 +1,283 @@
+{
+ "concept_id": "market-curve-side",
+ "reading": null,
+ "testable": true,
+ "test_type": "gate",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "side of the curve = direction of the latest displaced 4H (forex grid) structure break: first 4H close beyond the latest confirmed unbroken 2/2 swing, with N=4 window range/pre-range >= 1.5 and distance beyond the level/pre-range >= 0.65; known at the 4th window candle's close; held until the opposite",
+   "baseline: 15m rung-0 CISD (series_open, 2/2, max_wait 3), stop protected swing, 2R, 150min exit",
+   "gate: CISD direction equals the side of the curve (not fading the direction price is seeking)"
+  ],
+  "params": {
+   "structure_tf": "4h",
+   "grid4h": "forex",
+   "swing": "2/2",
+   "N": 4,
+   "r": 1.5,
+   "d": 0.65,
+   "baseline_tf": "15min",
+   "max_wait": 3,
+   "rr": 2.0,
+   "max_hold": "150min"
+  }
+ },
+ "params_source": {
+  "structure_tf": "method_spec: \u00a71.2 pairing 4-hour structure / 15-minute entry",
+  "grid4h": "phase3: forex grid for gold (carried as a knob)",
+  "swing": "phase3: swing_points left=2 right=2",
+  "N": "threshold_fits: displacement N-window default N=4",
+  "r": "threshold_fits: displacement win_range/pre_range default 1.5",
+  "d": "threshold_fits: displacement dist/pre_range default 0.65",
+  "baseline_tf": "phase3: primary stack entry TF",
+  "max_wait": "phase3: locked CISD config max_wait=3",
+  "rr": "phase3: locked 2R target",
+  "max_hold": "phase3: 10 entry-TF bars"
+ },
+ "n": 16394,
+ "span": {
+  "start": "2016-01-07 00:00:00+00:00",
+  "end": "2026-07-23 02:15:00+00:00",
+  "years": 10.541
+ },
+ "avg_R": -0.025665083704374963,
+ "avg_R_gross": 0.014334916295625055,
+ "win_rate": 0.42387458826399904,
+ "pf": 0.9417218108245552,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "avg_R_gated": -0.029266533877578958,
+  "avg_R_complement": -0.048478321745929163,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": 0.017643393649110516,
+ "ci_lo": -0.011293455577230268,
+ "ci_hi": 0.04554353449452988,
+ "ci_method": "day_block",
+ "p": 0.22366971907501346,
+ "halves": {
+  "H1": {
+   "n": 15610,
+   "diff": 0.0326339420925681,
+   "ci_lo": -0.0074001362532472165,
+   "ci_hi": 0.06804114512556024,
+   "ci_method": "block",
+   "p": 0.08995043811423677,
+   "start": "2016-01-07 00:00:00+00:00",
+   "end": "2020-12-31 19:15:00+00:00",
+   "n_gated": 7826
+  },
+  "H2": {
+   "n": 17092,
+   "diff": 0.003951240437393512,
+   "ci_lo": -0.03057167216194096,
+   "ci_hi": 0.03809456821423584,
+   "ci_method": "block",
+   "p": 0.8215411527293848,
+   "start": "2021-01-03 23:45:00+00:00",
+   "end": "2026-07-23 02:15:00+00:00",
+   "n_gated": 8568
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 8171,
+   "diff": 0.043658735162308726,
+   "ci_lo": -0.009841934040501966,
+   "ci_hi": 0.09582027538040726,
+   "ci_method": "block",
+   "p": 0.10530076804724808,
+   "start": "2016-01-07 00:00:00+00:00",
+   "end": "2018-08-22 08:45:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 8264,
+   "diff": 0.001616914213904289,
+   "ci_lo": -0.04929627871735238,
+   "ci_hi": 0.05207179604380012,
+   "ci_method": "block",
+   "p": 0.9501435877586697,
+   "start": "2018-08-22 11:45:00+00:00",
+   "end": "2021-04-12 08:15:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 8162,
+   "diff": 0.01386822597523553,
+   "ci_lo": -0.03800535753512433,
+   "ci_hi": 0.06485809194485519,
+   "ci_method": "block",
+   "p": 0.5971583220219688,
+   "start": "2021-04-12 09:30:00+00:00",
+   "end": "2023-12-01 17:00:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 8105,
+   "diff": 0.011146749228577345,
+   "ci_lo": -0.0420950309853905,
+   "ci_hi": 0.06091178099840042,
+   "ci_method": "block",
+   "p": 0.6714272897199234,
+   "start": "2023-12-04 04:00:00+00:00",
+   "end": "2026-07-23 02:15:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.04062157744483882,
+ "mde_threshold": 0.1,
+ "power_floor_n": 2692,
+ "verdict": "NULL",
+ "verdict_detail": "CI contains 0; powered (MDE 0.0406 <= 0.1000)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 32702,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "gate_mask_checked": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 64.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 2449,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "rr",
+    "px",
+    "curve_side",
+    "side_known_at",
+    "with_curve"
+   ],
+   "ignored": [],
+   "lookback": "120D",
+   "recent": "1D",
+   "events_fp": "5c7b86450dbdcf8c",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "150min",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": null,
+  "entry_mode": "next_open",
+  "hold_basis": "clock",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "Concept is underspecified: no rule locates the curve. Tested under a declared stand-in (latest displaced 4H structure break = the direction price is seeking); a NULL here speaks to that operationalisation, not to an undefined curve.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/structure_own_03b/market-curve-side.py",
+ "runtime_sec": 9.22,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:30:46+00:00",
+ "n_events_in": 32786,
+ "dropped": {
+  "no_bar_after_decision": 1,
+  "stop_not_beyond_entry": 11,
+  "target_not_beyond_entry": 0,
+  "no_bars_in_hold": 72
+ },
+ "n_complement": 16308,
+ "gate_firing_rate": 0.5013149042871996,
+ "events_fp": "5c7b86450dbdcf8c",
+ "mask_fp": "cbc25c3e0fc895ef",
+ "mask_col": "with_curve",
+ "exit_mix": {
+  "stop": 0.34695620348908135,
+  "target": 0.12870562400878371,
+  "time": 0.5243381725021349
+ },
+ "gated_vs_own_control": {
+  "diff": 0.0036014501732039954,
+  "ci_lo": -0.015874078406508788,
+  "ci_hi": 0.02341496911629101,
+  "p": 0.719354099377403
+ },
+ "complement": {
+  "n": 16308,
+  "avg_R": -0.06252026522183568,
+  "win_rate": 0.4081432425803287,
+  "pf": 0.8620680776107368,
+  "sd_R": 1.0095392317203717,
+  "exit_mix": {
+   "stop": 0.3551631101299976,
+   "target": 0.11975717439293598,
+   "time": 0.5250797154770664
+  },
+  "vs_own_control": {
+   "diff": -0.014041943475906517,
+   "ci_lo": -0.032034473161933114,
+   "ci_hi": 0.004249445930801863,
+   "p": 0.12926179834254262
+  }
+ },
+ "ci_components": {
+  "phase3_block": [
+   -0.008866646065633655,
+   0.04515339142055866
+  ],
+  "day_block": [
+   -0.011293455577230268,
+   0.04554353449452988
+  ]
+ },
+ "diff_meaning": "mean(R-ctrl | gated) - mean(R-ctrl | complement)",
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_eff_gated": 2719,
+  "n_eff_complement": 2713,
+  "n_eff": 2713
+ },
+ "ties": {
+  "real_ambiguous": 0.0005198458809858725,
+  "control_ambiguous": 0.00028132835912176625,
+  "real_gap_stop": 0.008348113265243717,
+  "control_gap_stop": 0.006439973090330867,
+  "gated_excess": 7.319751128461631e-05,
+  "complement_excess": 0.0004047093451066961,
+  "verdict_stop_first": "NULL"
+ },
+ "ctrl_overlap": 0.06546388600085622,
+ "exposure_bars": {
+  "real_mean": 143.26781236621613,
+  "control_mean": 142.9222555195401,
+  "hold_basis": "clock"
+ },
+ "run_id": "2401c7a97b19448ebe3024e8c57a782b",
+ "hyp_key": "944d11af263591de"
+}

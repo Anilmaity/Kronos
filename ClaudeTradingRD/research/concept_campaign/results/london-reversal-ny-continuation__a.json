@@ -1,0 +1,256 @@
+{
+ "concept_id": "london-reversal-ny-continuation",
+ "reading": "a",
+ "testable": true,
+ "test_type": "trade",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "daily bars roll 18:00 NY; stub sessions (<600 M1 bars) skipped",
+   "daily C2 closure: bull = low < prior low and close > prior low; bear mirror; two-sided = none",
+   "London window 02:00-05:00 NY (bar start inside); London extreme = London low (bull) / high (bear)",
+   "at decision the day's extreme so far (since 18:00) is still the London extreme (London formed the reversal)",
+   "entry trigger: a 15m CISD (series_open, 2/2 swing, max_wait 3) in the bias direction whose confirming bar closes 06:00-09:30 NY and whose protected swing is a higher low (bull) than the London low (a continuation, not the reversal itself)",
+   "enter next M1 open; stop at the protected swing; target the previous day's high (bull) / low (bear), skipped if already beyond it; exit at 17:00 NY; first qualifying event per day",
+   "bias day = C3 only: yesterday was a daily C2 closure in the bias direction"
+  ],
+  "params": {
+   "london_window": "02:00-05:00",
+   "entry_window": "06:00-09:30",
+   "entry_tf": "15min",
+   "cisd": "series_open 2/2 max_wait 3",
+   "target": "previous day high/low",
+   "max_hold": "to 17:00 NY same day",
+   "bias_days": "C3"
+  }
+ },
+ "params_source": {
+  "london_window": "method_spec: \u00a72.5 daily-profile-session-windows London 02:00-05:00",
+  "entry_window": "corpus: N3Ml-r0X30o 'London reversal and 15 continuation prior to NYSE open'; 06:00 start of the stated expansion window",
+  "entry_tf": "corpus: N3Ml-r0X30o '15 continuation'",
+  "cisd": "phase3: locked bare-CISD config",
+  "target": "corpus: execution.targets 'previous day low / high'",
+  "max_hold": "declared-before-run: intraday setup, flat by the 17:00 NY halt",
+  "bias_days": "corpus: 00iZXPAdR5A 'Candle three on the daily, London forms a reversal'"
+ },
+ "n": 175,
+ "span": {
+  "start": "2016-02-26 11:30:00+00:00",
+  "end": "2026-07-21 11:15:00+00:00",
+  "years": 10.396
+ },
+ "avg_R": -0.14413376853346943,
+ "avg_R_gross": -0.10413376853346942,
+ "win_rate": 0.35428571428571426,
+ "pf": 0.7844129521671093,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "n": 875,
+  "avg_R": -0.12664852972975071,
+  "win_rate": 0.3485714285714286,
+  "pf": 0.801588044770486,
+  "sd_R": 1.7596242674392608,
+  "exit_mix": {
+   "stop": 0.5965714285714285,
+   "target": 0.22514285714285714,
+   "time": 0.1782857142857143
+  },
+  "avg_R_gross": -0.08664852972975072,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": -0.017485238803718717,
+ "ci_lo": -0.27578312485602274,
+ "ci_hi": 0.24044075317112187,
+ "ci_method": "day_block",
+ "p": 0.8943724727185997,
+ "halves": {
+  "H1": {
+   "n": 93,
+   "diff": -0.028670460578375412,
+   "ci_lo": -0.3360498251098873,
+   "ci_hi": 0.3112894997621334,
+   "ci_method": "iid",
+   "p": 0.8621700772581627,
+   "start": "2016-02-26 11:30:00+00:00",
+   "end": "2020-11-10 14:00:00+00:00"
+  },
+  "H2": {
+   "n": 82,
+   "diff": -0.004799560449534848,
+   "ci_lo": -0.36211210901788055,
+   "ci_hi": 0.39187005873163566,
+   "ci_method": "iid",
+   "p": 0.9800926488748872,
+   "start": "2021-01-20 11:45:00+00:00",
+   "end": "2026-07-21 11:15:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 44,
+   "diff": -0.03429960490732803,
+   "ci_lo": -0.5552042310304103,
+   "ci_hi": 0.5150429912517996,
+   "ci_method": "iid",
+   "p": 0.9000271643110422,
+   "start": "2016-02-26 11:30:00+00:00",
+   "end": "2018-08-09 12:30:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 53,
+   "diff": -0.006958662838781604,
+   "ci_lo": -0.44175573575778326,
+   "ci_hi": 0.4430545983888899,
+   "ci_method": "iid",
+   "p": 0.9754062376693835,
+   "start": "2018-08-29 10:45:00+00:00",
+   "end": "2021-03-29 11:00:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 49,
+   "diff": 0.19883130954366673,
+   "ci_lo": -0.3053400032304023,
+   "ci_hi": 0.7519712248479604,
+   "ci_method": "iid",
+   "p": 0.4610268537132294,
+   "start": "2021-04-13 11:45:00+00:00",
+   "end": "2023-11-16 12:15:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 29,
+   "diff": -0.37671238661767525,
+   "ci_lo": -0.9108756913921993,
+   "ci_hi": 0.11943968606834457,
+   "ci_method": "iid",
+   "p": 0.15179031003308877,
+   "start": "2023-12-29 12:45:00+00:00",
+   "end": "2026-07-21 11:15:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.36894684629990093,
+ "mde_threshold": 0.1,
+ "power_floor_n": 2383,
+ "verdict": "UNDERPOWERED",
+ "verdict_detail": "CI contains 0; MDE 0.3689 vs threshold 0.1000, effective n 175 (power floor n=2383, have 175)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 175,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 1.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 29,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "target_px",
+    "max_hold"
+   ],
+   "ignored": [],
+   "lookback": "10D",
+   "recent": "1D",
+   "events_fp": "39777b1d425cc934",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "per-row column",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": null,
+  "entry_mode": "next_open",
+  "hold_basis": "clock",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "SMT and the hourly CISD on the daily C2 are not required (no correlated series).",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/model_own_03b/london-reversal-ny-continuation.py",
+ "runtime_sec": 0.93,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:11:28+00:00",
+ "n_events_in": 175,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 0,
+  "target_not_beyond_entry": 0,
+  "no_bars_in_hold": 0
+ },
+ "events_fp": "39777b1d425cc934",
+ "sd_R": 1.4861551208406139,
+ "exit_mix": {
+  "stop": 0.6342857142857142,
+  "target": 0.2342857142857143,
+  "time": 0.13142857142857142
+ },
+ "trades_per_year": 16.834013695022385,
+ "ci_components": {
+  "phase3_iid": [
+   -0.26177866517799125,
+   0.24309280490849278
+  ],
+  "day_block": [
+   -0.27578312485602274,
+   0.24044075317112187
+  ]
+ },
+ "diff_win": 0.005714285714285672,
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 175,
+  "n_clusters": null,
+  "n_eff": 175
+ },
+ "ties": {
+  "real_ambiguous": 0.0,
+  "control_ambiguous": 0.0,
+  "real_gap_stop": 0.011428571428571429,
+  "control_gap_stop": 0.004571428571428572,
+  "verdict_stop_first": "UNDERPOWERED"
+ },
+ "ctrl_overlap": 0.0,
+ "exposure_bars": {
+  "real_mean": 582.7028571428572,
+  "control_mean": 541.9714285714285,
+  "hold_basis": "clock"
+ },
+ "run_id": "57340a89db364bc192f2097da5567533",
+ "hyp_key": "9b855c25ad1bff3c"
+}

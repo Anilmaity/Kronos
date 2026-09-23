@@ -1,0 +1,268 @@
+{
+ "concept_id": "dont-trade-after-expansion",
+ "reading": "a",
+ "testable": true,
+ "test_type": "gate",
+ "claim": "-",
+ "operationalization": {
+  "rules": [
+   "baseline: 1h bare CISD (series_open, 2/2, max_wait 3), decide at confirm close, stop protected swing, 2R, 10h",
+   "expansion day = a daily (18:00 NY) candle CLOSING above the previous day's high (bull) / below its low (bear); stub days (<=300 M1) skipped",
+   "gate: the last 3 completed days are consecutive expansion days in the trade's direction (read via cl.asof)"
+  ],
+  "params": {
+   "n_days": 3,
+   "baseline": "1h rung-0 CISD",
+   "max_hold": "10h",
+   "day_open_hour": 18
+  }
+ },
+ "params_source": {
+  "n_days": "corpus: FKTBkTzsmUA 'After 3 days of expansion, I don't want to trade in the same direction'",
+  "baseline": "phase3: rung-0 CISD book (locked config)",
+  "max_hold": "phase3: 10 entry-TF bars",
+  "day_open_hour": "session_window_fit: settled 18:00 NY daily roll"
+ },
+ "n": 228,
+ "span": {
+  "start": "2016-01-04 15:00:00+00:00",
+  "end": "2026-07-22 19:00:00+00:00",
+  "years": 10.546
+ },
+ "avg_R": -0.008466514494652081,
+ "avg_R_gross": 0.03153348550534792,
+ "win_rate": 0.42543859649122806,
+ "pf": 0.9808610700984307,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "avg_R_gated": 0.0009938185877548526,
+  "avg_R_complement": -0.030849859431106137,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": -0.021204503376679902,
+ "ci_lo": -0.19981554374174285,
+ "ci_hi": 0.15118040495219093,
+ "ci_method": "day_block",
+ "p": 0.8128024783030914,
+ "halves": {
+  "H1": {
+   "n": 3803,
+   "diff": -0.08099613150545781,
+   "ci_lo": -0.33018416815177376,
+   "ci_hi": 0.15891309635509823,
+   "ci_method": "iid",
+   "p": 0.5162394249433107,
+   "start": "2016-01-04 15:00:00+00:00",
+   "end": "2020-12-31 05:00:00+00:00",
+   "n_gated": 91
+  },
+  "H2": {
+   "n": 4192,
+   "diff": 0.019846709541884104,
+   "ci_lo": -0.16638433272138917,
+   "ci_hi": 0.2069053198998259,
+   "ci_method": "iid",
+   "p": 0.8349080626025793,
+   "start": "2021-01-04 00:00:00+00:00",
+   "end": "2026-07-22 19:00:00+00:00",
+   "n_gated": 137
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 1976,
+   "diff": 0.07503301144207064,
+   "ci_lo": -0.2983518965188897,
+   "ci_hi": 0.46068707826114974,
+   "ci_method": "iid",
+   "p": 0.6983895957021071,
+   "start": "2016-01-04 15:00:00+00:00",
+   "end": "2018-08-22 11:00:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 2032,
+   "diff": -0.16014855488112584,
+   "ci_lo": -0.44754298948855,
+   "ci_hi": 0.13906249115177594,
+   "ci_method": "iid",
+   "p": 0.2845403270799182,
+   "start": "2018-08-22 16:00:00+00:00",
+   "end": "2021-04-12 05:00:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 2067,
+   "diff": -0.177439713811849,
+   "ci_lo": -0.4177352756968249,
+   "ci_hi": 0.06952241127456468,
+   "ci_method": "iid",
+   "p": 0.1534414089408186,
+   "start": "2021-04-12 10:00:00+00:00",
+   "end": "2023-12-01 16:00:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 1920,
+   "diff": 0.16760564641377818,
+   "ci_lo": -0.07669899349597416,
+   "ci_hi": 0.40330844110281316,
+   "ci_method": "iid",
+   "p": 0.17108271813918416,
+   "start": "2023-12-04 09:00:00+00:00",
+   "end": "2026-07-22 19:00:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.2508579200744745,
+ "mde_threshold": 0.1,
+ "power_floor_n": 1435,
+ "verdict": "UNDERPOWERED",
+ "verdict_detail": "CI contains 0; MDE 0.2509 vs threshold 0.1000, effective n 125 (power floor n=1435, have 228)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 7995,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "gate_mask_checked": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 300.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 587,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "rr",
+    "after_3exp"
+   ],
+   "ignored": [],
+   "lookback": "20D",
+   "recent": "1D",
+   "events_fp": "123b22337bbe25f7",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "10h",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": null,
+  "entry_mode": "next_open",
+  "hold_basis": "clock",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "Reading a: 3-day expansion stand-aside, gate on 1h CISD continuations; complement = all other 1h CISD trades (incl. counter-streak).",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/entry_own_02b/dont-trade-after-expansion.py",
+ "runtime_sec": 3.26,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:29:13+00:00",
+ "n_events_in": 8034,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 1,
+  "target_not_beyond_entry": 0,
+  "no_bars_in_hold": 38
+ },
+ "n_complement": 7767,
+ "gate_firing_rate": 0.02851782363977486,
+ "events_fp": "123b22337bbe25f7",
+ "mask_fp": "f6c2e7d9afc36d35",
+ "mask_col": "after_3exp",
+ "exit_mix": {
+  "stop": 0.33771929824561403,
+  "target": 0.15789473684210525,
+  "time": 0.5043859649122807
+ },
+ "gated_vs_own_control": {
+  "diff": -0.009460333082406933,
+  "ci_lo": -0.16937662609343326,
+  "ci_hi": 0.13701588423702418,
+  "p": 0.9036643287997387
+ },
+ "complement": {
+  "n": 7767,
+  "avg_R": -0.01910568913683315,
+  "win_rate": 0.4216557229303463,
+  "pf": 0.9563180908149703,
+  "sd_R": 1.03156839869505,
+  "exit_mix": {
+   "stop": 0.34775331530835585,
+   "target": 0.13480108149864814,
+   "time": 0.517445603192996
+  },
+  "vs_own_control": {
+   "diff": 0.011744170294272986,
+   "ci_lo": -0.014626140536882793,
+   "ci_hi": 0.037170107890779104,
+   "p": 0.3741126891025698
+  }
+ },
+ "ci_components": {
+  "phase3_block": [
+   -0.18128931083946814,
+   0.14555239617789742
+  ],
+  "day_block": [
+   -0.19981554374174285,
+   0.15118040495219093
+  ]
+ },
+ "diff_meaning": "mean(R-ctrl | gated) - mean(R-ctrl | complement)",
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_eff_gated": 125,
+  "n_eff_complement": 2679,
+  "n_eff": 125
+ },
+ "ties": {
+  "real_ambiguous": 0.0002501563477173233,
+  "control_ambiguous": 2.5015634771732333e-05,
+  "real_gap_stop": 0.00375234521575985,
+  "control_gap_stop": 0.004352720450281426,
+  "gated_excess": 0.0,
+  "complement_excess": 0.0002317497103128621,
+  "verdict_stop_first": "UNDERPOWERED"
+ },
+ "ctrl_overlap": 0.06574108818011257,
+ "exposure_bars": {
+  "real_mean": 549.6661663539712,
+  "control_mean": 548.2028267667292,
+  "hold_basis": "clock"
+ },
+ "run_id": "e63d2eef7c914095af299d3f811fdfb1",
+ "hyp_key": "6a671c2093d99ecc"
+}

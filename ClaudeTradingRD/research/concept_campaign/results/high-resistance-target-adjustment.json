@@ -1,0 +1,204 @@
+{
+ "concept_id": "high-resistance-target-adjustment",
+ "reading": null,
+ "testable": true,
+ "test_type": "rate",
+ "claim": "-",
+ "operationalization": {
+  "rules": [
+   "pools: untaken 15m fractal-2/2 swing highs/lows, tracked 7 days",
+   "HR extreme: a 15m bar takes >= 1 pool on one side only and closes back beyond all of them; the next bar stays inside that bar's extreme and closes back beyond them too; X = the sweep bar's extreme",
+   "decision: first opposite 15m swing formed after the sweep, confirmed while X is untouched and within 24 bars of the sweep",
+   "hit: X traded within 360 M1 bars; null: same distance at matched random moments, same horizon; claim '-' (HR extreme harder to reach)"
+  ],
+  "params": {
+   "tf": "15min",
+   "left": 2,
+   "right": 2,
+   "pool_window": "7D",
+   "max_wait_bars": 24,
+   "horizon_m1_bars": 360
+  }
+ },
+ "params_source": {
+  "tf": "corpus: source YAML timeframes.htf ['15m', '5m'] (education_ict_02)",
+  "left": "threshold_fits: short-term high/low = fractal 2/2",
+  "right": "threshold_fits: short-term high/low = fractal 2/2",
+  "pool_window": "declared-before-run: finite pool memory for the probe",
+  "max_wait_bars": "declared-before-run: the turn must come within 6h of the sweep",
+  "horizon_m1_bars": "declared-before-run: 6 trading hours, same as the batch's other 15m level tests"
+ },
+ "n": 7000,
+ "span": {
+  "start": "2016-01-04 04:45:00+00:00",
+  "end": "2026-07-23 01:00:00+00:00",
+  "years": 10.546
+ },
+ "avg_R": null,
+ "avg_R_gross": null,
+ "win_rate": null,
+ "pf": null,
+ "observed_rate": 0.5557142857142857,
+ "null_rate": 0.5605714285714286,
+ "lift": 0.991335372069317,
+ "control": {
+  "rate": 0.5605714285714286,
+  "reps": 5,
+  "kind": "null_fn x5"
+ },
+ "diff": -0.004857142857142893,
+ "ci_lo": -0.01783285714285713,
+ "ci_hi": 0.00834428571428577,
+ "ci_method": "phase3_iid",
+ "p": 0.46701846753779735,
+ "halves": {
+  "H1": {
+   "n": 3466,
+   "diff": -0.005481823427582189,
+   "ci_lo": -0.025447201384881657,
+   "ci_hi": 0.013040969417195573,
+   "ci_method": "iid",
+   "p": 0.5766323183595755,
+   "start": "2016-01-04 04:45:00+00:00",
+   "end": "2020-12-31 21:45:00+00:00"
+  },
+  "H2": {
+   "n": 3534,
+   "diff": -0.004244482173174857,
+   "ci_lo": -0.024052065647991006,
+   "ci_hi": 0.015226372382569367,
+   "ci_method": "iid",
+   "p": 0.6718627890990434,
+   "start": "2021-01-04 07:45:00+00:00",
+   "end": "2026-07-23 01:00:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 1892,
+   "diff": -0.004439746300211489,
+   "ci_lo": -0.027600422832980854,
+   "ci_hi": 0.02040169133192382,
+   "ci_method": "iid",
+   "p": 0.7169360961036702,
+   "start": "2016-01-04 04:45:00+00:00",
+   "end": "2018-08-22 02:45:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 1756,
+   "diff": -0.012870159453303054,
+   "ci_lo": -0.03998006833712987,
+   "ci_hi": 0.015045558086560426,
+   "ci_method": "iid",
+   "p": 0.3592226495232489,
+   "start": "2018-08-22 16:30:00+00:00",
+   "end": "2021-04-11 23:45:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 1672,
+   "diff": 0.006100478468899606,
+   "ci_lo": -0.021294856459330148,
+   "ci_hi": 0.0345753588516746,
+   "ci_method": "iid",
+   "p": 0.6686382950693891,
+   "start": "2021-04-12 15:15:00+00:00",
+   "end": "2023-12-01 12:30:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 1680,
+   "diff": -0.007857142857142896,
+   "ci_lo": -0.03513392857142856,
+   "ci_hi": 0.017869047619047652,
+   "ci_method": "iid",
+   "p": 0.5611806263341079,
+   "start": "2023-12-04 08:45:00+00:00",
+   "end": "2026-07-23 01:00:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.018708887196761954,
+ "mde_threshold": 0.05,
+ "power_floor_n": 981,
+ "verdict": "NULL",
+ "verdict_detail": "CI contains 0; powered (MDE 0.0187 <= 0.0500)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 7000,
+  "min_slack_min": 0.0,
+  "passed": true,
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 552,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "side",
+    "level"
+   ],
+   "ignored": [],
+   "lookback": "20D",
+   "recent": "1D",
+   "events_fp": "105a924495211d2f",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "reps": 5,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "mde_threshold": null,
+  "cluster": null,
+  "outcome_horizon": "1 days 00:00:00",
+  "null_kind": "null_fn x5"
+ },
+ "notes": "",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/liquidity_own_01a/high-resistance-target-adjustment.py",
+ "runtime_sec": 1.5,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:16:05+00:00",
+ "dropped": {
+  "nan_rows": 0
+ },
+ "null_kind": "null_fn x5",
+ "events_fp": "105a924495211d2f",
+ "predictors_probed": true,
+ "ci_components": {
+  "phase3_iid": [
+   -0.01783285714285713,
+   0.00834428571428577
+  ],
+  "day_block": [
+   -0.015495960579353648,
+   0.005529041494705976
+  ]
+ },
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 2535,
+  "n_clusters": null,
+  "n_eff": 2535
+ },
+ "run_id": "37582202726741e4a55ff8904b0830a9",
+ "hyp_key": "826daab08510dcc0"
+}

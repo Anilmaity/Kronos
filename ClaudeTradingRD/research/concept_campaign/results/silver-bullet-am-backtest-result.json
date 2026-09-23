@@ -1,0 +1,248 @@
+{
+ "concept_id": "silver-bullet-am-backtest-result",
+ "reading": null,
+ "testable": true,
+ "test_type": "trade",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "09:00 NY hourly candle high/low (M1 09:00-09:59 NY, >= 30 bars)",
+   "1m CISD (series_open, 2/2 swings, max_wait 3) on M1 09:30-11:00 NY; keep a bearish CISD whose extreme > 09:00 high (bullish: extreme < 09:00 low), extreme formed at/after 10:00 NY, decision (confirming bar close) before 11:00 NY",
+   "first qualifying setup per NY date; enter next M1 open; stop = the swept extreme (protected swing); target = the other side of the 09:00 candle; exit by 5h",
+   "not modelled: break-even at 3R (harness has fixed stops only)"
+  ],
+  "params": {
+   "range_candle": "09:00 NY 1h",
+   "window": "10:00-11:00 NY",
+   "entry_tf": "1min",
+   "max_hold": "5h",
+   "per_session": 1
+  }
+ },
+ "params_source": {
+  "range_candle": "corpus: silver-bullet-am-model 'mark the 09:00 hourly candle'",
+  "window": "corpus: silver-bullet-window 10:00-11:00 NY, cancel at 11:00",
+  "entry_tf": "corpus: silver-bullet-am-model ltf 1m; CISD per method_spec \u00a74.2 with phase3 locked parameters",
+  "max_hold": "declared-before-run: 5h (rest of the NY session; reported avg duration 1h29m)",
+  "per_session": "corpus: one setup per session (no trade if none by 11:00)"
+ },
+ "n": 1928,
+ "span": {
+  "start": "2016-01-04 15:18:00+00:00",
+  "end": "2026-07-22 14:08:00+00:00",
+  "years": 10.543
+ },
+ "avg_R": -0.07223772174703007,
+ "avg_R_gross": -0.032237721747030074,
+ "win_rate": 0.2671161825726141,
+ "pf": 0.9042542077771478,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "n": 9640,
+  "avg_R": -0.0380291396996315,
+  "win_rate": 0.29906639004149377,
+  "pf": 0.9455144539243941,
+  "sd_R": 1.862151814752339,
+  "exit_mix": {
+   "stop": 0.6546680497925311,
+   "target": 0.16307053941908714,
+   "time": 0.18226141078838173
+  },
+  "avg_R_gross": 0.001970860300368521,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": -0.034208582047398566,
+ "ci_lo": -0.12732556138555384,
+ "ci_hi": 0.05923904844796405,
+ "ci_method": "phase3_block",
+ "p": 0.4722888085797137,
+ "halves": {
+  "H1": {
+   "n": 907,
+   "diff": 0.00473723811434474,
+   "ci_lo": -0.1309535437359136,
+   "ci_hi": 0.14481596410236447,
+   "ci_method": "iid",
+   "p": 0.9463130150113745,
+   "start": "2016-01-04 15:18:00+00:00",
+   "end": "2020-12-31 15:44:00+00:00"
+  },
+  "H2": {
+   "n": 1021,
+   "diff": -0.06880589731351135,
+   "ci_lo": -0.18850361242276895,
+   "ci_hi": 0.057224444719372436,
+   "ci_method": "block",
+   "p": 0.2723737743048709,
+   "start": "2021-01-04 15:22:00+00:00",
+   "end": "2026-07-22 14:08:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 460,
+   "diff": -0.07699529426346481,
+   "ci_lo": -0.2874143025427495,
+   "ci_hi": 0.1427837398733231,
+   "ci_method": "block",
+   "p": 0.4829445105329331,
+   "start": "2016-01-04 15:18:00+00:00",
+   "end": "2018-08-20 14:04:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 491,
+   "diff": 0.09714921562366607,
+   "ci_lo": -0.10850038937545939,
+   "ci_hi": 0.2919121437631447,
+   "ci_method": "iid",
+   "p": 0.34157190710164187,
+   "start": "2018-08-22 14:39:00+00:00",
+   "end": "2021-04-09 14:32:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 478,
+   "diff": -0.1678844227745826,
+   "ci_lo": -0.3255388808369917,
+   "ci_hi": -0.0012929703821179524,
+   "ci_method": "iid",
+   "p": 0.042395536494608754,
+   "start": "2021-04-12 14:12:00+00:00",
+   "end": "2023-12-01 15:16:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 499,
+   "diff": 0.004032421620921621,
+   "ci_lo": -0.17415122519741855,
+   "ci_hi": 0.18476821415594527,
+   "ci_method": "iid",
+   "p": 0.9648725409126617,
+   "start": "2023-12-04 15:46:00+00:00",
+   "end": "2026-07-22 14:08:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.13333831959169562,
+ "mde_threshold": 0.1,
+ "power_floor_n": 3428,
+ "verdict": "UNDERPOWERED",
+ "verdict_detail": "CI contains 0; MDE 0.1333 vs threshold 0.1000, effective n 1928 (power floor n=3428, have 1928)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 1928,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 1.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 145,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "target_px"
+   ],
+   "ignored": [],
+   "lookback": "5D",
+   "recent": "1D",
+   "events_fp": "10b93c50c666e5ff",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "5h",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": null,
+  "entry_mode": "next_open",
+  "hold_basis": "clock",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "Instrument differs from the report (NAS100 -> XAUUSD). Median planned RR of the real arm 3.81 (reported avg ~5). Entry discretion in the original cannot be reproduced; this is the mechanical re-run the concept itself names.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/risk_own_01a/silver-bullet-am-backtest-result.py",
+ "runtime_sec": 1.06,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:16:07+00:00",
+ "n_events_in": 1928,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 0,
+  "target_not_beyond_entry": 0,
+  "no_bars_in_hold": 0
+ },
+ "events_fp": "10b93c50c666e5ff",
+ "sd_R": 1.8925045655527972,
+ "exit_mix": {
+  "stop": 0.720954356846473,
+  "target": 0.18931535269709543,
+  "time": 0.08973029045643154
+ },
+ "trades_per_year": 182.86211373669178,
+ "ci_components": {
+  "phase3_block": [
+   -0.12732556138555384,
+   0.05923904844796405
+  ],
+  "day_block": [
+   -0.12370328998634089,
+   0.05693852080605239
+  ]
+ },
+ "diff_win": -0.031950207468879666,
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 1928,
+  "n_clusters": null,
+  "n_eff": 1928
+ },
+ "ties": {
+  "real_ambiguous": 0.0005186721991701245,
+  "control_ambiguous": 0.0001037344398340249,
+  "real_gap_stop": 0.010892116182572614,
+  "control_gap_stop": 0.015145228215767635,
+  "verdict_stop_first": "UNDERPOWERED"
+ },
+ "ctrl_overlap": 0.0001037344398340249,
+ "exposure_bars": {
+  "real_mean": 296.09491701244815,
+  "control_mean": 281.18672199170123,
+  "hold_basis": "clock"
+ },
+ "run_id": "0016d14abc9a45cc985441667344e30e",
+ "hyp_key": "8034166b81dcd600"
+}

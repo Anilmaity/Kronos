@@ -1,0 +1,209 @@
+{
+ "concept_id": "strat-pivot-targets",
+ "reading": null,
+ "testable": true,
+ "test_type": "rate",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "1D bars, 18:00 NY roll; inside bar = high<=mother high and low>=mother low",
+   "breakout bar trades beyond the inside bar on one side only and closes beyond it",
+   "targets = highs (lows) of the 10 candles before the breakout bar beyond the breakout bar's extreme; first = nearest",
+   "decide at breakout close; hit = M1 trades through target within 5 sessions (6,900 M1 bars)",
+   "null = matched random daily-close moments +/-30d, same signed distance from next M1 open, same horizon"
+  ],
+  "params": {
+   "tf": "1D",
+   "day_open_hour": 18,
+   "n_prior_candles": 10,
+   "horizon_m1_bars": 6900,
+   "min_session_m1": 600,
+   "outcome_horizon": "7D"
+  }
+ },
+ "params_source": {
+  "tf": "corpus: V8P6lNIisvc worked example is monthly with daily reaction; 1D is the lowest listed htf analysis TF (yaml timeframes.htf)",
+  "day_open_hour": "session_window_fit: settled 18:00 NY daily roll",
+  "n_prior_candles": "declared-before-run: corpus never states how many prior candles enter the list (yaml ambiguity); 10",
+  "horizon_m1_bars": "declared-before-run: one trading week (5 x 1380 M1 bars)",
+  "min_session_m1": "declared-before-run: skip stub sessions (README trap 6)",
+  "outcome_horizon": "declared-before-run: 5 sessions span ~7 calendar days"
+ },
+ "n": 119,
+ "span": {
+  "start": "2016-01-25 23:00:00+00:00",
+  "end": "2026-07-13 22:00:00+00:00",
+  "years": 10.461
+ },
+ "avg_R": null,
+ "avg_R_gross": null,
+ "win_rate": null,
+ "pf": null,
+ "observed_rate": 0.7226890756302521,
+ "null_rate": 0.7663865546218488,
+ "lift": 0.9429824561403508,
+ "control": {
+  "rate": 0.7663865546218488,
+  "reps": 5,
+  "kind": "null_fn x5"
+ },
+ "diff": -0.043697478991596705,
+ "ci_lo": -0.12941176470588234,
+ "ci_hi": 0.043739495798319164,
+ "ci_method": "phase3_iid",
+ "p": 0.3225377700025204,
+ "halves": {
+  "H1": {
+   "n": 58,
+   "diff": -0.12413793103448278,
+   "ci_lo": -0.26215517241379305,
+   "ci_hi": 0.017241379310344862,
+   "ci_method": "iid",
+   "p": 0.08156923818299555,
+   "start": "2016-01-25 23:00:00+00:00",
+   "end": "2020-12-30 23:00:00+00:00"
+  },
+  "H2": {
+   "n": 61,
+   "diff": 0.032786885245901454,
+   "ci_lo": -0.0852459016393442,
+   "ci_hi": 0.1442622950819672,
+   "ci_method": "iid",
+   "p": 0.575486453517342,
+   "start": "2021-01-27 23:00:00+00:00",
+   "end": "2026-07-13 22:00:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 28,
+   "diff": -0.1071428571428571,
+   "ci_lo": -0.30714285714285716,
+   "ci_hi": 0.08571428571428563,
+   "ci_method": "iid",
+   "p": 0.2850375550308132,
+   "start": "2016-01-25 23:00:00+00:00",
+   "end": "2018-02-26 23:00:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 33,
+   "diff": -0.1515151515151515,
+   "ci_lo": -0.3272727272727273,
+   "ci_hi": 0.02424242424242418,
+   "ci_method": "iid",
+   "p": 0.09109988500695257,
+   "start": "2018-09-06 22:00:00+00:00",
+   "end": "2021-02-16 23:00:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 22,
+   "diff": 0.0636363636363636,
+   "ci_lo": -0.12727272727272732,
+   "ci_hi": 0.23636363636363633,
+   "ci_method": "iid",
+   "p": 0.4927210539524876,
+   "start": "2021-07-01 22:00:00+00:00",
+   "end": "2023-11-24 23:00:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 36,
+   "diff": 0.03888888888888886,
+   "ci_lo": -0.11111111111111116,
+   "ci_hi": 0.188888888888889,
+   "ci_method": "iid",
+   "p": 0.611355996188883,
+   "start": "2023-12-19 23:00:00+00:00",
+   "end": "2026-07-13 22:00:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.12375175619543607,
+ "mde_threshold": 0.05,
+ "power_floor_n": 729,
+ "verdict": "UNDERPOWERED",
+ "verdict_detail": "CI contains 0; MDE 0.1238 vs threshold 0.0500, effective n 119 (power floor n=729, have 119)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 119,
+  "min_slack_min": 0.0,
+  "passed": true,
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 25,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "target_px"
+   ],
+   "ignored": [],
+   "lookback": "45D",
+   "recent": "1D",
+   "events_fp": "f8c3641bae271d8c",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "reps": 5,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "mde_threshold": null,
+  "cluster": null,
+  "outcome_horizon": "7 days 00:00:00",
+  "null_kind": "null_fn x5"
+ },
+ "notes": "First (nearest unhit) pivot target only; the sequential and FVG-coincidence sub-claims are not scored.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/liquidity_guest_01b/strat-pivot-targets.py",
+ "runtime_sec": 0.06,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:06:52+00:00",
+ "dropped": {
+  "nan_rows": 0
+ },
+ "null_kind": "null_fn x5",
+ "events_fp": "f8c3641bae271d8c",
+ "predictors_probed": true,
+ "ci_components": {
+  "phase3_iid": [
+   -0.12941176470588234,
+   0.043739495798319164
+  ],
+  "day_block": [
+   -0.12605042016806667,
+   0.03193277310924414
+  ],
+  "day_block_7d": [
+   -0.12773109243697445,
+   0.043697478991596816
+  ]
+ },
+ "dependence": {
+  "day_block_mean_days": 7,
+  "n_days": 119,
+  "n_clusters": null,
+  "n_eff": 119
+ },
+ "run_id": "1edc973e1e784232bcca2cb2d6cfa153",
+ "hyp_key": "f70c9bb883a969e6"
+}

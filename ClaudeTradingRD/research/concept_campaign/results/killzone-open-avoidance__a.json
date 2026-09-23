@@ -1,0 +1,282 @@
+{
+ "concept_id": "killzone-open-avoidance",
+ "reading": "a",
+ "testable": true,
+ "test_type": "gate",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "baseline: bare 15m CISD (series_open level, 2/2 swings, max_wait 3), decide at the confirming 15m close, enter next M1 open, stop at the protected swing, 2R, hold 150 min",
+   "keep only decisions inside a forex kill zone: Asia 20:00-00:00, London 02:00-05:00, NY AM 07:00-10:00, London Close 10:00-12:00 NY",
+   "gate (pass) = decision NOT in the first 30 minutes of its kill zone; complement = decision at KZ start or start+15 min (entries on the kill zone's first candles)",
+   "claim '+': entries later in the kill zone beat entries at its beginning"
+  ],
+  "params": {
+   "tf": "15min",
+   "max_hold": "150min",
+   "killzones": [
+    "fx_asia",
+    "fx_london",
+    "fx_ny_am",
+    "fx_london_close"
+   ],
+   "begin_minutes": 30,
+   "level_rule": "series_open",
+   "swing": "2/2",
+   "max_wait": 3,
+   "rr": 2.0
+  }
+ },
+ "params_source": {
+  "tf": "corpus: concept timeframes.ltf lists 15m (1H/15m/5m)",
+  "max_hold": "phase3: meta/conjunction_preregistration.md \u00a71.8-1.13 locked config (series_open level, 2/2 swings, max_wait 3, min_series 1, stop at protected swing, 2R, max hold 10 entry-TF periods)",
+  "level_rule": "phase3: meta/conjunction_preregistration.md \u00a71.8-1.13 locked config (series_open level, 2/2 swings, max_wait 3, min_series 1, stop at protected swing, 2R, max hold 10 entry-TF periods)",
+  "swing": "phase3: meta/conjunction_preregistration.md \u00a71.8-1.13 locked config (series_open level, 2/2 swings, max_wait 3, min_series 1, stop at protected swing, 2R, max hold 10 entry-TF periods)",
+  "max_wait": "phase3: meta/conjunction_preregistration.md \u00a71.8-1.13 locked config (series_open level, 2/2 swings, max_wait 3, min_series 1, stop at protected swing, 2R, max hold 10 entry-TF periods)",
+  "rr": "phase3: meta/conjunction_preregistration.md \u00a71.8-1.13 locked config (series_open level, 2/2 swings, max_wait 3, min_series 1, stop at protected swing, 2R, max hold 10 entry-TF periods)",
+  "killzones": "session_window_fit: concepts/time/killzones.yaml forex windows (cl.KILLZONES fx_*)",
+  "begin_minutes": "corpus: qFtfD09Vv3E 'if you start to use 7 30 opening price' (remedy 30 min into the 07:00 window)"
+ },
+ "n": 15034,
+ "span": {
+  "start": "2016-01-04 02:00:00+00:00",
+  "end": "2026-07-23 02:15:00+00:00",
+  "years": 10.549
+ },
+ "avg_R": -0.02959305420422264,
+ "avg_R_gross": 0.010406945795777377,
+ "win_rate": 0.4303578555274711,
+ "pf": 0.9304998156503982,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "avg_R_gated": -0.041595412637996446,
+  "avg_R_complement": -0.04076605485238829,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": 0.020801784907515955,
+ "ci_lo": -0.025523327647083746,
+ "ci_hi": 0.06317136632551332,
+ "ci_method": "day_block",
+ "p": 0.35791234311795783,
+ "halves": {
+  "H1": {
+   "n": 8629,
+   "diff": 0.03795863430160795,
+   "ci_lo": -0.029409515072475342,
+   "ci_hi": 0.10439232171455688,
+   "ci_method": "iid",
+   "p": 0.26611414392682675,
+   "start": "2016-01-04 02:00:00+00:00",
+   "end": "2020-12-31 16:00:00+00:00",
+   "n_gated": 7113
+  },
+  "H2": {
+   "n": 9568,
+   "diff": 0.0053549277924754965,
+   "ci_lo": -0.059176744012186866,
+   "ci_hi": 0.06510104143298164,
+   "ci_method": "iid",
+   "p": 0.8658726824984452,
+   "start": "2021-01-04 08:00:00+00:00",
+   "end": "2026-07-23 02:15:00+00:00",
+   "n_gated": 7921
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 4461,
+   "diff": 0.095035888132918,
+   "ci_lo": 0.009609831853060238,
+   "ci_hi": 0.18145854573280007,
+   "ci_method": "iid",
+   "p": 0.030173819613887272,
+   "start": "2016-01-04 02:00:00+00:00",
+   "end": "2018-08-22 08:45:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 4602,
+   "diff": -0.014200040719509172,
+   "ci_lo": -0.10506866038608703,
+   "ci_hi": 0.07880696377251067,
+   "ci_method": "iid",
+   "p": 0.7621019769654159,
+   "start": "2018-08-22 11:45:00+00:00",
+   "end": "2021-04-12 08:15:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 4640,
+   "diff": 0.018430677630563233,
+   "ci_lo": -0.06626496823579947,
+   "ci_hi": 0.10791757986540157,
+   "ci_method": "iid",
+   "p": 0.6783050970992577,
+   "start": "2021-04-12 11:45:00+00:00",
+   "end": "2023-12-01 15:15:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 4494,
+   "diff": -0.014650370731861841,
+   "ci_lo": -0.10968813815286313,
+   "ci_hi": 0.07383801351489357,
+   "ci_method": "block",
+   "p": 0.754343946624402,
+   "start": "2023-12-04 04:00:00+00:00",
+   "end": "2026-07-23 02:15:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.06339037967361094,
+ "mde_threshold": 0.1,
+ "power_floor_n": 1272,
+ "verdict": "NULL",
+ "verdict_detail": "CI contains 0; powered (MDE 0.0634 <= 0.1000)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 18197,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "gate_mask_checked": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 5.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 1382,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "rr",
+    "later_in_kz"
+   ],
+   "ignored": [],
+   "lookback": "10D",
+   "recent": "1D",
+   "events_fp": "d34b077355c8f381",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "150min",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": null,
+  "entry_mode": "next_open",
+  "hold_basis": "clock",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "Gold, not indices. Rauf states the rule generally ('a Kill Zone') with the forex 07:00-10:00 window as his example, so all four forex kill zones are pooled.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/time_guest_01a/killzone-open-avoidance.py",
+ "runtime_sec": 14.84,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:27:15+00:00",
+ "n_events_in": 18197,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 0,
+  "target_not_beyond_entry": 0,
+  "no_bars_in_hold": 0
+ },
+ "n_complement": 3163,
+ "gate_firing_rate": 0.8261801395834478,
+ "events_fp": "d34b077355c8f381",
+ "mask_fp": "8b6d3843a277e2a1",
+ "mask_col": "later_in_kz",
+ "exit_mix": {
+  "stop": 0.329386723426899,
+  "target": 0.11540508181455368,
+  "time": 0.5552081947585473
+ },
+ "gated_vs_own_control": {
+  "diff": 0.012002358433773806,
+  "ci_lo": -0.005545566995444807,
+  "ci_hi": 0.030397138106504323,
+  "p": 0.19054019472896125
+ },
+ "complement": {
+  "n": 3163,
+  "avg_R": -0.04956548132613043,
+  "win_rate": 0.40373063547265253,
+  "pf": 0.9013537595361558,
+  "sd_R": 1.1056792571638536,
+  "exit_mix": {
+   "stop": 0.4277584571609232,
+   "target": 0.15807777426493835,
+   "time": 0.4141637685741385
+  },
+  "vs_own_control": {
+   "diff": -0.008799426473742142,
+   "ci_lo": -0.05223069570775314,
+   "ci_hi": 0.03175579999853231,
+   "p": 0.6812937106923866
+  }
+ },
+ "ci_components": {
+  "phase3_iid": [
+   -0.024233943609397023,
+   0.0631964758337836
+  ],
+  "day_block": [
+   -0.025523327647083746,
+   0.06317136632551332
+  ]
+ },
+ "diff_meaning": "mean(R-ctrl | gated) - mean(R-ctrl | complement)",
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_eff_gated": 2719,
+  "n_eff_complement": 2013,
+  "n_eff": 2013
+ },
+ "ties": {
+  "real_ambiguous": 0.0006594493597845798,
+  "control_ambiguous": 0.0003297246798922899,
+  "real_gap_stop": 0.006044952464691982,
+  "control_gap_stop": 0.005396493927570478,
+  "gated_excess": 0.0001862445124384728,
+  "complement_excess": 0.0010116977552956053,
+  "verdict_stop_first": "NULL"
+ },
+ "ctrl_overlap": 0.03801725559158103,
+ "exposure_bars": {
+  "real_mean": 148.78084299609827,
+  "control_mean": 142.94985986701104,
+  "hold_basis": "clock"
+ },
+ "run_id": "9b8958187f994ebaae6b7b10120ac9a3",
+ "hyp_key": "0bf2c4e8a594faaf"
+}

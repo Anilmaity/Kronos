@@ -1,0 +1,231 @@
+{
+ "concept_id": "nfp-week-protocol",
+ "reading": "b",
+ "testable": true,
+ "test_type": "trade",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "NFP weeks only; classify Mon..day-before-release sessions",
+   "internal week: a single session holds both the week-so-far high WH and low WL",
+   "after 08:30 NY on release day, first 5m bar (to 12:00 NY) closing back inside after trading beyond WH (WL) -> short (long) next M1 open",
+   "stop = extreme since 08:30; target = opposing external level; exit 16:00 NY"
+  ],
+  "params": {
+   "nfp_rule": "BLS reference-week rule + 2025 shutdown cases",
+   "release_time": "08:30 NY",
+   "internal_test": "one session of Mon..day-before holds both the week-so-far high and low",
+   "trigger": "first 5m close back inside after trading beyond WH/WL, 08:30-12:00 NY",
+   "stop": "extreme made since 08:30",
+   "target": "opposing external level (WL for shorts, WH for longs)",
+   "exit": "16:00 NY release day",
+   "min_session_m1": 300
+  }
+ },
+ "params_source": {
+  "nfp_rule": "declared-before-run: BLS Employment Situation scheduling convention",
+  "release_time": "corpus: QmGJFxfSHxM 'upon that news release at 8:30'",
+  "internal_test": "declared-before-run: QmGJFxfSHxM 'remained internal in between this low and high which formed during that expansion'",
+  "trigger": "declared-before-run: QmGJFxfSHxM 'manipulate that external high and then return right back into that range'; AM window from wGYde-h84cs 'I only watch am session'",
+  "stop": "declared-before-run: stop not stated in corpus; sweep extreme",
+  "target": "corpus: execution.targets 'the opposing external level'",
+  "exit": "declared-before-run: flat before the Friday close",
+  "min_session_m1": "declared-before-run: stub-session guard (trap 6)"
+ },
+ "n": 3,
+ "span": {
+  "start": "2019-08-02 14:50:00+00:00",
+  "end": "2025-04-04 14:05:00+00:00",
+  "years": 5.67
+ },
+ "avg_R": 0.09761295180721034,
+ "avg_R_gross": 0.13761295180721037,
+ "win_rate": 0.3333333333333333,
+ "pf": 1.1407879112603996,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "n": 15,
+  "avg_R": 0.2882921912479039,
+  "win_rate": 0.3333333333333333,
+  "pf": 1.475880279560997,
+  "sd_R": 2.72014409119163,
+  "exit_mix": {
+   "stop": 0.5333333333333333,
+   "target": 0.0,
+   "time": 0.4666666666666667
+  },
+  "avg_R_gross": 0.3282921912479039,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": -0.19067923944069354,
+ "ci_lo": -2.403396234068744,
+ "ci_hi": 1.990069794758136,
+ "ci_method": "phase3_iid",
+ "p": 0.8649099567660002,
+ "halves": {
+  "H1": {
+   "n": 2,
+   "diff": 0.011064474172304939,
+   "ci_lo": -2.103812316715586,
+   "ci_hi": 2.125941265060196,
+   "ci_method": "iid",
+   "p": 0.9918186258635816,
+   "start": "2019-08-02 14:50:00+00:00",
+   "end": "2020-07-02 13:10:00+00:00"
+  },
+  "H2": {
+   "n": 1,
+   "start": "2025-04-04 14:05:00+00:00",
+   "end": "2025-04-04 14:05:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 0,
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 2,
+   "diff": 0.011064474172304939,
+   "ci_lo": -2.103812316715586,
+   "ci_hi": 2.125941265060196,
+   "ci_method": "iid",
+   "p": 0.9918186258635816,
+   "start": "2019-08-02 14:50:00+00:00",
+   "end": "2020-07-02 13:10:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 0,
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 1,
+   "start": "2025-04-04 14:05:00+00:00",
+   "end": "2025-04-04 14:05:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 3.140024134211382,
+ "mde_threshold": 0.1,
+ "power_floor_n": 2958,
+ "verdict": "UNTESTABLE",
+ "verdict_detail": "n=3 (other arm None) below N_MIN_ANY=30",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 3,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 0.0
+  },
+  "probe": {
+   "sampled": 3,
+   "n_targeted": 3,
+   "n_cuts": 200,
+   "events_compared": 3,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "target_px",
+    "max_hold"
+   ],
+   "ignored": [],
+   "lookback": "20D",
+   "recent": "1D",
+   "events_fp": "028eff7b08ebef6e",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "per-row column",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": null,
+  "entry_mode": "next_open",
+  "hold_basis": "clock",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "At most one trade per NFP week (~126 weeks in span) and only internal weeks qualify, so this reading cannot be powered on 10.5 years.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/time_own_02b/nfp-week-protocol.py",
+ "runtime_sec": 0.75,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:37:18+00:00",
+ "n_events_in": 3,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 0,
+  "target_not_beyond_entry": 0,
+  "no_bars_in_hold": 0
+ },
+ "events_fp": "028eff7b08ebef6e",
+ "sd_R": 1.970403431878493,
+ "exit_mix": {
+  "stop": 0.6666666666666666,
+  "target": 0.0,
+  "time": 0.3333333333333333
+ },
+ "trades_per_year": 0.5290922259777885,
+ "ci_components": {
+  "phase3_iid": [
+   -2.403396234068744,
+   1.990069794758136
+  ],
+  "day_block": [
+   -2.103812316715586,
+   2.125941265060196
+  ]
+ },
+ "diff_win": 0.0,
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 3,
+  "n_clusters": null,
+  "n_eff": 3
+ },
+ "ties": {
+  "real_ambiguous": 0.0,
+  "control_ambiguous": 0.0,
+  "real_gap_stop": 0.0,
+  "control_gap_stop": 0.0,
+  "verdict_stop_first": "UNTESTABLE"
+ },
+ "ctrl_overlap": 0.0,
+ "exposure_bars": {
+  "real_mean": 358.3333333333333,
+  "control_mean": 334.4,
+  "hold_basis": "clock"
+ },
+ "run_id": "3344614b892e4937a94ccdd12d28be4e",
+ "hyp_key": "9c74a8ab275c2e94"
+}

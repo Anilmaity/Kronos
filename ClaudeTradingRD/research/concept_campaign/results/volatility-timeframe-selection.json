@@ -1,0 +1,281 @@
+{
+ "concept_id": "volatility-timeframe-selection",
+ "reading": null,
+ "testable": true,
+ "test_type": "gate",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "baseline: phase-3 bare CISD books on 5m (hold 50min) and 15m (hold 150min), pooled, next-M1-open entry, protected-swing stop, 2R",
+   "volatility state at the decision from completed 5m bars only",
+   "gated = 5m events in high volatility + 15m events in low volatility; complement = 5m-low + 15m-high"
+  ],
+  "params": {
+   "baseline": "bare CISD",
+   "baseline_tf": "5min + 15min pooled",
+   "level_rule": "series_open",
+   "swing": "2/2",
+   "max_wait": 3,
+   "rr": 2.0,
+   "max_hold": "10 entry-TF periods (50min / 150min per row)",
+   "vol_measure": "mean 5m bar range over last 12 completed 5m bars / median of same over previous 5,520 5m bars",
+   "vol_split": "ratio > 1 = high"
+  }
+ },
+ "params_source": {
+  "baseline": "phase3: meta/conjunction_preregistration.md \u00a71.8-1.13 (locked rung-0 config); max hold = 10 entry-TF periods (\u00a75.5)",
+  "baseline_tf": "corpus: X4XSsv5CNqg live example dropped 15m -> 5m for volatility",
+  "level_rule": "phase3: meta/conjunction_preregistration.md \u00a71.8-1.13 (locked rung-0 config); max hold = 10 entry-TF periods (\u00a75.5)",
+  "swing": "phase3: meta/conjunction_preregistration.md \u00a71.8-1.13 (locked rung-0 config); max hold = 10 entry-TF periods (\u00a75.5)",
+  "max_wait": "phase3: meta/conjunction_preregistration.md \u00a71.8-1.13 (locked rung-0 config); max hold = 10 entry-TF periods (\u00a75.5)",
+  "rr": "phase3: meta/conjunction_preregistration.md \u00a71.8-1.13 (locked rung-0 config); max hold = 10 entry-TF periods (\u00a75.5)",
+  "max_hold": "phase3: 10 entry-TF periods (\u00a75.5)",
+  "vol_measure": "declared-before-run: volatility is never quantified in the corpus [GAP]; scale-free recent-vs-typical range ratio (trap 6: no raw dollars)",
+  "vol_split": "declared-before-run: median split; only the direction of the relation is stated"
+ },
+ "n": 62889,
+ "span": {
+  "start": "2016-01-17 23:45:00+00:00",
+  "end": "2026-07-23 03:30:00+00:00",
+  "years": 10.511
+ },
+ "avg_R": -0.04151342601795583,
+ "avg_R_gross": -0.0015134260179558046,
+ "win_rate": 0.42520949609629666,
+ "pf": 0.9048404407593021,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "avg_R_gated": -0.03917992349232612,
+  "avg_R_complement": -0.04098061120386719,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": -0.0009293397828065786,
+ "ci_lo": -0.013572209674636642,
+ "ci_hi": 0.011783287868573543,
+ "ci_method": "phase3_block",
+ "p": 0.8857573026114891,
+ "halves": {
+  "H1": {
+   "n": 61733,
+   "diff": -0.005044594897461743,
+   "ci_lo": -0.022917643538182472,
+   "ci_hi": 0.012803239117237028,
+   "ci_method": "block",
+   "p": 0.5798647343827947,
+   "start": "2016-01-17 23:45:00+00:00",
+   "end": "2020-12-31 21:20:00+00:00",
+   "n_gated": 29635
+  },
+  "H2": {
+   "n": 68537,
+   "diff": 0.0028429454377718964,
+   "ci_lo": -0.01458182670489084,
+   "ci_hi": 0.020889106261485515,
+   "ci_method": "block",
+   "p": 0.7533868218425964,
+   "start": "2021-01-03 23:05:00+00:00",
+   "end": "2026-07-23 03:30:00+00:00",
+   "n_gated": 33254
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 32303,
+   "diff": -0.018791337498760396,
+   "ci_lo": -0.04493701202613712,
+   "ci_hi": 0.005853801482110121,
+   "ci_method": "block",
+   "p": 0.14698161193341258,
+   "start": "2016-01-17 23:45:00+00:00",
+   "end": "2018-08-22 10:55:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 32804,
+   "diff": 0.010666917977508772,
+   "ci_lo": -0.013655564152194013,
+   "ci_hi": 0.03537241091839702,
+   "ci_method": "iid",
+   "p": 0.3937420180739702,
+   "start": "2018-08-22 11:15:00+00:00",
+   "end": "2021-04-12 08:20:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 32895,
+   "diff": 0.001711265143826999,
+   "ci_lo": -0.022490860649552604,
+   "ci_hi": 0.028696212582335186,
+   "ci_method": "block",
+   "p": 0.895736214606125,
+   "start": "2021-04-12 08:50:00+00:00",
+   "end": "2023-12-01 20:15:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 32268,
+   "diff": 0.002683235012447136,
+   "ci_lo": -0.02217814360660424,
+   "ci_hi": 0.029133185951267484,
+   "ci_method": "iid",
+   "p": 0.8375833089870987,
+   "start": "2023-12-03 23:10:00+00:00",
+   "end": "2026-07-23 03:30:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.018121654679523324,
+ "mde_threshold": 0.1,
+ "power_floor_n": 2066,
+ "verdict": "NULL",
+ "verdict_detail": "CI contains 0; powered (MDE 0.0181 <= 0.1000)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 130270,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "gate_mask_checked": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 64.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 9546,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "rr",
+    "tf",
+    "max_hold",
+    "gated",
+    "vol_ratio"
+   ],
+   "ignored": [],
+   "lookback": "45D",
+   "recent": "1D",
+   "events_fp": "0b448ee7971a2689",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "per-row column",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": null,
+  "entry_mode": "next_open",
+  "hold_basis": "clock",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "The 'sloppy -> step back up' clause is visual and not modelled. Both books share decision times at 15m closes; the day-block CI absorbs that dependence.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/time_own_02b/volatility-timeframe-selection.py",
+ "runtime_sec": 8.83,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:43:22+00:00",
+ "n_events_in": 130702,
+ "dropped": {
+  "no_bar_after_decision": 1,
+  "stop_not_beyond_entry": 64,
+  "target_not_beyond_entry": 0,
+  "no_bars_in_hold": 367
+ },
+ "n_complement": 67381,
+ "gate_firing_rate": 0.4827588853918784,
+ "events_fp": "0b448ee7971a2689",
+ "mask_fp": "e0fa15bf1af885af",
+ "mask_col": "gated",
+ "exit_mix": {
+  "stop": 0.33627502424907374,
+  "target": 0.11238849401326147,
+  "time": 0.5513364817376648
+ },
+ "gated_vs_own_control": {
+  "diff": -0.0023335025256297076,
+  "ci_lo": -0.011251556555579528,
+  "ci_hi": 0.006425527338570061,
+  "p": 0.6048359511505764
+ },
+ "complement": {
+  "n": 67381,
+  "avg_R": -0.04238477394669031,
+  "win_rate": 0.4210385717041896,
+  "pf": 0.9061745336524132,
+  "sd_R": 1.0239747208303276,
+  "exit_mix": {
+   "stop": 0.3576527507754412,
+   "target": 0.12341758062361793,
+   "time": 0.5189296686009409
+  },
+  "vs_own_control": {
+   "diff": -0.001404162742823123,
+   "ci_lo": -0.010887085481216034,
+   "ci_hi": 0.007500632776587475,
+   "p": 0.7646790910198411
+  }
+ },
+ "ci_components": {
+  "phase3_block": [
+   -0.013572209674636642,
+   0.011783287868573543
+  ],
+  "day_block": [
+   -0.012625107718327637,
+   0.01062012895647157
+  ]
+ },
+ "diff_meaning": "mean(R-ctrl | gated) - mean(R-ctrl | complement)",
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_eff_gated": 2713,
+  "n_eff_complement": 2713,
+  "n_eff": 2713
+ },
+ "ties": {
+  "real_ambiguous": 0.0003454364013203347,
+  "control_ambiguous": 0.0006908728026406694,
+  "real_gap_stop": 0.010769939356720657,
+  "control_gap_stop": 0.007951178321946726,
+  "gated_excess": -4.770309593092593e-05,
+  "complement_excess": -0.0006233211142606966,
+  "verdict_stop_first": "NULL"
+ },
+ "ctrl_overlap": 0.085668227527443,
+ "exposure_bars": {
+  "real_mean": 72.37489061180625,
+  "control_mean": 72.23420434482229,
+  "hold_basis": "clock"
+ },
+ "run_id": "bcca9ff7a91e4cfa9b76e92ea850a543",
+ "hyp_key": "34cd0e2a1501bffb"
+}

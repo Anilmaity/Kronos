@@ -1,0 +1,209 @@
+{
+ "concept_id": "proximity-bias-nearest-extreme",
+ "reading": null,
+ "testable": true,
+ "test_type": "rate",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "at each NY trading-day close: previous calendar month's high/low (session-date months)",
+   "live only while price is strictly inside that range and neither extreme has been taken month-to-date",
+   "prediction: the nearer extreme is reached first by the end of the current month (M1-bar horizon); neither reached = miss",
+   "null: same two signed distances from the first price after a matched random moment (+/-30 d, on-the-hour M1 grid), same M1 horizon, same scoring",
+   "cluster = previous-month id (rows in a month share their levels)"
+  ],
+  "params": {
+   "period": "1M",
+   "horizon": "to the current month's close",
+   "decision_grid": "daily close (18:00 NY)",
+   "null_tod_tol_min": null,
+   "tie_rule": "strict nearer; equal distances -> low side"
+  }
+ },
+ "params_source": {
+  "period": "corpus: X4XSsv5CNqg 'Are we closer to previous month's low or previous month's high?'",
+  "horizon": "corpus: X4XSsv5CNqg 'That's your bias, which you can have for the whole month'",
+  "decision_grid": "declared-before-run: one read per trading day while the bias is live",
+  "null_tod_tol_min": "declared-before-run (re-run after bug fix): month-long horizon, time of day immaterial; exact-18:00 ToD matching found no bars after 2021 (reopen prints at 18:01+)",
+  "tie_rule": "declared-before-run: no tie-break stated; exact ties are measure-zero"
+ },
+ "n": 1021,
+ "span": {
+  "start": "2016-02-29 23:00:00+00:00",
+  "end": "2026-07-23 22:00:00+00:00",
+  "years": 10.393
+ },
+ "avg_R": null,
+ "avg_R_gross": null,
+ "win_rate": null,
+ "pf": null,
+ "observed_rate": 0.4201762977473066,
+ "null_rate": 0.49382957884427037,
+ "lift": 0.8508528361761205,
+ "control": {
+  "rate": 0.49382957884427037,
+  "reps": 5,
+  "kind": "null_fn x5"
+ },
+ "diff": -0.07365328109696373,
+ "ci_lo": -0.13531831564588143,
+ "ci_hi": -0.0033631111716221924,
+ "ci_method": "cluster",
+ "p": 0.028670942940577888,
+ "halves": {
+  "H1": {
+   "n": 418,
+   "diff": -0.06650717703349285,
+   "ci_lo": -0.1626794258373206,
+   "ci_hi": 0.03883971291865969,
+   "ci_method": "block",
+   "p": 0.19577243369155756,
+   "start": "2016-02-29 23:00:00+00:00",
+   "end": "2020-12-31 23:00:00+00:00"
+  },
+  "H2": {
+   "n": 603,
+   "diff": -0.0786069651741293,
+   "ci_lo": -0.14427860696517386,
+   "ci_hi": -0.006592039800995034,
+   "ci_method": "block",
+   "p": 0.02522526763639099,
+   "start": "2021-02-01 23:00:00+00:00",
+   "end": "2026-07-23 22:00:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 163,
+   "diff": -0.07239263803680973,
+   "ci_lo": -0.22950920245398757,
+   "ci_hi": 0.06748466257668706,
+   "ci_method": "block",
+   "p": 0.3393312181900383,
+   "start": "2016-02-29 23:00:00+00:00",
+   "end": "2018-08-01 22:00:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 266,
+   "diff": -0.05939849624060156,
+   "ci_lo": -0.1887593984962414,
+   "ci_hi": 0.1098120300751879,
+   "ci_method": "block",
+   "p": 0.43548528399096126,
+   "start": "2018-08-31 22:00:00+00:00",
+   "end": "2021-04-09 22:00:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 267,
+   "diff": -0.07415730337078652,
+   "ci_lo": -0.20149812734082373,
+   "ci_hi": 0.05168539325842647,
+   "ci_method": "block",
+   "p": 0.2509088784186332,
+   "start": "2021-04-12 22:00:00+00:00",
+   "end": "2023-11-30 23:00:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 325,
+   "diff": -0.08553846153846156,
+   "ci_lo": -0.14893846153846155,
+   "ci_hi": -0.02456923076923079,
+   "ci_method": "iid",
+   "p": 0.007016891890737995,
+   "start": "2024-01-02 23:00:00+00:00",
+   "end": "2026-07-23 22:00:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.09430880402063956,
+ "mde_threshold": 0.05,
+ "power_floor_n": 3633,
+ "verdict": "NEGATIVE",
+ "verdict_detail": "CI excludes 0 against the claim (+)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 1021,
+  "min_slack_min": 0.0,
+  "passed": true,
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 86,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "month_id",
+    "pmh",
+    "pml",
+    "near"
+   ],
+   "ignored": [],
+   "lookback": "75D",
+   "recent": "1D",
+   "events_fp": "fad9bbae5227697a",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "reps": 5,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "mde_threshold": null,
+  "cluster": "column:month_id",
+  "outcome_horizon": "1 days 00:00:00",
+  "null_kind": "null_fn x5"
+ },
+ "notes": "Monthly only, as demonstrated; the daily/weekly extension is not stated in the unit. RE-RUN ONCE after a bug fix: the first run matched the null's NY time of day (+/-30 min around 18:00) and silently lost 520/1021 rows after 2021 because the reopen bar prints at 18:01+; that run read diff -0.087 [-0.184, +0.026] UNDERPOWERED on n=501. ToD matching dropped (monthly horizon).",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/model_own_04b/proximity-bias-nearest-extreme.py",
+ "runtime_sec": 0.39,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:14:22+00:00",
+ "dropped": {
+  "nan_rows": 0
+ },
+ "null_kind": "null_fn x5",
+ "events_fp": "fad9bbae5227697a",
+ "predictors_probed": true,
+ "ci_components": {
+  "phase3_block": [
+   -0.1353721841332032,
+   -0.012928501469147532
+  ],
+  "day_block": [
+   -0.09951028403525904,
+   -0.04975514201763007
+  ],
+  "cluster": [
+   -0.13531831564588143,
+   -0.0033631111716221924
+  ]
+ },
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 1021,
+  "n_clusters": 114,
+  "n_eff": 114
+ },
+ "run_id": "bb8b3575410849e19d0b82bbf0aab820",
+ "hyp_key": "d989e1648f5d6ffb"
+}

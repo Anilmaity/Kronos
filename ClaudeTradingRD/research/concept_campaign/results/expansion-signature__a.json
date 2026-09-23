@@ -1,0 +1,268 @@
+{
+ "concept_id": "expansion-signature",
+ "reading": "a",
+ "testable": true,
+ "test_type": "trade",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "trend leg = latest 1h expansion event (close beyond 2/2 swing; 4-bar window range/pre-range >= 1.5, distance/pre-range >= 0.65) in the trade direction, decided before the pullback extreme; O = extreme behind its move; H = furthest 15m extreme from its break bar to the pullback extreme L",
+   "shallow: (H-L)/(H-O) <= 0.50; H not traded through before the CISD close",
+   "entry trigger: phase-3 15m CISD in the trend direction whose extreme bar reached into a same-direction 15m FVG formed within the prior 40 bars and not traded through before the extreme bar (important level = FVG)",
+   "enter next M1 open; stop L (new protected swing); target H; 8h trading time; control holds NY clock +/-30 min"
+  ],
+  "params": {
+   "trend_tf": "1h",
+   "entry_tf": "15min",
+   "exp_n": 4,
+   "exp_r": 1.5,
+   "exp_d": 0.65,
+   "shallow": 0.5,
+   "fvg_lookback": 40,
+   "cisd": "series_open/2-2/mw3",
+   "max_hold": "8h",
+   "hold_basis": "bars",
+   "ctrl_tod_tol_min": 30,
+   "cluster": "expansion leg"
+  }
+ },
+ "params_source": {
+  "trend_tf": "declared-before-run: 1h (concept ltf list 1H) carries the leg",
+  "entry_tf": "method_spec: \u00a71.3 15m CISD entry TF",
+  "exp_n": "threshold_fits: \u00a72 displacement=aggressive, close-beyond gate (grade A) + N=4 window r>=1.5, d>=0.65 vs the pre-break 4-bar range (grade B); 2/2 fractal swings",
+  "exp_r": "threshold_fits: \u00a72 displacement=aggressive, close-beyond gate (grade A) + N=4 window r>=1.5, d>=0.65 vs the pre-break 4-bar range (grade B); 2/2 fractal swings",
+  "exp_d": "threshold_fits: \u00a72 displacement=aggressive, close-beyond gate (grade A) + N=4 window r>=1.5, d>=0.65 vs the pre-break 4-bar range (grade B); 2/2 fractal swings",
+  "shallow": "threshold_fits: \u00a73 leg-level 'shallow' default 0.50 (grade B)",
+  "fvg_lookback": "phase3: poi_gate range lookback 40 bars",
+  "cisd": "phase3: \u00a71.8 series_open, 2/2, max_wait 3",
+  "target": "corpus: expansion-signature execution.targets 'previous candles' unswept highs/lows' -> the leg's unswept extreme H",
+  "max_hold": "declared-before-run: 8h trading time (32 entry-TF bars)",
+  "hold_basis": "declared-before-run: trading time (trap 7)",
+  "ctrl_tod_tol_min": "declared-before-run: trap 9, not a timing concept",
+  "cluster": "declared-before-run: one cluster per expansion leg (widens CI only)"
+ },
+ "n": 2066,
+ "span": {
+  "start": "2016-01-05 06:15:00+00:00",
+  "end": "2026-07-22 09:15:00+00:00",
+  "years": 10.543
+ },
+ "avg_R": 0.0027174633952701094,
+ "avg_R_gross": 0.042717463395270126,
+ "win_rate": 0.48693126815101645,
+ "pf": 1.0052380477220624,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "n": 10330,
+  "avg_R": -0.017508384866018134,
+  "win_rate": 0.4780251694094869,
+  "pf": 0.9668081542097267,
+  "sd_R": 1.383770411104914,
+  "exit_mix": {
+   "stop": 0.48993223620522747,
+   "target": 0.4363020329138432,
+   "time": 0.07376573088092933
+  },
+  "avg_R_gross": 0.02249161513398189,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": 0.020225848261288242,
+ "ci_lo": -0.050617566696233525,
+ "ci_hi": 0.09466167951783454,
+ "ci_method": "day_block",
+ "p": 0.5852485851165341,
+ "halves": {
+  "H1": {
+   "n": 989,
+   "diff": 0.013544239123946695,
+   "ci_lo": -0.07954479963258587,
+   "ci_hi": 0.10789507836889346,
+   "ci_method": "iid",
+   "p": 0.7769848069553457,
+   "start": "2016-01-05 06:15:00+00:00",
+   "end": "2020-12-31 13:30:00+00:00"
+  },
+  "H2": {
+   "n": 1077,
+   "diff": 0.026361513476544304,
+   "ci_lo": -0.05756760688542558,
+   "ci_hi": 0.12148356461458018,
+   "ci_method": "block",
+   "p": 0.563853781844862,
+   "start": "2021-01-04 08:00:00+00:00",
+   "end": "2026-07-22 09:15:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 503,
+   "diff": 0.04560107351859332,
+   "ci_lo": -0.09191834846205574,
+   "ci_hi": 0.188023769422871,
+   "ci_method": "block",
+   "p": 0.5231252812960714,
+   "start": "2016-01-05 06:15:00+00:00",
+   "end": "2018-08-20 16:45:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 542,
+   "diff": -0.0062226751535105485,
+   "ci_lo": -0.1368132416311663,
+   "ci_hi": 0.12734851961082796,
+   "ci_method": "iid",
+   "p": 0.9264286860600307,
+   "start": "2018-08-23 09:15:00+00:00",
+   "end": "2021-04-12 02:00:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 530,
+   "diff": 0.0900962034488666,
+   "ci_lo": -0.0354862410719563,
+   "ci_hi": 0.22881812323567172,
+   "ci_method": "iid",
+   "p": 0.18147508507749405,
+   "start": "2021-04-13 00:00:00+00:00",
+   "end": "2023-11-30 20:30:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 491,
+   "diff": -0.051993962050361574,
+   "ci_lo": -0.171549568777882,
+   "ci_hi": 0.06817388803936325,
+   "ci_method": "block",
+   "p": 0.3952145865223363,
+   "start": "2023-12-05 09:15:00+00:00",
+   "end": "2026-07-22 09:15:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.10383153899883873,
+ "mde_threshold": 0.1,
+ "power_floor_n": 2228,
+ "verdict": "UNDERPOWERED",
+ "verdict_detail": "CI contains 0; MDE 0.1038 vs threshold 0.1000, effective n 1075 (power floor n=2228, have 2066)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 2066,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 2944.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 194,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "target_px",
+    "e_id"
+   ],
+   "ignored": [],
+   "lookback": "45D",
+   "recent": "1D",
+   "events_fp": "7f6f09ac9025a091",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "8h",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": 30,
+  "entry_mode": "next_open",
+  "hold_basis": "bars",
+  "mde_threshold": null,
+  "cluster": "column:e_id",
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "Overlaps retracement-phase's continuation book; this reading adds the FVG 'important level' and drops the slow/quick split.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/structure_own_01b/expansion-signature.py",
+ "runtime_sec": 0.78,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:36:52+00:00",
+ "n_events_in": 2066,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 0,
+  "target_not_beyond_entry": 0,
+  "no_bars_in_hold": 0
+ },
+ "events_fp": "7f6f09ac9025a091",
+ "sd_R": 1.3231057160397786,
+ "exit_mix": {
+  "stop": 0.4849951597289448,
+  "target": 0.45256534365924495,
+  "time": 0.06243949661181026
+ },
+ "trades_per_year": 195.95079200207738,
+ "ci_components": {
+  "phase3_block": [
+   -0.04360558269403225,
+   0.08240544159549175
+  ],
+  "day_block": [
+   -0.050617566696233525,
+   0.09466167951783454
+  ],
+  "cluster": [
+   -0.05028768676580735,
+   0.09239255456460786
+  ]
+ },
+ "diff_win": 0.008906098741529533,
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 1255,
+  "n_clusters": 1075,
+  "n_eff": 1075
+ },
+ "ties": {
+  "real_ambiguous": 0.001452081316553727,
+  "control_ambiguous": 0.0008712487899322362,
+  "real_gap_stop": 0.01452081316553727,
+  "control_gap_stop": 0.015972894482090997,
+  "verdict_stop_first": "UNDERPOWERED"
+ },
+ "ctrl_overlap": 0.004162633107454018,
+ "exposure_bars": {
+  "real_mean": 480.0,
+  "control_mean": 479.9463697967086,
+  "hold_basis": "bars"
+ },
+ "run_id": "a7b1235612904db7aa92f3e8c6cbe2a5",
+ "hyp_key": "56338c24e62d7ab9"
+}

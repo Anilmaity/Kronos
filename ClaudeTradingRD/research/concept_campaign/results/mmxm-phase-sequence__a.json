@@ -1,0 +1,261 @@
+{
+ "concept_id": "mmxm-phase-sequence",
+ "reading": "a",
+ "testable": true,
+ "test_type": "trade",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "15m bars, NY trading day (18:00 roll); premium/discount array = prior day high/low (coverage >= 0.5)",
+   "SMR: first 15m trade through PDH; MSS = 15m close below the last 2/2 swing low confirmed before the sweep, within 16 bars; H0 = high from sweep to MSS",
+   "entry 1: first return into the first bearish FVG of leg H0->MSS, FVG low above (H0+L1)/2, high < H0, within 32 bars; stop H0; target PDL",
+   "BOS: close below L1 within 32 bars; H1 = retracement high; entry 2: first return into the first bearish FVG of leg H1->BOS, above (H1+L2)/2, high < H1, within 32 bars; stop H1; target PDL",
+   "mirrored at PDL for the buy model; all steps inside the sweep's trading day; entries whose PDL/PDH objective is already behind price are dropped",
+   "hold 480 M1 bars (hold_basis bars)",
+   "reading a: trade_test on second-leg entries only"
+  ],
+  "params": {
+   "tf": "15min",
+   "array": "prior-day high/low",
+   "min_coverage": 0.5,
+   "swing": "2/2",
+   "mss_wait_bars": 16,
+   "entry_wait_bars": 32,
+   "premium": "FVG low >= 0.5 of leg",
+   "target": "previous daily low/high",
+   "max_hold": "480min",
+   "hold_basis": "bars"
+  }
+ },
+ "params_source": {
+  "tf": "corpus: CrUfTskOveo AM Trades builds the sell model on the 15-minute",
+  "array": "corpus: UmLWRlXd_V8 'a push up into a premium array (previous daily high ...)'",
+  "min_coverage": "declared-before-run: skip stub sessions (README trap 6)",
+  "swing": "phase3: 2/2 fractal swing definition (conjunction_preregistration)",
+  "mss_wait_bars": "declared-before-run: the reaction must form within 4h of the sweep",
+  "entry_wait_bars": "declared-before-run: each step within 8h, and inside the trading day",
+  "premium": "corpus: UmLWRlXd_V8 'I don't take a short unless price is above equilibrium'",
+  "target": "corpus: UmLWRlXd_V8 execution targets 'previous daily low'",
+  "max_hold": "declared-before-run: intraday model, 8 trading hours",
+  "hold_basis": "declared-before-run: trading-time hold across the 17:00 halt (trap 7)"
+ },
+ "n": 8,
+ "span": {
+  "start": "2016-09-02 11:45:00+00:00",
+  "end": "2025-04-17 12:15:00+00:00",
+  "years": 8.621
+ },
+ "avg_R": -0.048039207917088336,
+ "avg_R_gross": -0.0080392079170883,
+ "win_rate": 0.5,
+ "pf": 0.9076169078517532,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "n": 40,
+  "avg_R": 0.08362457598733478,
+  "win_rate": 0.3,
+  "pf": 1.1320148639526746,
+  "sd_R": 2.327419693228057,
+  "exit_mix": {
+   "stop": 0.55,
+   "target": 0.075,
+   "time": 0.375
+  },
+  "avg_R_gross": 0.12362457598733467,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": -0.13166378390442313,
+ "ci_lo": -1.3647963673888144,
+ "ci_hi": 0.984421026667706,
+ "ci_method": "day_block",
+ "p": 0.8261082886066502,
+ "halves": {
+  "H1": {
+   "n": 3,
+   "diff": -1.7484581198952303,
+   "ci_lo": -2.9194659562311047,
+   "ci_hi": -0.5610134323468331,
+   "ci_method": "iid",
+   "p": 0.003659986607453187,
+   "start": "2016-09-02 11:45:00+00:00",
+   "end": "2020-02-27 18:45:00+00:00"
+  },
+  "H2": {
+   "n": 5,
+   "diff": 0.8384128176900614,
+   "ci_lo": -0.2996408298039894,
+   "ci_hi": 1.9786475025237646,
+   "ci_method": "iid",
+   "p": 0.14915061192411833,
+   "start": "2021-11-18 12:45:00+00:00",
+   "end": "2025-04-17 12:15:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 2,
+   "diff": -2.7372880316502135,
+   "ci_lo": -3.2838218053928867,
+   "ci_hi": -2.19075425790754,
+   "ci_method": "iid",
+   "p": 9.571436562667049e-23,
+   "start": "2016-09-02 11:45:00+00:00",
+   "end": "2018-03-26 09:00:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 1,
+   "start": "2020-02-27 18:45:00+00:00",
+   "end": "2020-02-27 18:45:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 2,
+   "diff": 0.5629114694249995,
+   "ci_lo": -1.357368421052646,
+   "ci_hi": 2.483191359902645,
+   "ci_method": "iid",
+   "p": 0.565599408570588,
+   "start": "2021-11-18 12:45:00+00:00",
+   "end": "2023-08-11 13:00:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 3,
+   "diff": 1.0220803832001024,
+   "ci_lo": -0.1506854460093927,
+   "ci_hi": 2.2346292983124223,
+   "ci_method": "iid",
+   "p": 0.09302644520956237,
+   "start": "2024-04-25 16:30:00+00:00",
+   "end": "2025-04-17 12:15:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 1.6789931378657557,
+ "mde_threshold": 0.1,
+ "power_floor_n": 2256,
+ "verdict": "UNTESTABLE",
+ "verdict_detail": "n=8 (other arm None) below N_MIN_ANY=30",
+ "sanity_flags": [
+  "differential 20.0pp outside +/-15pp"
+ ],
+ "lookahead": {
+  "rows_checked": 8,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 0.0
+  },
+  "probe": {
+   "sampled": 8,
+   "n_targeted": 8,
+   "n_cuts": 200,
+   "events_compared": 8,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "target_px",
+    "leg",
+    "model_id",
+    "second_leg"
+   ],
+   "ignored": [],
+   "lookback": "12D",
+   "recent": "1D",
+   "events_fp": "47ad7f5f0d4a7009",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "480min",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": null,
+  "entry_mode": "next_open",
+  "hold_basis": "bars",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "$niper's sequence; the AM Trades 'SMR stab' early entry and the MMXM Trader's SMT pairing are not included (no correlate used).",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/model_guest_01a/mmxm-phase-sequence.py",
+ "runtime_sec": 0.43,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:10:02+00:00",
+ "n_events_in": 8,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 0,
+  "target_not_beyond_entry": 0,
+  "no_bars_in_hold": 0
+ },
+ "events_fp": "47ad7f5f0d4a7009",
+ "sd_R": 1.2146626829852711,
+ "exit_mix": {
+  "stop": 0.5,
+  "target": 0.0,
+  "time": 0.5
+ },
+ "trades_per_year": 0.9279136233724992,
+ "ci_components": {
+  "phase3_iid": [
+   -1.136757294754657,
+   0.9818833908481688
+  ],
+  "day_block": [
+   -1.3647963673888144,
+   0.984421026667706
+  ]
+ },
+ "diff_win": 0.2,
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 8,
+  "n_clusters": null,
+  "n_eff": 8
+ },
+ "ties": {
+  "real_ambiguous": 0.0,
+  "control_ambiguous": 0.0,
+  "real_gap_stop": 0.0,
+  "control_gap_stop": 0.0,
+  "verdict_stop_first": "UNTESTABLE"
+ },
+ "ctrl_overlap": 0.0,
+ "exposure_bars": {
+  "real_mean": 480.0,
+  "control_mean": 480.0,
+  "hold_basis": "bars"
+ },
+ "run_id": "656cf5b799934d629f42c9f84c0a0f69",
+ "hyp_key": "6625f58963686444"
+}

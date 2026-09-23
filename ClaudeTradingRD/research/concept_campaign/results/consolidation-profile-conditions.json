@@ -1,0 +1,213 @@
+{
+ "concept_id": "consolidation-profile-conditions",
+ "reading": null,
+ "testable": true,
+ "test_type": "rate",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "decision at each completed daily close (18:00 NY trading day; stub days < 600 M1 bars dropped)",
+   "event if ANY of: (1) the day is the first of its week to trade through the prior completed week's high or low; (2) last 3 daily candles closed the same direction, or the last two daily ranges each >= 1.5x the prior ADR20; (3) close within 0.40-0.60 of the dealing range spanned by the latest confirmed daily 2/2 swing high and swing low",
+   "outcome: the NEXT trading day is a consolidation profile, |close-open| <= 0.20 x ADR20 (ADR known at its open)",
+   "null: the same outcome on a random other trading day within +/-30 days (regime-matched base rate)"
+  ],
+  "params": {
+   "cons_body_adr": 0.2,
+   "adr_n": 20,
+   "overext_mult": 1.5,
+   "three_closes": 3,
+   "eq_band": 0.1,
+   "swing": "2/2 daily",
+   "htf_level": "prior week H/L",
+   "null_window_days": 30,
+   "stub_min_m1": 600,
+   "day_open_hour": 18
+  }
+ },
+ "params_source": {
+  "cons_body_adr": "declared-before-run: 'opens and closes at almost the same price' (JABOO4LYNjQ) unquantified; 0.2 ADR",
+  "adr_n": "declared-before-run: 20-day average range as the 'average daily expansion'",
+  "overext_mult": "threshold_fits: displacement magnitude r=1.5 (range vs prior range) reused for 'large relative to average'",
+  "three_closes": "corpus: JABOO4LYNjQ 'three or more of the last daily candles closed in the same direction'",
+  "eq_band": "declared-before-run: 'at the 0.5 of the daily dealing range' as the middle fifth",
+  "swing": "declared-before-run: 2/2 fractal swings, as phase-3 locked config",
+  "htf_level": "declared-before-run: 'taken out a HTF old high or low' read as the prior week's H/L",
+  "null_window_days": "phase3: +/-30 day regime-matched control window",
+  "stub_min_m1": "declared-before-run: README trap 6 stub sessions",
+  "day_open_hour": "session_window_fit: settled 18:00 NY daily roll"
+ },
+ "n": 1319,
+ "span": {
+  "start": "2016-02-01 23:00:00+00:00",
+  "end": "2026-07-21 22:00:00+00:00",
+  "years": 10.464
+ },
+ "avg_R": null,
+ "avg_R_gross": null,
+ "win_rate": null,
+ "pf": null,
+ "observed_rate": 0.2850644427596664,
+ "null_rate": 0.27824109173616374,
+ "lift": 1.0245231607629428,
+ "control": {
+  "rate": 0.27824109173616374,
+  "reps": 5,
+  "kind": "null_fn x5"
+ },
+ "diff": 0.006823351023502677,
+ "ci_lo": -0.020318423047763434,
+ "ci_hi": 0.03275587566338132,
+ "ci_method": "phase3_iid",
+ "p": 0.6142931780913059,
+ "halves": {
+  "H1": {
+   "n": 612,
+   "diff": -0.0016339869281045694,
+   "ci_lo": -0.04053104575163401,
+   "ci_hi": 0.038897058823529375,
+   "ci_method": "iid",
+   "p": 0.9357279664256289,
+   "start": "2016-02-01 23:00:00+00:00",
+   "end": "2020-12-31 23:00:00+00:00"
+  },
+  "H2": {
+   "n": 707,
+   "diff": 0.014144271570014133,
+   "ci_lo": -0.02264497878359265,
+   "ci_hi": 0.05178217821782174,
+   "ci_method": "iid",
+   "p": 0.45630182057157714,
+   "start": "2021-01-04 23:00:00+00:00",
+   "end": "2026-07-21 22:00:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 327,
+   "diff": 0.029357798165137616,
+   "ci_lo": -0.0269113149847095,
+   "ci_hi": 0.0917584097859327,
+   "ci_method": "iid",
+   "p": 0.3321690647050176,
+   "start": "2016-02-01 23:00:00+00:00",
+   "end": "2018-08-21 22:00:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 321,
+   "diff": -0.02679127725856703,
+   "ci_lo": -0.08038940809968852,
+   "ci_hi": 0.02180685358255452,
+   "ci_method": "iid",
+   "p": 0.3041242130510169,
+   "start": "2018-08-23 22:00:00+00:00",
+   "end": "2021-04-05 22:00:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 335,
+   "diff": 0.013134328358208935,
+   "ci_lo": -0.04240298507462684,
+   "ci_hi": 0.06925373134328355,
+   "ci_method": "iid",
+   "p": 0.6447223027339104,
+   "start": "2021-04-15 22:00:00+00:00",
+   "end": "2023-11-29 23:00:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 336,
+   "diff": 0.010714285714285732,
+   "ci_lo": -0.04348214285714284,
+   "ci_hi": 0.06787202380952383,
+   "ci_method": "iid",
+   "p": 0.7060487578892046,
+   "start": "2023-12-04 23:00:00+00:00",
+   "end": "2026-07-21 22:00:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.03793236997073989,
+ "mde_threshold": 0.05,
+ "power_floor_n": 760,
+ "verdict": "NULL",
+ "verdict_detail": "CI contains 0; powered (MDE 0.0379 <= 0.0500)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 1320,
+  "min_slack_min": 0.0,
+  "passed": true,
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 99,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "cond_htf",
+    "cond_overext",
+    "cond_eq"
+   ],
+   "ignored": [],
+   "lookback": "120D",
+   "recent": "1D",
+   "events_fp": "fb9495edff43bafd",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "reps": 5,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "mde_threshold": null,
+  "cluster": null,
+  "outcome_horizon": "1 days 00:00:00",
+  "null_kind": "null_fn x5"
+ },
+ "notes": "Union of the three stated triggers; per-trigger firing rates {'cond_htf': 0.396, 'cond_overext': 0.489, 'cond_eq': 0.33}",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/model_guest_01b/consolidation-profile-conditions.py",
+ "runtime_sec": 0.43,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:10:01+00:00",
+ "dropped": {
+  "nan_rows": 1
+ },
+ "null_kind": "null_fn x5",
+ "events_fp": "fb9495edff43bafd",
+ "predictors_probed": true,
+ "ci_components": {
+  "phase3_iid": [
+   -0.020318423047763434,
+   0.03275587566338132
+  ],
+  "day_block": [
+   -0.018650492797570764,
+   0.033514025777106965
+  ]
+ },
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 1319,
+  "n_clusters": null,
+  "n_eff": 1319
+ },
+ "run_id": "0a41cc9f3b7b4ee8be041a6ee7cf6d41",
+ "hyp_key": "bbbfbef470e75fe9"
+}

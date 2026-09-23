@@ -1,0 +1,277 @@
+{
+ "concept_id": "continuation-signature",
+ "reading": "a",
+ "testable": true,
+ "test_type": "gate",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "4h bars, forex grid (17/21/01/05/09/13 NY)",
+   "expansion candle i = continuation closure vs i-1 (takes its high/low and closes beyond)",
+   "baseline: every candle i+1 after an expansion candle -> trade i's direction at i+1's close; stop = two-candle extreme; 2R; max hold 40h of trading bars",
+   "gate (reading a): candle i+1 is an inside bar of i -- HTF consolidation signature",
+   "claim '+'"
+  ],
+  "params": {
+   "tf": "4h",
+   "grid4h": "forex",
+   "stop": "two-candle extreme",
+   "rr": 2.0,
+   "max_hold": "40h",
+   "hold_basis": "bars",
+   "gate": "inside_bar"
+  }
+ },
+ "params_source": {
+  "tf": "corpus: concept timeframes htf 1D/4H; 4h chosen for sample size (fractal: true)",
+  "grid4h": "session_window_fit: forex grid for gold (weakly); carried as a knob",
+  "stop": "declared-before-run: beyond the extreme of the expansion + follow-up pair (protected-swing logic, method_spec \u00a75.1)",
+  "rr": "method_spec: \u00a75.3 2R floor",
+  "max_hold": "phase3: \u00a71.13 10 entry-TF bars",
+  "hold_basis": "declared-before-run: trading-time hold across the weekend (trap 7)",
+  "gate": "corpus: VD4xb9VfMHA / 4Gm8p6O7Ebs large range, small range, large range; t_talks_02 'HTF consolidation signature: an inside bar'"
+ },
+ "n": 1527,
+ "span": {
+  "start": "2016-01-04 06:00:00+00:00",
+  "end": "2026-07-22 21:00:00+00:00",
+  "years": 10.546
+ },
+ "avg_R": -0.08442720035732824,
+ "avg_R_gross": -0.04442720035732824,
+ "win_rate": 0.352324819908317,
+ "pf": 0.8683257569319807,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "avg_R_gated": -0.023846942243430265,
+  "avg_R_complement": -0.01524801148797088,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": -0.03564911187428102,
+ "ci_lo": -0.11694414406370847,
+ "ci_hi": 0.04596066764514137,
+ "ci_method": "phase3_block",
+ "p": 0.3909954367126767,
+ "halves": {
+  "H1": {
+   "n": 3486,
+   "diff": -0.07334984212004556,
+   "ci_lo": -0.19579116267580363,
+   "ci_hi": 0.03697726988638716,
+   "ci_method": "block",
+   "p": 0.2167392444062366,
+   "start": "2016-01-04 06:00:00+00:00",
+   "end": "2020-12-31 18:00:00+00:00",
+   "n_gated": 738
+  },
+  "H2": {
+   "n": 4098,
+   "diff": -0.004153158839598853,
+   "ci_lo": -0.12494425953821046,
+   "ci_hi": 0.11984799976757234,
+   "ci_method": "block",
+   "p": 0.9469752098499571,
+   "start": "2021-01-04 06:00:00+00:00",
+   "end": "2026-07-22 21:00:00+00:00",
+   "n_gated": 789
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 1863,
+   "diff": -0.010206594687982054,
+   "ci_lo": -0.1730398920864318,
+   "ci_hi": 0.13180644351670104,
+   "ci_method": "iid",
+   "p": 0.8955826433374661,
+   "start": "2016-01-04 06:00:00+00:00",
+   "end": "2018-08-22 01:00:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 1814,
+   "diff": -0.16480038107945313,
+   "ci_lo": -0.33933283641674084,
+   "ci_hi": 0.006035495918072193,
+   "ci_method": "block",
+   "p": 0.06141676197224161,
+   "start": "2018-08-22 17:00:00+00:00",
+   "end": "2021-04-09 17:00:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 1961,
+   "diff": -0.10703033098695743,
+   "ci_lo": -0.26260275359629387,
+   "ci_hi": 0.04992940033748809,
+   "ci_method": "iid",
+   "p": 0.17945801078552268,
+   "start": "2021-04-12 09:00:00+00:00",
+   "end": "2023-12-01 22:00:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 1946,
+   "diff": 0.11210718101298282,
+   "ci_lo": -0.06694686767070554,
+   "ci_hi": 0.28600822740244636,
+   "ci_method": "block",
+   "p": 0.21310781409180865,
+   "start": "2023-12-04 02:00:00+00:00",
+   "end": "2026-07-22 21:00:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.11642858667591297,
+ "mde_threshold": 0.1,
+ "power_floor_n": 2070,
+ "verdict": "UNDERPOWERED",
+ "verdict_detail": "CI contains 0; MDE 0.1164 vs threshold 0.1000, effective n 1283 (power floor n=2070, have 1527)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 7584,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "gate_mask_checked": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 4385.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 579,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "rr",
+    "inside_bar",
+    "close_inside"
+   ],
+   "ignored": [],
+   "lookback": "20D",
+   "recent": "1D",
+   "events_fp": "28851010f9af5fd5",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "40h",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": null,
+  "entry_mode": "next_open",
+  "hold_basis": "bars",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "Reading a: inside_bar as the continuation signature after a 4h expansion candle.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/structure_own_01a/continuation-signature.py",
+ "runtime_sec": 2.9,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:28:57+00:00",
+ "n_events_in": 7599,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 15,
+  "target_not_beyond_entry": 0,
+  "no_bars_in_hold": 0
+ },
+ "n_complement": 6057,
+ "gate_firing_rate": 0.20134493670886075,
+ "events_fp": "28851010f9af5fd5",
+ "mask_fp": "651b63e595fdab40",
+ "mask_col": "inside_bar",
+ "exit_mix": {
+  "stop": 0.5965946299934513,
+  "target": 0.24688932547478717,
+  "time": 0.15651604453176163
+ },
+ "gated_vs_own_control": {
+  "diff": -0.06058025811389798,
+  "ci_lo": -0.13954311881661785,
+  "ci_hi": 0.017165683262055254,
+  "p": 0.12968126178824807
+ },
+ "complement": {
+  "n": 6057,
+  "avg_R": -0.04017915772758787,
+  "win_rate": 0.376093775796599,
+  "pf": 0.9328305631372595,
+  "sd_R": 1.276792627946482,
+  "exit_mix": {
+   "stop": 0.5433382862803368,
+   "target": 0.24038302790160146,
+   "time": 0.21627868581806176
+  },
+  "vs_own_control": {
+   "diff": -0.024931146239616994,
+   "ci_lo": -0.06458897463658828,
+   "ci_hi": 0.013035551575677783,
+   "p": 0.20803489329882127
+  }
+ },
+ "ci_components": {
+  "phase3_block": [
+   -0.11694414406370847,
+   0.04596066764514137
+  ],
+  "day_block": [
+   -0.12097003815291527,
+   0.04099308708432428
+  ]
+ },
+ "diff_meaning": "mean(R-ctrl | gated) - mean(R-ctrl | complement)",
+ "dependence": {
+  "day_block_mean_days": 4,
+  "n_eff_gated": 1283,
+  "n_eff_complement": 2579,
+  "n_eff": 1283
+ },
+ "ties": {
+  "real_ambiguous": 0.003691983122362869,
+  "control_ambiguous": 0.003111814345991561,
+  "real_gap_stop": 0.00870253164556962,
+  "control_gap_stop": 0.009810126582278481,
+  "gated_excess": 0.00013097576948264568,
+  "complement_excess": 0.0006934125804853887,
+  "verdict_stop_first": "UNDERPOWERED"
+ },
+ "ctrl_overlap": 0.05783227848101266,
+ "exposure_bars": {
+  "real_mean": 2399.3053797468356,
+  "control_mean": 2399.2647679324896,
+  "hold_basis": "bars"
+ },
+ "run_id": "e7cab38dc78f43f2b4c891ed34666579",
+ "hyp_key": "22c40fc9ebfcd08f"
+}

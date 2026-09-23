@@ -1,0 +1,253 @@
+{
+ "concept_id": "smt-swing-point-substitute",
+ "reading": "a",
+ "testable": true,
+ "test_type": "trade",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "gold 1h and XAG_USD H1 inner-joined on shared bar labels",
+   "level: gold's most recent confirmed 2/2 swing low at bar p; silver's level = its low on bar p (mirror at highs)",
+   "failure swing at pos (<= 20 bars after p): gold's lowest low since p, below its 2 prior lows, ABOVE the gold level; silver trades below its level within [pos-2, closure]",
+   "closure: first gold close above the open of the first candle of the down-close series into pos, within 10 bars, no new gold extreme first",
+   "long at next M1 open, stop = the unswept gold low, 2.0R, exit after 10h"
+  ],
+  "params": {
+   "tf": "1h",
+   "swing": "2/2",
+   "lookback": 20,
+   "max_k": 10,
+   "rr": 2.0,
+   "max_hold": "10h",
+   "correlate": "XAG_USD H1"
+  }
+ },
+ "params_source": {
+  "tf": "corpus yaml timeframes ltf 1H",
+  "swing": "phase3: fractal 2/2",
+  "lookback": "phase3: SMT lookback 20 knob",
+  "max_k": "declared-before-run: closure within 10 bars of the failure swing",
+  "rr": "phase3: 2R",
+  "max_hold": "phase3: 1h book 10h exit",
+  "correlate": "method_spec: \u00a72.6 SMT = one shared level, one asset trades beyond, the other does not; silver = sanctioned gold correlate (fetch_correlated.py)"
+ },
+ "n": 750,
+ "span": {
+  "start": "2016-01-05 02:00:00+00:00",
+  "end": "2026-07-21 00:00:00+00:00",
+  "years": 10.538
+ },
+ "avg_R": 0.022118345906768953,
+ "avg_R_gross": 0.06211834590676897,
+ "win_rate": 0.4226666666666667,
+ "pf": 1.044837111862464,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "n": 3750,
+  "avg_R": -0.04305172891384464,
+  "win_rate": 0.41173333333333334,
+  "pf": 0.9152387280012542,
+  "sd_R": 1.1202424242986972,
+  "exit_mix": {
+   "stop": 0.4362666666666667,
+   "target": 0.15946666666666667,
+   "time": 0.40426666666666666
+  },
+  "avg_R_gross": -0.003051728913844633,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": 0.0651700748206136,
+ "ci_lo": -0.028229717279158257,
+ "ci_hi": 0.15643022235673212,
+ "ci_method": "day_block",
+ "p": 0.16653654083216032,
+ "halves": {
+  "H1": {
+   "n": 345,
+   "diff": 0.07383309641075862,
+   "ci_lo": -0.04990271952758516,
+   "ci_hi": 0.22356237777239849,
+   "ci_method": "block",
+   "p": 0.2898981783728511,
+   "start": "2016-01-05 02:00:00+00:00",
+   "end": "2020-12-22 07:00:00+00:00"
+  },
+  "H2": {
+   "n": 405,
+   "diff": 0.05779046383641597,
+   "ci_lo": -0.056341812812972576,
+   "ci_hi": 0.1785360144839933,
+   "ci_method": "iid",
+   "p": 0.33480641793380755,
+   "start": "2021-01-27 21:00:00+00:00",
+   "end": "2026-07-21 00:00:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 154,
+   "diff": 0.22033273302385423,
+   "ci_lo": 0.022662739516982475,
+   "ci_hi": 0.42067183899654237,
+   "ci_method": "iid",
+   "p": 0.030005189367753034,
+   "start": "2016-01-05 02:00:00+00:00",
+   "end": "2018-08-17 08:00:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 204,
+   "diff": -0.013186234328617479,
+   "ci_lo": -0.18524547775410197,
+   "ci_hi": 0.15378909473456226,
+   "ci_method": "iid",
+   "p": 0.8788244201936323,
+   "start": "2018-09-12 15:00:00+00:00",
+   "end": "2021-04-09 03:00:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 184,
+   "diff": -0.07168349293765253,
+   "ci_lo": -0.26259940712045765,
+   "ci_hi": 0.10875072049703513,
+   "ci_method": "iid",
+   "p": 0.449240120738831,
+   "start": "2021-04-13 03:00:00+00:00",
+   "end": "2023-11-30 19:00:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 208,
+   "diff": 0.14820225833342635,
+   "ci_lo": -0.01705125661136003,
+   "ci_hi": 0.3269400391458354,
+   "ci_method": "iid",
+   "p": 0.09125236841822329,
+   "start": "2023-12-07 07:00:00+00:00",
+   "end": "2026-07-21 00:00:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.13197704574798721,
+ "mde_threshold": 0.1,
+ "power_floor_n": 1307,
+ "verdict": "UNDERPOWERED",
+ "verdict_detail": "CI contains 0; MDE 0.1320 vs threshold 0.1000, effective n 670 (power floor n=1307, have 750)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 750,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 64.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 74,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "rr"
+   ],
+   "ignored": [],
+   "lookback": "30D",
+   "recent": "1D",
+   "events_fp": "e28585b0f1c89b79",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "10h",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": null,
+  "entry_mode": "next_open",
+  "hold_basis": "clock",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "Trade of the substituted setups alone vs a matched random entry. The 'failure swing near the level' has no tolerance in the corpus; any unswept low after the level within 20 bars qualifies.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/structure_own_02a/smt-swing-point-substitute.py",
+ "runtime_sec": 1.29,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:26:06+00:00",
+ "n_events_in": 756,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 0,
+  "target_not_beyond_entry": 0,
+  "no_bars_in_hold": 6
+ },
+ "events_fp": "e28585b0f1c89b79",
+ "sd_R": 1.1598686348972884,
+ "exit_mix": {
+  "stop": 0.4226666666666667,
+  "target": 0.18533333333333332,
+  "time": 0.392
+ },
+ "trades_per_year": 71.17108339828526,
+ "ci_components": {
+  "phase3_iid": [
+   -0.022103514884298462,
+   0.15353914341107167
+  ],
+  "day_block": [
+   -0.028229717279158257,
+   0.15643022235673212
+  ]
+ },
+ "diff_win": 0.01093333333333335,
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 670,
+  "n_clusters": null,
+  "n_eff": 670
+ },
+ "ties": {
+  "real_ambiguous": 0.0,
+  "control_ambiguous": 0.0002666666666666667,
+  "real_gap_stop": 0.0026666666666666666,
+  "control_gap_stop": 0.0056,
+  "verdict_stop_first": "UNDERPOWERED"
+ },
+ "ctrl_overlap": 0.010133333333333333,
+ "exposure_bars": {
+  "real_mean": 555.9346666666667,
+  "control_mean": 550.5069333333333,
+  "hold_basis": "clock"
+ },
+ "run_id": "8abda42577404f85b956957ec0daf875",
+ "hyp_key": "e15c434121a76739"
+}

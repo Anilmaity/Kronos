@@ -1,0 +1,212 @@
+{
+ "concept_id": "daily-orderflow-confirms-draw",
+ "reading": null,
+ "testable": true,
+ "test_type": "rate",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "at each completed daily close (18:00 NY day, stubs < 600 M1 dropped): order flow = latest one-sided daily-close reaction to a live daily FVG (bullish: close above a bearish FVG, or trade into a bullish FVG and close at/above its mean threshold; bearish mirrored; <= 60 days memory)",
+   "objectives: unmitigated confirmed daily 2/2 swing highs/lows (<= 120 days) and live daily FVGs beyond price (buy-side: bottom of a bearish FVG above)",
+   "draw = nearer objective; event only when order flow == draw direction",
+   "hit = the objective level is traded within the next 5 sessions (M1-bar horizon)",
+   "null = same side, same distance from the first M1 open, same M1-bar horizon, at matched random moments (5 reps, +/-30d)"
+  ],
+  "params": {
+   "swing": "2/2 daily",
+   "swing_age_days": 120,
+   "fvg_life_days": 60,
+   "draw_rule": "proximity",
+   "horizon_sessions": 5,
+   "stub_min_m1": 600,
+   "day_open_hour": 18
+  }
+ },
+ "params_source": {
+  "swing": "declared-before-run: 2/2 fractal swings, as phase-3 locked config",
+  "swing_age_days": "declared-before-run: 'old highs/lows' bounded to ~6 months",
+  "fvg_life_days": "declared-before-run: a daily FVG is a live PD array for 60 trading days",
+  "draw_rule": "method_spec: \u00a72.2 draw on liquidity, 'proximity' is the only fully mechanical reading (default)",
+  "horizon_sessions": "declared-before-run: one trading week for a daily-scale objective",
+  "stub_min_m1": "declared-before-run: README trap 6 stub sessions",
+  "day_open_hour": "session_window_fit: settled 18:00 NY daily roll"
+ },
+ "n": 988,
+ "span": {
+  "start": "2016-01-12 23:00:00+00:00",
+  "end": "2026-07-15 22:00:00+00:00",
+  "years": 10.502
+ },
+ "avg_R": null,
+ "avg_R_gross": null,
+ "win_rate": null,
+ "pf": null,
+ "observed_rate": 0.6902834008097166,
+ "null_rate": 0.702834008097166,
+ "lift": 0.9821428571428571,
+ "control": {
+  "rate": 0.702834008097166,
+  "reps": 5,
+  "kind": "null_fn x5"
+ },
+ "diff": -0.012550607287449389,
+ "ci_lo": -0.05121457489878414,
+ "ci_hi": 0.021052631578947788,
+ "ci_method": "phase3_block",
+ "p": 0.49601589033254323,
+ "halves": {
+  "H1": {
+   "n": 469,
+   "diff": -0.0281449893390191,
+   "ci_lo": -0.07675906183368864,
+   "ci_hi": 0.026034115138592807,
+   "ci_method": "iid",
+   "p": 0.2831434516296284,
+   "start": "2016-01-12 23:00:00+00:00",
+   "end": "2020-12-28 23:00:00+00:00"
+  },
+  "H2": {
+   "n": 519,
+   "diff": 0.0015414258188823915,
+   "ci_lo": -0.055895953757227924,
+   "ci_hi": 0.05589595375722347,
+   "ci_method": "block",
+   "p": 0.9568958582404715,
+   "start": "2021-01-04 23:00:00+00:00",
+   "end": "2026-07-15 22:00:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 252,
+   "diff": -0.014285714285714235,
+   "ci_lo": -0.08494047619047622,
+   "ci_hi": 0.04682539682539677,
+   "ci_method": "iid",
+   "p": 0.6708451095014087,
+   "start": "2016-01-12 23:00:00+00:00",
+   "end": "2018-08-21 22:00:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 248,
+   "diff": -0.03467741935483881,
+   "ci_lo": -0.10163306451612909,
+   "ci_hi": 0.033891129032258105,
+   "ci_method": "iid",
+   "p": 0.3158529542837597,
+   "start": "2018-08-23 22:00:00+00:00",
+   "end": "2021-04-09 22:00:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 263,
+   "diff": -0.049429657794676785,
+   "ci_lo": -0.13992395437262417,
+   "ci_hi": 0.031197718631178546,
+   "ci_method": "block",
+   "p": 0.257509240618051,
+   "start": "2021-04-13 22:00:00+00:00",
+   "end": "2023-11-24 23:00:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 225,
+   "diff": 0.05688888888888888,
+   "ci_lo": -0.013355555555555527,
+   "ci_hi": 0.12,
+   "ci_method": "iid",
+   "p": 0.09448017746771054,
+   "start": "2023-12-19 23:00:00+00:00",
+   "end": "2026-07-15 22:00:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.05164960215083456,
+ "mde_threshold": 0.05,
+ "power_floor_n": 1055,
+ "verdict": "UNDERPOWERED",
+ "verdict_detail": "CI contains 0; MDE 0.0516 vs threshold 0.0500, effective n 988 (power floor n=1055, have 988)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 988,
+  "min_slack_min": 0.0,
+  "passed": true,
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 73,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "level",
+    "of_state"
+   ],
+   "ignored": [],
+   "lookback": "300D",
+   "recent": "1D",
+   "events_fp": "7fcf25d5aab81b44",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "reps": 5,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "mde_threshold": null,
+  "cluster": null,
+  "outcome_horizon": "5 days 00:00:00",
+  "null_kind": "null_fn x5"
+ },
+ "notes": "Weekly-chart objectives and the 'return to neutral after objective' rule are not modelled (daily pools only; each day re-derives the draw).",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/model_guest_01b/daily-orderflow-confirms-draw.py",
+ "runtime_sec": 0.55,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:11:49+00:00",
+ "dropped": {
+  "nan_rows": 0
+ },
+ "null_kind": "null_fn x5",
+ "events_fp": "7fcf25d5aab81b44",
+ "predictors_probed": true,
+ "ci_components": {
+  "phase3_block": [
+   -0.05121457489878414,
+   0.021052631578947788
+  ],
+  "day_block": [
+   -0.040693319838056005,
+   0.01578947368421036
+  ],
+  "day_block_5d": [
+   -0.04676113360323819,
+   0.02064777327935275
+  ]
+ },
+ "dependence": {
+  "day_block_mean_days": 5,
+  "n_days": 988,
+  "n_clusters": null,
+  "n_eff": 988
+ },
+ "run_id": "90166086edfe4cd4b8a4b1c35e96a8a4",
+ "hyp_key": "80c304b21ab2f11a"
+}

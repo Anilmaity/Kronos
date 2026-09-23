@@ -1,0 +1,258 @@
+{
+ "concept_id": "fomc-day-participation",
+ "reading": "b",
+ "testable": true,
+ "test_type": "trade",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "book: 15m bare CISD (series_open, 2/2 swing, max_wait 3), decide at the confirming bar close, stop = protected swing, target 2R, 150-minute hold",
+   "only rows whose decision falls on an FOMC trading day (18:00-NY-roll session holding a scheduled 14:00 NY statement) \u2014 the guest's 'run the process every day'",
+   "trade_test vs matched random entries"
+  ],
+  "params": {
+   "tf": "15min",
+   "level_rule": "series_open",
+   "swing": "2/2",
+   "max_wait": 3,
+   "min_series": 1,
+   "rr": 2.0,
+   "max_hold": "150min",
+   "calendar": "scheduled FOMC statement days 2016-2026",
+   "release": "14:00 NY",
+   "excluded_span": "whole FOMC trading day"
+  }
+ },
+ "params_source": {
+  "tf": "corpus: timeframes.ltf [15m, 5m] (15m first listed); phase3 primary entry TF",
+  "level_rule": "phase3: locked CISD level rule (first-candle open)",
+  "swing": "phase3: locked swing fractal left=2,right=2",
+  "max_wait": "phase3: locked max_wait=3",
+  "min_series": "phase3: locked min_series=1",
+  "rr": "phase3: locked 2R target (\u00a71.12)",
+  "max_hold": "phase3: 10 entry-TF bars (\u00a71.13)",
+  "calendar": "declared-before-run: Federal Reserve published FOMC meeting calendar (statement day), scheduled meetings only",
+  "release": "declared-before-run: FOMC statement time 14:00 ET (Fed practice since 2013)",
+  "excluded_span": "corpus: tDiwwMRWF2k host 'no interest in trading FOMC ... rather wait for the following day'"
+ },
+ "n": 1011,
+ "span": {
+  "start": "2016-01-26 23:15:00+00:00",
+  "end": "2026-06-17 19:45:00+00:00",
+  "years": 10.387
+ },
+ "avg_R": -0.12290529485657811,
+ "avg_R_gross": -0.08290529485657809,
+ "win_rate": 0.3867457962413452,
+ "pf": 0.749157754400758,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "n": 5055,
+  "avg_R": -0.04018032950427047,
+  "win_rate": 0.41503461918892187,
+  "pf": 0.9095241762760645,
+  "sd_R": 1.0286498203532497,
+  "exit_mix": {
+   "stop": 0.36162215628091,
+   "target": 0.13471810089020772,
+   "time": 0.5036597428288823
+  },
+  "avg_R_gross": -0.0001803295042704531,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": -0.08272496535230764,
+ "ci_lo": -0.15492981791567131,
+ "ci_hi": -0.007557159878973797,
+ "ci_method": "day_block",
+ "p": 0.027779917370859036,
+ "halves": {
+  "H1": {
+   "n": 495,
+   "diff": -0.018356794399168416,
+   "ci_lo": -0.1390572728787219,
+   "ci_hi": 0.1107939472600968,
+   "ci_method": "block",
+   "p": 0.7733462455461358,
+   "start": "2016-01-26 23:15:00+00:00",
+   "end": "2020-12-16 20:15:00+00:00"
+  },
+  "H2": {
+   "n": 516,
+   "diff": -0.14447350144107488,
+   "ci_lo": -0.23102249953878398,
+   "ci_hi": -0.04435089825259994,
+   "ci_method": "iid",
+   "p": 0.00241488382624647,
+   "start": "2021-01-27 00:15:00+00:00",
+   "end": "2026-06-17 19:45:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 266,
+   "diff": 0.08380615759396849,
+   "ci_lo": -0.08561760922457826,
+   "ci_hi": 0.24353091533893748,
+   "ci_method": "block",
+   "p": 0.3182441849226775,
+   "start": "2016-01-26 23:15:00+00:00",
+   "end": "2018-08-01 19:15:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 257,
+   "diff": -0.15526618694396657,
+   "ci_lo": -0.2843965344919151,
+   "ci_hi": -0.03298357640807082,
+   "ci_method": "iid",
+   "p": 0.015484398327107154,
+   "start": "2018-09-26 00:15:00+00:00",
+   "end": "2021-03-17 18:00:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 246,
+   "diff": -0.07616323916251252,
+   "ci_lo": -0.2212530650973851,
+   "ci_hi": 0.062128465638102315,
+   "ci_method": "iid",
+   "p": 0.2920925438534783,
+   "start": "2021-04-27 23:00:00+00:00",
+   "end": "2023-11-01 20:30:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 242,
+   "diff": -0.1954041777380212,
+   "ci_lo": -0.3388927011154446,
+   "ci_hi": -0.04376111465488069,
+   "ci_method": "iid",
+   "p": 0.009449413154570353,
+   "start": "2023-12-12 23:15:00+00:00",
+   "end": "2026-06-17 19:45:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.10532770708179875,
+ "mde_threshold": 0.1,
+ "power_floor_n": 1122,
+ "verdict": "NEGATIVE",
+ "verdict_detail": "CI excludes 0 against the claim (+)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 1011,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 64.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 236,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "rr",
+    "not_fomc_day"
+   ],
+   "ignored": [],
+   "lookback": "10D",
+   "recent": "1D",
+   "events_fp": "c6afefe613fc7296",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "150min",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": null,
+  "entry_mode": "next_open",
+  "hold_basis": "clock",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "Calendar recall check (pre-test): 82/83 listed days have a 14:00-14:10 NY M1 range at or above the 90th percentile of their +/-30-day non-listed weekday neighbours; median ratio 7.33x. At ~84 FOMC days the FOMC arm's effective n (trading days) is structurally < 200.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/time_own_03a/fomc-day-participation.py",
+ "runtime_sec": 0.28,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T09:04:02+00:00",
+ "n_events_in": 1011,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 0,
+  "target_not_beyond_entry": 0,
+  "no_bars_in_hold": 0
+ },
+ "events_fp": "c6afefe613fc7296",
+ "sd_R": 1.0101136338797243,
+ "exit_mix": {
+  "stop": 0.4075173095944609,
+  "target": 0.11770524233432245,
+  "time": 0.47477744807121663
+ },
+ "trades_per_year": 97.32940168687402,
+ "ci_components": {
+  "phase3_block": [
+   -0.1534544286124747,
+   -0.006391119131471926
+  ],
+  "day_block": [
+   -0.15492981791567131,
+   -0.007557159878973797
+  ]
+ },
+ "diff_win": -0.028288822947576675,
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 83,
+  "n_clusters": null,
+  "n_eff": 83
+ },
+ "ties": {
+  "real_ambiguous": 0.0019782393669634025,
+  "control_ambiguous": 0.0003956478733926805,
+  "real_gap_stop": 0.00791295746785361,
+  "control_gap_stop": 0.006726013847675569,
+  "verdict_stop_first": "NEGATIVE"
+ },
+ "ctrl_overlap": 0.002373887240356083,
+ "exposure_bars": {
+  "real_mean": 144.74876360039565,
+  "control_mean": 142.3618199802176,
+  "hold_basis": "clock"
+ },
+ "run_id": "5e39fd2773e14a4986f96807bd2469b9",
+ "hyp_key": "ae052bae8a35cf26"
+}

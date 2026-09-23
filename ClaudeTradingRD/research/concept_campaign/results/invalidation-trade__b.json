@@ -1,0 +1,259 @@
+{
+ "concept_id": "invalidation-trade",
+ "reading": "b",
+ "testable": true,
+ "test_type": "trade",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "valid model: daily C2/C3 (C2-open ref) closure on day D + same-direction 1h CISD inside D (scope range, series_open)",
+   "invalidation: FIRST 1h close of session D+1 beyond EQ = (D high + D low)/2 against the model direction",
+   "trade opposite to the model; target = D's opposite extreme (PDL for a failed bullish model); exit at 17:00 NY of D+1 (wall clock)",
+   "after the EQ-break bar, the first 1h CISD in the NEW direction (series_open, 2/2 swing, max_wait 3) whose confirm bar starts at or after the break bar in the same session; enter at its close; stop = its protected swing"
+  ],
+  "params": {
+   "eq": "50% of prior day range",
+   "aligned_tf": "1h",
+   "entry": "CISD after EQ break",
+   "level_rule": "series_open",
+   "swing": "2/2",
+   "max_wait": 3,
+   "stub_filter_min_m1": 600,
+   "cisd_scope": "range",
+   "c3_reference": "c2_open",
+   "hold_basis": "bars"
+  }
+ },
+ "params_source": {
+  "eq": "corpus: invalidation-trade 'closes beyond the EQ of the previous higher-timeframe candle'",
+  "aligned_tf": "corpus: invalidation-trade ambiguity 'in the worked example the EQ was read on the hourly'",
+  "entry": "corpus: invalidation-trade execution.entry (a) / detection 'the invalidation itself is not the entry' (b)",
+  "stub_filter_min_m1": "declared-before-run: README trap 6 stub sessions",
+  "cisd_scope": "phase3: locked primary cisd_scope=range",
+  "c3_reference": "phase3: locked primary C3 reference (Reading A)",
+  "level_rule": "phase3: locked CISD level rule",
+  "swing": "phase3: locked swing 2/2",
+  "max_wait": "phase3: locked max_wait=3",
+  "hold_basis": "declared-before-run: README trap 7 procedure \u2014 clock runs showed real/control exposure 795/716 (a) and 706/640 (b) bars (>10%), rerun with bars"
+ },
+ "n": 322,
+ "span": {
+  "start": "2016-01-14 15:00:00+00:00",
+  "end": "2026-07-15 05:00:00+00:00",
+  "years": 10.497
+ },
+ "avg_R": -0.07258649880898359,
+ "avg_R_gross": -0.03258649880898356,
+ "win_rate": 0.4472049689440994,
+ "pf": 0.8174541673928387,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "n": 1610,
+  "avg_R": -0.04844954460951007,
+  "win_rate": 0.5018633540372671,
+  "pf": 0.872168256439259,
+  "sd_R": 0.8760136657115409,
+  "exit_mix": {
+   "stop": 0.3124223602484472,
+   "target": 0.34347826086956523,
+   "time": 0.3440993788819876
+  },
+  "avg_R_gross": -0.008449544609510048,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": -0.024136954199473516,
+ "ci_lo": -0.14670440110259786,
+ "ci_hi": 0.10183184590701459,
+ "ci_method": "phase3_block",
+ "p": 0.7034337118128924,
+ "halves": {
+  "H1": {
+   "n": 151,
+   "diff": -0.09902959404436723,
+   "ci_lo": -0.28573052817156924,
+   "ci_hi": 0.06875454952601853,
+   "ci_method": "block",
+   "p": 0.2734823812120507,
+   "start": "2016-01-14 15:00:00+00:00",
+   "end": "2020-12-07 03:00:00+00:00"
+  },
+  "H2": {
+   "n": 171,
+   "diff": 0.04199631256414615,
+   "ci_lo": -0.12177110256701308,
+   "ci_hi": 0.20789297401833595,
+   "ci_method": "block",
+   "p": 0.6175226561459672,
+   "start": "2021-01-29 08:00:00+00:00",
+   "end": "2026-07-15 05:00:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 75,
+   "diff": 0.14453167874229794,
+   "ci_lo": -0.08320150987178525,
+   "ci_hi": 0.39601169252635576,
+   "ci_method": "iid",
+   "p": 0.2371032357991707,
+   "start": "2016-01-14 15:00:00+00:00",
+   "end": "2018-08-06 20:00:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 81,
+   "diff": -0.2443920915968212,
+   "ci_lo": -0.44510546630258985,
+   "ci_hi": -0.02506281764064268,
+   "ci_method": "iid",
+   "p": 0.022565058523432633,
+   "start": "2018-08-31 04:00:00+00:00",
+   "end": "2021-03-29 06:00:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 87,
+   "diff": -0.03153197985462834,
+   "ci_lo": -0.22622235105186225,
+   "ci_hi": 0.14673849926716973,
+   "ci_method": "block",
+   "p": 0.7403345383591355,
+   "start": "2021-04-20 17:00:00+00:00",
+   "end": "2023-12-01 00:00:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 79,
+   "diff": 0.049709702642941424,
+   "ci_lo": -0.20288854123938357,
+   "ci_hi": 0.3337046263086156,
+   "ci_method": "block",
+   "p": 0.7165002882376266,
+   "start": "2024-01-08 05:00:00+00:00",
+   "end": "2026-07-15 05:00:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.1776296456410488,
+ "mde_threshold": 0.1,
+ "power_floor_n": 1016,
+ "verdict": "UNDERPOWERED",
+ "verdict_detail": "CI contains 0; MDE 0.1776 vs threshold 0.1000, effective n 322 (power floor n=1016, have 322)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 322,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 1.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 43,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "target_px",
+    "max_hold"
+   ],
+   "ignored": [],
+   "lookback": "20D",
+   "recent": "1D",
+   "events_fp": "f6789a966f9936b1",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "per-row column",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": null,
+  "entry_mode": "next_open",
+  "hold_basis": "bars",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "Case 1 (opposing setup at the previous-day extreme) is not included; 'fails to reclaim' is not required at entry (unknowable then). RE-RUN NOTE: first runs with hold_basis=clock: a diff +0.039 [-0.060,+0.140] UNDERPOWERED; b diff -0.029 [-0.148,+0.092] UNDERPOWERED; exposure gap >10% so re-run once with hold_basis='bars' per README trap 7.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/model_own_01a/invalidation-trade.py",
+ "runtime_sec": 0.68,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:17:54+00:00",
+ "n_events_in": 322,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 0,
+  "target_not_beyond_entry": 0,
+  "no_bars_in_hold": 0
+ },
+ "events_fp": "f6789a966f9936b1",
+ "sd_R": 0.8985746323920368,
+ "exit_mix": {
+  "stop": 0.32919254658385094,
+  "target": 0.3447204968944099,
+  "time": 0.32608695652173914
+ },
+ "trades_per_year": 30.675665101721442,
+ "ci_components": {
+  "phase3_block": [
+   -0.14670440110259786,
+   0.10183184590701459
+  ],
+  "day_block": [
+   -0.12947526971418374,
+   0.08712059029648266
+  ]
+ },
+ "diff_win": -0.05465838509316773,
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 322,
+  "n_clusters": null,
+  "n_eff": 322
+ },
+ "ties": {
+  "real_ambiguous": 0.0,
+  "control_ambiguous": 0.0006211180124223603,
+  "real_gap_stop": 0.003105590062111801,
+  "control_gap_stop": 0.004347826086956522,
+  "verdict_stop_first": "UNDERPOWERED"
+ },
+ "ctrl_overlap": 0.0037267080745341614,
+ "exposure_bars": {
+  "real_mean": 714.223602484472,
+  "control_mean": 714.223602484472,
+  "hold_basis": "bars"
+ },
+ "run_id": "beb6813f5dc142918f3993e14e3c83ec",
+ "hyp_key": "aa6f18f4221ccb4a"
+}

@@ -1,0 +1,208 @@
+{
+ "concept_id": "previous-day-lookback-three-days",
+ "reading": null,
+ "testable": true,
+ "test_type": "rate",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "at each trading-day close (D-1), take the highs and lows of D-2 and D-3",
+   "keep a level only if no later day through D-1 traded beyond it (still untaken) and it is still beyond day D's first open",
+   "hit = day D trades to it (any M1 high >= level above / low <= level below)",
+   "claim: 2-3-day-old untaken daily extremes are reached more often than an arbitrary level at the same distance"
+  ],
+  "params": {
+   "lookback_days": 3,
+   "ages_tested": [
+    2,
+    3
+   ],
+   "day_unit": "trading days (NY 18:00 roll), stub sessions dropped",
+   "min_day_bars": 600,
+   "horizon": "next session (M1 bars)",
+   "null": "distance-matched, clock-matched +/-30min, +/-30d, 5 reps"
+  }
+ },
+ "params_source": {
+  "lookback_days": "corpus: FXJBFbZQbck 'for me that is three days that I will look back into price action'",
+  "ages_tested": "declared-before-run: the 1-day-old level is previous-period-high-low's test; this concept's addition is the 2- and 3-day-old levels",
+  "day_unit": "declared-before-run: trading days (ambiguity: trading vs calendar not stated); session_window_fit 18:00 NY roll",
+  "min_day_bars": "declared-before-run: drop stub sessions <=600 M1 bars (README trap 6)",
+  "horizon": "declared-before-run: the next real session, in M1 bars",
+  "null": "declared-before-run: same signed distance from the next session's first open, random other session open +/-30d, NY clock +/-30min, same bar count, 5 reps"
+ },
+ "n": 5023,
+ "span": {
+  "start": "2016-01-05 23:00:00+00:00",
+  "end": "2026-07-21 22:00:00+00:00",
+  "years": 10.538
+ },
+ "avg_R": null,
+ "avg_R_gross": null,
+ "win_rate": null,
+ "pf": null,
+ "observed_rate": 0.1925144336054151,
+ "null_rate": 0.19920366314951224,
+ "lift": 0.9664201479112533,
+ "control": {
+  "rate": 0.19920366314951224,
+  "reps": 5,
+  "kind": "null_fn x5"
+ },
+ "diff": -0.006689229544097147,
+ "ci_lo": -0.018476010352379037,
+ "ci_hi": 0.004859645630101521,
+ "ci_method": "phase3_iid",
+ "p": 0.2611581103561779,
+ "halves": {
+  "H1": {
+   "n": 2390,
+   "diff": -0.006778242677824231,
+   "ci_lo": -0.025861924686192497,
+   "ci_hi": 0.012303347280334716,
+   "ci_method": "iid",
+   "p": 0.4863107915613096,
+   "start": "2016-01-05 23:00:00+00:00",
+   "end": "2020-12-31 23:00:00+00:00"
+  },
+  "H2": {
+   "n": 2633,
+   "diff": -0.006608431447018642,
+   "ci_lo": -0.024234713254842357,
+   "ci_hi": 0.01124192935814658,
+   "ci_method": "iid",
+   "p": 0.4652760216855888,
+   "start": "2021-01-04 23:00:00+00:00",
+   "end": "2026-07-21 22:00:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 1242,
+   "diff": -0.007568438003220601,
+   "ci_lo": -0.03462962962962964,
+   "ci_hi": 0.019806763285024148,
+   "ci_method": "iid",
+   "p": 0.5857548074949757,
+   "start": "2016-01-05 23:00:00+00:00",
+   "end": "2018-08-21 22:00:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 1274,
+   "diff": -0.006436420722135017,
+   "ci_lo": -0.0345368916797488,
+   "ci_hi": 0.01836734693877548,
+   "ci_method": "iid",
+   "p": 0.6334296382646265,
+   "start": "2018-08-22 22:00:00+00:00",
+   "end": "2021-04-09 22:00:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 1242,
+   "diff": 0.0027375201288245,
+   "ci_lo": -0.024154589371980673,
+   "ci_hi": 0.030434782608695643,
+   "ci_method": "iid",
+   "p": 0.8441604799623652,
+   "start": "2021-04-12 22:00:00+00:00",
+   "end": "2023-12-01 23:00:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 1265,
+   "diff": -0.015335968379446646,
+   "ci_lo": -0.040952569169960484,
+   "ci_hi": 0.010592885375494049,
+   "ci_method": "iid",
+   "p": 0.24350549780874844,
+   "start": "2023-12-05 23:00:00+00:00",
+   "end": "2026-07-21 22:00:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.016678067496565703,
+ "mde_threshold": 0.04980091578737806,
+ "power_floor_n": 564,
+ "verdict": "NULL",
+ "verdict_detail": "CI contains 0; powered (MDE 0.0167 <= 0.0498)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 5036,
+  "min_slack_min": 0.0,
+  "passed": true,
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 331,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "level",
+    "side",
+    "age"
+   ],
+   "ignored": [],
+   "lookback": "20D",
+   "recent": "1D",
+   "events_fp": "50f58821e54afbad",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "reps": 5,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "mde_threshold": null,
+  "cluster": null,
+  "outcome_horizon": "1 days 00:00:00",
+  "null_kind": "null_fn x5"
+ },
+ "notes": "Target/draw reading of the three-day lookback. Untaken = not traded beyond by any later day up to the decision. The 'confluence for reactions' use (deviation-and-retest box setup) is not separately tested.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/liquidity_own_01b/previous-day-lookback-three-days.py",
+ "runtime_sec": 1.19,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:08:02+00:00",
+ "dropped": {
+  "nan_rows": 13
+ },
+ "null_kind": "null_fn x5",
+ "events_fp": "50f58821e54afbad",
+ "predictors_probed": true,
+ "ci_components": {
+  "phase3_iid": [
+   -0.018476010352379037,
+   0.004859645630101521
+  ],
+  "day_block": [
+   -0.017609838565769156,
+   0.00348193457343214
+  ]
+ },
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 2629,
+  "n_clusters": null,
+  "n_eff": 2629
+ },
+ "run_id": "18c39170484d4c8bb541bde1339561a6",
+ "hyp_key": "8dacdbf05a99cc86"
+}

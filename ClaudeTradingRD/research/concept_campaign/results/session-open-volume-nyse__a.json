@@ -1,0 +1,184 @@
+{
+ "concept_id": "session-open-volume-nyse",
+ "reading": "a",
+ "testable": true,
+ "test_type": "rate",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "per NY weekday with >= 10 M1 bars in each 15-minute window",
+   "step(T) = high-low of M1 bars in [T, T+15m) exceeds that of [T-15m, T)",
+   "observed = step(08:30 NY); null = step(09:30 NY) the same day (paired comparator); claim 08:30 is the forex-class time level, 09:30 is not"
+  ],
+  "params": {
+   "tz": "America/New_York",
+   "win_min": 15,
+   "min_bars": 10,
+   "measure": "range[T,T+15) > range[T-15,T)",
+   "observed_time": "08:30",
+   "null_time": "09:30"
+  }
+ },
+ "params_source": {
+  "tz": "method_spec: \u00a71.4 DST settled, America/New_York",
+  "win_min": "declared-before-run: 15 minutes, the concept's measurable ('in the 15 minutes after 09:30 versus before')",
+  "min_bars": "declared-before-run: >= 10 of 15 M1 bars in each window",
+  "measure": "declared-before-run: range step-up indicator (no volume in the data)",
+  "observed_time": "corpus: wGYde-h84cs / session-open-volume-nyse.yaml 'For forex: 08:30 is usable when a release lands at that time'",
+  "null_time": "corpus: wGYde-h84cs 'that's when the stock New York Stock Exchange opens' ('For forex: do not use 09:30 as a structural time level')"
+ },
+ "n": 2716,
+ "span": {
+  "start": "2016-01-04 13:30:00+00:00",
+  "end": "2026-07-22 12:30:00+00:00",
+  "years": 10.543
+ },
+ "avg_R": null,
+ "avg_R_gross": null,
+ "win_rate": null,
+ "pf": null,
+ "observed_rate": 0.5736377025036818,
+ "null_rate": 0.7363770250368189,
+ "lift": 0.7789999999999999,
+ "control": {
+  "rate": 0.7363770250368189,
+  "reps": 1,
+  "kind": "null array x1"
+ },
+ "diff": -0.16273932253313705,
+ "ci_lo": -0.1936763622974963,
+ "ci_hi": -0.13181148748159055,
+ "ci_method": "phase3_block",
+ "p": 6.244666397950678e-25,
+ "halves": {
+  "H1": {
+   "n": 1290,
+   "diff": -0.1449612403100775,
+   "ci_lo": -0.18994186046511627,
+   "ci_hi": -0.10308139534883723,
+   "ci_method": "block",
+   "p": 6.071804219415197e-11,
+   "start": "2016-01-04 13:30:00+00:00",
+   "end": "2020-12-31 13:30:00+00:00"
+  },
+  "H2": {
+   "n": 1426,
+   "diff": -0.1788218793828893,
+   "ci_lo": -0.22230014025245437,
+   "ci_hi": -0.13671107994389897,
+   "ci_method": "block",
+   "p": 2.6136599125267264e-16,
+   "start": "2021-01-04 13:30:00+00:00",
+   "end": "2026-07-22 12:30:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 680,
+   "diff": -0.14558823529411768,
+   "ci_lo": -0.2088602941176471,
+   "ci_hi": -0.0808823529411764,
+   "ci_method": "block",
+   "p": 8.221766952531899e-06,
+   "start": "2016-01-04 13:30:00+00:00",
+   "end": "2018-08-21 12:30:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 679,
+   "diff": -0.14874815905743743,
+   "ci_lo": -0.20029455081001468,
+   "ci_hi": -0.09572901325478644,
+   "ci_method": "block",
+   "p": 2.4577899979814217e-08,
+   "start": "2018-08-22 12:30:00+00:00",
+   "end": "2021-04-09 12:30:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 683,
+   "diff": -0.18448023426061488,
+   "ci_lo": -0.25036603221083453,
+   "ci_hi": -0.12441434846266478,
+   "ci_method": "block",
+   "p": 9.385192959690754e-09,
+   "start": "2021-04-12 12:30:00+00:00",
+   "end": "2023-12-01 13:30:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 674,
+   "diff": -0.17210682492581597,
+   "ci_lo": -0.22700296735905046,
+   "ci_hi": -0.11275964391691395,
+   "ci_method": "block",
+   "p": 3.519072171497113e-09,
+   "start": "2023-12-04 13:30:00+00:00",
+   "end": "2026-07-22 12:30:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.044215022651211786,
+ "mde_threshold": 0.05,
+ "power_floor_n": 2124,
+ "verdict": "NEGATIVE",
+ "verdict_detail": "CI excludes 0 against the claim (+)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 2716,
+  "min_slack_min": 0.0,
+  "passed": true,
+  "no_detector_declaration": "pure clock rule: 15-minute M1 ranges either side of fixed NY times; no detector"
+ },
+ "settings": {
+  "reps": 5,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "mde_threshold": null,
+  "cluster": null,
+  "outcome_horizon": "1 days 00:00:00",
+  "null_kind": "null array x1"
+ },
+ "notes": "Reading a compares two time levels on the same days; the 'null' is the 09:30 comparator, not a random-time null.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/time_own_02a/session-open-volume-nyse.py",
+ "runtime_sec": 0.64,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:38:34+00:00",
+ "dropped": {
+  "nan_rows": 0
+ },
+ "null_kind": "null array x1",
+ "events_fp": "552a61646e950aed",
+ "predictors_probed": false,
+ "ci_components": {
+  "phase3_block": [
+   -0.1936763622974963,
+   -0.13181148748159055
+  ],
+  "day_block": [
+   -0.18593519882179677,
+   -0.1380614874815907
+  ]
+ },
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 2716,
+  "n_clusters": null,
+  "n_eff": 2716
+ },
+ "run_id": "c257605774644e728263f4dcdae2a952",
+ "hyp_key": "851a84053251bde7"
+}

@@ -1,0 +1,275 @@
+{
+ "concept_id": "htf-reaction-mss-retrace-entry",
+ "reading": "a",
+ "testable": true,
+ "test_type": "trade",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "1h fractal swing (2/2) known at the close of bar j+2; sweep = first 5m bar after that trading beyond it (within 5 days); one setup per sweep bar.",
+   "Structure reference = latest 5m fractal swing on the opposite side confirmed before the sweep bar (Trader T's 'relative low prior to the sweep').",
+   "Break = first 5m CLOSE beyond that reference within 72 bars (6h) from the sweep bar.",
+   "Block = the most recent same-direction 5m FVG stamped between the sweep bar and the break bar; no FVG -> no setup. Limit at its near edge.",
+   "Stop = sweep extreme (max high / min low from sweep bar to break bar); target = 2R from the limit.",
+   "Order live 12h from the break close; fill = first M1 bar through the limit; ABANDONED if the 2R target price traded on an earlier M1 bar (Trader T's rule)."
+  ],
+  "params": {
+   "htf": "1h",
+   "ltf": "5min",
+   "swing": [
+    2,
+    2
+   ],
+   "sweep_window_ns": "432000000000000",
+   "bos_bars": 72,
+   "expiry_ns": "43200000000000",
+   "rr": 2.0,
+   "sweep_window": "5D",
+   "expiry": "12h",
+   "max_hold": "12h",
+   "ctrl_tod_tol_min": 30
+  }
+ },
+ "params_source": {
+  "ctrl_tod_tol_min": "declared-before-run: 30 (README trap 9)",
+  "swing": "declared-before-run: fractal 2/2 on every timeframe",
+  "htf": "corpus: wCtxmWe4KNc 'when the market comes up it sweeps the high I then go to the smaller time frame like the five minute' (hourly sweep per concept yaml)",
+  "ltf": "corpus: wCtxmWe4KNc 'I just wait for a break and structure on the five minutes'",
+  "structure_ref": "corpus: wCtxmWe4KNc 'I use the relative low prior to the sweep'",
+  "rr": "corpus: wCtxmWe4KNc 'I just took a simple 2R'",
+  "cancel_rule": "corpus: wCtxmWe4KNc 'once it runs to my target without fill I usually um I do remove'",
+  "block": "declared-before-run: the block = latest 5m FVG of the shift leg (Trader T's 'block' undefined; $niper prefers the FVG)",
+  "stop": "corpus-derived: execution 'Beyond the swing that produced the break' / variant 'stop rests at the extreme that tagged the HTF level'",
+  "sweep_window_ns": "declared-before-run: 5 days",
+  "sweep_window": "declared-before-run: 5 days",
+  "expiry": "declared-before-run: 12h",
+  "bos_bars": "declared-before-run: 72 5m bars (6h)",
+  "expiry_ns": "declared-before-run: 12h",
+  "max_hold": "declared-before-run: 12h"
+ },
+ "n": 3515,
+ "span": {
+  "start": "2016-01-06 07:40:00+00:00",
+  "end": "2026-07-22 20:47:00+00:00",
+  "years": 10.541
+ },
+ "avg_R": -0.029332510893824156,
+ "avg_R_gross": 0.01066748910617587,
+ "win_rate": 0.3960170697012802,
+ "pf": 0.9469864084172575,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "n": 17575,
+  "avg_R": -0.035101574604984795,
+  "win_rate": 0.38640113798008535,
+  "pf": 0.9377194413735097,
+  "sd_R": 1.2256872479137197,
+  "exit_mix": {
+   "stop": 0.5078236130867709,
+   "target": 0.22071123755334282,
+   "time": 0.2714651493598862
+  },
+  "avg_R_gross": 0.0048984253950152285,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": 0.005769063711160639,
+ "ci_lo": -0.03878726667059418,
+ "ci_hi": 0.04748029006027146,
+ "ci_method": "phase3_iid",
+ "p": 0.7932122843924593,
+ "halves": {
+  "H1": {
+   "n": 1613,
+   "diff": 0.05583037829597198,
+   "ci_lo": -0.00956385536809088,
+   "ci_hi": 0.12017331499544467,
+   "ci_method": "iid",
+   "p": 0.09162639116922343,
+   "start": "2016-01-06 07:40:00+00:00",
+   "end": "2020-12-31 18:32:00+00:00"
+  },
+  "H2": {
+   "n": 1902,
+   "diff": -0.03668566837364519,
+   "ci_lo": -0.098285637728057,
+   "ci_hi": 0.022939843377890064,
+   "ci_method": "iid",
+   "p": 0.23551885815363208,
+   "start": "2021-01-06 01:32:00+00:00",
+   "end": "2026-07-22 20:47:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 789,
+   "diff": 0.04340546641037507,
+   "ci_lo": -0.049938837439501296,
+   "ci_hi": 0.1363722767074144,
+   "ci_method": "iid",
+   "p": 0.36111762545763954,
+   "start": "2016-01-06 07:40:00+00:00",
+   "end": "2018-08-22 04:56:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 913,
+   "diff": 0.04971293112437251,
+   "ci_lo": -0.0400798717904338,
+   "ci_hi": 0.1390485435874753,
+   "ci_method": "iid",
+   "p": 0.27664589236326464,
+   "start": "2018-08-27 03:51:00+00:00",
+   "end": "2021-04-12 08:09:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 945,
+   "diff": 0.003111364044536477,
+   "ci_lo": -0.0790722490059561,
+   "ci_hi": 0.09537550722434897,
+   "ci_method": "iid",
+   "p": 0.9442621893647877,
+   "start": "2021-04-13 09:15:00+00:00",
+   "end": "2023-12-01 14:38:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 868,
+   "diff": -0.07177050598121582,
+   "ci_lo": -0.16305006555277887,
+   "ci_hi": 0.014269633780037955,
+   "ci_method": "iid",
+   "p": 0.11260354733665288,
+   "start": "2023-12-06 09:03:00+00:00",
+   "end": "2026-07-22 20:47:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.06165569697296538,
+ "mde_threshold": 0.1,
+ "power_floor_n": 1337,
+ "verdict": "NULL",
+ "verdict_detail": "CI contains 0; powered (MDE 0.0617 <= 0.1000)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 3515,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 2.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 287,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "direction",
+    "stop_dist",
+    "target_dist",
+    "limit_px",
+    "extreme",
+    "htf_level",
+    "sweep_t",
+    "bos_t",
+    "ran_first",
+    "available_at"
+   ],
+   "ignored": [],
+   "lookback": "20D",
+   "recent": "1D",
+   "events_fp": "0d75f74ff8cea2df",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "12h",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": 30,
+  "entry_mode": "next_open",
+  "hold_basis": "clock",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "Script re-executed once after a params_source key typo made write_result refuse; the test itself is deterministic and unchanged.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/entry_guest_01a/htf-reaction-mss-retrace-entry.py",
+ "runtime_sec": 1.08,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:14:32+00:00",
+ "n_events_in": 3518,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 0,
+  "target_not_beyond_entry": 0,
+  "no_bars_in_hold": 3
+ },
+ "events_fp": "0d75f74ff8cea2df",
+ "sd_R": 1.2132594945870094,
+ "exit_mix": {
+  "stop": 0.4950213371266003,
+  "target": 0.21450924608819347,
+  "time": 0.29046941678520627
+ },
+ "trades_per_year": 333.46850649350654,
+ "ci_components": {
+  "phase3_iid": [
+   -0.03878726667059418,
+   0.04748029006027146
+  ],
+  "day_block": [
+   -0.036874286040475164,
+   0.049323398093899316
+  ]
+ },
+ "diff_win": 0.009615931721194848,
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 1890,
+  "n_clusters": null,
+  "n_eff": 1890
+ },
+ "ties": {
+  "real_ambiguous": 0.001422475106685633,
+  "control_ambiguous": 0.0003413940256045519,
+  "real_gap_stop": 0.005689900426742532,
+  "control_gap_stop": 0.00716927453769559,
+  "verdict_stop_first": "NULL"
+ },
+ "ctrl_overlap": 0.0003413940256045519,
+ "exposure_bars": {
+  "real_mean": 647.1422475106685,
+  "control_mean": 646.8793172119488,
+  "hold_basis": "clock"
+ },
+ "run_id": "0451d4f2ad6344cdb61fb51dabd4e68a",
+ "hyp_key": "5eb1577c9c59ad8b"
+}

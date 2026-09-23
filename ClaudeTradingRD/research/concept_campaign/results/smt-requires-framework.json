@@ -1,0 +1,282 @@
+{
+ "concept_id": "smt-requires-framework",
+ "reading": null,
+ "testable": true,
+ "test_type": "gate",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "baseline: every hourly gold/XAG SMT (detectors.bias.smt_events, 2/2 swings, 20-bar lookback), traded in gold in its direction at the next M1 open after the divergence bar close; stop 1 x ATR14(1h), 1R, 10h",
+   "gate (model first): a same-direction 1h CISD (series_open, 2/2, max_wait 3) confirmed at or within 3h before the SMT bar close",
+   "complement = SMT-first trades with no model behind them"
+  ],
+  "params": {
+   "tf": "1h",
+   "correlate": "XAG_USD H1",
+   "smt_lookback": 20,
+   "swing": "2/2",
+   "cisd_max_wait": 3,
+   "window": "3h",
+   "stop_atr": 1.0,
+   "atr_n": 14,
+   "rr": 1.0,
+   "max_hold": "10h",
+   "ctrl_tod_tol_min": 30
+  }
+ },
+ "params_source": {
+  "tf": "declared-before-run: SMT is fractal; silver held only at H1 (the concept's own htf list includes 1H)",
+  "correlate": "corpus: 'they just need to be correlated' (silver is allowed)",
+  "smt_lookback": "phase3: detectors.bias.smt_events default",
+  "swing": "phase3: 2/2 swings (\u00a71.8)",
+  "cisd_max_wait": "phase3: locked rung-0 config",
+  "window": "phase3: detectors.bias.smt_gate window=3 bars (hourly)",
+  "stop_atr": "declared-before-run: symmetric direction book",
+  "atr_n": "declared-before-run",
+  "rr": "declared-before-run: symmetric 1R barrier",
+  "max_hold": "phase3: 10 entry-TF bars (\u00a71.13)",
+  "ctrl_tod_tol_min": "declared-before-run: README trap 9"
+ },
+ "n": 1415,
+ "span": {
+  "start": "2016-01-04 16:00:00+00:00",
+  "end": "2026-07-21 21:00:00+00:00",
+  "years": 10.543
+ },
+ "avg_R": -0.05558918883483315,
+ "avg_R_gross": -0.015589188834833134,
+ "win_rate": 0.4929478138222849,
+ "pf": 0.8911634713858604,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "avg_R_gated": -0.06520057550318932,
+  "avg_R_complement": -0.038723820998065386,
+  "reps": 5,
+  "fill_rate": 0.9899985913508945
+ },
+ "diff": 0.02099414144677305,
+ "ci_lo": -0.04827597544174155,
+ "ci_hi": 0.09186838176890226,
+ "ci_method": "phase3_block",
+ "p": 0.5570561848614768,
+ "halves": {
+  "H1": {
+   "n": 3322,
+   "diff": 0.03606060281069434,
+   "ci_lo": -0.07085481303447624,
+   "ci_hi": 0.1361078222757309,
+   "ci_method": "block",
+   "p": 0.49460840961731933,
+   "start": "2016-01-04 16:00:00+00:00",
+   "end": "2020-12-31 21:00:00+00:00",
+   "n_gated": 634
+  },
+  "H2": {
+   "n": 3777,
+   "diff": 0.00825224517364604,
+   "ci_lo": -0.08662448087228537,
+   "ci_hi": 0.09557184473530692,
+   "ci_method": "block",
+   "p": 0.8590796307797395,
+   "start": "2021-01-04 17:00:00+00:00",
+   "end": "2026-07-21 21:00:00+00:00",
+   "n_gated": 781
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 1725,
+   "diff": 0.12835107675774446,
+   "ci_lo": -0.024563259014226554,
+   "ci_hi": 0.27692675798184263,
+   "ci_method": "block",
+   "p": 0.09515673390094483,
+   "start": "2016-01-04 16:00:00+00:00",
+   "end": "2018-08-22 07:00:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 1779,
+   "diff": 0.002211621630690568,
+   "ci_lo": -0.14185958822890907,
+   "ci_hi": 0.14848179626302022,
+   "ci_method": "block",
+   "p": 0.9761792458839691,
+   "start": "2018-08-22 19:00:00+00:00",
+   "end": "2021-04-12 02:00:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 1813,
+   "diff": -0.16179610532495295,
+   "ci_lo": -0.3033782483154915,
+   "ci_hi": -0.04662024527804528,
+   "ci_method": "block",
+   "p": 0.013505890409850646,
+   "start": "2021-04-12 12:00:00+00:00",
+   "end": "2023-12-01 11:00:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 1782,
+   "diff": 0.13242439548759605,
+   "ci_lo": 0.016960958541034205,
+   "ci_hi": 0.25391229502005225,
+   "ci_method": "iid",
+   "p": 0.028472041352791147,
+   "start": "2023-12-04 14:00:00+00:00",
+   "end": "2026-07-21 21:00:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.10016161750827605,
+ "mde_threshold": 0.1,
+ "power_floor_n": 1420,
+ "verdict": "UNDERPOWERED",
+ "verdict_detail": "CI contains 0; MDE 0.1002 vs threshold 0.1000, effective n 1074 (power floor n=1420, have 1415)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 7099,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "gate_mask_checked": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 300.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 499,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_dist",
+    "rr",
+    "model_first"
+   ],
+   "ignored": [],
+   "lookback": "20D",
+   "recent": "1D",
+   "events_fp": "da7109d3fc346ff9",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "10h",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": 30,
+  "entry_mode": "next_open",
+  "hold_basis": "clock",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "'Model' reduced to the 1h CISD; the C2/C3-closure-at-POI layer is not applied (phase 3 found no gate load-bearing). Only one reading run: the V-shape displacement and 'far beyond the level' variants have no stated measure.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/liquidity_own_02a/smt-requires-framework.py",
+ "runtime_sec": 1.67,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:13:54+00:00",
+ "n_events_in": 7136,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 0,
+  "target_not_beyond_entry": 0,
+  "no_bars_in_hold": 37
+ },
+ "n_complement": 5613,
+ "gate_firing_rate": 0.1997464431610086,
+ "events_fp": "da7109d3fc346ff9",
+ "mask_fp": "aee4f527c0c2601b",
+ "mask_col": "model_first",
+ "exit_mix": {
+  "stop": 0.4809590973201692,
+  "target": 0.46544428772919605,
+  "time": 0.0535966149506347
+ },
+ "gated_vs_own_control": {
+  "diff": 0.009746624421027451,
+  "ci_lo": -0.0577792736148313,
+  "ci_hi": 0.07185530181799464,
+  "p": 0.7682068177261724
+ },
+ "complement": {
+  "n": 5681,
+  "avg_R": -0.05023459939111328,
+  "win_rate": 0.4923428973772223,
+  "pf": 0.8994673128837388,
+  "sd_R": 0.9678905442342128,
+  "exit_mix": {
+   "stop": 0.46840345009681394,
+   "target": 0.45608167576130965,
+   "time": 0.07551487414187644
+  },
+  "vs_own_control": {
+   "diff": -0.011247517025745606,
+   "ci_lo": -0.03939947093555696,
+   "ci_hi": 0.01481435225469355,
+   "p": 0.4160740481663824
+  }
+ },
+ "ci_components": {
+  "phase3_block": [
+   -0.04827597544174155,
+   0.09186838176890226
+  ],
+  "day_block": [
+   -0.040724231305944186,
+   0.08674224529843745
+  ]
+ },
+ "diff_meaning": "mean(R-ctrl | gated) - mean(R-ctrl | complement)",
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_eff_gated": 1074,
+  "n_eff_complement": 2474,
+  "n_eff": 1074
+ },
+ "ties": {
+  "real_ambiguous": 0.000704324552753909,
+  "control_ambiguous": 0.0007968127490039841,
+  "real_gap_stop": 0.0061980560642343994,
+  "control_gap_stop": 0.0069721115537848604,
+  "gated_excess": 0.0008480565371024736,
+  "complement_excess": -0.0003206841261357563,
+  "verdict_stop_first": "UNDERPOWERED"
+ },
+ "ctrl_overlap": 0.06881047239612977,
+ "exposure_bars": {
+  "real_mean": 553.7934920411326,
+  "control_mean": 552.7959021058623,
+  "hold_basis": "clock"
+ },
+ "run_id": "e1bc5dc728ec4f43a07ca98391a23b05",
+ "hyp_key": "06fae8f428bc779b"
+}

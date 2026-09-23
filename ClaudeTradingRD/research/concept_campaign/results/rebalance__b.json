@@ -1,0 +1,201 @@
+{
+ "concept_id": "rebalance",
+ "reading": "b",
+ "testable": true,
+ "test_type": "rate",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "daily candles on the 18:00 NY trading day; C1/C2 = the last two completed sessions with >= 600 M1 bars",
+   "C3 opens beyond C1's extreme (would-be gap) but inside C2's range on the continuation side",
+   "decide at C3's first M1 bar close; hit = C1's extreme touched strictly before C2's extreme within the rest of C3 (M1 bars)",
+   "null = the same race (same two signed distances, same bar horizon) from 5 random moments within +/-30 days"
+  ],
+  "params": {
+   "min_bars": 600,
+   "day_open_hour": 18,
+   "continuation_level": "C2 extreme",
+   "horizon": "rest of C3"
+  }
+ },
+ "params_source": {
+  "min_bars": "declared-before-run: README trap 6 stub sessions",
+  "day_open_hour": "session_window_fit: settled 18:00 NY daily roll",
+  "continuation_level": "declared-before-run: 'only then continues' - continuing = trading through C2's extreme (the three-candle frame)",
+  "horizon": "corpus: opYUBJ8IFgg 'the daily candle opens, comes down and rebalances, then moves higher' - within the same daily candle"
+ },
+ "n": 1230,
+ "span": {
+  "start": "2016-01-06 23:01:00+00:00",
+  "end": "2026-07-22 22:05:00+00:00",
+  "years": 10.538
+ },
+ "avg_R": null,
+ "avg_R_gross": null,
+ "win_rate": null,
+ "pf": null,
+ "observed_rate": 0.36910569105691055,
+ "null_rate": 0.3617886178861789,
+ "lift": 1.0202247191011236,
+ "control": {
+  "rate": 0.3617886178861789,
+  "reps": 5,
+  "kind": "null_fn x5"
+ },
+ "diff": 0.007317073170731658,
+ "ci_lo": -0.022930894308943055,
+ "ci_hi": 0.037560975609756075,
+ "ci_method": "phase3_iid",
+ "p": 0.6353908252479312,
+ "halves": {
+  "H1": {
+   "n": 590,
+   "diff": -0.009152542372881378,
+   "ci_lo": -0.06037288135593225,
+   "ci_hi": 0.035940677966101675,
+   "ci_method": "iid",
+   "p": 0.7095166990383716,
+   "start": "2016-01-06 23:01:00+00:00",
+   "end": "2020-12-30 23:01:00+00:00"
+  },
+  "H2": {
+   "n": 640,
+   "diff": 0.022499999999999964,
+   "ci_lo": -0.017835937499999954,
+   "ci_hi": 0.06749999999999995,
+   "ci_method": "iid",
+   "p": 0.3013497533939211,
+   "start": "2021-01-04 23:01:00+00:00",
+   "end": "2026-07-22 22:05:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 306,
+   "diff": -0.006535947712418277,
+   "ci_lo": -0.07259803921568629,
+   "ci_hi": 0.056895424836601295,
+   "ci_method": "iid",
+   "p": 0.8431614426366562,
+   "start": "2016-01-06 23:01:00+00:00",
+   "end": "2018-08-21 22:01:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 313,
+   "diff": -0.013418530351437696,
+   "ci_lo": -0.08309904153354634,
+   "ci_hi": 0.05431309904153353,
+   "ci_method": "iid",
+   "p": 0.7018772058924381,
+   "start": "2018-08-23 22:01:00+00:00",
+   "end": "2021-04-08 22:01:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 304,
+   "diff": 0.01907894736842103,
+   "ci_lo": -0.044078947368421106,
+   "ci_hi": 0.08488486842105263,
+   "ci_method": "iid",
+   "p": 0.5619716847851286,
+   "start": "2021-04-13 22:01:00+00:00",
+   "end": "2023-11-29 23:04:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 307,
+   "diff": 0.03061889250814337,
+   "ci_lo": -0.0358469055374593,
+   "ci_hi": 0.09710097719869704,
+   "ci_method": "iid",
+   "p": 0.366638018219946,
+   "start": "2023-12-03 23:04:00+00:00",
+   "end": "2026-07-22 22:05:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.04323373168746434,
+ "mde_threshold": 0.05,
+ "power_floor_n": 920,
+ "verdict": "NULL",
+ "verdict_detail": "CI contains 0; powered (MDE 0.0432 <= 0.0500)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 1230,
+  "min_slack_min": 0.0,
+  "passed": true,
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 125,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "lvl_rebal",
+    "lvl_cont"
+   ],
+   "ignored": [],
+   "lookback": "20D",
+   "recent": "1D",
+   "events_fp": "9fa42c1eb30ce6ad",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "reps": 5,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "mde_threshold": null,
+  "cluster": null,
+  "outcome_horizon": "1 days 00:00:00",
+  "null_kind": "null_fn x5"
+ },
+ "notes": "Pre-creation case on the daily, as a race vs a matched null; 'the majority of candles do this' is a base-rate claim, so the question asked is whether the would-be gap is a magnet beyond geometry.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/structure_own_05b/rebalance.py",
+ "runtime_sec": 1.02,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:31:22+00:00",
+ "dropped": {
+  "nan_rows": 0
+ },
+ "null_kind": "null_fn x5",
+ "events_fp": "9fa42c1eb30ce6ad",
+ "predictors_probed": true,
+ "ci_components": {
+  "phase3_iid": [
+   -0.022930894308943055,
+   0.037560975609756075
+  ],
+  "day_block": [
+   -0.01593902439024219,
+   0.030243902439025194
+  ]
+ },
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 1230,
+  "n_clusters": null,
+  "n_eff": 1230
+ },
+ "run_id": "23beee98e6954b2e80a5a47d41ae7a89",
+ "hyp_key": "bc5f2d16ee4ec33d"
+}

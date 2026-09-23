@@ -1,0 +1,279 @@
+{
+ "concept_id": "fractal-c2-unicorn-pairing",
+ "reading": null,
+ "testable": true,
+ "test_type": "trade",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "pairings pooled: 15m C2 / 1m unicorn, 1h C2 / 5m unicorn, 4h C2 / 15m unicorn (forex 4h grid)",
+   "C2 = current C2-TF candle sweeps the previous candle's low (bull) / high (bear); trade inside C2 before it closes",
+   "POI: the C2 extreme so far tags, first vs C1, one of PDL/PWL, last Asia/London/NY-AM session low, a C2-TF 2/2 swing low confirmed before C2 (<= 48 C2 bars), or the top of a bullish C2-TF FVG (<= 48 C2 bars); bearish mirrored",
+   "unicorn on the paired TF: breaker = highest-high bar in the 12 bars before the C2 low; confirm on a close above it with a bullish FVG after the low overlapping the breaker's [body low, high]; breaker->confirm <= 12 bars",
+   "entry next M1 open after the confirming close; stop at the C2 extreme so far; 2R; hold 4 C2 bars; first per C2 per direction"
+  ],
+  "params": {
+   "pairs": [
+    [
+     "15min",
+     "1min",
+     "1h"
+    ],
+    [
+     "1h",
+     "5min",
+     "4h"
+    ],
+    [
+     "4h",
+     "15min",
+     "16h"
+    ]
+   ],
+   "count_max": 12,
+   "breaker_lookback": 12,
+   "poi_age_bars": 48,
+   "rr": 2.0,
+   "hold_c2_bars": 4,
+   "swing": "2/2 on the C2 TF",
+   "sessions": [
+    "asia",
+    "london",
+    "ny_am"
+   ],
+   "grid4h": "forex"
+  }
+ },
+ "params_source": {
+  "pairs": "corpus: 07lOxv39LdY 'pair a 15 minute C2 with a 1 minute unicorn a 1H hour C2 with a 5 minute unicorn a 4our C2 with a 15-minute unicorn'",
+  "count_max": "corpus: 07lOxv39LdY 'within that 10 to 12 candle range or even less'",
+  "breaker_lookback": "declared-before-run: same 12-bar budget as c2-unicorn (model_guest_01b)",
+  "poi_age_bars": "declared-before-run: c2-unicorn's 48h POI age at 1h, held at 48 C2 bars for every pairing",
+  "rr": "corpus: 07lOxv39LdY 'grab my two to two and a half R' (lower end)",
+  "hold_c2_bars": "declared-before-run: c2-unicorn's 4h hold at 1h, held at 4 C2 bars for every pairing",
+  "swing": "declared-before-run: 2/2 fractal swings, phase-3 locked config",
+  "sessions": "session_window_fit: SESSION_WINDOWS asia 20-00, london 02-05, ny_am 08:30-12 (NY)",
+  "grid4h": "session_window_fit: forex 4H grid (17/21/01/05/09/13 NY), concept_lab default"
+ },
+ "n": 3558,
+ "span": {
+  "start": "2016-01-04 11:55:00+00:00",
+  "end": "2026-07-23 01:45:00+00:00",
+  "years": 10.546
+ },
+ "avg_R": -0.053821400491524216,
+ "avg_R_gross": -0.01382140049152419,
+ "win_rate": 0.4033164699269252,
+ "pf": 0.8959478577316956,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "n": 17790,
+  "avg_R": -0.034883608103218236,
+  "win_rate": 0.4123664980326026,
+  "pf": 0.9267069240809241,
+  "sd_R": 1.0836271358814875,
+  "exit_mix": {
+   "stop": 0.3993254637436762,
+   "target": 0.15390668915120853,
+   "time": 0.44676784710511525
+  },
+  "avg_R_gross": 0.005116391896781786,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": -0.01893779238830598,
+ "ci_lo": -0.058828637734021715,
+ "ci_hi": 0.021507208664281734,
+ "ci_method": "phase3_block",
+ "p": 0.3554574080200762,
+ "halves": {
+  "H1": {
+   "n": 1559,
+   "diff": -0.028665424212892553,
+   "ci_lo": -0.09018017101651084,
+   "ci_hi": 0.027621738489335825,
+   "ci_method": "iid",
+   "p": 0.3401550736592848,
+   "start": "2016-01-04 11:55:00+00:00",
+   "end": "2020-12-31 06:07:00+00:00"
+  },
+  "H2": {
+   "n": 1999,
+   "diff": -0.011351310139916544,
+   "ci_lo": -0.06889698830814023,
+   "ci_hi": 0.04946254658320906,
+   "ci_method": "block",
+   "p": 0.7069600268673006,
+   "start": "2021-01-04 01:41:00+00:00",
+   "end": "2026-07-23 01:45:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 636,
+   "diff": -0.054440516389171856,
+   "ci_lo": -0.14240081945762245,
+   "ci_hi": 0.038063562830498714,
+   "ci_method": "iid",
+   "p": 0.23699907597137362,
+   "start": "2016-01-04 11:55:00+00:00",
+   "end": "2018-08-21 07:09:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 1027,
+   "diff": -0.04016066375849852,
+   "ci_lo": -0.12174509392570503,
+   "ci_hi": 0.029701782732443328,
+   "ci_method": "iid",
+   "p": 0.2985787586415964,
+   "start": "2018-08-22 17:25:00+00:00",
+   "end": "2021-04-12 01:08:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 1043,
+   "diff": 0.04248724398116269,
+   "ci_lo": -0.044564812150132145,
+   "ci_hi": 0.1283008567824014,
+   "ci_method": "block",
+   "p": 0.3353231706040355,
+   "start": "2021-04-15 01:13:00+00:00",
+   "end": "2023-12-01 16:05:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 852,
+   "diff": -0.042048932730579885,
+   "ci_lo": -0.12725491830153773,
+   "ci_hi": 0.03412606049545901,
+   "ci_method": "iid",
+   "p": 0.3070818188799971,
+   "start": "2023-12-08 05:42:00+00:00",
+   "end": "2026-07-23 01:45:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.057416284745993036,
+ "mde_threshold": 0.1,
+ "power_floor_n": 1173,
+ "verdict": "NULL",
+ "verdict_detail": "CI contains 0; powered (MDE 0.0574 <= 0.1000)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 3558,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 4.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 259,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "rr",
+    "max_hold",
+    "pairing"
+   ],
+   "ignored": [],
+   "lookback": "30D",
+   "recent": "1D",
+   "events_fp": "448709ce3cf0a343",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "per-row column",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": null,
+  "entry_mode": "next_open",
+  "hold_basis": "clock",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "Pooled across the three stated pairings; 1h/5m sub-book = the c2-unicorn book. Per-pairing point estimates (diagnostic only, no CI): {'15min/1min': {'n': 2499, 'avg_R': -0.0547, 'diff_vs_ctrl': -0.0243}, '1h/5min': {'n': 661, 'avg_R': -0.0919, 'diff_vs_ctrl': -0.0645}, '4h/15min': {'n': 398, 'avg_R': 0.0146, 'diff_vs_ctrl': 0.0906}}. No stop stated in the video: stop at the C2 extreme. Re-run once with an identical test only to fill this diagnostic (first run mapped no pairings).",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/time_guest_01a/fractal-c2-unicorn-pairing.py",
+ "runtime_sec": 1.23,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:39:50+00:00",
+ "n_events_in": 3561,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 0,
+  "target_not_beyond_entry": 0,
+  "no_bars_in_hold": 3
+ },
+ "events_fp": "448709ce3cf0a343",
+ "sd_R": 1.1222584705401273,
+ "exit_mix": {
+  "stop": 0.4451939291736931,
+  "target": 0.1599213041034289,
+  "time": 0.39488476672287803
+ },
+ "trades_per_year": 337.37266355140184,
+ "ci_components": {
+  "phase3_block": [
+   -0.058828637734021715,
+   0.021507208664281734
+  ],
+  "day_block": [
+   -0.05734800932065906,
+   0.020322128127364524
+  ]
+ },
+ "diff_win": -0.009050028105677399,
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 1902,
+  "n_clusters": null,
+  "n_eff": 1902
+ },
+ "ties": {
+  "real_ambiguous": 0.0011242270938729624,
+  "control_ambiguous": 0.0003372681281618887,
+  "real_gap_stop": 0.01461495222034851,
+  "control_gap_stop": 0.008431703204047217,
+  "verdict_stop_first": "NULL"
+ },
+ "ctrl_overlap": 0.0006183249016301292,
+ "exposure_bars": {
+  "real_mean": 179.16582349634626,
+  "control_mean": 178.34755480607083,
+  "hold_basis": "clock"
+ },
+ "run_id": "853db87f950946fd97fdea2e1d5f2670",
+ "hyp_key": "6ce3a289159dcee2"
+}

@@ -1,0 +1,221 @@
+{
+ "concept_id": "consolidation-reactivation-alert",
+ "reading": null,
+ "testable": true,
+ "test_type": "rate",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "daily bars (18:00 NY roll), stub days < 600 M1 bars skipped",
+   "consolidation at day k: mean range(last 5) < 0.8 x mean range(20 before) and mean |body|(last 5) < 0.5 x mean range(last 5)",
+   "nearest open bearish daily FVG above close[k] (low[a] > high[a+2], top not exceeded since), searched over 60 daily bars",
+   "alert = gap top, armed for the next 1,380 M1 bars; fires on first M1 high above; once per gap; decision at that M1 close",
+   "draw = nearest unbroken confirmed 2/2 daily swing high above the alert (60 bars); drop if none or if already reached before the alert",
+   "hit = M1 high >= draw within 5 x 1,380 M1 bars; null = same distance above price, same bars, at 5 random moments +/-30 days"
+  ],
+  "params": {
+   "min_day_m1": 600,
+   "short_n": 5,
+   "long_n": 20,
+   "range_ratio": 0.8,
+   "body_ratio": 0.5,
+   "search_bars": 60,
+   "alert_level": "gap top",
+   "session_bars": 1380,
+   "horizon_sessions": 5,
+   "draw": "nearest unbroken daily 2/2 swing high",
+   "day_open_hour": 18
+  }
+ },
+ "params_source": {
+  "min_day_m1": "declared-before-run: skip stub sessions (README trap 6; as the harness rate example)",
+  "short_n": "declared-before-run: 'small days' judged over the last week (5 sessions)",
+  "long_n": "declared-before-run: vs the prior 20 sessions",
+  "range_ratio": "declared-before-run: small days = 5-day mean range < 0.8x the prior 20-day mean (corpus does not quantify 'small days')",
+  "body_ratio": "declared-before-run: small bodies = mean body < half the mean range",
+  "search_bars": "declared-before-run: 60 daily bars (~3 months) gap/draw search",
+  "alert_level": "corpus: tDiwwMRWF2k 'set like an alert above the bearish gap from June 5th' -> above the gap's top (ambiguity resolved to the top)",
+  "session_bars": "declared-before-run: one ~23h session = 1,380 M1 bars",
+  "horizon_sessions": "declared-before-run: 5 sessions (one week) to reach the draw",
+  "draw": "declared-before-run: 'the liquidity above' = nearest unbroken daily swing high above the alert (yaml: 'treat the liquidity above as the draw')",
+  "day_open_hour": "session_window_fit: settled 18:00 NY daily roll"
+ },
+ "n": 33,
+ "span": {
+  "start": "2016-06-03 14:05:00+00:00",
+  "end": "2025-08-22 14:53:00+00:00",
+  "years": 9.218
+ },
+ "avg_R": null,
+ "avg_R_gross": null,
+ "win_rate": null,
+ "pf": null,
+ "observed_rate": 0.3333333333333333,
+ "null_rate": 0.3939393939393939,
+ "lift": 0.8461538461538461,
+ "control": {
+  "rate": 0.3939393939393939,
+  "reps": 5,
+  "kind": "null_fn x5"
+ },
+ "diff": -0.06060606060606061,
+ "ci_lo": -0.23636363636363636,
+ "ci_hi": 0.11515151515151517,
+ "ci_method": "phase3_iid",
+ "p": 0.49913610464233193,
+ "halves": {
+  "H1": {
+   "n": 16,
+   "diff": -0.12500000000000006,
+   "ci_lo": -0.3503125000000001,
+   "ci_hi": 0.15000000000000002,
+   "ci_method": "iid",
+   "p": 0.32739724705881174,
+   "start": "2016-06-03 14:05:00+00:00",
+   "end": "2020-11-20 14:15:00+00:00"
+  },
+  "H2": {
+   "n": 17,
+   "diff": 0.0,
+   "ci_lo": -0.2591176470588235,
+   "ci_hi": 0.2705882352941176,
+   "ci_method": "iid",
+   "p": 1.0,
+   "start": "2021-07-06 05:54:00+00:00",
+   "end": "2025-08-22 14:53:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 8,
+   "diff": -0.05000000000000002,
+   "ci_lo": -0.25,
+   "ci_hi": 0.22499999999999998,
+   "ci_method": "iid",
+   "p": 0.6798821146422405,
+   "start": "2016-06-03 14:05:00+00:00",
+   "end": "2017-12-22 14:29:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 8,
+   "diff": -0.20000000000000007,
+   "ci_lo": -0.550625,
+   "ci_hi": 0.19999999999999996,
+   "ci_method": "iid",
+   "p": 0.29628012484066935,
+   "start": "2019-01-25 13:42:00+00:00",
+   "end": "2020-11-20 14:15:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 9,
+   "diff": -0.04444444444444451,
+   "ci_lo": -0.4005555555555556,
+   "ci_hi": 0.3777777777777777,
+   "ci_method": "iid",
+   "p": 0.8228849144196038,
+   "start": "2021-07-06 05:54:00+00:00",
+   "end": "2022-11-30 23:06:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 8,
+   "diff": 0.04999999999999993,
+   "ci_lo": -0.32499999999999996,
+   "ci_hi": 0.42499999999999993,
+   "ci_method": "iid",
+   "p": 0.7938391644434952,
+   "start": "2024-01-05 15:02:00+00:00",
+   "end": "2025-08-22 14:53:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.25122899598094045,
+ "mde_threshold": 0.05,
+ "power_floor_n": 834,
+ "verdict": "UNDERPOWERED",
+ "verdict_detail": "CI contains 0; MDE 0.2512 vs threshold 0.0500, effective n 33 (power floor n=834, have 33)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 33,
+  "min_slack_min": 0.0,
+  "passed": true,
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 24,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "alert_level",
+    "draw_px",
+    "gap_bottom"
+   ],
+   "ignored": [],
+   "lookback": "180D",
+   "recent": "1D",
+   "events_fp": "153fe66f9c656df5",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "reps": 5,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "mde_threshold": null,
+  "cluster": null,
+  "outcome_horizon": "5 days 00:00:00",
+  "null_kind": "null_fn x5"
+ },
+ "notes": "",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/risk_guest_02a/consolidation-reactivation-alert.py",
+ "runtime_sec": 0.06,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:12:40+00:00",
+ "dropped": {
+  "nan_rows": 0
+ },
+ "null_kind": "null_fn x5",
+ "events_fp": "153fe66f9c656df5",
+ "predictors_probed": true,
+ "ci_components": {
+  "phase3_iid": [
+   -0.23636363636363636,
+   0.11515151515151517
+  ],
+  "day_block": [
+   -0.21212121212121218,
+   0.09696969696969704
+  ],
+  "day_block_5d": [
+   -0.206060606060606,
+   0.06060606060606061
+  ]
+ },
+ "dependence": {
+  "day_block_mean_days": 5,
+  "n_days": 33,
+  "n_clusters": null,
+  "n_eff": 33
+ },
+ "run_id": "946197536b664e8297da6daca43ce85a",
+ "hyp_key": "62c3e09f20267119"
+}

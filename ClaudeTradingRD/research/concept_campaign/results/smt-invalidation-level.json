@@ -1,0 +1,202 @@
+{
+ "concept_id": "smt-invalidation-level",
+ "reading": null,
+ "testable": true,
+ "test_type": "rate",
+ "claim": "-",
+ "operationalization": {
+  "rules": [
+   "hourly gold/XAG SMT (detectors.bias.smt_events, 2/2 swings, 20-bar lookback); keep silver-swept / gold-held SMTs",
+   "level = gold's held low (bullish) / high (bearish), known at the divergence bar's close",
+   "hit = gold trades through the level within 600 M1 bars after the close",
+   "null = same distance from the first M1 open at matched random moments (+/-30d, 5 reps), same side, same 600-bar horizon"
+  ],
+  "params": {
+   "tf": "1h",
+   "correlate": "XAG_USD H1",
+   "smt_lookback": 20,
+   "swing": "2/2",
+   "horizon_bars": 600
+  }
+ },
+ "params_source": {
+  "tf": "declared-before-run: SMT is fractal; silver held only at H1",
+  "correlate": "corpus: silver allowed as gold's correlate; phase3 load_correlate",
+  "smt_lookback": "phase3: detectors.bias.smt_events default",
+  "swing": "phase3: 2/2 swings (\u00a71.8)",
+  "horizon_bars": "phase3: 10 entry-TF bars hold (\u00a71.13), as trading minutes"
+ },
+ "n": 3554,
+ "span": {
+  "start": "2016-01-04 16:00:00+00:00",
+  "end": "2026-07-21 21:00:00+00:00",
+  "years": 10.543
+ },
+ "avg_R": null,
+ "avg_R_gross": null,
+ "win_rate": null,
+ "pf": null,
+ "observed_rate": 0.6114237478897018,
+ "null_rate": 0.5972988182329769,
+ "lift": 1.0236480120595441,
+ "control": {
+  "rate": 0.5972988182329769,
+  "reps": 5,
+  "kind": "null_fn x5"
+ },
+ "diff": 0.01412492965672485,
+ "ci_lo": -0.003095104108047253,
+ "ci_hi": 0.032134214969049,
+ "ci_method": "phase3_iid",
+ "p": 0.11602813489385813,
+ "halves": {
+  "H1": {
+   "n": 1678,
+   "diff": 0.018593563766388543,
+   "ci_lo": -0.006674612634085661,
+   "ci_hi": 0.04565256257449457,
+   "ci_method": "block",
+   "p": 0.1636563389579279,
+   "start": "2016-01-04 16:00:00+00:00",
+   "end": "2020-12-31 15:00:00+00:00"
+  },
+  "H2": {
+   "n": 1876,
+   "diff": 0.01012793176972282,
+   "ci_lo": -0.01461886993603422,
+   "ci_hi": 0.0366764392324095,
+   "ci_method": "iid",
+   "p": 0.43895161175875685,
+   "start": "2021-01-04 17:00:00+00:00",
+   "end": "2026-07-21 21:00:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 872,
+   "diff": 0.04288990825688077,
+   "ci_lo": 0.005493119266054992,
+   "ci_hi": 0.07892201834862378,
+   "ci_method": "iid",
+   "p": 0.022042504094222863,
+   "start": "2016-01-04 16:00:00+00:00",
+   "end": "2018-08-22 07:00:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 893,
+   "diff": -0.005599104143337086,
+   "ci_lo": -0.04277715565509521,
+   "ci_hi": 0.031131019036954144,
+   "ci_method": "iid",
+   "p": 0.7664938087242213,
+   "start": "2018-08-28 02:00:00+00:00",
+   "end": "2021-04-12 02:00:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 881,
+   "diff": 0.009080590238365494,
+   "ci_lo": -0.02838251986379107,
+   "ci_hi": 0.04836549375709425,
+   "ci_method": "iid",
+   "p": 0.6427954199508579,
+   "start": "2021-04-13 02:00:00+00:00",
+   "end": "2023-12-01 11:00:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 908,
+   "diff": 0.010792951541850226,
+   "ci_lo": -0.027758810572687132,
+   "ci_hi": 0.04868392070484582,
+   "ci_method": "iid",
+   "p": 0.5799520555202158,
+   "start": "2023-12-05 03:00:00+00:00",
+   "end": "2026-07-21 21:00:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.025178506310984977,
+ "mde_threshold": 0.05,
+ "power_floor_n": 902,
+ "verdict": "NULL",
+ "verdict_detail": "CI contains 0; powered (MDE 0.0252 <= 0.0500)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 3554,
+  "min_slack_min": 0.0,
+  "passed": true,
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 240,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "level"
+   ],
+   "ignored": [],
+   "lookback": "20D",
+   "recent": "1D",
+   "events_fp": "d589f7fb91df2c27",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "reps": 5,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "mde_threshold": null,
+  "cluster": null,
+  "outcome_horizon": "1 days 00:00:00",
+  "null_kind": "null_fn x5"
+ },
+ "notes": "7 events whose first M1 open was already through the level are kept; their nulls carry the same negative distance",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/liquidity_own_02a/smt-invalidation-level.py",
+ "runtime_sec": 1.39,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:11:48+00:00",
+ "dropped": {
+  "nan_rows": 0
+ },
+ "null_kind": "null_fn x5",
+ "events_fp": "d589f7fb91df2c27",
+ "predictors_probed": true,
+ "ci_components": {
+  "phase3_iid": [
+   -0.003095104108047253,
+   0.032134214969049
+  ],
+  "day_block": [
+   -0.0027419450687480172,
+   0.03012371042351197
+  ]
+ },
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 2118,
+  "n_clusters": null,
+  "n_eff": 2118
+ },
+ "run_id": "e4f047a29bd346d6b88e45a36ac3156f",
+ "hyp_key": "78e2b2f3cb07653d"
+}

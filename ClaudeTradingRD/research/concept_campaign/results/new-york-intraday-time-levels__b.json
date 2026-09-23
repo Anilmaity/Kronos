@@ -1,0 +1,178 @@
+{
+ "concept_id": "new-york-intraday-time-levels",
+ "reading": "b",
+ "testable": true,
+ "test_type": "rate",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "trading days (18:00 NY roll) with >= 1,200 M1 bars and >= 25 bars in 09:30-10:00",
+   "hit = the day's high or low (first M1 bar printing it) starts in [09:30, 10:00) NY",
+   "null = a random 30-minute window starting at a random M1 bar of the same trading day (ending by its last bar) contains the day's high or low"
+  ],
+  "params": {
+   "window": "09:30-10:00",
+   "min_day_bars": 1200,
+   "day_open_hour": 18
+  }
+ },
+ "params_source": {
+  "window": "corpus: X4XSsv5CNqg 'the volatility from 9:30 to 10:00'; W7Fu3Rx5iMs 'ideally this hits before 10:00 a.m.'",
+  "min_day_bars": "declared-before-run: skip stub sessions (README trap 6)",
+  "day_open_hour": "session_window_fit: settled 18:00 NY daily roll"
+ },
+ "n": 2651,
+ "span": {
+  "start": "2016-01-04 14:30:00+00:00",
+  "end": "2026-07-22 13:30:00+00:00",
+  "years": 10.543
+ },
+ "avg_R": null,
+ "avg_R_gross": null,
+ "win_rate": null,
+ "pf": null,
+ "observed_rate": 0.10637495284798189,
+ "null_rate": 0.04089023010184836,
+ "lift": 2.6014760147601472,
+ "control": {
+  "rate": 0.04089023010184836,
+  "reps": 5,
+  "kind": "null_fn x5"
+ },
+ "diff": 0.06548472274613354,
+ "ci_lo": 0.0530365899660502,
+ "ci_hi": 0.07921916258015808,
+ "ci_method": "phase3_block",
+ "p": 1.0815391416745209e-22,
+ "halves": {
+  "H1": {
+   "n": 1241,
+   "diff": 0.054149879129734096,
+   "ci_lo": 0.03802981466559227,
+   "ci_hi": 0.07107171635777598,
+   "ci_method": "iid",
+   "p": 1.326745003703037e-10,
+   "start": "2016-01-04 14:30:00+00:00",
+   "end": "2020-12-31 14:30:00+00:00"
+  },
+  "H2": {
+   "n": 1410,
+   "diff": 0.07546099290780142,
+   "ci_lo": 0.05687588652482256,
+   "ci_hi": 0.09631205673758854,
+   "ci_method": "block",
+   "p": 6.344382526436236e-14,
+   "start": "2021-01-04 14:30:00+00:00",
+   "end": "2026-07-22 13:30:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 662,
+   "diff": 0.03806646525679758,
+   "ci_lo": 0.017220543806646615,
+   "ci_hi": 0.06043051359516625,
+   "ci_method": "block",
+   "p": 0.000553734079407785,
+   "start": "2016-01-04 14:30:00+00:00",
+   "end": "2018-08-21 13:30:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 646,
+   "diff": 0.07770897832817336,
+   "ci_lo": 0.05262383900928792,
+   "ci_hi": 0.10434210526315787,
+   "ci_method": "iid",
+   "p": 3.8651151376663025e-09,
+   "start": "2018-08-22 13:30:00+00:00",
+   "end": "2021-04-09 13:30:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 675,
+   "diff": 0.0865185185185185,
+   "ci_lo": 0.058362962962963075,
+   "ci_hi": 0.11971111111111118,
+   "ci_method": "block",
+   "p": 3.2348709599927394e-08,
+   "start": "2021-04-12 13:30:00+00:00",
+   "end": "2023-12-01 14:30:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 668,
+   "diff": 0.059580838323353286,
+   "ci_lo": 0.036220059880239595,
+   "ci_hi": 0.08593562874251504,
+   "ci_method": "block",
+   "p": 2.630099006399597e-06,
+   "start": "2023-12-04 14:30:00+00:00",
+   "end": "2026-07-22 13:30:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.0187127678613218,
+ "mde_threshold": 0.01022255752546209,
+ "power_floor_n": 8884,
+ "verdict": "UNDERPOWERED",
+ "verdict_detail": "CI excludes 0 in claimed direction but not powered: n=2651, effective n=2651, MDE=0.0187 vs 0.0102, floor 200; power floor n=8884",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 2651,
+  "min_slack_min": 0.0,
+  "passed": true,
+  "no_detector_declaration": "pure clock rule: the 09:30-10:00 NY window is a fixed wall-clock window; the outcome is the day's extreme timestamp"
+ },
+ "settings": {
+  "reps": 5,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "mde_threshold": null,
+  "cluster": null,
+  "outcome_horizon": "1 days 00:00:00",
+  "null_kind": "null_fn x5"
+ },
+ "notes": "Reading b: does the 09:30-10:00 window hold the day's high/low more often than a random 30-minute window of the same day? A clock-share null; it measures opportunity (where extremes form), not tradeable accuracy (vault: Session Timing on Gold).",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/time_own_01b/new-york-intraday-time-levels.py",
+ "runtime_sec": 1.02,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:34:40+00:00",
+ "dropped": {
+  "nan_rows": 0
+ },
+ "null_kind": "null_fn x5",
+ "events_fp": "b58b5229ea369d2d",
+ "predictors_probed": false,
+ "ci_components": {
+  "phase3_block": [
+   0.0530365899660502,
+   0.07921916258015808
+  ],
+  "day_block": [
+   0.05311014711429615,
+   0.07733308185590308
+  ]
+ },
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 2651,
+  "n_clusters": null,
+  "n_eff": 2651
+ },
+ "run_id": "8b00b1135fa84fadb4b7febe67a20611",
+ "hyp_key": "6e5bbee58c5be1db"
+}

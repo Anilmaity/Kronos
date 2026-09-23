@@ -1,0 +1,252 @@
+{
+ "concept_id": "ltf-inversion-entry-in-tspot",
+ "reading": "a",
+ "testable": true,
+ "test_type": "trade",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "C2 (1h): low < prior low and close > prior low (bullish; bearish mirror); C3 = the next 1h bar opening at C2's close",
+   "alignment: a 5m CISD (series_open, 2/2, max_wait 3) in the model direction confirmed inside C2 (start >= C2 open, confirm bar close <= C2 close)",
+   "T-spot (declared stand-in, derivation withheld): [C2 low, C2 EQ] for bullish ([C2 EQ, C2 high] bearish); tagged when a C3 M1 bar trades to the EQ; invalid once C3 trades beyond C2's extreme",
+   "inversion (1m): a bearish 1m FVG formed inside C3 whose zone overlaps the T-spot, then a later 1m CLOSE above its top (whole gap) after the T-spot was tagged; decide at that close, enter next M1 open",
+   "stop = the wick extreme of C3 so far (the swing that formed the wick)",
+   "reading a: target 2R, max hold 5h"
+  ],
+  "params": {
+   "stack": "1h/5m/1m",
+   "tspot": "C2 wick-side half [extreme, EQ]",
+   "rr": 2.0,
+   "max_hold": "5h",
+   "cisd": "series_open 2/2 max_wait 3",
+   "ctrl_tod_tol_min": 30
+  }
+ },
+ "params_source": {
+  "stack": "corpus: gLul2OZQe9Q 'wait for an inversion to form, take my entry, and then look for 2 R' (hourly model, 5-minute confirmation, 1-minute entry; YAML execution)",
+  "tspot": "declared-before-run: method_spec \u00a73.7 'in one example, simply the equilibrium'; t-spot rule 20 'the EQ of the candle being traded from'; the indicator's derivation is withheld",
+  "rr": "corpus: gLul2OZQe9Q 'and then look for 2 R'",
+  "max_hold": "declared-before-run: 5 HTF bars",
+  "cisd": "phase3: rung-0 CISD config",
+  "ctrl_tod_tol_min": "declared-before-run: README trap 9"
+ },
+ "n": 6692,
+ "span": {
+  "start": "2016-01-04 02:32:00+00:00",
+  "end": "2026-07-22 10:29:00+00:00",
+  "years": 10.546
+ },
+ "avg_R": -0.05251366511536979,
+ "avg_R_gross": -0.012513665115369763,
+ "win_rate": 0.3320382546323969,
+ "pf": 0.924528636585773,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "n": 33460,
+  "avg_R": -0.04554377148397621,
+  "win_rate": 0.33514644351464434,
+  "pf": 0.9341587804439848,
+  "sd_R": 1.408248934162655,
+  "exit_mix": {
+   "stop": 0.6605797967722654,
+   "target": 0.326658696951584,
+   "time": 0.012761506276150627
+  },
+  "avg_R_gross": -0.005543771483976201,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": -0.006969893631393581,
+ "ci_lo": -0.04380862738677167,
+ "ci_hi": 0.02986938475243697,
+ "ci_method": "day_block",
+ "p": 0.7107695744457727,
+ "halves": {
+  "H1": {
+   "n": 2995,
+   "diff": 0.021979211255814993,
+   "ci_lo": -0.030734354963167083,
+   "ci_hi": 0.08062884315647778,
+   "ci_method": "block",
+   "p": 0.43913361314780974,
+   "start": "2016-01-04 02:32:00+00:00",
+   "end": "2020-12-31 15:33:00+00:00"
+  },
+  "H2": {
+   "n": 3697,
+   "diff": -0.03042203567553467,
+   "ci_lo": -0.08097947576138488,
+   "ci_hi": 0.01932133303649197,
+   "ci_method": "iid",
+   "p": 0.23446113663135332,
+   "start": "2021-01-04 16:25:00+00:00",
+   "end": "2026-07-22 10:29:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 1361,
+   "diff": 0.07059735915992779,
+   "ci_lo": -0.013733373793774123,
+   "ci_hi": 0.14762673297927384,
+   "ci_method": "iid",
+   "p": 0.08634070281840729,
+   "start": "2016-01-04 02:32:00+00:00",
+   "end": "2018-08-21 09:28:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 1827,
+   "diff": -0.015104233410834111,
+   "ci_lo": -0.09002125911195086,
+   "ci_hi": 0.055024165543999144,
+   "ci_method": "block",
+   "p": 0.6831270246976661,
+   "start": "2018-08-22 18:45:00+00:00",
+   "end": "2021-04-12 04:19:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 1899,
+   "diff": -0.011249000706299146,
+   "ci_lo": -0.08305578907610811,
+   "ci_hi": 0.060488029503712945,
+   "ci_method": "iid",
+   "p": 0.7586985063131776,
+   "start": "2021-04-12 15:55:00+00:00",
+   "end": "2023-12-01 07:27:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 1605,
+   "diff": -0.05842258393463638,
+   "ci_lo": -0.1318536469052249,
+   "ci_hi": 0.02022014504697759,
+   "ci_method": "iid",
+   "p": 0.13208541933745604,
+   "start": "2023-12-04 21:28:00+00:00",
+   "end": "2026-07-22 10:29:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.05265790944094505,
+ "mde_threshold": 0.1,
+ "power_floor_n": 1856,
+ "verdict": "NULL",
+ "verdict_detail": "CI contains 0; powered (MDE 0.0527 <= 0.1000)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 6692,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 64.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 508,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "rr"
+   ],
+   "ignored": [],
+   "lookback": "20D",
+   "recent": "1D",
+   "events_fp": "68063d0769487d6f",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "5h",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": 30,
+  "entry_mode": "next_open",
+  "hold_basis": "clock",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "Reading a: 2R target, 5h hold. T-spot is a declared stand-in (the author withholds its derivation); the positional 'enter on the open' shortcut variant is not tested.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/entry_own_02b/ltf-inversion-entry-in-tspot.py",
+ "runtime_sec": 1.81,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:22:21+00:00",
+ "n_events_in": 6693,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 1,
+  "target_not_beyond_entry": 0,
+  "no_bars_in_hold": 0
+ },
+ "events_fp": "68063d0769487d6f",
+ "sd_R": 1.407643405953911,
+ "exit_mix": {
+  "stop": 0.6657202630005977,
+  "target": 0.32591153616258217,
+  "time": 0.008368200836820083
+ },
+ "trades_per_year": 634.5412772585669,
+ "ci_components": {
+  "phase3_block": [
+   -0.043870086234449074,
+   0.02820231573562998
+  ],
+  "day_block": [
+   -0.04380862738677167,
+   0.02986938475243697
+  ]
+ },
+ "diff_win": -0.0031081888822474535,
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 2472,
+  "n_clusters": null,
+  "n_eff": 2472
+ },
+ "ties": {
+  "real_ambiguous": 0.0008965929468021519,
+  "control_ambiguous": 0.002839210998206814,
+  "real_gap_stop": 0.02540346682606097,
+  "control_gap_stop": 0.024626419605499102,
+  "verdict_stop_first": "NULL"
+ },
+ "ctrl_overlap": 0.0010759115361625821,
+ "exposure_bars": {
+  "real_mean": 281.0506575014943,
+  "control_mean": 281.5195158398087,
+  "hold_basis": "clock"
+ },
+ "run_id": "d4c39c7efe9e499981edc4f6d10f6a9b",
+ "hyp_key": "748d769f05b0af0a"
+}

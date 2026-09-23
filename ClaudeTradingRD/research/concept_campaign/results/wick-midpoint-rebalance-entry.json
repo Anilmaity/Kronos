@@ -1,0 +1,251 @@
+{
+ "concept_id": "wick-midpoint-rebalance-entry",
+ "reading": null,
+ "testable": true,
+ "test_type": "trade",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "15m bars; extreme wick = one-side wick >= 60% of range and the extreme takes the prior 20 bars' extreme",
+   "wick 50% measured from the body edge to the extreme",
+   "within 4h of the wick candle's close: price rebalances the wick 50% without trading beyond the wick extreme",
+   "then stop-entry beyond the wick candle's opposite extreme (buy stop above its high for a lower wick); decide at that M1 close",
+   "stop at the wick extreme; target 2R; max_hold 150min"
+  ],
+  "params": {
+   "tf": "15min",
+   "wick_share": 0.6,
+   "sweep_n": 20,
+   "window": "4h",
+   "rr": 2.0,
+   "max_hold": "150min"
+  }
+ },
+ "params_source": {
+  "tf": "declared-before-run: 15m, the lowest htf in the concept's timeframe list",
+  "wick_share": "declared-before-run: 'extreme wick' unquantified; >=60% of range (above threshold_fits' large-wick class)",
+  "sweep_n": "declared-before-run: key-level proxy = the wick takes the prior 20 bars' extreme (concept: 'swept prior-session low')",
+  "window": "declared-before-run: 16 execution bars for rebalance + trigger",
+  "rr": "declared-before-run: stated targets not mechanical; 2R",
+  "max_hold": "phase3: 10 entry-TF bars (\u00a71.13)"
+ },
+ "n": 944,
+ "span": {
+  "start": "2016-01-07 15:26:00+00:00",
+  "end": "2026-07-23 02:31:00+00:00",
+  "years": 10.538
+ },
+ "avg_R": -0.12280888886559266,
+ "avg_R_gross": -0.08280888886559265,
+ "win_rate": 0.3718220338983051,
+ "pf": 0.7909659616506607,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "n": 4720,
+  "avg_R": -0.048348258420513913,
+  "win_rate": 0.39364406779661015,
+  "pf": 0.9092312917925616,
+  "sd_R": 1.1647921428049608,
+  "exit_mix": {
+   "stop": 0.46779661016949153,
+   "target": 0.18898305084745762,
+   "time": 0.3432203389830508
+  },
+  "avg_R_gross": -0.008348258420513897,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": -0.07446063044507875,
+ "ci_lo": -0.15683710664931214,
+ "ci_hi": 0.011187527188248825,
+ "ci_method": "phase3_block",
+ "p": 0.08236456530200065,
+ "halves": {
+  "H1": {
+   "n": 462,
+   "diff": -0.10878108674176243,
+   "ci_lo": -0.2289276416578535,
+   "ci_hi": 0.010223619347694798,
+   "ci_method": "iid",
+   "p": 0.07458131454336543,
+   "start": "2016-01-07 15:26:00+00:00",
+   "end": "2020-12-28 15:23:00+00:00"
+  },
+  "H2": {
+   "n": 482,
+   "diff": -0.0415642594719089,
+   "ci_lo": -0.1621434695641798,
+   "ci_hi": 0.0785606309974032,
+   "ci_method": "iid",
+   "p": 0.4984791607911892,
+   "start": "2021-01-04 11:25:00+00:00",
+   "end": "2026-07-23 02:31:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 244,
+   "diff": -0.18989444630737262,
+   "ci_lo": -0.3397450358305843,
+   "ci_hi": -0.0378086263213343,
+   "ci_method": "iid",
+   "p": 0.013688753399895193,
+   "start": "2016-01-07 15:26:00+00:00",
+   "end": "2018-08-21 08:46:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 249,
+   "diff": -0.004951678506125552,
+   "ci_lo": -0.17685662102619493,
+   "ci_hi": 0.1725142806133152,
+   "ci_method": "iid",
+   "p": 0.9556942097240397,
+   "start": "2018-08-22 14:40:00+00:00",
+   "end": "2021-04-06 14:29:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 239,
+   "diff": -0.12430537471181106,
+   "ci_lo": -0.2852590767898055,
+   "ci_hi": 0.039949119870524574,
+   "ci_method": "iid",
+   "p": 0.13404839451460496,
+   "start": "2021-04-15 01:40:00+00:00",
+   "end": "2023-11-24 01:24:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 212,
+   "diff": 0.03294982199524865,
+   "ci_lo": -0.18596244310869506,
+   "ci_hi": 0.21513753159092136,
+   "ci_method": "block",
+   "p": 0.7474399682387027,
+   "start": "2023-12-08 01:21:00+00:00",
+   "end": "2026-07-23 02:31:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.12008773982323229,
+ "mde_threshold": 0.1,
+ "power_floor_n": 1362,
+ "verdict": "UNDERPOWERED",
+ "verdict_detail": "CI contains 0; MDE 0.1201 vs threshold 0.1000, effective n 803 (power floor n=1362, have 944)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 944,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 1.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 85,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "rr"
+   ],
+   "ignored": [],
+   "lookback": "5D",
+   "recent": "1D",
+   "events_fp": "e1490defa046956b",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "150min",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": null,
+  "entry_mode": "next_open",
+  "hold_basis": "clock",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/entry_guest_02b/wick-midpoint-rebalance-entry.py",
+ "runtime_sec": 1.6,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:09:12+00:00",
+ "n_events_in": 944,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 0,
+  "target_not_beyond_entry": 0,
+  "no_bars_in_hold": 0
+ },
+ "events_fp": "e1490defa046956b",
+ "sd_R": 1.178161065215153,
+ "exit_mix": {
+  "stop": 0.5286016949152542,
+  "target": 0.18220338983050846,
+  "time": 0.2891949152542373
+ },
+ "trades_per_year": 89.58067030397505,
+ "ci_components": {
+  "phase3_block": [
+   -0.15683710664931214,
+   0.011187527188248825
+  ],
+  "day_block": [
+   -0.15410817784192704,
+   0.008447632936957303
+  ]
+ },
+ "diff_win": -0.02182203389830506,
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 803,
+  "n_clusters": null,
+  "n_eff": 803
+ },
+ "ties": {
+  "real_ambiguous": 0.0,
+  "control_ambiguous": 0.000635593220338983,
+  "real_gap_stop": 0.014830508474576272,
+  "control_gap_stop": 0.011864406779661017,
+  "verdict_stop_first": "UNDERPOWERED"
+ },
+ "ctrl_overlap": 0.0,
+ "exposure_bars": {
+  "real_mean": 145.3146186440678,
+  "control_mean": 142.88601694915255,
+  "hold_basis": "clock"
+ },
+ "run_id": "4da391d8a8b948069c2fe0f1d57f3e01",
+ "hyp_key": "67c11bfc69a2674f"
+}

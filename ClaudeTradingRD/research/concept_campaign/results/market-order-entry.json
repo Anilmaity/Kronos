@@ -1,0 +1,53 @@
+{
+ "concept_id": "market-order-entry",
+ "reading": null,
+ "testable": false,
+ "test_type": "untestable",
+ "claim": null,
+ "operationalization": {
+  "rules": [
+   "not operationalisable: order-type choice on an existing trigger; the harness entry is already a market fill at the next M1 open (locked)",
+   "measurables (slippage, mid vs market fill quality, platform lag) need fill/quote data absent from mid-price M1 OHLC"
+  ],
+  "params": {}
+ },
+ "params_source": {},
+ "n": 0,
+ "span": null,
+ "avg_R": null,
+ "avg_R_gross": null,
+ "win_rate": null,
+ "pf": null,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": null,
+ "diff": null,
+ "ci_lo": null,
+ "ci_hi": null,
+ "ci_method": null,
+ "p": null,
+ "halves": null,
+ "blocks": null,
+ "mde": null,
+ "mde_threshold": null,
+ "power_floor_n": null,
+ "verdict": "UNTESTABLE",
+ "verdict_detail": "Order-type / execution-mechanics claim, not a price-pattern claim. The rule adds no signal: it says HOW to fill an already-printed trigger (market order, not a buy/sell-stop; options: take the market unless price drops fast, then work the mid; ignore platform lag on >=15m). (1) concept_lab's locked entry convention (entry_mode='next_open', the open of the first M1 bar after the trigger closes) IS a market order, and entry_mode is a locked knob, so any book built here would test the trigger (CISD/closure \u2014 already covered by their own concepts and by phase 3's null rung 0), not the order type. (2) Every stated measurable \u2014 slippage between trigger close and fill, market-vs-mid fill quality on fast drops, TradingView execution lag \u2014 needs broker fills, bid/ask quotes or option chains; the certified data is mid-price XAUUSD M1 OHLC with no spread, depth or fill records. (3) The options branch has no gold instrument here at all.",
+ "sanity_flags": null,
+ "lookahead": null,
+ "settings": null,
+ "notes": "Method spec \u00a74.8 also records an unreconciled OCO resting-limit statement (oco-bracket-order); the two order types are not reconciled in the corpus.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/entry_own_04a/market-order-entry.py",
+ "runtime_sec": null,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:06:56+00:00"
+}

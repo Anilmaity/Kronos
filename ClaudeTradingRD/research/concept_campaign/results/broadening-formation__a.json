@@ -1,0 +1,207 @@
+{
+ "concept_id": "broadening-formation",
+ "reading": "a",
+ "testable": true,
+ "test_type": "rate",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "range = prior trading day high/low (18:00 NY roll; periods with coverage < 0.5 skipped)",
+   "event = close of the first 1H bar that closes back inside the prior-day range after the day's running high (low) traded beyond PDH (PDL), the other side untaken; decision before 16:00 NY",
+   "hit = the other side of the prior-day range traded before the 17:00 NY halt (M1-bar horizon)",
+   "null = same distance from the next M1 open, same side, same M1-bar horizon, 5 matched random moments (+/-30d, NY time +/-30min)"
+  ],
+  "params": {
+   "range": "prior day",
+   "fail_tf": "1h",
+   "min_coverage": 0.5,
+   "latest_decision": "16:00 NY",
+   "horizon": "to 17:00 NY halt",
+   "null_tod_tol_min": 30,
+   "null_reps": 5
+  }
+ },
+ "params_source": {
+  "range": "corpus: RhvalhK2Ulc 'since it took both the range high and the range low' (daily outside bar = formation)",
+  "fail_tf": "corpus: concept timeframes htf 1D/1H; failure = a 1H close back inside (declared-before-run)",
+  "min_coverage": "declared-before-run: skip stub sessions (trap 6)",
+  "latest_decision": "declared-before-run: leave at least an hour for the rotation",
+  "horizon": "declared-before-run: the rest of the trading day",
+  "null_tod_tol_min": "declared-before-run: hold NY time of day (+/-30 min) fixed in the null (trap 9)",
+  "null_reps": "phase3: locked reps=5, +/-30-day window"
+ },
+ "n": 1881,
+ "span": {
+  "start": "2016-01-06 08:00:00+00:00",
+  "end": "2026-07-21 03:00:00+00:00",
+  "years": 10.535
+ },
+ "avg_R": null,
+ "avg_R_gross": null,
+ "win_rate": null,
+ "pf": null,
+ "observed_rate": 0.15045188729399256,
+ "null_rate": 0.1621477937267411,
+ "lift": 0.9278688524590164,
+ "control": {
+  "rate": 0.1621477937267411,
+  "reps": 5,
+  "kind": "null_fn x5"
+ },
+ "diff": -0.011695906432748537,
+ "ci_lo": -0.02850079744816587,
+ "ci_hi": 0.006916533758638994,
+ "ci_method": "phase3_iid",
+ "p": 0.19549885243555215,
+ "halves": {
+  "H1": {
+   "n": 892,
+   "diff": -0.005381165919282532,
+   "ci_lo": -0.03094730941704035,
+   "ci_hi": 0.021317264573991024,
+   "ci_method": "iid",
+   "p": 0.6865096875008658,
+   "start": "2016-01-06 08:00:00+00:00",
+   "end": "2020-12-31 03:00:00+00:00"
+  },
+  "H2": {
+   "n": 989,
+   "diff": -0.01739130434782607,
+   "ci_lo": -0.04206268958543982,
+   "ci_hi": 0.008498483316481297,
+   "ci_method": "iid",
+   "p": 0.17755535357705401,
+   "start": "2021-01-05 00:00:00+00:00",
+   "end": "2026-07-21 03:00:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 474,
+   "diff": 0.010970464135021119,
+   "ci_lo": -0.02532700421940928,
+   "ci_hi": 0.05106540084388185,
+   "ci_method": "iid",
+   "p": 0.573483861717738,
+   "start": "2016-01-06 08:00:00+00:00",
+   "end": "2018-08-22 01:00:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 472,
+   "diff": -0.018220338983050838,
+   "ci_lo": -0.05594279661016951,
+   "ci_hi": 0.018220338983050838,
+   "ci_method": "iid",
+   "p": 0.3355250761139242,
+   "start": "2018-08-23 02:00:00+00:00",
+   "end": "2021-04-09 14:00:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 493,
+   "diff": -0.017038539553752535,
+   "ci_lo": -0.053965517241379324,
+   "ci_hi": 0.02069979716024341,
+   "ci_method": "iid",
+   "p": 0.37104207755626356,
+   "start": "2021-04-12 15:00:00+00:00",
+   "end": "2023-12-01 10:00:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 442,
+   "diff": -0.023076923076923078,
+   "ci_lo": -0.062024886877828055,
+   "ci_hi": 0.01809954751131221,
+   "ci_method": "iid",
+   "p": 0.25890104266117636,
+   "start": "2023-12-04 08:00:00+00:00",
+   "end": "2026-07-21 03:00:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.02531287917763194,
+ "mde_threshold": 0.040536948431685274,
+ "power_floor_n": 734,
+ "verdict": "NULL",
+ "verdict_detail": "CI contains 0; powered (MDE 0.0253 <= 0.0405)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 1881,
+  "min_slack_min": 0.0,
+  "passed": true,
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 151,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "failed_side",
+    "target",
+    "close"
+   ],
+   "ignored": [],
+   "lookback": "10D",
+   "recent": "1D",
+   "events_fp": "7b91cca018f4add1",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "reps": 5,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "mde_threshold": null,
+  "cluster": null,
+  "outcome_horizon": "1 days 00:00:00",
+  "null_kind": "null_fn x5"
+ },
+ "notes": "Later framing (outside bar / prior-day range). Rows are per-day facts; day-block CI.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/structure_own_03b/broadening-formation.py",
+ "runtime_sec": 0.5,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:33:42+00:00",
+ "dropped": {
+  "nan_rows": 0
+ },
+ "null_kind": "null_fn x5",
+ "events_fp": "7b91cca018f4add1",
+ "predictors_probed": true,
+ "ci_components": {
+  "phase3_iid": [
+   -0.02850079744816587,
+   0.006916533758638994
+  ],
+  "day_block": [
+   -0.027857522594363335,
+   0.004678362573100623
+  ]
+ },
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 1881,
+  "n_clusters": null,
+  "n_eff": 1881
+ },
+ "run_id": "6bbb14bd8d0442bfb2a1ab48c79a21a2",
+ "hyp_key": "bfacc669ecc237d6"
+}

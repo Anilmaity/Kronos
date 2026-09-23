@@ -1,0 +1,192 @@
+{
+ "concept_id": "daily-profile-session-windows",
+ "reading": null,
+ "testable": true,
+ "test_type": "rate",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "trading day = 18:00 NY roll; days with < 600 M1 bars skipped",
+   "outcome per day = share of the day's high and low (first printing M1 bar) inside London 02:00-05:00 or New York a.m. 08:30-12:00 NY (DST-aware)",
+   "null = the same two windows shifted together by a uniform random offset within the 23h trading day (same lengths, same gap), scored on the same extremes; 5 reps",
+   "prediction stamped at the day's first M1 bar"
+  ],
+  "params": {
+   "windows": [
+    [
+     "02:00",
+     "05:00"
+    ],
+    [
+     "08:30",
+     "12:00"
+    ]
+   ],
+   "day_open_hour": 18,
+   "min_day_m1": 600,
+   "null": "block shift of both windows, uniform within the day",
+   "tz": "America/New_York"
+  }
+ },
+ "params_source": {
+  "windows": "corpus: y6SnEdASVLY / xdzyejskSKE / IeXtmeKqjnQ / 4WCiIyCiBrQ (daily profile series: London 02:00-05:00, NY a.m. 08:30-12:00); method_spec session windows",
+  "day_open_hour": "session_window_fit: 18:00 NY daily roll (corpus daily candle)",
+  "min_day_m1": "declared-before-run: stub-session floor as in the harness worked example (README trap 6)",
+  "null": "declared-before-run: geometry-matched block shift of the same windows",
+  "tz": "session_window_fit: America/New_York with DST (settled)"
+ },
+ "n": 2718,
+ "span": {
+  "start": "2016-01-03 23:00:00+00:00",
+  "end": "2026-07-21 22:04:00+00:00",
+  "years": 10.543
+ },
+ "avg_R": null,
+ "avg_R_gross": null,
+ "win_rate": null,
+ "pf": null,
+ "observed_rate": 0.37380426784400295,
+ "null_rate": 0.2530905077262693,
+ "lift": 1.4769588602994623,
+ "control": {
+  "rate": 0.2530905077262693,
+  "reps": 5,
+  "kind": "null_fn x5"
+ },
+ "diff": 0.1207137601177336,
+ "ci_lo": 0.1047452170713744,
+ "ci_hi": 0.1369048933038989,
+ "ci_method": "phase3_block",
+ "p": 5.261392406718052e-49,
+ "halves": {
+  "H1": {
+   "n": 1290,
+   "diff": 0.11480620155038762,
+   "ci_lo": 0.09472093023255813,
+   "ci_hi": 0.13550775193798348,
+   "ci_method": "block",
+   "p": 2.6264640230830325e-28,
+   "start": "2016-01-03 23:00:00+00:00",
+   "end": "2020-12-30 23:00:00+00:00"
+  },
+  "H2": {
+   "n": 1428,
+   "diff": 0.12605042016806728,
+   "ci_lo": 0.10343137254901906,
+   "ci_hi": 0.1514810924369744,
+   "ci_method": "block",
+   "p": 8.382807859573428e-25,
+   "start": "2021-01-03 23:00:00+00:00",
+   "end": "2026-07-21 22:04:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 681,
+   "diff": 0.10675477239353892,
+   "ci_lo": 0.07973201174742987,
+   "ci_hi": 0.13407856093979445,
+   "ci_method": "block",
+   "p": 1.360154413530457e-14,
+   "start": "2016-01-03 23:00:00+00:00",
+   "end": "2018-08-21 22:00:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 679,
+   "diff": 0.11944035346097209,
+   "ci_lo": 0.08864506627393332,
+   "ci_hi": 0.14757363770250453,
+   "ci_method": "block",
+   "p": 1.9392284317972118e-15,
+   "start": "2018-08-22 22:00:00+00:00",
+   "end": "2021-04-11 22:00:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 684,
+   "diff": 0.15891812865497074,
+   "ci_lo": 0.12777412280701764,
+   "ci_hi": 0.19547514619883108,
+   "ci_method": "block",
+   "p": 3.531496654813824e-20,
+   "start": "2021-04-12 22:00:00+00:00",
+   "end": "2023-11-30 23:03:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 674,
+   "diff": 0.09732937685459941,
+   "ci_lo": 0.07002596439169169,
+   "ci_hi": 0.123898367952523,
+   "ci_method": "block",
+   "p": 1.4209270249342973e-12,
+   "start": "2023-12-03 23:03:00+00:00",
+   "end": "2026-07-21 22:04:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.022984622813964236,
+ "mde_threshold": 0.05,
+ "power_floor_n": 575,
+ "verdict": "EDGE",
+ "verdict_detail": "CI excludes 0 in claimed direction; halves agree (H1 +0.1148, H2 +0.1261); powered",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 2718,
+  "min_slack_min": 0.0,
+  "passed": true,
+  "no_detector_declaration": "pure clock rule: fixed NY windows vs the day's M1 high/low; windows known before the day opens"
+ },
+ "settings": {
+  "reps": 5,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "mde_threshold": null,
+  "cluster": null,
+  "outcome_horizon": "1 days 00:00:00",
+  "null_kind": "null_fn x5"
+ },
+ "notes": "",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/time_own_01a/daily-profile-session-windows.py",
+ "runtime_sec": 0.78,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:33:48+00:00",
+ "dropped": {
+  "nan_rows": 0
+ },
+ "null_kind": "null_fn x5",
+ "events_fp": "fc38904468749538",
+ "predictors_probed": false,
+ "ci_components": {
+  "phase3_block": [
+   0.1047452170713744,
+   0.1369048933038989
+  ],
+  "day_block": [
+   0.10860835172921281,
+   0.13248712288447298
+  ]
+ },
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 2718,
+  "n_clusters": null,
+  "n_eff": 2718
+ },
+ "run_id": "4da4037d1ed94b1daf05a3ffef989ae3",
+ "hyp_key": "e18a73d1ba10e4be"
+}

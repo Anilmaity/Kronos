@@ -1,0 +1,291 @@
+{
+ "concept_id": "loss-and-gain-limit-rules",
+ "reading": null,
+ "testable": true,
+ "test_type": "gate",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "baseline: 15m bare CISD (series_open, 2/2 swings, max_wait 3), decided at the confirming 15m bar's close, next-M1-open entry, stop at the protected swing, 2R, 150-min clock hold",
+   "one position at a time: a signal is skipped while the previous taken trade is open (exit known at the close of its M1 exit bar, resolved with the harness resolver)",
+   "daily limits: step away for the rest of the trading day once realised R today <= -2.0 or >= +4.0",
+   "streak limits: step away for the rest of the day after 3 consecutive losses or 3 consecutive wins (counters reset at each step-away)",
+   "weekly limits: step away for the rest of the trading week once realised R this week <= -5.0 or >= +10.0",
+   "tallies count only trades taken under the rules; gate allowed = no limit active; complement = the trades a limit-breaker would have taken"
+  ],
+  "params": {
+   "baseline_tf": "15min",
+   "level_rule": "series_open",
+   "swing": "2/2",
+   "max_wait": 3,
+   "min_series": 1,
+   "rr": 2.0,
+   "max_hold": "150min",
+   "sequencing": "one position at a time",
+   "day_loss_R": -2.0,
+   "day_gain_R": 4.0,
+   "streak_n": 3,
+   "week_loss_R": -5.0,
+   "week_gain_R": 10.0,
+   "ctrl_tod_tol_min": 30
+  }
+ },
+ "params_source": {
+  "baseline_tf": "phase3: primary stack entry TF (15m), harness example_gate baseline",
+  "level_rule": "phase3: meta/conjunction_preregistration.md locked CISD config",
+  "swing": "phase3: meta/conjunction_preregistration.md locked CISD config",
+  "max_wait": "phase3: meta/conjunction_preregistration.md locked CISD config",
+  "min_series": "phase3: meta/conjunction_preregistration.md locked CISD config",
+  "rr": "phase3: 2R target (rung 0); also the guests' stated ~2:1 payoff",
+  "max_hold": "phase3: 10 entry-TF bars (section 1.13)",
+  "sequencing": "declared-before-run: a trader counting trades/losses holds one position at a time; signals while a position is open are skipped",
+  "day_loss_R": "declared-before-run: the guest supplies no numbers (yaml ambiguity); -2R, the two-loss daily cap two other guests state (risk-limits-and-trade-frequency)",
+  "day_gain_R": "declared-before-run: the guest supplies no numbers (yaml ambiguity); +4R, mirror of the loss side = two 2R winners",
+  "streak_n": "declared-before-run: the guest supplies no numbers (yaml ambiguity); 3, from the concept's measurable 'trade following a three-win streak'; mirrored to losses",
+  "week_loss_R": "declared-before-run: the guest supplies no numbers (yaml ambiguity); -5R, 2.5 daily loss limits",
+  "week_gain_R": "declared-before-run: the guest supplies no numbers (yaml ambiguity); +10R, mirror (2.5 daily gain limits)",
+  "ctrl_tod_tol_min": "declared-before-run: not a timing rule but limit states build up through the day (README trap 9)"
+ },
+ "n": 11176,
+ "span": {
+  "start": "2016-01-04 00:30:00+00:00",
+  "end": "2026-07-23 01:45:00+00:00",
+  "years": 10.549
+ },
+ "avg_R": -0.046171936151147494,
+ "avg_R_gross": -0.006171936151147469,
+ "win_rate": 0.41365425912670006,
+ "pf": 0.9002887189901162,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "avg_R_gated": -0.038709036518139756,
+  "avg_R_complement": -0.03885130558801462,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": 0.003960021171757462,
+ "ci_lo": -0.025845905892855136,
+ "ci_hi": 0.032863647005597234,
+ "ci_method": "day_block",
+ "p": 0.7914691906851273,
+ "halves": {
+  "H1": {
+   "n": 10040,
+   "diff": 0.011700976091737713,
+   "ci_lo": -0.03553653938885226,
+   "ci_hi": 0.05684277604899292,
+   "ci_method": "iid",
+   "p": 0.6195366961031055,
+   "start": "2016-01-04 00:30:00+00:00",
+   "end": "2020-12-31 19:15:00+00:00",
+   "n_gated": 5411
+  },
+  "H2": {
+   "n": 11060,
+   "diff": -0.003568191695581216,
+   "ci_lo": -0.044768398239890116,
+   "ci_hi": 0.03380828435726209,
+   "ci_method": "block",
+   "p": 0.8587189275754183,
+   "start": "2021-01-03 23:45:00+00:00",
+   "end": "2026-07-23 01:45:00+00:00",
+   "n_gated": 5765
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 5279,
+   "diff": 0.004855775697212253,
+   "ci_lo": -0.05397437919599344,
+   "ci_hi": 0.06316824587863237,
+   "ci_method": "iid",
+   "p": 0.8709214411699412,
+   "start": "2016-01-04 00:30:00+00:00",
+   "end": "2018-08-22 08:45:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 5295,
+   "diff": 0.0038348633198792793,
+   "ci_lo": -0.0575480692822197,
+   "ci_hi": 0.06341046303214054,
+   "ci_method": "block",
+   "p": 0.9010957965376917,
+   "start": "2018-08-22 11:45:00+00:00",
+   "end": "2021-04-12 06:30:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 5342,
+   "diff": 0.023361617729156844,
+   "ci_lo": -0.03469770272352917,
+   "ci_hi": 0.08431708896408793,
+   "ci_method": "block",
+   "p": 0.44162657501649805,
+   "start": "2021-04-12 09:30:00+00:00",
+   "end": "2023-12-01 17:00:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 5184,
+   "diff": -0.018574741712700592,
+   "ci_lo": -0.07804366440901236,
+   "ci_hi": 0.04428918243967573,
+   "ci_method": "iid",
+   "p": 0.5517144906108413,
+   "start": "2023-12-04 04:00:00+00:00",
+   "end": "2026-07-23 01:45:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.04195990404849545,
+ "mde_threshold": 0.1,
+ "power_floor_n": 1748,
+ "verdict": "NULL",
+ "verdict_detail": "CI contains 0; powered (MDE 0.0420 <= 0.1000)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 21100,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "gate_mask_checked": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 64.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 1522,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "rr",
+    "allowed"
+   ],
+   "ignored": [],
+   "lookback": "45D",
+   "recent": "1D",
+   "events_fp": "2a99ed62b4278db4",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "150min",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": 30,
+  "entry_mode": "next_open",
+  "hold_basis": "clock",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "Baseline = sequential 15m bare CISD book (see _book.py). Re-run ONCE after fixing a bug in _book.py (found by the size-down-on-fear b probe): a clock-hold time exit whose hold ended inside the 17:00 NY halt freed the position slot at the last pre-halt bar instead of at the hold's wall-clock end. Second fix + re-run: same-bar opposite CISD pairs (4 of 32,827) given a deterministic order (the probe of size-down-on-fear b caught slice-dependent order). Second run before this fix: NULL, diff +0.0040 [-0.0250, +0.0338]. First (buggy-chain) run: NULL, diff +0.0015 [-0.0278, +0.0315]. All limit values are declared (the concept gives none); one locked run.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/risk_guest_01a/loss-and-gain-limit-rules.py",
+ "runtime_sec": 3.33,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:36:04+00:00",
+ "n_events_in": 21158,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 8,
+  "target_not_beyond_entry": 0,
+  "no_bars_in_hold": 50
+ },
+ "n_complement": 9924,
+ "gate_firing_rate": 0.5296682464454976,
+ "events_fp": "2a99ed62b4278db4",
+ "mask_fp": "797447a528e347e2",
+ "mask_col": "allowed",
+ "exit_mix": {
+  "stop": 0.375,
+  "target": 0.1309949892627058,
+  "time": 0.4940050107372942
+ },
+ "gated_vs_own_control": {
+  "diff": -0.0074628996330077385,
+  "ci_lo": -0.028781115056911912,
+  "ci_hi": 0.013220296652127138,
+  "p": 0.48611507197805176
+ },
+ "complement": {
+  "n": 9924,
+  "avg_R": -0.05027422639277982,
+  "win_rate": 0.4202942361950826,
+  "pf": 0.8808047294056197,
+  "sd_R": 0.9664201070478484,
+  "exit_mix": {
+   "stop": 0.3162031438935913,
+   "target": 0.10681176944780331,
+   "time": 0.5769850866586054
+  },
+  "vs_own_control": {
+   "diff": -0.011422920804765202,
+   "ci_lo": -0.031902303689118054,
+   "ci_hi": 0.010693059584946702,
+   "p": 0.2931583214683778
+  }
+ },
+ "ci_components": {
+  "phase3_iid": [
+   -0.025047116286808006,
+   0.0335766836178524
+  ],
+  "day_block": [
+   -0.025845905892855136,
+   0.032863647005597234
+  ]
+ },
+ "diff_meaning": "mean(R-ctrl | gated) - mean(R-ctrl | complement)",
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_eff_gated": 2531,
+  "n_eff_complement": 2142,
+  "n_eff": 2142
+ },
+ "ties": {
+  "real_ambiguous": 0.0003791469194312796,
+  "control_ambiguous": 0.0003033175355450237,
+  "real_gap_stop": 0.007725118483412322,
+  "control_gap_stop": 0.007175355450236967,
+  "gated_excess": 3.579098067287044e-05,
+  "complement_excess": 0.00012091898428053209,
+  "verdict_stop_first": "NULL"
+ },
+ "ctrl_overlap": 0.044559241706161136,
+ "exposure_bars": {
+  "real_mean": 143.68379146919432,
+  "control_mean": 143.69958293838863,
+  "hold_basis": "clock"
+ },
+ "run_id": "a9897f545e464adaba4591f347b1457f",
+ "hyp_key": "02844702e0b6c10b"
+}

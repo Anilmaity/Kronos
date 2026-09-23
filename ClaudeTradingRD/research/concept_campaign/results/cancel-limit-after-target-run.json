@@ -1,0 +1,292 @@
+{
+ "concept_id": "cancel-limit-after-target-run",
+ "reading": null,
+ "testable": true,
+ "test_type": "gate",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "Baseline = Trader T book as htf-reaction-mss-retrace-entry reading a, but with NO cancel: every limit that fills within 12h is traded.",
+   "ran_first = the 2R target price traded on an M1 bar strictly before the fill bar (order of events, not elapsed time).",
+   "Gate kept = not ran_first (known at the fill = decision time). Stop = sweep extreme, target 2R, max hold 12h."
+  ],
+  "params": {
+   "htf": "1h",
+   "ltf": "5min",
+   "swing": [
+    2,
+    2
+   ],
+   "sweep_window_ns": "432000000000000",
+   "bos_bars": 72,
+   "expiry_ns": "43200000000000",
+   "rr": 2.0,
+   "sweep_window": "5D",
+   "expiry": "12h",
+   "max_hold": "12h",
+   "ctrl_tod_tol_min": 30
+  }
+ },
+ "params_source": {
+  "rr": "corpus: wCtxmWe4KNc 'I just took a simple 2R' (the fixed target the rule references)",
+  "cancel_rule": "corpus: wCtxmWe4KNc 'when it runs to my TV before filling my order in most cases it will go through my stop loss'",
+  "htf": "corpus: wCtxmWe4KNc hourly sweep",
+  "ltf": "corpus: wCtxmWe4KNc 'break and structure on the five minutes'",
+  "swing": "declared-before-run: fractal 2/2",
+  "sweep_window_ns": "declared-before-run: 5 days",
+  "sweep_window": "declared-before-run: 5 days",
+  "bos_bars": "declared-before-run: 72 5m bars (6h)",
+  "expiry_ns": "declared-before-run: 12h",
+  "expiry": "declared-before-run: 12h",
+  "max_hold": "declared-before-run: 12h",
+  "ctrl_tod_tol_min": "declared-before-run: 30 (README trap 9)"
+ },
+ "n": 3515,
+ "span": {
+  "start": "2016-01-04 13:21:00+00:00",
+  "end": "2026-07-22 20:47:00+00:00",
+  "years": 10.546
+ },
+ "avg_R": -0.029332510893824156,
+ "avg_R_gross": 0.01066748910617587,
+ "win_rate": 0.3960170697012802,
+ "pf": 0.9469864084172575,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "avg_R_gated": -0.044892207606003334,
+  "avg_R_complement": 0.049707585073954744,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": 0.0005379844161102505,
+ "ci_lo": -0.16511265556702598,
+ "ci_hi": 0.16334902430316808,
+ "ci_method": "phase3_block",
+ "p": 0.994877285483814,
+ "halves": {
+  "H1": {
+   "n": 1870,
+   "diff": 0.11449461823982095,
+   "ci_lo": -0.13789700898654347,
+   "ci_hi": 0.3763011802556057,
+   "ci_method": "block",
+   "p": 0.38275250694848106,
+   "start": "2016-01-04 13:21:00+00:00",
+   "end": "2020-12-31 18:32:00+00:00",
+   "n_gated": 1613
+  },
+  "H2": {
+   "n": 2191,
+   "diff": -0.09903894831918723,
+   "ci_lo": -0.2853671104840373,
+   "ci_hi": 0.09836458310169761,
+   "ci_method": "block",
+   "p": 0.31167629042995726,
+   "start": "2021-01-05 03:21:00+00:00",
+   "end": "2026-07-22 20:47:00+00:00",
+   "n_gated": 1902
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 922,
+   "diff": 0.20004568094179498,
+   "ci_lo": -0.12653928461533015,
+   "ci_hi": 0.548898301820698,
+   "ci_method": "block",
+   "p": 0.24565296102748926,
+   "start": "2016-01-04 13:21:00+00:00",
+   "end": "2018-08-22 04:56:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 1049,
+   "diff": 0.03138600097738219,
+   "ci_lo": -0.3033752728867246,
+   "ci_hi": 0.3406919052108321,
+   "ci_method": "block",
+   "p": 0.8485085230019509,
+   "start": "2018-08-22 14:19:00+00:00",
+   "end": "2021-04-12 08:09:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 1104,
+   "diff": -0.12899431542293088,
+   "ci_lo": -0.36864981917323014,
+   "ci_hi": 0.12261141904711165,
+   "ci_method": "iid",
+   "p": 0.3033451910423641,
+   "start": "2021-04-13 09:15:00+00:00",
+   "end": "2023-12-01 15:03:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 986,
+   "diff": -0.069090669314885,
+   "ci_lo": -0.35908925131425323,
+   "ci_hi": 0.23118061031731568,
+   "ci_method": "block",
+   "p": 0.6463599865532298,
+   "start": "2023-12-06 09:03:00+00:00",
+   "end": "2026-07-22 20:47:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.23475260652724683,
+ "mde_threshold": 0.1,
+ "power_floor_n": 3009,
+ "verdict": "UNDERPOWERED",
+ "verdict_detail": "CI contains 0; MDE 0.2348 vs threshold 0.1000, effective n 460 (power floor n=19371, have 546)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 4061,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "gate_mask_checked": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 16.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 335,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "direction",
+    "stop_dist",
+    "target_dist",
+    "limit_px",
+    "extreme",
+    "htf_level",
+    "sweep_t",
+    "bos_t",
+    "ran_first",
+    "available_at",
+    "kept"
+   ],
+   "ignored": [],
+   "lookback": "20D",
+   "recent": "1D",
+   "events_fp": "7a642b3865c80622",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "12h",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": 30,
+  "entry_mode": "next_open",
+  "hold_basis": "clock",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/entry_guest_01a/cancel-limit-after-target-run.py",
+ "runtime_sec": 1.07,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:15:08+00:00",
+ "n_events_in": 4064,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 0,
+  "target_not_beyond_entry": 0,
+  "no_bars_in_hold": 3
+ },
+ "n_complement": 546,
+ "gate_firing_rate": 0.8655503570549126,
+ "events_fp": "7a642b3865c80622",
+ "mask_fp": "94862097393a4dc0",
+ "mask_col": "kept",
+ "exit_mix": {
+  "stop": 0.4950213371266003,
+  "target": 0.21450924608819347,
+  "time": 0.29046941678520627
+ },
+ "gated_vs_own_control": {
+  "diff": 0.015559696712179178,
+  "ci_lo": -0.028888646718234302,
+  "ci_hi": 0.059327710562213136,
+  "p": 0.48931348202297115
+ },
+ "complement": {
+  "n": 546,
+  "avg_R": 0.06472929737002364,
+  "win_rate": 0.38095238095238093,
+  "pf": 1.1022813881657854,
+  "sd_R": 1.411374174177703,
+  "exit_mix": {
+   "stop": 0.6043956043956044,
+   "target": 0.33882783882783885,
+   "time": 0.056776556776556776
+  },
+  "vs_own_control": {
+   "diff": 0.015021712296068898,
+   "ci_lo": -0.15345412934498595,
+   "ci_hi": 0.17973436517101513,
+   "p": 0.8597213522020468
+  }
+ },
+ "ci_components": {
+  "phase3_block": [
+   -0.16511265556702598,
+   0.16334902430316808
+  ],
+  "day_block": [
+   -0.1499687583440361,
+   0.1468362183182029
+  ]
+ },
+ "diff_meaning": "mean(R-ctrl | gated) - mean(R-ctrl | complement)",
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_eff_gated": 1890,
+  "n_eff_complement": 460,
+  "n_eff": 460
+ },
+ "ties": {
+  "real_ambiguous": 0.0014774686037921695,
+  "control_ambiguous": 0.0004924895345973898,
+  "real_gap_stop": 0.005663629647869982,
+  "control_gap_stop": 0.0068456045309037185,
+  "gated_excess": 0.0009672830725462304,
+  "complement_excess": 0.001098901098901099,
+  "verdict_stop_first": "UNDERPOWERED"
+ },
+ "ctrl_overlap": 0.0006402363949766067,
+ "exposure_bars": {
+  "real_mean": 645.729623245506,
+  "control_mean": 644.6290568825412,
+  "hold_basis": "clock"
+ },
+ "run_id": "4eb8b9318268401d8cccc747b827af3b",
+ "hyp_key": "4c0039e3f126ac00"
+}

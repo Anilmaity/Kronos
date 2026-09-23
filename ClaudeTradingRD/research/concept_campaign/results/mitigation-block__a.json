@@ -1,0 +1,264 @@
+{
+ "concept_id": "mitigation-block",
+ "reading": "a",
+ "testable": true,
+ "test_type": "trade",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "15m bars; aggressive trend exactly as cheat-code-entry (fired displacement: close beyond latest 2/2 swing + threshold_fits 4-bar magnitude gate; 24-bar life; dies on a close beyond the leg origin)",
+   "candidate: an opposing-close candle inside the live trend (up-close in a bearish trend)",
+   "block forms when a later candle (within 16 bars) trades beyond the candidate's near extreme (its LOW for bearish), with no close beyond its far extreme before that",
+   "entry: first M1 touch of the block's OPENING price after the forming bar closes (limit emulated: decide at that M1 close, fill at next M1 open), live 16 bars",
+   "stop at the block's far extreme (high for shorts), no buffer; target 2R; exit 150 min",
+   "same-minute fills from several blocks: keep the most recent block"
+  ],
+  "params": {
+   "tf": "15min",
+   "swing": "2/2",
+   "disp_N": 4,
+   "disp_r": 1.5,
+   "disp_d": 0.65,
+   "trend_bars": 24,
+   "break_bars": 16,
+   "live_bars": 16,
+   "entry_level": "block open",
+   "stop_buffer": 0.0,
+   "rr": 2.0,
+   "max_hold": "150min"
+  }
+ },
+ "params_source": {
+  "tf": "corpus: mitigation-block.yaml timeframes htf 15m/5m; phase3 primary entry TF",
+  "swing": "phase3: locked 2/2 fractal",
+  "rr": "method_spec: \u00a75.3 2R floor/fixed target stands in for 'the trend's objective'",
+  "max_hold": "phase3: 10 entry-TF bars (\u00a71.13)",
+  "live_bars": "declared-before-run: the retest limit is live 16 bars (4h) after the block forms",
+  "disp_N": "threshold_fits: displacement magnitude gate default N=4",
+  "disp_r": "threshold_fits: displacement magnitude gate default r=1.5",
+  "disp_d": "threshold_fits: displacement magnitude gate default d=0.65",
+  "trend_bars": "declared-before-run: aggressive trend lifetime 24 bars",
+  "break_bars": "declared-before-run: the break of the candle's low must come within 16 bars",
+  "entry_level": "corpus: NgFIza9qsGQ 'When price is more clustered together here, I will use the opening price.' (option B)",
+  "stop_buffer": "declared-before-run: 'just beyond the high' = the high itself"
+ },
+ "n": 25934,
+ "span": {
+  "start": "2016-01-04 07:24:00+00:00",
+  "end": "2026-07-23 03:46:00+00:00",
+  "years": 10.546
+ },
+ "avg_R": -0.021524689223030857,
+ "avg_R_gross": 0.018475310776969168,
+ "win_rate": 0.3622657515230971,
+ "pf": 0.9663103699459764,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "n": 129670,
+  "avg_R": -0.04398598337071615,
+  "win_rate": 0.3602992210997147,
+  "pf": 0.9302785265663176,
+  "sd_R": 1.3225467111014886,
+  "exit_mix": {
+   "stop": 0.5872985270301535,
+   "target": 0.27236831958047353,
+   "time": 0.14033315338937302
+  },
+  "avg_R_gross": -0.003985983370716134,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": 0.022461294147685294,
+ "ci_lo": 0.002815113051182919,
+ "ci_hi": 0.04330521531082237,
+ "ci_method": "phase3_block",
+ "p": 0.029665885181944487,
+ "halves": {
+  "H1": {
+   "n": 12851,
+   "diff": 0.03073014547622707,
+   "ci_lo": 0.0020350917068933114,
+   "ci_hi": 0.06038210600954217,
+   "ci_method": "block",
+   "p": 0.038966200018163775,
+   "start": "2016-01-04 07:24:00+00:00",
+   "end": "2020-12-31 07:22:00+00:00"
+  },
+  "H2": {
+   "n": 13083,
+   "diff": 0.01433907382947923,
+   "ci_lo": -0.013492625227912435,
+   "ci_hi": 0.042342885176144415,
+   "ci_method": "block",
+   "p": 0.31409162924307116,
+   "start": "2021-01-04 01:01:00+00:00",
+   "end": "2026-07-23 03:46:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 7014,
+   "diff": 0.04415941765508784,
+   "ci_lo": 0.0019142711907197813,
+   "ci_hi": 0.08639892805729472,
+   "ci_method": "block",
+   "p": 0.04047059284173037,
+   "start": "2016-01-04 07:24:00+00:00",
+   "end": "2018-08-22 10:04:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 6474,
+   "diff": 0.02099093761982088,
+   "ci_lo": -0.018688408063310742,
+   "ci_hi": 0.05954518899198291,
+   "ci_method": "block",
+   "p": 0.29290969823556673,
+   "start": "2018-08-22 13:43:00+00:00",
+   "end": "2021-04-09 20:57:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 6052,
+   "diff": 0.016943007275716338,
+   "ci_lo": -0.018473638737229188,
+   "ci_hi": 0.056861525705200214,
+   "ci_method": "block",
+   "p": 0.37799396187682,
+   "start": "2021-04-12 14:48:00+00:00",
+   "end": "2023-12-01 21:46:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 6394,
+   "diff": 0.005371072381909443,
+   "ci_lo": -0.032652127566379266,
+   "ci_hi": 0.04273232049563461,
+   "ci_method": "block",
+   "p": 0.7800213177675873,
+   "start": "2023-12-04 03:10:00+00:00",
+   "end": "2026-07-23 03:46:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.028938404771483555,
+ "mde_threshold": 0.1,
+ "power_floor_n": 2172,
+ "verdict": "EDGE",
+ "verdict_detail": "CI excludes 0 in claimed direction; halves agree (H1 +0.0307, H2 +0.0143); powered",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 25934,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 60.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 1855,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "rr"
+   ],
+   "ignored": [],
+   "lookback": "20D",
+   "recent": "1D",
+   "events_fp": "58bb3e63da0c1509",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "150min",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": null,
+  "entry_mode": "next_open",
+  "hold_basis": "clock",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "Reading a = older candle-level TTrades definition, option B (opening-price retest). Option A (limit AT the high with the stop just beyond it) has ~zero risk and cannot be scored; option C (15s/30s model) needs sub-minute data. CAVEAT (post-verdict diagnostic, verdict NOT changed): the differential is concentrated in the smallest stops. By stop/ATR96(15m range) quintile the diff was Q1..Q5 +0.051/+0.013/+0.036/+0.009/+0.001R (weaker concentration than cheat-code-entry; p=0.03 is marginal). A pure-noise book (random direction at random 15m closes, stop at the just-closed candle's extreme, 2R, 150 min; n=58,539, n_boot=500, not written) also came back EDGE (+0.026R [+0.013,+0.039]), +0.14R in its smallest-stop quintile: the matched control places the same stop DISTANCE at an arbitrary level, while these books put it at a recent candle extreme, which M1 noise reaches less often. Treat this EDGE as a stop-geometry artefact candidate, not a trend-entry edge.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/entry_own_03b/mitigation-block.py",
+ "runtime_sec": 3.91,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:23:01+00:00",
+ "n_events_in": 26858,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 917,
+  "target_not_beyond_entry": 0,
+  "no_bars_in_hold": 7
+ },
+ "events_fp": "58bb3e63da0c1509",
+ "sd_R": 1.3506313184792627,
+ "exit_mix": {
+  "stop": 0.6003701704326367,
+  "target": 0.2924732012030539,
+  "time": 0.1071566283643094
+ },
+ "trades_per_year": 2459.0845015576324,
+ "ci_components": {
+  "phase3_block": [
+   0.002815113051182919,
+   0.04330521531082237
+  ],
+  "day_block": [
+   0.003190963426860869,
+   0.04304552483636431
+  ]
+ },
+ "diff_win": 0.0019665304233824066,
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 2668,
+  "n_clusters": null,
+  "n_eff": 2668
+ },
+ "ties": {
+  "real_ambiguous": 0.01087375645870286,
+  "control_ambiguous": 0.012925117606231202,
+  "real_gap_stop": 0.01854708105190098,
+  "control_gap_stop": 0.017745045114521477,
+  "verdict_stop_first": "EDGE"
+ },
+ "ctrl_overlap": 0.0036862805583404027,
+ "exposure_bars": {
+  "real_mean": 143.3580242153158,
+  "control_mean": 142.65662065242537,
+  "hold_basis": "clock"
+ },
+ "run_id": "2c42a10d78ae4148945e48d0a5ba35a1",
+ "hyp_key": "7e1aa1d3a8f6c8c0"
+}

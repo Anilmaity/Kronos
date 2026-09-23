@@ -1,0 +1,248 @@
+{
+ "concept_id": "inversion-fair-value-gap",
+ "reading": "b",
+ "testable": true,
+ "test_type": "trade",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "FVG = 3-bar wick gap stamped on the 3rd bar; inversion = first close beyond the gap's FAR edge within 12 bars (CE-only closes do not count); gaps cleared by the same close merge into one inversion (outermost zone)",
+   "swing point = the extreme (low for a bullish inversion) from the earliest cleared gap's first candle to the inverting bar",
+   "15m inversions; entry = first M1 bar within 16 bars (4h) after the inverting close touching the inverted zone's near edge (bullish: old bearish gap's top); decide at that M1 close, enter next M1 open; skip if that minute also reaches the stop",
+   "stop = swing point; target 2R; 150 min"
+  ],
+  "params": {
+   "tf": "15min",
+   "max_wait_inv": 12,
+   "retest_bars": 16,
+   "rr": 2.0,
+   "max_hold": "150min"
+  }
+ },
+ "params_source": {
+  "tf": "corpus: inversion-fair-value-gap.yaml timeframes (15m ltf); method_spec \u00a71.3 favourite entry TF",
+  "max_wait_inv": "declared-before-run: 'swiftly closed over' has no bar limit; 12 bars",
+  "retest_bars": "declared-before-run: the corpus gives no expiry ('the retest need not be immediate'); 16 bars = 4h",
+  "rr": "corpus: inversion-fair-value-gap.yaml measurable 'hit rate of a fixed-2R trade taken on the first retest'",
+  "max_hold": "phase3: meta/conjunction_preregistration.md \u00a71.8-1.16 (locked rung-0 CISD: series_open, 2/2, max_wait 3, stop = protected swing, 2R, 10 entry-TF bars)"
+ },
+ "n": 22252,
+ "span": {
+  "start": "2016-01-04 01:31:00+00:00",
+  "end": "2026-07-23 02:51:00+00:00",
+  "years": 10.549
+ },
+ "avg_R": -0.02281598838396138,
+ "avg_R_gross": 0.017184011616038643,
+ "win_rate": 0.4194229732158907,
+ "pf": 0.9531963182484711,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "n": 111260,
+  "avg_R": -0.040520073083304194,
+  "win_rate": 0.4095002696386842,
+  "pf": 0.916541499402751,
+  "sd_R": 1.0945942408683578,
+  "exit_mix": {
+   "stop": 0.41087542692791656,
+   "target": 0.15918569117382708,
+   "time": 0.42993888189825635
+  },
+  "avg_R_gross": -0.000520073083304172,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": 0.017704084699342815,
+ "ci_lo": 0.0011912595460139735,
+ "ci_hi": 0.03369425559632105,
+ "ci_method": "phase3_iid",
+ "p": 0.032748846716190515,
+ "halves": {
+  "H1": {
+   "n": 10028,
+   "diff": 0.027834514765865168,
+   "ci_lo": 0.005859089689274028,
+   "ci_hi": 0.05169808198109025,
+   "ci_method": "iid",
+   "p": 0.01729983857293896,
+   "start": "2016-01-04 01:31:00+00:00",
+   "end": "2020-12-31 15:02:00+00:00"
+  },
+  "H2": {
+   "n": 12224,
+   "diff": 0.009393551918985638,
+   "ci_lo": -0.01424075879054978,
+   "ci_hi": 0.032091401723248876,
+   "ci_method": "iid",
+   "p": 0.4267644335218049,
+   "start": "2021-01-04 04:31:00+00:00",
+   "end": "2026-07-23 02:51:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 4830,
+   "diff": 0.013192074531400887,
+   "ci_lo": -0.018862772014235404,
+   "ci_hi": 0.04703735743825586,
+   "ci_method": "iid",
+   "p": 0.4326281412380329,
+   "start": "2016-01-04 01:31:00+00:00",
+   "end": "2018-08-22 08:01:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 5787,
+   "diff": 0.04023059449025783,
+   "ci_lo": 0.009035077801299645,
+   "ci_hi": 0.07150370019320466,
+   "ci_method": "iid",
+   "p": 0.01158683000208025,
+   "start": "2018-08-22 13:02:00+00:00",
+   "end": "2021-04-12 08:10:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 6099,
+   "diff": 0.021710128082795436,
+   "ci_lo": -0.008920278184775714,
+   "ci_hi": 0.05308493843833188,
+   "ci_method": "iid",
+   "p": 0.16990794354261374,
+   "start": "2021-04-12 12:01:00+00:00",
+   "end": "2023-12-01 21:16:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 5536,
+   "diff": -0.006320619354946072,
+   "ci_lo": -0.03733520461700311,
+   "ci_hi": 0.02751891435362601,
+   "ci_method": "iid",
+   "p": 0.7024373544441223,
+   "start": "2023-12-04 06:06:00+00:00",
+   "end": "2026-07-23 02:51:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.023229994578879906,
+ "mde_threshold": 0.1,
+ "power_floor_n": 1201,
+ "verdict": "EDGE",
+ "verdict_detail": "CI excludes 0 in claimed direction; halves agree (H1 +0.0278, H2 +0.0094); powered",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 22252,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 7.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 1642,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "rr"
+   ],
+   "ignored": [],
+   "lookback": "15D",
+   "recent": "1D",
+   "events_fp": "542597506dd8f1b3",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "150min",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": null,
+  "entry_mode": "next_open",
+  "hold_basis": "clock",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/structure_own_04a/inversion-fair-value-gap.py",
+ "runtime_sec": 8.97,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:31:29+00:00",
+ "n_events_in": 22258,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 1,
+  "target_not_beyond_entry": 0,
+  "no_bars_in_hold": 5
+ },
+ "events_fp": "542597506dd8f1b3",
+ "sd_R": 1.1091353962832524,
+ "exit_mix": {
+  "stop": 0.4132662232608305,
+  "target": 0.16178321049793276,
+  "time": 0.4249505662412367
+ },
+ "trades_per_year": 2109.4064365429535,
+ "ci_components": {
+  "phase3_iid": [
+   0.0011912595460139735,
+   0.03369425559632105
+  ],
+  "day_block": [
+   0.0029047742017248713,
+   0.03224311527375838
+  ]
+ },
+ "diff_win": 0.009922703577206538,
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 2717,
+  "n_clusters": null,
+  "n_eff": 2717
+ },
+ "ties": {
+  "real_ambiguous": 0.0008987956138774043,
+  "control_ambiguous": 0.0005302894121876685,
+  "real_gap_stop": 0.009212655042243395,
+  "control_gap_stop": 0.009410390077296422,
+  "verdict_stop_first": "EDGE"
+ },
+ "ctrl_overlap": 0.003208700341542333,
+ "exposure_bars": {
+  "real_mean": 143.3511594463419,
+  "control_mean": 142.6799748337228,
+  "hold_basis": "clock"
+ },
+ "run_id": "401d6e86aea0472b852ba4faa99ae942",
+ "hyp_key": "c169ff8ef26ac278"
+}

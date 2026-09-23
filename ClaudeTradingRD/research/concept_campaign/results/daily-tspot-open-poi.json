@@ -1,0 +1,293 @@
+{
+ "concept_id": "daily-tspot-open-poi",
+ "reading": null,
+ "testable": true,
+ "test_type": "gate",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "baseline: every 5m unicorn (breaker L1->H1->lower low->close through H1, zone = up-close bodies L1..H1, overlapping same-direction FVG), limit at the overlap's near edge for 60 min (cancelled if 2R trades first), stop at the breaker's far edge, 2R, 50 min time exit",
+   "daily C2 (18:00 NY day): sweeps the prior day's low (high), closes back inside, closes up (down); days sweeping both sides excluded",
+   "T-spot = 50% of the C2 candle's range; open from the C2 close until the first 1H close beyond it, at most 5 trading days",
+   "gate: the latest C2 closed before the unicorn's first swing point has the unicorn's direction, its T-spot is still open at the unicorn's completion, and the unicorn's sweep extreme reached the T-spot"
+  ],
+  "params": {
+   "tf": "5min",
+   "W": 48,
+   "fill_min": 60,
+   "rr": 2.0,
+   "max_hold": "50min",
+   "tspot": "C2 range EQ (0.5)",
+   "max_age_days": 5,
+   "c2": "prior-candle sweep, close back inside, reversal close",
+   "day_open_hour": 18
+  }
+ },
+ "params_source": {
+  "tf": "corpus: 07lOxv39LdY 'look for the unicorn on the 5-minute' (concept detection rule 4)",
+  "W": "declared-before-run: unicorn formation window 48 bars, as the batch's base book",
+  "fill_min": "declared-before-run: limit rests 12 entry-TF bars (60 min)",
+  "rr": "corpus: 07lOxv39LdY worked example ~2.25R (low-hanging-fruit 2-2.5R)",
+  "max_hold": "phase3: 10 entry-TF bars (conjunction_preregistration 1.13) = 50 min on 5m",
+  "tspot": "method_spec: 3.7 T-spot 'in one example, simply the equilibrium' (own-voice t-spot.yaml: 'the T-spot is just the equilibrium')",
+  "max_age_days": "declared-before-run: the corpus says 'open until an hourly close past it' with no age limit; capped at 5 trading days (one week)",
+  "c2": "method_spec: fractal-model-c2 (detectors.fractal.c2_events defaults: prior_candle sweep, close inside, reversal close)",
+  "day_open_hour": "session_window_fit: 18:00 NY daily roll"
+ },
+ "n": 38,
+ "span": {
+  "start": "2016-01-04 11:57:00+00:00",
+  "end": "2026-07-22 13:01:00+00:00",
+  "years": 10.546
+ },
+ "avg_R": 0.05257136526959924,
+ "avg_R_gross": 0.09257136526959925,
+ "win_rate": 0.42105263157894735,
+ "pf": 1.094955986983947,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "avg_R_gated": -0.14059119759756009,
+  "avg_R_complement": -0.04543587409149655,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": 0.16228838376105056,
+ "ci_lo": -0.287010774416194,
+ "ci_hi": 0.667774795109968,
+ "ci_method": "phase3_iid",
+ "p": 0.5052293018888694,
+ "halves": {
+  "H1": {
+   "n": 3717,
+   "diff": -0.13597301530189942,
+   "ci_lo": -0.8260107732570131,
+   "ci_hi": 0.5520246158630047,
+   "ci_method": "iid",
+   "p": 0.6989148391906594,
+   "start": "2016-01-04 11:57:00+00:00",
+   "end": "2020-12-31 09:11:00+00:00",
+   "n_gated": 14
+  },
+  "H2": {
+   "n": 4503,
+   "diff": 0.33902308911790124,
+   "ci_lo": -0.20991510263946936,
+   "ci_hi": 0.9501300848530434,
+   "ci_method": "iid",
+   "p": 0.2519612921807096,
+   "start": "2021-01-04 05:31:00+00:00",
+   "end": "2026-07-22 13:01:00+00:00",
+   "n_gated": 24
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 1810,
+   "diff": -0.18002480288471595,
+   "ci_lo": -0.9545427365861399,
+   "ci_hi": 0.7020105293246593,
+   "ci_method": "iid",
+   "p": 0.6701111124046637,
+   "start": "2016-01-04 11:57:00+00:00",
+   "end": "2018-08-22 04:31:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 2141,
+   "diff": -0.0921950555870568,
+   "ci_lo": -1.1720573150333085,
+   "ci_hi": 1.0437514589431396,
+   "ci_method": "iid",
+   "p": 0.8704398530074606,
+   "start": "2018-08-23 12:16:00+00:00",
+   "end": "2021-04-12 07:36:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 2220,
+   "diff": 1.0904658836140557,
+   "ci_lo": 0.1847146555971021,
+   "ci_hi": 1.9813305910369357,
+   "ci_method": "iid",
+   "p": 0.017349234595329676,
+   "start": "2021-04-13 01:56:00+00:00",
+   "end": "2023-12-01 08:01:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 2049,
+   "diff": -0.2900809434493333,
+   "ci_lo": -0.8714896246883204,
+   "ci_hi": 0.39776001148167806,
+   "ci_method": "iid",
+   "p": 0.370316415716005,
+   "start": "2023-12-04 04:21:00+00:00",
+   "end": "2026-07-22 13:01:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.6823882810605074,
+ "mde_threshold": 0.1,
+ "power_floor_n": 1770,
+ "verdict": "UNDERPOWERED",
+ "verdict_detail": "CI contains 0; MDE 0.6824 vs threshold 0.1000, effective n 33 (power floor n=1770, have 38)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 8220,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "gate_mask_checked": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 7.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 638,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_dist",
+    "rr",
+    "confirm_time",
+    "t_a",
+    "count",
+    "sweep_px",
+    "lim_px",
+    "brk_px",
+    "body_below",
+    "l1",
+    "at_tspot"
+   ],
+   "ignored": [],
+   "lookback": "20D",
+   "recent": "1D",
+   "events_fp": "77ea3888b16be144",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "50min",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": null,
+  "entry_mode": "next_open",
+  "hold_basis": "clock",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "The DTR video never defines the T-spot (TTFM indicator output; derivation withheld in own-voice material too). Only the EQ construction is tested, so a NULL here speaks to 'C2 EQ as a standalone POI', not to the indicator's box. Direction = direction of the C2 closure (concept execution.bias).",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/entry_guest_01b/daily-tspot-open-poi.py",
+ "runtime_sec": 3.67,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:13:36+00:00",
+ "n_events_in": 8222,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 0,
+  "target_not_beyond_entry": 0,
+  "no_bars_in_hold": 2
+ },
+ "n_complement": 8182,
+ "gate_firing_rate": 0.004622871046228711,
+ "events_fp": "77ea3888b16be144",
+ "mask_fp": "bbee5bf5d03b4851",
+ "mask_col": "at_tspot",
+ "exit_mix": {
+  "stop": 0.5263157894736842,
+  "target": 0.2631578947368421,
+  "time": 0.21052631578947367
+ },
+ "gated_vs_own_control": {
+  "diff": 0.19316256286715933,
+  "ci_lo": -0.24244505004159067,
+  "ci_hi": 0.6318629365373852,
+  "p": 0.38646970049588836
+ },
+ "complement": {
+  "n": 8182,
+  "avg_R": -0.014561694985387797,
+  "win_rate": 0.37313615252994375,
+  "pf": 0.9764531076983545,
+  "sd_R": 1.3250992710229006,
+  "exit_mix": {
+   "stop": 0.5756538743583476,
+   "target": 0.2759716450745539,
+   "time": 0.1483744805670985
+  },
+  "vs_own_control": {
+   "diff": 0.03087417910610875,
+   "ci_lo": 0.0006166721774963914,
+   "ci_hi": 0.06040454848495537,
+   "p": 0.04294624053686426
+  }
+ },
+ "ci_components": {
+  "phase3_iid": [
+   -0.287010774416194,
+   0.667774795109968
+  ],
+  "day_block": [
+   -0.2764784593475359,
+   0.6276807604038929
+  ]
+ },
+ "diff_meaning": "mean(R-ctrl | gated) - mean(R-ctrl | complement)",
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_eff_gated": 33,
+  "n_eff_complement": 2566,
+  "n_eff": 33
+ },
+ "ties": {
+  "real_ambiguous": 0.013868613138686132,
+  "control_ambiguous": 0.014549878345498783,
+  "real_gap_stop": 0.021532846715328468,
+  "control_gap_stop": 0.0178345498783455,
+  "gated_excess": 0.02631578947368421,
+  "complement_excess": -0.0008066487411390862,
+  "diff_5050": 0.2027887118239357,
+  "ci_5050": [
+   -0.22593169104429675,
+   0.6991840139807648
+  ],
+  "verdict_5050": "UNDERPOWERED",
+  "verdict_stop_first": "UNDERPOWERED"
+ },
+ "ctrl_overlap": 0.0009245742092457421,
+ "exposure_bars": {
+  "real_mean": 48.80888077858881,
+  "control_mean": 48.67379562043796,
+  "hold_basis": "clock"
+ },
+ "run_id": "3a7f146d22d64c318c3c76f702832677",
+ "hyp_key": "872e7a6efe70db76"
+}

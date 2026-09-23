@@ -1,0 +1,263 @@
+{
+ "concept_id": "trend-entry-options",
+ "reading": null,
+ "testable": true,
+ "test_type": "trade",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "15m bars; aggressive trend episode = one FIRED displacement (close beyond the latest 2/2 swing + threshold_fits 4-bar magnitude gate), alive 24 bars, dies on a close beyond the leg origin",
+   "option 1 inducement: a candle raids the latest confirmed swing high (bearish trend) and closes back below it; enter at the next M1 open; stop at that candle's high",
+   "option 2 mitigation block: opposing candle whose near extreme is traded through within 16 bars (no close beyond its far extreme first); limit at its opening price live 16 bars, filled on the first M1 touch; stop at its far extreme",
+   "option 3 cheat code: opposing candle closes; enter at the next open; stop at its far extreme",
+   "per episode take ONLY the earliest entry across options (same minute: option order)",
+   "target 2R; exit 150 min; option 4 (15s/30s) omitted - sub-minute data"
+  ],
+  "params": {
+   "tf": "15min",
+   "swing": "2/2",
+   "disp_N": 4,
+   "disp_r": 1.5,
+   "disp_d": 0.65,
+   "trend_bars": 24,
+   "break_bars": 16,
+   "live_bars": 16,
+   "selection": "first per episode",
+   "rr": 2.0,
+   "max_hold": "150min"
+  }
+ },
+ "params_source": {
+  "tf": "corpus: trend-entry-options.yaml timeframes htf 4H/1H/15m/5m; phase3 primary entry TF",
+  "swing": "phase3: locked 2/2 fractal",
+  "disp_N": "threshold_fits: displacement magnitude gate default N=4",
+  "disp_r": "threshold_fits: displacement magnitude gate default r=1.5",
+  "disp_d": "threshold_fits: displacement magnitude gate default d=0.65",
+  "trend_bars": "declared-before-run: aggressive trend lifetime 24 bars",
+  "break_bars": "declared-before-run: mitigation break within 16 bars",
+  "live_bars": "declared-before-run: retest limit live 16 bars",
+  "selection": "corpus: trend-entry-options.yaml execution 'Whichever of the four the price action offers first'",
+  "rr": "method_spec: \u00a75.3 2R floor/fixed target stands in for 'the marked objective'",
+  "max_hold": "phase3: 10 entry-TF bars (\u00a71.13)"
+ },
+ "n": 8174,
+ "span": {
+  "start": "2016-01-04 06:15:00+00:00",
+  "end": "2026-07-23 02:45:00+00:00",
+  "years": 10.546
+ },
+ "avg_R": -0.006305001342479167,
+ "avg_R_gross": 0.03369499865752083,
+ "win_rate": 0.34903352091999024,
+ "pf": 0.9906922295394767,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "n": 40870,
+  "avg_R": -0.09475570269316429,
+  "win_rate": 0.32583802299975534,
+  "pf": 0.8635060476555806,
+  "sd_R": 1.3848456931979685,
+  "exit_mix": {
+   "stop": 0.6581844873990702,
+   "target": 0.2967702471250306,
+   "time": 0.04504526547589919
+  },
+  "avg_R_gross": -0.05475570269316427,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": 0.08845070135068513,
+ "ci_lo": 0.05255768544543918,
+ "ci_hi": 0.12216184069862046,
+ "ci_method": "phase3_block",
+ "p": 6.315289957765635e-07,
+ "halves": {
+  "H1": {
+   "n": 3985,
+   "diff": 0.08506875220613941,
+   "ci_lo": 0.03045145987855318,
+   "ci_hi": 0.1392450746294303,
+   "ci_method": "block",
+   "p": 0.002175967262136249,
+   "start": "2016-01-04 06:15:00+00:00",
+   "end": "2020-12-31 14:30:00+00:00"
+  },
+  "H2": {
+   "n": 4189,
+   "diff": 0.09166795304345539,
+   "ci_lo": 0.04253445815385531,
+   "ci_hi": 0.13899873619205239,
+   "ci_method": "block",
+   "p": 0.00019529643992981647,
+   "start": "2021-01-04 00:15:00+00:00",
+   "end": "2026-07-23 02:45:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 2124,
+   "diff": 0.09810705539414141,
+   "ci_lo": 0.03350568512101795,
+   "ci_hi": 0.1640295714347073,
+   "ci_method": "iid",
+   "p": 0.003215201291594327,
+   "start": "2016-01-04 06:15:00+00:00",
+   "end": "2018-08-22 09:45:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 2062,
+   "diff": 0.09203704391384276,
+   "ci_lo": 0.022575986768539322,
+   "ci_hi": 0.16231640982075896,
+   "ci_method": "block",
+   "p": 0.009829312590112865,
+   "start": "2018-08-22 19:45:00+00:00",
+   "end": "2021-04-09 13:30:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 1986,
+   "diff": 0.13710329875001093,
+   "ci_lo": 0.07063886539798173,
+   "ci_hi": 0.20828592710172691,
+   "ci_method": "iid",
+   "p": 9.444278016063239e-05,
+   "start": "2021-04-12 12:30:00+00:00",
+   "end": "2023-12-01 15:45:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 2002,
+   "diff": 0.026248307350388744,
+   "ci_lo": -0.0407411235240299,
+   "ci_hi": 0.09664363649028619,
+   "ci_method": "iid",
+   "p": 0.45389980708610017,
+   "start": "2023-12-04 00:15:00+00:00",
+   "end": "2026-07-23 02:45:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.04974631097688118,
+ "mde_threshold": 0.1,
+ "power_floor_n": 2023,
+ "verdict": "EDGE",
+ "verdict_detail": "CI excludes 0 in claimed direction; halves agree (H1 +0.0851, H2 +0.0917); powered",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 8174,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 64.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 621,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "rr",
+    "option"
+   ],
+   "ignored": [],
+   "lookback": "20D",
+   "recent": "1D",
+   "events_fp": "30ce8c556349aba7",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "150min",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": null,
+  "entry_mode": "next_open",
+  "hold_basis": "clock",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "One trade per trend episode. Option mix of the book: {3: 0.952, 1: 0.048} (1=inducement, 2=mitigation block, 3=cheat code). The cheat code usually offers first, so this book overlaps cheat-code-entry heavily; stops at a just-closed candle's extreme share the stop-geometry confound noted there. CAVEAT (post-verdict diagnostic, verdict NOT changed): the differential is concentrated in the smallest stops. By stop/ATR96(15m range) quintile the diff was Q1..Q5 +0.212/+0.145/+0.040/+0.092/-0.044R. A pure-noise book (random direction at random 15m closes, stop at the just-closed candle's extreme, 2R, 150 min; n=58,539, n_boot=500, not written) also came back EDGE (+0.026R [+0.013,+0.039]), +0.14R in its smallest-stop quintile: the matched control places the same stop DISTANCE at an arbitrary level, while these books put it at a recent candle extreme, which M1 noise reaches less often. Treat this EDGE as a stop-geometry artefact candidate, not a trend-entry edge.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/entry_own_03b/trend-entry-options.py",
+ "runtime_sec": 2.53,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:22:50+00:00",
+ "n_events_in": 8454,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 272,
+  "target_not_beyond_entry": 0,
+  "no_bars_in_hold": 8
+ },
+ "events_fp": "30ce8c556349aba7",
+ "sd_R": 1.4199444206767153,
+ "exit_mix": {
+  "stop": 0.6480303401027648,
+  "target": 0.33887937362368487,
+  "time": 0.013090286273550281
+ },
+ "trades_per_year": 775.0658099688472,
+ "ci_components": {
+  "phase3_block": [
+   0.05255768544543918,
+   0.12216184069862046
+  ],
+  "day_block": [
+   0.05452867725851341,
+   0.12144663911123435
+  ]
+ },
+ "diff_win": 0.023195497920234898,
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 2673,
+  "n_clusters": null,
+  "n_eff": 2673
+ },
+ "ties": {
+  "real_ambiguous": 0.0650844139955958,
+  "control_ambiguous": 0.06948862246146317,
+  "real_gap_stop": 0.016515781747002693,
+  "control_gap_stop": 0.02067531196476633,
+  "verdict_stop_first": "EDGE"
+ },
+ "ctrl_overlap": 0.016050893075605577,
+ "exposure_bars": {
+  "real_mean": 144.76107169072668,
+  "control_mean": 142.85882065084414,
+  "hold_basis": "clock"
+ },
+ "run_id": "8fd0217cc4624df78aadf32ec683b269",
+ "hyp_key": "5ea1f41414775059"
+}

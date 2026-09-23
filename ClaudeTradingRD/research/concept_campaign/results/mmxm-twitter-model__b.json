@@ -1,0 +1,255 @@
+{
+ "concept_id": "mmxm-twitter-model",
+ "reading": "b",
+ "testable": true,
+ "test_type": "trade",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "short: 15m bearish CISD whose swing extreme (same trading day) is above the previous day's high; long mirrored on PDL",
+   "SMT: silver's 1h bars of the same trading day closed by the decision did not take silver's own PDH (PDL for longs)",
+   "short only if the CISD close is above the midnight open (long: below); no trade before midnight",
+   "target = top (bottom) edge of the nearest unmitigated 1h bullish (bearish) FVG below (above) the entry, formed within 120 hourly bars; none -> no trade",
+   "stop at the raid extreme; exit after 150 min"
+  ],
+  "params": {
+   "tf": "15min",
+   "raid": "PDH/PDL (prior_hilo, min_coverage 0.5)",
+   "mss": "15m CISD series_open 2/2 max_wait 3",
+   "smt": "silver 1h, PDH/PDL held",
+   "midnight_filter": true,
+   "target": "nearest unmitigated 1h FVG edge",
+   "hfvg_lookback": 120,
+   "max_hold": "150min"
+  }
+ },
+ "params_source": {
+  "tf": "corpus: WwmS47Gb3M0 \u2014 15-minute structure shift",
+  "raid": "corpus: WwmS47Gb3M0 \u2014 previous day high raided (short) / low (long)",
+  "mss": "corpus: WwmS47Gb3M0 'although the model says a market structure shift I will also look for an inversion' (change in state of delivery permitted); phase3 CISD config",
+  "smt": "corpus: WwmS47Gb3M0 \u2014 SMT required; silver is the stated correlate for gold; declared-before-run: 1h silver is the finest available, so an hourly SMT proxy",
+  "midnight_filter": "corpus: WwmS47Gb3M0 'looking to only short above midnight open and then vice versa for Longs'",
+  "target": "corpus: WwmS47Gb3M0 'moving from external liquidity to internal liquidity on a smaller time frame' \u2014 hourly FVG target; nearest unmitigated = 'prefer the gap that has not already been reached into'",
+  "hfvg_lookback": "declared-before-run: 120 hourly bars (~5 sessions)",
+  "max_hold": "phase3: 10 entry-TF bars (\u00a71.13)"
+ },
+ "n": 537,
+ "span": {
+  "start": "2016-01-06 14:00:00+00:00",
+  "end": "2026-07-09 18:45:00+00:00",
+  "years": 10.505
+ },
+ "avg_R": -0.0984601415407713,
+ "avg_R_gross": -0.05846014154077129,
+ "win_rate": 0.43575418994413406,
+ "pf": 0.7668610659521655,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "n": 2685,
+  "avg_R": -0.03955634278579792,
+  "win_rate": 0.49050279329608937,
+  "pf": 0.8958481383809788,
+  "sd_R": 0.9701878166579555,
+  "exit_mix": {
+   "stop": 0.2975791433891993,
+   "target": 0.24878957169459961,
+   "time": 0.45363128491620114
+  },
+  "avg_R_gross": 0.00044365721420209717,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": -0.05890379875497338,
+ "ci_lo": -0.18462809993969273,
+ "ci_hi": 0.07212903413653775,
+ "ci_method": "phase3_block",
+ "p": 0.3684991935775315,
+ "halves": {
+  "H1": {
+   "n": 270,
+   "diff": 0.0042740369892018005,
+   "ci_lo": -0.14443234446450434,
+   "ci_hi": 0.1858407378762105,
+   "ci_method": "block",
+   "p": 0.9595426883988871,
+   "start": "2016-01-06 14:00:00+00:00",
+   "end": "2020-12-28 13:15:00+00:00"
+  },
+  "H2": {
+   "n": 267,
+   "diff": -0.12279149782211679,
+   "ci_lo": -0.28677535028083717,
+   "ci_hi": 0.04427365943625702,
+   "ci_method": "block",
+   "p": 0.14595587851537725,
+   "start": "2021-01-05 13:15:00+00:00",
+   "end": "2026-07-09 18:45:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 125,
+   "diff": 0.035865001703257654,
+   "ci_lo": -0.15271269940887916,
+   "ci_hi": 0.23017553332767696,
+   "ci_method": "iid",
+   "p": 0.7134860753060421,
+   "start": "2016-01-06 14:00:00+00:00",
+   "end": "2018-08-21 07:15:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 160,
+   "diff": -0.06131035274984356,
+   "ci_lo": -0.2515552443418148,
+   "ci_hi": 0.1403642226157052,
+   "ci_method": "block",
+   "p": 0.5397320412306366,
+   "start": "2018-08-31 09:00:00+00:00",
+   "end": "2021-04-01 09:15:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 119,
+   "diff": 0.038475557994460424,
+   "ci_lo": -0.129964928698715,
+   "ci_hi": 0.20845780643010042,
+   "ci_method": "block",
+   "p": 0.6558429886316515,
+   "start": "2021-04-19 11:15:00+00:00",
+   "end": "2023-11-09 12:15:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 133,
+   "diff": -0.2322060158322837,
+   "ci_lo": -0.4142892967645606,
+   "ci_hi": -0.03511851810399567,
+   "ci_method": "block",
+   "p": 0.016368985415373627,
+   "start": "2023-12-07 14:45:00+00:00",
+   "end": "2026-07-09 18:45:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.18350513975536187,
+ "mde_threshold": 0.1,
+ "power_floor_n": 1809,
+ "verdict": "UNDERPOWERED",
+ "verdict_detail": "CI contains 0; MDE 0.1835 vs threshold 0.1000, effective n 337 (power floor n=1809, have 537)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 537,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 64.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 70,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "target_px"
+   ],
+   "ignored": [],
+   "lookback": "10D",
+   "recent": "1D",
+   "events_fp": "962010b21b02efba",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "150min",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": null,
+  "entry_mode": "next_open",
+  "hold_basis": "clock",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "Silver 1h (m3_scalper/xag_h1_full.parquet) read only through bars closed by the decision time; the probe truncates gold only.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/model_own_03a/mmxm-twitter-model.py",
+ "runtime_sec": 0.23,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:22:26+00:00",
+ "n_events_in": 538,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 0,
+  "target_not_beyond_entry": 0,
+  "no_bars_in_hold": 1
+ },
+ "events_fp": "962010b21b02efba",
+ "sd_R": 0.9496119942153359,
+ "exit_mix": {
+  "stop": 0.33147113594040967,
+  "target": 0.24394785847299813,
+  "time": 0.4245810055865922
+ },
+ "trades_per_year": 51.117865519937446,
+ "ci_components": {
+  "phase3_block": [
+   -0.18462809993969273,
+   0.07212903413653775
+  ],
+  "day_block": [
+   -0.15152614960377614,
+   0.03288614214367152
+  ]
+ },
+ "diff_win": -0.054748603351955305,
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 337,
+  "n_clusters": null,
+  "n_eff": 337
+ },
+ "ties": {
+  "real_ambiguous": 0.0,
+  "control_ambiguous": 0.00037243947858472997,
+  "real_gap_stop": 0.00558659217877095,
+  "control_gap_stop": 0.00558659217877095,
+  "verdict_stop_first": "UNDERPOWERED"
+ },
+ "ctrl_overlap": 0.0007448789571694599,
+ "exposure_bars": {
+  "real_mean": 139.6536312849162,
+  "control_mean": 142.97243947858473,
+  "hold_basis": "clock"
+ },
+ "run_id": "33967cb5e25b4f44a8b53b0e2fd0a7cb",
+ "hyp_key": "4c335f98f04625eb"
+}

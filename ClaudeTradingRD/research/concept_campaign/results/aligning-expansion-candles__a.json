@@ -1,0 +1,280 @@
+{
+ "concept_id": "aligning-expansion-candles",
+ "reading": "a",
+ "testable": true,
+ "test_type": "gate",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "baseline: 15m CISD (series_open, 2/2 swing, max_wait 3) on UTC-aligned 15m bars; decide at confirming bar close; enter next M1 open; stop at protected swing; 2R target; 150min max hold",
+   "daily = 18:00 NY trading day; 4H = forex grid",
+   "gate: last CLOSED daily candle is a C2 closure in the trade direction AND last CLOSED 4H candle is a C2 closure in the trade direction (so the in-progress daily and 4H candles are both candle 3)",
+   "C2 bull: low<prev low & close>prev low (mirror bear) \u2014 method_spec \u00a73.2"
+  ],
+  "params": {
+   "baseline_tf": "15min",
+   "level_rule": "series_open",
+   "swing": "2/2",
+   "max_wait": 3,
+   "rr": 2.0,
+   "max_hold": "150min",
+   "grid4h": "forex",
+   "day_open_hour": 18,
+   "layers": "D+4H"
+  }
+ },
+ "params_source": {
+  "baseline_tf": "corpus: Kf4c41_qO1s 'two expansion candles aligned' (daily + 4-hour is enough to execute on the 15-minute)",
+  "level_rule": "method_spec: \u00a74.2 carry first-candle-open as the default",
+  "swing": "phase3: locked config \u00a71.8-1.13",
+  "max_wait": "phase3: locked config max_wait=3",
+  "rr": "method_spec: \u00a75.3 2R; concept execution.targets '2R'",
+  "max_hold": "phase3: 10 entry-TF bars (\u00a71.13)",
+  "grid4h": "session_window_fit: forex grid for gold",
+  "day_open_hour": "method_spec: \u00a71.4 18:00 daily open is canon",
+  "layers": "corpus: TL704EemfdA 'a daily candle three, a 4-hour candle three' + Kf4c41_qO1s minimum two aligned for 15m execution"
+ },
+ "n": 1998,
+ "span": {
+  "start": "2016-01-04 23:45:00+00:00",
+  "end": "2026-07-23 02:15:00+00:00",
+  "years": 10.546
+ },
+ "avg_R": -0.06450561652083657,
+ "avg_R_gross": -0.024505616520836562,
+ "win_rate": 0.40540540540540543,
+ "pf": 0.8567111518945698,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "avg_R_gated": -0.06213142200833175,
+  "avg_R_complement": -0.03880606957971454,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": 0.00143153328406166,
+ "ci_lo": -0.05147397343693874,
+ "ci_hi": 0.05523331937081183,
+ "ci_method": "day_block",
+ "p": 0.9580602956680726,
+ "halves": {
+  "H1": {
+   "n": 15637,
+   "diff": -0.024545771294732264,
+   "ci_lo": -0.09843400384161673,
+   "ci_hi": 0.043140425970481046,
+   "ci_method": "block",
+   "p": 0.4967413349709806,
+   "start": "2016-01-04 23:45:00+00:00",
+   "end": "2020-12-31 19:15:00+00:00",
+   "n_gated": 989
+  },
+  "H2": {
+   "n": 17092,
+   "diff": 0.026262578399716893,
+   "ci_lo": -0.048962682739829816,
+   "ci_hi": 0.10571510227860874,
+   "ci_method": "block",
+   "p": 0.5056920921315501,
+   "start": "2021-01-03 23:45:00+00:00",
+   "end": "2026-07-23 02:15:00+00:00",
+   "n_gated": 1009
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 8198,
+   "diff": -0.08076789428310613,
+   "ci_lo": -0.17937251100945664,
+   "ci_hi": 0.010486727960671814,
+   "ci_method": "iid",
+   "p": 0.09540032342254165,
+   "start": "2016-01-04 23:45:00+00:00",
+   "end": "2018-08-22 08:45:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 8264,
+   "diff": 0.02236906211126919,
+   "ci_lo": -0.07696038067077512,
+   "ci_hi": 0.11976283360333127,
+   "ci_method": "block",
+   "p": 0.6557934863743573,
+   "start": "2018-08-22 11:45:00+00:00",
+   "end": "2021-04-12 08:15:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 8162,
+   "diff": 0.006903209903045551,
+   "ci_lo": -0.09708542987514511,
+   "ci_hi": 0.11743070142275769,
+   "ci_method": "block",
+   "p": 0.89961733748098,
+   "start": "2021-04-12 09:30:00+00:00",
+   "end": "2023-12-01 17:00:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 8105,
+   "diff": 0.06763489428487827,
+   "ci_lo": -0.044319860177177504,
+   "ci_hi": 0.1723313309378283,
+   "ci_method": "iid",
+   "p": 0.22105174058135085,
+   "start": "2023-12-04 04:00:00+00:00",
+   "end": "2026-07-23 02:15:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.07626404130912658,
+ "mde_threshold": 0.1,
+ "power_floor_n": 1163,
+ "verdict": "NULL",
+ "verdict_detail": "CI contains 0; powered (MDE 0.0763 <= 0.1000)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 32729,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "gate_mask_checked": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 64.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 2446,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "rr",
+    "c3_stack",
+    "exp_support"
+   ],
+   "ignored": [],
+   "lookback": "20D",
+   "recent": "1D",
+   "events_fp": "243980a199d27ab0",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "150min",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": null,
+  "entry_mode": "next_open",
+  "hold_basis": "clock",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "gate_test vs complement of the same 15m CISD book; claim '+'. mask_available_at = decision time (gate reads only bars closed by then).",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/model_own_02a/aligning-expansion-candles.py",
+ "runtime_sec": 2.65,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:10:27+00:00",
+ "n_events_in": 32813,
+ "dropped": {
+  "no_bar_after_decision": 1,
+  "stop_not_beyond_entry": 11,
+  "target_not_beyond_entry": 0,
+  "no_bars_in_hold": 72
+ },
+ "n_complement": 30731,
+ "gate_firing_rate": 0.06104677808671209,
+ "events_fp": "243980a199d27ab0",
+ "mask_fp": "bc37d30c5cade0ce",
+ "mask_col": "c3_stack",
+ "exit_mix": {
+  "stop": 0.34434434434434436,
+  "target": 0.11361361361361362,
+  "time": 0.5420420420420421
+ },
+ "gated_vs_own_control": {
+  "diff": -0.0023741945125048194,
+  "ci_lo": -0.0546693497193735,
+  "ci_hi": 0.04587690983010949,
+  "p": 0.9262522553486598
+ },
+ "complement": {
+  "n": 30731,
+  "avg_R": -0.04261179737628104,
+  "win_rate": 0.41677784647424426,
+  "pf": 0.9045812785147297,
+  "sd_R": 1.0189536485154014,
+  "exit_mix": {
+   "stop": 0.3515017409130845,
+   "target": 0.12495525690670659,
+   "time": 0.5235430021802089
+  },
+  "vs_own_control": {
+   "diff": -0.003805727796566502,
+   "ci_lo": -0.017094817068564857,
+   "ci_hi": 0.00851560396791765,
+   "p": 0.5602270835434784
+  }
+ },
+ "ci_components": {
+  "phase3_block": [
+   -0.04942212775699253,
+   0.05170071594677984
+  ],
+  "day_block": [
+   -0.05147397343693874,
+   0.05523331937081183
+  ]
+ },
+ "diff_meaning": "mean(R-ctrl | gated) - mean(R-ctrl | complement)",
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_eff_gated": 860,
+  "n_eff_complement": 2722,
+  "n_eff": 860
+ },
+ "ties": {
+  "real_ambiguous": 0.0005194170307678206,
+  "control_ambiguous": 0.0003788688930306456,
+  "real_gap_stop": 0.008341226435271472,
+  "control_gap_stop": 0.006850194017537964,
+  "gated_excess": -0.0002002002002002002,
+  "complement_excess": 0.00016270215743060756,
+  "verdict_stop_first": "NULL"
+ },
+ "ctrl_overlap": 0.06556876164869076,
+ "exposure_bars": {
+  "real_mean": 143.26322221882734,
+  "control_mean": 142.99830120076996,
+  "hold_basis": "clock"
+ },
+ "run_id": "637ac89606db48a6955a2cfd0676a70c",
+ "hyp_key": "26463a537d707acb"
+}

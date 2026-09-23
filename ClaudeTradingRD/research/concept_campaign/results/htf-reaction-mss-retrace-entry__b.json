@@ -1,0 +1,270 @@
+{
+ "concept_id": "htf-reaction-mss-retrace-entry",
+ "reading": "b",
+ "testable": true,
+ "test_type": "trade",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "Trading day rolls 18:00 NY. Liquidity taken = first 15m bar of the day trading beyond the previous trading day's high (short) / low (long).",
+   "MSS = first 15m CLOSE beyond the latest confirmed 15m fractal swing (2/2, known by the prior bar's close) on the other side, within 24 bars (6h) of the sweep bar and the same trading day.",
+   "The MSS leg must leave a same-direction 15m FVG (stamped between the sweep bar and the MSS bar); latest one used; limit at its near edge.",
+   "Stop = the extreme that tagged the level (max high / min low sweep bar..MSS bar); target = previous day's opposite extreme; it must lie beyond the limit.",
+   "Order live 12h from the MSS close; fill = first M1 through the limit; MISSED (no trade) if the target traded first.",
+   "No premium/discount gate here (tested as discount-requirement-before-entry)."
+  ],
+  "params": {
+   "ltf": "15min",
+   "swing": [
+    2,
+    2
+   ],
+   "mss_bars": 24,
+   "expiry_ns": "43200000000000",
+   "expiry": "12h",
+   "max_hold": "24h",
+   "ctrl_tod_tol_min": 30
+  }
+ },
+ "params_source": {
+  "ctrl_tod_tol_min": "declared-before-run: 30 (README trap 9)",
+  "swing": "declared-before-run: fractal 2/2 on every timeframe",
+  "htf_level": "corpus: UmLWRlXd_V8 precondition 'liquidity has been taken (previous daily high, previous weekly high)'",
+  "ltf": "corpus: UmLWRlXd_V8 'drop to the 15-minute or the hourly' -> 15m",
+  "mss": "corpus: UmLWRlXd_V8 'I need a market structure break for a shift'",
+  "entry_array": "corpus: UmLWRlXd_V8 '$niper prefers a fair value gap, then an order block' -> FVG",
+  "target": "corpus: concept execution targets 'previous daily low or high'",
+  "stop": "corpus: variant 'the stop rests at the extreme that tagged the higher-timeframe level'",
+  "missed_rule": "corpus: discount-requirement invalidation 'Price expands to the objective without returning ... the trade is missed, not taken late'",
+  "mss_bars": "declared-before-run: 24 15m bars (6h), same trading day",
+  "expiry": "declared-before-run: 12h",
+  "expiry_ns": "declared-before-run: 12h",
+  "max_hold": "declared-before-run: 24h"
+ },
+ "n": 793,
+ "span": {
+  "start": "2016-01-07 11:21:00+00:00",
+  "end": "2026-07-22 05:36:00+00:00",
+  "years": 10.535
+ },
+ "avg_R": -0.07746601182770954,
+ "avg_R_gross": -0.03746601182770954,
+ "win_rate": 0.29255989911727615,
+ "pf": 0.8882793851975063,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "n": 3965,
+  "avg_R": -0.06840071938446178,
+  "win_rate": 0.2786885245901639,
+  "pf": 0.9035327114887753,
+  "sd_R": 1.8970161214192387,
+  "exit_mix": {
+   "stop": 0.6635561160151324,
+   "target": 0.12635561160151323,
+   "time": 0.21008827238335434
+  },
+  "avg_R_gross": -0.028400719384461797,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": -0.00906529244324776,
+ "ci_lo": -0.1442349646918776,
+ "ci_hi": 0.13035142473322217,
+ "ci_method": "phase3_iid",
+ "p": 0.8970301549374213,
+ "halves": {
+  "H1": {
+   "n": 366,
+   "diff": 0.06505014642820302,
+   "ci_lo": -0.11851291651828326,
+   "ci_hi": 0.2539415685981144,
+   "ci_method": "iid",
+   "p": 0.4935801829377972,
+   "start": "2016-01-07 11:21:00+00:00",
+   "end": "2020-12-31 13:18:00+00:00"
+  },
+  "H2": {
+   "n": 427,
+   "diff": -0.07259281147591981,
+   "ci_lo": -0.25514227069140705,
+   "ci_hi": 0.12310177423854296,
+   "ci_method": "iid",
+   "p": 0.451861767578228,
+   "start": "2021-01-05 03:16:00+00:00",
+   "end": "2026-07-22 05:36:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 182,
+   "diff": -0.025956836975924658,
+   "ci_lo": -0.2672415196720613,
+   "ci_hi": 0.2581149755768552,
+   "ci_method": "iid",
+   "p": 0.8464296038906141,
+   "start": "2016-01-07 11:21:00+00:00",
+   "end": "2018-08-22 08:59:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 208,
+   "diff": 0.12944295782083484,
+   "ci_lo": -0.1378783911941592,
+   "ci_hi": 0.44225437770428916,
+   "ci_method": "iid",
+   "p": 0.38177005091504324,
+   "start": "2018-08-24 01:49:00+00:00",
+   "end": "2021-04-09 16:51:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 205,
+   "diff": -0.0926082798434829,
+   "ci_lo": -0.3654415835878513,
+   "ci_hi": 0.23600293169332423,
+   "ci_method": "iid",
+   "p": 0.5461252254344675,
+   "start": "2021-04-13 09:54:00+00:00",
+   "end": "2023-12-01 14:46:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 198,
+   "diff": -0.05254581028634759,
+   "ci_lo": -0.28397015950809534,
+   "ci_hi": 0.22108976819399528,
+   "ci_method": "block",
+   "p": 0.6834025535215466,
+   "start": "2023-12-04 05:42:00+00:00",
+   "end": "2026-07-22 05:36:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.19624776521852397,
+ "mde_threshold": 0.1,
+ "power_floor_n": 3055,
+ "verdict": "UNDERPOWERED",
+ "verdict_detail": "CI contains 0; MDE 0.1962 vs threshold 0.1000, effective n 772 (power floor n=3055, have 793)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 793,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 1.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 62,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "direction",
+    "stop_dist",
+    "target_dist",
+    "limit_px",
+    "extreme",
+    "target_px_ref",
+    "sweep_t",
+    "mss_t",
+    "prem_leg",
+    "prem_day",
+    "available_at"
+   ],
+   "ignored": [],
+   "lookback": "20D",
+   "recent": "1D",
+   "events_fp": "91ac417488b6dee6",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "24h",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": 30,
+  "entry_mode": "next_open",
+  "hold_basis": "clock",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/entry_guest_01a/htf-reaction-mss-retrace-entry.py",
+ "runtime_sec": 0.35,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:14:39+00:00",
+ "n_events_in": 793,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 0,
+  "target_not_beyond_entry": 0,
+  "no_bars_in_hold": 0
+ },
+ "events_fp": "91ac417488b6dee6",
+ "sd_R": 1.8104211767964697,
+ "exit_mix": {
+  "stop": 0.6506935687263556,
+  "target": 0.11979823455233292,
+  "time": 0.22950819672131148
+ },
+ "trades_per_year": 75.27111486486487,
+ "ci_components": {
+  "phase3_iid": [
+   -0.1442349646918776,
+   0.13035142473322217
+  ],
+  "day_block": [
+   -0.13711046046621295,
+   0.1257619400613882
+  ]
+ },
+ "diff_win": 0.013871374527112235,
+ "dependence": {
+  "day_block_mean_days": 2,
+  "n_days": 772,
+  "n_clusters": null,
+  "n_eff": 772
+ },
+ "ties": {
+  "real_ambiguous": 0.0,
+  "control_ambiguous": 0.0,
+  "real_gap_stop": 0.0025220680958385876,
+  "control_gap_stop": 0.007061790668348045,
+  "verdict_stop_first": "UNDERPOWERED"
+ },
+ "ctrl_overlap": 0.0,
+ "exposure_bars": {
+  "real_mean": 1209.1992433795713,
+  "control_mean": 1218.7662042875158,
+  "hold_basis": "clock"
+ },
+ "run_id": "4aec27cd3e8548af8ebac2c600f95e12",
+ "hyp_key": "4170b6cea44f99ba"
+}

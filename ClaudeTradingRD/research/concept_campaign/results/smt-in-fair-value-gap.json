@@ -1,0 +1,258 @@
+{
+ "concept_id": "smt-in-fair-value-gap",
+ "reading": null,
+ "testable": true,
+ "test_type": "trade",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "gold 1h vs XAG_USD 1h on shared bar starts",
+   "paired gap: both assets print a same-direction 3-bar FVG on the same bar i",
+   "within 20 bars, the first bar where exactly one asset touches its gap's near edge is the SMT-in-gap; both on one bar = no divergence",
+   "bearish gaps -> short gold, bullish gaps -> long gold",
+   "decide at gold bar close, next M1 open, stop 1 x ATR14(1h), 1R, 10h"
+  ],
+  "params": {
+   "tf": "1h",
+   "correlate": "XAG_USD H1",
+   "lookback": 20,
+   "enter_rule": "near edge",
+   "stop_atr": 1.0,
+   "atr_n": 14,
+   "rr": 1.0,
+   "max_hold": "10h",
+   "ctrl_tod_tol_min": 30
+  }
+ },
+ "params_source": {
+  "tf": "declared-before-run: SMT is fractal; silver held only at H1",
+  "correlate": "corpus: silver allowed as gold's correlate; phase3 load_correlate",
+  "lookback": "phase3: detectors.bias.smt_events 20-bar lookback",
+  "enter_rule": "declared-before-run: 'trades into the gap' is unspecified (near edge / CE / fill); near edge = first entry",
+  "stop_atr": "declared-before-run: symmetric direction test",
+  "atr_n": "declared-before-run",
+  "rr": "declared-before-run: symmetric 1R barrier",
+  "max_hold": "phase3: 10 entry-TF bars (\u00a71.13)",
+  "ctrl_tod_tol_min": "declared-before-run: README trap 9"
+ },
+ "n": 3133,
+ "span": {
+  "start": "2016-01-06 21:00:00+00:00",
+  "end": "2026-07-23 02:00:00+00:00",
+  "years": 10.541
+ },
+ "avg_R": -0.00666015635625484,
+ "avg_R_gross": 0.03333984364374518,
+ "win_rate": 0.5113309926587934,
+ "pf": 0.9857250635027833,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "n": 15353,
+  "avg_R": -0.0366810667847515,
+  "win_rate": 0.4956034651208233,
+  "pf": 0.9227696902854018,
+  "sd_R": 0.9446484095636056,
+  "exit_mix": {
+   "stop": 0.4345079137627825,
+   "target": 0.4368527323650101,
+   "time": 0.12863935387220737
+  },
+  "avg_R_gross": 0.0033189332152485213,
+  "reps": 5,
+  "fill_rate": 0.9800829875518672
+ },
+ "diff": 0.03002091042849666,
+ "ci_lo": -0.009031285113469577,
+ "ci_hi": 0.06523320371400546,
+ "ci_method": "phase3_iid",
+ "p": 0.1130563315327151,
+ "halves": {
+  "H1": {
+   "n": 1455,
+   "diff": 0.04802074165154703,
+   "ci_lo": -0.004072134267653376,
+   "ci_hi": 0.10318057619395331,
+   "ci_method": "block",
+   "p": 0.07924440858000951,
+   "start": "2016-01-06 21:00:00+00:00",
+   "end": "2020-12-30 21:00:00+00:00"
+  },
+  "H2": {
+   "n": 1678,
+   "diff": 0.0051826278763799985,
+   "ci_lo": -0.04695294692942541,
+   "ci_hi": 0.05497052021502395,
+   "ci_method": "iid",
+   "p": 0.8420113405325491,
+   "start": "2021-01-04 18:00:00+00:00",
+   "end": "2026-07-23 02:00:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 726,
+   "diff": 0.05646956289055583,
+   "ci_lo": -0.017690257019313763,
+   "ci_hi": 0.13560151913129856,
+   "ci_method": "block",
+   "p": 0.14873292729579887,
+   "start": "2016-01-06 21:00:00+00:00",
+   "end": "2018-08-22 00:00:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 806,
+   "diff": 0.029568015676551058,
+   "ci_lo": -0.0425201799933808,
+   "ci_hi": 0.10932506869125626,
+   "ci_method": "block",
+   "p": 0.44528051955212905,
+   "start": "2018-08-22 13:00:00+00:00",
+   "end": "2021-04-09 17:00:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 845,
+   "diff": 0.009320973953552972,
+   "ci_lo": -0.0605254131676119,
+   "ci_hi": 0.08475435684352496,
+   "ci_method": "iid",
+   "p": 0.8014292403020014,
+   "start": "2021-04-12 12:00:00+00:00",
+   "end": "2023-12-01 14:00:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 756,
+   "diff": 0.008015783488408975,
+   "ci_lo": -0.0735933099309318,
+   "ci_hi": 0.08650358370591328,
+   "ci_method": "iid",
+   "p": 0.844403354349676,
+   "start": "2023-12-06 15:00:00+00:00",
+   "end": "2026-07-23 02:00:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.053077066194001946,
+ "mde_threshold": 0.1,
+ "power_floor_n": 883,
+ "verdict": "NULL",
+ "verdict_detail": "CI contains 0; powered (MDE 0.0531 <= 0.1000)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 3133,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 184.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 236,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_dist",
+    "rr",
+    "entered_by"
+   ],
+   "ignored": [],
+   "lookback": "20D",
+   "recent": "1D",
+   "events_fp": "38b08afeb79681fc",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "10h",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": 30,
+  "entry_mode": "next_open",
+  "hold_basis": "clock",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "Gaps are paired by printing on the same bar in both assets; the corpus does not require identical size or candle position, so this is the strict reading of 'the same move'. Hourly only.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/liquidity_own_02a/smt-in-fair-value-gap.py",
+ "runtime_sec": 1.59,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:13:09+00:00",
+ "n_events_in": 3152,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 0,
+  "target_not_beyond_entry": 0,
+  "no_bars_in_hold": 19
+ },
+ "events_fp": "38b08afeb79681fc",
+ "sd_R": 0.9533994043819087,
+ "exit_mix": {
+  "stop": 0.4308969039259496,
+  "target": 0.46217682732205556,
+  "time": 0.10692626875199489
+ },
+ "trades_per_year": 297.2281168831169,
+ "ci_components": {
+  "phase3_iid": [
+   -0.009031285113469577,
+   0.06523320371400546
+  ],
+  "day_block": [
+   -0.010996765357253207,
+   0.06234408595523549
+  ]
+ },
+ "diff_win": 0.015727527537970132,
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 1893,
+  "n_clusters": null,
+  "n_eff": 1893
+ },
+ "ties": {
+  "real_ambiguous": 0.000957548675390999,
+  "control_ambiguous": 0.0006513385006187716,
+  "real_gap_stop": 0.007022023619533993,
+  "control_gap_stop": 0.006839054256497101,
+  "verdict_stop_first": "NULL"
+ },
+ "ctrl_overlap": 0.024620595323389567,
+ "exposure_bars": {
+  "real_mean": 550.7037982764124,
+  "control_mean": 550.2127271543021,
+  "hold_basis": "clock"
+ },
+ "run_id": "932f8e266f7d4830a105f70355158d1a",
+ "hyp_key": "dce3d4e72951a574"
+}

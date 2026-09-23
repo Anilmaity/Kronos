@@ -1,0 +1,184 @@
+{
+ "concept_id": "session-high-low",
+ "reading": null,
+ "testable": true,
+ "test_type": "rate",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "levels: high and low of the forex Asia (20:00-00:00 NY) and London (02:00-05:00 NY) windows, available at the window end",
+   "row kept if the window covered >=50% of its minutes and the level is still beyond the first open after the window",
+   "hit = price trades to the level before 12:00 NY the same trading day (horizon in M1 bars)",
+   "claim: session extremes are reached more often than an arbitrary level at the same distance at the same clock time"
+  ],
+  "params": {
+   "windows": {
+    "fx_asia": "20:00-00:00",
+    "fx_london": "02:00-05:00"
+   },
+   "horizon_end": "12:00 NY",
+   "min_cover": 0.5,
+   "null": "distance-matched, NY clock +/-30min, +/-30d, 5 reps"
+  }
+ },
+ "params_source": {
+  "windows": "corpus: MPeeE55rNOw killzone pivots; concept detection_rules asia 20:00-00:00, london 02:00-05:00 (session_window_fit: killzones.yaml verbatim)",
+  "horizon_end": "session_window_fit: forex London Close killzone ends 12:00 NY (08:30-12:00 is the corpus-faithful superset)",
+  "min_cover": "declared-before-run: skip windows with <50% of nominal minutes (data holes, README trap 6)",
+  "null": "declared-before-run: same signed distance from the open at a random other day's same NY minute (+/-30 min, +/-30 d), same M1-bar count, 5 reps"
+ },
+ "n": 10852,
+ "span": {
+  "start": "2016-01-04 05:00:00+00:00",
+  "end": "2026-07-23 04:00:00+00:00",
+  "years": 10.546
+ },
+ "avg_R": null,
+ "avg_R_gross": null,
+ "win_rate": null,
+ "pf": null,
+ "observed_rate": 0.7117582012532252,
+ "null_rate": 0.7164025064504238,
+ "lift": 0.9935171846058861,
+ "control": {
+  "rate": 0.7164025064504238,
+  "reps": 5,
+  "kind": "null_fn x5"
+ },
+ "diff": -0.004644305197198717,
+ "ci_lo": -0.014265112421673432,
+ "ci_hi": 0.004072981938813114,
+ "ci_method": "phase3_iid",
+ "p": 0.3208265173363257,
+ "halves": {
+  "H1": {
+   "n": 5150,
+   "diff": -0.0074563106796115,
+   "ci_lo": -0.021632038834951392,
+   "ci_hi": 0.0068757281553397396,
+   "ci_method": "iid",
+   "p": 0.30523509969343177,
+   "start": "2016-01-04 05:00:00+00:00",
+   "end": "2020-12-31 10:00:00+00:00"
+  },
+  "H2": {
+   "n": 5702,
+   "diff": -0.00210452472816558,
+   "ci_lo": -0.01550947036127671,
+   "ci_hi": 0.011751139950894418,
+   "ci_method": "iid",
+   "p": 0.7621800436570156,
+   "start": "2021-01-04 05:00:00+00:00",
+   "end": "2026-07-23 04:00:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 2721,
+   "diff": -0.011466372657111368,
+   "ci_lo": -0.030431826534362355,
+   "ci_hi": 0.00839029768467474,
+   "ci_method": "iid",
+   "p": 0.2469551281971489,
+   "start": "2016-01-04 05:00:00+00:00",
+   "end": "2018-08-22 09:00:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 2707,
+   "diff": -0.005245659401551528,
+   "ci_lo": -0.027190616919098555,
+   "ci_hi": 0.016110084964905805,
+   "ci_method": "iid",
+   "p": 0.6348730037146539,
+   "start": "2018-08-23 04:00:00+00:00",
+   "end": "2021-04-12 04:00:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 2728,
+   "diff": -0.00293255131964798,
+   "ci_lo": -0.020899926686216992,
+   "ci_hi": 0.014670087976539571,
+   "ci_method": "iid",
+   "p": 0.7465616370020414,
+   "start": "2021-04-12 09:00:00+00:00",
+   "end": "2023-12-01 10:00:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 2696,
+   "diff": 0.001112759643916883,
+   "ci_lo": -0.01892989614243326,
+   "ci_hi": 0.02070474777448075,
+   "ci_method": "iid",
+   "p": 0.9123668176084099,
+   "start": "2023-12-04 05:00:00+00:00",
+   "end": "2026-07-23 04:00:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.013106294321968082,
+ "mde_threshold": 0.05,
+ "power_floor_n": 746,
+ "verdict": "NULL",
+ "verdict_detail": "CI contains 0; powered (MDE 0.0131 <= 0.0500)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 10870,
+  "min_slack_min": 0.0,
+  "passed": true,
+  "no_detector_declaration": "pure clock/level rule: session window highs/lows from cl.window_hilo with its available_at (window end); no detector"
+ },
+ "settings": {
+  "reps": 5,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "mde_threshold": null,
+  "cluster": null,
+  "outcome_horizon": "1 days 00:00:00",
+  "null_kind": "null_fn x5"
+ },
+ "notes": "Liquidity-pool (draw) reading of session highs/lows. NY AM window levels are not included: their natural target window (the NY PM / next session) is not stated. The two stated displacement rules ('fails to displace -> other side'; 'sweep high then displace below low -> continuation') need an undefined displacement measure and are not tested here.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/liquidity_own_01b/session-high-low.py",
+ "runtime_sec": 3.15,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:08:46+00:00",
+ "dropped": {
+  "nan_rows": 18
+ },
+ "null_kind": "null_fn x5",
+ "events_fp": "00d0bd2d55a75268",
+ "predictors_probed": false,
+ "ci_components": {
+  "phase3_iid": [
+   -0.014265112421673432,
+   0.004072981938813114
+  ],
+  "day_block": [
+   -0.01279711633222078,
+   0.0030061425552892255
+  ]
+ },
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 2719,
+  "n_clusters": null,
+  "n_eff": 2719
+ },
+ "run_id": "452a960d65d543e09174e88bacba5c98",
+ "hyp_key": "a07bdff1117e2c88"
+}

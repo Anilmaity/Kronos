@@ -1,0 +1,10 @@
+from verify import *
+m1 = cl.load_m1()
+e, s = detect(m1, tf="15min")
+run("15m CE tod_tol=30", e, H=150, tod=30)
+run("15m CE sweep placebo", e, H=150, sweeps=s)
+ef, sf = detect(m1, consume="fill")
+run("1h CE fill-def tod_tol=30", ef, tod=30)
+e20, s20 = detect(m1, range_bars=20)
+run("1h CE rb20 tod_tol=30", e20, tod=30)
+run("1h CE rb20 sweep placebo", e20, sweeps=s20)

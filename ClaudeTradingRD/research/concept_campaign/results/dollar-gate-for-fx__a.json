@@ -1,0 +1,280 @@
+{
+ "concept_id": "dollar-gate-for-fx",
+ "reading": "a",
+ "testable": true,
+ "test_type": "gate",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "baseline: bare 1h CISD (series_open, 2/2 swing, max_wait 3), decide at the confirming bar's close, enter next M1 open, stop at the protected swing, 2R, 10h max hold",
+   "dollar direction = -sign(close - open) of the last COMPLETED EURUSD weekly candle (forex week, 17:00 NY roll, built from OANDA EURUSD H1), read as-of its close_time; doji weeks and weeks older than 8 days dropped",
+   "gate: gold trade direction opposes the dollar (dollar bearish -> long gold); complement = trades the dollar veto removes"
+  ],
+  "params": {
+   "baseline_tf": "1h",
+   "level_rule": "series_open",
+   "swing": "2/2",
+   "max_wait": 3,
+   "rr": 2.0,
+   "max_hold": "10h",
+   "dollar_proxy": "EURUSD inverted",
+   "dollar_tf": "1W",
+   "dollar_rule": "last completed weekly candle body direction"
+  }
+ },
+ "params_source": {
+  "baseline_tf": "phase3: rung-0 1h CISD book (calibrated)",
+  "level_rule": "phase3: locked CISD config",
+  "swing": "phase3: locked CISD config",
+  "max_wait": "phase3: locked CISD config",
+  "rr": "phase3: 2R (\u00a71.13)",
+  "max_hold": "phase3: 10 entry-TF bars (\u00a71.13)",
+  "dollar_proxy": "declared-before-run: no DXY series in the campaign; EURUSD is DXY's largest component and the corpus's own proxy pair ('Your USD' = EURUSD)",
+  "dollar_tf": "corpus: qFtfD09Vv3E 'monthly charts are monthly and weekly charts are your most important to frame trading setups'",
+  "dollar_rule": "declared-before-run: 'which way is it delivering' read from the higher-timeframe candle; the corpus never mechanises 'agree'"
+ },
+ "n": 3928,
+ "span": {
+  "start": "2016-01-04 15:00:00+00:00",
+  "end": "2026-07-22 19:00:00+00:00",
+  "years": 10.546
+ },
+ "avg_R": -0.024973204873355522,
+ "avg_R_gross": 0.015026795126644498,
+ "win_rate": 0.4175152749490835,
+ "pf": 0.9435060571485027,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "avg_R_gated": -0.017258151385791592,
+  "avg_R_complement": -0.042191848763217084,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": -0.03706463421831893,
+ "ci_lo": -0.09211645115587506,
+ "ci_hi": 0.01814251124746145,
+ "ci_method": "day_block",
+ "p": 0.1875966146756677,
+ "halves": {
+  "H1": {
+   "n": 3803,
+   "diff": -0.08506435671096202,
+   "ci_lo": -0.1599428851318228,
+   "ci_hi": -0.01079570954377902,
+   "ci_method": "iid",
+   "p": 0.02537239012442202,
+   "start": "2016-01-04 15:00:00+00:00",
+   "end": "2020-12-31 05:00:00+00:00",
+   "n_gated": 1835
+  },
+  "H2": {
+   "n": 4192,
+   "diff": 0.006650362311475803,
+   "ci_lo": -0.05726589806404379,
+   "ci_hi": 0.07710236921891596,
+   "ci_method": "iid",
+   "p": 0.8461671549843781,
+   "start": "2021-01-04 00:00:00+00:00",
+   "end": "2026-07-22 19:00:00+00:00",
+   "n_gated": 2093
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 1976,
+   "diff": -0.06392717928008916,
+   "ci_lo": -0.1576420082507081,
+   "ci_hi": 0.04096167568428759,
+   "ci_method": "iid",
+   "p": 0.2070356021574153,
+   "start": "2016-01-04 15:00:00+00:00",
+   "end": "2018-08-22 11:00:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 2032,
+   "diff": -0.0845943183879925,
+   "ci_lo": -0.1852548335639233,
+   "ci_hi": 0.016848535880001396,
+   "ci_method": "block",
+   "p": 0.10084671758809148,
+   "start": "2018-08-22 16:00:00+00:00",
+   "end": "2021-04-12 05:00:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 2067,
+   "diff": -0.008338295539381684,
+   "ci_lo": -0.11463184905696576,
+   "ci_hi": 0.0910472561815626,
+   "ci_method": "block",
+   "p": 0.8737357539147621,
+   "start": "2021-04-12 10:00:00+00:00",
+   "end": "2023-12-01 16:00:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 1920,
+   "diff": 0.011493950509657059,
+   "ci_lo": -0.09005659638670865,
+   "ci_hi": 0.10990448082027902,
+   "ci_method": "iid",
+   "p": 0.8217294529503445,
+   "start": "2023-12-04 09:00:00+00:00",
+   "end": "2026-07-22 19:00:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.07880243085708502,
+ "mde_threshold": 0.1,
+ "power_floor_n": 2440,
+ "verdict": "NULL",
+ "verdict_detail": "CI contains 0; powered (MDE 0.0788 <= 0.1000)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 7995,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "gate_mask_checked": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 300.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 588,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "rr",
+    "usd_dir",
+    "usd_avail",
+    "agree"
+   ],
+   "ignored": [],
+   "lookback": "30D",
+   "recent": "1D",
+   "events_fp": "00dcc2f974c961f5",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "10h",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": null,
+  "entry_mode": "next_open",
+  "hold_basis": "clock",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "EURUSD H1 read from m3_scalper/eur_h1_full.parquet (2010-2026-07-23), outside the probe's truncation but consumed only through close_time <= decision. The method spec (\u00a72.6) records that TTrades himself does NOT use DXY for gold; this reading tests the guest (Rauf/Ben) variant that does.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/model_own_04a/dollar-gate-for-fx.py",
+ "runtime_sec": 2.05,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:14:21+00:00",
+ "n_events_in": 8034,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 1,
+  "target_not_beyond_entry": 0,
+  "no_bars_in_hold": 38
+ },
+ "n_complement": 4067,
+ "gate_firing_rate": 0.491307066916823,
+ "events_fp": "00dcc2f974c961f5",
+ "mask_fp": "87c56f4a34c343ce",
+ "mask_col": "agree",
+ "exit_mix": {
+  "stop": 0.3490325865580448,
+  "target": 0.13620162932790225,
+  "time": 0.5147657841140529
+ },
+ "gated_vs_own_control": {
+  "diff": -0.00771505348756393,
+  "ci_lo": -0.04593527790259183,
+  "ci_hi": 0.02974518619286956,
+  "p": 0.6894458930599121
+ },
+ "complement": {
+  "n": 4067,
+  "avg_R": -0.01284226803246208,
+  "win_rate": 0.4258667322350627,
+  "pf": 0.9703516333641174,
+  "sd_R": 1.0301747420736653,
+  "exit_mix": {
+   "stop": 0.3459552495697074,
+   "target": 0.13474305384804525,
+   "time": 0.5193016965822473
+  },
+  "vs_own_control": {
+   "diff": 0.029349580730755005,
+   "ci_lo": -0.004122284967588243,
+   "ci_hi": 0.06289104204783323,
+   "p": 0.08601636608230967
+  }
+ },
+ "ci_components": {
+  "phase3_block": [
+   -0.08493509822309017,
+   0.013706698274856646
+  ],
+  "day_block": [
+   -0.09211645115587506,
+   0.01814251124746145
+  ]
+ },
+ "diff_meaning": "mean(R-ctrl | gated) - mean(R-ctrl | complement)",
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_eff_gated": 2255,
+  "n_eff_complement": 2298,
+  "n_eff": 2255
+ },
+ "ties": {
+  "real_ambiguous": 0.0002501563477173233,
+  "control_ambiguous": 2.5015634771732333e-05,
+  "real_gap_stop": 0.00375234521575985,
+  "control_gap_stop": 0.004352720450281426,
+  "gated_excess": 0.0,
+  "complement_excess": 0.00044258667322350626,
+  "verdict_stop_first": "NULL"
+ },
+ "ctrl_overlap": 0.06574108818011257,
+ "exposure_bars": {
+  "real_mean": 549.6661663539712,
+  "control_mean": 548.2028267667292,
+  "hold_basis": "clock"
+ },
+ "run_id": "44fc7c3707a14c18a1d31ceac565d8da",
+ "hyp_key": "9470ad6d0dfcddc6"
+}

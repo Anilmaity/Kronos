@@ -1,0 +1,186 @@
+{
+ "concept_id": "session-open-volume-nyse",
+ "reading": "b",
+ "testable": true,
+ "test_type": "rate",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "as (a); observed = step(08:30 NY) on NFP days",
+   "NFP days: BLS reference-week rule (third Friday after the Saturday ending the week containing the 12th of the prior month; Jul 3/4 and Jan 1 adjustments; 2025 shutdown releases special-cased)",
+   "null = step(08:30 NY) on a random non-NFP weekday within +/-30 days, 5 draws"
+  ],
+  "params": {
+   "tz": "America/New_York",
+   "win_min": 15,
+   "min_bars": 10,
+   "measure": "range[T,T+15) > range[T-15,T)",
+   "observed_time": "08:30",
+   "news": "NFP only",
+   "null_window_days": 30
+  }
+ },
+ "params_source": {
+  "tz": "method_spec: \u00a71.4 DST settled, America/New_York",
+  "win_min": "declared-before-run: 15 minutes, the concept's measurable ('in the 15 minutes after 09:30 versus before')",
+  "min_bars": "declared-before-run: >= 10 of 15 M1 bars in each window",
+  "measure": "declared-before-run: range step-up indicator (no volume in the data)",
+  "observed_time": "corpus: session-open-volume-nyse.yaml 'For forex: 08:30 is usable when a release lands at that time'",
+  "news": "declared-before-run: NFP is the only 08:30 high-impact release whose dates are mechanically derivable; no calendar dataset in the workspace",
+  "null_window_days": "declared-before-run: the locked +/-30-day regime window"
+ },
+ "n": 123,
+ "span": {
+  "start": "2016-01-08 13:30:00+00:00",
+  "end": "2026-07-02 12:30:00+00:00",
+  "years": 10.478
+ },
+ "avg_R": null,
+ "avg_R_gross": null,
+ "win_rate": null,
+ "pf": null,
+ "observed_rate": 0.975609756097561,
+ "null_rate": 0.567479674796748,
+ "lift": 1.7191977077363896,
+ "control": {
+  "rate": 0.567479674796748,
+  "reps": 5,
+  "kind": "null_fn x5"
+ },
+ "diff": 0.40813008130081296,
+ "ci_lo": 0.35930894308943084,
+ "ci_hi": 0.4552845528455286,
+ "ci_method": "day_block",
+ "p": 2.1936364883727422e-62,
+ "halves": {
+  "H1": {
+   "n": 60,
+   "diff": 0.42000000000000004,
+   "ci_lo": 0.3433333333333336,
+   "ci_hi": 0.4866666666666666,
+   "ci_method": "block",
+   "p": 1.5459120730865104e-30,
+   "start": "2016-01-08 13:30:00+00:00",
+   "end": "2020-12-04 13:30:00+00:00"
+  },
+  "H2": {
+   "n": 63,
+   "diff": 0.39682539682539697,
+   "ci_lo": 0.3206349206349207,
+   "ci_hi": 0.4667460317460316,
+   "ci_method": "iid",
+   "p": 1.8164379221670503e-26,
+   "start": "2021-01-08 13:30:00+00:00",
+   "end": "2026-07-02 12:30:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 32,
+   "diff": 0.4624999999999999,
+   "ci_lo": 0.38124999999999987,
+   "ci_hi": 0.54375,
+   "ci_method": "iid",
+   "p": 6.639760642575854e-29,
+   "start": "2016-01-08 13:30:00+00:00",
+   "end": "2018-08-03 12:30:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 31,
+   "diff": 0.3935483870967742,
+   "ci_lo": 0.2838709677419353,
+   "ci_hi": 0.49677419354838703,
+   "ci_method": "iid",
+   "p": 4.294897727441393e-13,
+   "start": "2018-09-07 12:30:00+00:00",
+   "end": "2021-03-05 13:30:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 30,
+   "diff": 0.4066666666666666,
+   "ci_lo": 0.2933333333333332,
+   "ci_hi": 0.5199999999999999,
+   "ci_method": "block",
+   "p": 2.0241202069764944e-12,
+   "start": "2021-05-07 12:30:00+00:00",
+   "end": "2023-11-03 12:30:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 30,
+   "diff": 0.3666666666666667,
+   "ci_lo": 0.24,
+   "ci_hi": 0.4799999999999999,
+   "ci_method": "iid",
+   "p": 2.1142235732803995e-09,
+   "start": "2023-12-08 13:30:00+00:00",
+   "end": "2026-07-02 12:30:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.06859407332444298,
+ "mde_threshold": 0.05,
+ "power_floor_n": 232,
+ "verdict": "UNDERPOWERED",
+ "verdict_detail": "CI excludes 0 in claimed direction but not powered: n=123, effective n=123, MDE=0.0686 vs 0.0500, floor 200; power floor n=232",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 123,
+  "min_slack_min": 0.0,
+  "passed": true,
+  "no_detector_declaration": "pure clock/calendar rule: 15-minute M1 ranges either side of 08:30 NY on rule-derived NFP dates; no detector"
+ },
+ "settings": {
+  "reps": 5,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "mde_threshold": null,
+  "cluster": null,
+  "outcome_horizon": "1 days 00:00:00",
+  "null_kind": "null_fn x5"
+ },
+ "notes": "Only ~125 NFP days exist in the certified span, so the effective n is below the 200 floor by construction; CPI/other 08:30 releases stay in the null pool (attenuates toward 0).",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/time_own_02a/session-open-volume-nyse.py",
+ "runtime_sec": 0.06,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:38:34+00:00",
+ "dropped": {
+  "nan_rows": 0
+ },
+ "null_kind": "null_fn x5",
+ "events_fp": "43a5264e4a0d098b",
+ "predictors_probed": false,
+ "ci_components": {
+  "phase3_iid": [
+   0.359349593495935,
+   0.4536585365853658
+  ],
+  "day_block": [
+   0.35930894308943084,
+   0.4552845528455286
+  ]
+ },
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 123,
+  "n_clusters": null,
+  "n_eff": 123
+ },
+ "run_id": "75f9c66b311e4c4fbc1bf40781746996",
+ "hyp_key": "a3d955dd64a79541"
+}

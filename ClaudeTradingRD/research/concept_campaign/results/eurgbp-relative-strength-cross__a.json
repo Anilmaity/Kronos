@@ -1,0 +1,287 @@
+{
+ "concept_id": "eurgbp-relative-strength-cross",
+ "reading": "a",
+ "testable": true,
+ "test_type": "gate",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "baseline: bare 1h CISD (series_open, 2/2 swing, max_wait 3), decide at the confirming bar's close, enter next M1 open, stop at the protected swing, 2R, 10h max hold",
+   "reads = previous-candle closure (close above prior day's high = +1, below its low = -1, else 0) of the last completed 18:00-NY trading day before the CISD bar's day",
+   "dollar = -(EURUSD read); keep trades opposite a directional dollar (consolidating dollar -> no trade)",
+   "cross = XAU/XAG hourly-close line's daily read; keep directional-cross days",
+   "gate: cross == trade direction (long when gold is the stronger, short when gold is the weaker); complement: the cross selects silver"
+  ],
+  "params": {
+   "baseline_tf": "1h",
+   "level_rule": "series_open",
+   "swing": "2/2",
+   "max_wait": 3,
+   "rr": 2.0,
+   "max_hold": "10h",
+   "dollar_proxy": "EURUSD inverted",
+   "cross": "XAU/XAG line",
+   "strength_read": "daily previous-candle closure class",
+   "min_h1_per_day": 18
+  }
+ },
+ "params_source": {
+  "baseline_tf": "phase3: rung-0 1h CISD book (calibrated)",
+  "level_rule": "phase3: locked CISD config",
+  "swing": "phase3: locked CISD config",
+  "max_wait": "phase3: locked CISD config",
+  "rr": "phase3: 2R (\u00a71.13)",
+  "max_hold": "phase3: 10 entry-TF bars (\u00a71.13)",
+  "dollar_proxy": "declared-before-run: no DXY series; EURUSD is DXY's largest component (as dollar-gate-for-fx a)",
+  "cross": "declared-before-run: transfer EU/GU -> XAU/XAG; silver is the method's sanctioned gold correlate (method_spec \u00a72.6)",
+  "strength_read": "corpus: nWHint4Yano / 25V-sGyMj_M 'Read EURGBP direction using a daily C2/C3 closure'; method_spec \u00a72.3 closure class",
+  "min_h1_per_day": "declared-before-run: stub-day guard"
+ },
+ "n": 350,
+ "span": {
+  "start": "2016-01-27 06:00:00+00:00",
+  "end": "2026-07-22 19:00:00+00:00",
+  "years": 10.483
+ },
+ "avg_R": -0.046144987657894744,
+ "avg_R_gross": -0.0061449876578947285,
+ "win_rate": 0.4342857142857143,
+ "pf": 0.8974843656326964,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "avg_R_gated": -0.06319659128714021,
+  "avg_R_complement": -0.05277099902331792,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": 0.020453663845747982,
+ "ci_lo": -0.1398225604046296,
+ "ci_hi": 0.17636823433921134,
+ "ci_method": "day_block",
+ "p": 0.7998268233021335,
+ "halves": {
+  "H1": {
+   "n": 501,
+   "diff": 0.04287414728747647,
+   "ci_lo": -0.16004504197342545,
+   "ci_hi": 0.2531543553501883,
+   "ci_method": "iid",
+   "p": 0.6842010073205176,
+   "start": "2016-01-27 06:00:00+00:00",
+   "end": "2020-12-18 12:00:00+00:00",
+   "n_gated": 172
+  },
+  "H2": {
+   "n": 588,
+   "diff": 0.004729442535290278,
+   "ci_lo": -0.1934280292198719,
+   "ci_hi": 0.1935029214567077,
+   "ci_method": "iid",
+   "p": 0.9617854725511398,
+   "start": "2021-01-07 07:00:00+00:00",
+   "end": "2026-07-22 19:00:00+00:00",
+   "n_gated": 178
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 261,
+   "diff": 0.0070592260969515735,
+   "ci_lo": -0.30315634421289683,
+   "ci_hi": 0.3148876964770599,
+   "ci_method": "iid",
+   "p": 0.9642882822334757,
+   "start": "2016-01-27 06:00:00+00:00",
+   "end": "2018-08-21 19:00:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 272,
+   "diff": 0.11726098538567062,
+   "ci_lo": -0.14856469698852448,
+   "ci_hi": 0.38503809113173854,
+   "ci_method": "iid",
+   "p": 0.38900830600489755,
+   "start": "2018-08-28 07:00:00+00:00",
+   "end": "2021-04-05 16:00:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 280,
+   "diff": 0.06198950094295731,
+   "ci_lo": -0.29076519239229837,
+   "ci_hi": 0.3979214810767859,
+   "ci_method": "block",
+   "p": 0.7242103814995735,
+   "start": "2021-04-15 00:00:00+00:00",
+   "end": "2023-12-01 13:00:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 276,
+   "diff": -0.07762680816977785,
+   "ci_lo": -0.34121999135038317,
+   "ci_hi": 0.17927529535919154,
+   "ci_method": "iid",
+   "p": 0.5588038453772779,
+   "start": "2023-12-06 12:00:00+00:00",
+   "end": "2026-07-22 19:00:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.2259825659278496,
+ "mde_threshold": 0.1,
+ "power_floor_n": 1788,
+ "verdict": "UNDERPOWERED",
+ "verdict_detail": "CI contains 0; MDE 0.2260 vs threshold 0.1000, effective n 199 (power floor n=1788, have 350)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 1089,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "gate_mask_checked": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 300.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 111,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "rr",
+    "usd",
+    "ratio",
+    "gold",
+    "xag",
+    "read_avail",
+    "selected"
+   ],
+   "ignored": [],
+   "lookback": "30D",
+   "recent": "1D",
+   "events_fp": "072aa4244f235b1a",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "10h",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": null,
+  "entry_mode": "next_open",
+  "hold_basis": "clock",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "Transfer EURUSD/GBPUSD/EURGBP -> XAUUSD/XAGUSD/XAU-XAG: the campaign has no GBP series and the harness resolves XAUUSD only, so the comparison is gold trades the cross selects vs gold trades where silver was the selected vehicle. The hourly-CISD half of the cross read is not applied (the daily closure is the read).",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/structure_own_05a/eurgbp-relative-strength-cross.py",
+ "runtime_sec": 0.66,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:35:40+00:00",
+ "n_events_in": 1096,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 0,
+  "target_not_beyond_entry": 0,
+  "no_bars_in_hold": 7
+ },
+ "n_complement": 739,
+ "gate_firing_rate": 0.3213957759412305,
+ "events_fp": "072aa4244f235b1a",
+ "mask_fp": "a9ae5f22fe09fab4",
+ "mask_col": "selected",
+ "exit_mix": {
+  "stop": 0.38,
+  "target": 0.13142857142857142,
+  "time": 0.48857142857142855
+ },
+ "gated_vs_own_control": {
+  "diff": 0.017051603629245467,
+  "ci_lo": -0.10023105460071975,
+  "ci_hi": 0.12903529176348116,
+  "p": 0.7706358617395404
+ },
+ "complement": {
+  "n": 739,
+  "avg_R": -0.056173059239820466,
+  "win_rate": 0.40324763193504737,
+  "pf": 0.8791077630367059,
+  "sd_R": 1.0431512849250244,
+  "exit_mix": {
+   "stop": 0.36941813261163736,
+   "target": 0.13937753721244925,
+   "time": 0.4912043301759134
+  },
+  "vs_own_control": {
+   "diff": -0.0034020602165025435,
+   "ci_lo": -0.08636722710629727,
+   "ci_hi": 0.08005691341144834,
+   "p": 0.9361325978285453
+  }
+ },
+ "ci_components": {
+  "phase3_iid": [
+   -0.12869214907759022,
+   0.16321901670094285
+  ],
+  "day_block": [
+   -0.1398225604046296,
+   0.17636823433921134
+  ]
+ },
+ "diff_meaning": "mean(R-ctrl | gated) - mean(R-ctrl | complement)",
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_eff_gated": 199,
+  "n_eff_complement": 425,
+  "n_eff": 199
+ },
+ "ties": {
+  "real_ambiguous": 0.0018365472910927456,
+  "control_ambiguous": 0.0003673094582185491,
+  "real_gap_stop": 0.005509641873278237,
+  "control_gap_stop": 0.005693296602387512,
+  "gated_excess": 0.002857142857142857,
+  "complement_excess": 0.0008119079837618405,
+  "verdict_stop_first": "UNDERPOWERED"
+ },
+ "ctrl_overlap": 0.011753902662993572,
+ "exposure_bars": {
+  "real_mean": 550.5748393021121,
+  "control_mean": 548.6354453627181,
+  "hold_basis": "clock"
+ },
+ "run_id": "7bc0f9196bb1473e87854f7b0c2e42c9",
+ "hyp_key": "65d00b8808762b28"
+}

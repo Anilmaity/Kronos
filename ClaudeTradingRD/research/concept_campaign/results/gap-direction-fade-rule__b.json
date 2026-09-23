@@ -1,0 +1,187 @@
+{
+ "concept_id": "gap-direction-fade-rule",
+ "reading": "b",
+ "testable": true,
+ "test_type": "rate",
+ "claim": "-",
+ "operationalization": {
+  "rules": [
+   "session open = first M1 of each NY trading day (18:00 NY reopen, incl. Sunday); both that day and the previous one must have > 600 M1 bars",
+   "gap = day open - previous day close; decide at the first M1 close; drop rows already back at the previous close by then",
+   "hit = price touches the previous close within the next 60 M1 bars",
+   "HTF-through = the gap itself crosses a prior day / week / month high (prev close <= H < open) or low",
+   "null = same signed distance, same side, same 60 bars, at 5 matched random moments (+/-30 d, NY time of day +/-30 min)",
+   "reading a = not-through gaps, claim '+'; reading b = through gaps, claim '-'"
+  ],
+  "params": {
+   "horizon_bars": 60,
+   "null_tod_tol_min": 30,
+   "min_day_m1": 600,
+   "htf_levels": "prior 1D/1W/1M high-low",
+   "gap_size_min": 0,
+   "reading": "b"
+  }
+ },
+ "params_source": {
+  "horizon_bars": "corpus: 1XWyy6Q-_8Q 'every hour is like a new day when you're trading these gappers' (fill judged within the first hour)",
+  "null_tod_tol_min": "declared-before-run: null moments held at the reopen time of day (vault trap 9 / 18:00 reopen volatility artefact in session_window_fit)",
+  "min_day_m1": "declared-before-run: skip stub sessions (README trap 6), as in the harness rate example",
+  "htf_levels": "corpus: 1XWyy6Q-_8Q previous month's low example; 'or other higher-timeframe' -> day/week/month",
+  "gap_size_min": "corpus: concept yaml ambiguity 'No gap-size threshold' \u2014 rule tested as stated",
+  "reading": "declared-before-run: the rule's two branches"
+ },
+ "n": 110,
+ "span": {
+  "start": "2016-06-16 22:01:00+00:00",
+  "end": "2026-06-14 22:05:00+00:00",
+  "years": 9.993
+ },
+ "avg_R": null,
+ "avg_R_gross": null,
+ "win_rate": null,
+ "pf": null,
+ "observed_rate": 0.35454545454545455,
+ "null_rate": 0.26181818181818184,
+ "lift": 1.3541666666666665,
+ "control": {
+  "rate": 0.26181818181818184,
+  "reps": 5,
+  "kind": "null_fn x5"
+ },
+ "diff": 0.09272727272727271,
+ "ci_lo": -0.0036818181818182023,
+ "ci_hi": 0.18727272727272726,
+ "ci_method": "phase3_iid",
+ "p": 0.05697379395146427,
+ "halves": {
+  "H1": {
+   "n": 37,
+   "diff": 0.14054054054054055,
+   "ci_lo": -0.032432432432432434,
+   "ci_hi": 0.319054054054054,
+   "ci_method": "iid",
+   "p": 0.11702861372606652,
+   "start": "2016-06-16 22:01:00+00:00",
+   "end": "2020-12-27 23:01:00+00:00"
+  },
+  "H2": {
+   "n": 73,
+   "diff": 0.0684931506849315,
+   "ci_lo": -0.07130136986301373,
+   "ci_hi": 0.2000684931506848,
+   "ci_method": "iid",
+   "p": 0.32247670797449934,
+   "start": "2021-01-03 23:01:00+00:00",
+   "end": "2026-06-14 22:05:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 21,
+   "diff": 0.08571428571428569,
+   "ci_lo": -0.13333333333333336,
+   "ci_hi": 0.3333333333333333,
+   "ci_method": "iid",
+   "p": 0.47153313794897217,
+   "start": "2016-06-16 22:01:00+00:00",
+   "end": "2018-08-12 22:01:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 19,
+   "diff": 0.18947368421052627,
+   "ci_lo": -0.07394736842105268,
+   "ci_hi": 0.4526315789473684,
+   "ci_method": "iid",
+   "p": 0.15840128934165817,
+   "start": "2019-01-01 23:01:00+00:00",
+   "end": "2021-03-14 22:01:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 26,
+   "diff": 0.16923076923076927,
+   "ci_lo": -0.05403846153846153,
+   "ci_hi": 0.3771153846153844,
+   "ci_method": "iid",
+   "p": 0.12390247539869866,
+   "start": "2021-08-19 22:01:00+00:00",
+   "end": "2023-11-19 23:04:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 44,
+   "diff": 0.009090909090909094,
+   "ci_lo": -0.14999999999999994,
+   "ci_hi": 0.18193181818181808,
+   "ci_method": "iid",
+   "p": 0.9145045596664997,
+   "start": "2023-12-21 23:04:00+00:00",
+   "end": "2026-06-14 22:05:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.13647582053223242,
+ "mde_threshold": 0.05,
+ "power_floor_n": 820,
+ "verdict": "UNDERPOWERED",
+ "verdict_detail": "CI contains 0; MDE 0.1365 vs threshold 0.0500, effective n 110 (power floor n=820, have 110)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 110,
+  "min_slack_min": 0.0,
+  "passed": true,
+  "no_detector_declaration": "pure level/clock rule: day open vs previous day close from bars('1D') and prior_hilo 1D/1W/1M at the first M1 close of the day"
+ },
+ "settings": {
+  "reps": 5,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "mde_threshold": null,
+  "cluster": null,
+  "outcome_horizon": "1 days 00:00:00",
+  "null_kind": "null_fn x5"
+ },
+ "notes": "Gold trades ~23h, so its session-open gaps are the 18:00 NY reopen after the daily halt and the weekend gap \u2014 mostly small (median ~2% of the 14-day mean range). The source trades single stocks. Timeframe-continuity confirmation is not modelled.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/entry_guest_02a/gap-direction-fade-rule.py",
+ "runtime_sec": 0.06,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:13:50+00:00",
+ "dropped": {
+  "nan_rows": 0
+ },
+ "null_kind": "null_fn x5",
+ "events_fp": "20e9b22da0d760c5",
+ "predictors_probed": false,
+ "ci_components": {
+  "phase3_iid": [
+   -0.0036818181818182023,
+   0.18727272727272726
+  ],
+  "day_block": [
+   0.007227272727272668,
+   0.1781818181818181
+  ]
+ },
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 110,
+  "n_clusters": null,
+  "n_eff": 110
+ },
+ "run_id": "1a392c35b0d548ffbb9bcf51ef5cc555",
+ "hyp_key": "f71cc8821b1c874c"
+}

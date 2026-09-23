@@ -1,0 +1,262 @@
+{
+ "concept_id": "trading-without-structure-shift",
+ "reading": "b",
+ "testable": true,
+ "test_type": "trade",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "bias = direction of the latest respected 1h CISD block (series_open, 2/2, within 3 bars): a newer same-direction block replaces the anchor, opposite CISDs are ignored while the bias holds, and the bias ends on a 1h close through the current anchor's protected swing; the next CISD then sets the bias",
+   "entry: first M1 touch of the near edge of a 15m FVG in the bias direction formed entirely after the anchor, within 12 bars and before the violation; no structure break used anywhere",
+   "stop = the anchor's protected swing (bias proven wrong); 2R; 10h; cluster = anchor"
+  ],
+  "params": {
+   "tf": "15min",
+   "swing": 2,
+   "ret_bars": 4,
+   "fvg1h_life": 24,
+   "fill_bars": 12,
+   "rr": 2.0,
+   "max_hold": "10h",
+   "entry": "FVG near edge",
+   "anchor_tf": "1h",
+   "cluster": "anchor"
+  }
+ },
+ "params_source": {
+  "tf": "corpus: concept htf 1H/15m, ltf 5m/1m; 15m execution with 1h POIs (method_spec \u00a71.2 rule 3)",
+  "swing": "phase3: locked 2/2 swing",
+  "ret_bars": "threshold_fits: displacement N-window N=4 (grade B); close-beyond hard gate (A)",
+  "fvg1h_life": "declared-before-run: a 1h FVG is a live POI for 24 1h bars",
+  "fill_bars": "declared-before-run: limit rests 12 entry-TF bars",
+  "rr": "method_spec: \u00a75.3 2R floor (examples show 2.6R and 4R)",
+  "max_hold": "phase3: 10 bars of the 1h anchor TF (\u00a71.13); the stop is 1h structure, so 15m-bar holds would be time exits",
+  "entry": "corpus: eK_6wgNpNh0 'the entry trigger is arrival at one of his four arrays, limit or market'",
+  "anchor_tf": "phase3: locked 1h CISD config as the order block",
+  "cluster": "declared-before-run: trades sharing one bias anchor"
+ },
+ "n": 16010,
+ "span": {
+  "start": "2016-01-04 20:20:00+00:00",
+  "end": "2026-07-23 04:01:00+00:00",
+  "years": 10.546
+ },
+ "avg_R": -0.014185846987319312,
+ "avg_R_gross": 0.025814153012680703,
+ "win_rate": 0.4399750156152405,
+ "pf": 0.9576806831140906,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "n": 80050,
+  "avg_R": -0.027970022184997664,
+  "win_rate": 0.4445346658338538,
+  "pf": 0.9169211478161592,
+  "sd_R": 0.8425337922248358,
+  "exit_mix": {
+   "stop": 0.23514053716427233,
+   "target": 0.07517801374141161,
+   "time": 0.6896814490943161
+  },
+  "avg_R_gross": 0.012029977815002355,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": 0.013784175197678352,
+ "ci_lo": -0.00878554417344099,
+ "ci_hi": 0.03772349539641586,
+ "ci_method": "day_block",
+ "p": 0.24532744053612524,
+ "halves": {
+  "H1": {
+   "n": 7186,
+   "diff": 0.008054630417835638,
+   "ci_lo": -0.023418497170220178,
+   "ci_hi": 0.03915486769608758,
+   "ci_method": "block",
+   "p": 0.6138504598129666,
+   "start": "2016-01-04 20:20:00+00:00",
+   "end": "2020-12-31 21:50:00+00:00"
+  },
+  "H2": {
+   "n": 8824,
+   "diff": 0.018450144008642737,
+   "ci_lo": -0.011866338331476394,
+   "ci_hi": 0.04853561125850838,
+   "ci_method": "block",
+   "p": 0.23116395992250982,
+   "start": "2021-01-04 01:34:00+00:00",
+   "end": "2026-07-23 04:01:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 3383,
+   "diff": -0.018941017494390838,
+   "ci_lo": -0.061258563777920626,
+   "ci_hi": 0.02596704901292633,
+   "ci_method": "block",
+   "p": 0.39465200228459124,
+   "start": "2016-01-04 20:20:00+00:00",
+   "end": "2018-08-21 22:18:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 4219,
+   "diff": 0.03903567505782338,
+   "ci_lo": -0.005107264880473728,
+   "ci_hi": 0.08549969469492327,
+   "ci_method": "block",
+   "p": 0.09125775892289952,
+   "start": "2018-08-22 12:01:00+00:00",
+   "end": "2021-04-12 05:47:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 4328,
+   "diff": -0.0021632225892447704,
+   "ci_lo": -0.046336675982391114,
+   "ci_hi": 0.03996612712490278,
+   "ci_method": "block",
+   "p": 0.9217298571346484,
+   "start": "2021-04-12 18:48:00+00:00",
+   "end": "2023-12-01 09:55:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 4080,
+   "diff": 0.031723779753835585,
+   "ci_lo": -0.0093537461514025,
+   "ci_hi": 0.07296142461662683,
+   "ci_method": "block",
+   "p": 0.13086055473661767,
+   "start": "2023-12-04 10:34:00+00:00",
+   "end": "2026-07-23 04:01:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.03324015839661275,
+ "mde_threshold": 0.1,
+ "power_floor_n": 1769,
+ "verdict": "NULL",
+ "verdict_detail": "CI contains 0; powered (MDE 0.0332 <= 0.1000)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 16010,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 7.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 1185,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "rr",
+    "anchor"
+   ],
+   "ignored": [],
+   "lookback": "30D",
+   "recent": "1D",
+   "events_fp": "492360ac8bd29ea5",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "10h",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": null,
+  "entry_mode": "next_open",
+  "hold_basis": "clock",
+  "mde_threshold": null,
+  "cluster": "column:anchor",
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "Guest reading (Finessee_Fx). Of his four arrays only the FVG is used. Pre-verdict fix: the first draft held the ORIGINAL block until violated, which on this data kept one bullish anchor from 2016-01-04 for the whole decade (gold never closed below it) and failed the lookahead probe; the anchor now rolls to the latest same-direction block. No test had been run.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/entry_own_04b/trading-without-structure-shift.py",
+ "runtime_sec": 2.96,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:23:13+00:00",
+ "n_events_in": 16012,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 0,
+  "target_not_beyond_entry": 0,
+  "no_bars_in_hold": 2
+ },
+ "events_fp": "492360ac8bd29ea5",
+ "sd_R": 0.855494773350032,
+ "exit_mix": {
+  "stop": 0.22748282323547783,
+  "target": 0.08119925046845722,
+  "time": 0.6913179262960649
+ },
+ "trades_per_year": 1518.0821651090341,
+ "ci_components": {
+  "phase3_block": [
+   -0.009254975073595328,
+   0.036608567245146495
+  ],
+  "day_block": [
+   -0.00878554417344099,
+   0.03772349539641586
+  ],
+  "cluster": [
+   -0.008349589879131319,
+   0.03589829767844294
+  ]
+ },
+ "diff_win": -0.00455965021861332,
+ "dependence": {
+  "day_block_mean_days": 4,
+  "n_days": 2682,
+  "n_clusters": 4223,
+  "n_eff": 2682
+ },
+ "ties": {
+  "real_ambiguous": 0.00037476577139287947,
+  "control_ambiguous": 0.00011242973141786383,
+  "real_gap_stop": 0.0020612117426608368,
+  "control_gap_stop": 0.00316052467207995,
+  "verdict_stop_first": "NULL"
+ },
+ "ctrl_overlap": 0.0024609618988132415,
+ "exposure_bars": {
+  "real_mean": 548.4518425983761,
+  "control_mean": 545.5583260462212,
+  "hold_basis": "clock"
+ },
+ "run_id": "92e44cd259f74c4c87b0213d56dc2c6d",
+ "hyp_key": "7d4a2848787c37c7"
+}

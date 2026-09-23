@@ -1,0 +1,181 @@
+{
+ "concept_id": "weekly-open-as-fair-value",
+ "reading": null,
+ "testable": true,
+ "test_type": "rate",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "rows: each trading day (18:00 NY roll) except the week's first, stub days (<=600 M1 bars) skipped",
+   "level: the week's opening price (open of the week's first M1 bar, Sunday 18:00 NY)",
+   "hit: an M1 bar trades to the weekly open during that trading day (horizon = its M1-bar count)",
+   "null: same signed distance from price, same bar count, matched random moments +/-30 days (5 reps)"
+  ],
+  "params": {
+   "week_open": "Sunday 18:00 NY first M1 open",
+   "horizon": "the trading day, in M1 bars",
+   "min_day_bars": 600,
+   "day_open_hour": 18
+  }
+ },
+ "params_source": {
+  "week_open": "declared-before-run: concept ambiguity (Sunday 18:00 vs Monday); 18:00 is corpus canon for the daily open (method_spec \u00a71.4)",
+  "horizon": "corpus: wrIZ7CAuFCc 'reacted along that level all throughout the week' read day by day (midnight dividers); declared-before-run: one trading day",
+  "min_day_bars": "declared-before-run: README rate example's stub-day filter",
+  "day_open_hour": "session_window_fit: settled 18:00 NY daily roll"
+ },
+ "n": 2175,
+ "span": {
+  "start": "2016-01-04 23:00:00+00:00",
+  "end": "2026-07-21 22:00:00+00:00",
+  "years": 10.541
+ },
+ "avg_R": null,
+ "avg_R_gross": null,
+ "win_rate": null,
+ "pf": null,
+ "observed_rate": 0.39586206896551723,
+ "null_rate": 0.3972413793103448,
+ "lift": 0.9965277777777778,
+ "control": {
+  "rate": 0.3972413793103448,
+  "reps": 5,
+  "kind": "null_fn x5"
+ },
+ "diff": -0.0013793103448275779,
+ "ci_lo": -0.023542528735632208,
+ "ci_hi": 0.019954022988505737,
+ "ci_method": "phase3_iid",
+ "p": 0.9010745461796754,
+ "halves": {
+  "H1": {
+   "n": 1033,
+   "diff": 0.001161665053242944,
+   "ci_lo": -0.037952565343659254,
+   "ci_hi": 0.037773475314617624,
+   "ci_method": "iid",
+   "p": 0.9520496088044683,
+   "start": "2016-01-04 23:00:00+00:00",
+   "end": "2020-12-30 23:00:00+00:00"
+  },
+  "H2": {
+   "n": 1142,
+   "diff": -0.0036777583187391216,
+   "ci_lo": -0.03819176882662001,
+   "ci_hi": 0.0322285464098073,
+   "ci_method": "iid",
+   "p": 0.8377897743489116,
+   "start": "2021-01-04 23:00:00+00:00",
+   "end": "2026-07-21 22:00:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 547,
+   "diff": -0.008043875685557533,
+   "ci_lo": -0.05521023765996341,
+   "ci_hi": 0.04718464351005486,
+   "ci_method": "iid",
+   "p": 0.7581284799329611,
+   "start": "2016-01-04 23:00:00+00:00",
+   "end": "2018-08-21 22:00:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 541,
+   "diff": 0.016266173752310542,
+   "ci_lo": -0.03402957486136778,
+   "ci_hi": 0.06840110905730126,
+   "ci_method": "iid",
+   "p": 0.533618732093061,
+   "start": "2018-08-22 22:00:00+00:00",
+   "end": "2021-04-08 22:00:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 549,
+   "diff": 0.010564663023679421,
+   "ci_lo": -0.0440983606557377,
+   "ci_hi": 0.06193078324225865,
+   "ci_method": "iid",
+   "p": 0.6961087197505544,
+   "start": "2021-04-12 22:00:00+00:00",
+   "end": "2023-11-30 23:00:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 538,
+   "diff": -0.024535315985130146,
+   "ci_lo": -0.07435873605947957,
+   "ci_hi": 0.02380111524163569,
+   "ci_method": "iid",
+   "p": 0.3271866134635006,
+   "start": "2023-12-04 23:00:00+00:00",
+   "end": "2026-07-21 22:00:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.03108712375892338,
+ "mde_threshold": 0.05,
+ "power_floor_n": 841,
+ "verdict": "NULL",
+ "verdict_detail": "CI contains 0; powered (MDE 0.0311 <= 0.0500)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 2175,
+  "min_slack_min": 1440.0,
+  "passed": true,
+  "no_detector_declaration": "pure level rule: the week's opening price from bars('1W') (known at the week's first bar), asked at each later day's 18:00 start; no detector"
+ },
+ "settings": {
+  "reps": 5,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "mde_threshold": null,
+  "cluster": null,
+  "outcome_horizon": "1 days 00:00:00",
+  "null_kind": "null_fn x5"
+ },
+ "notes": "Magnet reading of 'fair value'. The 'reaction at the level' reading is not separately tested (concept not contested; no reaction size given). Script re-run once only because write_result was passed an invalid kwarg; test settings unchanged (same seed, identical numbers).",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/time_own_03b/weekly-open-as-fair-value.py",
+ "runtime_sec": 0.32,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:41:55+00:00",
+ "dropped": {
+  "nan_rows": 0
+ },
+ "null_kind": "null_fn x5",
+ "events_fp": "cc4f1b7965cb0e68",
+ "predictors_probed": false,
+ "ci_components": {
+  "phase3_iid": [
+   -0.023542528735632208,
+   0.019954022988505737
+  ],
+  "day_block": [
+   -0.01774942528735732,
+   0.016186206896550495
+  ]
+ },
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 2175,
+  "n_clusters": null,
+  "n_eff": 2175
+ },
+ "run_id": "e314d9502cdd416bb69ae749f2d389fd",
+ "hyp_key": "2f025f8048a3094c"
+}

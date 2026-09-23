@@ -1,0 +1,292 @@
+{
+ "concept_id": "mmxm-phase-sequence",
+ "reading": "b",
+ "testable": true,
+ "test_type": "gate",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "15m bars, NY trading day (18:00 roll); premium/discount array = prior day high/low (coverage >= 0.5)",
+   "SMR: first 15m trade through PDH; MSS = 15m close below the last 2/2 swing low confirmed before the sweep, within 16 bars; H0 = high from sweep to MSS",
+   "entry 1: first return into the first bearish FVG of leg H0->MSS, FVG low above (H0+L1)/2, high < H0, within 32 bars; stop H0; target PDL",
+   "BOS: close below L1 within 32 bars; H1 = retracement high; entry 2: first return into the first bearish FVG of leg H1->BOS, above (H1+L2)/2, high < H1, within 32 bars; stop H1; target PDL",
+   "mirrored at PDL for the buy model; all steps inside the sweep's trading day; entries whose PDL/PDH objective is already behind price are dropped",
+   "hold 480 M1 bars (hold_basis bars)",
+   "reading b: gate second-leg vs first-leg entries, clustered by model"
+  ],
+  "params": {
+   "tf": "15min",
+   "array": "prior-day high/low",
+   "min_coverage": 0.5,
+   "swing": "2/2",
+   "mss_wait_bars": 16,
+   "entry_wait_bars": 32,
+   "premium": "FVG low >= 0.5 of leg",
+   "target": "previous daily low/high",
+   "max_hold": "480min",
+   "hold_basis": "bars"
+  }
+ },
+ "params_source": {
+  "tf": "corpus: CrUfTskOveo AM Trades builds the sell model on the 15-minute",
+  "array": "corpus: UmLWRlXd_V8 'a push up into a premium array (previous daily high ...)'",
+  "min_coverage": "declared-before-run: skip stub sessions (README trap 6)",
+  "swing": "phase3: 2/2 fractal swing definition (conjunction_preregistration)",
+  "mss_wait_bars": "declared-before-run: the reaction must form within 4h of the sweep",
+  "entry_wait_bars": "declared-before-run: each step within 8h, and inside the trading day",
+  "premium": "corpus: UmLWRlXd_V8 'I don't take a short unless price is above equilibrium'",
+  "target": "corpus: UmLWRlXd_V8 execution targets 'previous daily low'",
+  "max_hold": "declared-before-run: intraday model, 8 trading hours",
+  "hold_basis": "declared-before-run: trading-time hold across the 17:00 halt (trap 7)"
+ },
+ "n": 8,
+ "span": {
+  "start": "2016-01-19 10:30:00+00:00",
+  "end": "2026-06-11 03:00:00+00:00",
+  "years": 10.39
+ },
+ "avg_R": -0.048039207917088336,
+ "avg_R_gross": -0.0080392079170883,
+ "win_rate": 0.5,
+ "pf": 0.9076169078517532,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "avg_R_gated": -0.02322400279665568,
+  "avg_R_complement": -0.045200907273840116,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": -0.06346978099844519,
+ "ci_lo": -1.1907598970309117,
+ "ci_hi": 1.129557928804591,
+ "ci_method": "cluster",
+ "p": 0.9146101773780464,
+ "halves": {
+  "H1": {
+   "n": 70,
+   "diff": -0.931622040908668,
+   "ci_lo": -1.9984463352109978,
+   "ci_hi": 0.07121884627057892,
+   "ci_method": "iid",
+   "p": 0.07765050847750182,
+   "start": "2016-01-19 10:30:00+00:00",
+   "end": "2020-12-28 19:00:00+00:00",
+   "n_gated": 3
+  },
+  "H2": {
+   "n": 72,
+   "diff": 0.4773761434459222,
+   "ci_lo": -0.9846189501341839,
+   "ci_hi": 1.9048412285454255,
+   "ci_method": "iid",
+   "p": 0.5172289872461981,
+   "start": "2021-01-05 03:30:00+00:00",
+   "end": "2026-06-11 03:00:00+00:00",
+   "n_gated": 5
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 32,
+   "diff": -1.2560206724899523,
+   "ci_lo": -2.5250371199665484,
+   "ci_hi": -0.14037425300270823,
+   "ci_method": "iid",
+   "p": 0.03895547693178321,
+   "start": "2016-01-19 10:30:00+00:00",
+   "end": "2018-08-22 09:00:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 40,
+   "diff": null,
+   "ci_lo": null,
+   "ci_hi": null,
+   "ci_method": "n/a",
+   "p": null,
+   "start": "2018-08-24 02:00:00+00:00",
+   "end": "2021-03-16 12:30:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 37,
+   "diff": 0.19762387903616122,
+   "ci_lo": -1.5810847301131794,
+   "ci_hi": 1.932086508263759,
+   "ci_method": "iid",
+   "p": 0.8254779778551821,
+   "start": "2021-05-13 03:30:00+00:00",
+   "end": "2023-12-01 15:15:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 33,
+   "diff": 0.5856378775513418,
+   "ci_lo": -1.2626953722307521,
+   "ci_hi": 2.558991594484303,
+   "ci_method": "iid",
+   "p": 0.5480448822964201,
+   "start": "2023-12-27 12:00:00+00:00",
+   "end": "2026-06-11 03:00:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 1.658338524608961,
+ "mde_threshold": 0.1,
+ "power_floor_n": 2201,
+ "verdict": "UNTESTABLE",
+ "verdict_detail": "n=8 (other arm 134) below N_MIN_ANY=30",
+ "sanity_flags": [
+  "differential 20.0pp outside +/-15pp"
+ ],
+ "lookahead": {
+  "rows_checked": 142,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "gate_mask_checked": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 0.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 31,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "target_px",
+    "leg",
+    "model_id",
+    "second_leg"
+   ],
+   "ignored": [],
+   "lookback": "12D",
+   "recent": "1D",
+   "events_fp": "cf780a80cda3c5c8",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "480min",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": null,
+  "entry_mode": "next_open",
+  "hold_basis": "bars",
+  "mde_threshold": null,
+  "cluster": "column:model_id",
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "Comparative claim: second distribution leg beats the first post-MSS entry.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/model_guest_01a/mmxm-phase-sequence.py",
+ "runtime_sec": 0.11,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:10:02+00:00",
+ "n_events_in": 142,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 0,
+  "target_not_beyond_entry": 0,
+  "no_bars_in_hold": 0
+ },
+ "n_complement": 134,
+ "gate_firing_rate": 0.056338028169014086,
+ "events_fp": "cf780a80cda3c5c8",
+ "mask_fp": "88305305d838c219",
+ "mask_col": "second_leg",
+ "exit_mix": {
+  "stop": 0.5,
+  "target": 0.0,
+  "time": 0.5
+ },
+ "gated_vs_own_control": {
+  "diff": -0.024815205120432657,
+  "ci_lo": -0.868003221093358,
+  "ci_hi": 0.8986974200407184,
+  "p": 0.9560909877952335
+ },
+ "complement": {
+  "n": 134,
+  "avg_R": -0.00654633139582751,
+  "win_rate": 0.3208955223880597,
+  "pf": 0.9899660454117288,
+  "sd_R": 1.9121956143285435,
+  "exit_mix": {
+   "stop": 0.6044776119402985,
+   "target": 0.05223880597014925,
+   "time": 0.34328358208955223
+  },
+  "vs_own_control": {
+   "diff": 0.038654575878012604,
+   "ci_lo": -0.27754094195861057,
+   "ci_hi": 0.39912325397424603,
+   "p": 0.8228143696261414
+  }
+ },
+ "ci_components": {
+  "phase3_iid": [
+   -1.1294031836715919,
+   1.0155836251393604
+  ],
+  "day_block": [
+   -1.115026358177064,
+   1.091969512033974
+  ],
+  "cluster": [
+   -1.1907598970309117,
+   1.129557928804591
+  ]
+ },
+ "diff_meaning": "mean(R-ctrl | gated) - mean(R-ctrl | complement)",
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_eff_gated": 8,
+  "n_eff_complement": 134,
+  "n_eff": 8
+ },
+ "ties": {
+  "real_ambiguous": 0.0,
+  "control_ambiguous": 0.0,
+  "real_gap_stop": 0.0,
+  "control_gap_stop": 0.018309859154929577,
+  "gated_excess": 0.0,
+  "complement_excess": 0.0,
+  "verdict_stop_first": "UNTESTABLE"
+ },
+ "ctrl_overlap": 0.0,
+ "exposure_bars": {
+  "real_mean": 480.0,
+  "control_mean": 480.0,
+  "hold_basis": "bars"
+ },
+ "run_id": "aa7a546b7bc640a19f1a66b03d413819",
+ "hyp_key": "b4836b525c04ffbe"
+}

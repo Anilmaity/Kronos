@@ -1,0 +1,211 @@
+{
+ "concept_id": "external-range-liquidity",
+ "reading": null,
+ "testable": true,
+ "test_type": "rate",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "1h FVG (3-candle gap); first tag within 20 bars must close back on the respect side of the zone (else failed, no event)",
+   "decision at the respecting tag bar's close",
+   "ERL = nearest confirmed 2/2 swing high above (bullish) / swing low below (bearish), formed in the last 72 1h bars, untaken up to the decision",
+   "hit = price trades to the ERL within 3 trading days (4,140 M1 bars); row kept only if ERL is still beyond the next M1 open",
+   "claim: after IRL is respected, ERL is reached more often than an arbitrary level at the same distance"
+  ],
+  "params": {
+   "tf": "1h",
+   "swing": "2/2",
+   "tag_wait_bars": 20,
+   "swing_lookback_bars": 72,
+   "respect": "first tag closes beyond the zone's far edge on the respect side",
+   "horizon_bars": 4140,
+   "null": "distance-matched, NY clock +/-30min, +/-30d, 5 reps, same bar count"
+  }
+ },
+ "params_source": {
+  "tf": "declared-before-run: 1h, one of the concept's listed htf timeframes, chosen for sample size",
+  "swing": "phase3: 2/2 fractal swings (locked config)",
+  "tag_wait_bars": "declared-before-run: FVG must be reached within 20 bars of forming (else stale)",
+  "swing_lookback_bars": "method_spec: \u00a71.1 relevant-swing look-back = three HTF candles; hourly chart -> three days (72 bars)",
+  "respect": "declared-before-run: 'respected' = the first tag does not close through the gap (corpus gives no closure rule)",
+  "horizon_bars": "declared-before-run: three trading days, matching the hourly relevant-swing look-back",
+  "null": "declared-before-run: same signed distance from the open at a random other day's same NY minute (+/-30 min, +/-30 d), same M1-bar count, 5 reps"
+ },
+ "n": 6135,
+ "span": {
+  "start": "2016-01-04 02:00:00+00:00",
+  "end": "2026-07-20 01:00:00+00:00",
+  "years": 10.538
+ },
+ "avg_R": null,
+ "avg_R_gross": null,
+ "win_rate": null,
+ "pf": null,
+ "observed_rate": 0.7452322738386308,
+ "null_rate": 0.7436348818255908,
+ "lift": 1.00214808644952,
+ "control": {
+  "rate": 0.7436348818255908,
+  "reps": 5,
+  "kind": "null_fn x5"
+ },
+ "diff": 0.0016141080250487994,
+ "ci_lo": -0.010695542690656508,
+ "ci_hi": 0.013418715222154919,
+ "ci_method": "day_block_3d",
+ "p": 0.7930256691624166,
+ "halves": {
+  "H1": {
+   "n": 2812,
+   "diff": 0.010170697012802266,
+   "ci_lo": -0.008748221906105394,
+   "ci_hi": 0.02965860597440342,
+   "ci_method": "block",
+   "p": 0.29924444654470456,
+   "start": "2016-01-04 02:00:00+00:00",
+   "end": "2020-12-31 08:00:00+00:00"
+  },
+  "H2": {
+   "n": 3323,
+   "diff": -0.005657538368943782,
+   "ci_lo": -0.02359915738790238,
+   "ci_hi": 0.01312970207643704,
+   "ci_method": "iid",
+   "p": 0.5459719538227761,
+   "start": "2021-01-04 11:00:00+00:00",
+   "end": "2026-07-20 01:00:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 1434,
+   "diff": -0.002510460251045954,
+   "ci_lo": -0.02636331938633186,
+   "ci_hi": 0.023999302649930335,
+   "ci_method": "iid",
+   "p": 0.845080328214135,
+   "start": "2016-01-04 02:00:00+00:00",
+   "end": "2018-08-21 17:00:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 1530,
+   "diff": 0.015816993464052187,
+   "ci_lo": -0.011650326797385731,
+   "ci_hi": 0.040784313725490184,
+   "ci_method": "iid",
+   "p": 0.2370261737292322,
+   "start": "2018-08-22 15:00:00+00:00",
+   "end": "2021-04-12 04:00:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 1609,
+   "diff": 0.005469235550031093,
+   "ci_lo": -0.019030453697949177,
+   "ci_hi": 0.028592293349906806,
+   "ci_method": "iid",
+   "p": 0.6525776084236415,
+   "start": "2021-04-15 02:00:00+00:00",
+   "end": "2023-12-01 14:00:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 1562,
+   "diff": -0.012548015364916787,
+   "ci_lo": -0.04097311139564663,
+   "ci_hi": 0.013703585147247187,
+   "ci_method": "iid",
+   "p": 0.3683315938782492,
+   "start": "2023-12-04 02:00:00+00:00",
+   "end": "2026-07-20 01:00:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.01723453677074268,
+ "mde_threshold": 0.05,
+ "power_floor_n": 729,
+ "verdict": "NULL",
+ "verdict_detail": "CI contains 0; powered (MDE 0.0172 <= 0.0500)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 6265,
+  "min_slack_min": 0.0,
+  "passed": true,
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 449,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "level",
+    "side"
+   ],
+   "ignored": [],
+   "lookback": "15D",
+   "recent": "1D",
+   "events_fp": "85cb6f610f2413c8",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "reps": 5,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "mde_threshold": null,
+  "cluster": null,
+  "outcome_horizon": "3 days 00:00:00",
+  "null_kind": "null_fn x5"
+ },
+ "notes": "Single reading: the variant only restates ERL = swing high/low; no distinct claim to split. Tested as the IRL->ERL rotation's second leg.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/liquidity_own_01b/external-range-liquidity.py",
+ "runtime_sec": 1.41,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:12:13+00:00",
+ "dropped": {
+  "nan_rows": 130
+ },
+ "null_kind": "null_fn x5",
+ "events_fp": "85cb6f610f2413c8",
+ "predictors_probed": true,
+ "ci_components": {
+  "phase3_iid": [
+   -0.01031854150138178,
+   0.013350150047410988
+  ],
+  "day_block": [
+   -0.009480543051987136,
+   0.013213076181144165
+  ],
+  "day_block_3d": [
+   -0.010695542690656508,
+   0.013418715222154919
+  ]
+ },
+ "dependence": {
+  "day_block_mean_days": 3,
+  "n_days": 2479,
+  "n_clusters": null,
+  "n_eff": 2479
+ },
+ "run_id": "c1f4d14002004a15832ea5b236d9560e",
+ "hyp_key": "d99d79e8c24f7a6a"
+}

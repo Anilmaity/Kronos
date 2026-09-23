@@ -1,0 +1,260 @@
+{
+ "concept_id": "daily-wick-confirmation-timeframes",
+ "reading": "b",
+ "testable": true,
+ "test_type": "trade",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "C2 closure (spec \u00a73.2: sweep the previous candle's extreme, close back inside; two-sided skipped) on 4h (forex grid 17/21/01/05/09/13 NY) or 1h bars",
+   "4h closure allowed in every session; 1h closure only when the 1h C2 bar starts in NY [07:00,17:00) ('I don't trust an hourly closure this early'); nothing below 1h",
+   "the C2's extreme equals the trading day's running extreme at the C2 close (candidate daily wick), same trading day",
+   "first qualifying closure per trading day; decide at the C2 close",
+   "direction away from the wick; stop = the C2 extreme; target = previous (non-stub) day's opposite extreme, rows with no room dropped; exit 17:00 NY"
+  ],
+  "params": {
+   "tfs": "4h,1h",
+   "grid4h": "forex",
+   "session_bounds": "18-02/02-07/07-17 NY",
+   "map": "asia:4h; london:4h; ny:4h,1h",
+   "one_per_day": true,
+   "target": "previous day opposite extreme",
+   "max_hold": "to 17:00 NY",
+   "stub_filter_min_m1": 600,
+   "ctrl_tod_tol_min": 30
+  }
+ },
+ "params_source": {
+  "tfs": "corpus: Mo9QMtotQyo 'in Asia, I want to use an hourly change in the state of delivery' / 'In London, I'd want to use that M15 or M30 CISD' / 4-hour or 1-hour closure, never below",
+  "session_bounds": "declared-before-run: partition at killzone starts (London 02:00, forex NY AM 07:00; session_window_fit killzones.yaml) and the 18:00 NY day open",
+  "map": "corpus: Mo9QMtotQyo session map (method_spec \u00a72.4 table); 'a higher-timeframe CISD always counts' -> floor",
+  "grid4h": "method_spec: \u00a71.4 forex grid for gold",
+  "one_per_day": "method_spec: \u00a72.4 'There is only one CISD per day'",
+  "target": "corpus: execution.targets 'previous day high / low' (first listed)",
+  "max_hold": "declared-before-run: the wick confirmation is for the current day",
+  "stub_filter_min_m1": "declared-before-run: README trap 6 stub sessions (n_m1>=600)",
+  "ctrl_tod_tol_min": "declared-before-run: confirmations cluster by session clock and the concept is about the confirming instrument, not the hour (README trap 9)"
+ },
+ "n": 2514,
+ "span": {
+  "start": "2016-01-05 10:00:00+00:00",
+  "end": "2026-07-23 01:00:00+00:00",
+  "years": 10.543
+ },
+ "avg_R": 0.11622175059276438,
+ "avg_R_gross": 0.15622175059276439,
+ "win_rate": 0.35481304693715193,
+ "pf": 1.1851087362256465,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "n": 12570,
+  "avg_R": -0.016379853725809298,
+  "win_rate": 0.3256165473349244,
+  "pf": 0.9751680778416186,
+  "sd_R": 1.960832089721782,
+  "exit_mix": {
+   "stop": 0.6182179793158313,
+   "target": 0.20652346857597453,
+   "time": 0.1752585521081941
+  },
+  "avg_R_gross": 0.023620146274190703,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": 0.13260160431857368,
+ "ci_lo": 0.02737045199248694,
+ "ci_hi": 0.23839272801623798,
+ "ci_method": "phase3_block",
+ "p": 0.013770549772271712,
+ "halves": {
+  "H1": {
+   "n": 1179,
+   "diff": 0.1446700121940078,
+   "ci_lo": -0.0065353256622206835,
+   "ci_hi": 0.30997993295100185,
+   "ci_method": "block",
+   "p": 0.07318324095133094,
+   "start": "2016-01-05 10:00:00+00:00",
+   "end": "2020-12-31 16:00:00+00:00"
+  },
+  "H2": {
+   "n": 1335,
+   "diff": 0.12194343736341502,
+   "ci_lo": 0.0006100331464934935,
+   "ci_hi": 0.2675176983410803,
+   "ci_method": "iid",
+   "p": 0.07330660348774705,
+   "start": "2021-01-04 15:00:00+00:00",
+   "end": "2026-07-23 01:00:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 623,
+   "diff": 0.20617268107416628,
+   "ci_lo": -0.0204366548019786,
+   "ci_hi": 0.46717101541801537,
+   "ci_method": "block",
+   "p": 0.09742988358291649,
+   "start": "2016-01-05 10:00:00+00:00",
+   "end": "2018-08-22 01:00:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 622,
+   "diff": 0.06694940106871033,
+   "ci_lo": -0.1110959836024884,
+   "ci_hi": 0.2666706313405302,
+   "ci_method": "iid",
+   "p": 0.4872394048064055,
+   "start": "2018-08-23 20:00:00+00:00",
+   "end": "2021-04-12 01:00:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 642,
+   "diff": 0.1732517893003657,
+   "ci_lo": -0.05655611966451155,
+   "ci_hi": 0.4215686389411045,
+   "ci_method": "block",
+   "p": 0.155487530732182,
+   "start": "2021-04-13 09:00:00+00:00",
+   "end": "2023-11-30 06:00:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 627,
+   "diff": 0.08300586403846258,
+   "ci_lo": -0.07632847663069925,
+   "ci_hi": 0.242443261060383,
+   "ci_method": "block",
+   "p": 0.3073866366443899,
+   "start": "2023-12-05 14:00:00+00:00",
+   "end": "2026-07-23 01:00:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.1508182913497392,
+ "mde_threshold": 0.1,
+ "power_floor_n": 5719,
+ "verdict": "UNDERPOWERED",
+ "verdict_detail": "CI excludes 0 in claimed direction but not powered: n=2514, effective n=2514, MDE=0.1508 vs 0.1000, floor 200; power floor n=5719",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 2514,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 18.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 192,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "target_px",
+    "max_hold",
+    "tf",
+    "session"
+   ],
+   "ignored": [],
+   "lookback": "10D",
+   "recent": "1D",
+   "events_fp": "0a254d00f63b1844",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "per-row column",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": 30,
+  "entry_mode": "next_open",
+  "hold_basis": "clock",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "Daily-bias precondition not applied: the test isolates the confirmation instrument (direction = away from the confirmed wick). Hold per row = to 17:00 NY (max_hold column, wall clock, no halt inside the trading day). Same-close ties between timeframes resolved higher-TF-first (deterministic).",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/time_own_03a/daily-wick-confirmation-timeframes.py",
+ "runtime_sec": 0.39,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T09:02:31+00:00",
+ "n_events_in": 2520,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 1,
+  "target_not_beyond_entry": 2,
+  "no_bars_in_hold": 3
+ },
+ "events_fp": "0a254d00f63b1844",
+ "sd_R": 2.413357780242451,
+ "exit_mix": {
+  "stop": 0.5851233094669849,
+  "target": 0.21400159108989658,
+  "time": 0.20087509944311854
+ },
+ "trades_per_year": 238.44157361724228,
+ "ci_components": {
+  "phase3_block": [
+   0.02737045199248694,
+   0.23839272801623798
+  ],
+  "day_block": [
+   0.029890040904453165,
+   0.23837904331741164
+  ]
+ },
+ "diff_win": 0.029196499602227532,
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 2514,
+  "n_clusters": null,
+  "n_eff": 2514
+ },
+ "ties": {
+  "real_ambiguous": 0.0,
+  "control_ambiguous": 7.955449482895784e-05,
+  "real_gap_stop": 0.007557677008750994,
+  "control_gap_stop": 0.011296738265712012,
+  "verdict_stop_first": "UNDERPOWERED"
+ },
+ "ctrl_overlap": 0.10906921241050119,
+ "exposure_bars": {
+  "real_mean": 869.2740652346857,
+  "control_mean": 868.629753381066,
+  "hold_basis": "clock"
+ },
+ "run_id": "6a29d5ae39dd4f64b956cdf5ce02e461",
+ "hyp_key": "abf8fad6b65eddc8"
+}

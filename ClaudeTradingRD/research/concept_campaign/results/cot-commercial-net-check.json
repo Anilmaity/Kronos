@@ -1,0 +1,284 @@
+{
+ "concept_id": "cot-commercial-net-check",
+ "reading": null,
+ "testable": true,
+ "test_type": "gate",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "COMEX gold COT (CFTC legacy futures-only, code 088691), commercial net = long - short",
+   "at each quarter start: reports with as-of <= quarter start - 10d; last 52 weeks; midpoint = (max+min)/2; latest net > midpoint -> bullish quarter else bearish",
+   "baseline: every trading day a long AND a short row at the prior daily close, stop 1.0 x ATR14(1D), target 2R, hold 1380 M1 bars (one trading day)",
+   "gate: row direction == quarter's COT reading; clustered by quarter"
+  ],
+  "params": {
+   "lag_days": 10,
+   "window": "52 weeks",
+   "atr_n": 14,
+   "stop_atr": 1.0,
+   "rr": 2.0,
+   "max_hold": "1380min",
+   "hold_basis": "bars",
+   "contract": "088691 COMEX gold, legacy futures-only"
+  }
+ },
+ "params_source": {
+  "lag_days": "declared-before-run: CFTC publishes Tuesday data on Friday; 10 days covers the Dec-2018 shutdown delay",
+  "window": "corpus: Ibw4saRtYMk 'take the last twelve months of COT data, split that range in half'",
+  "atr_n": "declared-before-run: standard 14-day ATR for a volatility-scaled stop",
+  "stop_atr": "declared-before-run: 1 daily ATR stop for a one-day directional hold",
+  "rr": "declared-before-run: 2R, the campaign's phase-3 default target",
+  "max_hold": "declared-before-run: one trading day per daily decision",
+  "hold_basis": "declared-before-run: trading-time hold so Friday decisions are not eaten by the weekend (trap 7)",
+  "contract": "corpus: Ibw4saRtYMk 'individual currency futures contract ... never the dollar index'"
+ },
+ "n": 2709,
+ "span": {
+  "start": "2016-01-21 23:00:00+00:00",
+  "end": "2026-07-22 22:00:00+00:00",
+  "years": 10.497
+ },
+ "avg_R": -0.04718444392862218,
+ "avg_R_gross": -0.00718444392862217,
+ "win_rate": 0.4640088593576966,
+ "pf": 0.8290409825934523,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "avg_R_gated": -0.03670636659123913,
+  "avg_R_complement": -0.02480501330486468,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": -0.01263843789863393,
+ "ci_lo": -0.06075113342576875,
+ "ci_hi": 0.03632201614207559,
+ "ci_method": "day_block",
+ "p": 0.6098027817881965,
+ "halves": {
+  "H1": {
+   "n": 2556,
+   "diff": -0.017226277359093597,
+   "ci_lo": -0.07068332167433233,
+   "ci_hi": 0.03280001304453145,
+   "ci_method": "iid",
+   "p": 0.5140606563867964,
+   "start": "2016-01-21 23:00:00+00:00",
+   "end": "2020-12-31 23:00:00+00:00",
+   "n_gated": 1278
+  },
+  "H2": {
+   "n": 2862,
+   "diff": -0.008541122154072461,
+   "ci_lo": -0.05834398632655721,
+   "ci_hi": 0.042846880177086745,
+   "ci_method": "iid",
+   "p": 0.7407459539017913,
+   "start": "2021-01-04 23:00:00+00:00",
+   "end": "2026-07-22 22:00:00+00:00",
+   "n_gated": 1431
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 1334,
+   "diff": -0.016508009677186256,
+   "ci_lo": -0.08508313707436745,
+   "ci_hi": 0.05794437510122258,
+   "ci_method": "iid",
+   "p": 0.6509578690359171,
+   "start": "2016-01-21 23:00:00+00:00",
+   "end": "2018-08-21 22:00:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 1360,
+   "diff": 0.0009990378319574905,
+   "ci_lo": -0.07489126421645595,
+   "ci_hi": 0.07826433695573051,
+   "ci_method": "iid",
+   "p": 0.9796004832588221,
+   "start": "2018-08-22 22:00:00+00:00",
+   "end": "2021-04-09 22:00:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 1370,
+   "diff": -0.004814464232264821,
+   "ci_lo": -0.08069369544237254,
+   "ci_hi": 0.0705068923988115,
+   "ci_method": "iid",
+   "p": 0.9006686936565889,
+   "start": "2021-04-12 22:00:00+00:00",
+   "end": "2023-12-01 23:00:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 1354,
+   "diff": -0.030440359733154745,
+   "ci_lo": -0.10583864691862942,
+   "ci_hi": 0.044622560460752435,
+   "ci_method": "iid",
+   "p": 0.42774575744461424,
+   "start": "2023-12-04 23:00:00+00:00",
+   "end": "2026-07-22 22:00:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.06937848851612306,
+ "mde_threshold": 0.1,
+ "power_floor_n": 1304,
+ "verdict": "UNDERPOWERED",
+ "verdict_detail": "CI contains 0; MDE 0.0694 vs threshold 0.1000, effective n 43 (power floor n=1304, have 2709)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 5418,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "gate_mask_checked": true,
+  "entry_delay_min": {
+   "median": 3.0,
+   "max": 4325.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 354,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_dist",
+    "rr",
+    "quarter",
+    "cot_dir",
+    "cot_aligned",
+    "cot_known_at"
+   ],
+   "ignored": [],
+   "lookback": "60D",
+   "recent": "1D",
+   "events_fp": "47d561e2bed5dca8",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "1380min",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": null,
+  "entry_mode": "next_open",
+  "hold_basis": "bars",
+  "mde_threshold": null,
+  "cluster": "column:quarter",
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "Quarterly reading => ~42 independent decisions 2016-2026; clustered by quarter, so effective n is the quarter count and the test cannot reach the 200 floor. The pairing with 'an old low in HTF discount as the smart money reversal' is not added: tested here is the COT filter alone, as a directional bias on a direction-neutral daily book. COT data file lives beside this script.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/model_guest_01a/cot-commercial-net-check.py",
+ "runtime_sec": 1.69,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:08:27+00:00",
+ "n_events_in": 5420,
+ "dropped": {
+  "no_bar_after_decision": 2,
+  "stop_not_beyond_entry": 0,
+  "target_not_beyond_entry": 0,
+  "no_bars_in_hold": 0
+ },
+ "n_complement": 2709,
+ "gate_firing_rate": 0.5,
+ "events_fp": "47d561e2bed5dca8",
+ "mask_fp": "d550c363dbb84a6e",
+ "mask_col": "cot_aligned",
+ "exit_mix": {
+  "stop": 0.1303063861203396,
+  "target": 0.013658176448874123,
+  "time": 0.8560354374307863
+ },
+ "gated_vs_own_control": {
+  "diff": -0.010478077337383047,
+  "ci_lo": -0.03632037247610619,
+  "ci_hi": 0.016934550606150126,
+  "p": 0.4405537627896765
+ },
+ "complement": {
+  "n": 2709,
+  "avg_R": -0.022644652743613793,
+  "win_rate": 0.4776670358065707,
+  "pf": 0.9132590095254335,
+  "sd_R": 0.6384695213701227,
+  "exit_mix": {
+   "stop": 0.11886304909560723,
+   "target": 0.012181616832779624,
+   "time": 0.8689553340716132
+  },
+  "vs_own_control": {
+   "diff": 0.002160360561250886,
+   "ci_lo": -0.025474824968151146,
+   "ci_hi": 0.03040975895694528,
+   "p": 0.8795538810318219
+  }
+ },
+ "ci_components": {
+  "phase3_iid": [
+   -0.04928392721460227,
+   0.024427198345174716
+  ],
+  "day_block": [
+   -0.06075113342576875,
+   0.03632201614207559
+  ],
+  "cluster": [
+   -0.03564777296685631,
+   0.009125923762859306
+  ]
+ },
+ "diff_meaning": "mean(R-ctrl | gated) - mean(R-ctrl | complement)",
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_eff_gated": 43,
+  "n_eff_complement": 43,
+  "n_eff": 43
+ },
+ "ties": {
+  "real_ambiguous": 0.0,
+  "control_ambiguous": 0.0,
+  "real_gap_stop": 0.0022148394241417496,
+  "control_gap_stop": 0.0026947212993724623,
+  "gated_excess": 0.0,
+  "complement_excess": 0.0,
+  "verdict_stop_first": "UNDERPOWERED"
+ },
+ "ctrl_overlap": 0.023403469915097824,
+ "exposure_bars": {
+  "real_mean": 1379.624953857512,
+  "control_mean": 1379.7888519748985,
+  "hold_basis": "bars"
+ },
+ "run_id": "1a746a709cc749758c2f9e194021af04",
+ "hyp_key": "910a4ae899e1f6f4"
+}

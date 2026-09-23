@@ -1,0 +1,208 @@
+{
+ "concept_id": "three-daily-profiles",
+ "reading": null,
+ "testable": true,
+ "test_type": "rate",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "at each completed daily close (18:00 NY day, stubs < 600 M1 dropped)",
+   "daily order flow = latest one-sided daily-close reaction to a live daily FVG (<= 60 days memory); must be non-neutral",
+   "expansion anticipated in the order-flow direction when none of the consolidation triggers fire (first weekly H/L take this week; 3 same-direction closes or two ranges >= 1.5x ADR20; close within 0.40-0.60 of the daily dealing range)",
+   "outcome: the NEXT day's body in that direction >= 0.5 x ADR20",
+   "null: the same directional outcome on a random other day within +/-30 days"
+  ],
+  "params": {
+   "exp_body_adr": 0.5,
+   "adr_n": 20,
+   "fvg_life_days": 60,
+   "overext_mult": 1.5,
+   "eq_band": 0.1,
+   "null_window_days": 30,
+   "stub_min_m1": 600,
+   "day_open_hour": 18
+  }
+ },
+ "params_source": {
+  "exp_body_adr": "declared-before-run: 'one-sided delivery' as a body of at least half an average day",
+  "adr_n": "declared-before-run: 20-day average daily range",
+  "fvg_life_days": "declared-before-run: a daily FVG is a live PD array for 60 trading days",
+  "overext_mult": "threshold_fits: displacement magnitude r=1.5 reused for 'large relative to average'",
+  "eq_band": "declared-before-run: 'at the 0.5' of the dealing range as its middle fifth",
+  "null_window_days": "phase3: +/-30 day regime-matched control window",
+  "stub_min_m1": "declared-before-run: README trap 6 stub sessions",
+  "day_open_hour": "session_window_fit: settled 18:00 NY daily roll"
+ },
+ "n": 1379,
+ "span": {
+  "start": "2016-01-29 23:00:00+00:00",
+  "end": "2026-07-20 22:00:00+00:00",
+  "years": 10.47
+ },
+ "avg_R": null,
+ "avg_R_gross": null,
+ "win_rate": null,
+ "pf": null,
+ "observed_rate": 0.21464829586656997,
+ "null_rate": 0.20464104423495286,
+ "lift": 1.0489014883061658,
+ "control": {
+  "rate": 0.20464104423495286,
+  "reps": 5,
+  "kind": "null_fn x5"
+ },
+ "diff": 0.010007251631617115,
+ "ci_lo": -0.013923132704856987,
+ "ci_hi": 0.03393763596809474,
+ "ci_method": "day_block",
+ "p": 0.41243202204382395,
+ "halves": {
+  "H1": {
+   "n": 659,
+   "diff": 0.00030349013657055,
+   "ci_lo": -0.03157056145675266,
+   "ci_hi": 0.03581942336874052,
+   "ci_method": "iid",
+   "p": 0.9859153902833817,
+   "start": "2016-01-29 23:00:00+00:00",
+   "end": "2020-12-30 23:00:00+00:00"
+  },
+  "H2": {
+   "n": 720,
+   "diff": 0.018888888888888844,
+   "ci_lo": -0.013333333333333364,
+   "ci_hi": 0.052513888888888895,
+   "ci_method": "iid",
+   "p": 0.2608146018088206,
+   "start": "2021-01-06 23:00:00+00:00",
+   "end": "2026-07-20 22:00:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 334,
+   "diff": 0.011377245508982059,
+   "ci_lo": -0.03414670658682636,
+   "ci_hi": 0.05868263473053892,
+   "ci_method": "iid",
+   "p": 0.6309217984620111,
+   "start": "2016-01-29 23:00:00+00:00",
+   "end": "2018-08-17 22:00:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 358,
+   "diff": -0.01396648044692736,
+   "ci_lo": -0.05698324022346371,
+   "ci_hi": 0.030181564245810092,
+   "ci_method": "iid",
+   "p": 0.5299430617879556,
+   "start": "2018-08-22 22:00:00+00:00",
+   "end": "2021-04-09 22:00:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 350,
+   "diff": 0.025714285714285717,
+   "ci_lo": -0.020571428571428574,
+   "ci_hi": 0.07257142857142859,
+   "ci_method": "iid",
+   "p": 0.27916868337246226,
+   "start": "2021-04-12 22:00:00+00:00",
+   "end": "2023-12-01 23:00:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 337,
+   "diff": 0.017804154302670627,
+   "ci_lo": -0.03145400593471809,
+   "ci_hi": 0.06885756676557861,
+   "ci_method": "iid",
+   "p": 0.4865902382234624,
+   "start": "2023-12-05 23:00:00+00:00",
+   "end": "2026-07-20 22:00:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.03420624348268934,
+ "mde_threshold": 0.05,
+ "power_floor_n": 646,
+ "verdict": "NULL",
+ "verdict_detail": "CI contains 0; powered (MDE 0.0342 <= 0.0500)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 1379,
+  "min_slack_min": 0.0,
+  "passed": true,
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 109,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction"
+   ],
+   "ignored": [],
+   "lookback": "300D",
+   "recent": "1D",
+   "events_fp": "414065934f86321e",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "reps": 5,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "mde_threshold": null,
+  "cluster": null,
+  "outcome_horizon": "1 days 00:00:00",
+  "null_kind": "null_fn x5"
+ },
+ "notes": "The speaker gives no positive test for anticipating expansion; the anticipation is operationalised as order flow established and no consolidation trigger.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/model_guest_01b/three-daily-profiles.py",
+ "runtime_sec": 0.52,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:13:01+00:00",
+ "dropped": {
+  "nan_rows": 0
+ },
+ "null_kind": "null_fn x5",
+ "events_fp": "414065934f86321e",
+ "predictors_probed": true,
+ "ci_components": {
+  "phase3_iid": [
+   -0.012911530094271224,
+   0.033216098622189966
+  ],
+  "day_block": [
+   -0.013923132704856987,
+   0.03393763596809474
+  ]
+ },
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 1379,
+  "n_clusters": null,
+  "n_eff": 1379
+ },
+ "run_id": "73f9c5ad26824eb9bbd38786eacd9554",
+ "hyp_key": "9faeeb52aea84506"
+}

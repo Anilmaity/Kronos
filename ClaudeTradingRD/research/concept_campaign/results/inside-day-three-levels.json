@@ -1,0 +1,206 @@
+{
+ "concept_id": "inside-day-three-levels",
+ "reading": null,
+ "testable": true,
+ "test_type": "rate",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "trading day rolls 18:00 NY; previous day = last completed day with >= 600 M1 bars",
+   "inside so far: running day high < PDH and running low > PDL",
+   "event: first M1 bar of the day trading through PD-EQ=(PDH+PDL)/2 while inside so far; day must open strictly inside the PD range",
+   "bias side = side of the EQ the day opened on (above -> bullish -> PDH)",
+   "hit: bias-side PD extreme traded before the opposite one, next M1 bar to end of that trading day (M1-bar horizon); same-bar both = 0.5",
+   "null: same up/down distances and bar horizon from matched random moments (5 reps, +/-30d), same side"
+  ],
+  "params": {
+   "day_open_hour": 18,
+   "min_prev_day_bars": 600,
+   "eq": "full-range midpoint",
+   "bias_proxy": "open side of EQ",
+   "horizon": "rest of the trading day, in M1 bars"
+  }
+ },
+ "params_source": {
+  "day_open_hour": "session_window_fit: settled 18:00 NY daily roll",
+  "min_prev_day_bars": "declared-before-run: skip data-hole stub sessions (trap 6), as in the harness rate example",
+  "eq": "method_spec: \u00a72.4 'the EQ of the previous day's range' (full range; body-EQ ambiguity noted in the concept)",
+  "bias_proxy": "declared-before-run: the concept names no bias rule for inside days; opening side of EQ = the side price travels from to reach the EQ",
+  "horizon": "declared-before-run: the claim is about the current (inside) day"
+ },
+ "n": 1275,
+ "span": {
+  "start": "2016-01-05 00:01:00+00:00",
+  "end": "2026-07-22 22:05:00+00:00",
+  "years": 10.543
+ },
+ "avg_R": null,
+ "avg_R_gross": null,
+ "win_rate": null,
+ "pf": null,
+ "observed_rate": 0.37333333333333335,
+ "null_rate": 0.3610196078431373,
+ "lift": 1.0341081903106668,
+ "control": {
+  "rate": 0.3610196078431373,
+  "reps": 5,
+  "kind": "null_fn x5"
+ },
+ "diff": 0.012313725490196104,
+ "ci_lo": -0.017884313725488984,
+ "ci_hi": 0.04219803921568982,
+ "ci_method": "phase3_block",
+ "p": 0.4217555483645832,
+ "halves": {
+  "H1": {
+   "n": 597,
+   "diff": -0.010720268006700173,
+   "ci_lo": -0.05261306532663322,
+   "ci_hi": 0.03417922948073697,
+   "ci_method": "iid",
+   "p": 0.6282615191526918,
+   "start": "2016-01-05 00:01:00+00:00",
+   "end": "2020-12-30 00:54:00+00:00"
+  },
+  "H2": {
+   "n": 678,
+   "diff": 0.03259587020648963,
+   "ci_lo": -0.009166666666666724,
+   "ci_hi": 0.07212758112094429,
+   "ci_method": "block",
+   "p": 0.11601073795533474,
+   "start": "2021-01-07 23:26:00+00:00",
+   "end": "2026-07-22 22:05:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 305,
+   "diff": -0.01704918032786884,
+   "ci_lo": -0.07477049180327873,
+   "ci_hi": 0.04331147540983598,
+   "ci_method": "iid",
+   "p": 0.5714100963753299,
+   "start": "2016-01-05 00:01:00+00:00",
+   "end": "2018-08-12 22:01:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 320,
+   "diff": -0.0068750000000000755,
+   "ci_lo": -0.07128125000000003,
+   "ci_hi": 0.05376562499999995,
+   "ci_method": "iid",
+   "p": 0.829365645614148,
+   "start": "2018-08-29 20:13:00+00:00",
+   "end": "2021-04-09 07:11:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 313,
+   "diff": 0.017571884984025565,
+   "ci_lo": -0.0479313099041536,
+   "ci_hi": 0.08819488817891284,
+   "ci_method": "block",
+   "p": 0.6128532061487493,
+   "start": "2021-04-12 12:03:00+00:00",
+   "end": "2023-11-30 23:24:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 337,
+   "diff": 0.05222551928783381,
+   "ci_lo": 0.000593471810089008,
+   "ci_hi": 0.11040059347181008,
+   "ci_method": "iid",
+   "p": 0.06227082104898531,
+   "start": "2023-12-06 06:19:00+00:00",
+   "end": "2026-07-22 22:05:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.04294104860209484,
+ "mde_threshold": 0.05,
+ "power_floor_n": 941,
+ "verdict": "NULL",
+ "verdict_detail": "CI contains 0; powered (MDE 0.0429 <= 0.0500)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 1275,
+  "min_slack_min": 0.0,
+  "passed": true,
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 105,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "side",
+    "pdh",
+    "pdl",
+    "eq"
+   ],
+   "ignored": [],
+   "lookback": "10D",
+   "recent": "1D",
+   "events_fp": "6b5338b2bd83db45",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "reps": 5,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "mde_threshold": null,
+  "cluster": null,
+  "outcome_horizon": "1 days 00:00:00",
+  "null_kind": "null_fn x5"
+ },
+ "notes": "Inside-day is read causally (inside so far), since a completed inside day is only known at its close. The EQ-first reaction is the concept's first measurable ('reaction rate at previous day EQ on inside days'). The unpublished inside-day entry model is out of scope by design.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/liquidity_own_02b/inside-day-three-levels.py",
+ "runtime_sec": 0.48,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:13:07+00:00",
+ "dropped": {
+  "nan_rows": 0
+ },
+ "null_kind": "null_fn x5",
+ "events_fp": "6b5338b2bd83db45",
+ "predictors_probed": true,
+ "ci_components": {
+  "phase3_block": [
+   -0.017884313725488984,
+   0.04219803921568982
+  ],
+  "day_block": [
+   -0.015529411764703587,
+   0.03921960784313959
+  ]
+ },
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 1275,
+  "n_clusters": null,
+  "n_eff": 1275
+ },
+ "run_id": "e09dbea9aed740af917bc17cdad397d7",
+ "hyp_key": "79e2115732574130"
+}

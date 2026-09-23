@@ -1,0 +1,278 @@
+{
+ "concept_id": "aggressive-expansion-no-retracement",
+ "reading": null,
+ "testable": true,
+ "test_type": "gate",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "15min bars; live short-term high = latest fractal 2/2 swing high confirmed before the bar; break = first CLOSE above it (mirror for lows)",
+   "window = 4 candles from the break bar; decide at the close of its last candle",
+   "aggressive := win_range/pre_range >= 1.5 AND (window extreme - level)/pre_range >= 0.65 (pre_range = the 4 candles before the break)",
+   "enter next M1 open in the break direction; stop = 50% retracement of the impulse leg (lowest low from the swing bar to the window end -> window high); skip if the window already closed beyond it; target 1.0R; exit after 150min",
+   "gate_test: aggressive breaks vs the rest, control-adjusted R, claim '+'"
+  ],
+  "params": {
+   "tf": "15min",
+   "window_n": 4,
+   "r_cut": 1.5,
+   "d_cut": 0.65,
+   "swing": "fractal 2/2",
+   "shallow_cut": 0.5,
+   "rr": 1.0,
+   "max_hold": "150min"
+  }
+ },
+ "params_source": {
+  "tf": "corpus: aggressive-expansion-no-retracement.yaml timeframes ltf 15m",
+  "window_n": "threshold_fits: \u00a72 displacement magnitude N=4",
+  "r_cut": "threshold_fits: \u00a72 win_range/pre_range >= 1.5",
+  "d_cut": "threshold_fits: \u00a72 dist/pre_range >= 0.65",
+  "swing": "threshold_fits: \u00a72 breaks of fractal 2/2 short-term highs/lows",
+  "shallow_cut": "threshold_fits: \u00a73 shallow retracement leg <= 0.50",
+  "rr": "declared-before-run: 1R = an equal extension, the no-retracement outcome against the deep-retracement outcome",
+  "max_hold": "phase3: 10 entry-TF bars (\u00a71.13)"
+ },
+ "n": 7184,
+ "span": {
+  "start": "2016-01-04 05:45:00+00:00",
+  "end": "2026-07-23 02:30:00+00:00",
+  "years": 10.546
+ },
+ "avg_R": -0.049651167239165295,
+ "avg_R_gross": -0.009651167239165266,
+ "win_rate": 0.4844097995545657,
+ "pf": 0.8959760463480687,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "avg_R_gated": -0.04906103408740908,
+  "avg_R_complement": -0.06364190049019207,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": 0.012236831289848597,
+ "ci_lo": -0.018926856011401646,
+ "ci_hi": 0.04340883074791184,
+ "ci_method": "phase3_iid",
+ "p": 0.44159476774338335,
+ "halves": {
+  "H1": {
+   "n": 8223,
+   "diff": -0.004281810239176875,
+   "ci_lo": -0.05003041499767257,
+   "ci_hi": 0.03730472111357623,
+   "ci_method": "iid",
+   "p": 0.8475983291287095,
+   "start": "2016-01-04 05:45:00+00:00",
+   "end": "2020-12-31 20:00:00+00:00",
+   "n_gated": 3538
+  },
+  "H2": {
+   "n": 9334,
+   "diff": 0.02754065329533698,
+   "ci_lo": -0.01642214866896537,
+   "ci_hi": 0.06921602474047138,
+   "ci_method": "iid",
+   "p": 0.20744501560513667,
+   "start": "2021-01-04 00:00:00+00:00",
+   "end": "2026-07-23 02:30:00+00:00",
+   "n_gated": 3646
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 4339,
+   "diff": 0.011428622673279307,
+   "ci_lo": -0.05036409671069497,
+   "ci_hi": 0.0722489232172652,
+   "ci_method": "iid",
+   "p": 0.7148336559729881,
+   "start": "2016-01-04 05:45:00+00:00",
+   "end": "2018-08-22 09:30:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 4345,
+   "diff": 0.0019165823363526853,
+   "ci_lo": -0.05993571098364027,
+   "ci_hi": 0.062393493051465757,
+   "ci_method": "iid",
+   "p": 0.9510285979257835,
+   "start": "2018-08-22 12:00:00+00:00",
+   "end": "2021-04-12 07:00:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 4455,
+   "diff": 0.017112672999132286,
+   "ci_lo": -0.04710047002100962,
+   "ci_hi": 0.07918176953382242,
+   "ci_method": "block",
+   "p": 0.5952839219009667,
+   "start": "2021-04-12 10:30:00+00:00",
+   "end": "2023-12-01 17:00:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 4418,
+   "diff": 0.018653347116835584,
+   "ci_lo": -0.04308666671453295,
+   "ci_hi": 0.07873642611256353,
+   "ci_method": "iid",
+   "p": 0.5483644350674648,
+   "start": "2023-12-04 00:00:00+00:00",
+   "end": "2026-07-23 02:30:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.04455151344351001,
+ "mde_threshold": 0.1,
+ "power_floor_n": 1426,
+ "verdict": "NULL",
+ "verdict_detail": "CI contains 0; powered (MDE 0.0446 <= 0.1000)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 17557,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "gate_mask_checked": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 64.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 1303,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "rr",
+    "aggressive"
+   ],
+   "ignored": [],
+   "lookback": "10D",
+   "recent": "1D",
+   "events_fp": "62c39ec3caa94571",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "150min",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": null,
+  "entry_mode": "next_open",
+  "hold_basis": "clock",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "The aggressive classifier is threshold_fits' absolute proxy for the corpus's relative displacement test; the corpus gives no classifier of its own (status underspecified).",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/structure_own_03a/aggressive-expansion-no-retracement.py",
+ "runtime_sec": 5.45,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:32:03+00:00",
+ "n_events_in": 17741,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 166,
+  "target_not_beyond_entry": 0,
+  "no_bars_in_hold": 18
+ },
+ "n_complement": 10373,
+ "gate_firing_rate": 0.4091815230392436,
+ "events_fp": "62c39ec3caa94571",
+ "mask_fp": "a5b9ab4bece3d2fa",
+ "mask_col": "aggressive",
+ "exit_mix": {
+  "stop": 0.42692093541202675,
+  "target": 0.42733853006681516,
+  "time": 0.14574053452115812
+ },
+ "gated_vs_own_control": {
+  "diff": -0.0005901331517562114,
+  "ci_lo": -0.02422112167096587,
+  "ci_hi": 0.021926158578651923,
+  "p": 0.9600202384846788
+ },
+ "complement": {
+  "n": 10373,
+  "avg_R": -0.07646886493179689,
+  "win_rate": 0.4745011086474501,
+  "pf": 0.8477286982113551,
+  "sd_R": 0.952896888367931,
+  "exit_mix": {
+   "stop": 0.4602332979851538,
+   "target": 0.42861274462546994,
+   "time": 0.11115395738937627
+  },
+  "vs_own_control": {
+   "diff": -0.012826964441604818,
+   "ci_lo": -0.03302715235840641,
+   "ci_hi": 0.0067564178195470585,
+   "p": 0.20628105646678468
+  }
+ },
+ "ci_components": {
+  "phase3_iid": [
+   -0.018926856011401646,
+   0.04340883074791184
+  ],
+  "day_block": [
+   -0.01886314219666089,
+   0.042860376947705635
+  ]
+ },
+ "diff_meaning": "mean(R-ctrl | gated) - mean(R-ctrl | complement)",
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_eff_gated": 2643,
+  "n_eff_complement": 2693,
+  "n_eff": 2643
+ },
+ "ties": {
+  "real_ambiguous": 0.0207894287178903,
+  "control_ambiguous": 0.02501566326821211,
+  "real_gap_stop": 0.01287235860340605,
+  "control_gap_stop": 0.011573731275274819,
+  "gated_excess": 0.0012527839643652562,
+  "complement_excess": -0.008020823291236866,
+  "verdict_stop_first": "NULL"
+ },
+ "ctrl_overlap": 0.036156518767443184,
+ "exposure_bars": {
+  "real_mean": 143.00039870137266,
+  "control_mean": 143.01428490060945,
+  "hold_basis": "clock"
+ },
+ "run_id": "edb738b6b53245f3bc14b9e3b09406ee",
+ "hyp_key": "34efa38d76091a75"
+}

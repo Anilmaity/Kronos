@@ -1,0 +1,204 @@
+{
+ "concept_id": "ten-am-candle-alignment",
+ "reading": "b",
+ "testable": true,
+ "test_type": "rate",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "4H bars on the futures grid 18/22/02/06/10/14 NY",
+   "prior candle expanded: body != 0 and opposing run / |body| <= 1.0",
+   "at the next candle's open (18:00 reopen flip excluded): hit = price trades back to the prior body's midpoint within the first 60 M1 bars",
+   "null = same signed distance/side/60 bars at the same NY clock on a random other day within +/-30 days"
+  ],
+  "params": {
+   "grid4h": "futures",
+   "wick_cut": 1.0,
+   "horizon_bars": 60,
+   "retrace_level": "0.5 of prior body",
+   "exclude_flip": "18:00",
+   "null_tod_tol_min": 0
+  }
+ },
+ "params_source": {
+  "grid4h": "corpus: EYzP7c24AwM '10:00 and 2:00 will be a 4-Hour candle' (18/22/02/06/10/14 grid); phase3: grid carried as a knob",
+  "wick_cut": "threshold_fits: small wick / expansion candle opposing_run/|body| <= 1.0 (grade A)",
+  "horizon_bars": "declared-before-run: 'on the flip' = the first hour of the new 4H candle (measurable: 4H extremes within the first hour)",
+  "retrace_level": "declared-before-run: 0.5 of the body (the corpus's 0.5 / consequent-encroachment rule, threshold_fits 'shallow' cut)",
+  "exclude_flip": "session_window_fit: the 18:00 reopen is a gap artefact",
+  "null_tod_tol_min": "declared-before-run: clock-fixed null (README trap 9)"
+ },
+ "n": 8966,
+ "span": {
+  "start": "2016-01-04 03:00:00+00:00",
+  "end": "2026-07-23 06:00:00+00:00",
+  "years": 10.549
+ },
+ "avg_R": null,
+ "avg_R_gross": null,
+ "win_rate": null,
+ "pf": null,
+ "observed_rate": 0.33749721168860136,
+ "null_rate": 0.35527548516618335,
+ "lift": 0.949959188798895,
+ "control": {
+  "rate": 0.35527548516618335,
+  "reps": 5,
+  "kind": "null_fn x5"
+ },
+ "diff": -0.017778273477581985,
+ "ci_lo": -0.028530559892928832,
+ "ci_hi": -0.006825228641534644,
+ "ci_method": "phase3_iid",
+ "p": 0.0013240689122014525,
+ "halves": {
+  "H1": {
+   "n": 4191,
+   "diff": -0.02037699832975426,
+   "ci_lo": -0.037565020281555755,
+   "ci_hi": -0.0031949415413982988,
+   "ci_method": "iid",
+   "p": 0.020125021059326228,
+   "start": "2016-01-04 03:00:00+00:00",
+   "end": "2020-12-31 11:00:00+00:00"
+  },
+  "H2": {
+   "n": 4775,
+   "diff": -0.015497382198952858,
+   "ci_lo": -0.03120732984293193,
+   "ci_hi": 0.0002523560209423422,
+   "ci_method": "iid",
+   "p": 0.053483174255191834,
+   "start": "2021-01-04 03:00:00+00:00",
+   "end": "2026-07-23 06:00:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 2184,
+   "diff": -0.02115384615384619,
+   "ci_lo": -0.04505952380952382,
+   "ci_hi": 0.0049473443223443025,
+   "ci_method": "iid",
+   "p": 0.09727643859107499,
+   "start": "2016-01-04 03:00:00+00:00",
+   "end": "2018-08-21 14:00:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 2238,
+   "diff": -0.021179624664879437,
+   "ci_lo": -0.045757372654155554,
+   "ci_hi": 0.0032283288650580577,
+   "ci_method": "iid",
+   "p": 0.09010702680655226,
+   "start": "2018-08-22 18:00:00+00:00",
+   "end": "2021-04-12 02:00:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 2253,
+   "diff": -0.013848202396804288,
+   "ci_lo": -0.036930758988015976,
+   "ci_hi": 0.011276076342654227,
+   "ci_method": "iid",
+   "p": 0.26013865443657525,
+   "start": "2021-04-12 10:00:00+00:00",
+   "end": "2023-12-01 19:00:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 2291,
+   "diff": -0.01510257529463116,
+   "ci_lo": -0.03683980794412928,
+   "ci_hi": 0.008476647752073286,
+   "ci_method": "iid",
+   "p": 0.19141964066719247,
+   "start": "2023-12-04 03:00:00+00:00",
+   "end": "2026-07-23 06:00:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.015512869229724932,
+ "mde_threshold": 0.05,
+ "power_floor_n": 864,
+ "verdict": "NEGATIVE",
+ "verdict_detail": "CI excludes 0 against the claim (+)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 8966,
+  "min_slack_min": 0.0,
+  "passed": true,
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 694,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "level_px"
+   ],
+   "ignored": [],
+   "lookback": "10D",
+   "recent": "1D",
+   "events_fp": "b5dd2d6b9ac8c090",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "reps": 5,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "mde_threshold": null,
+  "cluster": null,
+  "outcome_horizon": "1 days 00:00:00",
+  "null_kind": "null_fn x5"
+ },
+ "notes": "Reading b: retracement at the 4H flip after an expansion candle, futures grid as the corpus states (gold's locked default is the forex grid).",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/time_own_01b/ten-am-candle-alignment.py",
+ "runtime_sec": 1.19,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:41:04+00:00",
+ "dropped": {
+  "nan_rows": 0
+ },
+ "null_kind": "null_fn x5",
+ "events_fp": "b5dd2d6b9ac8c090",
+ "predictors_probed": true,
+ "ci_components": {
+  "phase3_iid": [
+   -0.028530559892928832,
+   -0.006825228641534644
+  ],
+  "day_block": [
+   -0.027130723282011732,
+   -0.0080750794507207
+  ]
+ },
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 2711,
+  "n_clusters": null,
+  "n_eff": 2711
+ },
+ "run_id": "281e5cee4ebb4ea480722fbc3ef89fa2",
+ "hyp_key": "e15c0f6ae8a03284"
+}

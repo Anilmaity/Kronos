@@ -1,0 +1,204 @@
+{
+ "concept_id": "trend-by-previous-day-extremes",
+ "reading": null,
+ "testable": true,
+ "test_type": "rate",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "daily candles on the 18:00 NY trading day; sessions with < 600 M1 bars dropped",
+   "take = wick through the previous session's high (low)",
+   "bull trend = the last 2 sessions each took their previous day's high; bear = each took the previous low; both at once -> dropped",
+   "decide at the session close; level = that session's high (bull) / low (bear)",
+   "hit = level touched during the next session (M1-bar horizon)",
+   "null = same signed distance from price, same side, same bar horizon, 5 random moments within +/-30 days"
+  ],
+  "params": {
+   "n_trend": 2,
+   "take": "wick",
+   "min_bars": 600,
+   "day_open_hour": 18,
+   "horizon": "next session M1 bars"
+  }
+ },
+ "params_source": {
+  "n_trend": "declared-before-run: 'over and over again' / 'each successive day'; no count given (ambiguity) -> the minimum repetition, 2 consecutive days",
+  "take": "declared-before-run: literal 'take' = trade through (wick); close-beyond is not stated",
+  "min_bars": "declared-before-run: README trap 6 stub sessions (example uses >600)",
+  "day_open_hour": "session_window_fit: settled 18:00 NY daily roll",
+  "horizon": "corpus: FXJBFbZQbck 'the draw for the coming day' -> one session"
+ },
+ "n": 1328,
+ "span": {
+  "start": "2016-01-07 23:00:00+00:00",
+  "end": "2026-07-22 22:00:00+00:00",
+  "years": 10.535
+ },
+ "avg_R": null,
+ "avg_R_gross": null,
+ "win_rate": null,
+ "pf": null,
+ "observed_rate": 0.5067771084337349,
+ "null_rate": 0.5489457831325302,
+ "lift": 0.9231824417009601,
+ "control": {
+  "rate": 0.5489457831325302,
+  "reps": 5,
+  "kind": "null_fn x5"
+ },
+ "diff": -0.04216867469879526,
+ "ci_lo": -0.07290286144578316,
+ "ci_hi": -0.012349397590361463,
+ "ci_method": "phase3_iid",
+ "p": 0.006337490819244868,
+ "halves": {
+  "H1": {
+   "n": 615,
+   "diff": -0.05170731707317078,
+   "ci_lo": -0.09756097560975607,
+   "ci_hi": -0.00517886178861795,
+   "ci_method": "iid",
+   "p": 0.02823338455535872,
+   "start": "2016-01-07 23:00:00+00:00",
+   "end": "2020-12-31 23:00:00+00:00"
+  },
+  "H2": {
+   "n": 713,
+   "diff": -0.033941093969144465,
+   "ci_lo": -0.07714586255259469,
+   "ci_hi": 0.009270687237026705,
+   "ci_method": "iid",
+   "p": 0.12365866294600499,
+   "start": "2021-01-04 23:00:00+00:00",
+   "end": "2026-07-22 22:00:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 325,
+   "diff": -0.03876923076923078,
+   "ci_lo": -0.10278461538461545,
+   "ci_hi": 0.027076923076923002,
+   "ci_method": "iid",
+   "p": 0.24189378480713675,
+   "start": "2016-01-07 23:00:00+00:00",
+   "end": "2018-08-21 22:00:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 328,
+   "diff": -0.05426829268292688,
+   "ci_lo": -0.11646341463414628,
+   "ci_hi": 0.01103658536585372,
+   "ci_method": "iid",
+   "p": 0.09522576848128875,
+   "start": "2018-08-22 22:00:00+00:00",
+   "end": "2021-04-06 22:00:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 346,
+   "diff": -0.05375722543352601,
+   "ci_lo": -0.1173554913294798,
+   "ci_hi": 0.009248554913294793,
+   "ci_method": "iid",
+   "p": 0.09602514020559738,
+   "start": "2021-04-12 22:00:00+00:00",
+   "end": "2023-11-29 23:00:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 329,
+   "diff": -0.021276595744680882,
+   "ci_lo": -0.08937689969604853,
+   "ci_hi": 0.04621580547112465,
+   "ci_method": "iid",
+   "p": 0.5384903844289146,
+   "start": "2023-12-04 23:00:00+00:00",
+   "end": "2026-07-22 22:00:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.043277753069799134,
+ "mde_threshold": 0.05,
+ "power_floor_n": 995,
+ "verdict": "NEGATIVE",
+ "verdict_detail": "CI excludes 0 against the claim (+)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 1328,
+  "min_slack_min": 0.0,
+  "passed": true,
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 98,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "level"
+   ],
+   "ignored": [],
+   "lookback": "20D",
+   "recent": "1D",
+   "events_fp": "a9802ebc140a5f4f",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "reps": 5,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "mde_threshold": null,
+  "cluster": null,
+  "outcome_horizon": "1 days 00:00:00",
+  "null_kind": "null_fn x5"
+ },
+ "notes": "Tests the trend-conditioned next-day draw vs a geometry-matched null (the raw hit rate is mostly distance).",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/structure_own_05b/trend-by-previous-day-extremes.py",
+ "runtime_sec": 0.51,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:25:23+00:00",
+ "dropped": {
+  "nan_rows": 0
+ },
+ "null_kind": "null_fn x5",
+ "events_fp": "a9802ebc140a5f4f",
+ "predictors_probed": true,
+ "ci_components": {
+  "phase3_iid": [
+   -0.07290286144578316,
+   -0.012349397590361463
+  ],
+  "day_block": [
+   -0.06552710843373435,
+   -0.018072289156625947
+  ]
+ },
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 1328,
+  "n_clusters": null,
+  "n_eff": 1328
+ },
+ "run_id": "328fa5c0ac21460fa839c571eeb3d9f2",
+ "hyp_key": "dd652d77d36d043e"
+}

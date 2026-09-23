@@ -1,0 +1,11 @@
+import numpy as np, pandas as pd
+tr = pd.read_pickle("orig_trades.pkl"); ev = pd.read_pickle("indep_events.pkl")
+m = tr.merge(ev.reset_index().rename(columns={"index":"ev_id"})[["ev_id","R","CR","my_gate"]], on="ev_id")
+print(len(tr), "matched", len(m))
+print("max |R diff|", np.nanmax(np.abs(m.net_R - m.R)), "frac equal", np.mean(np.isclose(m.net_R, m.R, atol=1e-9)))
+print(m[~np.isclose(m.net_R, m.R, atol=1e-6)][["decision_time","net_R","R","reason"]].head())
+g = m.gate.to_numpy()
+print("harness raw: gated", m.net_R[g].mean(), "compl", m.net_R[~g].mean(), "diff", m.net_R[g].mean()-m.net_R[~g].mean())
+print("harness ctrl: gated", m.ctrl_mean_R[g].mean(), "compl", m.ctrl_mean_R[~g].mean())
+print("my ctrl on same rows: gated", m.CR[g].mean(), "compl", m.CR[~g].mean())
+print("ctrl_n dist", m.ctrl_n.value_counts().head())

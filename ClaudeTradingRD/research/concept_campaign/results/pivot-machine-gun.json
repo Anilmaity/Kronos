@@ -1,0 +1,272 @@
+{
+ "concept_id": "pivot-machine-gun",
+ "reading": null,
+ "testable": true,
+ "test_type": "gate",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "1h bars (forex grid); STRAT types vs previous bar, equal extremes not taken.",
+   "Run = consecutive same-direction 2s; trigger = the next bar is a 2 in the opposite direction; decide at its close against the run.",
+   "Stop = run extreme; target = the opposite extreme of the bar before the run's first 2 (retrace through the whole stack); max_hold 24h.",
+   "Book = runs >= 2; gate machine_gun = run >= 5; complement = runs of 2-4."
+  ],
+  "params": {
+   "tf": "1h",
+   "min_run_baseline": 2,
+   "machine_gun_len": 5,
+   "max_hold": "24h",
+   "grid4h": "forex (n/a at 1h)"
+  }
+ },
+ "params_source": {
+  "tf": "declared-before-run: 1h (listed LTF)",
+  "min_run_baseline": "declared-before-run: shortest multi-pivot stack (2) as the 'shorter one' of the measurable",
+  "machine_gun_len": "corpus: 1XWyy6Q-_8Q 'twos to the upside all in the same direction for five or more candles'",
+  "max_hold": "declared-before-run: 24h",
+  "grid4h": "declared-before-run: forex grid default"
+ },
+ "n": 421,
+ "span": {
+  "start": "2016-01-05 19:00:00+00:00",
+  "end": "2026-07-22 17:00:00+00:00",
+  "years": 10.541
+ },
+ "avg_R": 0.05242391580645182,
+ "avg_R_gross": 0.09242391580645178,
+ "win_rate": 0.334916864608076,
+ "pf": 1.0788626920082502,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "avg_R_gated": -0.04879123016409867,
+  "avg_R_complement": -0.0479196266491541,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": 0.09723817009003106,
+ "ci_lo": -0.12807490827556733,
+ "ci_hi": 0.3266643898911806,
+ "ci_method": "phase3_block",
+ "p": 0.4019132675381006,
+ "halves": {
+  "H1": {
+   "n": 2390,
+   "diff": -0.12713047141557568,
+   "ci_lo": -0.4880072099736028,
+   "ci_hi": 0.23576517152204618,
+   "ci_method": "block",
+   "p": 0.49111621774969805,
+   "start": "2016-01-05 19:00:00+00:00",
+   "end": "2020-12-31 20:00:00+00:00",
+   "n_gated": 172
+  },
+  "H2": {
+   "n": 2846,
+   "diff": 0.25799213393267606,
+   "ci_lo": -0.008312580917904077,
+   "ci_hi": 0.5235523465406364,
+   "ci_method": "block",
+   "p": 0.05724407423417537,
+   "start": "2021-01-04 05:00:00+00:00",
+   "end": "2026-07-22 17:00:00+00:00",
+   "n_gated": 249
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 1242,
+   "diff": -0.3119801933636006,
+   "ci_lo": -0.6754484053881546,
+   "ci_hi": 0.061419991183559966,
+   "ci_method": "block",
+   "p": 0.09698590482024545,
+   "start": "2016-01-05 19:00:00+00:00",
+   "end": "2018-08-21 20:00:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 1288,
+   "diff": 0.0729420368354651,
+   "ci_lo": -0.3501631435079392,
+   "ci_hi": 0.5395594690727382,
+   "ci_method": "iid",
+   "p": 0.7479322490905457,
+   "start": "2018-08-22 14:00:00+00:00",
+   "end": "2021-04-09 15:00:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 1351,
+   "diff": 0.0704261707745043,
+   "ci_lo": -0.30019474866410467,
+   "ci_hi": 0.4640507165051871,
+   "ci_method": "iid",
+   "p": 0.717930325020174,
+   "start": "2021-04-12 09:00:00+00:00",
+   "end": "2023-12-01 20:00:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 1355,
+   "diff": 0.43731470971260417,
+   "ci_lo": 0.0430070474027778,
+   "ci_hi": 0.8483137088207764,
+   "ci_method": "iid",
+   "p": 0.0332805399120467,
+   "start": "2023-12-04 10:00:00+00:00",
+   "end": "2026-07-22 17:00:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.3250036216620531,
+ "mde_threshold": 0.1,
+ "power_floor_n": 4447,
+ "verdict": "UNDERPOWERED",
+ "verdict_detail": "CI contains 0; MDE 0.3250 vs threshold 0.1000, effective n 400 (power floor n=4447, have 421)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 5236,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "gate_mask_checked": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 300.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 392,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "target_px",
+    "run_len",
+    "machine_gun"
+   ],
+   "ignored": [],
+   "lookback": "10D",
+   "recent": "1D",
+   "events_fp": "ea0a4ac6317be6d4",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "24h",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": null,
+  "entry_mode": "next_open",
+  "hold_basis": "clock",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "Speed/acceleration is scored as reaching the stack's base before the run extreme, control-adjusted.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/structure_guest_01b/pivot-machine-gun.py",
+ "runtime_sec": 2.34,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:20:40+00:00",
+ "n_events_in": 5297,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 6,
+  "target_not_beyond_entry": 14,
+  "no_bars_in_hold": 41
+ },
+ "n_complement": 4815,
+ "gate_firing_rate": 0.08040488922841864,
+ "events_fp": "ea0a4ac6317be6d4",
+ "mask_fp": "4fa7da603be1711b",
+ "mask_col": "machine_gun",
+ "exit_mix": {
+  "stop": 0.6247030878859857,
+  "target": 0.2494061757719715,
+  "time": 0.12589073634204276
+ },
+ "gated_vs_own_control": {
+  "diff": 0.10121514597055048,
+  "ci_lo": -0.11107259742115103,
+  "ci_hi": 0.3318306726159589,
+  "p": 0.3703555671031217
+ },
+ "complement": {
+  "n": 4815,
+  "avg_R": -0.0439426507686347,
+  "win_rate": 0.44963655244029077,
+  "pf": 0.9196812388994223,
+  "sd_R": 1.4273585450142703,
+  "exit_mix": {
+   "stop": 0.5185877466251299,
+   "target": 0.4344755970924195,
+   "time": 0.046936656282450674
+  },
+  "vs_own_control": {
+   "diff": 0.003976975880519401,
+   "ci_lo": -0.03950007847109489,
+   "ci_hi": 0.048684212324113345,
+   "p": 0.8596790598470482
+  }
+ },
+ "ci_components": {
+  "phase3_block": [
+   -0.12807490827556733,
+   0.3266643898911806
+  ],
+  "day_block": [
+   -0.1008296478277159,
+   0.2988658287105569
+  ]
+ },
+ "diff_meaning": "mean(R-ctrl | gated) - mean(R-ctrl | complement)",
+ "dependence": {
+  "day_block_mean_days": 3,
+  "n_eff_gated": 400,
+  "n_eff_complement": 2298,
+  "n_eff": 400
+ },
+ "ties": {
+  "real_ambiguous": 0.00019098548510313216,
+  "control_ambiguous": 0.0005347593582887701,
+  "real_gap_stop": 0.012605042016806723,
+  "control_gap_stop": 0.011191749427043545,
+  "gated_excess": 0.0,
+  "complement_excess": -0.0003738317757009346,
+  "verdict_stop_first": "UNDERPOWERED"
+ },
+ "ctrl_overlap": 0.04236058059587471,
+ "exposure_bars": {
+  "real_mean": 1218.292780748663,
+  "control_mean": 1225.3455691367456,
+  "hold_basis": "clock"
+ },
+ "run_id": "40b7dc76153a427da90bac1e96542e41",
+ "hyp_key": "ac2a5d0388cf3888"
+}

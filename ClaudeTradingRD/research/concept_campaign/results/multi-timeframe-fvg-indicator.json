@@ -1,0 +1,278 @@
+{
+ "concept_id": "multi-timeframe-fvg-indicator",
+ "reading": null,
+ "testable": true,
+ "test_type": "gate",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "baseline: every 5m 3-candle FVG traded on its first M1 return within 48 5m bars; decide at that M1 close if not closed beyond the far edge; enter next M1 open; stop at the far edge; target 2R; max hold 50 min",
+   "gate: at the decision, the 5m gap intersects >= 1 same-direction 10m or 15m FVG formed within the prior 4h and whose far edge has not been traded through (M1) from its close up to the touch M1",
+   "mask known at the decision"
+  ],
+  "params": {
+   "entry_tf": "5min",
+   "sources": [
+    "10min",
+    "15min"
+   ],
+   "max_age_bars": 48,
+   "rr": 2.0,
+   "max_hold": "50min",
+   "htf_live": "4h",
+   "min_overlaps": 1
+  }
+ },
+ "params_source": {
+  "entry_tf": "corpus: 0bH_kkG2q6s 'a five-minute gap that coincides with gaps from a couple of other timeframes'",
+  "sources": "corpus: 0bH_kkG2q6s preferred sources 5/10/15-minute",
+  "max_age_bars": "declared-before-run: a 5m gap stays live 4h",
+  "rr": "method_spec \u00a75.3: 2R floor",
+  "max_hold": "phase3: 10 entry-TF bars (\u00a71.13)",
+  "htf_live": "declared-before-run: HTF gap considered live 4h unless traded through",
+  "min_overlaps": "declared-before-run: overlap count unstated; >=1 other timeframe"
+ },
+ "n": 35076,
+ "span": {
+  "start": "2016-01-03 23:15:00+00:00",
+  "end": "2026-07-23 03:28:00+00:00",
+  "years": 10.549
+ },
+ "avg_R": -0.010464209210117545,
+ "avg_R_gross": 0.029535790789882485,
+ "win_rate": 0.36372448397764856,
+ "pf": 0.9838021984440726,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "avg_R_gated": -0.05970023643644803,
+  "avg_R_complement": -0.09354152979078029,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": 0.01867326546202604,
+ "ci_lo": -0.0011163934306968276,
+ "ci_hi": 0.038308480318141575,
+ "ci_method": "phase3_block",
+ "p": 0.06336217766986751,
+ "halves": {
+  "H1": {
+   "n": 49771,
+   "diff": 0.022643397060992894,
+   "ci_lo": -0.006608165073930598,
+   "ci_hi": 0.05111085062749912,
+   "ci_method": "iid",
+   "p": 0.12409674472629663,
+   "start": "2016-01-03 23:15:00+00:00",
+   "end": "2020-12-31 21:50:00+00:00",
+   "n_gated": 15034
+  },
+  "H2": {
+   "n": 64046,
+   "diff": 0.015777663690941825,
+   "ci_lo": -0.009089136028455513,
+   "ci_hi": 0.04055889977399823,
+   "ci_method": "iid",
+   "p": 0.21286902436242372,
+   "start": "2021-01-03 23:11:00+00:00",
+   "end": "2026-07-23 03:28:00+00:00",
+   "n_gated": 20042
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 22596,
+   "diff": 0.008880049247382622,
+   "ci_lo": -0.033812325772252586,
+   "ci_hi": 0.05195365858419605,
+   "ci_method": "block",
+   "p": 0.6848440025367525,
+   "start": "2016-01-03 23:15:00+00:00",
+   "end": "2018-08-22 10:33:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 30269,
+   "diff": 0.030793397171788597,
+   "ci_lo": -0.005675322504382005,
+   "ci_hi": 0.06967958234132263,
+   "ci_method": "iid",
+   "p": 0.10918688876841243,
+   "start": "2018-08-22 12:01:00+00:00",
+   "end": "2021-04-12 08:10:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 30924,
+   "diff": 0.008583749643592934,
+   "ci_lo": -0.027493939417444654,
+   "ci_hi": 0.044057213573280636,
+   "ci_method": "iid",
+   "p": 0.6381689186400672,
+   "start": "2021-04-12 08:46:00+00:00",
+   "end": "2023-12-01 21:15:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 30028,
+   "diff": 0.024604613023453514,
+   "ci_lo": -0.013339906321056503,
+   "ci_hi": 0.0631758175964116,
+   "ci_method": "iid",
+   "p": 0.20748790992850982,
+   "start": "2023-12-03 23:07:00+00:00",
+   "end": "2026-07-23 03:28:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.028177082569281742,
+ "mde_threshold": 0.1,
+ "power_floor_n": 2785,
+ "verdict": "NULL",
+ "verdict_detail": "CI contains 0; powered (MDE 0.0282 <= 0.1000)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 113817,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "gate_mask_checked": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 10.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 8385,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "direction",
+    "stop_px",
+    "gap_close",
+    "mtf_overlap",
+    "available_at",
+    "rr"
+   ],
+   "ignored": [],
+   "lookback": "5D",
+   "recent": "1D",
+   "events_fp": "bbb258dc220dedbc",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "50min",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": null,
+  "entry_mode": "next_open",
+  "hold_basis": "clock",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "Gate test of the indicator's one testable claim: MTF overlap makes a gap more reactive. A first run evaluated overlap at the 5m gap's close (gate rate 3.9%, diff +0.038 [-0.008,+0.084] NULL); fixed to evaluate at the touch/decision, as the chart shows it, and re-run once. Both runs are ledgered.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/model_guest_02b/multi-timeframe-fvg-indicator.py",
+ "runtime_sec": 16.92,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:14:57+00:00",
+ "n_events_in": 117794,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 3950,
+  "target_not_beyond_entry": 0,
+  "no_bars_in_hold": 27
+ },
+ "n_complement": 78741,
+ "gate_firing_rate": 0.3081789187906903,
+ "events_fp": "bbb258dc220dedbc",
+ "mask_fp": "46a7122a55cfb2c3",
+ "mask_col": "mtf_overlap",
+ "exit_mix": {
+  "stop": 0.6086497890295358,
+  "target": 0.30502337780818795,
+  "time": 0.0863268331622762
+ },
+ "gated_vs_own_control": {
+  "diff": 0.049236027226330484,
+  "ci_lo": 0.03397139523008553,
+  "ci_hi": 0.06570461473714807,
+  "p": 1.186869523655788e-09
+ },
+ "complement": {
+  "n": 78741,
+  "avg_R": -0.06297876802647584,
+  "win_rate": 0.3355431096887263,
+  "pf": 0.9080275130838218,
+  "sd_R": 1.3901142164792666,
+  "exit_mix": {
+   "stop": 0.6480867654716095,
+   "target": 0.3079971044309826,
+   "time": 0.043916130097407954
+  },
+  "vs_own_control": {
+   "diff": 0.030562761764304447,
+   "ci_lo": 0.019794030089775608,
+   "ci_hi": 0.04116073299717812,
+   "p": 2.0582346674647326e-08
+  }
+ },
+ "ci_components": {
+  "phase3_block": [
+   -0.0011163934306968276,
+   0.038308480318141575
+  ],
+  "day_block": [
+   -0.0005446031175678366,
+   0.03758263526142936
+  ]
+ },
+ "diff_meaning": "mean(R-ctrl | gated) - mean(R-ctrl | complement)",
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_eff_gated": 2721,
+  "n_eff_complement": 2722,
+  "n_eff": 2721
+ },
+ "ties": {
+  "real_ambiguous": 0.054113181686391315,
+  "control_ambiguous": 0.06570547457761143,
+  "real_gap_stop": 0.021464280379908097,
+  "control_gap_stop": 0.01941362010947398,
+  "gated_excess": -0.008085300490363783,
+  "complement_excess": -0.013154519246644063,
+  "verdict_stop_first": "NULL"
+ },
+ "ctrl_overlap": 0.015570608959997189,
+ "exposure_bars": {
+  "real_mean": 48.626250911551,
+  "control_mean": 48.64305507964539,
+  "hold_basis": "clock"
+ },
+ "run_id": "d1f79ab0ac4247acbeb3e6a691c3a4dc",
+ "hyp_key": "58de4dc30d99eb65"
+}

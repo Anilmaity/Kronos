@@ -1,0 +1,274 @@
+{
+ "concept_id": "high-vs-low-resistance-liquidity",
+ "reading": "a",
+ "testable": true,
+ "test_type": "gate",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "swings: 15m fractal 2/2, decided at the close of the 2nd right-hand bar",
+   "book: bracket toward the just-confirmed swing (target = swing extreme, stop = same distance on the other side of the confirmation close), 6h trading-time hold",
+   "gate low_resistance: swing high lower than the previous swing high (swing low higher than the previous swing low) = failure swing; complement = the swing exceeded the previous one (swept it) = high resistance; equal levels dropped; previous swing must lie within 7 days"
+  ],
+  "params": {
+   "tf": "15min",
+   "left": 2,
+   "right": 2,
+   "prev_window": "7D",
+   "max_hold": "6h",
+   "hold_basis": "bars",
+   "ctrl_tod_tol_min": 30
+  }
+ },
+ "params_source": {
+  "tf": "corpus: source YAML timeframes.htf includes 15m (shorts_02/03/04)",
+  "left": "threshold_fits: short-term high/low = fractal 2/2",
+  "right": "threshold_fits: short-term high/low = fractal 2/2",
+  "prev_window": "declared-before-run: finite history for the probe",
+  "max_hold": "declared-before-run: 24 x 15m bars",
+  "hold_basis": "declared-before-run: trading-time hold (README trap 7)",
+  "ctrl_tod_tol_min": "declared-before-run: not a timing concept; swings cluster in active hours (README trap 9)"
+ },
+ "n": 34967,
+ "span": {
+  "start": "2016-01-04 01:45:00+00:00",
+  "end": "2026-07-23 04:00:00+00:00",
+  "years": 10.549
+ },
+ "avg_R": -0.05332260990207137,
+ "avg_R_gross": -0.013322609902071335,
+ "win_rate": 0.49152057654359826,
+ "pf": 0.8970875307039177,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "avg_R_gated": -0.05385419332897479,
+  "avg_R_complement": -0.04856608768196092,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": 0.006546687807930898,
+ "ci_lo": -0.011634866877800663,
+ "ci_hi": 0.023695420839393945,
+ "ci_method": "phase3_iid",
+ "p": 0.46761746306532875,
+ "halves": {
+  "H1": {
+   "n": 32642,
+   "diff": 0.017381430777829797,
+   "ci_lo": -0.007053071227613428,
+   "ci_hi": 0.04265416139653855,
+   "ci_method": "block",
+   "p": 0.17046690484383167,
+   "start": "2016-01-04 01:45:00+00:00",
+   "end": "2020-12-31 21:45:00+00:00",
+   "n_gated": 17070
+  },
+  "H2": {
+   "n": 35000,
+   "diff": -0.0032211316859477603,
+   "ci_lo": -0.02682582733742246,
+   "ci_hi": 0.020413431084370538,
+   "ci_method": "iid",
+   "p": 0.7892455123335109,
+   "start": "2021-01-03 23:30:00+00:00",
+   "end": "2026-07-23 04:00:00+00:00",
+   "n_gated": 17897
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 17360,
+   "diff": 0.002446646206815011,
+   "ci_lo": -0.03335255940015587,
+   "ci_hi": 0.035768763475092245,
+   "ci_method": "iid",
+   "p": 0.8896466378287736,
+   "start": "2016-01-04 01:45:00+00:00",
+   "end": "2018-08-22 10:45:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 17022,
+   "diff": 0.03478490603427296,
+   "ci_lo": 0.002333269634753502,
+   "ci_hi": 0.06875359664303253,
+   "ci_method": "iid",
+   "p": 0.04008222178921924,
+   "start": "2018-08-22 11:30:00+00:00",
+   "end": "2021-04-12 08:00:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 16724,
+   "diff": -0.006161515133227663,
+   "ci_lo": -0.038469243954694636,
+   "ci_hi": 0.027255475745178944,
+   "ci_method": "iid",
+   "p": 0.7132590138974957,
+   "start": "2021-04-12 09:00:00+00:00",
+   "end": "2023-12-01 21:45:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 16536,
+   "diff": -0.004907760709231715,
+   "ci_lo": -0.039115828771276166,
+   "ci_hi": 0.02708821814456501,
+   "ci_method": "iid",
+   "p": 0.7713668196958983,
+   "start": "2023-12-04 00:30:00+00:00",
+   "end": "2026-07-23 04:00:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.025250668918963985,
+ "mde_threshold": 0.1,
+ "power_floor_n": 2084,
+ "verdict": "NULL",
+ "verdict_detail": "CI contains 0; powered (MDE 0.0253 <= 0.1000)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 67642,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "gate_mask_checked": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 4380.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 4906,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "target_px",
+    "low_resistance"
+   ],
+   "ignored": [],
+   "lookback": "20D",
+   "recent": "1D",
+   "events_fp": "64ac29c6e802de19",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "6h",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": 30,
+  "entry_mode": "next_open",
+  "hold_basis": "bars",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/liquidity_own_01a/high-vs-low-resistance-liquidity.py",
+ "runtime_sec": 8.02,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:13:27+00:00",
+ "n_events_in": 67849,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 131,
+  "target_not_beyond_entry": 76,
+  "no_bars_in_hold": 0
+ },
+ "n_complement": 32675,
+ "gate_firing_rate": 0.5169421365423849,
+ "events_fp": "64ac29c6e802de19",
+ "mask_fp": "ed046d37ccee106c",
+ "mask_col": "low_resistance",
+ "exit_mix": {
+  "stop": 0.48574370120399235,
+  "target": 0.47130151285497757,
+  "time": 0.04295478594103012
+ },
+ "gated_vs_own_control": {
+  "diff": 0.0005315834269034245,
+  "ci_lo": -0.011802341991624063,
+  "ci_hi": 0.012983051810386684,
+  "p": 0.9329988294875029
+ },
+ "complement": {
+  "n": 32675,
+  "avg_R": -0.054581192062988386,
+  "win_rate": 0.4923947972456006,
+  "pf": 0.892825823653441,
+  "sd_R": 1.0005532636883308,
+  "exit_mix": {
+   "stop": 0.4745830145371079,
+   "target": 0.4617903596021423,
+   "time": 0.06362662586074981
+  },
+  "vs_own_control": {
+   "diff": -0.006015104381027467,
+   "ci_lo": -0.017619773026460218,
+   "ci_hi": 0.005584693211104276,
+   "p": 0.3095670372774782
+  }
+ },
+ "ci_components": {
+  "phase3_iid": [
+   -0.011634866877800663,
+   0.023695420839393945
+  ],
+  "day_block": [
+   -0.010324829550405795,
+   0.023145092442334356
+  ]
+ },
+ "diff_meaning": "mean(R-ctrl | gated) - mean(R-ctrl | complement)",
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_eff_gated": 2720,
+  "n_eff_complement": 2722,
+  "n_eff": 2720
+ },
+ "ties": {
+  "real_ambiguous": 0.0030454451376363796,
+  "control_ambiguous": 0.004488335649448567,
+  "real_gap_stop": 0.01697170397090565,
+  "control_gap_stop": 0.015756482658703174,
+  "gated_excess": -0.0018302971373008836,
+  "complement_excess": -0.001028309104820199,
+  "verdict_stop_first": "NULL"
+ },
+ "ctrl_overlap": 0.13448449188374087,
+ "exposure_bars": {
+  "real_mean": 359.9787705863221,
+  "control_mean": 359.9866621329943,
+  "hold_basis": "bars"
+ },
+ "run_id": "998635a9525c42cab3780e13c36a2ea5",
+ "hyp_key": "5d8db431a81ed2d7"
+}

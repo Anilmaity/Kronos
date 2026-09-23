@@ -1,0 +1,207 @@
+{
+ "concept_id": "intraday-reversal",
+ "reading": null,
+ "testable": true,
+ "test_type": "rate",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "4H forex-grid candle is a C2 closure (took prior 4H low, closed back above; mirrored)",
+   "1H CISD inside it: 4H extreme, the opposing 1H series that made it, a later 1H close through the series' first open before the 4H close",
+   "the 4H extreme is the trading day's extreme so far (18:00 NY roll)",
+   "decide at the 4H close (candles closing at 17:00 NY, the day end, are skipped); outcome = extreme not traded through before the trading day ends (M1 bars)",
+   "null: same signed distance from first price after a matched random moment (+/-30d, NY time of day +/-30 min), same M1-bar horizon, not touched"
+  ],
+  "params": {
+   "grid4h": "forex",
+   "cisd_tf": "1h",
+   "level_rule": "series_open",
+   "horizon": "rest of NY trading day (M1 bars)",
+   "skip_close_hour_ny": 17,
+   "null_tod_tol_min": 30,
+   "day_open_hour": 18
+  }
+ },
+ "params_source": {
+  "grid4h": "session_window_fit: forex grid for gold (carried as knob; forex is the declared default)",
+  "cisd_tf": "corpus: m0wTBdUe7gs 'a 4hour candle closure plus an hourly change delivery'",
+  "level_rule": "method_spec: \u00a74.2 first-candle-open default",
+  "horizon": "corpus: intraday-reversal yaml 'That extreme is then treated as the low of the day'",
+  "skip_close_hour_ny": "declared-before-run: a 4H candle closing at the 17:00 halt leaves no session to hold",
+  "null_tod_tol_min": "declared-before-run: README trap 9 \u2014 hold NY clock fixed in the null",
+  "day_open_hour": "session_window_fit: settled 18:00 NY daily candle"
+ },
+ "n": 1584,
+ "span": {
+  "start": "2016-01-04 18:00:00+00:00",
+  "end": "2026-07-21 01:00:00+00:00",
+  "years": 10.541
+ },
+ "avg_R": null,
+ "avg_R_gross": null,
+ "win_rate": null,
+ "pf": null,
+ "observed_rate": 0.5372474747474747,
+ "null_rate": 0.5036616161616161,
+ "lift": 1.066683379293056,
+ "control": {
+  "rate": 0.5036616161616161,
+  "reps": 5,
+  "kind": "null_fn x5"
+ },
+ "diff": 0.0335858585858585,
+ "ci_lo": 0.007695707070707023,
+ "ci_hi": 0.060609217171717154,
+ "ci_method": "phase3_iid",
+ "p": 0.012842732248016025,
+ "halves": {
+  "H1": {
+   "n": 709,
+   "diff": 0.055853314527503584,
+   "ci_lo": 0.013244005641748836,
+   "ci_hi": 0.10045133991537371,
+   "ci_method": "iid",
+   "p": 0.012053307728452842,
+   "start": "2016-01-04 18:00:00+00:00",
+   "end": "2020-12-30 06:00:00+00:00"
+  },
+  "H2": {
+   "n": 875,
+   "diff": 0.015542857142857192,
+   "ci_lo": -0.02446285714285713,
+   "ci_hi": 0.055091428571428576,
+   "ci_method": "iid",
+   "p": 0.44376383007776016,
+   "start": "2021-01-04 18:00:00+00:00",
+   "end": "2026-07-21 01:00:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 361,
+   "diff": 0.06260387811634349,
+   "ci_lo": 0.004432132963988866,
+   "ci_hi": 0.12411357340720221,
+   "ci_method": "iid",
+   "p": 0.040319002577500755,
+   "start": "2016-01-04 18:00:00+00:00",
+   "end": "2018-08-21 17:00:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 390,
+   "diff": 0.04358974358974366,
+   "ci_lo": -0.014371794871794887,
+   "ci_hi": 0.09898717948717953,
+   "ci_method": "iid",
+   "p": 0.1317277332780852,
+   "start": "2018-08-27 05:00:00+00:00",
+   "end": "2021-04-09 05:00:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 437,
+   "diff": 0.0356979405034325,
+   "ci_lo": -0.019233409610984072,
+   "ci_hi": 0.09704805491990834,
+   "ci_method": "iid",
+   "p": 0.22882076257817066,
+   "start": "2021-04-12 09:00:00+00:00",
+   "end": "2023-11-30 18:00:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 396,
+   "diff": -0.005050505050505083,
+   "ci_lo": -0.06768939393939398,
+   "ci_hi": 0.05556818181818183,
+   "ci_method": "iid",
+   "p": 0.8723928017546119,
+   "start": "2023-12-05 14:00:00+00:00",
+   "end": "2026-07-21 01:00:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.03781745384005483,
+ "mde_threshold": 0.05,
+ "power_floor_n": 907,
+ "verdict": "EDGE",
+ "verdict_detail": "CI excludes 0 in claimed direction; halves agree (H1 +0.0559, H2 +0.0155); powered",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 1584,
+  "min_slack_min": 0.0,
+  "passed": true,
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 143,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "level"
+   ],
+   "ignored": [],
+   "lookback": "6D",
+   "recent": "1D",
+   "events_fp": "5940768006baa166",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "reps": 5,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "mde_threshold": null,
+  "cluster": null,
+  "outcome_horizon": "1 days 00:00:00",
+  "null_kind": "null_fn x5"
+ },
+ "notes": "",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/model_own_04b/intraday-reversal.py",
+ "runtime_sec": 0.57,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:11:08+00:00",
+ "dropped": {
+  "nan_rows": 0
+ },
+ "null_kind": "null_fn x5",
+ "events_fp": "5940768006baa166",
+ "predictors_probed": true,
+ "ci_components": {
+  "phase3_iid": [
+   0.007695707070707023,
+   0.060609217171717154
+  ],
+  "day_block": [
+   0.010703286184271852,
+   0.05584078111257034
+  ]
+ },
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 1267,
+  "n_clusters": null,
+  "n_eff": 1267
+ },
+ "run_id": "cdaeedb184844bd9a6271f92e9973833",
+ "hyp_key": "a6d5fc8a67dfa62b"
+}

@@ -1,0 +1,209 @@
+{
+ "concept_id": "seven-hour-candle-daily-profile",
+ "reading": null,
+ "testable": true,
+ "test_type": "rate",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "7h candles anchored on the 18:00 NY roll: Asia 18:00-01:00, London 01:00-08:00, NY 08:00-15:00 (>= 210 M1 bars each)",
+   "London reversal (C2): bearish = London high > Asia high, London close < Asia high, London low >= Asia low; bullish mirrored",
+   "reference = 50% of the London candle; 50% of its sweep wick when opposing run (open->sweep extreme)/|body| > 1.0; kept only if the London close is on the reversal side of it",
+   "respected = no NY M1 close beyond the reference 08:00-15:00 NY",
+   "null = same distance/side/bar count at matched random moments (+/-30d, NY clock within 30 min)"
+  ],
+  "params": {
+   "anchor": "18:00 NY",
+   "london": [
+    "01:00",
+    "08:00"
+   ],
+   "min_bars": 210,
+   "wick_cut": 1.0,
+   "ny_window_h": 7,
+   "null_tod_tol_min": 30
+  }
+ },
+ "params_source": {
+  "anchor": "declared-before-run: 18:00 NY roll (session_window_fit) - makes the 01:00 candle's predecessor start at the reopen",
+  "london": "corpus: 07lOxv39LdY 'this candle here is the 1:00 candle so it's 1:00 a.m. to 8:00 a.m. that is the London candle'",
+  "min_bars": "declared-before-run: half of a 7h candle's M1 bars present",
+  "wick_cut": "threshold_fits: large wick = opposing_run/|body| > 1.0 (grade A); 0.5-of-wick branch per 07lOxv39LdY",
+  "ny_window_h": "declared-before-run: the New York 7h candle (08:00-15:00)",
+  "null_tod_tol_min": "declared-before-run: hold the NY clock near 08:00 so the null is any NY morning"
+ },
+ "n": 829,
+ "span": {
+  "start": "2016-01-11 13:00:00+00:00",
+  "end": "2026-07-20 12:00:00+00:00",
+  "years": 10.519
+ },
+ "avg_R": null,
+ "avg_R_gross": null,
+ "win_rate": null,
+ "pf": null,
+ "observed_rate": 0.2870928829915561,
+ "null_rate": 0.2687575392038601,
+ "lift": 1.0682226211849193,
+ "control": {
+  "rate": 0.2687575392038601,
+  "reps": 5,
+  "kind": "null_fn x5"
+ },
+ "diff": 0.018335343787696023,
+ "ci_lo": -0.013757539203860062,
+ "ci_hi": 0.05162846803377563,
+ "ci_method": "phase3_iid",
+ "p": 0.2716746472462655,
+ "halves": {
+  "H1": {
+   "n": 370,
+   "diff": 0.027567567567567508,
+   "ci_lo": -0.021094594594594653,
+   "ci_hi": 0.07893243243243239,
+   "ci_method": "iid",
+   "p": 0.27999222045585687,
+   "start": "2016-01-11 13:00:00+00:00",
+   "end": "2020-12-29 13:00:00+00:00"
+  },
+  "H2": {
+   "n": 459,
+   "diff": 0.010893246187363759,
+   "ci_lo": -0.037472766884531605,
+   "ci_hi": 0.05406318082788667,
+   "ci_method": "iid",
+   "p": 0.6408637367311085,
+   "start": "2021-01-13 13:00:00+00:00",
+   "end": "2026-07-20 12:00:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 203,
+   "diff": 0.0394088669950739,
+   "ci_lo": -0.030541871921182295,
+   "ci_hi": 0.10839901477832509,
+   "ci_method": "iid",
+   "p": 0.2662073037674018,
+   "start": "2016-01-11 13:00:00+00:00",
+   "end": "2018-08-21 12:00:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 193,
+   "diff": -0.0031088082901554737,
+   "ci_lo": -0.07253886010362692,
+   "ci_hi": 0.068419689119171,
+   "ci_method": "iid",
+   "p": 0.9311062309327062,
+   "start": "2018-08-27 12:00:00+00:00",
+   "end": "2021-04-05 12:00:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 204,
+   "diff": 0.02450980392156865,
+   "ci_lo": -0.04120098039215691,
+   "ci_hi": 0.10100490196078432,
+   "ci_method": "iid",
+   "p": 0.4992840460247394,
+   "start": "2021-04-13 12:00:00+00:00",
+   "end": "2023-11-29 13:00:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 229,
+   "diff": 0.012227074235807822,
+   "ci_lo": -0.05504366812227076,
+   "ci_hi": 0.07772925764192135,
+   "ci_method": "iid",
+   "p": 0.7181094439530349,
+   "start": "2023-12-08 13:00:00+00:00",
+   "end": "2026-07-20 12:00:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.04673158718396145,
+ "mde_threshold": 0.05,
+ "power_floor_n": 725,
+ "verdict": "NULL",
+ "verdict_detail": "CI contains 0; powered (MDE 0.0467 <= 0.0500)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 829,
+  "min_slack_min": 0.0,
+  "passed": true,
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 79,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "level",
+    "large_wick"
+   ],
+   "ignored": [],
+   "lookback": "5D",
+   "recent": "1D",
+   "events_fp": "0cb96e7430dc1898",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "reps": 5,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "mde_threshold": null,
+  "cluster": null,
+  "outcome_horizon": "1 days 00:00:00",
+  "null_kind": "null_fn x5"
+ },
+ "notes": "Underspecified concept (paid-course device). Only the one stated measurable is scored: 50% respect on a classified London reversal. 7h FVG context not modelled. Timezone assumed NY (the corpus convention).",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/time_guest_01a/seven-hour-candle-daily-profile.py",
+ "runtime_sec": 0.31,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:35:31+00:00",
+ "dropped": {
+  "nan_rows": 0
+ },
+ "null_kind": "null_fn x5",
+ "events_fp": "0cb96e7430dc1898",
+ "predictors_probed": true,
+ "ci_components": {
+  "phase3_iid": [
+   -0.013757539203860062,
+   0.05162846803377563
+  ],
+  "day_block": [
+   -0.012303980699637842,
+   0.049469240048251366
+  ]
+ },
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 829,
+  "n_clusters": null,
+  "n_eff": 829
+ },
+ "run_id": "febe23af90dd4100bff9186e36c7b304",
+ "hyp_key": "37d2ce543f085831"
+}

@@ -1,0 +1,252 @@
+{
+ "concept_id": "universal-models",
+ "reading": null,
+ "testable": true,
+ "test_type": "trade",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "range = prior trading day's high/low (18:00 NY roll); prior day needs >= 600 M1 bars",
+   "key level: first 1h candle (UTC hourly) of the trading day whose high > PDH (low < PDL)",
+   "swing formation: that candle is a C2 - high > prior 1h high and close back below it (mirror for lows) - and closes back inside the range (below PDH / above PDL)",
+   "SMT: XAG_USD H1 running high of the same trading day through that hour <= XAG's prior-day high (bearish); mirror for bullish; missing XAG hour -> no event",
+   "enter next M1 open after the C2 close; stop = C2 extreme; target = opposing side of the range (PDL for shorts, PDH for longs); exit after 24h wall clock",
+   "control matched on NY time of day +/-30 min (sweeps cluster in session hours)"
+  ],
+  "params": {
+   "range": "prior trading day",
+   "swing_tf": "1h",
+   "smt_asset": "XAG_USD",
+   "min_prior_day_m1": 600,
+   "max_hold": "24h",
+   "ctrl_tod_tol_min": 30
+  }
+ },
+ "params_source": {
+  "range": "corpus: 3eVxTV_7L2U order-pairing ranges 'key level = a range high or range low; target = the opposing side of the range'; prior day chosen (declared-before-run) as the mechanical range",
+  "swing_tf": "corpus: 3eVxTV_7L2U 'It is simply when candle 2 closes back inside of candle 1's range'; 1h from the concept's ltf list (declared-before-run)",
+  "smt_asset": "declared-before-run: XAG_USD, the standard gold correlate (method_spec \u00a72.6)",
+  "min_prior_day_m1": "declared-before-run: skip stub sessions (README trap 6)",
+  "max_hold": "declared-before-run: one day; the target is a daily-range side",
+  "ctrl_tod_tol_min": "declared-before-run: README trap 9 - concept is not about timing but PDH/PDL sweeps cluster in session hours"
+ },
+ "n": 282,
+ "span": {
+  "start": "2016-01-08 01:00:00+00:00",
+  "end": "2026-07-09 15:00:00+00:00",
+  "years": 10.5
+ },
+ "avg_R": -0.033765914494316644,
+ "avg_R_gross": 0.0062340855056833315,
+ "win_rate": 0.26595744680851063,
+ "pf": 0.9540409022131798,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "n": 1405,
+  "avg_R": 0.13264225909387117,
+  "win_rate": 0.27686832740213524,
+  "pf": 1.1812582811603294,
+  "sd_R": 2.819556398598922,
+  "exit_mix": {
+   "stop": 0.696085409252669,
+   "target": 0.16512455516014235,
+   "time": 0.1387900355871886
+  },
+  "avg_R_gross": 0.17264225909387115,
+  "reps": 5,
+  "fill_rate": 0.9964539007092199
+ },
+ "diff": -0.16640817358818782,
+ "ci_lo": -0.464673503407389,
+ "ci_hi": 0.1410857505958126,
+ "ci_method": "day_block",
+ "p": 0.28155008187906444,
+ "halves": {
+  "H1": {
+   "n": 125,
+   "diff": -0.32088489025936723,
+   "ci_lo": -0.651725647794442,
+   "ci_hi": 0.01947109808956814,
+   "ci_method": "iid",
+   "p": 0.06092570952818718,
+   "start": "2016-01-08 01:00:00+00:00",
+   "end": "2020-12-09 05:00:00+00:00"
+  },
+  "H2": {
+   "n": 157,
+   "diff": -0.03799195095932198,
+   "ci_lo": -0.46299439277847193,
+   "ci_hi": 0.42663598887885235,
+   "ci_method": "iid",
+   "p": 0.8670539221294458,
+   "start": "2021-01-05 00:00:00+00:00",
+   "end": "2026-07-09 15:00:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 68,
+   "diff": -0.26031536458534676,
+   "ci_lo": -0.7172511723214109,
+   "ci_hi": 0.21403191223851684,
+   "ci_method": "iid",
+   "p": 0.2732050949874748,
+   "start": "2016-01-08 01:00:00+00:00",
+   "end": "2018-08-22 01:00:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 70,
+   "diff": -0.3612617619100945,
+   "ci_lo": -0.8593744891618199,
+   "ci_hi": 0.10620807320091494,
+   "ci_method": "iid",
+   "p": 0.14248582751236555,
+   "start": "2018-08-24 01:00:00+00:00",
+   "end": "2021-04-09 14:00:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 86,
+   "diff": 0.0708607376932289,
+   "ci_lo": -0.5533134141435142,
+   "ci_hi": 0.7520530289119948,
+   "ci_method": "iid",
+   "p": 0.8314907255083558,
+   "start": "2021-04-14 02:00:00+00:00",
+   "end": "2023-11-10 13:00:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 58,
+   "diff": -0.15722471333565424,
+   "ci_lo": -0.731609798921723,
+   "ci_hi": 0.5497386574642359,
+   "ci_method": "block",
+   "p": 0.6305270659831722,
+   "start": "2023-12-27 10:00:00+00:00",
+   "end": "2026-07-09 15:00:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.4329380640732584,
+ "mde_threshold": 0.1,
+ "power_floor_n": 5286,
+ "verdict": "UNDERPOWERED",
+ "verdict_detail": "CI contains 0; MDE 0.4329 vs threshold 0.1000, effective n 279 (power floor n=5286, have 282)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 282,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 60.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 33,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "target_px"
+   ],
+   "ignored": [],
+   "lookback": "20D",
+   "recent": "1D",
+   "events_fp": "5c762de8e2a9f789",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "24h",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": 30,
+  "entry_mode": "next_open",
+  "hold_basis": "clock",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "Tested the order-pairing-range framework with both required confirmations (C2 closure + XAG SMT). The internal->external and external->internal FVG frameworks give no rule for which gap is the key level, so they were not run.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/model_guest_02b/universal-models.py",
+ "runtime_sec": 0.55,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:07:54+00:00",
+ "n_events_in": 282,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 0,
+  "target_not_beyond_entry": 0,
+  "no_bars_in_hold": 0
+ },
+ "events_fp": "5c762de8e2a9f789",
+ "sd_R": 2.116518893667973,
+ "exit_mix": {
+  "stop": 0.6985815602836879,
+  "target": 0.14184397163120568,
+  "time": 0.1595744680851064
+ },
+ "trades_per_year": 26.858018252933505,
+ "ci_components": {
+  "phase3_iid": [
+   -0.45194643148886154,
+   0.14425506944157374
+  ],
+  "day_block": [
+   -0.464673503407389,
+   0.1410857505958126
+  ]
+ },
+ "diff_win": -0.010910880593624606,
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 279,
+  "n_clusters": null,
+  "n_eff": 279
+ },
+ "ties": {
+  "real_ambiguous": 0.0,
+  "control_ambiguous": 0.0,
+  "real_gap_stop": 0.0035460992907801418,
+  "control_gap_stop": 0.008540925266903915,
+  "verdict_stop_first": "UNDERPOWERED"
+ },
+ "ctrl_overlap": 0.0035587188612099642,
+ "exposure_bars": {
+  "real_mean": 1301.5673758865248,
+  "control_mean": 1272.15871886121,
+  "hold_basis": "clock"
+ },
+ "run_id": "924166213cef4333a7a2030ee4ce6a29",
+ "hyp_key": "a2e914ba33e0d8b4"
+}

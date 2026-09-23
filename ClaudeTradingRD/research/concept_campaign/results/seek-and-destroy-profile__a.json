@@ -1,0 +1,279 @@
+{
+ "concept_id": "seek-and-destroy-profile",
+ "reading": "a",
+ "testable": true,
+ "test_type": "gate",
+ "claim": "-",
+ "operationalization": {
+  "rules": [
+   "baseline: 15m bare CISD (series_open, 2/2, max_wait 3), decided inside NY 08:30-12:00; stop at protected swing; 2R; exit after 150 min",
+   "gate: the trading day is Seek & Destroy by recognition A (London took both Asia extremes and closed back inside the Asia range), known at 05:00 NY",
+   "claim '-': gated (S&D-day) trades are worse than the rest -> stand aside"
+  ],
+  "params": {
+   "asia_window": "20:00-00:00",
+   "london_window": "02:00-05:00",
+   "ny_window": "08:30-12:00",
+   "recognition": "London high>Asia high & London low<Asia low & London close inside Asia range",
+   "min_cov": 0.5,
+   "tf": "15min",
+   "max_hold": "150min",
+   "baseline": "15m CISD rung-0 in NY AM",
+   "rr": 2.0
+  }
+ },
+ "params_source": {
+  "asia_window": "session_window_fit: Asia 20:00-00:00 (killzones.yaml, SESSION_WINDOWS)",
+  "london_window": "method_spec: \u00a72.5 daily-profile session windows, London 02:00-05:00",
+  "ny_window": "method_spec: \u00a72.5 New York a.m. 08:30-12:00",
+  "recognition": "corpus: 4WCiIyCiBrQ 'London will take both sides of the Asia range' + Tjk9bXERZy0 'if London session took Asia high and low then I'm anticipating New York'; 'failed to displace' = London's close back inside Asia (threshold_fits: displacement = a close beyond the level)",
+  "min_cov": "declared-before-run: both windows need >= 50% of nominal minutes (trap 6)",
+  "tf": "corpus: PlZD45uLPjE \u2014 ltf 15m/5m/1m; phase3 15m primary entry TF",
+  "max_hold": "phase3: 10 entry-TF bars (\u00a71.13)",
+  "baseline": "phase3: rung-0 CISD config (conjunction preregistration), NY AM restriction per \u00a72.5",
+  "rr": "phase3: rung-0 2R target"
+ },
+ "n": 277,
+ "span": {
+  "start": "2016-01-04 14:00:00+00:00",
+  "end": "2026-07-22 15:45:00+00:00",
+  "years": 10.546
+ },
+ "avg_R": -0.06598835403680704,
+ "avg_R_gross": -0.025988354036807035,
+ "win_rate": 0.4223826714801444,
+ "pf": 0.8431766235697492,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "avg_R_gated": -0.043917384005933605,
+  "avg_R_complement": -0.02849849573855748,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": -0.0036348326960774988,
+ "ci_lo": -0.1377583645678241,
+ "ci_hi": 0.1342957235458276,
+ "ci_method": "day_block",
+ "p": 0.9582315059015917,
+ "halves": {
+  "H1": {
+   "n": 2559,
+   "diff": 0.01801072108497879,
+   "ci_lo": -0.14882809328677846,
+   "ci_hi": 0.18423018364324237,
+   "ci_method": "block",
+   "p": 0.8321248947342511,
+   "start": "2016-01-04 14:00:00+00:00",
+   "end": "2020-12-31 16:00:00+00:00",
+   "n_gated": 136
+  },
+  "H2": {
+   "n": 2769,
+   "diff": -0.024419770519762515,
+   "ci_lo": -0.2044013476666231,
+   "ci_hi": 0.14947081532168163,
+   "ci_method": "iid",
+   "p": 0.786772742983804,
+   "start": "2021-01-04 14:00:00+00:00",
+   "end": "2026-07-22 15:45:00+00:00",
+   "n_gated": 141
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 1332,
+   "diff": -0.014789987476473853,
+   "ci_lo": -0.2511139722435069,
+   "ci_hi": 0.21048648552812144,
+   "ci_method": "iid",
+   "p": 0.9000508463398195,
+   "start": "2016-01-04 14:00:00+00:00",
+   "end": "2018-08-21 14:45:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 1355,
+   "diff": 0.07340848890190907,
+   "ci_lo": -0.20152432263321252,
+   "ci_hi": 0.36949772862161906,
+   "ci_method": "block",
+   "p": 0.6143095235317791,
+   "start": "2018-08-22 13:30:00+00:00",
+   "end": "2021-04-08 15:45:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 1312,
+   "diff": -0.07631168741757273,
+   "ci_lo": -0.26907514661735865,
+   "ci_hi": 0.1365872741956701,
+   "ci_method": "iid",
+   "p": 0.4608778599335689,
+   "start": "2021-04-12 13:00:00+00:00",
+   "end": "2023-12-01 15:15:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 1329,
+   "diff": 0.010527786827748381,
+   "ci_lo": -0.40217515591371034,
+   "ci_hi": 0.4847855068468914,
+   "ci_method": "iid",
+   "p": 0.9628897224166945,
+   "start": "2023-12-04 14:15:00+00:00",
+   "end": "2026-07-22 15:45:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.19443792142301722,
+ "mde_threshold": 0.1,
+ "power_floor_n": 1048,
+ "verdict": "UNDERPOWERED",
+ "verdict_detail": "CI contains 0; MDE 0.1944 vs threshold 0.1000, effective n 128 (power floor n=1048, have 277)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 5328,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "gate_mask_checked": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 5.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 413,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "rr",
+    "sd_day",
+    "sd_at"
+   ],
+   "ignored": [],
+   "lookback": "10D",
+   "recent": "1D",
+   "events_fp": "329368fc5296511c",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "150min",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": null,
+  "entry_mode": "next_open",
+  "hold_basis": "clock",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "Stand-aside reading tested as a gate with claim '-'.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/model_own_03a/seek-and-destroy-profile.py",
+ "runtime_sec": 1.75,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:18:20+00:00",
+ "n_events_in": 5328,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 0,
+  "target_not_beyond_entry": 0,
+  "no_bars_in_hold": 0
+ },
+ "n_complement": 5051,
+ "gate_firing_rate": 0.05198948948948949,
+ "events_fp": "329368fc5296511c",
+ "mask_fp": "690c31c55d90d45b",
+ "mask_col": "sd_day",
+ "exit_mix": {
+  "stop": 0.30685920577617326,
+  "target": 0.11191335740072202,
+  "time": 0.5812274368231047
+ },
+ "gated_vs_own_control": {
+  "diff": -0.022070970030873438,
+  "ci_lo": -0.1391675594898578,
+  "ci_hi": 0.09563007735977537,
+  "p": 0.7125204985288378
+ },
+ "complement": {
+  "n": 5051,
+  "avg_R": -0.04693463307335343,
+  "win_rate": 0.4367451989705009,
+  "pf": 0.8828368030765775,
+  "sd_R": 0.9281004671686087,
+  "exit_mix": {
+   "stop": 0.2977628192437141,
+   "target": 0.09305088101366066,
+   "time": 0.6091862997426252
+  },
+  "vs_own_control": {
+   "diff": -0.01843613733479595,
+   "ci_lo": -0.04646276461839952,
+   "ci_hi": 0.010565570593752259,
+   "p": 0.20507109530578474
+  }
+ },
+ "ci_components": {
+  "phase3_block": [
+   -0.1232528709291716,
+   0.12617937682097044
+  ],
+  "day_block": [
+   -0.1377583645678241,
+   0.1342957235458276
+  ]
+ },
+ "diff_meaning": "mean(R-ctrl | gated) - mean(R-ctrl | complement)",
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_eff_gated": 128,
+  "n_eff_complement": 2459,
+  "n_eff": 128
+ },
+ "ties": {
+  "real_ambiguous": 0.00018768768768768769,
+  "control_ambiguous": 0.00022522522522522523,
+  "real_gap_stop": 0.0016891891891891893,
+  "control_gap_stop": 0.0021396396396396395,
+  "gated_excess": 0.0,
+  "complement_excess": -3.9596119580281134e-05,
+  "verdict_stop_first": "UNDERPOWERED"
+ },
+ "ctrl_overlap": 0.011036036036036036,
+ "exposure_bars": {
+  "real_mean": 149.54748498498498,
+  "control_mean": 143.14624624624625,
+  "hold_basis": "clock"
+ },
+ "run_id": "67e005d8be2c47019b798c133b1cee41",
+ "hyp_key": "222bbe417a423da1"
+}

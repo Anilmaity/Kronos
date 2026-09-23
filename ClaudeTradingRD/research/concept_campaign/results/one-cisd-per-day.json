@@ -1,0 +1,208 @@
+{
+ "concept_id": "one-cisd-per-day",
+ "reading": null,
+ "testable": true,
+ "test_type": "rate",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "15m CISD (series_open, 2/2 swings, close-through within 3 bars), confirmed (decision at the confirming bar's close) between 02:00 and 12:00 NY",
+   "the day's single CISD = the first such event in the trading day (18:00 NY roll)",
+   "prediction: its protected swing is the daily wick -> not traded through from the next M1 open to the 17:00 NY halt",
+   "null: same signed distance from the M1 open at matched random moments (+/-30d, NY time of day +/-30 min), same number of M1 bars"
+  ],
+  "params": {
+   "tf": "15min",
+   "max_wait": 3,
+   "swing": 2,
+   "window": [
+    "02:00",
+    "12:00"
+   ],
+   "day_end": "17:00",
+   "null_tod_tol_min": 30
+  }
+ },
+ "params_source": {
+  "tf": "corpus: daily-wick-confirmation-timeframes \u2014 London 15m/30m CISD, New York 5m/15m CISD; 15m is the one timeframe named for both sessions",
+  "max_wait": "phase3: locked CISD config",
+  "swing": "phase3: locked 2/2 swing",
+  "window": "session_window_fit: London open 02:00 NY .. ny_am end 12:00 NY (concept names London then New York)",
+  "day_end": "session_window_fit: daily halt 17:00 NY ends the trading day",
+  "null_tod_tol_min": "declared-before-run: hold NY clock fixed in the null (trap 9)"
+ },
+ "n": 2718,
+ "span": {
+  "start": "2016-01-04 08:15:00+00:00",
+  "end": "2026-07-22 07:00:00+00:00",
+  "years": 10.543
+ },
+ "avg_R": null,
+ "avg_R_gross": null,
+ "win_rate": null,
+ "pf": null,
+ "observed_rate": 0.24392935982339956,
+ "null_rate": 0.25452538631346583,
+ "lift": 0.9583694709453597,
+ "control": {
+  "rate": 0.25452538631346583,
+  "reps": 5,
+  "kind": "null_fn x5"
+ },
+ "diff": -0.010596026490066218,
+ "ci_lo": -0.02862582781456943,
+ "ci_hi": 0.0075809418690216636,
+ "ci_method": "day_block",
+ "p": 0.25130747667900827,
+ "halves": {
+  "H1": {
+   "n": 1290,
+   "diff": -0.007441860465116301,
+   "ci_lo": -0.03535271317829457,
+   "ci_hi": 0.01829457364341086,
+   "ci_method": "iid",
+   "p": 0.5866026797876183,
+   "start": "2016-01-04 08:15:00+00:00",
+   "end": "2020-12-31 07:45:00+00:00"
+  },
+  "H2": {
+   "n": 1428,
+   "diff": -0.013445378151260567,
+   "ci_lo": -0.03935924369747902,
+   "ci_hi": 0.013046218487394947,
+   "ci_method": "iid",
+   "p": 0.31455309974044654,
+   "start": "2021-01-04 08:00:00+00:00",
+   "end": "2026-07-22 07:00:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 681,
+   "diff": -0.010279001468428778,
+   "ci_lo": -0.04464757709251102,
+   "ci_hi": 0.02350954478707783,
+   "ci_method": "iid",
+   "p": 0.5544016073598999,
+   "start": "2016-01-04 08:15:00+00:00",
+   "end": "2018-08-22 06:15:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 679,
+   "diff": -0.003534609720176829,
+   "ci_lo": -0.04242268041237115,
+   "ci_hi": 0.032400589101620025,
+   "ci_method": "iid",
+   "p": 0.8530916022503087,
+   "start": "2018-08-23 07:30:00+00:00",
+   "end": "2021-04-12 06:30:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 684,
+   "diff": -0.02134502923976611,
+   "ci_lo": -0.05438596491228073,
+   "ci_hi": 0.014634502923976594,
+   "ci_method": "iid",
+   "p": 0.22541162047775934,
+   "start": "2021-04-13 08:15:00+00:00",
+   "end": "2023-12-01 08:00:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 674,
+   "diff": -0.007121661721068262,
+   "ci_lo": -0.04451038575667654,
+   "ci_hi": 0.03175816023738873,
+   "ci_method": "iid",
+   "p": 0.7143443991069478,
+   "start": "2023-12-04 10:30:00+00:00",
+   "end": "2026-07-22 07:00:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.02587709336600151,
+ "mde_threshold": 0.05,
+ "power_floor_n": 729,
+ "verdict": "NULL",
+ "verdict_detail": "CI contains 0; powered (MDE 0.0259 <= 0.0500)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 2718,
+  "min_slack_min": 0.0,
+  "passed": true,
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 211,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "level",
+    "entry_ref"
+   ],
+   "ignored": [],
+   "lookback": "10D",
+   "recent": "1D",
+   "events_fp": "1d51ed299e3d425a",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "reps": 5,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "mde_threshold": null,
+  "cluster": null,
+  "outcome_horizon": "1 days 00:00:00",
+  "null_kind": "null_fn x5"
+ },
+ "notes": "0 events with no M1 bar before day end scored NaN (dropped)",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/entry_own_04b/one-cisd-per-day.py",
+ "runtime_sec": 0.9,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:09:52+00:00",
+ "dropped": {
+  "nan_rows": 0
+ },
+ "null_kind": "null_fn x5",
+ "events_fp": "1d51ed299e3d425a",
+ "predictors_probed": true,
+ "ci_components": {
+  "phase3_iid": [
+   -0.027522075055187625,
+   0.006918690213392202
+  ],
+  "day_block": [
+   -0.02862582781456943,
+   0.0075809418690216636
+  ]
+ },
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 2718,
+  "n_clusters": null,
+  "n_eff": 2718
+ },
+ "run_id": "b57055bbf14c439a841285d7e4eea5b5",
+ "hyp_key": "81e7fee41faeac41"
+}

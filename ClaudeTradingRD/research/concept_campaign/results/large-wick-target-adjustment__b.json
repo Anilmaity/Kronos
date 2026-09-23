@@ -1,0 +1,252 @@
+{
+ "concept_id": "large-wick-target-adjustment",
+ "reading": "b",
+ "testable": true,
+ "test_type": "trade",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "entry: 1h CISD (series_open, 2/2 swings, max_wait 3, min_series 1), decide at the confirming 1h close, enter next M1 open, stop at the protected swing, hold 10h",
+   "running daily candle at the decision (18:00 NY trading day, M1 bars closed by then): O = first M1 open in 18:00-19:00 NY, H/L = running high/low, P = confirm close",
+   "large wick = opposing run (O-L long, H-O short) > 1.0 x max(direction*(P-O), 0)",
+   "keep large-wick events with price still on the wick side of the daily open (direction*(O-P) > 0)",
+   "target = the daily open O; claim '+' vs matched random entry"
+  ],
+  "params": {
+   "entry_tf": "1h",
+   "max_hold": "10h",
+   "wick_cut": 1.0,
+   "daily_open": "18:00 NY",
+   "open_max_delay_min": 60,
+   "pdx_min_coverage": 0.5
+  }
+ },
+ "params_source": {
+  "entry_tf": "phase3: meta/conjunction_preregistration.md \u00a71.8-1.13 (locked rung-0 config)",
+  "max_hold": "phase3: 10 entry-TF bars (\u00a71.13)",
+  "wick_cut": "threshold_fits: large wick = opposing_run/|body| > 1.0 (grade A)",
+  "daily_open": "method_spec \u00a71.4: the 18:00 NY daily candle anchor (the concept's ambiguity names 18:00 as the corpus's preferred open)",
+  "open_max_delay_min": "declared-before-run: first traded minute of the reopen hour",
+  "pdx_min_coverage": "declared-before-run: README trap 6, skip stub sessions",
+  "target": "corpus: 5UsKZ7pZqvY 'my expectations is favoring back towards that daily open'"
+ },
+ "n": 1432,
+ "span": {
+  "start": "2016-01-05 16:00:00+00:00",
+  "end": "2026-07-22 19:00:00+00:00",
+  "years": 10.543
+ },
+ "avg_R": -0.051730149125001144,
+ "avg_R_gross": -0.011730149125001128,
+ "win_rate": 0.598463687150838,
+ "pf": 0.8070875117031634,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "n": 7160,
+  "avg_R": -0.04853511276350369,
+  "win_rate": 0.605586592178771,
+  "pf": 0.8288913736699872,
+  "sd_R": 0.6965144583961265,
+  "exit_mix": {
+   "stop": 0.23770949720670392,
+   "target": 0.5995810055865922,
+   "time": 0.1627094972067039
+  },
+  "avg_R_gross": -0.008535112763503678,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": -0.0031950363614974553,
+ "ci_lo": -0.042706687143130716,
+ "ci_hi": 0.03523811158790267,
+ "ci_method": "phase3_block",
+ "p": 0.8723440051136575,
+ "halves": {
+  "H1": {
+   "n": 709,
+   "diff": -0.01607232249636041,
+   "ci_lo": -0.0707647735709288,
+   "ci_hi": 0.0341270897341431,
+   "ci_method": "iid",
+   "p": 0.5480791662101768,
+   "start": "2016-01-05 16:00:00+00:00",
+   "end": "2020-12-29 22:00:00+00:00"
+  },
+  "H2": {
+   "n": 723,
+   "diff": 0.009432897068126132,
+   "ci_lo": -0.047138274052791855,
+   "ci_hi": 0.06301387214530942,
+   "ci_method": "block",
+   "p": 0.7371094170268324,
+   "start": "2021-01-05 09:00:00+00:00",
+   "end": "2026-07-22 19:00:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 386,
+   "diff": -0.052562495428158315,
+   "ci_lo": -0.11892894815153214,
+   "ci_hi": 0.028493675972259082,
+   "ci_method": "block",
+   "p": 0.1622264150887301,
+   "start": "2016-01-05 16:00:00+00:00",
+   "end": "2018-08-21 10:00:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 359,
+   "diff": 0.02592824873754301,
+   "ci_lo": -0.04436956494009602,
+   "ci_hi": 0.09820596294544635,
+   "ci_method": "iid",
+   "p": 0.47593032099951915,
+   "start": "2018-08-28 07:00:00+00:00",
+   "end": "2021-04-07 16:00:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 329,
+   "diff": -0.002378991879069689,
+   "ci_lo": -0.08566704794054125,
+   "ci_hi": 0.08284224912481158,
+   "ci_method": "block",
+   "p": 0.9558667806252418,
+   "start": "2021-04-12 10:00:00+00:00",
+   "end": "2023-11-29 09:00:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 358,
+   "diff": 0.020078989377208797,
+   "ci_lo": -0.056327187790547836,
+   "ci_hi": 0.10120709027890337,
+   "ci_method": "iid",
+   "p": 0.6173385745383408,
+   "start": "2023-12-05 08:00:00+00:00",
+   "end": "2026-07-22 19:00:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.05570739537891568,
+ "mde_threshold": 0.1,
+ "power_floor_n": 445,
+ "verdict": "NULL",
+ "verdict_detail": "CI contains 0; powered (MDE 0.0557 <= 0.1000)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 1432,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 300.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 119,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "target_px"
+   ],
+   "ignored": [],
+   "lookback": "20D",
+   "recent": "1D",
+   "events_fp": "55d22826e7f67587",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "10h",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": null,
+  "entry_mode": "next_open",
+  "hold_basis": "clock",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "Target 2 (current high/low of day) and the session-lows alternative are not scored; T1 (the daily open) is the one both Shorts name first.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/risk_own_02b/large-wick-target-adjustment.py",
+ "runtime_sec": 0.76,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:20:44+00:00",
+ "n_events_in": 1473,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 0,
+  "target_not_beyond_entry": 24,
+  "no_bars_in_hold": 17
+ },
+ "events_fp": "55d22826e7f67587",
+ "sd_R": 0.6447763740147472,
+ "exit_mix": {
+  "stop": 0.21717877094972068,
+  "target": 0.5789106145251397,
+  "time": 0.20391061452513967
+ },
+ "trades_per_year": 135.81874837704493,
+ "ci_components": {
+  "phase3_block": [
+   -0.042706687143130716,
+   0.03523811158790267
+  ],
+  "day_block": [
+   -0.04080007326495588,
+   0.03469607561521307
+  ]
+ },
+ "diff_win": -0.007122905027933002,
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 1197,
+  "n_clusters": null,
+  "n_eff": 1197
+ },
+ "ties": {
+  "real_ambiguous": 0.0006983240223463687,
+  "control_ambiguous": 0.0008379888268156424,
+  "real_gap_stop": 0.002793296089385475,
+  "control_gap_stop": 0.0036312849162011174,
+  "verdict_stop_first": "NULL"
+ },
+ "ctrl_overlap": 0.010614525139664804,
+ "exposure_bars": {
+  "real_mean": 529.8428770949721,
+  "control_mean": 549.4107541899441,
+  "hold_basis": "clock"
+ },
+ "run_id": "9f98d204436d4679a13419626d1ab32d",
+ "hyp_key": "17bb7709e880101c"
+}

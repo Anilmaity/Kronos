@@ -1,0 +1,250 @@
+{
+ "concept_id": "draw-on-liquidity",
+ "reading": "b",
+ "testable": true,
+ "test_type": "trade",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "decision at the 18:00 NY daily roll (yesterday's close_time); entry = first M1 open of the new trading day",
+   "draw selection: follow the displacement: yesterday closed above its open -> long toward PDH; below -> short toward PDL; doji -> no draw",
+   "target = the nominated previous-day extreme, stop = the opposite one (draw reached first = win); a gap beyond either level drops the day",
+   "hold: one session (1376 M1 bars); days with < 600 M1 bars are not read"
+  ],
+  "params": {
+   "reading": "b",
+   "min_bars": 600,
+   "max_hold": "1376min",
+   "hold_basis": "bars",
+   "ctrl_tod_tol_min": 30,
+   "day_open_hour": 18
+  }
+ },
+ "params_source": {
+  "reading": "corpus: education_ict_01 'follow the displacement - generally right' (behavioural read 2)",
+  "min_bars": "declared-before-run: README trap 6 stub-session guard",
+  "max_hold": "corpus: measurable 'hit rate of the nominated draw being reached the same day' -> one session",
+  "hold_basis": "declared-before-run: trading-time hold (README trap 7, weekend entries)",
+  "ctrl_tod_tol_min": "declared-before-run: every entry is at the 18:00 open; the control must sit at the same NY clock (README trap 9)",
+  "day_open_hour": "session_window_fit: settled 18:00 NY daily roll"
+ },
+ "n": 2615,
+ "span": {
+  "start": "2016-01-05 23:00:00+00:00",
+  "end": "2026-07-22 22:00:00+00:00",
+  "years": 10.541
+ },
+ "avg_R": -0.0463542384034633,
+ "avg_R_gross": -0.006354238403463292,
+ "win_rate": 0.6183556405353728,
+ "pf": 0.8345224591651943,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "n": 7540,
+  "avg_R": -0.0306151664022154,
+  "win_rate": 0.6363395225464191,
+  "pf": 0.886473346101609,
+  "sd_R": 0.7098018509674493,
+  "exit_mix": {
+   "stop": 0.22281167108753316,
+   "target": 0.6393899204244032,
+   "time": 0.13779840848806366
+  },
+  "avg_R_gross": 0.00938483359778462,
+  "reps": 5,
+  "fill_rate": 0.5766730401529637
+ },
+ "diff": -0.015739072001247904,
+ "ci_lo": -0.05037111258118335,
+ "ci_hi": 0.03438568060802406,
+ "ci_method": "day_block",
+ "p": 0.46666354079218314,
+ "halves": {
+  "H1": {
+   "n": 1255,
+   "diff": -0.0036829574126624187,
+   "ci_lo": -0.05080007727496272,
+   "ci_hi": 0.04524526414657616,
+   "ci_method": "iid",
+   "p": 0.8805171473603969,
+   "start": "2016-01-05 23:00:00+00:00",
+   "end": "2020-12-30 23:00:00+00:00"
+  },
+  "H2": {
+   "n": 1360,
+   "diff": -0.040699263112007375,
+   "ci_lo": -0.14234192800659212,
+   "ci_hi": 0.04818637042882627,
+   "ci_method": "iid",
+   "p": 0.4023978959270399,
+   "start": "2021-01-04 23:00:00+00:00",
+   "end": "2026-07-22 22:00:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 660,
+   "diff": -0.015955891851219282,
+   "ci_lo": -0.08044038014584183,
+   "ci_hi": 0.046897494316321134,
+   "ci_method": "iid",
+   "p": 0.6232984208839427,
+   "start": "2016-01-05 23:00:00+00:00",
+   "end": "2018-08-21 22:00:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 662,
+   "diff": 0.00786361807616097,
+   "ci_lo": -0.053626981751170553,
+   "ci_hi": 0.07441773211090792,
+   "ci_method": "iid",
+   "p": 0.809760677032955,
+   "start": "2018-08-22 22:00:00+00:00",
+   "end": "2021-04-09 22:00:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 661,
+   "diff": -0.05157984766044644,
+   "ci_lo": -0.15858953504169157,
+   "ci_hi": 0.0485965136575019,
+   "ci_method": "iid",
+   "p": 0.3291225758535781,
+   "start": "2021-04-12 22:00:00+00:00",
+   "end": "2023-12-01 23:00:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 632,
+   "diff": null,
+   "ci_lo": null,
+   "ci_hi": null,
+   "ci_method": "n/a",
+   "p": null,
+   "start": "2023-12-04 23:00:00+00:00",
+   "end": "2026-07-22 22:00:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.06057594946820086,
+ "mde_threshold": 0.1,
+ "power_floor_n": 960,
+ "verdict": "UNDERPOWERED",
+ "verdict_detail": "CI contains 0 but 49% of control draws are the concept's own trades (> 20%): the differential is attenuated, so NULL is not shown",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 2615,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "entry_delay_min": {
+   "median": 3.0,
+   "max": 4325.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 176,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "target_px"
+   ],
+   "ignored": [],
+   "lookback": "10D",
+   "recent": "1D",
+   "events_fp": "1042eef9ab98dbf9",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "1376min",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": 30,
+  "entry_mode": "next_open",
+  "hold_basis": "bars",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/liquidity_own_01a/draw-on-liquidity.py",
+ "runtime_sec": 1.58,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:11:59+00:00",
+ "n_events_in": 2713,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 11,
+  "target_not_beyond_entry": 87,
+  "no_bars_in_hold": 0
+ },
+ "events_fp": "1042eef9ab98dbf9",
+ "sd_R": 0.7551837326704416,
+ "exit_mix": {
+  "stop": 0.227151051625239,
+  "target": 0.6179732313575526,
+  "time": 0.15487571701720843
+ },
+ "trades_per_year": 248.08538961038963,
+ "ci_components": {
+  "phase3_block": [
+   -0.047096127318230575,
+   0.02949640701664115
+  ],
+  "day_block": [
+   -0.05037111258118335,
+   0.03438568060802406
+  ]
+ },
+ "diff_win": -0.01798388201104628,
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 1508,
+  "n_clusters": null,
+  "n_eff": 1508
+ },
+ "ties": {
+  "real_ambiguous": 0.0,
+  "control_ambiguous": 0.0005305039787798408,
+  "real_gap_stop": 0.0019120458891013384,
+  "control_gap_stop": 0.002519893899204244,
+  "verdict_stop_first": "UNDERPOWERED"
+ },
+ "ctrl_overlap": 0.493368700265252,
+ "exposure_bars": {
+  "real_mean": 1375.613001912046,
+  "control_mean": 1376.0,
+  "hold_basis": "bars"
+ },
+ "run_id": "23532c6b5e1e49769b451c9b3235835e",
+ "hyp_key": "7be4b1e33127499a"
+}

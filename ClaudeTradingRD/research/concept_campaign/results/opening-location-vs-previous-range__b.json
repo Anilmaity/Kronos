@@ -1,0 +1,209 @@
+{
+ "concept_id": "opening-location-vs-previous-range",
+ "reading": "b",
+ "testable": true,
+ "test_type": "rate",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "forex 4H grid; leg = lowest low before the high -> high (bearish prev candle; bullish mirror); deviation k at base + dir*k*leg",
+   "new 4H candle opens between the 2.0 and 2.5 deviation (framework two)",
+   "outcome: M1 touch of the previous candle's 50% (EQ) within 240 M1 bars",
+   "decision after the new candle's first M1 bar closes",
+   "null: same moment, same distance and horizon, opposite direction (mirror level)"
+  ],
+  "params": {
+   "grid4h": "forex",
+   "min_leg_frac": 0.1,
+   "open_band": [
+    2.0,
+    2.5
+   ],
+   "target": "prev candle 50%",
+   "horizon_m1_bars": 240,
+   "null": "same-moment mirror level"
+  }
+ },
+ "params_source": {
+  "grid4h": "corpus: wWIHS_dxbEY 'forex ... 1am, 5am, 9am NY' 4H opens = forex grid; session_window_fit: forex grid for gold",
+  "min_leg_frac": "declared-before-run: a leg under 10% of the candle's range is no manipulation leg",
+  "open_band": "corpus: wWIHS_dxbEY 'opens at the 1 / 1.5 deviation' / 'at the 2 / 2.5 deviation' (declared-before-run: the closed band between the two named levels)",
+  "target": "corpus: wWIHS_dxbEY 'continuation to the 2 / 2.5' (first level of the band) / 'retracement to equilibrium of the previous range'",
+  "horizon_m1_bars": "declared-before-run: the developing 4H candle = 240 M1 bars of trading time",
+  "null": "declared-before-run: same-moment mirror null holds volatility (README trap 4)"
+ },
+ "n": 678,
+ "span": {
+  "start": "2016-01-04 23:01:00+00:00",
+  "end": "2026-07-17 01:01:00+00:00",
+  "years": 10.53
+ },
+ "avg_R": null,
+ "avg_R_gross": null,
+ "win_rate": null,
+ "pf": null,
+ "observed_rate": 0.616519174041298,
+ "null_rate": 0.6460176991150443,
+ "lift": 0.954337899543379,
+ "control": {
+  "rate": 0.6460176991150443,
+  "reps": 1,
+  "kind": "null array x1"
+ },
+ "diff": -0.029498525073746285,
+ "ci_lo": -0.08554572271386429,
+ "ci_hi": 0.02359882005899705,
+ "ci_method": "phase3_iid",
+ "p": 0.28939944093235925,
+ "halves": {
+  "H1": {
+   "n": 343,
+   "diff": -0.061224489795918324,
+   "ci_lo": -0.1283527696793003,
+   "ci_hi": 0.011661807580174877,
+   "ci_method": "iid",
+   "p": 0.08651481440152024,
+   "start": "2016-01-04 23:01:00+00:00",
+   "end": "2020-12-29 02:01:00+00:00"
+  },
+  "H2": {
+   "n": 335,
+   "diff": 0.0029850746268657025,
+   "ci_lo": -0.07164179104477619,
+   "ci_hi": 0.07768656716417906,
+   "ci_method": "iid",
+   "p": 0.9375421839559966,
+   "start": "2021-01-03 23:01:00+00:00",
+   "end": "2026-07-17 01:01:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 186,
+   "diff": -0.026881720430107503,
+   "ci_lo": -0.12365591397849462,
+   "ci_hi": 0.06451612903225812,
+   "ci_method": "iid",
+   "p": 0.5754864535173403,
+   "start": "2016-01-04 23:01:00+00:00",
+   "end": "2018-08-09 13:01:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 181,
+   "diff": -0.07182320441988954,
+   "ci_lo": -0.17140883977900553,
+   "ci_hi": 0.02209944751381221,
+   "ci_method": "iid",
+   "p": 0.1456875288913592,
+   "start": "2018-08-28 09:01:00+00:00",
+   "end": "2021-04-08 13:01:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 148,
+   "diff": 0.006756756756756799,
+   "ci_lo": -0.10135135135135143,
+   "ci_hi": 0.11486486486486491,
+   "ci_method": "iid",
+   "p": 0.9025048278137726,
+   "start": "2021-04-12 17:01:00+00:00",
+   "end": "2023-11-29 18:01:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 163,
+   "diff": -0.018404907975460127,
+   "ci_lo": -0.12269938650306744,
+   "ci_hi": 0.07990797546012254,
+   "ci_method": "iid",
+   "p": 0.7217751670453308,
+   "start": "2023-12-08 14:01:00+00:00",
+   "end": "2026-07-17 01:01:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.07800595160531182,
+ "mde_threshold": 0.05,
+ "power_floor_n": 1651,
+ "verdict": "UNDERPOWERED",
+ "verdict_detail": "CI contains 0; MDE 0.0780 vs threshold 0.0500, effective n 620 (power floor n=1651, have 678)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 678,
+  "min_slack_min": 0.0,
+  "passed": true,
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 77,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "open_dev",
+    "target_px"
+   ],
+   "ignored": [],
+   "lookback": "10D",
+   "recent": "1D",
+   "events_fp": "bd2ca7f211330007",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "reps": 5,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "mde_threshold": null,
+  "cluster": null,
+  "outcome_horizon": "1 days 00:00:00",
+  "null_kind": "null array x1"
+ },
+ "notes": "",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/model_guest_02a/opening-location-vs-previous-range.py",
+ "runtime_sec": 0.16,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:12:01+00:00",
+ "dropped": {
+  "nan_rows": 0
+ },
+ "null_kind": "null array x1",
+ "events_fp": "bd2ca7f211330007",
+ "predictors_probed": true,
+ "ci_components": {
+  "phase3_iid": [
+   -0.08554572271386429,
+   0.02359882005899705
+  ],
+  "day_block": [
+   -0.08148148148148152,
+   0.023778594371435372
+  ]
+ },
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 620,
+  "n_clusters": null,
+  "n_eff": 620
+ },
+ "run_id": "d33a33cf428a4b389e56e9283c9968f6",
+ "hyp_key": "5a2efce54e5f3e8f"
+}

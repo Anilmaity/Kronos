@@ -1,0 +1,261 @@
+{
+ "concept_id": "thursday-counter-week",
+ "reading": "b",
+ "testable": true,
+ "test_type": "trade",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "daily bars roll at 18:00 NY; session weekday = trading_day + 1 (Mon..Fri); weekly open = Monday session open",
+   "run (bullish): Tue and Wed each close > open, make a higher high AND a higher low than the prior day (no internal low), Wed close > weekly open; Monday need not expand (speaker's relaxation); bearish mirror",
+   "'relevant level' reached by Wed is undefined in the corpus and NOT required",
+   "SMT is not required (no correlated gold-EUR/GBP series in the harness)",
+   "on Thursday, at each hourly close: Thursday's extreme so far has swept Wednesday's extreme",
+   "and an hourly CISD against the run exists inside Thursday so far -> decide at that hourly close (first one only)",
+   "enter next M1 open toward the weekly open; stop at Thursday's extreme so far; target weekly open (skip if price already beyond it)",
+   "hold until Friday 17:00 NY (max_hold column)"
+  ],
+  "params": {
+   "day_open_hour": 18,
+   "expansion_day": "close beyond open + higher high + higher low vs prior day",
+   "days_required": "Tue+Wed (Mon optional)",
+   "cisd_level_rule": "series_open",
+   "cisd_tf": "1h",
+   "hold_basis": "bars",
+   "stop": "Thursday extreme so far",
+   "target": "weekly open",
+   "max_hold": "to Friday 17:00 NY"
+  }
+ },
+ "params_source": {
+  "day_open_hour": "method_spec: \u00a71.4 daily open 18:00 NY canon",
+  "expansion_day": "declared-before-run: 'expand away without creating a significant low' -> each day makes a higher high and a higher low and closes up",
+  "days_required": "corpus: uPUNOi_R9fA relaxation 'Monday need not expand (Tue and Wed suffices)' (yaml detection_rules)",
+  "cisd_level_rule": "method_spec: \u00a74.2 default first-candle-open of the series",
+  "cisd_tf": "corpus: oBkh-__IL-I 'drop to the hourly' ; method_spec \u00a72.4 hourly CISD confirmation",
+  "hold_basis": "declared-before-run: README trap 7 - clock runs showed real/control exposure gaps of 14% (a) and 18% (b), so rerun in trading time as prescribed",
+  "stop": "corpus: execution.stop 'Beyond the Thursday extreme'",
+  "target": "corpus: execution.targets first = weekly open",
+  "max_hold": "declared-before-run: through the Friday continuation day"
+ },
+ "n": 52,
+ "span": {
+  "start": "2016-05-05 20:00:00+00:00",
+  "end": "2026-04-02 02:00:00+00:00",
+  "years": 9.906
+ },
+ "avg_R": 0.04405583050553874,
+ "avg_R_gross": 0.08405583050553878,
+ "win_rate": 0.34615384615384615,
+ "pf": 1.0703400728713792,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "n": 260,
+  "avg_R": -0.14834777286114342,
+  "win_rate": 0.2923076923076923,
+  "pf": 0.7784527350229297,
+  "sd_R": 1.7123382090739159,
+  "exit_mix": {
+   "stop": 0.6230769230769231,
+   "target": 0.11923076923076924,
+   "time": 0.25769230769230766
+  },
+  "avg_R_gross": -0.10834777286114342,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": 0.19240360336668216,
+ "ci_lo": -0.3337823688414417,
+ "ci_hi": 0.8014527708107342,
+ "ci_method": "phase3_iid",
+ "p": 0.5064579803460929,
+ "halves": {
+  "H1": {
+   "n": 20,
+   "diff": -0.033932238825344685,
+   "ci_lo": -0.5689901925506159,
+   "ci_hi": 0.5260530557584243,
+   "ci_method": "iid",
+   "p": 0.903320923605429,
+   "start": "2016-05-05 20:00:00+00:00",
+   "end": "2020-12-17 03:00:00+00:00"
+  },
+  "H2": {
+   "n": 32,
+   "diff": 0.3338635047366989,
+   "ci_lo": -0.47946233493795565,
+   "ci_hi": 1.2235999982036836,
+   "ci_method": "iid",
+   "p": 0.44221896066614486,
+   "start": "2021-03-11 02:00:00+00:00",
+   "end": "2026-04-02 02:00:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 14,
+   "diff": -0.11486049414378735,
+   "ci_lo": -0.7048338332571069,
+   "ci_hi": 0.556233849707219,
+   "ci_method": "iid",
+   "p": 0.7210658610949814,
+   "start": "2016-05-05 20:00:00+00:00",
+   "end": "2018-07-12 02:00:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 7,
+   "diff": -0.232939075370515,
+   "ci_lo": -1.196839932677352,
+   "ci_hi": 0.9684921064548581,
+   "ci_method": "iid",
+   "p": 0.6732494380451994,
+   "start": "2019-01-31 15:00:00+00:00",
+   "end": "2021-03-11 02:00:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 15,
+   "diff": -0.1728663906626472,
+   "ci_lo": -1.1346081319487857,
+   "ci_hi": 0.8448508596413226,
+   "ci_method": "iid",
+   "p": 0.7321042306022534,
+   "start": "2021-07-15 11:00:00+00:00",
+   "end": "2023-11-09 14:00:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 16,
+   "diff": 0.9897877300383631,
+   "ci_lo": -0.2102739085319854,
+   "ci_hi": 2.43656660054658,
+   "ci_method": "iid",
+   "p": 0.14268653321796326,
+   "start": "2024-02-22 13:00:00+00:00",
+   "end": "2026-04-02 02:00:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.8113561623382984,
+ "mde_threshold": 0.1,
+ "power_floor_n": 3424,
+ "verdict": "UNDERPOWERED",
+ "verdict_detail": "CI contains 0; MDE 0.8114 vs threshold 0.1000, effective n 52 (power floor n=3424, have 52)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 52,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 0.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 24,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "target_px",
+    "max_hold"
+   ],
+   "ignored": [],
+   "lookback": "40D",
+   "recent": "1D",
+   "events_fp": "95d8c4ec69ea3179",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "per-row column",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": null,
+  "entry_mode": "next_open",
+  "hold_basis": "bars",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "Thursday-intraday branch. Small-wick+SMT exception not applied (wick unknowable before the close; no SMT series). Rerun once with hold_basis='bars' per README trap 7 (clock run: n=52 diff +0.105 [-0.411,+0.709] UNDERPOWERED).",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/model_own_03b/thursday-counter-week.py",
+ "runtime_sec": 0.07,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:15:00+00:00",
+ "n_events_in": 52,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 0,
+  "target_not_beyond_entry": 0,
+  "no_bars_in_hold": 0
+ },
+ "events_fp": "95d8c4ec69ea3179",
+ "sd_R": 1.9344624142904512,
+ "exit_mix": {
+  "stop": 0.5769230769230769,
+  "target": 0.1346153846153846,
+  "time": 0.28846153846153844
+ },
+ "trades_per_year": 5.249585406301824,
+ "ci_components": {
+  "phase3_iid": [
+   -0.3337823688414417,
+   0.8014527708107342
+  ],
+  "day_block": [
+   -0.32618373347503854,
+   0.786531244120363
+  ]
+ },
+ "diff_win": 0.05384615384615382,
+ "dependence": {
+  "day_block_mean_days": 2,
+  "n_days": 52,
+  "n_clusters": null,
+  "n_eff": 52
+ },
+ "ties": {
+  "real_ambiguous": 0.0,
+  "control_ambiguous": 0.0,
+  "real_gap_stop": 0.0,
+  "control_gap_stop": 0.011538461538461539,
+  "verdict_stop_first": "UNDERPOWERED"
+ },
+ "ctrl_overlap": 0.0,
+ "exposure_bars": {
+  "real_mean": 2148.4615384615386,
+  "control_mean": 2148.4615384615386,
+  "hold_basis": "bars"
+ },
+ "run_id": "e09d754a331143be912d8ab96c041c4a",
+ "hyp_key": "90843d13ce13c36d"
+}

@@ -1,0 +1,210 @@
+{
+ "concept_id": "balance-area-poc-target",
+ "reading": null,
+ "testable": true,
+ "test_type": "rate",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "balance area = previous trading day's 70% TPO value area (18:00 NY roll), POC = most-visited of 100 equal price bins (M1 high-low overlap counts)",
+   "event = first M1 close back inside the value area after an M1 close outside it, during the current trading day; direction toward the POC",
+   "outcome: M1 touch of the POC before the trading day ends",
+   "null: same moment, same distance and horizon, opposite direction"
+  ],
+  "params": {
+   "profile": "TPO (time at price) proxy for volume",
+   "bins": 100,
+   "value_area_share": 0.7,
+   "balance": "previous trading day",
+   "reentry": "M1 close inside",
+   "horizon": "rest of trading day",
+   "min_m1_per_day": 600,
+   "null": "same-moment mirror level"
+  }
+ },
+ "params_source": {
+  "profile": "declared-before-run: no volume in the certified file; TPO is the Market Profile analogue of the volume profile",
+  "bins": "declared-before-run: 100 equal bins over the day's range",
+  "value_area_share": "declared-before-run: the standard 70% value area (Dalton, Market Profile convention)",
+  "balance": "declared-before-run: the unit gives no rule for how many sessions make a balance area; one trading day is the smallest standard unit",
+  "reentry": "corpus: 8Z2AbZLjunU 'you're going to want to target the point of control' after re-entry; 're-enter' undefined -> close-based",
+  "horizon": "declared-before-run: intraday setup, resolved within the session",
+  "min_m1_per_day": "declared-before-run: stub days never define a balance (README trap 6)",
+  "null": "declared-before-run: same-moment mirror null holds volatility (README trap 4)"
+ },
+ "n": 2241,
+ "span": {
+  "start": "2016-01-05 01:20:00+00:00",
+  "end": "2026-07-21 00:44:00+00:00",
+  "years": 10.538
+ },
+ "avg_R": null,
+ "avg_R_gross": null,
+ "win_rate": null,
+ "pf": null,
+ "observed_rate": 0.6501561802766622,
+ "null_rate": 0.6358768406961178,
+ "lift": 1.0224561403508772,
+ "control": {
+  "rate": 0.6358768406961178,
+  "reps": 1,
+  "kind": "null array x1"
+ },
+ "diff": 0.014279339580544392,
+ "ci_lo": -0.014279339580544392,
+ "ci_hi": 0.042391789379741196,
+ "ci_method": "phase3_block",
+ "p": 0.3233003814280494,
+ "halves": {
+  "H1": {
+   "n": 1071,
+   "diff": 0.004668534080298881,
+   "ci_lo": -0.036414565826330514,
+   "ci_hi": 0.047642390289449145,
+   "ci_method": "iid",
+   "p": 0.827652498888969,
+   "start": "2016-01-05 01:20:00+00:00",
+   "end": "2020-12-30 06:20:00+00:00"
+  },
+  "H2": {
+   "n": 1170,
+   "diff": 0.023076923076923106,
+   "ci_lo": -0.023076923076923106,
+   "ci_hi": 0.06495726495726495,
+   "ci_method": "block",
+   "p": 0.30415969919310665,
+   "start": "2021-01-04 23:36:00+00:00",
+   "end": "2026-07-21 00:44:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 549,
+   "diff": 0.021857923497267784,
+   "ci_lo": -0.03460837887067392,
+   "ci_hi": 0.0765482695810564,
+   "ci_method": "iid",
+   "p": 0.4408151317307552,
+   "start": "2016-01-05 01:20:00+00:00",
+   "end": "2018-08-21 22:02:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 580,
+   "diff": -0.005172413793103403,
+   "ci_lo": -0.05862068965517242,
+   "ci_hi": 0.0517672413793103,
+   "ci_method": "iid",
+   "p": 0.8542685188241097,
+   "start": "2018-08-23 00:11:00+00:00",
+   "end": "2021-04-12 02:04:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 562,
+   "diff": -0.003558718861209953,
+   "ci_lo": -0.06054270462633454,
+   "ci_hi": 0.053380782918149516,
+   "ci_method": "block",
+   "p": 0.9025427070680823,
+   "start": "2021-04-13 02:06:00+00:00",
+   "end": "2023-12-01 09:04:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 550,
+   "diff": 0.045454545454545414,
+   "ci_lo": -0.025454545454545396,
+   "ci_hi": 0.11272727272727268,
+   "ci_method": "block",
+   "p": 0.19724168832154057,
+   "start": "2023-12-04 14:13:00+00:00",
+   "end": "2026-07-21 00:44:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.040503035981324584,
+ "mde_threshold": 0.05,
+ "power_floor_n": 1471,
+ "verdict": "NULL",
+ "verdict_detail": "CI contains 0; powered (MDE 0.0405 <= 0.0500)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 2241,
+  "min_slack_min": 0.0,
+  "passed": true,
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 184,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "poc",
+    "vah",
+    "val"
+   ],
+   "ignored": [],
+   "lookback": "10D",
+   "recent": "1D",
+   "events_fp": "c1da2ee1e192b99b",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "reps": 5,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "mde_threshold": null,
+  "cluster": null,
+  "outcome_horizon": "1 days 00:00:00",
+  "null_kind": "null array x1"
+ },
+ "notes": "Volume is unavailable: the balance area and POC are time-at-price (TPO) proxies, not the guest's volume profile. Only the first objective (POC) is tested.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/model_guest_02a/balance-area-poc-target.py",
+ "runtime_sec": 0.67,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:13:13+00:00",
+ "dropped": {
+  "nan_rows": 0
+ },
+ "null_kind": "null array x1",
+ "events_fp": "c1da2ee1e192b99b",
+ "predictors_probed": true,
+ "ci_components": {
+  "phase3_block": [
+   -0.014279339580544392,
+   0.042391789379741196
+  ],
+  "day_block": [
+   -0.013386880856760323,
+   0.04017179830432842
+  ]
+ },
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 2241,
+  "n_clusters": null,
+  "n_eff": 2241
+ },
+ "run_id": "2a5f87e0bf0744eaa31cbbc36a1202a4",
+ "hyp_key": "10f77a36a9e78a20"
+}

@@ -1,0 +1,207 @@
+{
+ "concept_id": "consequent-encroachment",
+ "reading": "b",
+ "testable": true,
+ "test_type": "rate",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "1H wick-defined FVGs (method_spec 3.9); CE = gap midpoint",
+   "first 1H bar within 48 bars whose wick reaches the CE (no earlier close beyond the far edge)",
+   "event: first CE touch closes back on the respecting side; hit = the displacement leg's extreme is reached within 600 trading minutes",
+   "null: same signed distance from the next M1 open, same M1-bar horizon, matched random moments; claim '+'"
+  ],
+  "params": {
+   "tf": "1h",
+   "fvg_life_bars": 48,
+   "horizon_m1_bars": 600,
+   "ce": "midpoint of gap boundary prices"
+  }
+ },
+ "params_source": {
+  "tf": "corpus: YAML htf 1H (fractal); phase3 1H HTF",
+  "fvg_life_bars": "declared-before-run: a gap is watched for 48 1H bars (2 days)",
+  "horizon_m1_bars": "phase3: 10 entry-TF bars (10 x 1H = 600 trading minutes)",
+  "ce": "corpus: YAML 'ce := (gap_high + gap_low) / 2'"
+ },
+ "n": 5549,
+ "span": {
+  "start": "2016-01-04 12:00:00+00:00",
+  "end": "2026-07-22 21:00:00+00:00",
+  "years": 10.546
+ },
+ "avg_R": null,
+ "avg_R_gross": null,
+ "win_rate": null,
+ "pf": null,
+ "observed_rate": 0.5177509461164174,
+ "null_rate": 0.5274103442061633,
+ "lift": 0.9816852320098407,
+ "control": {
+  "rate": 0.5274103442061633,
+  "reps": 5,
+  "kind": "null_fn x5"
+ },
+ "diff": -0.009659398089745919,
+ "ci_lo": -0.023790773112272408,
+ "ci_hi": 0.005373941250675862,
+ "ci_method": "phase3_iid",
+ "p": 0.1941890202179695,
+ "halves": {
+  "H1": {
+   "n": 2552,
+   "diff": -0.01394984326018811,
+   "ci_lo": -0.03684561128526646,
+   "ci_hi": 0.009326018808777373,
+   "ci_method": "iid",
+   "p": 0.2362830189162765,
+   "start": "2016-01-04 12:00:00+00:00",
+   "end": "2020-12-31 08:00:00+00:00"
+  },
+  "H2": {
+   "n": 2997,
+   "diff": -0.006006006006005982,
+   "ci_lo": -0.029496162829496186,
+   "ci_hi": 0.014964964964964881,
+   "ci_method": "iid",
+   "p": 0.5964439205726639,
+   "start": "2021-01-04 06:00:00+00:00",
+   "end": "2026-07-22 21:00:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 1337,
+   "diff": -0.005086013462976768,
+   "ci_lo": -0.035759162303664986,
+   "ci_hi": 0.025878833208676122,
+   "ci_method": "iid",
+   "p": 0.7463545058997214,
+   "start": "2016-01-04 12:00:00+00:00",
+   "end": "2018-08-17 15:00:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 1340,
+   "diff": -0.024029850746268733,
+   "ci_lo": -0.056123134328358255,
+   "ci_hi": 0.007462686567164201,
+   "ci_method": "iid",
+   "p": 0.1385031572594396,
+   "start": "2018-08-22 15:00:00+00:00",
+   "end": "2021-04-12 04:00:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 1440,
+   "diff": 0.014027777777777861,
+   "ci_lo": -0.015281250000001495,
+   "ci_hi": 0.04458680555555462,
+   "ci_method": "block",
+   "p": 0.35836528914964827,
+   "start": "2021-04-13 08:00:00+00:00",
+   "end": "2023-12-01 12:00:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 1432,
+   "diff": -0.024301675977653647,
+   "ci_lo": -0.052395251396648065,
+   "ci_hi": 0.005178072625698314,
+   "ci_method": "iid",
+   "p": 0.09800566992311945,
+   "start": "2023-12-04 06:00:00+00:00",
+   "end": "2026-07-22 21:00:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.020844114047125464,
+ "mde_threshold": 0.05,
+ "power_floor_n": 965,
+ "verdict": "NULL",
+ "verdict_detail": "CI contains 0; powered (MDE 0.0208 <= 0.0500)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 5549,
+  "min_slack_min": 0.0,
+  "passed": true,
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 407,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "reading",
+    "direction",
+    "level",
+    "side",
+    "fvg_time"
+   ],
+   "ignored": [],
+   "lookback": "10D",
+   "recent": "1D",
+   "events_fp": "9ab0645a3deda07b",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "reps": 5,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "mde_threshold": null,
+  "cluster": "column:fvg_time",
+  "outcome_horizon": "1 days 00:00:00",
+  "null_kind": "null_fn x5"
+ },
+ "notes": "Reading a tests Reading A (CE close = invalidation, predicts the far edge is taken); Reading B (a CE close is only a hint) is the alternative this same statistic arbitrates. Reading b tests the respect->continuation use both readings share. Clustered by FVG.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/entry_own_02a/consequent-encroachment.py",
+ "runtime_sec": 1.82,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:18:57+00:00",
+ "dropped": {
+  "nan_rows": 0
+ },
+ "null_kind": "null_fn x5",
+ "events_fp": "9ab0645a3deda07b",
+ "predictors_probed": true,
+ "ci_components": {
+  "phase3_iid": [
+   -0.023790773112272408,
+   0.005373941250675862
+  ],
+  "day_block": [
+   -0.022505446924401724,
+   0.004042232440375104
+  ],
+  "cluster": [
+   -0.021807532888811133,
+   0.0024526941791299006
+  ]
+ },
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 2453,
+  "n_clusters": 5549,
+  "n_eff": 2453
+ },
+ "run_id": "0e929288e3454dbbacb2431db2f8c956",
+ "hyp_key": "909435f0e2e50e5e"
+}

@@ -1,0 +1,215 @@
+{
+ "concept_id": "internal-external-range-liquidity",
+ "reading": null,
+ "testable": true,
+ "test_type": "rate",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "1D bars (18:00 NY roll), stub sessions (<600 M1) dropped",
+   "structures older than 20 sessions forgotten; swings: 3-candle (left=1,right=1), known at the right bar's close; FVG: 3-bar daily gap known at the third bar's close",
+   "IRL->ERL: first tag of an untagged daily FVG -> target nearest unswept swing high above bar high (bullish FVG) / swing low below bar low (bearish FVG)",
+   "ERL->IRL: bar runs an unswept swing high -> target top edge of nearest untagged bullish FVG below bar low (mirror for lows)",
+   "decide at daily close; hit = M1 reaches target within 5 sessions (6,900 M1 bars)",
+   "null: matched random daily-close moments +/-30d, same signed distance from next M1 open, same side and horizon; legs pooled"
+  ],
+  "params": {
+   "tf": "1D",
+   "day_open_hour": 18,
+   "swing": "1/1",
+   "horizon_m1_bars": 6900,
+   "tag_rule": "first touch (tag, not full fill)",
+   "memory_sessions": 20,
+   "min_session_m1": 600,
+   "outcome_horizon": "7D"
+  }
+ },
+ "params_source": {
+  "tf": "corpus: zXtJSSkiNmo Ash Trades variant stated for the daily only; 5aRB_ZY3474 applies it on 1D among others",
+  "day_open_hour": "session_window_fit: settled 18:00 NY daily roll",
+  "swing": "corpus: zXtJSSkiNmo three-candle swing point (swing-point-stop-hunt, same guest)",
+  "horizon_m1_bars": "declared-before-run: one trading week (5 x 1380 M1 bars)",
+  "tag_rule": "declared-before-run: yaml ambiguity 'tagged vs filled' -> tagged, as the rule text says 'traded into'",
+  "memory_sessions": "declared-before-run: 'old highs/lows' and unfilled gaps are only tracked for 20 sessions (~1 month) so the state is bounded; needed for a finite probe warm-up",
+  "min_session_m1": "declared-before-run: skip stub sessions (README trap 6)",
+  "outcome_horizon": "declared-before-run: 5 sessions span ~7 calendar days"
+ },
+ "n": 654,
+ "span": {
+  "start": "2016-01-12 23:00:00+00:00",
+  "end": "2026-07-07 22:00:00+00:00",
+  "years": 10.48
+ },
+ "avg_R": null,
+ "avg_R_gross": null,
+ "win_rate": null,
+ "pf": null,
+ "observed_rate": 0.25688073394495414,
+ "null_rate": 0.26666666666666666,
+ "lift": 0.9633027522935781,
+ "control": {
+  "rate": 0.26666666666666666,
+  "reps": 5,
+  "kind": "null_fn x5"
+ },
+ "diff": -0.00978593272171252,
+ "ci_lo": -0.04587155963302755,
+ "ci_hi": 0.02813455657492353,
+ "ci_method": "phase3_iid",
+ "p": 0.6042227526390344,
+ "halves": {
+  "H1": {
+   "n": 321,
+   "diff": 0.0012461059190030932,
+   "ci_lo": -0.05920560747663549,
+   "ci_hi": 0.057320872274143286,
+   "ci_method": "iid",
+   "p": 0.966563461603806,
+   "start": "2016-01-12 23:00:00+00:00",
+   "end": "2020-12-31 23:00:00+00:00"
+  },
+  "H2": {
+   "n": 333,
+   "diff": -0.020420420420420415,
+   "ci_lo": -0.07148648648648649,
+   "ci_hi": 0.03783783783783784,
+   "ci_method": "iid",
+   "p": 0.4640503700006215,
+   "start": "2021-01-04 23:00:00+00:00",
+   "end": "2026-07-07 22:00:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 157,
+   "diff": -0.001273885350318471,
+   "ci_lo": -0.08538216560509558,
+   "ci_hi": 0.08407643312101906,
+   "ci_method": "iid",
+   "p": 0.9764916561109479,
+   "start": "2016-01-12 23:00:00+00:00",
+   "end": "2018-08-15 22:00:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 184,
+   "diff": -0.0010869565217391242,
+   "ci_lo": -0.07934782608695667,
+   "ci_hi": 0.07717391304347831,
+   "ci_method": "block",
+   "p": 0.9782828902968034,
+   "start": "2018-08-22 22:00:00+00:00",
+   "end": "2021-04-08 22:00:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 162,
+   "diff": -0.019753086419753096,
+   "ci_lo": -0.09879629629629631,
+   "ci_hi": 0.06546296296296293,
+   "ci_method": "iid",
+   "p": 0.6373600636784553,
+   "start": "2021-04-15 22:00:00+00:00",
+   "end": "2023-12-01 23:00:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 151,
+   "diff": -0.01854304635761586,
+   "ci_lo": -0.09804635761589402,
+   "ci_hi": 0.06493377483443712,
+   "ci_method": "iid",
+   "p": 0.6556049243690792,
+   "start": "2023-12-08 23:00:00+00:00",
+   "end": "2026-07-07 22:00:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.05289240646166273,
+ "mde_threshold": 0.05,
+ "power_floor_n": 732,
+ "verdict": "UNDERPOWERED",
+ "verdict_detail": "CI contains 0; MDE 0.0529 vs threshold 0.0500, effective n 603 (power floor n=732, have 654)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 654,
+  "min_slack_min": 0.0,
+  "passed": true,
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 59,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "target_px",
+    "leg"
+   ],
+   "ignored": [],
+   "lookback": "60D",
+   "recent": "1D",
+   "events_fp": "b3c321ffa56f0be3",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "reps": 5,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "mde_threshold": null,
+  "cluster": null,
+  "outcome_horizon": "7 days 00:00:00",
+  "null_kind": "null_fn x5"
+ },
+ "notes": "Both legs of the alternation pooled into one reading; per-leg hit rates printed by the script, not scored separately. 'Before the FVG side is revisited' race clause not applied: plain reach-within-horizon vs geometry-matched null.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/liquidity_guest_01b/internal-external-range-liquidity.py",
+ "runtime_sec": 0.21,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:07:55+00:00",
+ "dropped": {
+  "nan_rows": 0
+ },
+ "null_kind": "null_fn x5",
+ "events_fp": "b3c321ffa56f0be3",
+ "predictors_probed": true,
+ "ci_components": {
+  "phase3_iid": [
+   -0.04587155963302755,
+   0.02813455657492353
+  ],
+  "day_block": [
+   -0.04340306934656509,
+   0.023263198438071394
+  ],
+  "day_block_7d": [
+   -0.04472291130131785,
+   0.023716125544717866
+  ]
+ },
+ "dependence": {
+  "day_block_mean_days": 7,
+  "n_days": 603,
+  "n_clusters": null,
+  "n_eff": 603
+ },
+ "run_id": "86b01c68bb934b5b870ccb2b419eb3b0",
+ "hyp_key": "7e99fc4e13ec2050"
+}

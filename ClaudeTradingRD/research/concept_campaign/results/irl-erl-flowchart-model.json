@@ -1,0 +1,263 @@
+{
+ "concept_id": "irl-erl-flowchart-model",
+ "reading": null,
+ "testable": true,
+ "test_type": "trade",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "1. bias: previous daily candle (18:00 NY day) is a C2 closure in the direction",
+   "2. 1H: IRL = 3-bar FVG, ERL = 2/2 swing extreme, from the prior 72 1H bars",
+   "3. reaction: the 5m reversal extreme reaches into a still-untouched same-side 1H FVG or takes a still-untaken 1H swing low/high (1H bars closed before the extreme only)",
+   "4. 5m stop raid: extreme beyond the latest 5m 2/2 swing confirmed before it; then a 5m CISD (series_open, max_wait 3) in the direction",
+   "5. extreme bar and CISD bar both start in forex London 02-05 or NY AM 07-10 NY",
+   "enter next M1 open; stop = protected swing (extreme); 2R; hold to daily close; first setup per side per day"
+  ],
+  "params": {
+   "bias": "prev daily C2",
+   "mid_tf": "1h",
+   "exec_tf": "5min",
+   "lookback_1h": 72,
+   "level_rule": "series_open",
+   "max_wait": 3,
+   "killzones": "fx_london 02-05, fx_ny_am 07-10 NY",
+   "rr": 2.0,
+   "max_hold": "to daily close",
+   "one_per_side_day": true,
+   "day_open_hour": 18
+  }
+ },
+ "params_source": {
+  "bias": "corpus: vWv1jAiKjJ4 / kv9aH7fb2Hc bias forms incl. 'a daily sweep-and-close-back-inside' (concept preconditions)",
+  "mid_tf": "corpus: vWv1jAiKjJ4 'drop ONE timeframe'; method_spec \u00a71.2 daily->1H",
+  "exec_tf": "method_spec: \u00a71.2 pairing 1H->5m",
+  "lookback_1h": "method_spec: \u00a71.1 three-HTF-candle look-back (hourly -> 3 days)",
+  "level_rule": "method_spec: \u00a74.2 first-candle-open default",
+  "max_wait": "phase3: locked config max_wait=3",
+  "killzones": "session_window_fit: killzones.yaml forex London / NY AM (hours never given in the videos; London is the one labelled)",
+  "rr": "corpus: TfHlNgAZ_II 'just around a 2R trade'",
+  "max_hold": "method_spec: \u00a75.5 time-based exit at the HTF (daily) candle close",
+  "one_per_side_day": "method_spec: \u00a72.4 only one CISD per day forms the wick",
+  "day_open_hour": "method_spec: \u00a71.4 18:00 canon"
+ },
+ "n": 425,
+ "span": {
+  "start": "2016-01-18 07:45:00+00:00",
+  "end": "2026-07-10 06:35:00+00:00",
+  "years": 10.472
+ },
+ "avg_R": 0.025323896733741642,
+ "avg_R_gross": 0.06532389673374164,
+ "win_rate": 0.37411764705882355,
+ "pf": 1.0408979615743574,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "n": 2125,
+  "avg_R": 0.001576210779677504,
+  "win_rate": 0.37929411764705884,
+  "pf": 1.0026357422837755,
+  "sd_R": 1.3114195555483834,
+  "exit_mix": {
+   "stop": 0.5505882352941176,
+   "target": 0.2743529411764706,
+   "time": 0.17505882352941177
+  },
+  "avg_R_gross": 0.04157621077967752,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": 0.023747685954064138,
+ "ci_lo": -0.10829999799086755,
+ "ci_hi": 0.17165118509739985,
+ "ci_method": "phase3_iid",
+ "p": 0.7394970401532177,
+ "halves": {
+  "H1": {
+   "n": 190,
+   "diff": -0.07369504716247038,
+   "ci_lo": -0.27559693636181204,
+   "ci_hi": 0.15157404282292689,
+   "ci_method": "iid",
+   "p": 0.4988746443285377,
+   "start": "2016-01-18 07:45:00+00:00",
+   "end": "2020-12-24 14:50:00+00:00"
+  },
+  "H2": {
+   "n": 235,
+   "diff": 0.10253117230360274,
+   "ci_lo": -0.08387430882662125,
+   "ci_hi": 0.2872290532706744,
+   "ci_method": "iid",
+   "p": 0.27879661559472957,
+   "start": "2021-01-12 09:15:00+00:00",
+   "end": "2026-07-10 06:35:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 99,
+   "diff": 0.06564409166756319,
+   "ci_lo": -0.21041551391933497,
+   "ci_hi": 0.3762556605839084,
+   "ci_method": "iid",
+   "p": 0.6609438174578195,
+   "start": "2016-01-18 07:45:00+00:00",
+   "end": "2018-08-10 08:30:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 107,
+   "diff": -0.16904780428961008,
+   "ci_lo": -0.42347557603949293,
+   "ci_hi": 0.10496751258500643,
+   "ci_method": "iid",
+   "p": 0.20985054260795857,
+   "start": "2018-08-29 07:50:00+00:00",
+   "end": "2021-04-06 13:05:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 133,
+   "diff": 0.2053116176993112,
+   "ci_lo": -0.03662306800625406,
+   "ci_hi": 0.4477784105900321,
+   "ci_method": "iid",
+   "p": 0.0966239637341779,
+   "start": "2021-04-15 07:50:00+00:00",
+   "end": "2023-11-14 13:50:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 86,
+   "diff": -0.06539917022827443,
+   "ci_lo": -0.39440044299333443,
+   "ci_hi": 0.2808864562837435,
+   "ci_method": "iid",
+   "p": 0.7042191285668509,
+   "start": "2023-12-05 08:45:00+00:00",
+   "end": "2026-07-10 06:35:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.20008200030009315,
+ "mde_threshold": 0.1,
+ "power_floor_n": 1702,
+ "verdict": "UNDERPOWERED",
+ "verdict_detail": "CI contains 0; MDE 0.2001 vs threshold 0.1000, effective n 412 (power floor n=1702, have 425)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 425,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 0.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 45,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "rr",
+    "max_hold"
+   ],
+   "ignored": [],
+   "lookback": "20D",
+   "recent": "1D",
+   "events_fp": "b2a0fb84f321a401",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "per-row column",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": null,
+  "entry_mode": "next_open",
+  "hold_basis": "clock",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "contested concept tested on its common flowchart (both source definitions agree on steps 1-5; the contested points are the unstated kill-zone hours and the discretionary strong-narrative override, not separable readings). trade_test vs matched controls.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/model_own_02a/irl-erl-flowchart-model.py",
+ "runtime_sec": 3.21,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:27:04+00:00",
+ "n_events_in": 425,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 0,
+  "target_not_beyond_entry": 0,
+  "no_bars_in_hold": 0
+ },
+ "events_fp": "b2a0fb84f321a401",
+ "sd_R": 1.365231020609653,
+ "exit_mix": {
+  "stop": 0.5788235294117647,
+  "target": 0.30823529411764705,
+  "time": 0.11294117647058824
+ },
+ "trades_per_year": 40.583333333333336,
+ "ci_components": {
+  "phase3_iid": [
+   -0.10829999799086755,
+   0.17165118509739985
+  ],
+  "day_block": [
+   -0.11090104002833086,
+   0.15875680527390393
+  ]
+ },
+ "diff_win": -0.005176470588235282,
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 412,
+  "n_clusters": null,
+  "n_eff": 412
+ },
+ "ties": {
+  "real_ambiguous": 0.0,
+  "control_ambiguous": 0.0,
+  "real_gap_stop": 0.002352941176470588,
+  "control_gap_stop": 0.011294117647058824,
+  "verdict_stop_first": "UNDERPOWERED"
+ },
+ "ctrl_overlap": 0.0,
+ "exposure_bars": {
+  "real_mean": 632.6211764705882,
+  "control_mean": 636.8465882352941,
+  "hold_basis": "clock"
+ },
+ "run_id": "fa1594cafe5d4da9ae5aedac83e55a20",
+ "hyp_key": "94aa19c46db1a4bd"
+}

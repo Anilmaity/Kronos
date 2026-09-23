@@ -1,0 +1,200 @@
+{
+ "concept_id": "next-day-model",
+ "reading": "b",
+ "testable": true,
+ "test_type": "rate",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "reversal day D: took exactly one side of D-1's range and closed back inside",
+   "prediction: D+1 reaches D-1's opposite extreme (bullish reversal -> D-1 high)",
+   "hit = any M1 high>=/low<= target within one session (1380 M1 bars) after D's close",
+   "null = same signed distance from the first price, same side, same bar count, at matched random moments (5 reps, +/-30 d)"
+  ],
+  "params": {
+   "tf": "1D",
+   "day_open_hour": 18,
+   "horizon_bars": 1380,
+   "min_nm1": 600
+  }
+ },
+ "params_source": {
+  "tf": "corpus: next-day-model.yaml timeframes htf 1D",
+  "day_open_hour": "method_spec: \u00a71.4 daily open 18:00 canon",
+  "horizon_bars": "declared-before-run: the anticipated candle is D+1 (one session in trading time)",
+  "min_nm1": "declared-before-run: drop stub sessions (README trap 6)"
+ },
+ "n": 868,
+ "span": {
+  "start": "2016-01-08 23:00:00+00:00",
+  "end": "2026-07-20 22:00:00+00:00",
+  "years": 10.527
+ },
+ "avg_R": null,
+ "avg_R_gross": null,
+ "win_rate": null,
+ "pf": null,
+ "observed_rate": 0.2995391705069124,
+ "null_rate": 0.3069124423963133,
+ "lift": 0.9759759759759761,
+ "control": {
+  "rate": 0.3069124423963133,
+  "reps": 5,
+  "kind": "null_fn x5"
+ },
+ "diff": -0.007373271889400956,
+ "ci_lo": -0.04056451612903228,
+ "ci_hi": 0.02603686635944702,
+ "ci_method": "phase3_iid",
+ "p": 0.6643135739782986,
+ "halves": {
+  "H1": {
+   "n": 421,
+   "diff": -0.013776722090261317,
+   "ci_lo": -0.06271971496437061,
+   "ci_hi": 0.039429928741092635,
+   "ci_method": "iid",
+   "p": 0.5970323097055386,
+   "start": "2016-01-08 23:00:00+00:00",
+   "end": "2020-12-23 23:00:00+00:00"
+  },
+  "H2": {
+   "n": 447,
+   "diff": -0.0013422818791946622,
+   "ci_lo": -0.048769574944071636,
+   "ci_hi": 0.04833333333333334,
+   "ci_method": "iid",
+   "p": 0.9567867274324335,
+   "start": "2021-01-11 23:00:00+00:00",
+   "end": "2026-07-20 22:00:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 230,
+   "diff": -0.017391304347826042,
+   "ci_lo": -0.08608695652173914,
+   "ci_hi": 0.05308695652173905,
+   "ci_method": "iid",
+   "p": 0.6242485912096389,
+   "start": "2016-01-08 23:00:00+00:00",
+   "end": "2018-08-16 22:00:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 214,
+   "diff": -0.02523364485981311,
+   "ci_lo": -0.09532710280373832,
+   "ci_hi": 0.04579439252336448,
+   "ci_method": "iid",
+   "p": 0.4833565133024469,
+   "start": "2018-08-22 22:00:00+00:00",
+   "end": "2021-04-09 22:00:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 232,
+   "diff": 0.018965517241379348,
+   "ci_lo": -0.052629310344827686,
+   "ci_hi": 0.08879310344827585,
+   "ci_method": "iid",
+   "p": 0.5991079696650952,
+   "start": "2021-04-12 22:00:00+00:00",
+   "end": "2023-11-30 23:00:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 192,
+   "diff": -0.007291666666666696,
+   "ci_lo": -0.08651041666666671,
+   "ci_hi": 0.07291666666666669,
+   "ci_method": "iid",
+   "p": 0.8577143000745224,
+   "start": "2023-12-07 23:00:00+00:00",
+   "end": "2026-07-20 22:00:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.04760021973847129,
+ "mde_threshold": 0.05,
+ "power_floor_n": 787,
+ "verdict": "NULL",
+ "verdict_detail": "CI contains 0; powered (MDE 0.0476 <= 0.0500)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 868,
+  "min_slack_min": 0.0,
+  "passed": true,
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 73,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "target"
+   ],
+   "ignored": [],
+   "lookback": "30D",
+   "recent": "1D",
+   "events_fp": "eeee88c43a36714b",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "reps": 5,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "mde_threshold": null,
+  "cluster": null,
+  "outcome_horizon": "1 days 00:00:00",
+  "null_kind": "null_fn x5"
+ },
+ "notes": "objective per detection_rules: 'the objective is the other side of the range' / 'the magnitude is the previous candle's opposite extreme' (STRAT 2-2 reversal).",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/model_own_01b/next-day-model.py",
+ "runtime_sec": 0.42,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:09:16+00:00",
+ "dropped": {
+  "nan_rows": 0
+ },
+ "null_kind": "null_fn x5",
+ "events_fp": "eeee88c43a36714b",
+ "predictors_probed": true,
+ "ci_components": {
+  "phase3_iid": [
+   -0.04056451612903228,
+   0.02603686635944702
+  ],
+  "day_block": [
+   -0.03618087557603609,
+   0.020967741935484452
+  ]
+ },
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 868,
+  "n_clusters": null,
+  "n_eff": 868
+ },
+ "run_id": "dd7eff6bd1764467a6c887fe6d8120cd",
+ "hyp_key": "3bb1185f456f60a0"
+}

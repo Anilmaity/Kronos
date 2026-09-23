@@ -1,0 +1,260 @@
+{
+ "concept_id": "mmxm-hedging-program",
+ "reading": null,
+ "testable": true,
+ "test_type": "trade",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "1H: curve split = 2/2 swing low that is the lowest low of 48 bars; range high = highest high of the 48 bars before it; sell side = bars between them",
+   "mitigation blocks = up-close candles on the sell side, zone = candle high..low",
+   "block extended to the buy side once a 1H close above its high (from the low's confirmation, within 48 bars)",
+   "first M1 return to the block high before price reaches the range high, within 48 1H bars of the low: long at the next M1 open, stop block low, 2R, 10h trading time; mirrored for sell models",
+   "clustered by model"
+  ],
+  "params": {
+   "tf": "1h",
+   "range_bars": 48,
+   "window_bars": 48,
+   "zone": "candle range",
+   "rr": 2.0,
+   "max_hold": "10h",
+   "hold_basis": "bars",
+   "swing": "2/2"
+  }
+ },
+ "params_source": {
+  "tf": "corpus: Ibw4saRtYMk concept ltf 4H/1H/15m \u2014 1H declared-before-run",
+  "range_bars": "declared-before-run: the model's range = two trading days of 1H bars",
+  "window_bars": "declared-before-run: buy side considered for two trading days",
+  "zone": "declared-before-run: whole candle as the block (source gives no boundary)",
+  "rr": "phase3: 2R target (no target stated in the source)",
+  "max_hold": "phase3: 10 entry-TF bars",
+  "hold_basis": "declared-before-run: trading-time hold across halts (trap 7)",
+  "swing": "phase3: 2/2 fractal swing"
+ },
+ "n": 14877,
+ "span": {
+  "start": "2016-01-08 09:01:00+00:00",
+  "end": "2026-07-22 23:14:00+00:00",
+  "years": 10.535
+ },
+ "avg_R": -0.012883008904093123,
+ "avg_R_gross": 0.02711699109590689,
+ "win_rate": 0.3700342811050615,
+ "pf": 0.9793814178474526,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "n": 74385,
+  "avg_R": -0.0597917951944297,
+  "win_rate": 0.3576796397123076,
+  "pf": 0.9068108222365268,
+  "sd_R": 1.3246155286241024,
+  "exit_mix": {
+   "stop": 0.5980506822612086,
+   "target": 0.26590038314176245,
+   "time": 0.13604893459702896
+  },
+  "avg_R_gross": -0.019791795194429668,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": 0.04690878629033658,
+ "ci_lo": -0.004838418804881407,
+ "ci_hi": 0.09959891770264398,
+ "ci_method": "day_block",
+ "p": 0.07829527931153489,
+ "halves": {
+  "H1": {
+   "n": 7052,
+   "diff": 0.04231231731883088,
+   "ci_lo": -0.026861075978634158,
+   "ci_hi": 0.10917555528771822,
+   "ci_method": "block",
+   "p": 0.22275329510271866,
+   "start": "2016-01-08 09:01:00+00:00",
+   "end": "2020-12-31 04:16:00+00:00"
+  },
+  "H2": {
+   "n": 7825,
+   "diff": 0.05105118874235678,
+   "ci_lo": -0.013450848206429424,
+   "ci_hi": 0.11615139875931645,
+   "ci_method": "block",
+   "p": 0.12256755776557242,
+   "start": "2021-01-05 02:31:00+00:00",
+   "end": "2026-07-22 23:14:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 3740,
+   "diff": 0.06953998956272209,
+   "ci_lo": -0.0321307739357013,
+   "ci_hi": 0.15567396569449407,
+   "ci_method": "block",
+   "p": 0.14665079805797768,
+   "start": "2016-01-08 09:01:00+00:00",
+   "end": "2018-08-22 08:52:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 3718,
+   "diff": 0.0212060280004341,
+   "ci_lo": -0.06706189583186906,
+   "ci_hi": 0.11501187905267407,
+   "ci_method": "block",
+   "p": 0.6479932571277172,
+   "start": "2018-08-22 15:55:00+00:00",
+   "end": "2021-04-09 14:24:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 4147,
+   "diff": 0.08051366410193604,
+   "ci_lo": -0.0038110338981411766,
+   "ci_hi": 0.17207305833833908,
+   "ci_method": "block",
+   "p": 0.0727481216403876,
+   "start": "2021-04-12 14:21:00+00:00",
+   "end": "2023-12-01 14:46:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 3272,
+   "diff": 0.007655340935334279,
+   "ci_lo": -0.08853766702254727,
+   "ci_hi": 0.09329331330971753,
+   "ci_method": "block",
+   "p": 0.8689168257377011,
+   "start": "2023-12-04 08:41:00+00:00",
+   "end": "2026-07-22 23:14:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.07464169632693139,
+ "mde_threshold": 0.1,
+ "power_floor_n": 8289,
+ "verdict": "NULL",
+ "verdict_detail": "CI contains 0; powered (MDE 0.0746 <= 0.1000)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 14877,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 2940.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 1199,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "rr",
+    "model_id"
+   ],
+   "ignored": [],
+   "lookback": "20D",
+   "recent": "1D",
+   "events_fp": "e8aa15722ae59787",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "10h",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": null,
+  "entry_mode": "next_open",
+  "hold_basis": "bars",
+  "mde_threshold": null,
+  "cluster": "column:model_id",
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "The central-bank hedging mechanism itself is not observable in OHLC (and the source offers one COT chart); tested is its stated trading consequence, the hold of extended sell-side up-close candles.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/model_guest_01a/mmxm-hedging-program.py",
+ "runtime_sec": 4.46,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:19:59+00:00",
+ "n_events_in": 14984,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 107,
+  "target_not_beyond_entry": 0,
+  "no_bars_in_hold": 0
+ },
+ "events_fp": "e8aa15722ae59787",
+ "sd_R": 1.3422721553858408,
+ "exit_mix": {
+  "stop": 0.5783424077434967,
+  "target": 0.28486926127579487,
+  "time": 0.13678833098070847
+ },
+ "trades_per_year": 1412.1164890852392,
+ "ci_components": {
+  "phase3_block": [
+   0.00017897231345037867,
+   0.09260383839100812
+  ],
+  "day_block": [
+   -0.004838418804881407,
+   0.09959891770264398
+  ],
+  "cluster": [
+   0.008920068708561208,
+   0.08562000276981194
+  ]
+ },
+ "diff_win": 0.012354641392753885,
+ "dependence": {
+  "day_block_mean_days": 2,
+  "n_days": 1877,
+  "n_clusters": 2211,
+  "n_eff": 1877
+ },
+ "ties": {
+  "real_ambiguous": 0.0024198427102238356,
+  "control_ambiguous": 0.0011158163608254352,
+  "real_gap_stop": 0.011695906432748537,
+  "control_gap_stop": 0.014398064125831821,
+  "verdict_stop_first": "NULL"
+ },
+ "ctrl_overlap": 0.0013309134906231096,
+ "exposure_bars": {
+  "real_mean": 599.9794313369631,
+  "control_mean": 599.9895812327754,
+  "hold_basis": "bars"
+ },
+ "run_id": "c1259a959fde492a96233ae17124ad15",
+ "hyp_key": "ff1e4f22c8e23996"
+}

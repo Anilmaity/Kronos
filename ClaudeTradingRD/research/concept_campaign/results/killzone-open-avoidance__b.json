@@ -1,0 +1,200 @@
+{
+ "concept_id": "killzone-open-avoidance",
+ "reading": "b",
+ "testable": true,
+ "test_type": "rate",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "each NY trading day: first_move = sign(close of the last M1 bar before 07:30 NY - open of the first M1 bar at/after 07:00 NY); needs >= 20 of 30 M1 bars; decide at 07:30 NY",
+   "outcome = the move from the 07:30 open to the 16:59 close has the OPPOSITE sign (flat days dropped)",
+   "null = at matched random moments (+/-30d, same minute grid): sign of the preceding 30 M1 bars vs the sign over the same number of following M1 bars as the real day",
+   "claim '+': the kill zone's opening move reverses more often than a random 30-minute move"
+  ],
+  "params": {
+   "window": [
+    "07:00",
+    "07:30"
+   ],
+   "day_end": "17:00",
+   "min_cover": 20
+  }
+ },
+ "params_source": {
+  "window": "corpus: qFtfD09Vv3E '7am to 10am ... never trade at the beginning ... 7 30 opening price'",
+  "day_end": "declared-before-run: the day's direction read to the 17:00 NY daily close (18:00 roll)",
+  "min_cover": "declared-before-run: at least 2/3 of the window's M1 bars present"
+ },
+ "n": 2718,
+ "span": {
+  "start": "2016-01-04 12:30:00+00:00",
+  "end": "2026-07-22 11:30:00+00:00",
+  "years": 10.543
+ },
+ "avg_R": null,
+ "avg_R_gross": null,
+ "win_rate": null,
+ "pf": null,
+ "observed_rate": 0.49484915378955113,
+ "null_rate": 0.5095658572479764,
+ "lift": 0.9711191335740073,
+ "control": {
+  "rate": 0.5095658572479764,
+  "reps": 5,
+  "kind": "null_fn x5"
+ },
+ "diff": -0.014689035795777017,
+ "ci_lo": -0.03647660134117442,
+ "ci_hi": 0.006652033697858119,
+ "ci_method": "phase3_iid",
+ "p": 0.18185179865559747,
+ "halves": {
+  "H1": {
+   "n": 1290,
+   "diff": -0.025387596899224762,
+   "ci_lo": -0.05520736434108523,
+   "ci_hi": 0.0050029069767441895,
+   "ci_method": "iid",
+   "p": 0.09836475935484465,
+   "start": "2016-01-04 12:30:00+00:00",
+   "end": "2020-12-31 12:30:00+00:00"
+  },
+  "H2": {
+   "n": 1428,
+   "diff": -0.005077030812324912,
+   "ci_lo": -0.03305409663865687,
+   "ci_hi": 0.02486782212885033,
+   "ci_method": "block",
+   "p": 0.7311520079386697,
+   "start": "2021-01-04 12:30:00+00:00",
+   "end": "2026-07-22 11:30:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 680,
+   "diff": -0.022941176470588298,
+   "ci_lo": -0.06442463235294116,
+   "ci_hi": 0.02015257352941181,
+   "ci_method": "iid",
+   "p": 0.2876629870265018,
+   "start": "2016-01-04 12:30:00+00:00",
+   "end": "2018-08-21 11:30:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 679,
+   "diff": -0.020544918998527284,
+   "ci_lo": -0.05854381443298965,
+   "ci_hi": 0.022179675994109,
+   "ci_method": "iid",
+   "p": 0.3184442210515108,
+   "start": "2018-08-22 11:30:00+00:00",
+   "end": "2021-04-09 11:30:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 685,
+   "diff": 0.005547445255474348,
+   "ci_lo": -0.033802919708029136,
+   "ci_hi": 0.04709489051094885,
+   "ci_method": "iid",
+   "p": 0.7880811713689257,
+   "start": "2021-04-12 11:30:00+00:00",
+   "end": "2023-12-01 12:30:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 674,
+   "diff": -0.021142433234421387,
+   "ci_lo": -0.06417470326409486,
+   "ci_hi": 0.02210867952522282,
+   "ci_method": "block",
+   "p": 0.336794146229221,
+   "start": "2023-12-04 12:30:00+00:00",
+   "end": "2026-07-22 11:30:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.03082417253475778,
+ "mde_threshold": 0.05,
+ "power_floor_n": 1033,
+ "verdict": "NULL",
+ "verdict_detail": "CI contains 0; powered (MDE 0.0308 <= 0.0500)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 2718,
+  "min_slack_min": 0.0,
+  "passed": true,
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 201,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "first_move"
+   ],
+   "ignored": [],
+   "lookback": "10D",
+   "recent": "1D",
+   "events_fp": "6a1032ef2b2b5d51",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "reps": 5,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "mde_threshold": null,
+  "cluster": null,
+  "outcome_horizon": "1 days 00:00:00",
+  "null_kind": "null_fn x5"
+ },
+ "notes": "Tests 'it's doing the opposite of what it is actually going to do' on the forex 07:00 window he names. Gold, not indices.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/time_guest_01a/killzone-open-avoidance.py",
+ "runtime_sec": 3.24,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:27:42+00:00",
+ "dropped": {
+  "nan_rows": 0
+ },
+ "null_kind": "null_fn x5",
+ "events_fp": "6a1032ef2b2b5d51",
+ "predictors_probed": true,
+ "ci_components": {
+  "phase3_iid": [
+   -0.03647660134117442,
+   0.006652033697858119
+  ],
+  "day_block": [
+   -0.03655445180279733,
+   0.0052074135393658915
+  ]
+ },
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 2718,
+  "n_clusters": null,
+  "n_eff": 2718
+ },
+ "run_id": "aa5ab15ef93b4b5aae68e41722059a85",
+ "hyp_key": "42e9b23705de8da2"
+}

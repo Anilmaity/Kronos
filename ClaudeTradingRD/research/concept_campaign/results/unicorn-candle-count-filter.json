@@ -1,0 +1,283 @@
+{
+ "concept_id": "unicorn-candle-count-filter",
+ "reading": null,
+ "testable": true,
+ "test_type": "gate",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "5m bars; 3-candle swing points (left=right=1)",
+   "breaker (method spec 4.6, mirrored): swing low L1 -> swing high H1 -> lower low below L1 -> a 5m CLOSE above H1, all within W bars of L1; zone = bodies of the up-close candles L1..H1 (bearish mirror)",
+   "unicorn = a same-direction 3-bar FVG from the leg out of the lower low (third candle <= break bar + 1) that overlaps the breaker zone; completion = later of break bar and FVG bar",
+   "resting limit at the top (long) / bottom (short) of the breaker/FVG overlap from the completion close for 60 min; cancelled if 2R trades first; filled = first M1 touch, entered at the next M1 open with the planned stop distance",
+   "stop = far edge of the breaker zone; target 2R; time exit 50 min",
+   "gate: count = bars from L1 to completion (inclusive) <= 12"
+  ],
+  "params": {
+   "tf": "5min",
+   "W": 48,
+   "fill_min": 60,
+   "rr": 2.0,
+   "cut": 12,
+   "max_hold": "50min"
+  }
+ },
+ "params_source": {
+  "tf": "corpus: 07lOxv39LdY DTR C2U - hourly POI, 'drop to the 5-minute, look for a unicorn' (guest_methods_appendix DTR)",
+  "W": "declared-before-run: base formation window 48 bars (4h) so the complement (13-48 bars, 'built over several hours') is populated",
+  "fill_min": "declared-before-run: limit rests 12 entry-TF bars (60 min)",
+  "rr": "corpus: 07lOxv39LdY low-hanging-fruit target 2-2.5R (worked example ~2.25R); G44VpidBD_U 80% at 2R",
+  "cut": "corpus: 07lOxv39LdY 'roughly 10 to 12 candles or fewer' - upper bound 12",
+  "max_hold": "phase3: 10 entry-TF bars (conjunction_preregistration 1.13) = 50 min on 5m"
+ },
+ "n": 3462,
+ "span": {
+  "start": "2016-01-04 11:57:00+00:00",
+  "end": "2026-07-22 13:01:00+00:00",
+  "years": 10.546
+ },
+ "avg_R": -0.0036700651001124467,
+ "avg_R_gross": 0.03632993489988758,
+ "win_rate": 0.36857307914500287,
+ "pf": 0.9942204890533182,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "avg_R_gated": -0.04211860268750143,
+  "avg_R_complement": -0.04860953863413243,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": 0.011789463668180674,
+ "ci_lo": -0.052954076230689054,
+ "ci_hi": 0.07371078708995543,
+ "ci_method": "phase3_iid",
+ "p": 0.7152223576816182,
+ "halves": {
+  "H1": {
+   "n": 3717,
+   "diff": 0.05776242170379643,
+   "ci_lo": -0.03529225361531018,
+   "ci_hi": 0.15463349517138436,
+   "ci_method": "iid",
+   "p": 0.2331930371687468,
+   "start": "2016-01-04 11:57:00+00:00",
+   "end": "2020-12-31 09:11:00+00:00",
+   "n_gated": 1500
+  },
+  "H2": {
+   "n": 4503,
+   "diff": -0.02425568617577689,
+   "ci_lo": -0.11399600239533775,
+   "ci_hi": 0.05965413826009955,
+   "ci_method": "iid",
+   "p": 0.5840072225807075,
+   "start": "2021-01-04 05:31:00+00:00",
+   "end": "2026-07-22 13:01:00+00:00",
+   "n_gated": 1962
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 1810,
+   "diff": 0.0956277178517171,
+   "ci_lo": -0.05502473996082414,
+   "ci_hi": 0.23240386813352484,
+   "ci_method": "iid",
+   "p": 0.19217799693655196,
+   "start": "2016-01-04 11:57:00+00:00",
+   "end": "2018-08-22 04:31:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 2141,
+   "diff": 0.022709833995273883,
+   "ci_lo": -0.09918762186992482,
+   "ci_hi": 0.1422531562012676,
+   "ci_method": "iid",
+   "p": 0.7123461021894811,
+   "start": "2018-08-23 12:16:00+00:00",
+   "end": "2021-04-12 07:36:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 2220,
+   "diff": -0.018935345725131763,
+   "ci_lo": -0.14232186120149595,
+   "ci_hi": 0.10307212010171704,
+   "ci_method": "iid",
+   "p": 0.7622910837461081,
+   "start": "2021-04-13 01:56:00+00:00",
+   "end": "2023-12-01 08:01:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 2049,
+   "diff": -0.028954129093831833,
+   "ci_lo": -0.15416475710803607,
+   "ci_hi": 0.09357604605714276,
+   "ci_method": "iid",
+   "p": 0.6468572861305155,
+   "start": "2023-12-04 04:21:00+00:00",
+   "end": "2026-07-22 13:01:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.09052778038427434,
+ "mde_threshold": 0.1,
+ "power_floor_n": 2838,
+ "verdict": "NULL",
+ "verdict_detail": "CI contains 0; powered (MDE 0.0905 <= 0.1000)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 8220,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "gate_mask_checked": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 7.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 636,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_dist",
+    "rr",
+    "confirm_time",
+    "t_a",
+    "count",
+    "sweep_px",
+    "lim_px",
+    "brk_px",
+    "body_below",
+    "l1",
+    "fast"
+   ],
+   "ignored": [],
+   "lookback": "10D",
+   "recent": "1D",
+   "events_fp": "a464978cc8dfe7e9",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "50min",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": null,
+  "entry_mode": "next_open",
+  "hold_basis": "clock",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "Count start point is unstated in the corpus; declared as the breaker's first swing point L1 (the whole formation). Stop is 'not stated' for this concept; the unicorn-model / unicorn-entry-model breaker-edge stop is used. Limit fill is emulated (entry at the next M1 open after the touch). Swing 1/1 per swing-point-stop-hunt / unicorn-model ('a swing high has a lower high on each side').",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/entry_guest_01b/unicorn-candle-count-filter.py",
+ "runtime_sec": 2.37,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:12:23+00:00",
+ "n_events_in": 8222,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 0,
+  "target_not_beyond_entry": 0,
+  "no_bars_in_hold": 2
+ },
+ "n_complement": 4758,
+ "gate_firing_rate": 0.4211678832116788,
+ "events_fp": "a464978cc8dfe7e9",
+ "mask_fp": "2a331ab072e72243",
+ "mask_col": "fast",
+ "exit_mix": {
+  "stop": 0.5953206239168111,
+  "target": 0.29693818601964184,
+  "time": 0.10774119006354708
+ },
+ "gated_vs_own_control": {
+  "diff": 0.03844853758738898,
+  "ci_lo": -0.011764701376010772,
+  "ci_hi": 0.08730730069250252,
+  "p": 0.12819150178802477
+ },
+ "complement": {
+  "n": 4758,
+  "avg_R": -0.021950464714924112,
+  "win_rate": 0.37683900798654896,
+  "pf": 0.9637671395002919,
+  "sd_R": 1.2998965925499233,
+  "exit_mix": {
+   "stop": 0.5609499789827659,
+   "target": 0.26061370323665406,
+   "time": 0.17843631778058008
+  },
+  "vs_own_control": {
+   "diff": 0.026659073919208316,
+   "ci_lo": -0.014576410472128118,
+   "ci_hi": 0.06571440398605415,
+   "p": 0.19307392212363172
+  }
+ },
+ "ci_components": {
+  "phase3_iid": [
+   -0.052954076230689054,
+   0.07371078708995543
+  ],
+  "day_block": [
+   -0.048761504136335385,
+   0.07101960811159527
+  ]
+ },
+ "diff_meaning": "mean(R-ctrl | gated) - mean(R-ctrl | complement)",
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_eff_gated": 1920,
+  "n_eff_complement": 2240,
+  "n_eff": 1920
+ },
+ "ties": {
+  "real_ambiguous": 0.013868613138686132,
+  "control_ambiguous": 0.014549878345498783,
+  "real_gap_stop": 0.021532846715328468,
+  "control_gap_stop": 0.0178345498783455,
+  "gated_excess": -0.002888503755054882,
+  "complement_excess": 0.000924758301807482,
+  "verdict_stop_first": "NULL"
+ },
+ "ctrl_overlap": 0.0009245742092457421,
+ "exposure_bars": {
+  "real_mean": 48.80888077858881,
+  "control_mean": 48.67379562043796,
+  "hold_basis": "clock"
+ },
+ "run_id": "f91def1074ba4570af3c69bdb21fd024",
+ "hyp_key": "4e9ab20b72e91ede"
+}

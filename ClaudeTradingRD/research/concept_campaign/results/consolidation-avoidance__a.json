@@ -1,0 +1,270 @@
+{
+ "concept_id": "consolidation-avoidance",
+ "reading": "a",
+ "testable": true,
+ "test_type": "gate",
+ "claim": "-",
+ "operationalization": {
+  "rules": [
+   "baseline: 15m bare CISD (series_open, 2/2 swing, max_wait 3); decide at the confirming bar close; enter next M1 open; stop at the protected swing; 2R; exit after 150 min",
+   "claim '-': trades taken while the higher timeframe is in consolidation (gated) are worse than the rest",
+   "gate: the last completed daily candle (18:00 NY roll, stubs <600 M1 skipped) is an inside day: high <= prior high and low >= prior low (read via asof at decision)"
+  ],
+  "params": {
+   "tf": "15min",
+   "cisd": "series_open 2/2 max_wait 3",
+   "rr": 2.0,
+   "max_hold": "150min",
+   "consolidation": "daily inside day"
+  }
+ },
+ "params_source": {
+  "tf": "corpus: concept timeframes.ltf 15m; phase3 15m stack",
+  "cisd": "phase3: locked bare-CISD config",
+  "rr": "phase3: locked 2R",
+  "max_hold": "phase3: 10 entry-TF bars",
+  "consolidation": "declared-before-run: no quantitative range definition in corpus; daily inside bar = range with both boundaries and no displacement (method_spec \u00a72.8 no-bias states)"
+ },
+ "n": 4982,
+ "span": {
+  "start": "2016-01-06 01:15:00+00:00",
+  "end": "2026-07-23 02:15:00+00:00",
+  "years": 10.543
+ },
+ "avg_R": -0.01457725876549398,
+ "avg_R_gross": 0.025422741234506045,
+ "win_rate": 0.4309514251304697,
+ "pf": 0.9668253241401717,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "avg_R_gated": -0.04671529460552162,
+  "avg_R_complement": -0.037196814318695114,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": 0.04425249874040328,
+ "ci_lo": 0.005487423765600054,
+ "ci_hi": 0.08073821086908134,
+ "ci_method": "phase3_block",
+ "p": 0.02115649489692663,
+ "halves": {
+  "H1": {
+   "n": 15621,
+   "diff": 0.05693425596823126,
+   "ci_lo": 0.0026959690129153666,
+   "ci_hi": 0.10749667160947096,
+   "ci_method": "block",
+   "p": 0.033208902677655375,
+   "start": "2016-01-06 01:15:00+00:00",
+   "end": "2020-12-31 19:15:00+00:00",
+   "n_gated": 2437
+  },
+  "H2": {
+   "n": 17092,
+   "diff": 0.03199527309834554,
+   "ci_lo": -0.020496772802472554,
+   "ci_hi": 0.08332406702731437,
+   "ci_method": "block",
+   "p": 0.2270339531290614,
+   "start": "2021-01-03 23:45:00+00:00",
+   "end": "2026-07-23 02:15:00+00:00",
+   "n_gated": 2545
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 8182,
+   "diff": 0.05829452022621109,
+   "ci_lo": -0.014452945118408906,
+   "ci_hi": 0.1346739482866149,
+   "ci_method": "block",
+   "p": 0.1254431560118349,
+   "start": "2016-01-06 01:15:00+00:00",
+   "end": "2018-08-22 08:45:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 8264,
+   "diff": 0.04204145524404623,
+   "ci_lo": -0.021948178483870644,
+   "ci_hi": 0.108631636120594,
+   "ci_method": "iid",
+   "p": 0.20692742655935123,
+   "start": "2018-08-22 11:45:00+00:00",
+   "end": "2021-04-12 08:15:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 8162,
+   "diff": 0.0229456232541098,
+   "ci_lo": -0.06553468871847386,
+   "ci_hi": 0.11315821627882632,
+   "ci_method": "block",
+   "p": 0.6147177569937764,
+   "start": "2021-04-12 09:30:00+00:00",
+   "end": "2023-12-01 17:00:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 8105,
+   "diff": 0.050033472674191955,
+   "ci_lo": -0.01552933621022394,
+   "ci_hi": 0.1178811515381059,
+   "ci_method": "iid",
+   "p": 0.1415329421011755,
+   "start": "2023-12-04 04:00:00+00:00",
+   "end": "2026-07-23 02:15:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.05378197670653814,
+ "mde_threshold": 0.1,
+ "power_floor_n": 1442,
+ "verdict": "NEGATIVE",
+ "verdict_detail": "CI excludes 0 against the claim (-)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 32713,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "gate_mask_checked": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 64.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 2475,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "rr",
+    "in_cons"
+   ],
+   "ignored": [],
+   "lookback": "10D",
+   "recent": "1D",
+   "events_fp": "29e20b7b56dde5b1",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "150min",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": null,
+  "entry_mode": "next_open",
+  "hold_basis": "clock",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/model_own_03b/consolidation-avoidance.py",
+ "runtime_sec": 3.9,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:19:27+00:00",
+ "n_events_in": 32797,
+ "dropped": {
+  "no_bar_after_decision": 1,
+  "stop_not_beyond_entry": 11,
+  "target_not_beyond_entry": 0,
+  "no_bars_in_hold": 72
+ },
+ "n_complement": 27731,
+ "gate_firing_rate": 0.1522941949683612,
+ "events_fp": "29e20b7b56dde5b1",
+ "mask_fp": "5f0c945c3c7dffad",
+ "mask_col": "in_cons",
+ "exit_mix": {
+  "stop": 0.3486551585708551,
+  "target": 0.1346848655158571,
+  "time": 0.5166599759132878
+ },
+ "gated_vs_own_control": {
+  "diff": 0.03213803584002764,
+  "ci_lo": -0.0027683351904566407,
+  "ci_hi": 0.0661483980835179,
+  "p": 0.06755173345658584
+ },
+ "complement": {
+  "n": 27731,
+  "avg_R": -0.04931127721907075,
+  "win_rate": 0.4133641051530778,
+  "pf": 0.8899682708845867,
+  "sd_R": 1.0145177860842531,
+  "exit_mix": {
+   "stop": 0.35151995961198657,
+   "target": 0.1223540442104504,
+   "time": 0.5261259961775631
+  },
+  "vs_own_control": {
+   "diff": -0.012114462900375635,
+   "ci_lo": -0.025350108431647263,
+   "ci_hi": 0.0010680027617870189,
+   "p": 0.07224866875196329
+  }
+ },
+ "ci_components": {
+  "phase3_block": [
+   0.005487423765600054,
+   0.08073821086908134
+  ],
+  "day_block": [
+   0.009122061516731443,
+   0.08052762260519764
+  ]
+ },
+ "diff_meaning": "mean(R-ctrl | gated) - mean(R-ctrl | complement)",
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_eff_gated": 417,
+  "n_eff_complement": 2304,
+  "n_eff": 417
+ },
+ "ties": {
+  "real_ambiguous": 0.0005196710787760218,
+  "control_ambiguous": 0.0003362577568550729,
+  "real_gap_stop": 0.008345306147403173,
+  "control_gap_stop": 0.006596765811756794,
+  "gated_excess": 0.00016057808109193092,
+  "complement_excess": 0.00018751577656774007,
+  "verdict_stop_first": "NEGATIVE"
+ },
+ "ctrl_overlap": 0.06626723321003883,
+ "exposure_bars": {
+  "real_mean": 143.2672943478128,
+  "control_mean": 143.0271573991991,
+  "hold_basis": "clock"
+ },
+ "run_id": "0957dff5780f43edae0300ae797b8011",
+ "hyp_key": "103e7eef52098f94"
+}

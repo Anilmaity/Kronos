@@ -1,0 +1,210 @@
+{
+ "concept_id": "consolidation-vs-retracement-test",
+ "reading": "a",
+ "testable": true,
+ "test_type": "rate",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "1h bars; every confirmed 2/2 swing extreme with its opposing-candle series (detectors.cisd run logic)",
+   "closure level = open of the series' first candle; FAILURE = no close through it within 3 bars after the run ends / swing is confirmable, and the extreme not yet traded through -> consolidation; decide at the 3rd bar's close",
+   "range = [swing extreme, far extreme of the series-start..decision bars]",
+   "prediction: the swing extreme is taken before the far side (M1, 6900-bar horizon; ties/none -> NaN)",
+   "null: 5 matched random moments (+/-30 days), same up/down distances from the first M1 open, same horizon"
+  ],
+  "params": {
+   "tf": "1h",
+   "swing": "2/2",
+   "level_rule": "series_open",
+   "max_wait": 3,
+   "horizon_m1_bars": 6900,
+   "null": "sample_times reps 5 window 30d"
+  }
+ },
+ "params_source": {
+  "tf": "corpus: Nlw-PZhoViQ chart lesson worked on the hourly; concept htf 1D/4H/1H",
+  "swing": "phase3: \u00a71.8 locked swing 2/2",
+  "level_rule": "phase3: \u00a71.8 locked series_open (close through the series of opposing candles)",
+  "max_wait": "phase3: \u00a71.8 locked max_wait 3 ('1, 2, maybe three' candles)",
+  "horizon_m1_bars": "declared-before-run: five trading sessions",
+  "null": "declared-before-run: locked harness reps/window/seed, geometry-matched distances"
+ },
+ "n": 4310,
+ "span": {
+  "start": "2016-01-04 05:00:00+00:00",
+  "end": "2026-07-22 09:00:00+00:00",
+  "years": 10.546
+ },
+ "avg_R": null,
+ "avg_R_gross": null,
+ "win_rate": null,
+ "pf": null,
+ "observed_rate": 0.5642691415313225,
+ "null_rate": 0.5577764887857695,
+ "lift": 1.0116402409855727,
+ "control": {
+  "rate": 0.5577764887857695,
+  "reps": 5,
+  "kind": "null_fn x5"
+ },
+ "diff": 0.0067853095860379575,
+ "ci_lo": -0.008826290553995749,
+ "ci_hi": 0.02351020480093713,
+ "ci_method": "phase3_iid",
+ "p": 0.4107720209511873,
+ "halves": {
+  "H1": {
+   "n": 2073,
+   "diff": 0.0028380768612316087,
+   "ci_lo": -0.02130045023315636,
+   "ci_hi": 0.028204092297797058,
+   "ci_method": "iid",
+   "p": 0.8221908789484629,
+   "start": "2016-01-04 05:00:00+00:00",
+   "end": "2020-12-31 11:00:00+00:00"
+  },
+  "H2": {
+   "n": 2237,
+   "diff": 0.00987930263746084,
+   "ci_lo": -0.012898971837282034,
+   "ci_hi": 0.034418678289375504,
+   "ci_method": "iid",
+   "p": 0.4131120515648737,
+   "start": "2021-01-04 21:00:00+00:00",
+   "end": "2026-07-22 09:00:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 1084,
+   "diff": -0.011715867158671678,
+   "ci_lo": -0.04373154981549828,
+   "ci_hi": 0.020902905904059015,
+   "ci_method": "iid",
+   "p": 0.47736943547099014,
+   "start": "2016-01-04 05:00:00+00:00",
+   "end": "2018-08-20 14:00:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 1101,
+   "diff": 0.01718135028761736,
+   "ci_lo": -0.01743036633363621,
+   "ci_hi": 0.05244436875567661,
+   "ci_method": "iid",
+   "p": 0.33511472893178135,
+   "start": "2018-08-23 13:00:00+00:00",
+   "end": "2021-04-09 20:00:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 1007,
+   "diff": 0.006388613042039193,
+   "ci_lo": -0.026732456140350927,
+   "ci_hi": 0.04104642502482628,
+   "ci_method": "iid",
+   "p": 0.711770394276384,
+   "start": "2021-04-13 01:00:00+00:00",
+   "end": "2023-12-01 07:00:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 1118,
+   "diff": 0.013714967203339312,
+   "ci_lo": -0.019697003577817545,
+   "ci_hi": 0.047694171138938556,
+   "ci_method": "iid",
+   "p": 0.4250123579997412,
+   "start": "2023-12-04 05:00:00+00:00",
+   "end": "2026-07-22 09:00:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.023110996002719854,
+ "mde_threshold": 0.05,
+ "power_floor_n": 921,
+ "verdict": "NULL",
+ "verdict_detail": "CI contains 0; powered (MDE 0.0231 <= 0.0500)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 4331,
+  "min_slack_min": 0.0,
+  "passed": true,
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 303,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "side",
+    "lvl_pred",
+    "lvl_other"
+   ],
+   "ignored": [],
+   "lookback": "20D",
+   "recent": "1D",
+   "events_fp": "cdaf39c60812f0a9",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "reps": 5,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "mde_threshold": null,
+  "cluster": null,
+  "outcome_horizon": "5 days 00:00:00",
+  "null_kind": "null_fn x5"
+ },
+ "notes": "Reading a: 'failure to close => the opposite side (the swing extreme) is usually taken out'. Precondition 'an expansion leg has completed' not modelled: every 1h swing with an opposing series is classified.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/structure_own_01a/consolidation-vs-retracement-test.py",
+ "runtime_sec": 2.3,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:27:07+00:00",
+ "dropped": {
+  "nan_rows": 21
+ },
+ "null_kind": "null_fn x5",
+ "events_fp": "cdaf39c60812f0a9",
+ "predictors_probed": true,
+ "ci_components": {
+  "phase3_iid": [
+   -0.008826290553995749,
+   0.02351020480093713
+  ],
+  "day_block": [
+   -0.0065522413851963,
+   0.01953129434152282
+  ],
+  "day_block_5d": [
+   -0.005746803191108677,
+   0.018633262160212456
+  ]
+ },
+ "dependence": {
+  "day_block_mean_days": 5,
+  "n_days": 2326,
+  "n_clusters": null,
+  "n_eff": 2326
+ },
+ "run_id": "98835597ce4742839a5677a2dead2c3d",
+ "hyp_key": "245a6320f10f430d"
+}

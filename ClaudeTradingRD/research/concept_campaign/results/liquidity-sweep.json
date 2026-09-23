@@ -1,0 +1,274 @@
+{
+ "concept_id": "liquidity-sweep",
+ "reading": null,
+ "testable": true,
+ "test_type": "gate",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "baseline: 15m bare CISD (series_open level, fractal 2/2, max_wait 3), entry at the next M1 open after the confirming close, stop = protected swing, 2R, 150 min",
+   "gate swept: the CISD extreme traded beyond an untaken 1H fractal-2/2 swing low (bullish) / high (bearish) formed within 7 days, confirmed before the opposing run into the extreme started and untaken from its confirmation to that start",
+   "complement: reversal with no run of that relevant pool (inducement)"
+  ],
+  "params": {
+   "tf": "15min",
+   "max_wait": 3,
+   "rr": 2.0,
+   "max_hold": "150min",
+   "htf": "1h",
+   "pool_window": "7D",
+   "ctrl_tod_tol_min": 30
+  }
+ },
+ "params_source": {
+  "tf": "phase3: 15m entry TF of the 15m/4H/1D stack; concept ltf ['15m','5m']",
+  "max_wait": "phase3: locked CISD max_wait=3",
+  "rr": "method_spec: \u00a75.3 2R floor/fixed target",
+  "max_hold": "phase3: 10 entry-TF bars (\u00a71.13)",
+  "htf": "corpus: source YAML timeframes.htf ['1D','4H','1H'] (sunday_sessions_live_q_a_03); 1H = lowest HTF, fractal 2/2 per threshold_fits",
+  "pool_window": "declared-before-run: finite pool memory (one week)",
+  "ctrl_tod_tol_min": "declared-before-run: not a timing concept; HTF-swing runs cluster in London/NY hours (README trap 9)"
+ },
+ "n": 2067,
+ "span": {
+  "start": "2016-01-04 00:30:00+00:00",
+  "end": "2026-07-23 02:15:00+00:00",
+  "years": 10.549
+ },
+ "avg_R": -0.05195604561439196,
+ "avg_R_gross": -0.011956045614391939,
+ "win_rate": 0.4358974358974359,
+ "pf": 0.8544162148973425,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "avg_R_gated": -0.025627567773039654,
+  "avg_R_complement": -0.04127749962103298,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": -0.024239865684875683,
+ "ci_lo": -0.0653820148996415,
+ "ci_hi": 0.019167464562224547,
+ "ci_method": "phase3_iid",
+ "p": 0.2610887316028261,
+ "halves": {
+  "H1": {
+   "n": 15651,
+   "diff": -0.03632350375294136,
+   "ci_lo": -0.09387590073520898,
+   "ci_hi": 0.025611187103649024,
+   "ci_method": "iid",
+   "p": 0.23340267639876366,
+   "start": "2016-01-04 00:30:00+00:00",
+   "end": "2020-12-31 19:15:00+00:00",
+   "n_gated": 967
+  },
+  "H2": {
+   "n": 17092,
+   "diff": -0.013377178032465735,
+   "ci_lo": -0.06966276509095748,
+   "ci_hi": 0.04156965955081574,
+   "ci_method": "iid",
+   "p": 0.6373383645557769,
+   "start": "2021-01-03 23:45:00+00:00",
+   "end": "2026-07-23 02:15:00+00:00",
+   "n_gated": 1100
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 8212,
+   "diff": -0.06568043676243579,
+   "ci_lo": -0.14295597611676425,
+   "ci_hi": 0.017500076122934232,
+   "ci_method": "iid",
+   "p": 0.10858899586725863,
+   "start": "2016-01-04 00:30:00+00:00",
+   "end": "2018-08-22 08:45:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 8264,
+   "diff": -0.0022556562975345074,
+   "ci_lo": -0.08788703251524184,
+   "ci_hi": 0.07815961357518718,
+   "ci_method": "iid",
+   "p": 0.9575325913011188,
+   "start": "2018-08-22 11:45:00+00:00",
+   "end": "2021-04-12 08:15:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 8162,
+   "diff": 0.0002200043026707576,
+   "ci_lo": -0.08010718400649898,
+   "ci_hi": 0.08085475563093451,
+   "ci_method": "iid",
+   "p": 0.9957251187859772,
+   "start": "2021-04-12 09:30:00+00:00",
+   "end": "2023-12-01 17:00:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 8105,
+   "diff": -0.03212631221912391,
+   "ci_lo": -0.11358282092514178,
+   "ci_hi": 0.04851454363761668,
+   "ci_method": "iid",
+   "p": 0.4372199979305869,
+   "start": "2023-12-04 04:00:00+00:00",
+   "end": "2026-07-23 02:15:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.06042778168838101,
+ "mde_threshold": 0.1,
+ "power_floor_n": 755,
+ "verdict": "NULL",
+ "verdict_detail": "CI contains 0; powered (MDE 0.0604 <= 0.1000)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 32743,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "gate_mask_checked": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 64.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 2346,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "rr",
+    "swept"
+   ],
+   "ignored": [],
+   "lookback": "10D",
+   "recent": "1D",
+   "events_fp": "935974fb3208123f",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "150min",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": 30,
+  "entry_mode": "next_open",
+  "hold_basis": "clock",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/liquidity_own_01a/liquidity-sweep.py",
+ "runtime_sec": 4.41,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:18:17+00:00",
+ "n_events_in": 32827,
+ "dropped": {
+  "no_bar_after_decision": 1,
+  "stop_not_beyond_entry": 11,
+  "target_not_beyond_entry": 0,
+  "no_bars_in_hold": 72
+ },
+ "n_complement": 30676,
+ "gate_firing_rate": 0.06312799682374859,
+ "events_fp": "935974fb3208123f",
+ "mask_fp": "06300d26d800489d",
+ "mask_col": "swept",
+ "exit_mix": {
+  "stop": 0.24286405418480891,
+  "target": 0.06579583938074504,
+  "time": 0.6913401064344461
+ },
+ "gated_vs_own_control": {
+  "diff": -0.026328477841352307,
+  "ci_lo": -0.06573341710945373,
+  "ci_hi": 0.015074278783439718,
+  "p": 0.20153973510535422
+ },
+ "complement": {
+  "n": 30676,
+  "avg_R": -0.04336611177750959,
+  "win_rate": 0.414786804016169,
+  "pf": 0.904229515853451,
+  "sd_R": 1.0288389956943804,
+  "exit_mix": {
+   "stop": 0.35832572695266657,
+   "target": 0.12821097926717956,
+   "time": 0.5134632937801539
+  },
+  "vs_own_control": {
+   "diff": -0.002088612156476613,
+   "ci_lo": -0.015553535569369966,
+   "ci_hi": 0.010971348079368178,
+   "p": 0.7575790647859257
+  }
+ },
+ "ci_components": {
+  "phase3_iid": [
+   -0.0653820148996415,
+   0.019167464562224547
+  ],
+  "day_block": [
+   -0.06392276942196418,
+   0.01664698693104304
+  ]
+ },
+ "diff_meaning": "mean(R-ctrl | gated) - mean(R-ctrl | complement)",
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_eff_gated": 1479,
+  "n_eff_complement": 2723,
+  "n_eff": 1479
+ },
+ "ties": {
+  "real_ambiguous": 0.0005191949424304431,
+  "control_ambiguous": 0.0003542741960113612,
+  "real_gap_stop": 0.008337659957853587,
+  "control_gap_stop": 0.0073664600067189934,
+  "gated_excess": 0.0008708272859216256,
+  "complement_excess": 0.00011735558742991262,
+  "verdict_stop_first": "NULL"
+ },
+ "ctrl_overlap": 0.06736096264850502,
+ "exposure_bars": {
+  "real_mean": 143.2580704272669,
+  "control_mean": 143.31388082949027,
+  "hold_basis": "clock"
+ },
+ "run_id": "4ba619a16fa24ce4869661bfd4dd2324",
+ "hyp_key": "0a0e48e6062ba5bc"
+}

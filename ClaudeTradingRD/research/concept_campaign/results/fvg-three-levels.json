@@ -1,0 +1,207 @@
+{
+ "concept_id": "fvg-three-levels",
+ "reading": null,
+ "testable": true,
+ "test_type": "rate",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "15m bars; FVG = three candles whose 1st and 3rd wicks do not overlap (detectors.primitives.fair_value_gaps)",
+   "first return: first M1 bar within 1440 M1 bars after the 3rd candle closes that trades into the near edge (bullish: low <= gap high); decision = that M1 bar's close; skip if it closes beyond the far edge",
+   "leg extreme = most extreme price between the gap's completion and the touch (the move the gap left behind)",
+   "outcome = 1 if price then reaches the leg extreme (M1 high/low) before any 15m candle closes beyond the far edge, within the next 16 15m candles; else 0 (distances measured from the touch close, applied from the next M1 open)",
+   "null = same up/down distances and same 16-candle race from the next M1 open at matched random moments (+/-30 d, 5 reps, locked seed)"
+  ],
+  "params": {
+   "tf": "15min",
+   "return_bars": 1440,
+   "race_bars": 16,
+   "invalidation": "15m close beyond far edge",
+   "target": "leg extreme"
+  }
+ },
+ "params_source": {
+  "tf": "corpus: ZVUDpCyvxfQ ltf 15m (concept timeframes 1D/4H/1H over 15m/5m/1m)",
+  "return_bars": "declared-before-run: a gap's first return counted within about one trading day",
+  "race_bars": "declared-before-run: 16 entry-TF candles = 4 trading hours for the reaction to resolve",
+  "invalidation": "corpus: ZVUDpCyvxfQ / consequent-encroachment 'closes ... outside the fair value gap' = invalidate; all three depths (near edge, CE, full fill) accepted",
+  "target": "declared-before-run: 'price continues away' -> back to the extreme of the leg that left the gap"
+ },
+ "n": 34790,
+ "span": {
+  "start": "2016-01-03 23:33:00+00:00",
+  "end": "2026-07-23 04:01:00+00:00",
+  "years": 10.549
+ },
+ "avg_R": null,
+ "avg_R_gross": null,
+ "win_rate": null,
+ "pf": null,
+ "observed_rate": 0.3981029031330842,
+ "null_rate": 0.3884736993388905,
+ "lift": 1.024787273399926,
+ "control": {
+  "rate": 0.3884736993388905,
+  "reps": 5,
+  "kind": "null_fn x5"
+ },
+ "diff": 0.009629203794193741,
+ "ci_lo": 0.003982753664846209,
+ "ci_hi": 0.015268899108939362,
+ "ci_method": "phase3_iid",
+ "p": 0.0008245019666217766,
+ "halves": {
+  "H1": {
+   "n": 15655,
+   "diff": 0.010105397636537838,
+   "ci_lo": 0.0014043436601724163,
+   "ci_hi": 0.01907697221335037,
+   "ci_method": "iid",
+   "p": 0.024996509233123725,
+   "start": "2016-01-03 23:33:00+00:00",
+   "end": "2020-12-31 17:03:00+00:00"
+  },
+  "H2": {
+   "n": 19135,
+   "diff": 0.009239613274104996,
+   "ci_lo": 0.0016124902012019484,
+   "ci_hi": 0.01720668931277765,
+   "ci_method": "iid",
+   "p": 0.020202264759606493,
+   "start": "2021-01-04 01:34:00+00:00",
+   "end": "2026-07-23 04:01:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 7663,
+   "diff": 0.010387576667101606,
+   "ci_lo": -0.0026641002218453264,
+   "ci_hi": 0.022867023358997773,
+   "ci_method": "iid",
+   "p": 0.11074367868462667,
+   "start": "2016-01-03 23:33:00+00:00",
+   "end": "2018-08-22 08:51:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 8889,
+   "diff": 0.008639892001350014,
+   "ci_lo": -0.0036702666216673133,
+   "ci_hi": 0.020617617279784,
+   "ci_method": "iid",
+   "p": 0.16318778633021244,
+   "start": "2018-08-22 12:01:00+00:00",
+   "end": "2021-04-12 08:09:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 9357,
+   "diff": 0.004360371914075012,
+   "ci_lo": -0.00759003954258847,
+   "ci_hi": 0.015777492786149427,
+   "ci_method": "iid",
+   "p": 0.4645000898418675,
+   "start": "2021-04-12 09:52:00+00:00",
+   "end": "2023-12-01 21:01:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 8881,
+   "diff": 0.015516270690237588,
+   "ci_lo": 0.00508613894831664,
+   "ci_hi": 0.027478324513005248,
+   "ci_method": "iid",
+   "p": 0.0066027020402418144,
+   "start": "2023-12-04 00:05:00+00:00",
+   "end": "2026-07-23 04:01:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.008066244018765068,
+ "mde_threshold": 0.05,
+ "power_floor_n": 906,
+ "verdict": "EDGE",
+ "verdict_detail": "CI excludes 0 in claimed direction; halves agree (H1 +0.0101, H2 +0.0092); powered",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 34790,
+  "min_slack_min": 0.0,
+  "passed": true,
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 2560,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "fvg_time",
+    "decision_time",
+    "direction",
+    "near_edge",
+    "far_edge",
+    "leg_extreme",
+    "touch_close",
+    "available_at"
+   ],
+   "ignored": [],
+   "lookback": "20D",
+   "recent": "1D",
+   "events_fp": "b801bc5f8f9d4af6",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "reps": 5,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "mde_threshold": null,
+  "cluster": null,
+  "outcome_horizon": "1 days 00:00:00",
+  "null_kind": "null_fn x5"
+ },
+ "notes": "Three-level reaction concept tested as one rate: all three accepted depths share the far-edge close invalidation, so the rate covers near-edge, CE and full-fill returns together. Adjacent gaps are not merged.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/entry_own_03a/fvg-three-levels.py",
+ "runtime_sec": 6.68,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:17:37+00:00",
+ "dropped": {
+  "nan_rows": 0
+ },
+ "null_kind": "null_fn x5",
+ "events_fp": "b801bc5f8f9d4af6",
+ "predictors_probed": true,
+ "ci_components": {
+  "phase3_iid": [
+   0.003982753664846209,
+   0.015268899108939362
+  ],
+  "day_block": [
+   0.004430620170288738,
+   0.014934881398124487
+  ]
+ },
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 2720,
+  "n_clusters": null,
+  "n_eff": 2720
+ },
+ "run_id": "aabe32d488d84b3f9018ee86bbe8c528",
+ "hyp_key": "f36ff2f16ede683f"
+}

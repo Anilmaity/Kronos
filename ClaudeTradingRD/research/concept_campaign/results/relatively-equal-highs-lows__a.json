@@ -1,0 +1,208 @@
+{
+ "concept_id": "relatively-equal-highs-lows",
+ "reading": "a",
+ "testable": true,
+ "test_type": "rate",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "1h 2/2 fractal swings; consecutive same-side swings with |L1-L2| <= 0.10 x ATR14(1h) form one pool at min (lows) / max (highs)",
+   "decision at the close of the bar that confirms L2; pool must be untaken from L1 to the decision and still beyond the next M1 open",
+   "hit = price trades to the pool within 3 trading days (4,140 M1 bars)",
+   "claim: equal-high/low pools are reached more often than an arbitrary level at the same distance"
+  ],
+  "params": {
+   "tf": "1h",
+   "swing": "2/2",
+   "tol_atr": 0.1,
+   "atr_n": 14,
+   "horizon_bars": 4140,
+   "null": "distance-matched, NY clock +/-30min, +/-30d, 5 reps, same bar count"
+  }
+ },
+ "params_source": {
+  "tf": "declared-before-run: 1h, one of the concept's listed htf timeframes (1D/4H/1H), chosen for sample size",
+  "swing": "phase3: 2/2 fractal swings (locked config)",
+  "tol_atr": "declared-before-run: TOL = 0.10 x ATR(14) on the 1h bars (source gives no tolerance; ambiguity 'relatively equal has no numeric tolerance')",
+  "atr_n": "declared-before-run: standard 14-bar ATR",
+  "horizon_bars": "method_spec: \u00a71.1 relevant-swing look-back on the hourly chart is three days; used as the carry-forward horizon ('later' is not bounded)",
+  "null": "declared-before-run: same signed distance from the open at a random other day's same NY minute (+/-30 min, +/-30 d), same M1-bar count, 5 reps"
+ },
+ "n": 1106,
+ "span": {
+  "start": "2016-01-14 02:00:00+00:00",
+  "end": "2026-07-17 09:00:00+00:00",
+  "years": 10.505
+ },
+ "avg_R": null,
+ "avg_R_gross": null,
+ "win_rate": null,
+ "pf": null,
+ "observed_rate": 0.8471971066907775,
+ "null_rate": 0.827124773960217,
+ "lift": 1.024267599475295,
+ "control": {
+  "rate": 0.827124773960217,
+  "reps": 5,
+  "kind": "null_fn x5"
+ },
+ "diff": 0.020072332730560527,
+ "ci_lo": -0.00398282097649193,
+ "ci_hi": 0.04376130198915007,
+ "ci_method": "phase3_iid",
+ "p": 0.09935359763337817,
+ "halves": {
+  "H1": {
+   "n": 554,
+   "diff": 0.032490974729241895,
+   "ci_lo": -0.003989169675090197,
+   "ci_hi": 0.0624548736462095,
+   "ci_method": "iid",
+   "p": 0.05525887051921907,
+   "start": "2016-01-14 02:00:00+00:00",
+   "end": "2020-12-30 02:00:00+00:00"
+  },
+  "H2": {
+   "n": 552,
+   "diff": 0.007608695652174036,
+   "ci_lo": -0.02645833333333327,
+   "ci_hi": 0.04277173913043478,
+   "ci_method": "iid",
+   "p": 0.666600943922407,
+   "start": "2021-01-05 22:00:00+00:00",
+   "end": "2026-07-17 09:00:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 246,
+   "diff": 0.004878048780487698,
+   "ci_lo": -0.04878048780487809,
+   "ci_hi": 0.05284552845528456,
+   "ci_method": "iid",
+   "p": 0.8507539368607202,
+   "start": "2016-01-14 02:00:00+00:00",
+   "end": "2018-08-16 18:00:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 334,
+   "diff": 0.042514970059880364,
+   "ci_lo": -0.0030239520958083477,
+   "ci_hi": 0.08565868263473055,
+   "ci_method": "iid",
+   "p": 0.06021224254954999,
+   "start": "2018-08-23 15:00:00+00:00",
+   "end": "2021-04-09 04:00:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 263,
+   "diff": 0.013688212927756793,
+   "ci_lo": -0.03347908745247161,
+   "ci_hi": 0.06009505703422065,
+   "ci_method": "iid",
+   "p": 0.5663638010244261,
+   "start": "2021-04-14 10:00:00+00:00",
+   "end": "2023-11-30 10:00:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 263,
+   "diff": 0.012167300380228174,
+   "ci_lo": -0.04258555133079844,
+   "ci_hi": 0.062357414448669164,
+   "ci_method": "iid",
+   "p": 0.6494802133742921,
+   "start": "2023-12-08 11:00:00+00:00",
+   "end": "2026-07-17 09:00:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.03412287642494917,
+ "mde_threshold": 0.04321880650994575,
+ "power_floor_n": 690,
+ "verdict": "NULL",
+ "verdict_detail": "CI contains 0; powered (MDE 0.0341 <= 0.0432)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 1160,
+  "min_slack_min": 0.0,
+  "passed": true,
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 104,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "level",
+    "side"
+   ],
+   "ignored": [],
+   "lookback": "15D",
+   "recent": "1D",
+   "events_fp": "427678fe97a8d872",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "reps": 5,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "mde_threshold": null,
+  "cluster": null,
+  "outcome_horizon": "3 days 00:00:00",
+  "null_kind": "null_fn x5"
+ },
+ "notes": "Target reading. Detection rule 1 (|L1-L2|<=TOL, pool = min/max). Consecutive swings only; clusters of 3+ are subsumed as overlapping pairs.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/liquidity_own_01b/relatively-equal-highs-lows.py",
+ "runtime_sec": 0.55,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:11:20+00:00",
+ "dropped": {
+  "nan_rows": 54
+ },
+ "null_kind": "null_fn x5",
+ "events_fp": "427678fe97a8d872",
+ "predictors_probed": true,
+ "ci_components": {
+  "phase3_iid": [
+   -0.00398282097649193,
+   0.04376130198915007
+  ],
+  "day_block": [
+   -0.0037844704959026404,
+   0.042386017141037666
+  ],
+  "day_block_3d": [
+   -0.0030550132342553973,
+   0.042721699111300145
+  ]
+ },
+ "dependence": {
+  "day_block_mean_days": 3,
+  "n_days": 912,
+  "n_clusters": null,
+  "n_eff": 912
+ },
+ "run_id": "22608eff6ec547779326c2b0d8c49f5d",
+ "hyp_key": "856598c8c9d10bd0"
+}

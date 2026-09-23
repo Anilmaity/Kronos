@@ -1,0 +1,262 @@
+{
+ "concept_id": "fractal-model-c2",
+ "reading": "b",
+ "testable": true,
+ "test_type": "trade",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "HTF bars 1h (4h on the forex grid); bars with < 20 M1 skipped",
+   "C2: low < prior low and close >= prior low and close > open (bullish); mirror bearish (detectors.fractal.c2_events defaults)",
+   "POI: satisfied by the sweep of candle 1's extreme",
+   "confirmation: a 5min CISD inside C2 in the same direction (series_open, scope range)",
+   "decide at C2 close_time; enter next M1 open; stop = C2 extreme; target = max(C1 high, C2 high) bullish / min(C1 low, C2 low) bearish",
+   "time exit after 60min of trading bars (C3's duration)"
+  ],
+  "params": {
+   "htf": "1h",
+   "ltf": "5min",
+   "grid4h": "forex",
+   "min_m1": 20,
+   "sweep_ref": "prior_candle",
+   "require_reversal_close": true,
+   "cisd_level": "series_open",
+   "cisd_scope": "range",
+   "target": "nearest unswept of C1/C2 far extremes",
+   "max_hold": "60min",
+   "hold_basis": "bars"
+  }
+ },
+ "params_source": {
+  "htf": "method_spec: \u00a71.3 named stacks (favourite 4H/15m; playbook 1H/5m)",
+  "ltf": "method_spec: \u00a71.2 timeframe pairing table (4-hour->15-minute, 1-hour->5-minute)",
+  "grid4h": "session_window_fit: forex grid for gold (phase3 knob, primary)",
+  "min_m1": "declared-before-run: stub-bar guard (quarter of a full bar)",
+  "sweep_ref": "corpus: fractal-model-c2 'take out its PREVIOUS CANDLE'S high'",
+  "require_reversal_close": "corpus: fractal-model-c2 'The candle's own shape must be a reversal'",
+  "cisd_level": "phase3: locked CISD level rule (first-candle open)",
+  "cisd_scope": "phase3: locked primary cisd_scope=range",
+  "target": "corpus: fractal-model-c2 execution.targets 'previous candles' unswept highs/lows' / method_spec \u00a75.2 'starting with candle 1's'",
+  "max_hold": "method_spec: \u00a75.5 time-based exit at the close of the HTF candle traded (C3)",
+  "hold_basis": "declared-before-run: README trap 7 \u2014 4H/1H holds cross halts"
+ },
+ "n": 13183,
+ "span": {
+  "start": "2016-01-04 02:00:00+00:00",
+  "end": "2026-07-23 04:00:00+00:00",
+  "years": 10.549
+ },
+ "avg_R": -0.035970917018155545,
+ "avg_R_gross": 0.004029082981844467,
+ "win_rate": 0.5609497079572177,
+ "pf": 0.8745590530139912,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "n": 65915,
+  "avg_R": -0.04106842684975826,
+  "win_rate": 0.5495865887885913,
+  "pf": 0.8560033892410904,
+  "sd_R": 0.7617038007171736,
+  "exit_mix": {
+   "stop": 0.21125692179321853,
+   "target": 0.46772358340286735,
+   "time": 0.3210194948039141
+  },
+  "avg_R_gross": -0.0010684268497582476,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": 0.005097509831602717,
+ "ci_lo": -0.012951182627820293,
+ "ci_hi": 0.025199538150255312,
+ "ci_method": "phase3_iid",
+ "p": 0.6004445661032531,
+ "halves": {
+  "H1": {
+   "n": 6028,
+   "diff": 0.015926711532819677,
+   "ci_lo": -0.01623524370568868,
+   "ci_hi": 0.05669970537275034,
+   "ci_method": "block",
+   "p": 0.3920034971703029,
+   "start": "2016-01-04 02:00:00+00:00",
+   "end": "2020-12-31 17:00:00+00:00"
+  },
+  "H2": {
+   "n": 7155,
+   "diff": -0.004025960169087121,
+   "ci_lo": -0.02294679835703759,
+   "ci_hi": 0.01348200604150761,
+   "ci_method": "iid",
+   "p": 0.6648591908434975,
+   "start": "2021-01-04 11:00:00+00:00",
+   "end": "2026-07-23 04:00:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 3063,
+   "diff": -0.0008577508582321286,
+   "ci_lo": -0.028412352581665638,
+   "ci_hi": 0.026930612411488187,
+   "ci_method": "block",
+   "p": 0.9515549078332034,
+   "start": "2016-01-04 02:00:00+00:00",
+   "end": "2018-08-22 08:00:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 3333,
+   "diff": 0.026320115259576046,
+   "ci_lo": -0.021573669886742163,
+   "ci_hi": 0.08939467918093646,
+   "ci_method": "iid",
+   "p": 0.35249991339955633,
+   "start": "2018-08-22 16:00:00+00:00",
+   "end": "2021-04-12 08:00:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 3445,
+   "diff": -0.01543571542468418,
+   "ci_lo": -0.03922783820962552,
+   "ci_hi": 0.010619734573211225,
+   "ci_method": "iid",
+   "p": 0.2248094770420905,
+   "start": "2021-04-12 13:00:00+00:00",
+   "end": "2023-12-01 07:00:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 3342,
+   "diff": 0.010556211390381098,
+   "ci_lo": -0.01639258522514221,
+   "ci_hi": 0.03773918335741904,
+   "ci_method": "iid",
+   "p": 0.44461499033048885,
+   "start": "2023-12-04 04:00:00+00:00",
+   "end": "2026-07-23 04:00:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.02726644139153702,
+ "mde_threshold": 0.1,
+ "power_floor_n": 981,
+ "verdict": "NULL",
+ "verdict_detail": "CI contains 0; powered (MDE 0.0273 <= 0.1000)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 13183,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 4385.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 949,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "target_px"
+   ],
+   "ignored": [],
+   "lookback": "5D",
+   "recent": "1D",
+   "events_fp": "ad465b83833df712",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "60min",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": null,
+  "entry_mode": "next_open",
+  "hold_basis": "bars",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "Wick-size tradeability and 'ideal formation' refinements not applied; the two gates the spec calls required (POI, LTF CISD) are.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/model_own_01a/fractal-model-c2.py",
+ "runtime_sec": 2.39,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-09-23T08:18:57+00:00",
+ "n_events_in": 13326,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 31,
+  "target_not_beyond_entry": 112,
+  "no_bars_in_hold": 0
+ },
+ "events_fp": "ad465b83833df712",
+ "sd_R": 1.033909838173268,
+ "exit_mix": {
+  "stop": 0.20541606614579383,
+  "target": 0.4795570052340135,
+  "time": 0.31502692862019266
+ },
+ "trades_per_year": 1249.6991305476251,
+ "ci_components": {
+  "phase3_iid": [
+   -0.012951182627820293,
+   0.025199538150255312
+  ],
+  "day_block": [
+   -0.012129076254716193,
+   0.02598026416264031
+  ]
+ },
+ "diff_win": 0.011363119168626312,
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 2704,
+  "n_clusters": null,
+  "n_eff": 2704
+ },
+ "ties": {
+  "real_ambiguous": 0.0008344079496321019,
+  "control_ambiguous": 0.0011833421831146172,
+  "real_gap_stop": 0.006068421451869832,
+  "control_gap_stop": 0.004566487142532049,
+  "verdict_stop_first": "NULL"
+ },
+ "ctrl_overlap": 0.1089281650610635,
+ "exposure_bars": {
+  "real_mean": 59.99605552605628,
+  "control_mean": 59.99763331563377,
+  "hold_basis": "bars"
+ },
+ "run_id": "ce4a096e8911464187b45fdde4ee1401",
+ "hyp_key": "801e7d7db44c1e2b"
+}
