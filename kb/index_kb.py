@@ -42,7 +42,8 @@ SOURCES: list[tuple[str, Path, str]] = [
 ]
 
 SKIP_DIRS = {".git", "node_modules", ".venv", "__pycache__", ".obsidian",
-             ".pytest_cache", "raw"}
+             ".pytest_cache", "raw",
+             "_inbox"}  # research/concepts/_inbox: per-unit drafts already merged into the 505
 
 # The vault's generated TTrades Library (research/python/export_obsidian.py) re-renders
 # concepts, study notes and reports that the ttrades-concept/research/research-meta
