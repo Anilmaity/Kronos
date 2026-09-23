@@ -44,6 +44,13 @@ SOURCES: list[tuple[str, Path, str]] = [
 SKIP_DIRS = {".git", "node_modules", ".venv", "__pycache__", ".obsidian",
              ".pytest_cache", "raw"}
 
+# The vault's generated TTrades Library (research/python/export_obsidian.py) re-renders
+# concepts, study notes and reports that the ttrades-concept/research/research-meta
+# sources already index from the originals — skip those copies so hits aren't doubled.
+# Its Videos/ and Playlists/ notes are new cross-references and stay indexed.
+SKIP_VAULT_PREFIXES = tuple(
+    VAULT / "50 Research" / "TTrades Library" / d for d in ("Concepts", "Study Units", "Reports"))
+
 
 def file_fingerprint(p: Path) -> str:
     st = p.stat()
@@ -105,6 +112,8 @@ def iter_files():
             if not p.is_file() or p.suffix.lower() not in {".md", ".yaml", ".yml", ".txt"}:
                 continue
             if any(part in SKIP_DIRS for part in p.parts):
+                continue
+            if any(p.is_relative_to(d) for d in SKIP_VAULT_PREFIXES):
                 continue
             if p in seen:
                 continue
