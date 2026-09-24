@@ -16,8 +16,7 @@ import {
 import { gql } from "@apollo/client";
 import { client } from "@/GraphQL/client";
 import { toast } from "sonner";
-import { useTheme } from "next-themes";
-import { chartTheme, type ChartTheme } from "@/utils/chartTheme";
+
 import { zigzag, swingLabels, hhLlPath, type SwingLabel } from "@/utils/zigzag";
 
 interface CandleData {
@@ -51,11 +50,25 @@ function stored<T extends string>(key: string, options: readonly T[], fallback: 
   return v && options.includes(v) ? v : fallback;
 }
 
+// The chart canvas uses the operator's own chart style in every app theme — the same as
+// KronosStrategies/strategies/shared/db_utils.py::format_chart and ClaudeTradingRD/plot_xau.py:
+// green up / black down candles with black borders and wicks on #DBDBDB, no grid.
+const CHART_STYLE = {
+  bg: "#DBDBDB",
+  text: "#000000",
+  scaleBorder: "#B8B8B8",
+  up: "#089981",
+  down: "#000000",
+  zigzag: "#007AFF",
+  trend: "#FF9500",
+  muted: "#8E8E93",
+} as const;
+
 // bullish structure in the up colour, bearish in the down colour, first high/low muted
-function labelColor(label: SwingLabel, t: ChartTheme): string {
-  if (label === "HH" || label === "HL") return t.up;
-  if (label === "LH" || label === "LL") return t.down;
-  return t.text3;
+function labelColor(label: SwingLabel): string {
+  if (label === "HH" || label === "HL") return CHART_STYLE.up;
+  if (label === "LH" || label === "LL") return CHART_STYLE.down;
+  return CHART_STYLE.muted;
 }
 
 const CANDLES_QUERY = gql`
@@ -81,8 +94,6 @@ const CandleChart = () => {
   const trendSeriesRef = useRef<ISeriesApi<"Line"> | null>(null);
   const markersRef = useRef<ISeriesMarkersPluginApi<Time> | null>(null);
 
-  const { resolvedTheme } = useTheme();
-
   const [interval, setIntervalState] = useState<Interval>(() => {
     if (typeof window === "undefined") return "5m";
     const stored = window.localStorage.getItem(STORAGE_KEY) as Interval | null;
@@ -95,21 +106,16 @@ const CandleChart = () => {
   const [trendOpt, setTrendOpt] = useState<TrendOption>(() =>
     stored(TREND_KEY, TREND_OPTIONS, "On"),
   );
-  // refs so the polling fetch always draws with the current toggles and theme
-  const overlayRef = useRef({ zigzagOpt, trendOpt, theme: "dark" as "dark" | "light" });
-  overlayRef.current = {
-    zigzagOpt,
-    trendOpt,
-    theme: resolvedTheme === "light" ? "light" : "dark",
-  };
+  // ref so the polling fetch always draws with the current toggles
+  const overlayRef = useRef({ zigzagOpt, trendOpt });
+  overlayRef.current = { zigzagOpt, trendOpt };
 
   const drawStructure = useCallback(() => {
     const zz = zigzagSeriesRef.current;
     const tr = trendSeriesRef.current;
     const mk = markersRef.current;
     if (!zz || !tr || !mk) return;
-    const { zigzagOpt: opt, trendOpt: trend, theme } = overlayRef.current;
-    const t = chartTheme(theme);
+    const { zigzagOpt: opt, trendOpt: trend } = overlayRef.current;
     const bars = candlesRef.current;
     if (opt === "Off" || bars.length < 3) {
       zz.setData([]);
@@ -119,8 +125,6 @@ const CandleChart = () => {
     }
     const pivots = zigzag(bars, parseFloat(opt));
     const labels = swingLabels(pivots);
-    zz.applyOptions({ color: t.accent });
-    tr.applyOptions({ color: t.warn });
     zz.setData(pivots.map((p) => ({ time: p.time as UTCTimestamp, value: p.price })));
     const path = trend === "On" ? hhLlPath(pivots, labels) : [];
     tr.setData(
@@ -131,7 +135,7 @@ const CandleChart = () => {
       position: p.kind === "H" ? "aboveBar" : "belowBar",
       shape: "circle",
       size: 0.6,
-      color: labelColor(p.label, t),
+      color: labelColor(p.label),
       text: p.label,
     }));
     mk.setMarkers(markers);
@@ -166,14 +170,15 @@ const CandleChart = () => {
       width: chartContainerRef.current.clientWidth,
       height: chartContainerRef.current.clientHeight,
       layout: {
-        background: { color: "#131722" },
-        textColor: "#787B86",
+        background: { color: CHART_STYLE.bg },
+        textColor: CHART_STYLE.text,
       },
       grid: {
-        vertLines: { color: "#2A2E39" },
-        horzLines: { color: "#2A2E39" },
+        vertLines: { visible: false },
+        horzLines: { visible: false },
       },
-      timeScale: { borderColor: "#2A2E39", timeVisible: true, secondsVisible: true },
+      rightPriceScale: { borderColor: CHART_STYLE.scaleBorder },
+      timeScale: { borderColor: CHART_STYLE.scaleBorder, timeVisible: true, secondsVisible: true },
     });
     chart.applyOptions({
       rightPriceScale: { scaleMargins: { top: 0.1, bottom: 0.1 } },
@@ -183,20 +188,24 @@ const CandleChart = () => {
 
     candleSeriesRef.current = chart.addSeries(CandlestickSeries, {
       priceFormat: { type: "price", precision: 2, minMove: 0.01 },
-      upColor: "#089981",
-      downColor: "#F23645",
-      borderVisible: false,
-      wickUpColor: "#089981",
-      wickDownColor: "#F23645",
+      upColor: CHART_STYLE.up,
+      downColor: CHART_STYLE.down,
+      borderVisible: true,
+      borderUpColor: CHART_STYLE.down,
+      borderDownColor: CHART_STYLE.down,
+      wickUpColor: CHART_STYLE.down,
+      wickDownColor: CHART_STYLE.down,
     });
 
     zigzagSeriesRef.current = chart.addSeries(LineSeries, {
+      color: CHART_STYLE.zigzag,
       lineWidth: 2,
       priceLineVisible: false,
       lastValueVisible: false,
       crosshairMarkerVisible: false,
     });
     trendSeriesRef.current = chart.addSeries(LineSeries, {
+      color: CHART_STYLE.trend,
       lineWidth: 3,
       priceLineVisible: false,
       lastValueVisible: false,
@@ -213,11 +222,11 @@ const CandleChart = () => {
     legend.style.fontSize = "12px";
     legend.style.fontWeight = "500";
     legend.style.lineHeight = "20px";
-    legend.style.color = "var(--tv-text-1)";
-    legend.style.backgroundColor = "var(--tv-surface)";
+    legend.style.color = CHART_STYLE.text;
+    legend.style.backgroundColor = "rgba(255,255,255,0.72)";
     legend.style.padding = "8px 10px";
     legend.style.borderRadius = "6px";
-    legend.style.border = "1px solid var(--tv-border)";
+    legend.style.border = "1px solid rgba(0,0,0,0.12)";
     legend.style.pointerEvents = "none";
     chartContainerRef.current.appendChild(legend);
     legendRef.current = legend;
@@ -230,10 +239,9 @@ const CandleChart = () => {
       }
       const { open, high, low, close } = candleData as CandleData;
       const isGreen = close >= open;
-      // Use CSS custom properties so legend OHLC colours follow the theme without JS
-      const color = isGreen ? "var(--tv-up)" : "var(--tv-down)";
+      const color = isGreen ? CHART_STYLE.up : CHART_STYLE.down;
       legend.innerHTML = `
-        <div style="font-weight:600;color:var(--tv-text-1);">${SYMBOL}</div>
+        <div style="font-weight:600;">${SYMBOL}</div>
         <div>
           O: <span style="color:${color};">${open.toFixed(2)}</span>
           H: <span style="color:${color};">${high.toFixed(2)}</span>
@@ -260,27 +268,6 @@ const CandleChart = () => {
       markersRef.current = null;
     };
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
-
-  // Re-apply chart colours whenever the resolved theme changes
-  useEffect(() => {
-    if (!chartRef.current || !candleSeriesRef.current) return;
-    const t = chartTheme(resolvedTheme === "light" ? "light" : "dark");
-
-    chartRef.current.applyOptions({
-      layout: { background: { color: t.bg }, textColor: t.text3 },
-      grid: { vertLines: { color: t.border }, horzLines: { color: t.border } },
-      timeScale: { borderColor: t.border },
-    });
-
-    candleSeriesRef.current.applyOptions({
-      upColor: t.up,
-      downColor: t.down,
-      borderVisible: false,
-      wickUpColor: t.up,
-      wickDownColor: t.down,
-    });
-    drawStructure();
-  }, [resolvedTheme, drawStructure]);
 
   // Redraw the structure overlay when a toggle changes
   useEffect(() => {
