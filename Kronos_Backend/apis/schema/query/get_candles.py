@@ -51,7 +51,7 @@ _session.headers.update({
 })
 
 _TTL = float(os.getenv("CANDLES_CACHE_TTL_SEC", "5"))
-_CACHE = {}  # (symbol, interval, limit) -> (fetched_at, [CandleType])
+_CACHE = {}  # (symbol, interval, limit, before) -> (fetched_at, [CandleType])
 _CACHE_LOCK = threading.Lock()
 
 _SYMBOL_RE = re.compile(r"^[A-Z0-9_]{3,20}$")
@@ -74,10 +74,14 @@ class CandleType(graphene.ObjectType):
     close = graphene.Float()
 
 
-def _fetch_oanda(symbol, granularity, count):
+def _fetch_oanda(symbol, granularity, count, to=None):
+    params = {"granularity": granularity, "count": count, "price": "M"}
+    if to is not None:
+        # history page: OANDA returns the `count` candles ending at `to`
+        params["to"] = datetime.fromtimestamp(to, tz=timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
     resp = _session.get(
         f"{_OANDA_BASE}/instruments/{symbol}/candles",
-        params={"granularity": granularity, "count": count, "price": "M"},
+        params=params,
         timeout=_HTTP_TIMEOUT,
     )
     resp.raise_for_status()
@@ -110,9 +114,14 @@ class GetCandles(graphene.ObjectType):
         symbol=graphene.String(default_value="XAU_USD"),
         interval=graphene.String(default_value="5m"),
         limit=graphene.Int(default_value=500),
+        before=graphene.Int(
+            required=False,
+            description="Unix seconds: return the `limit` candles strictly before this time "
+                        "(chart scroll-back). Omit for the latest candles.",
+        ),
     )
 
-    def resolve_candles(self, info, symbol, interval, limit):
+    def resolve_candles(self, info, symbol, interval, limit, before=None):
         if interval not in INTERVAL_MAP:
             raise GraphQLError(
                 f"Unknown interval '{interval}'. Valid: {list(INTERVAL_MAP)}"
@@ -123,7 +132,7 @@ class GetCandles(graphene.ObjectType):
         granularity, fold, bucket_secs = INTERVAL_MAP[interval]
         limit = max(1, min(int(limit), _MAX_COUNT))
 
-        key = (symbol, interval, limit)
+        key = (symbol, interval, limit, before)
         now = _time.monotonic()
         with _CACHE_LOCK:
             hit = _CACHE.get(key)
@@ -132,13 +141,17 @@ class GetCandles(graphene.ObjectType):
 
         count = min(limit * fold, _MAX_COUNT)
         try:
-            bars = _fetch_oanda(symbol, granularity, count)
+            bars = _fetch_oanda(symbol, granularity, count, to=before)
         except Exception as exc:
             logger.exception("candles query failed (symbol=%s interval=%s)", symbol, interval)
             raise GraphQLError(f"candles query failed: {exc}")
 
+        if before is not None:
+            bars = [b for b in bars if b[0] < before]
         if fold > 1:
             bars = _aggregate(bars, bucket_secs)
+            if before is not None and len(bars) > 1:
+                bars = bars[1:]  # the page's first bucket may be missing its leading source bars
         bars = bars[-limit:]
 
         result = [

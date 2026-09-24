@@ -19,6 +19,7 @@ import { toast } from "sonner";
 import { Maximize2, Minimize2 } from "lucide-react";
 
 import { zigzag, swingLabels, hhLlPath, type SwingLabel } from "@/utils/zigzag";
+import { mergeLatest, prependOlder } from "@/utils/candles";
 
 interface CandleData {
   time: UTCTimestamp;
@@ -33,6 +34,10 @@ type Interval = (typeof INTERVALS)[number];
 
 const SYMBOL = "XAU_USD";
 const CANDLE_LIMIT = 500;
+// Scroll-back: when the view gets within LOAD_MORE_AT bars of the oldest loaded candle, fetch
+// the CANDLE_LIMIT candles before it. MAX_BARS bounds memory and redraw cost.
+const LOAD_MORE_AT = 30;
+const MAX_BARS = 20_000;
 const POLL_MS = 10_000;
 const STORAGE_KEY = "kronos:chart:interval";
 
@@ -73,8 +78,8 @@ function labelColor(label: SwingLabel): string {
 }
 
 const CANDLES_QUERY = gql`
-  query Candles($symbol: String!, $interval: String!, $limit: Int) {
-    candles(symbol: $symbol, interval: $interval, limit: $limit) {
+  query Candles($symbol: String!, $interval: String!, $limit: Int, $before: Int) {
+    candles(symbol: $symbol, interval: $interval, limit: $limit, before: $before) {
       time
       open
       high
@@ -91,6 +96,9 @@ const CandleChart = () => {
   const candleSeriesRef = useRef<ISeriesApi<"Candlestick"> | null>(null);
   const legendRef = useRef<HTMLDivElement | null>(null);
   const firstLoadRef = useRef(true);
+  const intervalRef = useRef<string>("");
+  const loadingOlderRef = useRef(false);
+  const historyDoneRef = useRef(false);
   const candlesRef = useRef<CandleData[]>([]);
   const zigzagSeriesRef = useRef<ISeriesApi<"Line"> | null>(null);
   const trendSeriesRef = useRef<ISeriesApi<"Line"> | null>(null);
@@ -150,7 +158,10 @@ const CandleChart = () => {
         variables: { symbol: SYMBOL, interval: tf, limit: CANDLE_LIMIT },
         fetchPolicy: "no-cache",
       });
-      const candles: CandleData[] = res.data.candles ?? [];
+      if (tf !== intervalRef.current) return; // stale response from a previous interval
+      const latest: CandleData[] = res.data.candles ?? [];
+      // merge, don't replace: keeps candles already loaded by scrolling back
+      const candles = mergeLatest(candlesRef.current, latest) as CandleData[];
       candleSeriesRef.current?.setData(candles);
       candlesRef.current = candles;
       drawStructure();
@@ -163,6 +174,45 @@ const CandleChart = () => {
       console.error(err);
     }
   }, [drawStructure]);
+
+  // Scroll-back: fetch the page before the oldest loaded candle and prepend it, shifting the
+  // visible range by the number of bars added so the view does not jump.
+  const loadOlder = useCallback(async () => {
+    const tf = intervalRef.current;
+    const loaded = candlesRef.current;
+    if (loadingOlderRef.current || historyDoneRef.current || !loaded.length) return;
+    if (loaded.length >= MAX_BARS) {
+      historyDoneRef.current = true;
+      return;
+    }
+    loadingOlderRef.current = true;
+    try {
+      const res = await client.query({
+        query: CANDLES_QUERY,
+        variables: { symbol: SYMBOL, interval: tf, limit: CANDLE_LIMIT, before: loaded[0].time },
+        fetchPolicy: "no-cache",
+      });
+      if (tf !== intervalRef.current) return;
+      const { candles, added } = prependOlder(candlesRef.current, res.data.candles ?? []);
+      if (added === 0) {
+        historyDoneRef.current = true; // start of the available history
+        return;
+      }
+      const ts = chartRef.current?.timeScale();
+      const range = ts?.getVisibleLogicalRange();
+      candleSeriesRef.current?.setData(candles as CandleData[]);
+      candlesRef.current = candles as CandleData[];
+      if (ts && range) ts.setVisibleLogicalRange({ from: range.from + added, to: range.to + added });
+      drawStructure();
+    } catch (err: any) {
+      toast.error(err.message);
+      console.error(err);
+    } finally {
+      loadingOlderRef.current = false;
+    }
+  }, [drawStructure]);
+  const loadOlderRef = useRef(loadOlder);
+  loadOlderRef.current = loadOlder;
 
   // One-time chart creation — dark defaults; theme effect applies correct colours immediately after
   useEffect(() => {
@@ -233,6 +283,10 @@ const CandleChart = () => {
     chartContainerRef.current.appendChild(legend);
     legendRef.current = legend;
 
+    chart.timeScale().subscribeVisibleLogicalRangeChange((range) => {
+      if (range && range.from < LOAD_MORE_AT) loadOlderRef.current();
+    });
+
     chart.subscribeCrosshairMove((param) => {
       const candleData = param.seriesData.get(candleSeriesRef.current!);
       if (!candleData) {
@@ -280,6 +334,8 @@ const CandleChart = () => {
   useEffect(() => {
     if (!candleSeriesRef.current) return;
     firstLoadRef.current = true;
+    intervalRef.current = interval;
+    historyDoneRef.current = false;
     candleSeriesRef.current.setData([]);
     candlesRef.current = [];
     drawStructure();
