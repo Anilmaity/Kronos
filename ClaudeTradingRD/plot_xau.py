@@ -8,11 +8,17 @@ db_utils imports psycopg2 and loads .env at import time).
 Times are shown in New York local time (DST-aware). 4h bars sit on the forex grid
 (01/05/09/13/17/21 NY) and 1D bars are NY trading days rolling at 18:00.
 
-Usage:  .venv/bin/python plot_xau.py [--tf 15m] [--shot]
+A second segmented control overlays the zigzag from market_structure/build_foundation.py
+(percentage reversal on high/low) at 0.5 / 1.5 / 3 / 6%, computed on the shown bars,
+with each pivot labelled H/L (first), HH/LH (high vs previous high), HL/LL (low vs
+previous low).
+
+Usage:  .venv/bin/python plot_xau.py [--tf 15m] [--zigzag 1.5%] [--shot]
         --shot saves xau_chart.png ~6s after load
 """
 import argparse
 import json
+import sys
 import threading
 import time
 from pathlib import Path
@@ -22,6 +28,18 @@ from lightweight_charts import Chart
 
 HERE = Path(__file__).parent
 DATA = HERE / "m3_scalper" / "xau_m1_full.parquet"
+
+sys.path.insert(0, str(HERE / "market_structure"))
+from build_foundation import zigzag_pct  # noqa: E402  (the MarketStructure study's zigzag)
+
+# switcher label -> reversal % (study scales: primary 6 / secondary 3 / minor 1.5;
+# 0.5 added for intraday timeframes). Off by default: the chart stays plain.
+ZIGZAG = {"Off": None, "0.5%": 0.5, "1.5%": 1.5, "3%": 3.0, "6%": 6.0}
+ZZ_COLOR = "#007AFF"
+# swing labels: bullish structure in the up-candle green, bearish in the down-candle
+# black, the first high/low (nothing to compare yet) in system grey
+LABEL_COLOR = {"HH": "#089981", "HL": "#089981", "LH": "#000000", "LL": "#000000",
+               "H": "#8E8E93", "L": "#8E8E93"}
 NY = "America/New_York"
 
 # switcher label -> (pandas rule, resample offset in NY time, lookback in calendar days)
@@ -50,6 +68,8 @@ body { font-family: %(sf)s; -webkit-font-smoothing: antialiased; }
 .topbar { background: #ECECEC; border-bottom: 1px solid var(--sep);
           min-height: 38px; padding: 0 8px; }
 .topbar-seperator { display: none; }
+.topbar-textbox.mac-caption { margin: 0 8px 0 22px; font-size: 12px; font-weight: 500;
+                  color: var(--label-2); }
 .topbar-textbox { margin: 0 14px 0 6px; font-size: 13px; font-weight: 600;
                   letter-spacing: -.08px; color: var(--label); }
 .mac-seg { display: inline-flex; gap: 0; padding: 2px; margin: 0 !important;
@@ -76,28 +96,32 @@ body { font-family: %(sf)s; -webkit-font-smoothing: antialiased; }
 """ % {"sf": SF}
 
 
-def apply_mac_chrome(chart):
+def apply_mac_chrome(chart, labels=("Candle interval", "Zigzag reversal")):
     css = json.dumps(MAC_CSS)
+    labels = json.dumps(list(labels))
     # leading ';' — the lib concatenates queued scripts, so a bare '(' would be
     # parsed as a call on the previous statement (makeSwitcher(...)(...))
     chart.run_script(f"""
         ;(() => {{
           const s = document.createElement('style'); s.textContent = {css};
           document.head.appendChild(s);
-          const b = document.querySelector('.switcher-button');
-          if (b) {{
-            const seg = b.parentElement;
+          const labels = {labels};
+          const segs = [...new Set([...document.querySelectorAll('.switcher-button')]
+                                   .map(b => b.parentElement))];
+          segs.forEach((seg, k) => {{
             seg.classList.add('mac-seg');
             seg.setAttribute('role', 'radiogroup');
-            seg.setAttribute('aria-label', 'Candle interval');
+            seg.setAttribute('aria-label', labels[k] || 'Options');
             seg.querySelectorAll('.switcher-button').forEach(x => {{
               x.setAttribute('role', 'radio');
-              const on = x.classList.contains('active-switcher-button');
-              x.setAttribute('aria-checked', on);
+              x.setAttribute('aria-checked', x.classList.contains('active-switcher-button'));
               x.addEventListener('click', () => seg.querySelectorAll('.switcher-button')
                 .forEach(y => y.setAttribute('aria-checked', y === x)));
             }});
-          }}
+          }});
+          document.querySelectorAll('.topbar-textbox').forEach(t => {{
+            if (t.innerText.trim() === 'Zigzag') t.classList.add('mac-caption');
+          }});
         }})();
     """)
 
@@ -139,9 +163,39 @@ def candles(m1: pd.DataFrame, label: str) -> pd.DataFrame:
     return df
 
 
+def zigzag_frame(df: pd.DataFrame, pct: float) -> pd.DataFrame:
+    """Pivots of the MarketStructure zigzag on the bars currently shown.
+
+    Drawing aid, not a signal: a pivot is only known once price has reversed `pct`%
+    from it, and the last leg is still developing (it repaints)."""
+    z = zigzag_pct(df["date"].to_list(), df["high"].to_numpy(), df["low"].to_numpy(), pct,
+                   one_pivot_per_bar=True)
+    return pd.DataFrame({"date": pd.to_datetime(z["date"]).astype("datetime64[ns]"),
+                         "Zigzag": z["price"].astype(float), "kind": z["kind"]})
+
+
+def swing_labels(z: pd.DataFrame) -> list:
+    """H/L for the first high/low, then each high vs the previous high (HH/LH) and each
+    low vs the previous low (HL/LL). An exact tie keeps the plain H/L."""
+    out, last = [], {"H": None, "L": None}
+    for t, price, kind in zip(z["date"], z["Zigzag"], z["kind"]):
+        prev = last[kind]
+        if prev is None or price == prev:
+            label = kind
+        elif kind == "H":
+            label = "HH" if price > prev else "LH"
+        else:
+            label = "HL" if price > prev else "LL"
+        last[kind] = price
+        out.append({"time": t, "position": "above" if kind == "H" else "below",
+                    "shape": "circle", "color": LABEL_COLOR[label], "text": label})
+    return out
+
+
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--tf", default="15m", choices=list(TIMEFRAMES))
+    ap.add_argument("--zigzag", default="Off", choices=list(ZIGZAG))
     ap.add_argument("--shot", action="store_true")
     a = ap.parse_args()
 
@@ -149,13 +203,35 @@ def main() -> None:
     chart = Chart(width=1500, height=900, toolbox=True, title="XAUUSD")
     format_chart(chart)
 
+    zz = chart.create_line(name="Zigzag", color=ZZ_COLOR, width=2,
+                           price_line=False, price_label=False)
+    state = {"df": candles(m1, a.tf), "pct": ZIGZAG[a.zigzag]}
+
+    def draw_zigzag():
+        chart.clear_markers()
+        if not state["pct"]:
+            zz.set(None)
+            return
+        z = zigzag_frame(state["df"], state["pct"])
+        zz.set(z[["date", "Zigzag"]])
+        chart.marker_list(swing_labels(z))
+
     def on_tf(c):
-        c.set(candles(m1, c.topbar["tf"].value))
+        state["df"] = candles(m1, c.topbar["tf"].value)
+        c.set(state["df"])
+        draw_zigzag()
+
+    def on_zz(c):
+        state["pct"] = ZIGZAG[c.topbar["zz"].value]
+        draw_zigzag()
 
     chart.topbar.textbox("symbol", "XAUUSD")
     chart.topbar.switcher("tf", tuple(TIMEFRAMES), default=a.tf, func=on_tf)
+    chart.topbar.textbox("zzlabel", "Zigzag")
+    chart.topbar.switcher("zz", tuple(ZIGZAG), default=a.zigzag, func=on_zz)
     apply_mac_chrome(chart)
-    chart.set(candles(m1, a.tf))
+    chart.set(state["df"])
+    draw_zigzag()
 
     if a.shot:
         def shot():
