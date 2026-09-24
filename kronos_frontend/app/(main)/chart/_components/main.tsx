@@ -3,16 +3,22 @@
 import React, { useEffect, useRef, useState, useCallback } from "react";
 import {
   createChart,
+  createSeriesMarkers,
   CandlestickSeries,
+  LineSeries,
   IChartApi,
   ISeriesApi,
+  ISeriesMarkersPluginApi,
+  SeriesMarker,
+  Time,
   UTCTimestamp,
 } from "lightweight-charts";
 import { gql } from "@apollo/client";
 import { client } from "@/GraphQL/client";
 import { toast } from "sonner";
 import { useTheme } from "next-themes";
-import { chartTheme } from "@/utils/chartTheme";
+import { chartTheme, type ChartTheme } from "@/utils/chartTheme";
+import { zigzag, swingLabels, hhLlPath, type SwingLabel } from "@/utils/zigzag";
 
 interface CandleData {
   time: UTCTimestamp;
@@ -29,6 +35,28 @@ const SYMBOL = "XAU_USD";
 const CANDLE_LIMIT = 500;
 const POLL_MS = 10_000;
 const STORAGE_KEY = "kronos:chart:interval";
+
+// Market structure overlay (utils/zigzag.ts): zigzag reversal %, H/L-HH/LH-HL/LL labels,
+// and the HH -> LL -> HH -> LL trend line. Off by default so the chart opens plain.
+const ZIGZAG_OPTIONS = ["Off", "0.5%", "1.5%", "3%", "6%"] as const;
+type ZigzagOption = (typeof ZIGZAG_OPTIONS)[number];
+const TREND_OPTIONS = ["Off", "On"] as const;
+type TrendOption = (typeof TREND_OPTIONS)[number];
+const ZIGZAG_KEY = "kronos:chart:zigzag";
+const TREND_KEY = "kronos:chart:trend";
+
+function stored<T extends string>(key: string, options: readonly T[], fallback: T): T {
+  if (typeof window === "undefined") return fallback;
+  const v = window.localStorage.getItem(key) as T | null;
+  return v && options.includes(v) ? v : fallback;
+}
+
+// bullish structure in the up colour, bearish in the down colour, first high/low muted
+function labelColor(label: SwingLabel, t: ChartTheme): string {
+  if (label === "HH" || label === "HL") return t.up;
+  if (label === "LH" || label === "LL") return t.down;
+  return t.text3;
+}
 
 const CANDLES_QUERY = gql`
   query Candles($symbol: String!, $interval: String!, $limit: Int) {
@@ -48,6 +76,10 @@ const CandleChart = () => {
   const candleSeriesRef = useRef<ISeriesApi<"Candlestick"> | null>(null);
   const legendRef = useRef<HTMLDivElement | null>(null);
   const firstLoadRef = useRef(true);
+  const candlesRef = useRef<CandleData[]>([]);
+  const zigzagSeriesRef = useRef<ISeriesApi<"Line"> | null>(null);
+  const trendSeriesRef = useRef<ISeriesApi<"Line"> | null>(null);
+  const markersRef = useRef<ISeriesMarkersPluginApi<Time> | null>(null);
 
   const { resolvedTheme } = useTheme();
 
@@ -56,6 +88,54 @@ const CandleChart = () => {
     const stored = window.localStorage.getItem(STORAGE_KEY) as Interval | null;
     return stored && INTERVALS.includes(stored) ? stored : "5m";
   });
+
+  const [zigzagOpt, setZigzagOpt] = useState<ZigzagOption>(() =>
+    stored(ZIGZAG_KEY, ZIGZAG_OPTIONS, "Off"),
+  );
+  const [trendOpt, setTrendOpt] = useState<TrendOption>(() =>
+    stored(TREND_KEY, TREND_OPTIONS, "On"),
+  );
+  // refs so the polling fetch always draws with the current toggles and theme
+  const overlayRef = useRef({ zigzagOpt, trendOpt, theme: "dark" as "dark" | "light" });
+  overlayRef.current = {
+    zigzagOpt,
+    trendOpt,
+    theme: resolvedTheme === "light" ? "light" : "dark",
+  };
+
+  const drawStructure = useCallback(() => {
+    const zz = zigzagSeriesRef.current;
+    const tr = trendSeriesRef.current;
+    const mk = markersRef.current;
+    if (!zz || !tr || !mk) return;
+    const { zigzagOpt: opt, trendOpt: trend, theme } = overlayRef.current;
+    const t = chartTheme(theme);
+    const bars = candlesRef.current;
+    if (opt === "Off" || bars.length < 3) {
+      zz.setData([]);
+      tr.setData([]);
+      mk.setMarkers([]);
+      return;
+    }
+    const pivots = zigzag(bars, parseFloat(opt));
+    const labels = swingLabels(pivots);
+    zz.applyOptions({ color: t.accent });
+    tr.applyOptions({ color: t.warn });
+    zz.setData(pivots.map((p) => ({ time: p.time as UTCTimestamp, value: p.price })));
+    const path = trend === "On" ? hhLlPath(pivots, labels) : [];
+    tr.setData(
+      path.length > 1 ? path.map((p) => ({ time: p.time as UTCTimestamp, value: p.price })) : [],
+    );
+    const markers: SeriesMarker<Time>[] = labels.map((p) => ({
+      time: p.time as UTCTimestamp,
+      position: p.kind === "H" ? "aboveBar" : "belowBar",
+      shape: "circle",
+      size: 0.6,
+      color: labelColor(p.label, t),
+      text: p.label,
+    }));
+    mk.setMarkers(markers);
+  }, []);
 
   const fetchData = useCallback(async (tf: Interval) => {
     try {
@@ -66,6 +146,8 @@ const CandleChart = () => {
       });
       const candles: CandleData[] = res.data.candles ?? [];
       candleSeriesRef.current?.setData(candles);
+      candlesRef.current = candles;
+      drawStructure();
       if (firstLoadRef.current && candles.length > 0) {
         chartRef.current?.timeScale().fitContent();
         firstLoadRef.current = false;
@@ -74,7 +156,7 @@ const CandleChart = () => {
       toast.error(err.message);
       console.error(err);
     }
-  }, []);
+  }, [drawStructure]);
 
   // One-time chart creation — dark defaults; theme effect applies correct colours immediately after
   useEffect(() => {
@@ -107,6 +189,20 @@ const CandleChart = () => {
       wickUpColor: "#089981",
       wickDownColor: "#F23645",
     });
+
+    zigzagSeriesRef.current = chart.addSeries(LineSeries, {
+      lineWidth: 2,
+      priceLineVisible: false,
+      lastValueVisible: false,
+      crosshairMarkerVisible: false,
+    });
+    trendSeriesRef.current = chart.addSeries(LineSeries, {
+      lineWidth: 3,
+      priceLineVisible: false,
+      lastValueVisible: false,
+      crosshairMarkerVisible: false,
+    });
+    markersRef.current = createSeriesMarkers(candleSeriesRef.current, []);
 
     // Legend overlay — uses CSS custom properties so it tracks theme changes automatically
     const legend = document.createElement("div");
@@ -159,6 +255,9 @@ const CandleChart = () => {
       chart.remove();
       chartRef.current = null;
       candleSeriesRef.current = null;
+      zigzagSeriesRef.current = null;
+      trendSeriesRef.current = null;
+      markersRef.current = null;
     };
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -180,17 +279,34 @@ const CandleChart = () => {
       wickUpColor: t.up,
       wickDownColor: t.down,
     });
-  }, [resolvedTheme]);
+    drawStructure();
+  }, [resolvedTheme, drawStructure]);
+
+  // Redraw the structure overlay when a toggle changes
+  useEffect(() => {
+    drawStructure();
+  }, [zigzagOpt, trendOpt, drawStructure]);
 
   // Refetch + polling whenever interval changes
   useEffect(() => {
     if (!candleSeriesRef.current) return;
     firstLoadRef.current = true;
     candleSeriesRef.current.setData([]);
+    candlesRef.current = [];
+    drawStructure();
     fetchData(interval);
     const id = window.setInterval(() => fetchData(interval), POLL_MS);
     return () => window.clearInterval(id);
-  }, [interval, fetchData]);
+  }, [interval, fetchData, drawStructure]);
+
+  const onSelectZigzag = (v: ZigzagOption) => {
+    setZigzagOpt(v);
+    if (typeof window !== "undefined") window.localStorage.setItem(ZIGZAG_KEY, v);
+  };
+  const onSelectTrend = (v: TrendOption) => {
+    setTrendOpt(v);
+    if (typeof window !== "undefined") window.localStorage.setItem(TREND_KEY, v);
+  };
 
   const onSelectInterval = (tf: Interval) => {
     setIntervalState(tf);
@@ -202,48 +318,17 @@ const CandleChart = () => {
   return (
     <div className="w-full">
       {/* Toolbar — Task 5.1 style mapping applied */}
-      <div className="flex items-center gap-2 mb-2">
-        <span
-          className="mr-2"
-          style={{
-            fontSize: 11,
-            fontWeight: 500,
-            textTransform: "uppercase",
-            letterSpacing: "0.4px",
-            color: "var(--tv-text-3)",
-          }}
-        >
-          Interval:
-        </span>
-        {INTERVALS.map((tf) => {
-          const active = tf === interval;
-          return (
-            <button
-              key={tf}
-              type="button"
-              onClick={() => onSelectInterval(tf)}
-              className={
-                active
-                  ? "px-3 py-1 text-sm transition-colors bg-[var(--tv-accent)] hover:bg-[var(--tv-accent-hover)]"
-                  : "px-3 py-1 text-sm transition-colors bg-[var(--tv-surface)] hover:bg-[var(--tv-surface-2)]"
-              }
-              style={
-                active
-                  ? {
-                      color: "#fff",
-                      borderRadius: "6px",
-                    }
-                  : {
-                      color: "var(--tv-text-2)",
-                      borderRadius: "6px",
-                      border: "1px solid var(--tv-border)",
-                    }
-              }
-            >
-              {tf}
-            </button>
-          );
-        })}
+      <div className="flex flex-wrap items-center gap-x-6 gap-y-2 mb-2">
+        <ToolbarGroup label="Interval" options={INTERVALS} value={interval} onSelect={onSelectInterval} />
+        <ToolbarGroup label="Zigzag" options={ZIGZAG_OPTIONS} value={zigzagOpt} onSelect={onSelectZigzag} />
+        <ToolbarGroup
+          label="Trend"
+          options={TREND_OPTIONS}
+          value={trendOpt}
+          onSelect={onSelectTrend}
+          disabled={zigzagOpt === "Off"}
+          title={zigzagOpt === "Off" ? "Turn the zigzag on to draw the HH–LL trend line" : undefined}
+        />
       </div>
       <div className="relative w-full h-[80vh]">
         <div ref={chartContainerRef} className="w-full h-full" />
@@ -251,5 +336,73 @@ const CandleChart = () => {
     </div>
   );
 };
+
+function ToolbarGroup<T extends string>({
+  label,
+  options,
+  value,
+  onSelect,
+  disabled = false,
+  title,
+}: {
+  label: string;
+  options: readonly T[];
+  value: T;
+  onSelect: (v: T) => void;
+  disabled?: boolean;
+  title?: string;
+}) {
+  return (
+    <div
+      className="flex items-center gap-2"
+      role="radiogroup"
+      aria-label={label}
+      title={title}
+      style={disabled ? { opacity: 0.5 } : undefined}
+    >
+      <span
+        className="mr-2"
+        style={{
+          fontSize: 11,
+          fontWeight: 500,
+          textTransform: "uppercase",
+          letterSpacing: "0.4px",
+          color: "var(--tv-text-3)",
+        }}
+      >
+        {label}:
+      </span>
+      {options.map((opt) => {
+        const active = opt === value;
+        return (
+          <button
+            key={opt}
+            type="button"
+            role="radio"
+            aria-checked={active}
+            disabled={disabled}
+            onClick={() => onSelect(opt)}
+            className={
+              active
+                ? "px-3 py-1 text-sm transition-colors bg-[var(--tv-accent)] hover:bg-[var(--tv-accent-hover)]"
+                : "px-3 py-1 text-sm transition-colors bg-[var(--tv-surface)] hover:bg-[var(--tv-surface-2)]"
+            }
+            style={
+              active
+                ? { color: "#fff", borderRadius: "6px" }
+                : {
+                    color: "var(--tv-text-2)",
+                    borderRadius: "6px",
+                    border: "1px solid var(--tv-border)",
+                  }
+            }
+          >
+            {opt}
+          </button>
+        );
+      })}
+    </div>
+  );
+}
 
 export default CandleChart;
