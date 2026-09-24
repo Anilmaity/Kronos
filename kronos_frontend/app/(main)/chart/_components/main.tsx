@@ -16,6 +16,7 @@ import {
 import { gql } from "@apollo/client";
 import { client } from "@/GraphQL/client";
 import { toast } from "sonner";
+import { Maximize2, Minimize2 } from "lucide-react";
 
 import { zigzag, swingLabels, hhLlPath, type SwingLabel } from "@/utils/zigzag";
 
@@ -85,6 +86,7 @@ const CANDLES_QUERY = gql`
 
 const CandleChart = () => {
   const chartContainerRef = useRef<HTMLDivElement | null>(null);
+  const panelRef = useRef<HTMLDivElement | null>(null);
   const chartRef = useRef<IChartApi | null>(null);
   const candleSeriesRef = useRef<ISeriesApi<"Candlestick"> | null>(null);
   const legendRef = useRef<HTMLDivElement | null>(null);
@@ -286,6 +288,23 @@ const CandleChart = () => {
     return () => window.clearInterval(id);
   }, [interval, fetchData, drawStructure]);
 
+  // Full screen: the whole panel (toolbar + chart) so the controls stay usable; Esc exits.
+  const [isFullscreen, setIsFullscreen] = useState(false);
+  const [canFullscreen, setCanFullscreen] = useState(false);
+  useEffect(() => {
+    setCanFullscreen(typeof document !== "undefined" && !!document.fullscreenEnabled);
+    const onChange = () => setIsFullscreen(document.fullscreenElement === panelRef.current);
+    document.addEventListener("fullscreenchange", onChange);
+    return () => document.removeEventListener("fullscreenchange", onChange);
+  }, []);
+  const toggleFullscreen = () => {
+    if (document.fullscreenElement) {
+      document.exitFullscreen().catch(() => {});
+    } else {
+      panelRef.current?.requestFullscreen().catch((err) => toast.error(err.message));
+    }
+  };
+
   const onSelectZigzag = (v: ZigzagOption) => {
     setZigzagOpt(v);
     if (typeof window !== "undefined") window.localStorage.setItem(ZIGZAG_KEY, v);
@@ -303,7 +322,10 @@ const CandleChart = () => {
   };
 
   return (
-    <div className="w-full">
+    <div
+      ref={panelRef}
+      className={isFullscreen ? "w-full h-screen flex flex-col p-4 bg-[var(--tv-bg)]" : "w-full"}
+    >
       {/* Toolbar — Task 5.1 style mapping applied */}
       <div className="flex flex-wrap items-center gap-x-6 gap-y-2 mb-2">
         <ToolbarGroup label="Interval" options={INTERVALS} value={interval} onSelect={onSelectInterval} />
@@ -316,8 +338,25 @@ const CandleChart = () => {
           disabled={zigzagOpt === "Off"}
           title={zigzagOpt === "Off" ? "Turn the zigzag on to draw the HH–LL trend line" : undefined}
         />
+        {canFullscreen && (
+          <button
+            type="button"
+            onClick={toggleFullscreen}
+            aria-pressed={isFullscreen}
+            title={isFullscreen ? "Exit full screen (Esc)" : "Full screen"}
+            className="ml-auto inline-flex items-center gap-1.5 px-3 py-1 text-sm transition-colors bg-[var(--tv-surface)] hover:bg-[var(--tv-surface-2)]"
+            style={{
+              color: "var(--tv-text-2)",
+              borderRadius: "6px",
+              border: "1px solid var(--tv-border)",
+            }}
+          >
+            {isFullscreen ? <Minimize2 size={14} aria-hidden /> : <Maximize2 size={14} aria-hidden />}
+            {isFullscreen ? "Exit full screen" : "Full screen"}
+          </button>
+        )}
       </div>
-      <div className="relative w-full h-[80vh]">
+      <div className={isFullscreen ? "relative w-full flex-1 min-h-0" : "relative w-full h-[80vh]"}>
         <div ref={chartContainerRef} className="w-full h-full" />
       </div>
     </div>
