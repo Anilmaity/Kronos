@@ -11,9 +11,12 @@ Times are shown in New York local time (DST-aware). 4h bars sit on the forex gri
 A second segmented control overlays the zigzag from market_structure/build_foundation.py
 (percentage reversal on high/low) at 0.5 / 1.5 / 3 / 6%, computed on the shown bars,
 with each pivot labelled H/L (first), HH/LH (high vs previous high), HL/LL (low vs
-previous low).
+previous low). A third control draws the trend line: only the HH and LL pivots, joined
+HH -> LL -> HH -> LL; it only shows while the zigzag is on.
 
-Usage:  .venv/bin/python plot_xau.py [--tf 15m] [--zigzag 1.5%] [--shot]
+Opens maximised on the secondary display when one is connected (--screen N overrides).
+
+Usage:  .venv/bin/python plot_xau.py [--tf 15m] [--zigzag 1.5%] [--trends On] [--shot]
         --shot saves xau_chart.png ~6s after load
 """
 import argparse
@@ -24,6 +27,7 @@ import time
 from pathlib import Path
 
 import pandas as pd
+import webview
 from lightweight_charts import Chart
 
 HERE = Path(__file__).parent
@@ -40,6 +44,8 @@ ZZ_COLOR = "#007AFF"
 # black, the first high/low (nothing to compare yet) in system grey
 LABEL_COLOR = {"HH": "#089981", "HL": "#089981", "LH": "#000000", "LL": "#000000",
                "H": "#8E8E93", "L": "#8E8E93"}
+# trend line: joins only the structure points, HH -> LL -> HH -> LL
+TREND_COLOR = "#FF9500"
 NY = "America/New_York"
 
 # switcher label -> (pandas rule, resample offset in NY time, lookback in calendar days)
@@ -120,7 +126,7 @@ def apply_mac_chrome(chart, labels=("Candle interval", "Zigzag reversal")):
             }});
           }});
           document.querySelectorAll('.topbar-textbox').forEach(t => {{
-            if (t.innerText.trim() === 'Zigzag') t.classList.add('mac-caption');
+            if (['Zigzag', 'Trends'].includes(t.innerText.trim())) t.classList.add('mac-caption');
           }});
         }})();
     """)
@@ -192,29 +198,61 @@ def swing_labels(z: pd.DataFrame) -> list:
     return out
 
 
+def hh_ll_path(z: pd.DataFrame, labels: list) -> pd.DataFrame:
+    """The trend line: only the HH and LL pivots, strictly alternating HH -> LL -> HH -> LL.
+
+    HL / LH / H / L pivots are skipped. When two of the same kind follow each other
+    (e.g. HH, HL, HH in an uptrend) only the more extreme one is kept, so the line
+    always runs from a higher high to a lower low and back."""
+    path = []                                        # [date, price, label]
+    for t, price, m in zip(z["date"], z["Zigzag"], labels):
+        lab = m["text"]
+        if lab not in ("HH", "LL"):
+            continue
+        if path and path[-1][2] == lab:
+            if (lab == "HH" and price >= path[-1][1]) or (lab == "LL" and price <= path[-1][1]):
+                path[-1] = [t, price, lab]
+            continue
+        path.append([t, price, lab])
+    return pd.DataFrame(path, columns=["date", "Trend", "label"])
+
+
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--tf", default="15m", choices=list(TIMEFRAMES))
     ap.add_argument("--zigzag", default="Off", choices=list(ZIGZAG))
+    ap.add_argument("--trends", default="On", choices=["Off", "On"])
+    ap.add_argument("--screen", type=int, default=None,
+                    help="display index; default = the secondary display when present")
     ap.add_argument("--shot", action="store_true")
     a = ap.parse_args()
 
     m1 = load_m1()
-    chart = Chart(width=1500, height=900, toolbox=True, title="XAUUSD")
+    screens = webview.screens
+    screen = a.screen if a.screen is not None else (1 if len(screens) > 1 else 0)
+    chart = Chart(width=1500, height=900, toolbox=True, title="XAUUSD",
+                  screen=min(screen, len(screens) - 1), maximize=True)
     format_chart(chart)
 
     zz = chart.create_line(name="Zigzag", color=ZZ_COLOR, width=2,
                            price_line=False, price_label=False)
-    state = {"df": candles(m1, a.tf), "pct": ZIGZAG[a.zigzag]}
+    state = {"df": candles(m1, a.tf), "pct": ZIGZAG[a.zigzag], "trends": a.trends == "On"}
+
+    trend = chart.create_line(name="Trend", color=TREND_COLOR, width=3,
+                              price_line=False, price_label=False)
 
     def draw_zigzag():
         chart.clear_markers()
         if not state["pct"]:
             zz.set(None)
+            trend.set(None)
             return
         z = zigzag_frame(state["df"], state["pct"])
         zz.set(z[["date", "Zigzag"]])
-        chart.marker_list(swing_labels(z))
+        labels = swing_labels(z)
+        chart.marker_list(labels)
+        path = hh_ll_path(z, labels) if state["trends"] else None
+        trend.set(path[["date", "Trend"]] if path is not None and len(path) > 1 else None)
 
     def on_tf(c):
         state["df"] = candles(m1, c.topbar["tf"].value)
@@ -225,11 +263,17 @@ def main() -> None:
         state["pct"] = ZIGZAG[c.topbar["zz"].value]
         draw_zigzag()
 
+    def on_trend(c):
+        state["trends"] = c.topbar["trend"].value == "On"
+        draw_zigzag()
+
     chart.topbar.textbox("symbol", "XAUUSD")
     chart.topbar.switcher("tf", tuple(TIMEFRAMES), default=a.tf, func=on_tf)
     chart.topbar.textbox("zzlabel", "Zigzag")
     chart.topbar.switcher("zz", tuple(ZIGZAG), default=a.zigzag, func=on_zz)
-    apply_mac_chrome(chart)
+    chart.topbar.textbox("trendlabel", "Trends")
+    chart.topbar.switcher("trend", ("Off", "On"), default=a.trends, func=on_trend)
+    apply_mac_chrome(chart, labels=("Candle interval", "Zigzag reversal", "Trends"))
     chart.set(state["df"])
     draw_zigzag()
 
