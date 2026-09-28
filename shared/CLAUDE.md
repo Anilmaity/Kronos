@@ -252,49 +252,51 @@ npm run lint       # next lint
 
 ## Deployment & infrastructure (AWS + Netlify)
 
-AWS account `086769945463` (IAM user `anil`), region **ap-south-1 (Mumbai)**. Credentials are in
-`KronosStrategies/.env_aws` (gitignored — do not commit or echo them into tracked files).
-`aws` CLI v1.40 is installed locally.
+> **Migrated 2026-09-28.** Production moved from AWS account `086769945463` (the "old" account,
+> local profile `jegnus`) into account **`948806325684`** (IAM user `anilmaity`, region
+> **ap-south-1**). The new account's IAM keys are in the workspace-root `.env`
+> (gitignored, `Access key ID : …` format — never echo them). `aws` CLI v1.40 is installed locally.
 
-### Lightsail
-- **`algorobos`** — `ubuntu@13.126.204.82` (static IP), Ubuntu 22.04, `small_3_1` (2 GB).
-  **This is the live production box.** It runs the whole `KronosStrategies` Docker Compose stack
-  *and* the Django backend. Ports 22, 80, and 0–65535 are open. The checkout at
-  `/home/ubuntu/KronosStrategies` is **not a git repo** — deploy by `scp` + `docker compose build`,
-  not `git pull`. **Compose project name must be `-p kronos`** (omitting it spawns a duplicate stack
-  → double trading). SSH: key `~/.ssh/algobet-ssh.pem`, always `ssh -F /dev/null`. Service code is
-  **baked into images at build time** (not bind-mounted) → a restart alone does not pick up code
+### Lightsail (production — account 948806325684)
+- **`kronos-backend`** — `ubuntu@15.252.166.251` (static IP `kronos-backend-ip`), Ubuntu 22.04,
+  `micro_3_1` (**1 GB + 2 GB swap** — the account refused `small_3_1`; resize via snapshot once AWS
+  raises the plan limit). **This is the live production box** despite its name: the whole
+  `KronosStrategies` Compose stack (`-p kronos`) *and* the Django backend (`-p kronos_backend`, host
+  nginx :443 → :8000, Let's Encrypt cert for `app.algorobos.com`, certbot timer). Checkouts
+  `/home/ubuntu/KronosStrategies` and `/home/ubuntu/Kronos_Backend` are **not git repos** — deploy by
+  `scp` + `docker compose build`, not `git pull`. **Compose project name must be `-p kronos`**
+  (omitting it spawns a duplicate stack → double trading). SSH: key `~/.ssh/algobet-ssh.pem`,
+  always `ssh -F /dev/null` (Lightsail's own key `kronos-backend-key` is not on the Mac). Service code
+  is **baked into images at build time** (not bind-mounted) → a restart alone does not pick up code
   changes; you must rebuild. For the Telegram copy-trader specifically, use the
-  `KronosStrategies:deploying-telegram-copytrader` skill — it has the exact, verified deploy/verify steps.
-- **`algobet-backend`** (`13.206.201.12`, port 22 only) and the Lightsail DB **`onvya_database`** belong
-  to *other, unrelated projects* sharing this AWS account — not part of Kronos. Leave them alone.
+  `KronosStrategies:deploying-telegram-copytrader` skill (its IP/host references predate the migration).
+- `Kronos_Backend/deploy/deploy.sh` (the old standalone-env tool) is **retired** — it would overwrite
+  production; it now exits unless `I_KNOW_THIS_IS_PRODUCTION=yes`. The standalone checkout is kept
+  at `~/standalone_backup/` on the box; snapshot `kronos-backend-pre-prod-20260928` is its rollback.
 
 ### Databases
-- **`kronos-strategies-db`** — Lightsail managed PostgreSQL 18.4 (`micro_2_0`), publicly accessible at
-  `ls-c3002c4cc96130d24250133c280823179d61a1da.czomeckmiuze.ap-south-1.rds.amazonaws.com:5432`.
-- The repos also reference **TigerData Cloud** Postgres + TimescaleDB (`TIGERDATA_URL`). The active
-  target for any given service is whatever its **on-box `.env`** sets — the local `.env` files in all
-  three repos are **empty (0 bytes)**; the real production env lives only on the `algorobos` box. Never
-  scp a local `.env`/`*.session` to the box, and never read the running container's env (it leaks live
-  broker/Redis/Telegram secrets).
+- **`kronos-db`** — Lightsail managed PostgreSQL 18.6 (`micro_2_0`), **private** (reachable only from
+  Lightsail in account 948806325684), endpoint
+  `ls-31e814d812c0b37f746fa7ce799f5d6d1c0f0700.c3c6eykyy22v.ap-south-1.rds.amazonaws.com:5432`,
+  master user `dbmasteruser`. Production data lives in database **`tsdb`** (same name as before).
+  Scripts on the Mac cannot reach it unless public access is enabled.
+- The on-box `.env` files are the only real config; the local `.env` files in the three product
+  folders are **empty (0 bytes)**. Never scp a local `.env`/`*.session` to the box, and never read the
+  running container's env (it leaks live broker/Redis/Telegram secrets).
 
-### Standalone backend environment (PrijenBalar's AWS account — NOT production)
-A second, independent Kronos_Backend deployment lives in AWS account `948806325684` (IAM user
-`prijenbalar`, local profile `prijen`), region ap-south-1, created 2026-09-20. It shares nothing
-with production: own Lightsail box **`kronos-backend`** (`ubuntu@15.252.166.251`, `micro_3_1`,
-SSH key `~/.ssh/kronos-backend-key.pem`, always `ssh -F /dev/null`) and own private managed
-PostgreSQL 18 **`kronos-db`** (empty schema, migrations only — no strategies, users or broker data).
-Only the Django backend runs there (Docker: `web` + `nginx`, project `kronos-backend`, `:80`);
-no trading engine, no frontend. Tooling in `Kronos_Backend/deploy/`: `provision-lightsail.sh`
-(idempotent infra) and `deploy.sh` (rsync + build + migrate + smoke test) —
-`AWS_PROFILE=prijen Kronos_Backend/deploy/deploy.sh` ships the current checkout. Endpoint:
-`http://15.252.166.251/graphql/`. Django admin login needs HTTPS (`SESSION_COOKIE_SECURE`), so
-add a domain + TLS before expecting `/admin/` to work.
+### Old account 086769945463 (pre-migration — do not trade from it)
+- **`algorobos`** (`13.126.204.82`) — the former production box. All Kronos containers **stopped with
+  `--restart=no`** at the 2026-09-28 cutover; its nginx only relays `app.algorobos.com` to the new box
+  until Cloudflare DNS is repointed. **`kronos-strategies-db`** (PostgreSQL 18.4, public) holds the
+  frozen pre-cutover copy. Both kept for rollback until the operator retires them.
+- `mailcow`, `jegnus-backend`, `algobet-backend`, the Lightsail DB **`onvya_database`** (plus the
+  `delidr` database) and the `jegnus-*` S3 buckets belong to *other, unrelated projects* — leave them alone.
+- DNS for `algorobos.com` is on **Cloudflare** (proxied), not AWS.
 
 ### Frontend
 - **Netlify** builds `kronos_frontend` (`netlify.toml`: `npm run build`, publish `.next`,
-  `@netlify/plugin-nextjs`). It serves `app.algorobos.com`, which the SPA also points at for the GraphQL
-  API — so the Django backend on the `algorobos` box is what answers `https://app.algorobos.com/graphql/`.
+  `@netlify/plugin-nextjs`). It serves `algorobos.com` (apex); the SPA points at `app.algorobos.com` (API-only) for the GraphQL
+  API — so the Django backend on the production box (`kronos-backend`, since 2026-09-28) is what answers `https://app.algorobos.com/graphql/`.
   Auto-deploy-on-push was linked to the old Bitbucket `algomaya-frontend` repo, which the monorepo no
   longer pushes to (see §3). Once the site is re-linked to `Anilmaity/Kronos` (base dir `kronos_frontend/`),
   **every push to `main` that touches the frontend ships it live** — verify before pushing.

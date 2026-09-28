@@ -8,6 +8,15 @@
 # Same NAME_PREFIX/REGION overrides as provision-lightsail.sh.
 set -euo pipefail
 
+# RETIRED 2026-09-28: the kronos-backend box (15.252.166.251) became PRODUCTION when the
+# whole Kronos stack migrated into this AWS account. This script would rsync over the live
+# backend, rewrite its .env, and start a second nginx on :80 against the host nginx.
+# Production deploys follow the Deploy Runbook (scp + compose build, -p kronos).
+if [[ "${I_KNOW_THIS_IS_PRODUCTION:-}" != "yes" ]]; then
+  echo "deploy.sh is retired: kronos-backend is the production box since 2026-09-28." >&2
+  exit 1
+fi
+
 NAME_PREFIX="${NAME_PREFIX:-kronos}"
 REGION="${REGION:-ap-south-1}"
 INSTANCE_NAME="${NAME_PREFIX}-backend"
