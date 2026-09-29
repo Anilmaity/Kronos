@@ -197,10 +197,9 @@ Env via `.env` (`python-dotenv`): `SECRET_KEY`, and `NAME/USER/PASSWORD/HOST/POR
 ## 3. kronos_frontend — Next.js 14 dashboard
 
 Subdirectory of the monorepo; frozen pre-monorepo remote Bitbucket `jegnus/algomaya-frontend`.
-Deployed on **Netlify** (`netlify.toml`, `@netlify/plugin-nextjs`). The Netlify site was linked to
-the old Bitbucket repo (the frontend's only hosted remote), so **pushing the monorepo does not
-trigger a frontend deploy** until the site is re-linked to `Anilmaity/Kronos` with base directory
-`kronos_frontend/` — verify in the Netlify dashboard before assuming a push shipped.
+Deployed on **Netlify** (`netlify.toml`, `@netlify/plugin-nextjs`) — since 2026-09-29 the site
+**`algorobos-kronos`** in the *new* Netlify account (see Deployment → Frontend). It is **not linked
+to any git repo**: pushing the monorepo never deploys the frontend; deploy with the Netlify CLI.
 
 - **Next.js 14 App Router** with route groups: `(auth)` (`/login` + OTP), `(main)` protected
   (`/dashboard`, `/accounts`, `/backtests`, `/chart`, `/marketplace`, `/signals`, `/admin`,
@@ -294,9 +293,14 @@ npm run lint       # next lint
 - DNS for `algorobos.com` is on **Cloudflare** (proxied), not AWS.
 
 ### Frontend
-- **Netlify** builds `kronos_frontend` (`netlify.toml`: `npm run build`, publish `.next`,
-  `@netlify/plugin-nextjs`). It serves `algorobos.com` (apex); the SPA points at `app.algorobos.com` (API-only) for the GraphQL
-  API — so the Django backend on the production box (`kronos-backend`, since 2026-09-28) is what answers `https://app.algorobos.com/graphql/`.
-  Auto-deploy-on-push was linked to the old Bitbucket `algomaya-frontend` repo, which the monorepo no
-  longer pushes to (see §3). Once the site is re-linked to `Anilmaity/Kronos` (base dir `kronos_frontend/`),
-  **every push to `main` that touches the frontend ships it live** — verify before pushing.
+- **Netlify site `algorobos-kronos`** (id `41e6aaa0-25ae-4acd-969f-685cf3039d35`, team "algo" in the
+  new Netlify account, migrated 2026-09-29) serves **`algorobos.com`** (+ alias `www.algorobos.com`,
+  force-SSL, Netlify Let's Encrypt cert carried over). Build: `netlify.toml` (`npm run build`, publish
+  `.next`, `@netlify/plugin-nextjs`); no env vars; Netlify login protection on non-production deploys
+  only. The SPA calls `https://app.algorobos.com/graphql/` (API-only), answered by the Django backend on
+  the production box (`kronos-backend`).
+- **Not git-linked** — deploy from `kronos_frontend/` with the CLI, token = the `new_netlify : …` line
+  of the workspace-root `.env` (never echo it):
+  `NETLIFY_AUTH_TOKEN=<new_netlify> NETLIFY_SITE_ID=41e6aaa0-25ae-4acd-969f-685cf3039d35 npx -y netlify-cli deploy --prod --build`.
+- The old site `algorobos` (`492b58d0…`, old account = the `netlify : …` token, which also hosts
+  unrelated jegnus/delidr/matru sites) no longer has the domain; kept only for rollback.
