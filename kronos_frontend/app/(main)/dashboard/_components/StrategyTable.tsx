@@ -41,7 +41,31 @@ const StrategyTable: React.FC<StrategyTableProps> = ({
 
   const [tableData, setTableData] = React.useState<UserExchangeSetProps[]>([]);
 
-  const [totalProfitLoss, setTotalProfitLoss] = useState<number>(0);
+  // Copy-trade tabs (Neymar / Neymar VIP) use their own column layout, and let the
+  // user Remove a row from the tab. Removal is a per-browser view setting only —
+  // nothing is deleted on the server.
+  const copyTrade = Boolean(source);
+  const removedKey = source ? `kronos:removed-rows:${source}` : "";
+  const [removedIds, setRemovedIds] = useState<string[]>([]);
+
+  useEffect(() => {
+    if (!removedKey) return;
+    try {
+      setRemovedIds(JSON.parse(localStorage.getItem(removedKey) ?? "[]"));
+    } catch {
+      setRemovedIds([]);
+    }
+  }, [removedKey]);
+
+  const saveRemovedIds = (ids: string[]) => {
+    setRemovedIds(ids);
+    setExpandIndex([]);
+    try {
+      localStorage.setItem(removedKey, JSON.stringify(ids));
+    } catch {
+      // storage unavailable — removal lasts for this page view only
+    }
+  };
 
   const [userStrategyIds, setUserStrategyIds] = useState<string[]>([]);
 
@@ -138,17 +162,6 @@ const StrategyTable: React.FC<StrategyTableProps> = ({
             .filter((broker) => broker.userstrategys.length > 0)
         : allBrokers;
       setTableData(userbrokers);
-
-      const sum = userbrokers.reduce(
-        (acc: number, broker: UserExchangeSetProps) =>
-          acc +
-          broker.userstrategys.reduce(
-            (sAcc: number, strategy) => sAcc + Number(strategy.totalProfitLoss ?? 0),
-            0
-          ),
-        0
-      );
-      setTotalProfitLoss(sum);
     } catch (err) {
       middleware(err);
     }
@@ -205,7 +218,33 @@ const StrategyTable: React.FC<StrategyTableProps> = ({
     handleRouteChange();
   }, []);
 
-  if (tableData.length > 0) {
+  const visibleData = tableData
+    .map((broker) => ({
+      ...broker,
+      userstrategys: broker.userstrategys.filter((s) => !removedIds.includes(s.id)),
+    }))
+    .filter((broker) => broker.userstrategys.length > 0);
+
+  const totalProfitLoss = visibleData.reduce(
+    (acc, broker) =>
+      acc +
+      broker.userstrategys.reduce(
+        (sAcc, strategy) => sAcc + Number(strategy.totalProfitLoss ?? 0),
+        0
+      ),
+    0
+  );
+
+  const restoreRemoved = removedIds.length > 0 && (
+    <button
+      onClick={() => saveRemovedIds([])}
+      style={{ color: "var(--tv-accent)", textTransform: "none", letterSpacing: 0 }}
+    >
+      Show {removedIds.length} removed
+    </button>
+  );
+
+  if (visibleData.length > 0) {
     return (
       <div
         className="w-full flex flex-col items-start justify-start overflow-x-auto"
@@ -228,15 +267,26 @@ const StrategyTable: React.FC<StrategyTableProps> = ({
           }}
         >
           <div className="w-1/12 text-center">No.</div>
-          <div className="w-1/4">Strategy</div>
-          <div className="w-1/6 text-center">Execution</div>
-          <div className="w-1/6 text-center">Open · Total</div>
-          <div className="w-1/6 text-center">Multiplier · Status</div>
+          {copyTrade ? (
+            <>
+              <div className="w-1/4">Name</div>
+              <div className="w-1/6 text-center">Open · Total</div>
+              <div className="w-1/6 text-center">Price</div>
+              <div className="w-1/6 text-center">Status</div>
+            </>
+          ) : (
+            <>
+              <div className="w-1/4">Strategy</div>
+              <div className="w-1/6 text-center">Execution</div>
+              <div className="w-1/6 text-center">Open · Total</div>
+              <div className="w-1/6 text-center">Multiplier · Status</div>
+            </>
+          )}
           <div className="w-1/12 text-center">P &amp; L</div>
           <div className="w-1/12 text-end">Actions</div>
         </div>
 
-        {tableData.map((exchange) => {
+        {visibleData.map((exchange) => {
           return (
             <div key={exchange.id} className="w-full min-w-[860px]">
               {exchange.userstrategys.map((strategy, sindex) => {
@@ -250,6 +300,8 @@ const StrategyTable: React.FC<StrategyTableProps> = ({
                           handleExpand(currentIndex, strategy.id)
                         }
                         index={currentIndex}
+                        copyTrade={copyTrade}
+                        onRemove={() => saveRemovedIds([...removedIds, strategy.id])}
                         brokerDetails={{
                           id: exchange.id,
                           name: exchange.label || exchange.name,
@@ -269,6 +321,8 @@ const StrategyTable: React.FC<StrategyTableProps> = ({
                           handleExpand(currentIndex, strategy.id)
                         }
                         index={currentIndex}
+                        copyTrade={copyTrade}
+                        onRemove={() => saveRemovedIds([...removedIds, strategy.id])}
                         brokerDetails={{
                           id: exchange.id,
                           name: exchange.label || exchange.name,
@@ -294,6 +348,7 @@ const StrategyTable: React.FC<StrategyTableProps> = ({
             fontWeight: 600,
           }}
         >
+          {restoreRemoved}
           <div style={{ color: "var(--tv-text-3)" }}>
             Total P&amp;L ·{" "}
             {dateFormatter(selectedDate.toISOString().split("T")[0])}
@@ -324,7 +379,10 @@ const StrategyTable: React.FC<StrategyTableProps> = ({
           color: "var(--tv-text-3)",
         }}
       >
-        No data available for selected date
+        <div className="flex flex-col items-center gap-2">
+          No data available for selected date
+          {restoreRemoved}
+        </div>
       </div>
     );
   }

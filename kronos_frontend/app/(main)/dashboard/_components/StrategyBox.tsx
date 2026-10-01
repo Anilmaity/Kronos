@@ -71,6 +71,9 @@ interface StrategyBoxProps {
     marginAvailable: string;
     accountHolderName: string;
   };
+  // Copy-trade tab layout — see StrategyTableRow.
+  copyTrade?: boolean;
+  onRemove?: () => void;
 }
 
 const StrategyBox: React.FC<StrategyBoxProps> = ({
@@ -78,7 +81,10 @@ const StrategyBox: React.FC<StrategyBoxProps> = ({
   handleExpand,
   data,
   brokerDetails,
+  copyTrade = false,
+  onRemove,
 }) => {
+  const sizeLabel = copyTrade ? "Price" : "Multiplier";
   const [isActive, setIsActive] = useState<boolean>(data.isActive);
   const { setStrategyChangeHappend } = useStrategyChangeHappend();
 
@@ -138,7 +144,7 @@ const StrategyBox: React.FC<StrategyBoxProps> = ({
       })
       .then((response) => {
         if (response.data.SetUserStrategyMultiplier.Response === "Success") {
-          toast.success("Multiplier Changed Successfully");
+          toast.success(`${sizeLabel} Changed Successfully`);
           setStrategyChangeHappend(true);
         } else {
           toast.error("Something went wrong in changing multiplier");
@@ -220,7 +226,7 @@ const StrategyBox: React.FC<StrategyBoxProps> = ({
             className="cursor-pointer font-semibold"
             onClick={() => handleExpand(index)}
           >
-            {(data.name)}
+            {copyTrade ? brokerDetails.name : data.name}
           </button>
           <div className="flex items-center gap-6">
             <TooltipProvider>
@@ -283,6 +289,24 @@ const StrategyBox: React.FC<StrategyBoxProps> = ({
                 </TooltipProvider>
               )}
             </div>
+            {copyTrade ? (
+            <div
+              className="py-1 lg:py-2 h-8 lg:h-12 w-8 lg:w-12 text-xl lg:text-2xl rounded-full flex items-center justify-center text-white"
+              style={{ background: "var(--tv-down)" }}
+            >
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger onClick={() => onRemove?.()}>
+                    <RiDeleteBin6Line />
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>Remove</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            </div>
+            ) : (
+            <>
             <div
               className="py-1 lg:py-2 h-8 lg:h-12 w-8 lg:w-12 text-xl lg:text-2xl rounded-full flex items-center justify-center text-white"
               style={{ background: "var(--tv-accent)" }}
@@ -371,6 +395,8 @@ const StrategyBox: React.FC<StrategyBoxProps> = ({
                 </AlertDialogContent>
               </AlertDialog>
             </div>
+            </>
+            )}
           </div>
         </div>
         <div className="table w-full py-4 border-b" style={{ borderColor: "var(--tv-border)" }}>
@@ -414,7 +440,7 @@ const StrategyBox: React.FC<StrategyBoxProps> = ({
               </div>
             </div>
             <div className="flex items-center gap-4 w-1/2">
-              <div className="font-semibold">Multiplier :</div>
+              <div className="font-semibold">{sizeLabel} :</div>
               <Select onValueChange={(event) => handleMultiplierChange(event)}>
                 <SelectTrigger
                   className="w-[125px] p-2 lg:p-4 h-7 lg:h-10"

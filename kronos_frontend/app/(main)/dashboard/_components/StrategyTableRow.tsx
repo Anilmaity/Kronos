@@ -52,6 +52,10 @@ interface StrategyTableRowProps {
     marginAvailable: string;
     accountHolderName: string;
   };
+  // Copy-trade tab layout (Neymar / Neymar VIP): no Strategy column, "Price"
+  // instead of "Multiplier", and Remove (hide from the tab) as the only removal action.
+  copyTrade?: boolean;
+  onRemove?: () => void;
 }
 
 const StrategyTableRow: React.FC<StrategyTableRowProps> = ({
@@ -59,7 +63,10 @@ const StrategyTableRow: React.FC<StrategyTableRowProps> = ({
   handleExpand,
   data,
   brokerDetails,
+  copyTrade = false,
+  onRemove,
 }) => {
+  const sizeLabel = copyTrade ? "Price" : "Multiplier";
   const [isActive, setIsActive] = useState<boolean>(data.isActive);
 
   const { setStrategyChangeHappend } = useStrategyChangeHappend();
@@ -113,10 +120,10 @@ const StrategyTableRow: React.FC<StrategyTableRowProps> = ({
       })
       .then((response) => {
         if (response.data.SetUserStrategyMultiplier.Response === "Success") {
-          toast.success("Multiplier Changed Successfully");
+          toast.success(`${sizeLabel} Changed Successfully`);
           setStrategyChangeHappend(true);
         } else {
-          toast.error("Something went wrong in changing multiplier");
+          toast.error(`Something went wrong in changing ${sizeLabel.toLowerCase()}`);
         }
       })
       .catch((err) => {
@@ -212,6 +219,37 @@ const StrategyTableRow: React.FC<StrategyTableRowProps> = ({
       style={{ borderBottom: "1px solid var(--tv-border)", minHeight: "36px" }}
     >
       <div className="tnum w-1/12 text-center">{index + 1}</div>
+      {copyTrade ? (
+        <>
+          <button
+            className="w-1/4 cursor-pointer flex items-center gap-1 justify-between text-start"
+            onClick={() => {
+              handleExpand(index);
+            }}
+          >
+            {brokerDetails.name}
+          </button>
+          <div className="tnum w-1/6 text-center">
+            {data.activePositionsCount} | {data.totalPositionCount}
+          </div>
+          <div className="tnum w-1/6 text-center">{data.multiplyer}x</div>
+          <div className="w-1/6 flex items-center justify-center">
+            <span
+              style={{
+                border: "1px solid",
+                borderRadius: "4px",
+                fontSize: "11px",
+                padding: "2px 8px",
+                color: isActive ? "var(--tv-up)" : "var(--tv-text-3)",
+                borderColor: isActive ? "var(--tv-up)" : "var(--tv-text-3)",
+              }}
+            >
+              {isActive ? "Running" : "Paused"}
+            </span>
+          </div>
+        </>
+      ) : (
+      <>
       <button
         className="w-1/4 cursor-pointer flex items-center gap-1 justify-between text-start"
         onClick={() => {
@@ -246,6 +284,8 @@ const StrategyTableRow: React.FC<StrategyTableRowProps> = ({
           {isActive ? "Running" : "Paused"}
         </span>
       </div>
+      </>
+      )}
       <div className="w-1/12 text-center">
         {totalPandL(data.totalProfitLoss)}
       </div>
@@ -281,7 +321,7 @@ const StrategyTableRow: React.FC<StrategyTableRowProps> = ({
               )}
               <MenubarSeparator />
               <MenubarSub>
-                <MenubarSubTrigger>Multiplier</MenubarSubTrigger>
+                <MenubarSubTrigger>{sizeLabel}</MenubarSubTrigger>
                 <MenubarSubContent>
                   {Array.from(Array(15).keys()).map((item) => {
                     return (
@@ -298,6 +338,10 @@ const StrategyTableRow: React.FC<StrategyTableRowProps> = ({
                 </MenubarSubContent>
               </MenubarSub>
               <MenubarSeparator />
+              {copyTrade ? (
+                <MenubarItem onClick={() => onRemove?.()}>Remove</MenubarItem>
+              ) : (
+              <>
               <MenubarItem
                 onClick={() => {
                   handleExitStrategy({
@@ -329,6 +373,8 @@ const StrategyTableRow: React.FC<StrategyTableRowProps> = ({
               >
                 Archive Strategy
               </MenubarItem>
+              </>
+              )}
             </MenubarContent>
           </MenubarMenu>
         </Menubar>
