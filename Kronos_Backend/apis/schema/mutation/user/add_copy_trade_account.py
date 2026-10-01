@@ -22,7 +22,9 @@ class AddCopyTradeAccount(graphene.Mutation):
         source = graphene.String(required=True)
         user_broker_id = graphene.String(required=True)
         lot_size = graphene.Float(required=True)
-        # Optional stop loss / drawdown (see apis/copy_trade.py).
+        # Optional stop loss / drawdown (see apis/copy_trade.py). Drawdown is
+        # entered as USD amounts (daily_dd_offset / max_dd_offset); the floor
+        # arguments are accepted for old clients and ignored.
         trade_sl_usd = graphene.Float()
         max_sl_per_trade_usd = graphene.Float()
         daily_dd_floor = graphene.Float()
@@ -82,7 +84,7 @@ class AddCopyTradeAccount(graphene.Mutation):
         )
         # Drawdown is per MT5 account: only overwrite it when this popup set one,
         # so adding the account to the second tab doesn't clear the first's.
-        if risk["daily_dd_floor"] is not None or risk["max_dd_floor"] is not None:
+        if risk["daily_dd_offset"] is not None or risk["max_dd_offset"] is not None:
             fields = apply_drawdown(userbroker, risk)
             if fields:
                 userbroker.save(update_fields=fields + ["modified_at"])

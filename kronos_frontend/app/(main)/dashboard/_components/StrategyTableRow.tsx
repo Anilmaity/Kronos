@@ -258,11 +258,13 @@ const StrategyTableRow: React.FC<StrategyTableRowProps> = ({
             <span style={small}>max ${data.maxSlPerTradeUsd ? formatUsd(data.maxSlPerTradeUsd) : "90"}/trade</span>
           </div>
           <div className={`tnum ${CT_COL.daily} text-center flex flex-col`}>
-            <span>{formatUsd(account?.dailyDdFloor)}</span>
+            <span>{account?.dailyDdOffset ? `$${formatUsd(account.dailyDdOffset)}` : "—"}</span>
+            {account?.dailyDdFloor && <span style={small}>floor {formatUsd(account.dailyDdFloor)}</span>}
             {equity !== null && <span style={small}>equity {formatUsd(account?.ddEquity)}</span>}
           </div>
           <div className={`tnum ${CT_COL.max} text-center flex flex-col`}>
-            <span>{formatUsd(account?.maxDdFloor)}</span>
+            <span>{account?.maxDdOffset ? `$${formatUsd(account.maxDdOffset)}` : "—"}</span>
+            {account?.maxDdFloor && <span style={small}>floor {formatUsd(account.maxDdFloor)}</span>}
             {equity !== null && <span style={small}>equity {formatUsd(account?.ddEquity)}</span>}
           </div>
           <div className={`${CT_COL.status} flex flex-col items-center justify-center gap-1`}>

@@ -89,19 +89,15 @@ const buttonStyle = (primary: boolean, disabled = false): React.CSSProperties =>
 export interface RiskForm {
   tradeSl: string;
   maxSl: string;
-  dailyFloor: string;
-  maxFloor: string;
-  dailyOffset: string;
-  maxOffset: string;
+  dailyAmount: string; // Daily drawdown, USD loss amount
+  maxAmount: string; // Max drawdown, USD loss amount
 }
 
 export const emptyRisk = (): RiskForm => ({
   tradeSl: "",
   maxSl: "90",
-  dailyFloor: "",
-  maxFloor: "",
-  dailyOffset: "230",
-  maxOffset: "500",
+  dailyAmount: "",
+  maxAmount: "",
 });
 
 const num = (v: string): number | null => (v.trim() === "" ? null : Number(v));
@@ -111,38 +107,31 @@ export const riskError = (f: RiskForm, equity?: number | null): string | null =>
   const fields: [string, string][] = [
     ["Trade SL", f.tradeSl],
     ["Max SL per trade", f.maxSl],
-    ["Daily drawdown", f.dailyFloor],
-    ["Max drawdown", f.maxFloor],
-    ["Daily reset amount", f.dailyOffset],
-    ["Max reset amount", f.maxOffset],
+    ["Daily drawdown", f.dailyAmount],
+    ["Max drawdown", f.maxAmount],
   ];
   for (const [label, raw] of fields) {
     const v = num(raw);
     if (v !== null && (!Number.isFinite(v) || v <= 0)) return `${label} must be greater than 0`;
   }
   if (equity) {
-    for (const [label, raw] of [["Daily drawdown", f.dailyFloor], ["Max drawdown", f.maxFloor]] as const) {
+    for (const [label, raw] of [["Daily drawdown", f.dailyAmount], ["Max drawdown", f.maxAmount]] as const) {
       const v = num(raw);
       if (v !== null && v >= equity - DD_BUFFER)
-        return `${label} must be below the current equity ${equity.toFixed(2)} (minus ${DD_BUFFER})`;
+        return `${label} must be smaller than the equity ${equity.toFixed(2)}`;
     }
   }
   return null;
 };
 
-export const riskVariables = (f: RiskForm) => {
-  const tradeSl = num(f.tradeSl);
-  const dailyFloor = num(f.dailyFloor);
-  const maxFloor = num(f.maxFloor);
-  return {
-    tradeSlUsd: tradeSl,
-    maxSlPerTradeUsd: num(f.maxSl),
-    dailyDdFloor: dailyFloor,
-    maxDdFloor: maxFloor,
-    dailyDdOffset: dailyFloor === null ? null : num(f.dailyOffset),
-    maxDdOffset: maxFloor === null ? null : num(f.maxOffset),
-  };
-};
+// Drawdown goes to the backend as USD amounts (the *_offset fields); it derives
+// the equity floors (equity − amount) and the copy-trader resets them daily.
+export const riskVariables = (f: RiskForm) => ({
+  tradeSlUsd: num(f.tradeSl),
+  maxSlPerTradeUsd: num(f.maxSl),
+  dailyDdOffset: num(f.dailyAmount),
+  maxDdOffset: num(f.maxAmount),
+});
 
 // Polls an account's equity every 3s while `active` (the copy-trader refreshes it every 3s).
 export const useLiveEquity = (userBrokerId: string | undefined, active: boolean) => {
@@ -171,14 +160,14 @@ export const useLiveEquity = (userBrokerId: string | undefined, active: boolean)
   return equity;
 };
 
-const EquityLine = ({ equity, floor }: { equity: number | null; floor: string }) => {
+const EquityLine = ({ equity, amount }: { equity: number | null; amount: string }) => {
   if (equity === null) return null;
-  const f = floor.trim() === "" ? null : Number(floor);
-  const room = f !== null && Number.isFinite(f) ? equity - f : null;
+  const a = amount.trim() === "" ? null : Number(amount);
+  const floor = a !== null && Number.isFinite(a) ? equity - a : null;
   return (
-    <span style={{ fontSize: "11px", color: room !== null && room <= 10 ? "var(--tv-down)" : "var(--tv-up)" }}>
+    <span style={{ fontSize: "11px", color: "var(--tv-up)" }}>
       Live equity {equity.toFixed(2)}
-      {room !== null ? ` · room ${room.toFixed(2)}` : ""}
+      {floor !== null ? ` · closes all at ${floor.toFixed(2)}` : ""}
     </span>
   );
 };
@@ -218,24 +207,16 @@ const RiskFields = ({
       </div>
       <div className="grid grid-cols-2 gap-3">
         <div className="flex flex-col gap-1">
-          {field("dailyFloor", "Daily drawdown (equity)", "Optional",
-            "Equity floor for today. Reaching it closes every trade on the account.")}
-          <EquityLine equity={equity} floor={form.dailyFloor} />
+          {field("dailyAmount", "Daily drawdown (USD)", "Optional, e.g. 230",
+            "Most the account may lose today. Equity at (today's equity − this) closes every trade; resets each broker day.")}
+          <EquityLine equity={equity} amount={form.dailyAmount} />
         </div>
         <div className="flex flex-col gap-1">
-          {field("maxFloor", "Max drawdown (equity)", "Optional",
-            "Overall equity floor. Reaching it closes every trade on the account.")}
-          <EquityLine equity={equity} floor={form.maxFloor} />
+          {field("maxAmount", "Max drawdown (USD)", "Optional, e.g. 480",
+            "Equity at (equity − this) closes every trade; the floor is reset from equity each broker day.")}
+          <EquityLine equity={equity} amount={form.maxAmount} />
         </div>
       </div>
-      {(form.dailyFloor.trim() !== "" || form.maxFloor.trim() !== "") && (
-        <div className="grid grid-cols-2 gap-3">
-          {field("dailyOffset", "Daily reset (USD below equity)", "230",
-            "Each new broker day: daily floor = that day's equity − this.")}
-          {field("maxOffset", "Max reset (USD below equity)", "500",
-            "Each new broker day: max floor = that day's equity − this.")}
-        </div>
-      )}
     </>
   );
 };
@@ -584,10 +565,8 @@ export const riskFromRow = (
 ): RiskForm => ({
   tradeSl: str(us.tradeSlUsd),
   maxSl: str(us.maxSlPerTradeUsd) || "90",
-  dailyFloor: str(ub.dailyDdFloor),
-  maxFloor: str(ub.maxDdFloor),
-  dailyOffset: str(ub.dailyDdOffset) || "230",
-  maxOffset: str(ub.maxDdOffset) || "500",
+  dailyAmount: str(ub.dailyDdOffset),
+  maxAmount: str(ub.maxDdOffset),
 });
 
 export const formatUsd = (v: string | null | undefined) =>

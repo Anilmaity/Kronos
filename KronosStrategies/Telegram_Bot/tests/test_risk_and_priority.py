@@ -179,8 +179,34 @@ def _guard(monkeypatch, client, cfg, ticks=1):
 
 
 def _cfg(daily=4500.0, mx_=4000.0, dd_day=date(2026, 10, 1), blocked=None):
-    return {"daily_dd_floor": daily, "max_dd_floor": mx_, "daily_dd_offset": 230.0,
-            "max_dd_offset": 500.0, "dd_day": dd_day, "dd_blocked_day": blocked}
+    return {"daily_dd_floor": daily, "max_dd_floor": mx_,
+            "daily_dd_offset": 230.0 if daily is not None else None,
+            "max_dd_offset": 500.0 if mx_ is not None else None,
+            "dd_day": dd_day, "dd_blocked_day": blocked}
+
+
+def test_guard_sets_floors_from_amounts_on_first_read(monkeypatch):
+    """User entered Daily 230 / Max 480 (amounts): floors = equity - amount."""
+    c = _GuardClient(9864.23)
+    cfg = {"daily_dd_floor": None, "max_dd_floor": None, "daily_dd_offset": 230.0,
+           "max_dd_offset": 480.0, "dd_day": None, "dd_blocked_day": None}
+    saved = _guard(monkeypatch, c, cfg)
+    assert saved[0]["daily_dd_floor"] == 9634.23
+    assert saved[0]["max_dd_floor"] == 9384.23
+    assert saved[0]["dd_day"] == date(2026, 10, 1)
+    assert saved[0]["dd_status"] == "ok" and c.closed == 0
+    c.equity = 9634.0                                   # lost $230 today -> close all
+    saved = _guard(monkeypatch, c, cfg)
+    assert c.closed == 1 and saved[-1]["dd_status"] == "breached_daily"
+
+
+def test_fixed_floor_without_amount_is_not_reset(monkeypatch):
+    c = _GuardClient(4620.0, broker_time=datetime(2026, 10, 2, 0, 5, 0))
+    cfg = {"daily_dd_floor": 4500.0, "max_dd_floor": None, "daily_dd_offset": None,
+           "max_dd_offset": None, "dd_day": date(2026, 10, 1), "dd_blocked_day": None}
+    saved = _guard(monkeypatch, c, cfg)
+    assert "daily_dd_floor" not in saved[0]
+    assert saved[0]["dd_day"] == date(2026, 10, 2)
 
 
 def test_guard_ok_above_floors(monkeypatch):

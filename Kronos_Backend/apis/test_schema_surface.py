@@ -24,6 +24,7 @@ EXPECTED_QUERY_FIELDS = [
     "allUserBrokers",
     "archivedStrategies",
     "candles",
+    "copyTradeHistory",
     "getStrategy",
     "getUserPositions",
     "getheatmap",

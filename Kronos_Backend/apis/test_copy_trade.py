@@ -138,25 +138,47 @@ class SetCopyTradeLotTests(CopyTradeTestBase):
 
 
 class RiskSettingsTests(CopyTradeTestBase):
+    """Daily / Max drawdown are USD loss amounts; floors = equity - amount."""
+
     def update(self, us, **kw):
         from apis.schema.mutation.user.update_copy_trade_risk import UpdateCopyTradeRisk
         return UpdateCopyTradeRisk.mutate(None, _info(self.user), user_strategy_id=str(us.id), **kw)
 
-    def test_add_with_trade_sl_and_drawdown_defaults(self):
-        b = self.broker()
+    def add_full(self, b, source="neymar-vip", **kw):
         from apis.schema.mutation.user.add_copy_trade_account import AddCopyTradeAccount
-        res = AddCopyTradeAccount.mutate(None, _info(self.user), source="neymar-vip",
-                                         user_broker_id=str(b.id), lot_size=0.1,
-                                         trade_sl_usd=200, daily_dd_floor=4550, max_dd_floor=4000)
+        return AddCopyTradeAccount.mutate(None, _info(self.user), source=source,
+                                          user_broker_id=str(b.id), lot_size=0.1, **kw)
+
+    def test_add_with_trade_sl_and_drawdown_amounts(self):
+        b = self.broker()
+        b.dd_equity = Decimal("9864.23"); b.save()
+        res = self.add_full(b, trade_sl_usd=200, daily_dd_offset=230, max_dd_offset=480)
         self.assertTrue(res.Ok, res.Response)
         us = UserStrategy.objects.get(user_broker=b)
         self.assertEqual(us.trade_sl_usd, Decimal("200.00"))
         self.assertEqual(us.max_sl_per_trade_usd, Decimal("90.00"))       # default cap
         b.refresh_from_db()
-        self.assertEqual(b.daily_dd_floor, Decimal("4550.00"))
-        self.assertEqual(b.max_dd_floor, Decimal("4000.00"))
-        self.assertEqual(b.daily_dd_offset, Decimal("230.00"))            # default reset amounts
-        self.assertEqual(b.max_dd_offset, Decimal("500.00"))
+        self.assertEqual(b.daily_dd_offset, Decimal("230.00"))
+        self.assertEqual(b.max_dd_offset, Decimal("480.00"))
+        self.assertEqual(b.daily_dd_floor, Decimal("9634.23"))            # equity - 230
+        self.assertEqual(b.max_dd_floor, Decimal("9384.23"))              # equity - 480
+        self.assertIsNone(b.dd_day)                                        # bot adopts for today
+
+    def test_amounts_without_known_equity_leave_floor_to_the_bot(self):
+        b = self.broker()
+        self.assertTrue(self.add_full(b, daily_dd_offset=230).Ok)
+        b.refresh_from_db()
+        self.assertEqual(b.daily_dd_offset, Decimal("230.00"))
+        self.assertIsNone(b.daily_dd_floor)
+        self.assertIsNone(b.max_dd_offset)
+
+    def test_old_floor_arguments_are_ignored(self):
+        b = self.broker()
+        b.dd_equity = Decimal("9800"); b.save()
+        self.assertTrue(self.add_full(b, daily_dd_floor=230, max_dd_floor=480).Ok)
+        b.refresh_from_db()
+        self.assertIsNone(b.daily_dd_floor)
+        self.assertIsNone(b.daily_dd_offset)
 
     def test_add_without_risk_keeps_channel_sl_and_no_drawdown(self):
         b = self.broker()
@@ -164,49 +186,47 @@ class RiskSettingsTests(CopyTradeTestBase):
         us = UserStrategy.objects.get(user_broker=b)
         self.assertIsNone(us.trade_sl_usd)
         b.refresh_from_db()
-        self.assertIsNone(b.daily_dd_floor)
+        self.assertIsNone(b.daily_dd_offset)
 
     def test_adding_to_second_tab_without_drawdown_keeps_first_tabs_drawdown(self):
-        from apis.schema.mutation.user.add_copy_trade_account import AddCopyTradeAccount
         b = self.broker()
-        AddCopyTradeAccount.mutate(None, _info(self.user), source="neymar", user_broker_id=str(b.id),
-                                   lot_size=0.1, daily_dd_floor=4500)
+        self.add_full(b, source="neymar", daily_dd_offset=230)
         self.assertTrue(self.add(b, source="neymar-vip").Ok)
         b.refresh_from_db()
-        self.assertEqual(b.daily_dd_floor, Decimal("4500.00"))
+        self.assertEqual(b.daily_dd_offset, Decimal("230.00"))
 
-    def test_floor_at_or_above_equity_rejected(self):
+    def test_amount_not_below_equity_rejected(self):
         b = self.broker()
-        b.dd_equity = Decimal("4600")
-        b.save()
-        from apis.schema.mutation.user.add_copy_trade_account import AddCopyTradeAccount
-        res = AddCopyTradeAccount.mutate(None, _info(self.user), source="neymar",
-                                         user_broker_id=str(b.id), lot_size=0.1, daily_dd_floor=4595)
+        b.dd_equity = Decimal("4600"); b.save()
+        res = self.add_full(b, source="neymar", daily_dd_offset=4595)
         self.assertFalse(res.Ok)
         self.assertIn("equity", res.Response)
         self.assertFalse(UserStrategy.objects.exists())
 
     def test_update_sets_and_clears(self):
         b = self.broker()
+        b.dd_equity = Decimal("10000"); b.save()
         us = UserStrategy.objects.create(strategy_id=VIP_ID, user_broker=b)
         res = self.update(us, trade_sl_usd=1000, max_sl_per_trade_usd=90,
-                          daily_dd_floor=4550, max_dd_floor=4000, daily_dd_offset=230, max_dd_offset=470)
+                          daily_dd_offset=230, max_dd_offset=500)
         self.assertTrue(res.Ok, res.Response)
         us.refresh_from_db(); b.refresh_from_db()
         self.assertEqual(us.trade_sl_usd, Decimal("1000.00"))
-        self.assertEqual(b.max_dd_floor, Decimal("4000.00"))
-        self.assertIsNone(b.dd_day)                                        # bot adopts for today
-        # empty fields clear
-        self.assertTrue(self.update(us).Ok)
+        self.assertEqual(b.daily_dd_floor, Decimal("9770.00"))
+        self.assertEqual(b.max_dd_floor, Decimal("9500.00"))
+        self.assertIsNone(b.dd_day)
+        self.assertTrue(self.update(us).Ok)                   # empty fields clear
         us.refresh_from_db(); b.refresh_from_db()
         self.assertIsNone(us.trade_sl_usd)
         self.assertIsNone(us.max_sl_per_trade_usd)
         self.assertIsNone(b.daily_dd_floor)
         self.assertIsNone(b.daily_dd_offset)
+        self.assertIsNone(b.max_dd_offset)
 
     def test_update_rejects_bad_values(self):
         us = UserStrategy.objects.create(strategy_id=VIP_ID, user_broker=self.broker())
-        for kw in ({"trade_sl_usd": -5}, {"daily_dd_floor": 0}, {"max_sl_per_trade_usd": "x"}):
+        for kw in ({"trade_sl_usd": -5}, {"daily_dd_offset": 0}, {"max_sl_per_trade_usd": "x"},
+                   {"max_dd_offset": -1}):
             self.assertFalse(self.update(us, **kw).Ok, kw)
 
     def test_update_rejects_non_copy_trade_row(self):
@@ -215,11 +235,51 @@ class RiskSettingsTests(CopyTradeTestBase):
         us = UserStrategy.objects.create(strategy=other, user_broker=self.broker())
         self.assertFalse(self.update(us, trade_sl_usd=100).Ok)
 
-    def test_editing_floor_keeps_todays_block(self):
+    def test_editing_amount_keeps_todays_block(self):
         import datetime as dt
         b = self.broker()
-        b.daily_dd_floor = Decimal("4500"); b.dd_blocked_day = dt.date(2026, 10, 1); b.save()
+        b.daily_dd_offset = Decimal("230"); b.dd_blocked_day = dt.date(2026, 10, 1); b.save()
         us = UserStrategy.objects.create(strategy_id=VIP_ID, user_broker=b)
-        self.assertTrue(self.update(us, daily_dd_floor=4400).Ok)
+        self.assertTrue(self.update(us, daily_dd_offset=300).Ok)
         b.refresh_from_db()
         self.assertEqual(b.dd_blocked_day, dt.date(2026, 10, 1))
+
+
+class CopyTradeHistoryTests(CopyTradeTestBase):
+    """copyTradeHistory: untraded signals from StrategySignal (the tg_* tables
+    are Postgres-only and are exercised on the live DB)."""
+
+    def history(self, source="neymar-vip", user=None):
+        from apis.schema.query.copy_trade_history import CopyTradeHistory
+        return CopyTradeHistory.resolve_copy_trade_history(None, _info(user or self.user),
+                                                           source=source, days=7)
+
+    def test_untraded_signals_listed_once_with_reason(self):
+        from django.utils import timezone
+        from apis.models import StrategySignal
+        now = timezone.now().replace(second=10)
+        for _ in range(2):                         # same signal recorded twice -> one row
+            StrategySignal.objects.create(strategy_id=VIP_ID, symbol="XAUUSD", side="SELL",
+                                          entry_price=Decimal("4150"), stop_loss=Decimal("4160"),
+                                          take_profit=Decimal("4140"), status="REJECTED",
+                                          rejection_reason="manager_gate (strategy paused)",
+                                          signal_at=now)
+        StrategySignal.objects.create(strategy_id=NEYMAR_ID, symbol="XAUUSD", side="BUY",
+                                      entry_price=Decimal("4100"), status="REJECTED",
+                                      rejection_reason="other tab", signal_at=now)
+        rows = self.history()
+        self.assertEqual(len(rows), 1)
+        r = rows[0]
+        self.assertFalse(r.traded)
+        self.assertEqual(r.side, "sell")
+        self.assertEqual(r.rejection_reason, "manager_gate (strategy paused)")
+        self.assertEqual(r.tps, [4140.0])
+
+    def test_unknown_source_is_empty(self):
+        self.assertEqual(self.history(source="nope"), [])
+
+    def test_requires_login(self):
+        from django.contrib.auth.models import AnonymousUser
+        from graphql import GraphQLError
+        with self.assertRaises(GraphQLError):
+            self.history(user=AnonymousUser())

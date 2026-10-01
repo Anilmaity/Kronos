@@ -5,6 +5,7 @@ import StrategyTable from "./StrategyTable";
 import DatePicker from "@/app/(main)/dashboard/_components/DatePicker";
 import { StrategySource } from "./strategySources";
 import { AddCopyTradeDialog } from "./CopyTradeDialogs";
+import CopyTradeHistory from "./CopyTradeHistory";
 import { useStrategyChangeHappend } from "@/hooks/useStrategyChangeHappend";
 
 const DashboardPage = ({
@@ -19,6 +20,7 @@ const DashboardPage = ({
 
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [addOpen, setAddOpen] = useState(false);
+  const [view, setView] = useState<"accounts" | "history">("accounts");
   const [rowCount, setRowCount] = useState(0);
   const { setStrategyChangeHappend } = useStrategyChangeHappend();
 
@@ -45,8 +47,35 @@ const DashboardPage = ({
     );
   }
 
+  const viewTab = (key: "accounts" | "history", label: string) => (
+    <button
+      onClick={() => setView(key)}
+      style={{
+        padding: "6px 16px",
+        fontSize: "13px",
+        fontWeight: 600,
+        borderBottom: `2px solid ${view === key ? "var(--tv-accent)" : "transparent"}`,
+        color: view === key ? "var(--tv-text)" : "var(--tv-text-3)",
+      }}
+    >
+      {label}
+    </button>
+  );
+
   return (
     <div className="flex flex-col items-start w-full gap-6">
+      {/* Copy-trade tabs: Accounts (live) | History (every signal + your orders) */}
+      {source && (
+        <div className="flex items-center gap-2 w-full" style={{ borderBottom: "1px solid var(--tv-border)" }}>
+          {viewTab("accounts", "Accounts")}
+          {viewTab("history", "History")}
+        </div>
+      )}
+
+      {source && view === "history" ? (
+        <CopyTradeHistory source={source} />
+      ) : (
+      <>
 
       {/* ── Top bar: section label + date picker ── */}
       <div className="flex items-center justify-between w-full gap-4 flex-wrap">
@@ -111,6 +140,8 @@ const DashboardPage = ({
           onRowCount={setRowCount}
         />
       </div>
+      </>
+      )}
       {source && (
         <AddCopyTradeDialog
           open={addOpen}

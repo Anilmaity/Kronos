@@ -464,7 +464,12 @@ class MetaApiClient:
                 d["balance"] = float(d["balance"])
             return d
         except Exception as e:
-            log.warning("[MetaAPI:%s] account-information failed: %s", self.label, e)
+            # Polled every ~2s: one slow read is normal (the next tick retries),
+            # so warn at most once a minute per account.
+            now = time.monotonic()
+            if now - getattr(self, "_acct_info_warned", 0.0) >= 60:
+                self._acct_info_warned = now
+                log.warning("[MetaAPI:%s] account-information failed: %s", self.label, e)
             return None
 
     def get_broker_time(self) -> datetime | None:

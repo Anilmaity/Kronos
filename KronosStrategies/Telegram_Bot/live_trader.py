@@ -327,14 +327,15 @@ def _entry_accounts() -> list[dict]:
 
 
 # ── Drawdown guard (dashboard "Daily drawdown" / "Max drawdown") ──────────────
-# Per MT5 account (UserBroker) equity FLOORS. Every DD_POLL_SEC the guard reads
-# each account's equity:
+# Per MT5 account (UserBroker). Daily / Max drawdown are entered as USD amounts;
+# the equity FLOORS are equity - amount (set when first seen, reset every new
+# broker day). Every DD_POLL_SEC the guard reads each account's equity:
 #   * equity <= a floor        -> close EVERY position + pending order on the
 #                                 account (any symbol), no new trades until the
 #                                 next broker day
 #   * equity <= floor + buffer -> no new trades until the next broker day
 #   * new broker day (broker midnight) -> floors reset from that day's starting
-#     equity: daily = equity - daily offset (230), max = equity - max offset (500)
+#     equity: daily = equity - daily amount, max = equity - max amount
 # A floor that is already at/above equity when first seen (a typo) blocks new
 # trades but never auto-closes — it closes only after equity was seen above it.
 DD_POLL_SEC = float(os.getenv("TG_DD_POLL_SEC", "2"))
@@ -343,8 +344,6 @@ DD_CONFIG_REFRESH_SEC = 10
 DD_EQUITY_WRITE_SEC = 3          # equity shown live on the Neymar tabs
 DD_CLOSE_RETRY_SEC = 5
 DD_BROKER_TIME_REFRESH_SEC = 1800
-DEFAULT_DAILY_DD_OFFSET = 230.0
-DEFAULT_MAX_DD_OFFSET = 500.0
 _dd_state: dict[str, dict] = {}       # user_broker_id -> guard state
 _dd_cfg: dict[str, dict] = {}         # user_broker_id -> DB settings (refreshed)
 _dd_cfg_at = 0.0
@@ -366,7 +365,11 @@ async def _guard_account(loop, ub_id: str, client, cfg: dict) -> None:
     now = datetime.now(timezone.utc)
     ts = now.timestamp()
     st = _dd_state.setdefault(ub_id, {"label": client.label})
-    has_floor = cfg.get("daily_dd_floor") is not None or cfg.get("max_dd_floor") is not None
+    # Drawdown is set as USD amounts (daily_dd_offset / max_dd_offset) and the
+    # floors are derived: equity - amount. A floor without an amount (set
+    # directly) stays fixed.
+    has_floor = any(cfg.get(k) is not None for k in
+                    ("daily_dd_floor", "max_dd_floor", "daily_dd_offset", "max_dd_offset"))
     if not has_floor and ts - st.get("eq_polled", 0) < DD_EQUITY_WRITE_SEC:
         return                                   # no floors: equity for display only
     st["eq_polled"] = ts
@@ -387,17 +390,18 @@ async def _guard_account(loop, ub_id: str, client, cfg: dict) -> None:
         day = (now.replace(tzinfo=None) + (st.get("offset") or timedelta(0))).date()
         st["day"] = day
         daily, mx_ = cfg.get("daily_dd_floor"), cfg.get("max_dd_floor")
+        d_amt, m_amt = cfg.get("daily_dd_offset"), cfg.get("max_dd_offset")
         dd_day = _as_date(cfg.get("dd_day"))
-        if dd_day is None:
-            writes["dd_day"] = cfg["dd_day"] = day           # adopt the floors as set, for today
-        elif dd_day < day:
-            if daily is not None:
-                daily = round(eq - float(cfg.get("daily_dd_offset") or DEFAULT_DAILY_DD_OFFSET), 2)
-                writes["daily_dd_floor"] = cfg["daily_dd_floor"] = daily
-            if mx_ is not None:
-                mx_ = round(eq - float(cfg.get("max_dd_offset") or DEFAULT_MAX_DD_OFFSET), 2)
-                writes["max_dd_floor"] = cfg["max_dd_floor"] = mx_
+        new_day = dd_day is not None and dd_day < day
+        if d_amt is not None and (daily is None or new_day):
+            daily = round(eq - float(d_amt), 2)
+            writes["daily_dd_floor"] = cfg["daily_dd_floor"] = daily
+        if m_amt is not None and (mx_ is None or new_day):
+            mx_ = round(eq - float(m_amt), 2)
+            writes["max_dd_floor"] = cfg["max_dd_floor"] = mx_
+        if dd_day is None or new_day:
             writes["dd_day"] = cfg["dd_day"] = day
+        if new_day:
             log.warning("[%s] NEW BROKER DAY %s — equity %.2f, daily floor %s, max floor %s",
                         client.label, day, eq, daily, mx_)
         floors = [(n, f) for n, f in (("daily", daily), ("max", mx_)) if f is not None]

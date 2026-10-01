@@ -520,15 +520,17 @@ const StrategyBox: React.FC<StrategyBoxProps> = ({
               <div className="flex items-center gap-4 w-1/2">
                 <div className="font-semibold">Daily drawdown :</div>
                 <div>
-                  {formatUsd(account?.dailyDdFloor)}
-                  {account?.dailyDdFloor ? ` (resets to equity − ${formatUsd(account?.dailyDdOffset)})` : ""}
+                  {account?.dailyDdOffset
+                    ? `$${formatUsd(account.dailyDdOffset)} · floor ${formatUsd(account?.dailyDdFloor)}`
+                    : "—"}
                 </div>
               </div>
               <div className="flex items-center gap-4 w-1/2">
                 <div className="font-semibold">Max drawdown :</div>
                 <div>
-                  {formatUsd(account?.maxDdFloor)}
-                  {account?.maxDdFloor ? ` (resets to equity − ${formatUsd(account?.maxDdOffset)})` : ""}
+                  {account?.maxDdOffset
+                    ? `$${formatUsd(account.maxDdOffset)} · floor ${formatUsd(account?.maxDdFloor)}`
+                    : "—"}
                 </div>
                 <button
                   onClick={() => setRiskOpen(true)}

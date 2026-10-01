@@ -104,11 +104,12 @@ class UserBroker(BaseModel):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     # ── Drawdown guard (Telegram copy-trader, Neymar tabs) ──────────────────
-    # Equity FLOORS for this MT5 account. When equity falls to a floor the
-    # copy-trader closes every position / pending order on the account and
-    # takes no new trades until the next broker day. Within DD_BUFFER of a
-    # floor it only stops new trades. At each new broker day the floors are
-    # reset from that day's starting equity: floor = equity - offset.
+    # The user enters Daily / Max drawdown as USD LOSS AMOUNTS (*_dd_offset);
+    # the equity FLOORS (*_dd_floor) are derived: equity - amount, now and at
+    # every new broker day from that day's starting equity. When equity falls
+    # to a floor the copy-trader closes every position / pending order on the
+    # account and takes no new trades until the next broker day; within
+    # DD_BUFFER of a floor it only stops new trades.
     daily_dd_floor = models.DecimalField(max_digits=14, decimal_places=2, null=True, blank=True)
     max_dd_floor = models.DecimalField(max_digits=14, decimal_places=2, null=True, blank=True)
     daily_dd_offset = models.DecimalField(max_digits=14, decimal_places=2, null=True, blank=True)
