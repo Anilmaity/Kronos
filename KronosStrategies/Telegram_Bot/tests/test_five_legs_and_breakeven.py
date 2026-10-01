@@ -173,3 +173,48 @@ def test_schema_init_serialised_and_retried(monkeypatch):
     assert db.init_schema() is True
     assert calls["n"] == 2                          # failed once, then succeeded
     assert calls["sql"][-3] == "SELECT lock"        # lock taken before the DDL
+
+
+def test_failed_close_is_not_marked_closed(monkeypatch):
+    """Found live: a leg whose close call failed was marked closed anyway, so a
+    later 'Trade failed' skipped it and it stayed open."""
+    monkeypatch.setattr(lt.time, "sleep", lambda s: None)
+    broker = _Broker()
+    tries = []
+    broker.close_position = lambda t: tries.append(t) or (t != "t2")   # t2 keeps failing
+    monkeypatch.setattr(lt, "ACCOUNTS_BY_LABEL", {"primary": broker})
+    monkeypatch.setattr(lt.db, "record_slice_close", lambda *a, **k: None)
+    slices = [{"tp_index": i, "ticket_id": f"t{i}", "kind": "market", "broker_state": "filled",
+               "account": "primary", "volume": 0.02} for i in (1, 2, 3)]
+    asyncio.run(_close(slices))
+    assert {o["ticket_id"]: o["broker_state"] for o in slices} == {
+        "t1": "closed", "t2": "filled", "t3": "closed"}
+    assert tries.count("t2") == 3                          # 3 attempts, then left open
+
+
+def _close(slices):
+    async def go():
+        await lt._close_slices(asyncio.get_running_loop(), 7, slices, "x")
+    return go()
+
+
+def test_failed_exit_keeps_retrying_in_background(monkeypatch):
+    monkeypatch.setattr(lt.time, "sleep", lambda s: None)
+    monkeypatch.setattr(lt, "CLOSE_RETRY_EVERY_SEC", 0.01)
+    broker = _Broker()
+    state = {"n": 0}
+
+    def close(t):
+        state["n"] += 1
+        return state["n"] > 5            # MetaAPI down for the first 5 calls
+    broker.close_position = close
+    monkeypatch.setattr(lt, "ACCOUNTS_BY_LABEL", {"primary": broker})
+    monkeypatch.setattr(lt.db, "record_slice_close", lambda *a, **k: None)
+    slices = [{"tp_index": 1, "ticket_id": "t1", "kind": "market", "broker_state": "filled",
+               "account": "primary", "volume": 0.02}]
+
+    async def go():
+        await lt._close_slices(asyncio.get_running_loop(), 8, slices, "x")
+        await asyncio.sleep(0.2)          # let the background retry run
+    asyncio.run(go())
+    assert state["n"] >= 6                # 3 immediate tries + background retries until it closed

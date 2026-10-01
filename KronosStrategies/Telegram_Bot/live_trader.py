@@ -126,7 +126,9 @@ SWEEP_INTERVAL_SEC = int(os.getenv("SWEEP_INTERVAL_SEC", "1800"))  # background 
 # channel's text replies. A slice that disappears from the broker is confirmed
 # terminal only after ABSENT_CONFIRM_POLLS consecutive misses, so a single
 # transient empty read can't fake a close.
-BROKER_POLL_SEC = int(os.getenv("BROKER_POLL_SEC", "30"))
+# 5s (was 30s): a stop-out is confirmed — and its Trade-SL re-entry placed —
+# within ~10s; fills / live P&L reach the dashboard just as fast.
+BROKER_POLL_SEC = int(os.getenv("BROKER_POLL_SEC", "5"))
 ABSENT_CONFIRM_POLLS = int(os.getenv("ABSENT_CONFIRM_POLLS", "2"))
 _TAG_RE = re.compile(r"tg-(\d+)-tp(\d+)")
 
@@ -194,7 +196,7 @@ PRIORITY_CHANNEL = os.getenv(
     "TG_PRIORITY_CHANNEL", VIP_CHANNEL_ID if CHANNEL == "NeymarGoldTrader" else "").strip()
 PRIORITY_STRATEGY_ID = os.getenv(
     "TG_PRIORITY_STRATEGY_ID", VIP_STRATEGY_ID if PRIORITY_CHANNEL else "").strip()
-PRIORITY_WAIT_SEC = float(os.getenv("TG_PRIORITY_WAIT_SEC", "10"))
+PRIORITY_WAIT_SEC = float(os.getenv("TG_PRIORITY_WAIT_SEC", "8"))   # Neymar led VIP by <=7s in 36 pairs
 PRIORITY_MATCH_SEC = float(os.getenv("TG_PRIORITY_MATCH_SEC", "1800"))
 PRIORITY_TOLERANCE = float(os.getenv("TG_PRIORITY_TOLERANCE", "5.0"))
 _priority_meta: set[str] = set()      # MetaAPI ids the priority (VIP) bot trades
@@ -707,7 +709,10 @@ async def _ladder_reenter(loop, pos: dict, msg_id: int, o: dict, label: str, pnl
     if not px:
         log.warning("[%s:%s] TP%s re-entry skipped — no price", msg_id, label, o["tp_index"])
         return None
+    # Market re-entry: its stop is checked from the closing side, so the broker
+    # floor must also clear the spread.
     min_d = await loop.run_in_executor(None, lambda: client.stops_level_price(symbol))
+    min_d += max(0.0, px["ask"] - px["bid"])
     ref = px["ask"] if side == "buy" else px["bid"]
     tp = o.get("tp")
     if tp is not None and ((side == "buy" and tp <= ref + min_d) or
@@ -826,7 +831,9 @@ async def place_order(msg_id: int, sig: dict, accounts: list[dict] | None = None
             if o["tp_index"] in ladders:
                 o["ladder"] = dict(ladders[o["tp_index"]], base=o["tp_index"])
         if not submitted:
-            log.warning("[%s:%s] no orders submitted for this account", msg_id, label)
+            log.warning("[%s:%s] no orders submitted for this account: %s", msg_id, label,
+                        getattr(client, "account_error", "") or "unknown")
+        acc_errors[label] = getattr(client, "account_error", "") or ""
         acct_vol = (round(sum(float(o["volume"]) for o in submitted), 2)
                     if submitted else total_vol)
         return label, submitted, acct_vol
@@ -835,6 +842,7 @@ async def place_order(msg_id: int, sig: dict, accounts: list[dict] | None = None
     # fetch + market-vs-limit) at the same wall-clock instant. Sequential
     # submission made later accounts decide several broker round-trips behind the
     # first, fetching a worse price on a fast retrace — our-side fill divergence.
+    acc_errors: dict[str, str] = {}
     results = await asyncio.gather(*(_submit_for_account(acc) for acc in accounts))
 
     all_orders: list[dict] = []
@@ -858,6 +866,8 @@ async def place_order(msg_id: int, sig: dict, accounts: list[dict] | None = None
         "risk_pts": risk_pts,
         "orders": all_orders,
         "status": "submitted" if all_orders else "rejected",
+        # Broker's reason per account when legs / the whole signal failed.
+        "errors": {k: v for k, v in acc_errors.items() if v},
         "dry_run": DRY_RUN,
         "opened_at": datetime.now(timezone.utc).isoformat(),
     }
@@ -926,10 +936,13 @@ async def modify_sl(msg_id: int, new_sl: float, *, managed: bool = True):
         else:
             targets = [(o, new_sl, None) for o in legs]
 
+        # All legs' stops move AT ONCE. POSITION_MODIFY only applies once filled;
+        # pending limits ignore the call. The TP is always re-sent (see
+        # modify_position_sl).
+        await asyncio.gather(*(
+            loop.run_in_executor(None, _modify_sl_retry, client, o["ticket_id"], eff, o.get("tp"))
+            for o, eff, _m in targets))
         for o, eff, meta in targets:
-            # POSITION_MODIFY only applies once filled; pending limits ignore the call.
-            await loop.run_in_executor(None, client.modify_position_sl, o["ticket_id"], eff,
-                                       o.get("tp"))   # keep the TP (see modify_position_sl)
             o["sl"] = eff
             if meta:
                 o["ladder"] = meta                  # re-enter after this capped stop
@@ -942,6 +955,18 @@ async def modify_sl(msg_id: int, new_sl: float, *, managed: bool = True):
     await r.set(key, json.dumps(pos))
     await loop.run_in_executor(None, db.update_sl, msg_id, new_sl)
     log.info(f"[{msg_id}] SL modified -> {new_sl} ({'DRY' if DRY_RUN else 'LIVE'})")
+
+
+def _modify_sl_retry(client, ticket: str, sl: float, tp, attempts: int = 3) -> bool:
+    """Move a stop, retried — seen live: a single modify failing under MetaAPI
+    load left one leg on its old stop. Blocking (run in an executor)."""
+    for attempt in range(attempts):
+        if client.modify_position_sl(ticket, sl, tp):
+            return True
+        time.sleep(0.4 * (attempt + 1))
+    log.error("[%s] SL modify FAILED for %s after %d tries (%s)", getattr(client, "label", "?"),
+              ticket, attempts, getattr(client, "last_error", ""))
+    return False
 
 
 async def move_to_breakeven(msg_id: int):
@@ -1002,32 +1027,85 @@ async def apply_management(msg_id: int, text: str, parent_id: int | None) -> dic
 
 
 async def _close_slices(loop, msg_id: int, slices: list[dict], reason: str) -> None:
-    """Close / cancel these slices at the broker and settle each one."""
+    """Close / cancel these slices at the broker — ALL AT ONCE — then settle
+    each. Slices already settled (TP/SL hit at the broker, seen by reconcile)
+    are not sent again."""
+    done = await _send_closes(loop, msg_id, slices)
+    await _settle_closes(loop, msg_id, done, reason)
+
+
+async def _send_closes(loop, msg_id: int, slices: list[dict]) -> list[tuple]:
+    """Broker side only: close / cancel all at once (each retried). Returns the
+    (slice, client, was_pending) that are now gone at the broker."""
+    todo = []
     for o in slices:
         client = ACCOUNTS_BY_LABEL.get(o.get("account", "primary"))
-        if client is None:
+        if client is None or o.get("broker_state") in ("closed", "cancelled"):
             continue
-        was_filled = o.get("broker_state") == "filled" or o["kind"] != "limit"
-        if o["kind"] == "limit" and o.get("broker_state") != "filled":
-            await loop.run_in_executor(None, client.cancel_order, o["ticket_id"])
-        else:
-            await loop.run_in_executor(None, client.close_position, o["ticket_id"])
-        if o.get("broker_state") in ("closed", "cancelled"):
-            continue                    # already settled (reconcile got there first)
-        if was_filled:
-            # We just closed it, so history-deals may not have settled yet;
-            # _slice_realized_pnl falls back to the last live snapshot.
-            val = await _slice_realized_pnl(loop, client, o)
-            o["broker_state"], o["realized_pnl"] = "closed", val
-            await loop.run_in_executor(None, db.record_slice_close,
-                                       msg_id, o["tp_index"], o["ticket_id"],
-                                       reason, val)
-        else:
+        todo.append((o, client, o["kind"] == "limit" and o.get("broker_state") != "filled"))
+
+    def _send(o, client, pending):
+        fn = client.cancel_order if pending else client.close_position
+        for attempt in range(3):                      # retried: a failed close must not linger
+            if fn(o["ticket_id"]):
+                return True
+            time.sleep(0.4 * (attempt + 1))
+        return False
+    sent = await asyncio.gather(*(loop.run_in_executor(None, _send, o, c, pend) for o, c, pend in todo))
+    failed = [t for t, ok in zip(todo, sent) if not ok]
+    for o, _c, _p in failed:
+        # NOT marked closed (marking it closed anyway is how a leg survived a
+        # "Trade failed" exit); keep trying in the background until it is gone.
+        log.error("[%s:%s] TP%s close FAILED at the broker — still open, retrying in background",
+                  msg_id, o.get("account", "primary"), o["tp_index"])
+    if failed:
+        asyncio.create_task(_keep_closing(msg_id, failed))
+    return [t for t, ok in zip(todo, sent) if ok]
+
+
+CLOSE_RETRY_EVERY_SEC = 5
+CLOSE_RETRY_FOR_SEC = 120
+
+
+async def _keep_closing(msg_id: int, failed: list[tuple]) -> None:
+    """Retry exits that failed (e.g. a MetaAPI outage) every few seconds until
+    the broker confirms them, for up to CLOSE_RETRY_FOR_SEC."""
+    loop = asyncio.get_running_loop()
+    deadline = loop.time() + CLOSE_RETRY_FOR_SEC
+    left = list(failed)
+    while left and loop.time() < deadline:
+        await asyncio.sleep(CLOSE_RETRY_EVERY_SEC)
+        still = []
+        for o, client, pending in left:
+            fn = client.cancel_order if pending else client.close_position
+            ok = await loop.run_in_executor(None, fn, o["ticket_id"])
+            if ok:
+                log.warning("[%s:%s] TP%s close succeeded on background retry", msg_id,
+                            o.get("account", "primary"), o["tp_index"])
+            else:
+                still.append((o, client, pending))
+        left = still
+    for o, _c, _p in left:
+        log.error("[%s:%s] TP%s could NOT be closed for %ss — it stays under its own SL/TP "
+                  "at the broker", msg_id, o.get("account", "primary"), o["tp_index"],
+                  CLOSE_RETRY_FOR_SEC)
+
+
+async def _settle_closes(loop, msg_id: int, todo: list[tuple], reason: str) -> None:
+    """Record the realized P&L of closed slices (after the broker work)."""
+    async def _settle(o, client, pending):
+        if pending:
             o["broker_state"] = "cancelled"
             await loop.run_in_executor(None, db.record_slice_close,
-                                       msg_id, o["tp_index"], o["ticket_id"],
-                                       "cancelled", None)
-
+                                       msg_id, o["tp_index"], o["ticket_id"], "cancelled", None)
+            return
+        # Just closed: history-deals may not have settled yet; _slice_realized_pnl
+        # falls back to the last live snapshot.
+        val = await _slice_realized_pnl(loop, client, o)
+        o["broker_state"], o["realized_pnl"] = "closed", val
+        await loop.run_in_executor(None, db.record_slice_close,
+                                   msg_id, o["tp_index"], o["ticket_id"], reason, val)
+    await asyncio.gather(*(_settle(o, c, pend) for o, c, pend in todo))
 
 
 async def breakeven_partial(msg_id: int) -> None:
@@ -1049,18 +1127,22 @@ async def breakeven_partial(msg_id: int) -> None:
                                       o["tp_index"]), reverse=True)
     keep, close = far[:BE_KEEP_LEGS], far[BE_KEEP_LEGS:]
     loop = asyncio.get_running_loop()
+    # Broker work first and all at once: exit the near legs AND move the kept
+    # legs' stops in the same instant; P&L bookkeeping only afterwards.
+    moves = []
+    for o in keep:
+        client = ACCOUNTS_BY_LABEL.get(o.get("account", "primary"))
+        if client is not None and o.get("broker_state") == "filled":
+            moves.append(loop.run_in_executor(None, _modify_sl_retry, client, o["ticket_id"],
+                                              pos["entry_mid"], o.get("tp")))
+        o["sl"] = pos["entry_mid"]
+    done, _ = await asyncio.gather(_send_closes(loop, msg_id, close), asyncio.gather(*moves))
     if close:
-        await _close_slices(loop, msg_id, close, "breakeven_exit")
+        await _settle_closes(loop, msg_id, done, "breakeven_exit")
         for o in close:                       # flatten their dashboard rows now
             if o.get("broker_state") == "closed":
                 await _conclude_slice_row(loop, APIS_BY_LABEL.get(o.get("account", "primary")),
                                           pos, o, "breakeven_exit")
-    for o in keep:
-        client = ACCOUNTS_BY_LABEL.get(o.get("account", "primary"))
-        if client is not None and o.get("broker_state") == "filled":
-            await loop.run_in_executor(None, client.modify_position_sl, o["ticket_id"],
-                                       pos["entry_mid"], o.get("tp"))
-        o["sl"] = pos["entry_mid"]
     await r.set(key, json.dumps(pos))
     log.info("[%s] BREAKEVEN: exited %d leg(s), kept %d at entry %.2f (%s)", msg_id,
              len(close), len(keep), pos["entry_mid"], "DRY" if DRY_RUN else "LIVE")
@@ -1267,19 +1349,23 @@ async def reconcile_broker() -> None:
     """
     open_ids = await r.smembers(f"{REDIS_PREFIX}:open")
     if not open_ids:
-        return
+        return False
     loop = asyncio.get_running_loop()
     symbol = next(iter(ALLOWED_INSTRUMENTS))
+    pending_confirm = False
 
     # Build per-account tag maps from each account's own broker truth. Keeping
     # them per-account is the safety-critical bit: a slice is only ever matched
     # against positions/orders from ITS OWN account, never another's. If ANY
     # configured account can't be queried, skip this whole cycle and fail safe.
     acct_maps: dict[str, tuple[dict, dict]] = {}
-    for acc in ACCOUNTS:
+    accs = list(ACCOUNTS)
+    fetched = await asyncio.gather(*(
+        asyncio.gather(loop.run_in_executor(None, lambda c=a["client"]: c.get_open_positions(symbol)),
+                       loop.run_in_executor(None, lambda c=a["client"]: c.get_pending_orders(symbol)))
+        for a in accs))
+    for acc, (positions, orders) in zip(accs, fetched):
         client, label = acc["client"], acc["label"]
-        positions = await loop.run_in_executor(None, lambda c=client: c.get_open_positions(symbol))
-        orders = await loop.run_in_executor(None, lambda c=client: c.get_pending_orders(symbol))
         if positions is None or orders is None:
             if acc.get("source") == "db":
                 # Its slices stay untouched (no maps) and it takes no new entries
@@ -1287,7 +1373,7 @@ async def reconcile_broker() -> None:
                 acc["healthy"] = False
                 log.warning("[%s] broker query failed — skipping this account this cycle", label)
                 continue
-            return  # could not verify a broker — skip this cycle, fail safe
+            return False  # could not verify a broker — skip this cycle, fail safe
         acc["healthy"] = True
         pos_by_tag, ord_by_tag = {}, {}
         for p in positions:
@@ -1309,6 +1395,7 @@ async def reconcile_broker() -> None:
         sid_i = int(sid)
         changed = False
         stopped_legs: list[tuple[dict, str, object]] = []
+        closed_now: list[tuple[dict, str]] = []
 
         for o in pos.get("orders", []):
             label = o.get("account", "primary")
@@ -1354,32 +1441,43 @@ async def reconcile_broker() -> None:
                     continue                           # already terminal, or never seen yet
                 o["miss"] = o.get("miss", 0) + 1
                 changed = True  # persist the counter so it accrues across polls
+                if o["miss"] < ABSENT_CONFIRM_POLLS:
+                    pending_confirm = True     # poller takes the second look quickly
                 if o["miss"] >= ABSENT_CONFIRM_POLLS:
                     if prev == "filled":
-                        # Prefer the broker's TRUE realized PnL (history deals)
-                        # over the stale last-live snapshot; falls back to the
-                        # snapshot if deals aren't available/settled yet.
-                        pnl = await _slice_realized_pnl(loop, ACCOUNTS_BY_LABEL.get(label), o)
-                        reason = _infer_close_reason(o.get("last_price"), pnl, o["tp"], o["sl"])
-                        o["broker_state"], o["realized_pnl"] = "closed", pnl
-                        await loop.run_in_executor(None, db.record_slice_close,
-                                                   sid_i, idx, o["ticket_id"], reason, pnl)
-                        log.info("[%s:%s] TP%d CLOSED (~%s, pnl=%s via %s) (broker)",
-                                 sid_i, label, idx, reason, pnl, o.get("pnl_source"))
-                        # Flatten THIS slice's dashboard row now. Waiting for the
-                        # whole signal to conclude (below) left TP1-3 showing as
-                        # open with a frozen mark for as long as the runner leg
-                        # lived (2026-09-18: hours behind a breakeven stop).
-                        await _conclude_slice_row(loop, APIS_BY_LABEL.get(label), pos, o,
-                                                  f"broker_{reason}")
-                        if reason == "sl" and o.get("ladder"):
-                            stopped_legs.append((o, label, pnl))
+                        # Settled below, all legs together (one P&L lookup each,
+                        # in parallel — 5 sequential lookups took ~30s live).
+                        closed_now.append((o, label))
                     else:                              # pending -> gone, never filled
                         o["broker_state"] = "cancelled"
                         await loop.run_in_executor(None, db.record_slice_close,
                                                    sid_i, idx, o["ticket_id"], "cancelled", None)
                         log.info("[%s:%s] TP%d CANCELLED unfilled (broker)", sid_i, label, idx)
                     changed = True
+
+        # Legs the broker closed (TP / SL hit): realized P&L for all at once.
+        if closed_now:
+            # Prefer the broker's TRUE realized PnL (history deals) over the stale
+            # last-live snapshot; falls back to the snapshot if deals aren't
+            # available / settled yet.
+            pnls = await asyncio.gather(*(
+                _slice_realized_pnl(loop, ACCOUNTS_BY_LABEL.get(label), o) for o, label in closed_now))
+            for (o, label), pnl in zip(closed_now, pnls):
+                idx = o["tp_index"]
+                reason = _infer_close_reason(o.get("last_price"), pnl, o["tp"], o["sl"])
+                o["broker_state"], o["realized_pnl"] = "closed", pnl
+                await loop.run_in_executor(None, db.record_slice_close,
+                                           sid_i, idx, o["ticket_id"], reason, pnl)
+                log.info("[%s:%s] TP%d CLOSED (~%s, pnl=%s via %s) (broker)",
+                         sid_i, label, idx, reason, pnl, o.get("pnl_source"))
+                # Flatten THIS slice's dashboard row now. Waiting for the
+                # whole signal to conclude (below) left TP1-3 showing as
+                # open with a frozen mark for as long as the runner leg
+                # lived (2026-09-18: hours behind a breakeven stop).
+                await _conclude_slice_row(loop, APIS_BY_LABEL.get(label), pos, o,
+                                          f"broker_{reason}")
+                if reason == "sl" and o.get("ladder"):
+                    stopped_legs.append((o, label, pnl))
 
         # Trade SL ladder: re-enter stopped legs that still have budget.
         for o, label, pnl in stopped_legs:
@@ -1456,15 +1554,23 @@ async def reconcile_broker() -> None:
             await r.set(key, json.dumps(pos))
             log.info("[%s] CONCLUDED from broker: %s pnl=%s (all-acct %s)",
                      sid_i, reason, primary_total, total)
+    return pending_confirm
+
+
+CONFIRM_RECHECK_SEC = 1.5   # second look at a leg that just vanished from the broker
 
 
 async def _position_poller() -> None:
-    """Periodically reconcile tracked signals against broker truth."""
+    """Periodically reconcile tracked signals against broker truth. A leg that
+    has just disappeared is looked at again after CONFIRM_RECHECK_SEC instead
+    of a full poll, so a TP / SL hit is concluded in ~7s."""
+    delay = BROKER_POLL_SEC
     while True:
-        await asyncio.sleep(BROKER_POLL_SEC)
+        await asyncio.sleep(delay)
         try:
-            await reconcile_broker()
+            delay = CONFIRM_RECHECK_SEC if await reconcile_broker() else BROKER_POLL_SEC
         except Exception as e:
+            delay = BROKER_POLL_SEC
             log.exception(f"position poller error: {e}")
 
 
@@ -1626,9 +1732,10 @@ async def handle_new_signal(msg) -> None:
     if not pos.get("orders"):
         log.warning(f"[{msg.id}] no orders submitted — not tracking (next signal will be eligible)")
         loop = asyncio.get_running_loop()
+        why = "; ".join(f"{k}: {v}" for k, v in pos.get("errors", {}).items()) or "unknown"
         await loop.run_in_executor(None, lambda: _record_signals(
             sig, status="REJECTED",
-            rejection_reason="no orders submitted (broker rejection)",
+            rejection_reason=f"no orders submitted ({why})"[:480],
             signal_at=pos.get("posted_at")))
         return
     await r.set(f"{REDIS_PREFIX}:signal:{msg.id}", json.dumps(pos))
@@ -1645,9 +1752,12 @@ async def handle_new_signal(msg) -> None:
         sig, status="PLACED", reason=reason,
         signal_at=pos.get("posted_at"), only_labels=placed))
     if reject:
-        await loop.run_in_executor(None, lambda: _record_signals(
-            sig, status="REJECTED", rejection_reason="no orders on this account",
-            signal_at=pos.get("posted_at"), only_labels=reject))
+        for lbl in reject:
+            err = pos.get("errors", {}).get(lbl, "")
+            await loop.run_in_executor(None, lambda lbl=lbl, err=err: _record_signals(
+                sig, status="REJECTED",
+                rejection_reason=f"no orders on this account ({err or 'unknown'})"[:480],
+                signal_at=pos.get("posted_at"), only_labels={lbl}))
 
 
 async def _deferred_priority_entry(msg_id: int, sig: dict, shared: list[dict],
@@ -1777,6 +1887,11 @@ async def main(args):
     global r
     from telethon import TelegramClient, events  # runtime-only dependency
 
+    # Broker / DB calls run in threads; the default pool on this 2-vCPU box is
+    # only 6 workers, so parallel legs + the 2s drawdown guard queued behind
+    # each other. 32 lets every leg's call go out at once.
+    from concurrent.futures import ThreadPoolExecutor
+    asyncio.get_running_loop().set_default_executor(ThreadPoolExecutor(max_workers=32))
     r, kind = await make_store(REDIS_URL)
     log.info(f"State store: {kind}")
     log.info("Fanning out each signal to accounts: %s",

@@ -64,6 +64,7 @@ def buy_signal(client) -> dict:
 
 
 async def save(pos: dict) -> None:
+    db.insert_signal(pos, "e2e")                   # as the live handler does (FK for updates)
     await lt.r.set(f"{lt.REDIS_PREFIX}:signal:{pos['msg_id']}", json.dumps(pos))
     await lt.r.sadd(f"{lt.REDIS_PREFIX}:open", str(pos["msg_id"]))
 
@@ -80,6 +81,8 @@ async def flatten_tests(client) -> None:
 
 async def main() -> int:
     loop = asyncio.get_running_loop()
+    from concurrent.futures import ThreadPoolExecutor
+    loop.set_default_executor(ThreadPoolExecutor(max_workers=32))   # as the live bot
     lt.r, kind = await make_store(lt.REDIS_URL)
     db.init_schema()
     acc = lt.ACCOUNTS[0]
@@ -123,7 +126,10 @@ async def main() -> int:
 
         # ── 2. move SL within the cap ────────────────────────────────────────
         new_sl = round(sig["sl"] - 1.0, 2)
+        t0 = time.monotonic()
         await lt.modify_sl(990101, new_sl)
+        check("SPEED: SL moved on all 5 legs in under 2s", time.monotonic() - t0 < 2.0,
+              f"{time.monotonic() - t0:.2f}s")
         legs = tagged(client, 990101)
         check("move SL within cap: every leg moved", all(near(p.get("stopLoss"), new_sl) for p in legs),
               str({p.get("stopLoss") for p in legs}))
@@ -184,7 +190,10 @@ async def main() -> int:
         pos["entry_mid"] = be
         await lt.r.set(f"{lt.REDIS_PREFIX}:signal:990101", json.dumps(pos))
         live_before = len(tagged(client, 990101))
+        t0 = time.monotonic()
         await lt.breakeven_partial(990101)
+        check("SPEED: breakeven (exit 3 + move 2) in under 3s", time.monotonic() - t0 < 3.0,
+              f"{time.monotonic() - t0:.2f}s")
         legs = tagged(client, 990101)
         check("breakeven: only 2 legs left", len(legs) == 2,
               f"{live_before} -> {len(legs)} {[leg_of(p) for p in legs]}")
@@ -194,10 +203,42 @@ async def main() -> int:
               str([p.get("stopLoss") for p in legs]))
 
         # ── 7. "Trade failed" -> exit all ───────────────────────────────────
+        t0 = time.monotonic()
         action = await lt.apply_management(990199, "Trade failed", 990101)
+        check("SPEED: 'Trade failed' exit done in under 3s", time.monotonic() - t0 < 3.0,
+              f"{time.monotonic() - t0:.2f}s")
         check("'Trade failed' read as close-all", (action or {}).get("close") == "all", str(action))
         check("'Trade failed': no legs left", tagged(client, 990101) == [])
         check("signal no longer open", "990101" not in await lt.r.smembers(f"{lt.REDIS_PREFIX}:open"))
+
+        # ── 7b. full 5-leg channel close timing ────────────────────────────
+        pos3 = await lt.place_order(990103, buy_signal(client))
+        pos3.update(raw="e2e", posted_at=None)
+        await save(pos3)
+        t0 = time.monotonic()
+        await lt.close_order(990103, "channel_close")
+        took = time.monotonic() - t0
+        check("SPEED: all 5 legs closed by a channel exit in under 3s",
+              took < 3.0 and tagged(client, 990103) == [], f"{took:.2f}s")
+
+        # ── 7c. stop-out noticed by reconciliation within ~10s ───────────────
+        pos4 = await lt.place_order(990104, buy_signal(client))
+        pos4.update(raw="e2e", posted_at=None)
+        await save(pos4)
+        await lt.reconcile_broker()                           # observe the legs
+        for p in tagged(client, 990104):
+            client.close_position(str(p["id"]))               # as if stopped at the broker
+        t0 = time.monotonic()
+        delay = lt.BROKER_POLL_SEC                            # same cadence as the live poller
+        while time.monotonic() - t0 < 25:
+            await asyncio.sleep(delay)
+            delay = lt.CONFIRM_RECHECK_SEC if await lt.reconcile_broker() else lt.BROKER_POLL_SEC
+            if "990104" not in await lt.r.smembers(f"{lt.REDIS_PREFIX}:open"):
+                break
+        took = time.monotonic() - t0
+        check("SPEED: broker-side close confirmed and concluded within ~10s",
+              "990104" not in await lt.r.smembers(f"{lt.REDIS_PREFIX}:open") and took <= 10.0,
+              f"{took:.1f}s (poll {lt.BROKER_POLL_SEC}s, second look {lt.CONFIRM_RECHECK_SEC}s)")
 
         # ── 8. drawdown guard: close everything, near-floor block, day reset ─
         pos2 = await lt.place_order(990102, buy_signal(client))

@@ -32,6 +32,7 @@ from __future__ import annotations
 
 import logging
 import os
+import threading
 import time
 from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime
@@ -47,7 +48,11 @@ _TOKEN = os.getenv("META_API_TOKEN", "")
 _ACCOUNT = os.getenv("META_ACCOUNT_ID", "")
 DRY_RUN = os.getenv("DRY_RUN", "false").lower() == "true"
 
-_PROVISION_URL = "https://mt-provisioning-api-v1.agiliumtrade.ai"
+# Real MetaAPI provisioning host (was "...-v1.agiliumtrade.ai", which does not
+# resolve, so the region lookup always fell back). Tokens without account-
+# management access get 403 here — the new-york default below is then used
+# (verified 2026-10-01: this account answers fastest on new-york).
+_PROVISION_URL = "https://mt-provisioning-api-v1.agiliumtrade.agiliumtrade.ai"
 _TIMEOUT = 15
 
 # MetaAPI's broker link blips for a few seconds at a time: the gateway returns
@@ -58,22 +63,31 @@ _TIMEOUT = 15
 # transient failures with backoff; a non-transient status (e.g. 400 bad order)
 # returns immediately so the caller's raise_for_status surfaces the real error.
 _RETRY_STATUSES = {429, 502, 503, 504}
+LEG_ATTEMPTS = int(os.getenv("TG_LEG_ATTEMPTS", "3"))     # tries on a real broker rejection
+# During a MetaAPI outage (504 "not connected to broker", timeouts) a leg keeps
+# trying for this long — as long as price has not crossed its stop.
+LEG_OUTAGE_BUDGET_SEC = float(os.getenv("TG_LEG_OUTAGE_BUDGET_SEC", "45"))
+LEG_MAX_ATTEMPTS = 10
 _RETRY_ATTEMPTS = int(os.getenv("METAAPI_RETRY_ATTEMPTS", "3"))
 _RETRY_BACKOFF = float(os.getenv("METAAPI_RETRY_BACKOFF", "1.5"))  # seconds, exponential
 
 
-def _request(method: str, url: str, **kwargs) -> requests.Response:
+def _request(method: str, url: str, *, retry_uncertain: bool = True, **kwargs) -> requests.Response:
     """HTTP request with bounded backoff retry on transient MetaAPI failures.
 
     Returns the final Response (the caller still calls raise_for_status); raises
     the last connection/timeout exception only if every attempt failed to reach
     the server. A non-transient HTTP status returns on the first try.
     """
+    # retry_uncertain=False (order placement): a timeout or 504 may mean the
+    # broker DID execute the order, so it is never blindly re-sent here — the
+    # caller first checks the broker for the order's tag (no duplicates).
+    statuses = _RETRY_STATUSES if retry_uncertain else (_RETRY_STATUSES - {504})
     last_exc: Exception | None = None
     for attempt in range(1, _RETRY_ATTEMPTS + 1):
         try:
             resp = requests.request(method, url, **kwargs)
-            if resp.status_code in _RETRY_STATUSES and attempt < _RETRY_ATTEMPTS:
+            if resp.status_code in statuses and attempt < _RETRY_ATTEMPTS:
                 delay = _RETRY_BACKOFF * (2 ** (attempt - 1))
                 log.warning("[MetaAPI] HTTP %s (attempt %d/%d) — retrying in %.1fs",
                             resp.status_code, attempt, _RETRY_ATTEMPTS, delay)
@@ -82,6 +96,8 @@ def _request(method: str, url: str, **kwargs) -> requests.Response:
             return resp
         except (requests.ConnectionError, requests.Timeout) as e:
             last_exc = e
+            if not retry_uncertain and not isinstance(e, requests.ConnectTimeout):
+                raise                      # may have reached the broker: caller verifies
             if attempt < _RETRY_ATTEMPTS:
                 delay = _RETRY_BACKOFF * (2 ** (attempt - 1))
                 log.warning("[MetaAPI] %s (attempt %d/%d) — retrying in %.1fs",
@@ -145,6 +161,14 @@ def _apply_stops_floor(side: Side, ref_price: float, sl: float, tp: float | None
     return sl, tp, adjusted
 
 
+def _uncertain(error: str) -> bool:
+    """A failure after which the order may still have executed at the broker
+    (also the MetaAPI-outage signature: 504 'not connected to broker')."""
+    e = (error or "").lower()
+    return any(k in e for k in ("timeout", "timed out", "http 504", "readtimeout",
+                                "connectionerror", "not connected to broker"))
+
+
 def _extract_ticket(resp: dict, payload: dict, prefer_position: bool) -> str | None:
     """Return the ticket id from a trade response, or log+None if absent.
 
@@ -173,10 +197,21 @@ class MetaApiClient:
         self.label = label
         self._trading_url: str | None = None
         self._spec_cache: dict[str, dict] = {}
+        self._tl = threading.local()       # per-thread last error (legs run in parallel)
+        self.account_error = ""            # summary of the last submit_signal_orders failure
 
     @property
     def account(self) -> str:
         return self._account
+
+    @property
+    def last_error(self) -> str:
+        """The broker's reason for this thread's last failed trade call."""
+        return getattr(self._tl, "value", "")
+
+    @last_error.setter
+    def last_error(self, value: str) -> None:
+        self._tl.value = value
 
     def _headers(self) -> dict:
         return {"auth-token": self._token, "Content-Type": "application/json"}
@@ -192,7 +227,7 @@ class MetaApiClient:
             resp.raise_for_status()
             region = resp.json().get("region", "new-york")
         except Exception:
-            log.warning("[MetaAPI:%s] region lookup failed — defaulting to new-york", self.label)
+            log.info("[MetaAPI:%s] region lookup unavailable — using new-york", self.label)
             region = "new-york"
         self._trading_url = f"https://mt-client-api-v1.{region}.agiliumtrade.ai"
         log.info("[MetaAPI:%s] trading host: %s", self.label, self._trading_url)
@@ -207,13 +242,32 @@ class MetaApiClient:
             return None
         try:
             url = f"{self._resolve_trading_url()}/users/current/accounts/{self._account}/trade"
-            resp = _request("POST", url, headers=self._headers(), json=payload, timeout=_TIMEOUT)
+            resp = _request("POST", url, retry_uncertain=False, headers=self._headers(),
+                            json=payload, timeout=_TIMEOUT)
             resp.raise_for_status()
-            return resp.json()
+            data = resp.json()
+            if isinstance(data, dict) and not (data.get("orderId") or data.get("positionId")):
+                self.last_error = str(data.get("stringCode") or data.get("message") or data)[:200]
+            return data
         except requests.HTTPError as e:
+            self.last_error = f"HTTP {e.response.status_code}: {e.response.text[:160]}"
             log.error("[MetaAPI:%s] HTTP %s: %s", self.label, e.response.status_code, e.response.text)
-        except Exception:
+        except Exception as e:
+            self.last_error = f"{type(e).__name__}: {str(e)[:160]}"
             log.exception("[MetaAPI:%s] trade call failed", self.label)
+        return None
+
+    def find_by_comment(self, comment: str, symbol: str | None = None) -> dict | None:
+        """The open position or pending order carrying `comment` (our leg tag),
+        if the broker has one — used to adopt an order whose placement call
+        timed out instead of placing it a second time."""
+        tag = comment[:31]
+        for kind, rows in (("market", self.get_open_positions(symbol)),
+                           ("limit", self.get_pending_orders(symbol))):
+            for r in rows or []:
+                if (r.get("comment") or "") == tag:
+                    return {"ticket_id": str(r.get("id")), "kind": kind,
+                            "sl": r.get("stopLoss"), "tp": r.get("takeProfit")}
         return None
 
     def get_symbol_price(self, symbol: str) -> dict | None:
@@ -546,8 +600,15 @@ class MetaApiClient:
                 use_market = True
 
         # Reference the broker measures the stops level from: current market price
-        # for a market order, the open (entry) price for a pending limit.
+        # for a market order, the open (entry) price for a pending limit. A market
+        # position's stop is checked against the price it CLOSES at (bid for a
+        # buy, ask for a sell), so the floor measured from the entry side must
+        # also clear the spread — without it every floored stop came out one
+        # spread too close and the broker rejected it (INVALID_STOPS, verified on
+        # the demo 2026-10-01).
         ref_price = cur if (use_market and cur is not None) else entry
+        if use_market and px:
+            min_d = min_d + max(0.0, float(px["ask"]) - float(px["bid"]))
         levels: list[tuple[float, float]] = []
         for tp in tps:
             o_sl, o_tp, adjusted = _apply_stops_floor(side, ref_price, sl, tp, min_d)
@@ -583,62 +644,126 @@ class MetaApiClient:
                         msg_id, self.label, total_volume, len(tps))
             return []
 
+        def place_once(i: int, o_sl: float, o_tp: float | None, market: bool,
+                       comment: str) -> tuple[str | None, str, float, float | None]:
+            """One placement attempt -> (ticket, kind, sl, tp)."""
+            if market:
+                return (self.place_market_order_full(side, symbol, vol_each, o_sl, o_tp, comment),
+                        "market", o_sl, o_tp)
+            tid, retcode = self.place_limit_order(side, symbol, vol_each, entry, o_sl, o_tp, cur, comment)
+            # Price moved to the wrong side of the limit between plan and trade
+            # (the recurring INVALID_PRICE drop) — enter at market instead of
+            # aborting the leg, as long as we're not chasing into the SL. Keep
+            # the plan's TARGET levels (only widen further if THIS account's
+            # price now demands it) so accounts stay aligned.
+            if not tid and str(retcode) in ("TRADE_RETCODE_INVALID_PRICE", "10015"):
+                px2 = self.get_symbol_price(symbol)
+                cur2 = (px2["ask"] if side == "buy" else px2["bid"]) if px2 else cur
+                room_ok = cur2 is not None and (
+                    (o_sl - cur2 >= min_d) if side == "sell" else (cur2 - o_sl >= min_d))
+                if room_ok:
+                    spread2 = max(0.0, px2["ask"] - px2["bid"]) if px2 else 0.0
+                    o_sl, o_tp, _adj = _apply_stops_floor(side, cur2, o_sl, o_tp, min_d + spread2)
+                    log.warning("[%s:%s] TP%d limit rejected INVALID_PRICE (entry=%.2f cur=%.2f) "
+                                "— falling back to market", msg_id, self.label, i, entry, cur2)
+                    return (self.place_market_order_full(side, symbol, vol_each, o_sl, o_tp, comment),
+                            "market", o_sl, o_tp)
+                log.warning("[%s:%s] TP%d limit rejected INVALID_PRICE and market unsafe "
+                            "(cur=%s sl=%.2f) — not chasing", msg_id, self.label, i, cur2, o_sl)
+            return tid, "limit", o_sl, o_tp
+
         def place_leg(i: int, o_sl: float, o_tp: float | None) -> dict | None:
-            """Place one TP leg; returns its slice dict or None on failure."""
+            """Place one TP leg, retrying a rejected / failed attempt at the fresh
+            price. Never duplicates: before each retry the broker is checked for
+            this leg's tag (an attempt that timed out may have gone through)."""
             comment = f"tg-{msg_id}-tp{i}"
-            kind = "market" if use_market else "limit"
-            if use_market:
-                tid = self.place_market_order_full(side, symbol, vol_each, o_sl, o_tp, comment)
-            else:
-                tid, retcode = self.place_limit_order(side, symbol, vol_each, entry, o_sl, o_tp, cur, comment)
-                # Price moved to the wrong side of the limit between plan and trade
-                # (the recurring INVALID_PRICE drop) — enter at market instead of
-                # aborting the whole signal, as long as we're not chasing into the
-                # SL. Keep the plan's TARGET levels (only widen further if THIS
-                # account's price now demands it) so accounts stay aligned.
-                if not tid and str(retcode) in ("TRADE_RETCODE_INVALID_PRICE", "10015"):
-                    px2 = self.get_symbol_price(symbol)
-                    cur2 = (px2["ask"] if side == "buy" else px2["bid"]) if px2 else cur
-                    room_ok = cur2 is not None and (
-                        (o_sl - cur2 >= min_d) if side == "sell" else (cur2 - o_sl >= min_d))
-                    if room_ok:
-                        o_sl, o_tp, adj2 = _apply_stops_floor(side, cur2, o_sl, o_tp, min_d)
-                        log.warning("[%s:%s] TP%d limit rejected INVALID_PRICE (entry=%.2f cur=%.2f) "
-                                    "— falling back to market", msg_id, self.label, i, entry, cur2)
-                        tid = self.place_market_order_full(side, symbol, vol_each, o_sl, o_tp, comment)
-                        kind = "market"
+            market = use_market
+            errors: list[str] = []
+            started = time.monotonic()
+            rejections = 0
+            for attempt in range(1, LEG_MAX_ATTEMPTS + 1):
+                self.last_error = ""
+                tid, kind, sl_used, tp_used = place_once(i, o_sl, o_tp, market, comment)
+                if not tid:
+                    errors.append(self.last_error or "no ticket")
+                    found = self.find_by_comment(comment, symbol)
+                    # A timeout / 504 may mean the broker DID execute but has not
+                    # listed it yet: look again before ever sending it twice.
+                    if not found and _uncertain(errors[-1]):
+                        for wait in (1.0, 1.5, 2.0):
+                            time.sleep(wait)
+                            found = self.find_by_comment(comment, symbol)
+                            if found:
+                                break
+                    if found:
+                        log.warning("[%s:%s] TP%d call failed but the order IS at the broker — "
+                                    "adopted ticket %s (no duplicate)", msg_id, self.label, i,
+                                    found["ticket_id"])
+                        tid, kind = found["ticket_id"], found["kind"]
+                if tid:
+                    log.info("[%s:%s] %s order placed | TP%d=%s vol=%.2f ticket=%s%s",
+                             msg_id, self.label, kind, i, "open" if tp_used is None else tp_used,
+                             vol_each, tid, f" (attempt {attempt})" if attempt > 1 else "")
+                    return {"tp_index": i, "tp": tp_used, "ticket_id": tid, "kind": kind,
+                            "volume": vol_each, "entry": entry, "sl": sl_used}
+                # A real broker rejection gets LEG_ATTEMPTS tries; a MetaAPI
+                # outage keeps trying until LEG_OUTAGE_BUDGET_SEC is used up.
+                if _uncertain(errors[-1]) or errors[-1].startswith("HTTP 5"):
+                    if time.monotonic() - started >= LEG_OUTAGE_BUDGET_SEC:
+                        break
+                else:
+                    rejections += 1
+                    if rejections >= LEG_ATTEMPTS:
+                        break
+                time.sleep(min(0.4 * attempt, 3.0))
+                # Retry at the fresh price: re-floor the stops; a limit that can no
+                # longer rest goes to market — unless price is already through the
+                # SL (then the setup is gone: never chase).
+                px = self.get_symbol_price(symbol)
+                cur2 = (px["ask"] if side == "buy" else px["bid"]) if px else None
+                exit_px = (px["bid"] if side == "buy" else px["ask"]) if px else None
+                if cur2 is not None:
+                    # Price already AT/THROUGH the stop (on the side that triggers
+                    # it): the setup is gone. A stop that is merely too close is
+                    # widened to the broker floor below.
+                    if (exit_px >= o_sl) if side == "sell" else (exit_px <= o_sl):
+                        errors.append(f"price {exit_px:.2f} at/through SL {o_sl:.2f} — not chasing")
+                        break
+                    limit_ok = (entry <= cur2 - min_d) if side == "buy" else (entry >= cur2 + min_d)
+                    if market or not limit_ok:
+                        market = True
+                        spread = max(0.0, px["ask"] - px["bid"])
+                        o_sl, o_tp, _adj = _apply_stops_floor(side, cur2, o_sl, o_tp, min_d + spread)
                     else:
-                        log.warning("[%s:%s] TP%d limit rejected INVALID_PRICE and market unsafe "
-                                    "(cur=%s sl=%.2f) — not chasing", msg_id, self.label, i, cur2, o_sl)
-            if not tid:
-                return None
-            log.info("[%s:%s] %s order placed | TP%d=%s vol=%.2f ticket=%s",
-                     msg_id, self.label, kind, i, "open" if o_tp is None else o_tp, vol_each, tid)
-            return {"tp_index": i, "tp": o_tp, "ticket_id": tid, "kind": kind,
-                    "volume": vol_each, "entry": entry, "sl": o_sl}
+                        o_sl, o_tp, _adj = _apply_stops_floor(side, entry, o_sl, o_tp, min_d)
+                log.warning("[%s:%s] TP%d attempt %d failed (%s) — retrying", msg_id, self.label,
+                            i, attempt, errors[-1])
+            leg_errors[i] = " | ".join(dict.fromkeys(errors))[:180]
+            log.error("[%s:%s] TP%d NOT placed after %d attempts / %.0fs: %s", msg_id, self.label,
+                      i, attempt, time.monotonic() - started, leg_errors[i])
+            return None
 
         # All legs go to the broker AT ONCE (each REST order is ~0.3-0.7s; placing
-        # them one by one delayed the last leg by seconds). All-or-nothing as
-        # before: if any leg fails, the legs that did go in are cancelled/closed.
+        # them one by one delayed the last leg by seconds).
+        leg_errors: dict[int, str] = {}
+        self.account_error = ""
         legs = list(enumerate(levels, start=1))
         if len(legs) == 1:
             results = [place_leg(1, *levels[0])]
         else:
             with ThreadPoolExecutor(max_workers=len(legs)) as ex:
                 results = list(ex.map(lambda leg: place_leg(leg[0], *leg[1]), legs))
-        if any(r is None for r in results):
-            failed = [i for (i, _), r in zip(legs, results) if r is None]
-            log.error("[%s:%s] order placement failed for TP%s — rolling back the other legs",
-                      msg_id, self.label, ",".join(map(str, failed)))
-            for prev in results:
-                if prev is None:
-                    continue
-                if prev["kind"] == "limit":
-                    self.cancel_order(prev["ticket_id"])
-                else:
-                    self.close_position(prev["ticket_id"])
-            return []
-        submitted: list[dict] = list(results)
+        # A leg that still failed after its retries no longer cancels the legs
+        # that DID go in — rolling them back is how whole signals were lost
+        # ("no orders submitted"). Keep what is at the broker; report the rest.
+        failed = [i for (i, _), r in zip(legs, results) if r is None]
+        submitted: list[dict] = [r for r in results if r is not None]
+        if failed:
+            reasons = "; ".join(sorted(set(leg_errors.values()))) or "unknown"
+            self.account_error = (f"TP{','.join(map(str, failed))} not placed: {reasons}"
+                                  if submitted else f"broker: {reasons}")
+            log.error("[%s:%s] %d/%d legs placed — missing TP%s", msg_id, self.label,
+                      len(submitted), len(legs), ",".join(map(str, failed)))
         return submitted
 
 

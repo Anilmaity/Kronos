@@ -59,7 +59,8 @@ def test_accounts_place_identical_tp_sl_levels(monkeypatch):
     assert p_levels == n_levels                       # IDENTICAL targets across accounts
     # strictest stops (8.0) applied against the reference ask (2000.5):
     # TP1 (2005) is within 8.0 of 2000.5 -> floored up to 2008.5; SL stays 1990.
-    assert p_levels[0] == (1990.0, 2008.5)
+    # (+ the 0.2 spread: a buy's stops are checked from the bid)
+    assert p_levels[0] == (1990.0, 2008.7)
     # per-account sizing still differs (risk 100 vs 50): vol 0.1 vs 0.05 / 3 TPs
     assert primary.placed[0][3] != neymar2.placed[0][3]
     # kind is decided once -> both market

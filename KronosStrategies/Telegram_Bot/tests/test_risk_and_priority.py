@@ -339,23 +339,97 @@ def test_deferred_orders_merge_into_existing_signal(monkeypatch):
 
 
 # ── Parallel leg placement ───────────────────────────────────────────────────
-def test_legs_placed_in_parallel_and_rolled_back_on_failure():
+def _leg_client(market):
     c = _RealClient("tok", "acct", dry_run=False, label="x")
-    closed = []
+    c.place_market_order_full = market
+    c.get_symbol_price = lambda symbol: {"bid": 2000.3, "ask": 2000.5}
+    c.get_open_positions = lambda symbol=None: []
+    c.get_pending_orders = lambda symbol=None: []
+    return c
+
+
+_PLAN3 = {"use_market": True, "levels": [(1990.0, 2010.0), (1990.0, 2015.0), (1990.0, 2020.0)],
+          "min_d": 1.0, "cur": 2000.5}
+
+
+def _submit(c, msg_id=5):
+    return c.submit_signal_orders(side="buy", symbol="XAUUSD", entry=2000.0, sl=1990.0,
+                                  tps=[2010.0, 2015.0, 2020.0], total_volume=0.03,
+                                  msg_id=msg_id, plan=dict(_PLAN3))
+
+
+def test_failed_leg_is_retried_and_succeeds(monkeypatch):
+    monkeypatch.setattr(mx.time, "sleep", lambda s: None)
     calls = []
 
     def market(side, symbol, volume, sl, tp, comment=""):
         calls.append(comment)
-        return None if comment.endswith("tp2") else f"t-{comment}"
-    c.place_market_order_full = market
-    c.close_position = lambda tid: closed.append(tid) or True
-    plan = {"use_market": True, "levels": [(1990.0, 2010.0), (1990.0, 2015.0), (1990.0, 2020.0)],
-            "min_d": 1.0, "cur": 2000.5}
-    out = c.submit_signal_orders(side="buy", symbol="XAUUSD", entry=2000.0, sl=1990.0,
-                                 tps=[2010.0, 2015.0, 2020.0], total_volume=0.03, msg_id=5, plan=plan)
-    assert out == []
-    assert sorted(calls) == ["tg-5-tp1", "tg-5-tp2", "tg-5-tp3"]
-    assert sorted(closed) == ["t-tg-5-tp1", "t-tg-5-tp3"]
+        if comment.endswith("tp2") and calls.count(comment) == 1:
+            return None                                  # first try rejected
+        return f"t-{comment}-{calls.count(comment)}"
+    out = _submit(_leg_client(market))
+    assert [o["tp_index"] for o in out] == [1, 2, 3]
+    assert calls.count("tg-5-tp2") == 2
+
+
+def test_leg_that_keeps_failing_does_not_cancel_the_others(monkeypatch):
+    monkeypatch.setattr(mx.time, "sleep", lambda s: None)
+    calls = []
+    c = None
+
+    def market(side, symbol, volume, sl, tp, comment=""):
+        calls.append(comment)
+        if comment.endswith("tp2"):
+            c.last_error = "TRADE_RETCODE_INVALID_STOPS"
+            return None
+        return f"t-{comment}"
+    c = _leg_client(market)
+    closed = []
+    c.close_position = lambda t: closed.append(t) or True
+    out = _submit(c)
+    assert [o["tp_index"] for o in out] == [1, 3]       # kept, not rolled back
+    assert closed == []
+    assert calls.count("tg-5-tp2") == mx.LEG_ATTEMPTS
+    assert "TP2 not placed" in c.account_error and "INVALID_STOPS" in c.account_error
+
+
+def test_timed_out_leg_that_reached_the_broker_is_adopted_not_duplicated(monkeypatch):
+    monkeypatch.setattr(mx.time, "sleep", lambda s: None)
+    calls = []
+
+    def market(side, symbol, volume, sl, tp, comment=""):
+        calls.append(comment)
+        return None if comment.endswith("tp3") else f"t-{comment}"   # tp3 "timed out"
+    c = _leg_client(market)
+    c.get_open_positions = lambda symbol=None: [{"id": "real-3", "comment": "tg-5-tp3"}]
+    out = _submit(c)
+    assert {o["tp_index"]: o["ticket_id"] for o in out}[3] == "real-3"
+    assert calls.count("tg-5-tp3") == 1                  # never sent twice
+
+
+def test_no_retry_when_price_is_through_the_sl(monkeypatch):
+    monkeypatch.setattr(mx.time, "sleep", lambda s: None)
+    calls = []
+    c = _leg_client(lambda *a, **k: calls.append(1) or None)
+    c.get_symbol_price = lambda symbol: {"bid": 1989.0, "ask": 1989.2}   # below SL 1990
+    out = _submit(c)
+    assert out == [] and len(calls) == 3                 # one try per leg, no chasing
+    assert "not chasing" in c.account_error
+
+
+def test_order_post_is_never_blindly_resent_after_a_timeout(monkeypatch):
+    import requests
+    sent = []
+
+    def fake(method, url, **kw):
+        sent.append(method)
+        raise requests.ReadTimeout("slow")
+    monkeypatch.setattr(mx.requests, "request", fake)
+    c = _RealClient("tok", "acct", dry_run=False, label="x")
+    c._trading_url = "https://h"
+    assert c._trade({"actionType": "ORDER_TYPE_BUY"}) is None
+    assert sent == ["POST"]                              # exactly once
+    assert "ReadTimeout" in c.last_error
 
 
 def test_legs_keep_tp_order():
@@ -471,3 +545,92 @@ def test_reentry_skipped_when_drawdown_room_too_small(monkeypatch):
     assert _run(lambda lp: lt._ladder_reenter(lp, {"side": "buy", "instrument": "XAUUSD"},
                                               7, _stopped_leg(), "a", -90.0)) is None
     assert c.placed == []
+
+
+def test_stop_too_close_is_widened_on_retry_not_abandoned(monkeypatch):
+    """Found live: a leg rejected INVALID_STOPS because its stop sat inside the
+    broker minimum must be retried with the stop widened — not given up."""
+    monkeypatch.setattr(mx.time, "sleep", lambda s: None)
+    sent = []
+
+    def market(side, symbol, volume, sl, tp, comment=""):
+        sent.append((comment, sl))
+        return None if (2000.5 - sl) < 1.0 else f"t-{comment}"   # broker floor 1.0
+    c = _leg_client(market)
+    plan = dict(_PLAN3, levels=[(2000.0, 2010.0), (1990.0, 2015.0), (1990.0, 2020.0)])
+    out = c.submit_signal_orders(side="buy", symbol="XAUUSD", entry=2000.0, sl=1990.0,
+                                 tps=[2010.0, 2015.0, 2020.0], total_volume=0.03, msg_id=6, plan=plan)
+    assert sorted(o["tp_index"] for o in out) == [1, 2, 3]
+    tp1 = [sl for cm, sl in sent if cm == "tg-6-tp1"]
+    assert tp1[0] == 2000.0 and tp1[-1] <= 2000.3 - 1.0         # widened past bid - floor
+
+
+def test_market_plan_floor_clears_the_spread():
+    """A buy's stop is checked from the BID: the floor must add the spread."""
+    c = _RealClient("tok", "acct", dry_run=False, label="x")
+    c.get_symbol_price = lambda symbol: {"bid": 2000.0, "ask": 2000.3}
+    c._get_symbol_spec = lambda b: {"stops_level_price": 0.7, "tick_size": 0.01}
+    plan = c.build_order_plan("buy", "XAUUSD", 2001.0, 1999.9, [2010.0])
+    assert plan["use_market"] is True
+    sl = plan["levels"][0][0]
+    assert 2000.0 - sl >= 0.7 - 1e-9                      # clears the floor from the bid
+
+
+def test_uncertain_failure_is_rechecked_before_any_retry(monkeypatch):
+    """Seen live: a 504 'TimeoutError' — the order executed but showed up only
+    a moment later. The bot must look again, not send a second order."""
+    monkeypatch.setattr(mx.time, "sleep", lambda s: None)
+    sends = []
+    c = None
+    looks = {"n": 0}
+
+    def market(side, symbol, volume, sl, tp, comment=""):
+        sends.append(comment)
+        if comment.endswith("tp1"):
+            c.last_error = 'HTTP 504: {"error":"TimeoutError"}'
+            return None
+        return f"t-{comment}"
+    c = _leg_client(market)
+
+    def positions(symbol=None):
+        looks["n"] += 1
+        return [{"id": "late-1", "comment": "tg-5-tp1"}] if looks["n"] >= 3 else []
+    c.get_open_positions = positions
+    out = _submit(c)
+    assert {o["tp_index"]: o["ticket_id"] for o in out}[1] == "late-1"
+    assert sends.count("tg-5-tp1") == 1
+
+
+def test_leg_survives_a_metaapi_outage(monkeypatch):
+    """Seen live: MetaAPI answered 504 'not connected to broker' for a while.
+    The leg keeps trying (time budget) instead of giving up after 3 tries."""
+    monkeypatch.setattr(mx.time, "sleep", lambda s: None)
+    calls = []
+    c = None
+
+    def market(side, symbol, volume, sl, tp, comment=""):
+        calls.append(comment)
+        if comment.endswith("tp1") and calls.count(comment) <= 5:
+            c.last_error = 'HTTP 504: {"message":"account is not connected to broker yet"}'
+            return None
+        return f"t-{comment}"
+    c = _leg_client(market)
+    out = _submit(c)
+    assert sorted(o["tp_index"] for o in out) == [1, 2, 3]
+    assert calls.count("tg-5-tp1") == 6
+
+
+def test_real_rejection_still_stops_after_three(monkeypatch):
+    monkeypatch.setattr(mx.time, "sleep", lambda s: None)
+    calls = []
+    c = None
+
+    def market(side, symbol, volume, sl, tp, comment=""):
+        calls.append(comment)
+        if comment.endswith("tp1"):
+            c.last_error = "TRADE_RETCODE_NO_MONEY"
+            return None
+        return f"t-{comment}"
+    c = _leg_client(market)
+    _submit(c)
+    assert calls.count("tg-5-tp1") == 3
