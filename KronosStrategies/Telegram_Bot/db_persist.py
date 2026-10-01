@@ -22,6 +22,7 @@ import json
 import logging
 import os
 import re
+import time
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -94,21 +95,34 @@ def _connect():
     )
 
 
+_SCHEMA_LOCK_KEY = 7310412   # pg advisory lock id shared by every copy-trader
+
+
 def init_schema() -> bool:
     """Apply init_schema.sql. Returns True on success, False on failure."""
     if not _SCHEMA_PATH.exists():
         log.warning("[db] schema file missing: %s", _SCHEMA_PATH)
         return False
-    try:
-        ddl = _render_ddl(_SCHEMA_PATH.read_text(encoding="utf-8"), _PREFIX)
-        with _connect() as conn, conn.cursor() as cur:
-            cur.execute(ddl)
-            cur.execute(_XCHAN_DDL)
-        log.info("[db] schema initialised")
-        return True
-    except Exception as e:
-        log.error("[db] schema init failed: %s", e)
-        return False
+    ddl = _render_ddl(_SCHEMA_PATH.read_text(encoding="utf-8"), _PREFIX)
+    # Both copy-traders share these tables and (re)start together — e.g. after
+    # a reboot — so their DDL raced into a Postgres deadlock (2026-10-01). A
+    # transaction-scoped advisory lock makes them take turns; the retry covers
+    # anything else transient.
+    for attempt in range(1, 6):
+        try:
+            with _connect() as conn, conn.cursor() as cur:
+                cur.execute("SELECT pg_advisory_xact_lock(%s)", (_SCHEMA_LOCK_KEY,))
+                cur.execute(ddl)
+                cur.execute(_XCHAN_DDL)
+            log.info("[db] schema initialised")
+            return True
+        except Exception as e:
+            if attempt == 5:
+                log.error("[db] schema init failed: %s", e)
+                return False
+            log.warning("[db] schema init attempt %d failed (%s) — retrying", attempt, e)
+            time.sleep(0.5 * attempt)
+    return False
 
 
 def insert_signal(pos: dict, channel: str) -> None:

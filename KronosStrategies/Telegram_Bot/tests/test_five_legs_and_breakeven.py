@@ -136,3 +136,40 @@ def test_bot_passes_each_legs_tp_when_moving_sl(monkeypatch):
     monkeypatch.setattr(lt, "r", store)
     asyncio.run(lt.breakeven_partial(43))
     assert sorted(calls) == [("t2", 2000.0, 2010.0), ("t3", 2000.0, 2015.0)]
+
+
+def test_schema_init_serialised_and_retried(monkeypatch):
+    """Both bots start together after a reboot: the DDL takes an advisory lock
+    and a transient failure (the 2026-10-01 deadlock) is retried."""
+    import db_persist as db
+    calls = {"n": 0, "sql": []}
+
+    class Cur:
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *a):
+            return False
+
+        def execute(self, sql, params=None):
+            calls["sql"].append(sql.split()[0] + (" lock" if "advisory" in sql else ""))
+            if "advisory" in sql:
+                calls["n"] += 1
+                if calls["n"] == 1:
+                    raise RuntimeError("deadlock detected")
+
+    class Conn:
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *a):
+            return False
+
+        def cursor(self):
+            return Cur()
+
+    monkeypatch.setattr(db, "_connect", lambda: Conn())
+    monkeypatch.setattr(db.time, "sleep", lambda s: None)
+    assert db.init_schema() is True
+    assert calls["n"] == 2                          # failed once, then succeeded
+    assert calls["sql"][-3] == "SELECT lock"        # lock taken before the DDL
