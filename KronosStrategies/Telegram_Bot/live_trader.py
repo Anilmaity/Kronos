@@ -340,7 +340,7 @@ def _entry_accounts() -> list[dict]:
 # trades but never auto-closes — it closes only after equity was seen above it.
 DD_POLL_SEC = float(os.getenv("TG_DD_POLL_SEC", "2"))
 DD_BUFFER = float(os.getenv("TG_DD_BUFFER_USD", "10"))
-DD_CONFIG_REFRESH_SEC = 10
+DD_CONFIG_REFRESH_SEC = 3       # dashboard drawdown edits reach the guard within ~3s
 DD_EQUITY_WRITE_SEC = 3          # equity shown live on the Neymar tabs
 DD_CLOSE_RETRY_SEC = 5
 DD_BROKER_TIME_REFRESH_SEC = 1800
