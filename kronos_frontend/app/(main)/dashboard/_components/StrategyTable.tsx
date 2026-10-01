@@ -16,7 +16,7 @@ import { UserExchangeSetProps } from "@/types";
 // Components
 import StrategyBox from "./StrategyBox";
 import StrategyTableRow from "./StrategyTableRow";
-import { dateFormatter } from "@/utils/dateFormatter";
+import { formatLocalDate, localDateKey } from "@/utils/dateFormatter";
 import { gql } from "@apollo/client";
 import { client } from "@/GraphQL/client";
 import { StrategySource, matchesSource } from "./strategySources";
@@ -175,10 +175,7 @@ const StrategyTable: React.FC<StrategyTableProps> = ({
 }
     `;
     try {
-      const selectDate =
-        `${selectedDate.getFullYear()}-` +
-        `${String(selectedDate.getMonth() + 1).padStart(2, "0")}-` +
-        `${String(selectedDate.getDate()).padStart(2, "0")}`;
+      const selectDate = localDateKey(selectedDate);
       const { data } = await client.query({
         query,
         variables: {
@@ -401,7 +398,7 @@ const StrategyTable: React.FC<StrategyTableProps> = ({
           {restoreRemoved}
           <div style={{ color: "var(--tv-text-3)" }}>
             Total P&amp;L ·{" "}
-            {dateFormatter(selectedDate.toISOString().split("T")[0])}
+            {formatLocalDate(selectedDate)}
           </div>
           <div
             className="tnum"

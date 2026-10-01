@@ -12,6 +12,7 @@ import { getCurrencySymbol } from "@/utils/currencySymbol";
 // Types
 import { UserExchangeSetProps } from "@/types";
 import { middleware } from "@/GraphQL/middleware";
+import { localDateKey } from "@/utils/dateFormatter";
 
 const UserBrokerPositionTable = ({
   selectedDate,
@@ -48,7 +49,7 @@ const UserBrokerPositionTable = ({
     `;
 
     try {
-      const selectDate = selectedDate.toISOString().split("T")[0];
+      const selectDate = localDateKey(selectedDate);
       const { data } = await client.query({
         query: query,
         variables: {

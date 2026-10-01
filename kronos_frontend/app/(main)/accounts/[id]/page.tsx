@@ -2,6 +2,7 @@
 "use client";
 
 import React, { useCallback, useEffect, useRef, useState } from "react";
+import { localDateKey } from "@/utils/dateFormatter";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 
@@ -22,7 +23,8 @@ const PRESETS: { key: Preset; label: string }[] = [
   { key: "custom", label: "Custom" },
 ];
 
-const toIsoDate = (d: Date): string => d.toISOString().slice(0, 10);
+// Local calendar day (toISOString() shifted it to the previous day in IST).
+const toIsoDate = (d: Date): string => localDateKey(d);
 
 // Resolves a preset (plus the custom-range inputs) to concrete fromDate/toDate
 // ISO strings. "All-time" (and an unfilled "Custom") omit both, which the

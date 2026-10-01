@@ -6,7 +6,7 @@ import { CalendarIcon } from "lucide-react";
 
 // Utils
 import { cn } from "@/lib/utils";
-import { dateFormatter } from "@/utils/dateFormatter";
+import { formatLocalDate } from "@/utils/dateFormatter";
 
 // Components
 import { Button } from "@/components/ui/button";
@@ -49,7 +49,7 @@ const DatePicker: React.FC<DatePickerProps> = ({
         >
           <CalendarIcon className="mr-2 h-4 w-4" />
           {date ? (
-            dateFormatter(selectedDate.toISOString().split("T")[0])
+            formatLocalDate(selectedDate)
           ) : (
             <span>Pick a date</span>
           )}
