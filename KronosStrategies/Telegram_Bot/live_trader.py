@@ -142,7 +142,9 @@ def _build_accounts() -> list[dict]:
         os.getenv("META_API_TOKEN", ""), os.getenv("META_ACCOUNT_ID", ""),
         dry_run=DRY_RUN, label="primary")
     accounts = [{"label": "primary", "client": primary, "risk_usd": RISK_PER_TRADE_USD,
-                 "apis": apis._default_dashboard}]  # existing 'Neymar Telegram Copy' strategy
+                 "apis": apis._default_dashboard,  # existing 'Neymar Telegram Copy' strategy
+                 "source": "env", "us_id": apis.USER_STRATEGY_ID, "lot": None,
+                 "entries": True, "healthy": True}]
 
     tg2_acct = os.getenv("TG2_META_ACCOUNT_ID", "").strip()
     tg2_tok = os.getenv("TG2_META_API_TOKEN", "").strip()
@@ -157,7 +159,8 @@ def _build_accounts() -> list[dict]:
             strategy_id=os.getenv("APIS2_STRATEGY_ID", "30427449-9705-406c-820d-2b5ff9d8c003"))
         accounts.append({"label": "neymar2", "client": client2,
                          "risk_usd": float(os.getenv("TG2_RISK_USD", str(RISK_PER_TRADE_USD))),
-                         "apis": dash2})
+                         "apis": dash2, "source": "env", "us_id": dash2.user_strategy_id,
+                         "lot": None, "entries": True, "healthy": True})
     return accounts
 
 
@@ -166,6 +169,130 @@ ACCOUNTS_BY_LABEL = {a["label"]: a["client"] for a in ACCOUNTS}
 APIS_BY_LABEL = {a["label"]: a["apis"] for a in ACCOUNTS}
 
 r = None  # state store (RedisStore or MemoryStore) — set in main()
+
+# ── Accounts managed from the dashboard ("Add Data" on the Neymar tabs) ───────
+# Besides the env accounts above, every UserStrategy on this bot's Strategy is
+# traded too, at its fixed `lot_size` ("Price"). The dashboard rows are re-read
+# at every new signal (so Pause/Resume and Price apply to the very next signal)
+# and every TG_ACCOUNT_REFRESH_SEC in the background (so a newly added account
+# is validated and ready before its first signal). Accounts are never dropped
+# from the routing maps once loaded — a paused/removed account just stops taking
+# NEW entries, while its already-open slices still close/reconcile normally.
+DB_ACCOUNTS = os.getenv("TG_DB_ACCOUNTS", "true").lower() == "true"
+ACCOUNT_REFRESH_SEC = int(os.getenv("TG_ACCOUNT_REFRESH_SEC", "60"))
+_BAD_ACCOUNT_LOG_SEC = 600
+_bad_accounts: dict[str, float] = {}   # user_strategy_id -> last time we logged it unusable
+
+
+def _decrypt_token(enc: str) -> str:
+    """Decrypt a UserBroker.meta_api_token_enc (Fernet, FIELD_ENCRYPTION_KEY —
+    the same scheme as Kronos_Backend/apis/crypto.py)."""
+    from cryptography.fernet import Fernet
+    key = os.getenv("FIELD_ENCRYPTION_KEY", "")
+    if not key:
+        raise RuntimeError("FIELD_ENCRYPTION_KEY is not set")
+    return Fernet(key.encode()).decrypt(enc.encode()).decode()
+
+
+def _db_label(user_strategy_id: str) -> str:
+    return f"us-{user_strategy_id[:8]}"
+
+
+def _log_bad_account(us_id: str, msg: str, *args) -> None:
+    now = datetime.now(timezone.utc).timestamp()
+    if now - _bad_accounts.get(us_id, 0) >= _BAD_ACCOUNT_LOG_SEC:
+        _bad_accounts[us_id] = now
+        log.warning(msg, *args)
+
+
+def _new_db_account(row: dict) -> dict | None:
+    """Build + validate a MetaAPI client for a dashboard-added account. Blocking.
+    Returns None (and the account is retried on the next refresh) when its
+    creds are missing/undecryptable or MetaAPI can't list its positions — an
+    unusable account is never added, so it can't stall the others."""
+    us_id = row["user_strategy_id"]
+    label = _db_label(us_id)
+    acct = (row.get("meta_account_id") or "").strip()
+    if not acct or not row.get("token_enc"):
+        _log_bad_account(us_id, "[%s] dashboard account has no MetaAPI id/token — not trading it", label)
+        return None
+    try:
+        token = _decrypt_token(row["token_enc"])
+    except Exception as e:
+        _log_bad_account(us_id, "[%s] cannot decrypt MetaAPI token (%s) — not trading it", label, e)
+        return None
+    client = mx.MetaApiClient(token, acct, dry_run=DRY_RUN, label=label)
+    if client.get_open_positions(next(iter(ALLOWED_INSTRUMENTS))) is None:
+        _log_bad_account(us_id, "[%s] MetaAPI account %s not reachable — not trading it yet", label, acct)
+        return None
+    _bad_accounts.pop(us_id, None)
+    dash = apis.ApisDashboard(us_id, row["user_broker_id"], apis.CURRENCYPAIR_ID,
+                              enabled=apis._ENABLED, label=label,
+                              strategy_id=row["strategy_id"])
+    return {"label": label, "client": client, "risk_usd": RISK_PER_TRADE_USD, "apis": dash,
+            "source": "db", "us_id": us_id, "meta_account_id": acct,
+            "lot": row["lot_size"], "entries": row["entries"], "healthy": True}
+
+
+async def refresh_accounts() -> bool:
+    """Sync every account's lot / Pause-Resume from the dashboard and load newly
+    added accounts. Returns False when the DB can't be read (caller fails closed)."""
+    loop = asyncio.get_running_loop()
+    env_ids = [a["us_id"] for a in ACCOUNTS if a.get("source") == "env" and a.get("us_id")]
+    rows = await loop.run_in_executor(
+        None, lambda: apis.load_account_rows(apis.STRATEGY_ID, env_ids))
+    if rows is None:
+        return False
+    by_id = {row["user_strategy_id"]: row for row in rows}
+    env_meta = {(os.getenv("META_ACCOUNT_ID", "") or "").strip(),
+                (os.getenv("TG2_META_ACCOUNT_ID", "") or "").strip()} - {""}
+
+    for acc in ACCOUNTS:
+        row = by_id.get(acc.get("us_id") or "")
+        if row is None:
+            # Row deleted (or env account never provisioned): no NEW entries.
+            acc["entries"] = False
+            continue
+        acc["lot"] = row["lot_size"]
+        acc["entries"] = row["entries"]
+
+    if not DB_ACCOUNTS:
+        return True
+    known = {a.get("us_id") for a in ACCOUNTS}
+    for row in rows:
+        us_id = row["user_strategy_id"]
+        if us_id in known or row["strategy_id"] != apis.STRATEGY_ID:
+            continue
+        if (row.get("meta_account_id") or "").strip() in env_meta:
+            _log_bad_account(us_id, "[%s] is the same MetaAPI account as an env account "
+                             "of this bot — not trading it twice", _db_label(us_id))
+            continue
+        if not row["entries"]:
+            continue  # paused / archived — load it once it is resumed
+        acc = await loop.run_in_executor(None, _new_db_account, row)
+        if acc is None:
+            continue
+        ACCOUNTS.append(acc)
+        ACCOUNTS_BY_LABEL[acc["label"]] = acc["client"]
+        APIS_BY_LABEL[acc["label"]] = acc["apis"]
+        log.info("[%s] dashboard account added (MetaAPI %s, lot %s)",
+                 acc["label"], acc["meta_account_id"], acc["lot"] or "risk-based")
+    return True
+
+
+def _entry_accounts() -> list[dict]:
+    """Accounts that take NEW signals: not paused on the dashboard and whose
+    broker answered at the last check."""
+    return [a for a in ACCOUNTS if a.get("entries", True) and a.get("healthy", True)]
+
+
+async def _account_refresher() -> None:
+    while True:
+        await asyncio.sleep(ACCOUNT_REFRESH_SEC)
+        try:
+            await refresh_accounts()
+        except Exception as e:
+            log.exception(f"account refresher error: {e}")
 
 
 def is_malformed(sig: dict) -> str | None:
@@ -251,6 +378,8 @@ def _record_signals(sig: dict, *, status: str, reason: str = "",
     for acc in ACCOUNTS:
         if only_labels is not None and acc["label"] not in only_labels:
             continue
+        if acc.get("source") == "db":
+            continue  # same Strategy as the primary — its row already shows the signal
         dash = acc.get("apis")
         if dash is None:
             continue
@@ -281,9 +410,10 @@ async def place_order(msg_id: int, sig: dict) -> dict:
     # reference (first/primary) account's price for the market-vs-limit call —
     # instead of letting each account re-decide against its own price/spec, which
     # is what made neymar2 widen a TP differently and miss fills primary caught.
+    accounts = _entry_accounts()
     stops = await asyncio.gather(*(
         loop.run_in_executor(None, lambda c=acc["client"]: c.stops_level_price(sig["instrument"]))
-        for acc in ACCOUNTS), return_exceptions=True)
+        for acc in accounts), return_exceptions=True)
     min_ds = [s for s in stops if isinstance(s, (int, float))]
     min_d = max(min_ds) if min_ds else None
     ref_client = ACCOUNTS[0]["client"]
@@ -302,7 +432,12 @@ async def place_order(msg_id: int, sig: dict) -> dict:
         account_volume). Swallows its own broker errors so one account failing
         can never abort another whose orders may already be live at the broker."""
         client, label = acc["client"], acc["label"]
-        total_vol = acc["risk_usd"] / (risk_pts * USD_PER_POINT_PER_LOT)
+        if acc.get("lot"):
+            # Fixed "Price" from the dashboard: the TOTAL lot for this signal,
+            # split evenly across the TP legs by submit_signal_orders.
+            total_vol = float(acc["lot"])
+        else:
+            total_vol = acc["risk_usd"] / (risk_pts * USD_PER_POINT_PER_LOT)
         total_vol = max(total_vol, MIN_LOT * len(otps))
         try:
             submitted = await loop.run_in_executor(
@@ -342,7 +477,7 @@ async def place_order(msg_id: int, sig: dict) -> dict:
     # fetch + market-vs-limit) at the same wall-clock instant. Sequential
     # submission made later accounts decide several broker round-trips behind the
     # first, fetching a worse price on a fast retrace — our-side fill divergence.
-    results = await asyncio.gather(*(_submit_for_account(acc) for acc in ACCOUNTS))
+    results = await asyncio.gather(*(_submit_for_account(acc) for acc in accounts))
 
     all_orders: list[dict] = []
     primary_vol: float | None = None
@@ -685,7 +820,14 @@ async def reconcile_broker() -> None:
         positions = await loop.run_in_executor(None, lambda c=client: c.get_open_positions(symbol))
         orders = await loop.run_in_executor(None, lambda c=client: c.get_pending_orders(symbol))
         if positions is None or orders is None:
+            if acc.get("source") == "db":
+                # Its slices stay untouched (no maps) and it takes no new entries
+                # until it answers again; the other accounts reconcile normally.
+                acc["healthy"] = False
+                log.warning("[%s] broker query failed — skipping this account this cycle", label)
+                continue
             return  # could not verify a broker — skip this cycle, fail safe
+        acc["healthy"] = True
         pos_by_tag, ord_by_tag = {}, {}
         for p in positions:
             m = _TAG_RE.search(p.get("comment") or "")
@@ -873,6 +1015,11 @@ async def _classify_open_signals(open_ids) -> tuple[list[str], list[str], bool]:
         client = acc["client"]
         positions = await loop.run_in_executor(None, lambda c=client: c.get_open_positions(symbol))
         if positions is None:
+            if acc.get("source") == "db":
+                acc["healthy"] = False  # excluded from this signal's entries
+                log.warning("[%s] broker query failed — not trading this account this signal",
+                            acc["label"])
+                continue
             return [], [], False  # could not verify an account — caller must not cancel
         all_positions.extend(positions)
     live, unfilled = [], []
@@ -928,14 +1075,15 @@ async def handle_new_signal(msg) -> None:
             sig, status="REJECTED", rejection_reason="duplicate_repost",
             signal_at=msg.date.astimezone(timezone.utc).isoformat()))
         return
-    # Strategy-Manager gate: the primary account's UserStrategy row is this
-    # bot's on/off switch, flipped by the manager loop while armed. New entries
-    # only — replies, closes, sweeps, and broker reconciliation are never gated.
+    # Pause/Resume gate: each account's UserStrategy row (deployed, active, not
+    # archived) decides whether THAT account takes new entries; the rows (and
+    # each account's Price) are re-read now so a change applies to this signal.
+    # New entries only — replies, closes, sweeps, and broker reconciliation are
+    # never gated. DB unreachable -> nothing is entered (fail-closed).
     loop = asyncio.get_running_loop()
-    allowed = await loop.run_in_executor(
-        None, APIS_BY_LABEL["primary"].entries_allowed)
-    if allowed is not True:
-        why = ("manager_gate (strategy paused)" if allowed is False
+    db_ok = await refresh_accounts()
+    if not db_ok or not any(a.get("entries", True) for a in ACCOUNTS):
+        why = ("manager_gate (strategy paused)" if db_ok
                else "manager_gate (DB unreachable — fail-closed)")
         log.warning(f"[{msg.id}] {why} — skip")
         await loop.run_in_executor(None, lambda: _record_signals(
@@ -987,7 +1135,7 @@ async def handle_new_signal(msg) -> None:
     # Surface this signal on the dashboard Signals tab: one row per account that
     # got orders (PLACED), one per account that the broker rejected (REJECTED).
     placed = {o.get("account", "primary") for o in pos["orders"]}
-    reject = {a["label"] for a in ACCOUNTS} - placed
+    reject = {a["label"] for a in _entry_accounts()} - placed
     reason = (f"TG @{CHANNEL} | zone {sig['entry_low']}-{sig['entry_high']} "
               f"| SL {sig['sl']} | TP {sig['tps']}")
     await loop.run_in_executor(None, lambda: _record_signals(
@@ -1078,6 +1226,12 @@ async def main(args):
         await reset_state()
 
     db.init_schema()
+    # Load dashboard accounts BEFORE hydrating, so their open slices route.
+    if not await refresh_accounts():
+        log.warning("Dashboard accounts not loaded (DB unreachable) — retrying every %ss",
+                    ACCOUNT_REFRESH_SEC)
+    log.info("Accounts: %s", [(a["label"], a.get("lot") or "risk", a.get("entries"))
+                              for a in ACCOUNTS])
     await hydrate_from_db()
     await sweep_stale_open()  # clear opens that already went stale while we were down
 
@@ -1097,6 +1251,7 @@ async def main(args):
 
     asyncio.create_task(_stale_sweeper())
     asyncio.create_task(_position_poller())
+    asyncio.create_task(_account_refresher())
     await client.run_until_disconnected()
 
 

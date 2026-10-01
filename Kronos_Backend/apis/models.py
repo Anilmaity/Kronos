@@ -184,6 +184,10 @@ class UserStrategy(BaseModel):
     is_active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     multiplyer = models.IntegerField(default=1)
+    # Fixed total lot per signal for the Telegram copy-traders (shown as "Price"
+    # on the Neymar tabs). NULL = the bot's risk-based sizing. Split evenly
+    # across the signal's TP legs by the copy-trader.
+    lot_size = models.DecimalField(max_digits=6, decimal_places=2, null=True, blank=True)
     user_broker = models.ForeignKey(UserBroker, on_delete=models.CASCADE)
     deployed = models.BooleanField(default=False)
     archived = models.BooleanField(default=False)

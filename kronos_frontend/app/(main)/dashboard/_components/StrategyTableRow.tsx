@@ -40,6 +40,7 @@ import {
   MenubarTrigger,
 } from "@/components/ui/menubar";
 import { middleware } from "@/GraphQL/middleware";
+import { PriceDialog, formatLot } from "./CopyTradeDialogs";
 
 interface StrategyTableRowProps {
   index: number;
@@ -67,6 +68,7 @@ const StrategyTableRow: React.FC<StrategyTableRowProps> = ({
   onRemove,
 }) => {
   const sizeLabel = copyTrade ? "Price" : "Multiplier";
+  const [priceOpen, setPriceOpen] = useState(false);
   const [isActive, setIsActive] = useState<boolean>(data.isActive);
 
   const { setStrategyChangeHappend } = useStrategyChangeHappend();
@@ -232,7 +234,7 @@ const StrategyTableRow: React.FC<StrategyTableRowProps> = ({
           <div className="tnum w-1/6 text-center">
             {data.activePositionsCount} | {data.totalPositionCount}
           </div>
-          <div className="tnum w-1/6 text-center">{data.multiplyer}x</div>
+          <div className="tnum w-1/6 text-center">{formatLot(data.lotSize)}</div>
           <div className="w-1/6 flex items-center justify-center">
             <span
               style={{
@@ -320,6 +322,9 @@ const StrategyTableRow: React.FC<StrategyTableRowProps> = ({
                 </MenubarItem>
               )}
               <MenubarSeparator />
+              {copyTrade ? (
+                <MenubarItem onClick={() => setPriceOpen(true)}>{sizeLabel}</MenubarItem>
+              ) : (
               <MenubarSub>
                 <MenubarSubTrigger>{sizeLabel}</MenubarSubTrigger>
                 <MenubarSubContent>
@@ -337,6 +342,7 @@ const StrategyTableRow: React.FC<StrategyTableRowProps> = ({
                   })}
                 </MenubarSubContent>
               </MenubarSub>
+              )}
               <MenubarSeparator />
               {copyTrade ? (
                 <MenubarItem onClick={() => onRemove?.()}>Remove</MenubarItem>
@@ -379,6 +385,16 @@ const StrategyTableRow: React.FC<StrategyTableRowProps> = ({
           </MenubarMenu>
         </Menubar>
       </div>
+      {copyTrade && (
+        <PriceDialog
+          open={priceOpen}
+          onOpenChange={setPriceOpen}
+          userStrategyId={data.id}
+          accountName={brokerDetails.name}
+          currentLot={data.lotSize}
+          onSaved={() => setStrategyChangeHappend(true)}
+        />
+      )}
     </div>
   );
 };

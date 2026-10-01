@@ -59,6 +59,7 @@ import {
 
 import PositionRows from "./PositionRows";
 import { middleware } from "@/GraphQL/middleware";
+import { PriceDialog, formatLot } from "./CopyTradeDialogs";
 
 interface StrategyBoxProps {
   index: number;
@@ -85,6 +86,7 @@ const StrategyBox: React.FC<StrategyBoxProps> = ({
   onRemove,
 }) => {
   const sizeLabel = copyTrade ? "Price" : "Multiplier";
+  const [priceOpen, setPriceOpen] = useState(false);
   const [isActive, setIsActive] = useState<boolean>(data.isActive);
   const { setStrategyChangeHappend } = useStrategyChangeHappend();
 
@@ -441,6 +443,25 @@ const StrategyBox: React.FC<StrategyBoxProps> = ({
             </div>
             <div className="flex items-center gap-4 w-1/2">
               <div className="font-semibold">{sizeLabel} :</div>
+              {copyTrade ? (
+                <>
+                  <span className="tnum">{formatLot(data.lotSize)}</span>
+                  <button
+                    onClick={() => setPriceOpen(true)}
+                    style={{ color: "var(--tv-accent)", fontSize: "12px", fontWeight: 600 }}
+                  >
+                    Edit
+                  </button>
+                  <PriceDialog
+                    open={priceOpen}
+                    onOpenChange={setPriceOpen}
+                    userStrategyId={data.id}
+                    accountName={brokerDetails.name}
+                    currentLot={data.lotSize}
+                    onSaved={() => setStrategyChangeHappend(true)}
+                  />
+                </>
+              ) : (
               <Select onValueChange={(event) => handleMultiplierChange(event)}>
                 <SelectTrigger
                   className="w-[125px] p-2 lg:p-4 h-7 lg:h-10"
@@ -460,6 +481,7 @@ const StrategyBox: React.FC<StrategyBoxProps> = ({
                   ))}
                 </SelectContent>
               </Select>
+              )}
             </div>
           </div>
         </div>

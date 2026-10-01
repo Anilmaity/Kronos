@@ -40,6 +40,8 @@ export interface UserStrategysProps {
   isActive: boolean;
   createdAt: string;
   multiplyer: string;
+  // Copy-trade tabs: fixed total lot per signal ("Price"); null = risk-based.
+  lotSize?: string | null;
   deployed: string;
   strategy: StrategyProps;
   userExchange: UserExchangeSetProps;

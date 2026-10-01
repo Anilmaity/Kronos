@@ -5,7 +5,8 @@ export type StrategySource = "neymar" | "neymar-vip";
 
 // Platform Strategy rows provisioned by KronosStrategies/Telegram_Bot
 // (apis_persist.py, deploy_dashboard_account2.py, deploy_neymar_vip.py).
-const SOURCE_STRATEGY_IDS: Record<StrategySource, string[]> = {
+// Keep in sync with Kronos_Backend/apis/copy_trade.py.
+export const SOURCE_STRATEGY_IDS: Record<StrategySource, string[]> = {
   neymar: [
     "d9bf1604-9ee0-4454-b3c1-b7335ff8915f", // Neymar Telegram Copy
     "30427449-9705-406c-820d-2b5ff9d8c003", // Neymar Telegram Copy (Account 2)

@@ -26,12 +26,15 @@ interface StrategyTableProps {
   brokerIds: string[];
   // Limit the table to one strategy family (e.g. the Neymar copy-traders); all strategies when omitted.
   source?: StrategySource;
+  // Reports how many rows are shown (the "No." for the next added account).
+  onRowCount?: (count: number) => void;
 }
 
 const StrategyTable: React.FC<StrategyTableProps> = ({
   selectedDate,
   brokerIds,
   source,
+  onRowCount,
 }) => {
   let global_index = 0;
   const { expandIndex, setExpandIndex } = useExpandIndex();
@@ -88,6 +91,7 @@ const StrategyTable: React.FC<StrategyTableProps> = ({
         name
         isActive
         multiplyer
+        lotSize
         createdAt
         activePositionsCount(date: $date)
         totalPositionCount(date: $date)
@@ -234,6 +238,11 @@ const StrategyTable: React.FC<StrategyTableProps> = ({
       ),
     0
   );
+
+  const rowCount = visibleData.reduce((n, broker) => n + broker.userstrategys.length, 0);
+  useEffect(() => {
+    onRowCount?.(rowCount);
+  }, [rowCount]);
 
   const restoreRemoved = removedIds.length > 0 && (
     <button

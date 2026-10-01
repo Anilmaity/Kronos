@@ -4,6 +4,8 @@ import React, { useState } from "react";
 import StrategyTable from "./StrategyTable";
 import DatePicker from "@/app/(main)/dashboard/_components/DatePicker";
 import { StrategySource } from "./strategySources";
+import { AddCopyTradeDialog } from "./CopyTradeDialogs";
+import { useStrategyChangeHappend } from "@/hooks/useStrategyChangeHappend";
 
 const DashboardPage = ({
   label = "01 — Dashboard",
@@ -16,6 +18,9 @@ const DashboardPage = ({
   const [isLoading] = useState(false);
 
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
+  const [addOpen, setAddOpen] = useState(false);
+  const [rowCount, setRowCount] = useState(0);
+  const { setStrategyChangeHappend } = useStrategyChangeHappend();
 
   const creationDate = new Date("2024-01-01");
 
@@ -60,8 +65,24 @@ const DashboardPage = ({
           </span>
         </div>
 
-        {/* Date picker — right aligned */}
+        {/* Date picker — right aligned (copy-trade tabs: Add Data first) */}
         <div className="flex items-center gap-3">
+          {source && (
+            <button
+              onClick={() => setAddOpen(true)}
+              style={{
+                height: "32px",
+                padding: "0 14px",
+                borderRadius: "6px",
+                fontSize: "12px",
+                fontWeight: 600,
+                background: "var(--tv-accent)",
+                color: "#fff",
+              }}
+            >
+              + Add Data
+            </button>
+          )}
           <span
             style={{
               fontSize: "11px",
@@ -83,8 +104,22 @@ const DashboardPage = ({
 
       {/* ── Positions ── */}
       <div className="w-full">
-        <StrategyTable selectedDate={selectedDate} brokerIds={brokerIds} source={source} />
+        <StrategyTable
+          selectedDate={selectedDate}
+          brokerIds={brokerIds}
+          source={source}
+          onRowCount={setRowCount}
+        />
       </div>
+      {source && (
+        <AddCopyTradeDialog
+          open={addOpen}
+          onOpenChange={setAddOpen}
+          source={source}
+          nextNumber={rowCount + 1}
+          onAdded={() => setStrategyChangeHappend(true)}
+        />
+      )}
     </div>
   );
 };

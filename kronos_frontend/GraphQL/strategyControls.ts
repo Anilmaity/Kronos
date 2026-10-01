@@ -75,3 +75,47 @@ export const GET_ARCHIVED_STRATEGIES = gql`
     }
   }
 `;
+
+// ── Telegram copy-trade tabs (Neymar / Neymar VIP) ─────────────────────────────
+// Add a broker account to a copy-trade tab at a fixed total lot per signal.
+export const ADD_COPY_TRADE_ACCOUNT = gql`
+  mutation AddCopyTradeAccount($source: String!, $userBrokerId: String!, $lotSize: Float!) {
+    AddCopyTradeAccount(source: $source, userBrokerId: $userBrokerId, lotSize: $lotSize) {
+      Ok
+      Response
+    }
+  }
+`;
+
+// Change a copy-trade account's fixed total lot ("Price").
+export const SET_COPY_TRADE_LOT = gql`
+  mutation SetCopyTradeLot($userStrategyId: String!, $lotSize: Float!) {
+    SetCopyTradeLot(userStrategyId: $userStrategyId, lotSize: $lotSize) {
+      Ok
+      Response
+    }
+  }
+`;
+
+// Accounts for the "Add Data" picker, with what each is already deployed to.
+export const GET_COPY_TRADE_ACCOUNT_OPTIONS = gql`
+  query GetCopyTradeAccountOptions {
+    getuserdata {
+      userbrokers {
+        id
+        label
+        name
+        accountHolderName
+        metaAccountId
+        hasToken
+        isActive
+        userstrategys {
+          id
+          strategy {
+            id
+          }
+        }
+      }
+    }
+  }
+`;

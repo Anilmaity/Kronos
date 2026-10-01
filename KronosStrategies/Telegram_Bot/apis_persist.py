@@ -370,3 +370,41 @@ def record_signal(side: str, entry: float | None, sl: float | None,
     return _default_dashboard.record_signal(
         side, entry, sl, take_profit, status=status, reason=reason,
         rejection_reason=rejection_reason, signal_at=signal_at, position_id=position_id)
+
+
+# ── Copy-trade accounts managed from the dashboard ─────────────────────────────
+def load_account_rows(strategy_id: str, user_strategy_ids: list[str]) -> list[dict] | None:
+    """Every account this bot should know about, as the dashboard has it.
+
+    Returns the UserStrategy rows on this bot's Strategy (accounts added with
+    "Add Data" on the Neymar tabs) PLUS the rows of the env-configured accounts
+    (`user_strategy_ids`), so their Pause/Resume and Price apply as well.
+    Returns None when the DB can't be reached — callers fail closed.
+    """
+    try:
+        with _default_dashboard._connect() as conn, conn.cursor() as cur:
+            cur.execute(
+                """
+                SELECT us.id::text, us.strategy_id::text, us.lot_size, us.is_active,
+                       us.deployed, us.archived, ub.id::text, ub.meta_account_id,
+                       ub.meta_api_token_enc, ub.is_active
+                  FROM apis_userstrategy us
+                  JOIN apis_userbroker ub ON ub.id = us.user_broker_id
+                 WHERE us.strategy_id::text = %s OR us.id::text = ANY(%s)
+                """,
+                (strategy_id, list(user_strategy_ids)),
+            )
+            rows = cur.fetchall()
+    except Exception as e:
+        log.warning("load_account_rows: DB read failed (%s)", e)
+        return None
+    keys = ("user_strategy_id", "strategy_id", "lot_size", "us_active", "deployed",
+            "archived", "user_broker_id", "meta_account_id", "token_enc", "broker_active")
+    out = []
+    for row in rows:
+        d = dict(zip(keys, row))
+        d["lot_size"] = float(d["lot_size"]) if d["lot_size"] is not None else None
+        d["entries"] = bool(d["us_active"]) and bool(d["deployed"]) and not d["archived"] \
+            and bool(d["broker_active"])
+        out.append(d)
+    return out
