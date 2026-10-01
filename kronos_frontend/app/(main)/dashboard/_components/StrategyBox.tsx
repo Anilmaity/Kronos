@@ -26,7 +26,7 @@ import { formatCapital } from "@/utils/FormatCapital";
 import { getCurrencySymbol } from "@/utils/currencySymbol";
 
 // Types
-import { UserStrategysProps } from "@/types";
+import { UserExchangeSetProps, UserStrategysProps } from "@/types";
 import { useStrategyChangeHappend } from "@/hooks/useStrategyChangeHappend";
 
 // Components
@@ -59,7 +59,14 @@ import {
 
 import PositionRows from "./PositionRows";
 import { middleware } from "@/GraphQL/middleware";
-import { PriceDialog, formatLot } from "./CopyTradeDialogs";
+import {
+  PriceDialog,
+  RiskDialog,
+  ddStatusLabel,
+  formatLot,
+  formatUsd,
+  riskFromRow,
+} from "./CopyTradeDialogs";
 
 interface StrategyBoxProps {
   index: number;
@@ -75,6 +82,7 @@ interface StrategyBoxProps {
   // Copy-trade tab layout — see StrategyTableRow.
   copyTrade?: boolean;
   onRemove?: () => void;
+  account?: UserExchangeSetProps;
 }
 
 const StrategyBox: React.FC<StrategyBoxProps> = ({
@@ -84,9 +92,13 @@ const StrategyBox: React.FC<StrategyBoxProps> = ({
   brokerDetails,
   copyTrade = false,
   onRemove,
+  account,
 }) => {
   const sizeLabel = copyTrade ? "Price" : "Multiplier";
   const [priceOpen, setPriceOpen] = useState(false);
+  const [riskOpen, setRiskOpen] = useState(false);
+  const equity = account?.ddEquity ? Number(account.ddEquity) : null;
+  const dd = ddStatusLabel(account?.ddStatus);
   const [isActive, setIsActive] = useState<boolean>(data.isActive);
   const { setStrategyChangeHappend } = useStrategyChangeHappend();
 
@@ -485,6 +497,58 @@ const StrategyBox: React.FC<StrategyBoxProps> = ({
             </div>
           </div>
         </div>
+        {copyTrade && (
+          <div className="table w-full py-4 border-b" style={{ borderColor: "var(--tv-border)" }}>
+            <div className="flex items-center w-full">
+              <div className="flex items-center gap-4 w-1/2">
+                <div className="font-semibold">Trade SL :</div>
+                <div>
+                  {data.tradeSlUsd
+                    ? `$${formatUsd(data.tradeSlUsd)} per signal · max $${formatUsd(data.maxSlPerTradeUsd)} per stop`
+                    : "Channel SL"}
+                </div>
+              </div>
+              <div className="flex items-center gap-4 w-1/2">
+                <div className="font-semibold">Equity :</div>
+                <div>
+                  {formatUsd(account?.ddEquity)}
+                  {dd && <span style={{ color: dd.color, marginLeft: 8 }}>{dd.text}</span>}
+                </div>
+              </div>
+            </div>
+            <div className="flex items-center w-full mt-4">
+              <div className="flex items-center gap-4 w-1/2">
+                <div className="font-semibold">Daily drawdown :</div>
+                <div>
+                  {formatUsd(account?.dailyDdFloor)}
+                  {account?.dailyDdFloor ? ` (resets to equity − ${formatUsd(account?.dailyDdOffset)})` : ""}
+                </div>
+              </div>
+              <div className="flex items-center gap-4 w-1/2">
+                <div className="font-semibold">Max drawdown :</div>
+                <div>
+                  {formatUsd(account?.maxDdFloor)}
+                  {account?.maxDdFloor ? ` (resets to equity − ${formatUsd(account?.maxDdOffset)})` : ""}
+                </div>
+                <button
+                  onClick={() => setRiskOpen(true)}
+                  style={{ color: "var(--tv-accent)", fontSize: "12px", fontWeight: 600 }}
+                >
+                  Edit
+                </button>
+              </div>
+            </div>
+            <RiskDialog
+              open={riskOpen}
+              onOpenChange={setRiskOpen}
+              userStrategyId={data.id}
+              accountName={brokerDetails.name}
+              initial={riskFromRow(data, account ?? {})}
+              equity={equity}
+              onSaved={() => setStrategyChangeHappend(true)}
+            />
+          </div>
+        )}
         {data.positions.length > 0 ? (
           <div className="w-full">
             <div className="table w-full py-4">

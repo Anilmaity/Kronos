@@ -25,7 +25,7 @@ import { formatCapital } from "@/utils/FormatCapital";
 import { useStrategyChangeHappend } from "@/hooks/useStrategyChangeHappend";
 
 // Types
-import { UserStrategysProps } from "@/types";
+import { UserExchangeSetProps, UserStrategysProps } from "@/types";
 
 // Components
 import {
@@ -40,7 +40,15 @@ import {
   MenubarTrigger,
 } from "@/components/ui/menubar";
 import { middleware } from "@/GraphQL/middleware";
-import { PriceDialog, formatLot } from "./CopyTradeDialogs";
+import {
+  CT_COL,
+  PriceDialog,
+  RiskDialog,
+  ddStatusLabel,
+  formatLot,
+  formatUsd,
+  riskFromRow,
+} from "./CopyTradeDialogs";
 
 interface StrategyTableRowProps {
   index: number;
@@ -57,6 +65,7 @@ interface StrategyTableRowProps {
   // instead of "Multiplier", and Remove (hide from the tab) as the only removal action.
   copyTrade?: boolean;
   onRemove?: () => void;
+  account?: UserExchangeSetProps; // the row's MT5 account (drawdown settings)
 }
 
 const StrategyTableRow: React.FC<StrategyTableRowProps> = ({
@@ -66,9 +75,14 @@ const StrategyTableRow: React.FC<StrategyTableRowProps> = ({
   brokerDetails,
   copyTrade = false,
   onRemove,
+  account,
 }) => {
   const sizeLabel = copyTrade ? "Price" : "Multiplier";
   const [priceOpen, setPriceOpen] = useState(false);
+  const [riskOpen, setRiskOpen] = useState(false);
+  const equity = account?.ddEquity ? Number(account.ddEquity) : null;
+  const dd = ddStatusLabel(account?.ddStatus);
+  const small: React.CSSProperties = { fontSize: "11px", color: "var(--tv-text-3)", fontWeight: 500 };
   const [isActive, setIsActive] = useState<boolean>(data.isActive);
 
   const { setStrategyChangeHappend } = useStrategyChangeHappend();
@@ -220,22 +234,35 @@ const StrategyTableRow: React.FC<StrategyTableRowProps> = ({
       className="flex items-center justify-normal w-full font-semibold hover:bg-[var(--tv-surface-2)]"
       style={{ borderBottom: "1px solid var(--tv-border)", minHeight: "36px" }}
     >
-      <div className="tnum w-1/12 text-center">{index + 1}</div>
+      <div className={`tnum ${copyTrade ? CT_COL.no : "w-1/12"} text-center`}>{index + 1}</div>
       {copyTrade ? (
         <>
           <button
-            className="w-1/4 cursor-pointer flex items-center gap-1 justify-between text-start"
+            className={`${CT_COL.name} cursor-pointer flex items-center gap-1 justify-between text-start`}
             onClick={() => {
               handleExpand(index);
             }}
           >
             {brokerDetails.name}
           </button>
-          <div className="tnum w-1/6 text-center">
+          <div className={`tnum ${CT_COL.open} text-center`}>
             {data.activePositionsCount} | {data.totalPositionCount}
           </div>
-          <div className="tnum w-1/6 text-center">{formatLot(data.lotSize)}</div>
-          <div className="w-1/6 flex items-center justify-center">
+          <div className={`tnum ${CT_COL.price} text-center`}>{formatLot(data.lotSize)}</div>
+          <div className={`tnum ${CT_COL.tradeSl} text-center flex flex-col`}>
+            {data.tradeSlUsd ? (
+              <span>${formatUsd(data.tradeSlUsd)}</span>
+            ) : (
+              <span style={small}>Channel SL</span>
+            )}
+            <span style={small}>max ${data.maxSlPerTradeUsd ? formatUsd(data.maxSlPerTradeUsd) : "90"}/trade</span>
+          </div>
+          <div className={`tnum ${CT_COL.daily} text-center flex flex-col`}>
+            <span>{formatUsd(account?.dailyDdFloor)}</span>
+            {equity !== null && <span style={small}>equity {formatUsd(account?.ddEquity)}</span>}
+          </div>
+          <div className={`tnum ${CT_COL.max} text-center`}>{formatUsd(account?.maxDdFloor)}</div>
+          <div className={`${CT_COL.status} flex flex-col items-center justify-center gap-1`}>
             <span
               style={{
                 border: "1px solid",
@@ -248,6 +275,7 @@ const StrategyTableRow: React.FC<StrategyTableRowProps> = ({
             >
               {isActive ? "Running" : "Paused"}
             </span>
+            {dd && <span style={{ ...small, color: dd.color }}>{dd.text}</span>}
           </div>
         </>
       ) : (
@@ -288,10 +316,10 @@ const StrategyTableRow: React.FC<StrategyTableRowProps> = ({
       </div>
       </>
       )}
-      <div className="w-1/12 text-center">
+      <div className={`${copyTrade ? CT_COL.pnl : "w-1/12"} text-center`}>
         {totalPandL(data.totalProfitLoss)}
       </div>
-      <div className="w-1/12 flex items-center justify-end">
+      <div className={`${copyTrade ? CT_COL.actions : "w-1/12"} flex items-center justify-end`}>
         <Menubar className="bg-transparent border-none">
           <MenubarMenu>
             <MenubarTrigger className=" cursor-pointer">
@@ -323,7 +351,11 @@ const StrategyTableRow: React.FC<StrategyTableRowProps> = ({
               )}
               <MenubarSeparator />
               {copyTrade ? (
-                <MenubarItem onClick={() => setPriceOpen(true)}>{sizeLabel}</MenubarItem>
+                <>
+                  <MenubarItem onClick={() => setPriceOpen(true)}>{sizeLabel}</MenubarItem>
+                  <MenubarSeparator />
+                  <MenubarItem onClick={() => setRiskOpen(true)}>Stop Loss &amp; Drawdown</MenubarItem>
+                </>
               ) : (
               <MenubarSub>
                 <MenubarSubTrigger>{sizeLabel}</MenubarSubTrigger>
@@ -392,6 +424,17 @@ const StrategyTableRow: React.FC<StrategyTableRowProps> = ({
           userStrategyId={data.id}
           accountName={brokerDetails.name}
           currentLot={data.lotSize}
+          onSaved={() => setStrategyChangeHappend(true)}
+        />
+      )}
+      {copyTrade && (
+        <RiskDialog
+          open={riskOpen}
+          onOpenChange={setRiskOpen}
+          userStrategyId={data.id}
+          accountName={brokerDetails.name}
+          initial={riskFromRow(data, account ?? {})}
+          equity={equity}
           onSaved={() => setStrategyChangeHappend(true)}
         />
       )}

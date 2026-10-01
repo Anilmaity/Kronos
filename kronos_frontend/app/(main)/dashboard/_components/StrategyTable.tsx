@@ -20,6 +20,7 @@ import { dateFormatter } from "@/utils/dateFormatter";
 import { gql } from "@apollo/client";
 import { client } from "@/GraphQL/client";
 import { StrategySource, matchesSource } from "./strategySources";
+import { CT_COL } from "./CopyTradeDialogs";
 
 interface StrategyTableProps {
   selectedDate: Date;
@@ -48,6 +49,7 @@ const StrategyTable: React.FC<StrategyTableProps> = ({
   // user Remove a row from the tab. Removal is a per-browser view setting only —
   // nothing is deleted on the server.
   const copyTrade = Boolean(source);
+  const minW = copyTrade ? "min-w-[1100px]" : "min-w-[860px]";
   const removedKey = source ? `kronos:removed-rows:${source}` : "";
   const [removedIds, setRemovedIds] = useState<string[]>([]);
 
@@ -85,6 +87,14 @@ const StrategyTable: React.FC<StrategyTableProps> = ({
       label
       accountHolderName
       marginAvailable
+      dailyDdFloor
+      maxDdFloor
+      dailyDdOffset
+      maxDdOffset
+      ddStatus
+      ddEquity
+      ddEquityAt
+      ddBlockedDay
 
       userstrategys {
         id
@@ -92,6 +102,8 @@ const StrategyTable: React.FC<StrategyTableProps> = ({
         isActive
         multiplyer
         lotSize
+        tradeSlUsd
+        maxSlPerTradeUsd
         createdAt
         activePositionsCount(date: $date)
         totalPositionCount(date: $date)
@@ -265,7 +277,7 @@ const StrategyTable: React.FC<StrategyTableProps> = ({
       >
         {/* Table header */}
         <div
-          className="flex items-center w-full px-4 py-3 min-w-[860px]"
+          className={`flex items-center w-full px-4 py-3 ${minW}`}
           style={{
             borderBottom: "1px solid var(--tv-border)",
             fontSize: "11px",
@@ -275,29 +287,35 @@ const StrategyTable: React.FC<StrategyTableProps> = ({
             fontWeight: 500,
           }}
         >
-          <div className="w-1/12 text-center">No.</div>
           {copyTrade ? (
             <>
-              <div className="w-1/4">Name</div>
-              <div className="w-1/6 text-center">Open · Total</div>
-              <div className="w-1/6 text-center">Price</div>
-              <div className="w-1/6 text-center">Status</div>
+              <div className={`${CT_COL.no} text-center`}>No.</div>
+              <div className={CT_COL.name}>Name</div>
+              <div className={`${CT_COL.open} text-center`}>Open · Total</div>
+              <div className={`${CT_COL.price} text-center`}>Price</div>
+              <div className={`${CT_COL.tradeSl} text-center`}>Trade SL</div>
+              <div className={`${CT_COL.daily} text-center`}>Daily DD</div>
+              <div className={`${CT_COL.max} text-center`}>Max DD</div>
+              <div className={`${CT_COL.status} text-center`}>Status</div>
+              <div className={`${CT_COL.pnl} text-center`}>P &amp; L</div>
+              <div className={`${CT_COL.actions} text-end`}>Actions</div>
             </>
           ) : (
             <>
+              <div className="w-1/12 text-center">No.</div>
               <div className="w-1/4">Strategy</div>
               <div className="w-1/6 text-center">Execution</div>
               <div className="w-1/6 text-center">Open · Total</div>
               <div className="w-1/6 text-center">Multiplier · Status</div>
+              <div className="w-1/12 text-center">P &amp; L</div>
+              <div className="w-1/12 text-end">Actions</div>
             </>
           )}
-          <div className="w-1/12 text-center">P &amp; L</div>
-          <div className="w-1/12 text-end">Actions</div>
         </div>
 
         {visibleData.map((exchange) => {
           return (
-            <div key={exchange.id} className="w-full min-w-[860px]">
+            <div key={exchange.id} className={`w-full ${minW}`}>
               {exchange.userstrategys.map((strategy, sindex) => {
                 const currentIndex = global_index++;
                 if (expandIndex.includes(currentIndex)) {
@@ -310,6 +328,7 @@ const StrategyTable: React.FC<StrategyTableProps> = ({
                         }
                         index={currentIndex}
                         copyTrade={copyTrade}
+                        account={exchange}
                         onRemove={() => saveRemovedIds([...removedIds, strategy.id])}
                         brokerDetails={{
                           id: exchange.id,
@@ -331,6 +350,7 @@ const StrategyTable: React.FC<StrategyTableProps> = ({
                         }
                         index={currentIndex}
                         copyTrade={copyTrade}
+                        account={exchange}
                         onRemove={() => saveRemovedIds([...removedIds, strategy.id])}
                         brokerDetails={{
                           id: exchange.id,
@@ -348,7 +368,7 @@ const StrategyTable: React.FC<StrategyTableProps> = ({
           );
         })}
         <div
-          className="flex items-center justify-end gap-6 w-full min-w-[860px] py-3 px-4"
+          className={`flex items-center justify-end gap-6 w-full ${minW} py-3 px-4`}
           style={{
             borderTop: "1px solid var(--tv-border)",
             fontSize: "11px",

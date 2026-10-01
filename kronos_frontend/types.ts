@@ -42,6 +42,9 @@ export interface UserStrategysProps {
   multiplyer: string;
   // Copy-trade tabs: fixed total lot per signal ("Price"); null = risk-based.
   lotSize?: string | null;
+  // Copy-trade Trade SL: total USD per signal + max USD per single stop.
+  tradeSlUsd?: string | null;
+  maxSlPerTradeUsd?: string | null;
   deployed: string;
   strategy: StrategyProps;
   userExchange: UserExchangeSetProps;
@@ -103,6 +106,15 @@ export interface UserExchangeSetProps {
   label: string;
   metaAccountId: string;
   metaApiTokenLast4: string;
+  // Drawdown guard (copy-trade tabs): equity floors + what the bot last saw.
+  dailyDdFloor?: string | null;
+  maxDdFloor?: string | null;
+  dailyDdOffset?: string | null;
+  maxDdOffset?: string | null;
+  ddStatus?: string | null;
+  ddEquity?: string | null;
+  ddEquityAt?: string | null;
+  ddBlockedDay?: string | null;
   hasToken: boolean;
   marginUsed?: string;
   userbrokerpositions: PositionProps[];

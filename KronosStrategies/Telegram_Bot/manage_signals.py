@@ -51,6 +51,9 @@ BREAKEVEN_RE = re.compile(
 CLOSE_ALL_RE = re.compile(
     r"close\s+(?:all|everything|the\s+trade)"
     r"|\bexit\s+all\b"
+    # "Trade failed" / "setup failed" -> the channel is out: exit every leg.
+    r"|\b(?:trade|setup|signal)\s+(?:has\s+|is\s+)?failed\b"
+    r"|\bfailed\s+(?:trade|setup|signal)\b"
     r"|out\s+of\s+(?:this|these|the)\s+(?:entry|entries|trade|trades)",
     re.IGNORECASE)
 

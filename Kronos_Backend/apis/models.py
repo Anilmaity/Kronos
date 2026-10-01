@@ -103,6 +103,24 @@ class UserBroker(BaseModel):
     last_updated = models.DateTimeField(auto_now_add=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
+    # ── Drawdown guard (Telegram copy-trader, Neymar tabs) ──────────────────
+    # Equity FLOORS for this MT5 account. When equity falls to a floor the
+    # copy-trader closes every position / pending order on the account and
+    # takes no new trades until the next broker day. Within DD_BUFFER of a
+    # floor it only stops new trades. At each new broker day the floors are
+    # reset from that day's starting equity: floor = equity - offset.
+    daily_dd_floor = models.DecimalField(max_digits=14, decimal_places=2, null=True, blank=True)
+    max_dd_floor = models.DecimalField(max_digits=14, decimal_places=2, null=True, blank=True)
+    daily_dd_offset = models.DecimalField(max_digits=14, decimal_places=2, null=True, blank=True)
+    max_dd_offset = models.DecimalField(max_digits=14, decimal_places=2, null=True, blank=True)
+    # Written by the copy-trader: broker day the floors belong to, day new
+    # trades are blocked for, guard status and the last equity it read.
+    dd_day = models.DateField(null=True, blank=True)
+    dd_blocked_day = models.DateField(null=True, blank=True)
+    dd_status = models.CharField(max_length=60, default="", blank=True)
+    dd_equity = models.DecimalField(max_digits=14, decimal_places=2, null=True, blank=True)
+    dd_equity_at = models.DateTimeField(null=True, blank=True)
+
 
     def __str__(self):
         return  str(self.user.email)
@@ -188,6 +206,12 @@ class UserStrategy(BaseModel):
     # on the Neymar tabs). NULL = the bot's risk-based sizing. Split evenly
     # across the signal's TP legs by the copy-trader.
     lot_size = models.DecimalField(max_digits=6, decimal_places=2, null=True, blank=True)
+    # Trade SL (copy-trade): total USD loss budget for one signal, split evenly
+    # across its TP legs. Each leg is stopped at most max_sl_per_trade_usd at a
+    # time and re-entered (same TP) after a stop until its budget is used.
+    # NULL = use the channel's SL.
+    trade_sl_usd = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    max_sl_per_trade_usd = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     user_broker = models.ForeignKey(UserBroker, on_delete=models.CASCADE)
     deployed = models.BooleanField(default=False)
     archived = models.BooleanField(default=False)

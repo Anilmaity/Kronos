@@ -23,7 +23,8 @@ import json
 import logging
 import os
 import re
-from datetime import datetime, timezone
+import time
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 from dotenv import load_dotenv
@@ -179,6 +180,28 @@ r = None  # state store (RedisStore or MemoryStore) — set in main()
 # from the routing maps once loaded — a paused/removed account just stops taking
 # NEW entries, while its already-open slices still close/reconcile normally.
 DB_ACCOUNTS = os.getenv("TG_DB_ACCOUNTS", "true").lower() == "true"
+
+# ── VIP priority (Neymar bot only) ──────────────────────────────────────────
+# The VIP channel posts ~91% of the free channel's trades, usually 1-2s BEFORE
+# it. On an account that is ALSO traded by the VIP bot, the VIP trade wins: the
+# Neymar bot skips a trade VIP already posted, and when Neymar posts first it
+# waits up to PRIORITY_WAIT_SEC for VIP before trading those shared accounts.
+# Accounts only on the Neymar tab always trade instantly. Every bot records its
+# signals in the shared kronos_xchan_signals table on arrival.
+VIP_CHANNEL_ID = "-1002776523643"
+VIP_STRATEGY_ID = "c708a216-5c5f-41b4-a63b-7e13d15ce090"
+PRIORITY_CHANNEL = os.getenv(
+    "TG_PRIORITY_CHANNEL", VIP_CHANNEL_ID if CHANNEL == "NeymarGoldTrader" else "").strip()
+PRIORITY_STRATEGY_ID = os.getenv(
+    "TG_PRIORITY_STRATEGY_ID", VIP_STRATEGY_ID if PRIORITY_CHANNEL else "").strip()
+PRIORITY_WAIT_SEC = float(os.getenv("TG_PRIORITY_WAIT_SEC", "10"))
+PRIORITY_MATCH_SEC = float(os.getenv("TG_PRIORITY_MATCH_SEC", "1800"))
+PRIORITY_TOLERANCE = float(os.getenv("TG_PRIORITY_TOLERANCE", "5.0"))
+_priority_meta: set[str] = set()      # MetaAPI ids the priority (VIP) bot trades
+
+
+def _meta_id(acc: dict) -> str:
+    return (getattr(acc["client"], "account", "") or "").strip()
 ACCOUNT_REFRESH_SEC = int(os.getenv("TG_ACCOUNT_REFRESH_SEC", "60"))
 _BAD_ACCOUNT_LOG_SEC = 600
 _bad_accounts: dict[str, float] = {}   # user_strategy_id -> last time we logged it unusable
@@ -231,10 +254,12 @@ def _new_db_account(row: dict) -> dict | None:
                               strategy_id=row["strategy_id"])
     return {"label": label, "client": client, "risk_usd": RISK_PER_TRADE_USD, "apis": dash,
             "source": "db", "us_id": us_id, "meta_account_id": acct,
-            "lot": row["lot_size"], "entries": row["entries"], "healthy": True}
+            "lot": row["lot_size"], "entries": row["entries"], "healthy": True,
+            "trade_sl": row.get("trade_sl_usd"), "max_sl": row.get("max_sl_per_trade_usd"),
+            "ub_id": row["user_broker_id"]}
 
 
-async def refresh_accounts() -> bool:
+async def refresh_accounts(load_new: bool = True) -> bool:
     """Sync every account's lot / Pause-Resume from the dashboard and load newly
     added accounts. Returns False when the DB can't be read (caller fails closed)."""
     loop = asyncio.get_running_loop()
@@ -255,7 +280,21 @@ async def refresh_accounts() -> bool:
             continue
         acc["lot"] = row["lot_size"]
         acc["entries"] = row["entries"]
+        acc["trade_sl"] = row.get("trade_sl_usd")
+        acc["max_sl"] = row.get("max_sl_per_trade_usd")
+        acc["ub_id"] = row.get("user_broker_id")
 
+    # At signal time only the flags/Price/SL are synced (one quick query) —
+    # loading + validating new accounts runs in the background refresher, so it
+    # never delays an entry.
+    if not load_new:
+        return True
+    if PRIORITY_STRATEGY_ID:
+        global _priority_meta
+        metas = await loop.run_in_executor(
+            None, lambda: apis.load_strategy_meta_accounts(PRIORITY_STRATEGY_ID))
+        if metas is not None:
+            _priority_meta = metas
     if not DB_ACCOUNTS:
         return True
     known = {a.get("us_id") for a in ACCOUNTS}
@@ -281,9 +320,167 @@ async def refresh_accounts() -> bool:
 
 
 def _entry_accounts() -> list[dict]:
-    """Accounts that take NEW signals: not paused on the dashboard and whose
-    broker answered at the last check."""
-    return [a for a in ACCOUNTS if a.get("entries", True) and a.get("healthy", True)]
+    """Accounts that take NEW signals: not paused on the dashboard, broker
+    answered at the last check, and not drawdown-blocked for the broker day."""
+    return [a for a in ACCOUNTS
+            if a.get("entries", True) and a.get("healthy", True) and not _dd_blocked(a)]
+
+
+# ── Drawdown guard (dashboard "Daily drawdown" / "Max drawdown") ──────────────
+# Per MT5 account (UserBroker) equity FLOORS. Every DD_POLL_SEC the guard reads
+# each account's equity:
+#   * equity <= a floor        -> close EVERY position + pending order on the
+#                                 account (any symbol), no new trades until the
+#                                 next broker day
+#   * equity <= floor + buffer -> no new trades until the next broker day
+#   * new broker day (broker midnight) -> floors reset from that day's starting
+#     equity: daily = equity - daily offset (230), max = equity - max offset (470)
+# A floor that is already at/above equity when first seen (a typo) blocks new
+# trades but never auto-closes — it closes only after equity was seen above it.
+DD_POLL_SEC = float(os.getenv("TG_DD_POLL_SEC", "2"))
+DD_BUFFER = float(os.getenv("TG_DD_BUFFER_USD", "10"))
+DD_CONFIG_REFRESH_SEC = 10
+DD_EQUITY_WRITE_SEC = 15
+DD_CLOSE_RETRY_SEC = 5
+DD_BROKER_TIME_REFRESH_SEC = 1800
+DEFAULT_DAILY_DD_OFFSET = 230.0
+DEFAULT_MAX_DD_OFFSET = 470.0
+_dd_state: dict[str, dict] = {}       # user_broker_id -> guard state
+_dd_cfg: dict[str, dict] = {}         # user_broker_id -> DB settings (refreshed)
+_dd_cfg_at = 0.0
+
+
+def _dd_blocked(acc: dict) -> bool:
+    st = _dd_state.get(acc.get("ub_id") or "")
+    return bool(st and st.get("day") and st.get("blocked_day") == st.get("day"))
+
+
+def _as_date(v):
+    if v is None or hasattr(v, "year") and not isinstance(v, datetime):
+        return v
+    return datetime.fromisoformat(str(v)).date()
+
+
+async def _guard_account(loop, ub_id: str, client, cfg: dict) -> None:
+    """One guard tick for one MT5 account."""
+    now = datetime.now(timezone.utc)
+    ts = now.timestamp()
+    st = _dd_state.setdefault(ub_id, {"label": client.label})
+    has_floor = cfg.get("daily_dd_floor") is not None or cfg.get("max_dd_floor") is not None
+    if not has_floor and ts - st.get("eq_polled", 0) < DD_EQUITY_WRITE_SEC:
+        return                                   # no floors: equity for display only
+    st["eq_polled"] = ts
+    info = await loop.run_in_executor(None, client.get_account_information)
+    if not info:
+        return
+    eq = float(info["equity"])
+    st["equity"] = eq
+    writes: dict = {}
+
+    if has_floor:
+        # Broker trading day (broker server midnight), offset refreshed half-hourly.
+        if st.get("offset") is None or ts - st.get("offset_at", 0) > DD_BROKER_TIME_REFRESH_SEC:
+            bt = await loop.run_in_executor(None, client.get_broker_time)
+            if bt is not None:
+                st["offset"] = bt - now.replace(tzinfo=None)
+            st["offset_at"] = ts
+        day = (now.replace(tzinfo=None) + (st.get("offset") or timedelta(0))).date()
+        st["day"] = day
+        daily, mx_ = cfg.get("daily_dd_floor"), cfg.get("max_dd_floor")
+        dd_day = _as_date(cfg.get("dd_day"))
+        if dd_day is None:
+            writes["dd_day"] = cfg["dd_day"] = day           # adopt the floors as set, for today
+        elif dd_day < day:
+            if daily is not None:
+                daily = round(eq - float(cfg.get("daily_dd_offset") or DEFAULT_DAILY_DD_OFFSET), 2)
+                writes["daily_dd_floor"] = cfg["daily_dd_floor"] = daily
+            if mx_ is not None:
+                mx_ = round(eq - float(cfg.get("max_dd_offset") or DEFAULT_MAX_DD_OFFSET), 2)
+                writes["max_dd_floor"] = cfg["max_dd_floor"] = mx_
+            writes["dd_day"] = cfg["dd_day"] = day
+            log.warning("[%s] NEW BROKER DAY %s — equity %.2f, daily floor %s, max floor %s",
+                        client.label, day, eq, daily, mx_)
+        floors = [(n, f) for n, f in (("daily", daily), ("max", mx_)) if f is not None]
+
+        key = tuple(floors)
+        if st.get("cfg_key") != key:                         # new / edited floors
+            st["cfg_key"] = key
+            st["armed"] = all(eq > f for _, f in floors)
+            if not st["armed"]:
+                log.error("[%s] drawdown floor %s is not below equity %.2f — blocking new "
+                          "trades, NOT closing (check the setting)", client.label, floors, eq)
+        elif not st.get("armed") and all(eq > f + DD_BUFFER for _, f in floors):
+            st["armed"] = True
+
+        blocked_day = _as_date(cfg.get("dd_blocked_day"))
+        breached = [n for n, f in floors if eq <= f]
+        near = [n for n, f in floors if eq <= f + DD_BUFFER]
+        if breached and st["armed"]:
+            status = f"breached_{breached[0]}"
+            if blocked_day != day or ts - st.get("closed_at", 0) >= DD_CLOSE_RETRY_SEC:
+                st["closed_at"] = ts
+                res = await loop.run_in_executor(None, client.close_everything)
+                if res["positions"] or res["orders"] or blocked_day != day:
+                    log.error("[%s] DRAWDOWN BREACH (%s): equity %.2f <= floor %s — closed "
+                              "%d position(s), cancelled %d order(s), failed %d, flat=%s",
+                              client.label, breached[0], eq, dict(floors)[breached[0]],
+                              res["positions"], res["orders"], res["failed"], res["complete"])
+        elif breached:
+            status = "floor_above_equity"
+        elif near:
+            status = f"near_{near[0]}"
+        elif blocked_day == day:
+            status = st.get("status") or "blocked_today"
+            status = status if status.startswith(("breached", "near", "floor")) else "blocked_today"
+        else:
+            status = "ok"
+        if (breached or near) and blocked_day != day:
+            writes["dd_blocked_day"] = cfg["dd_blocked_day"] = blocked_day = day
+            log.warning("[%s] equity %.2f within %.0f of %s floor — no new trades until the "
+                        "next broker day", client.label, eq, DD_BUFFER, (breached or near)[0])
+        st["blocked_day"] = blocked_day
+    else:
+        status = ""
+        st["blocked_day"] = None                 # floors removed: nothing to block
+    if status != st.get("status"):
+        st["status"] = writes["dd_status"] = status
+    if writes or ts - st.get("eq_written", 0) >= DD_EQUITY_WRITE_SEC:
+        st["eq_written"] = ts
+        writes["dd_equity"] = round(eq, 2)
+        writes["dd_equity_at"] = now
+        await loop.run_in_executor(None, lambda: apis.save_drawdown(ub_id, **writes))
+
+
+async def check_drawdown() -> None:
+    """One guard pass over every distinct MT5 account this bot trades."""
+    global _dd_cfg, _dd_cfg_at
+    loop = asyncio.get_running_loop()
+    by_ub: dict[str, object] = {}
+    for a in ACCOUNTS:
+        if a.get("ub_id") and a["ub_id"] not in by_ub:
+            by_ub[a["ub_id"]] = a["client"]
+    if not by_ub:
+        return
+    ts = datetime.now(timezone.utc).timestamp()
+    if ts - _dd_cfg_at >= DD_CONFIG_REFRESH_SEC or set(by_ub) - set(_dd_cfg):
+        rows = await loop.run_in_executor(None, lambda: apis.load_drawdown_rows(list(by_ub)))
+        if rows is not None:
+            _dd_cfg, _dd_cfg_at = rows, ts
+    items = [(ub, client) for ub, client in by_ub.items() if ub in _dd_cfg]
+    results = await asyncio.gather(*(_guard_account(loop, ub, client, _dd_cfg[ub])
+                                      for ub, client in items), return_exceptions=True)
+    for (ub, client), res in zip(items, results):
+        if isinstance(res, Exception):
+            log.error("[%s] drawdown guard tick failed: %r", client.label, res)
+
+
+async def _drawdown_guard() -> None:
+    while True:
+        await asyncio.sleep(DD_POLL_SEC)
+        try:
+            await check_drawdown()
+        except Exception as e:
+            log.exception(f"drawdown guard error: {e}")
 
 
 async def _account_refresher() -> None:
@@ -315,6 +512,16 @@ def _signal_entry(sig: dict) -> float:
     return sig["entry_low"] if sig["side"] == "sell" else sig["entry_high"]
 
 
+# Every signal is traded as exactly TG_LEG_COUNT legs (default 5): extra TPs are
+# dropped, and when the channel gives fewer the LAST TP is repeated (3 TPs ->
+# TP1, TP2, TP3, TP3, TP3). 0 = one leg per TP as posted.
+LEG_COUNT = int(os.getenv("TG_LEG_COUNT", "5"))
+# "Breakeven / zero risk" from the channel: close every open leg except the
+# BE_KEEP_LEGS with the farthest TPs, which keep running with their stop moved
+# to entry. 0 = old behaviour (stop to entry on every leg, nothing closed).
+BE_KEEP_LEGS = int(os.getenv("TG_BE_KEEP_LEGS", "2"))
+
+
 def order_tps(sig: dict) -> list[float | None]:
     """TP levels to actually place — one broker order per element.
 
@@ -326,6 +533,9 @@ def order_tps(sig: dict) -> list[float | None]:
     tps: list[float | None] = list(sig["tps"])
     if TP_OPEN_LEG and sig.get("tp_open"):
         tps.append(None)
+    if LEG_COUNT > 0 and tps:
+        tps = tps[:LEG_COUNT]
+        tps += [tps[-1]] * (LEG_COUNT - len(tps))
     return tps
 
 
@@ -389,7 +599,148 @@ def _record_signals(sig: dict, *, status: str, reason: str = "",
                            position_id=(pos_ids or {}).get(acc["label"]))
 
 
-async def place_order(msg_id: int, sig: dict) -> dict:
+# ── Trade SL ladder (dashboard "Trade SL" / "Max SL per trade") ───────────────
+# Trade SL = total USD the account may lose on one signal, split evenly across
+# the TP legs. A leg is never stopped for more than Max SL per trade (default
+# $90) at once: it enters with that stop, and each time the stop is hit it is
+# re-entered at market with the SAME TP and the next chunk of its budget, until
+# the budget is spent (e.g. $200/leg -> stops of 90, 90, 20). Re-entries stop
+# as soon as the channel ends the signal (it leaves the :open set), its SL is
+# managed (breakeven/move), or the account is paused / drawdown-blocked.
+DEFAULT_MAX_SL_PER_TRADE = 90.0
+LADDER_MIN_CHUNK_USD = 1.0          # a remaining budget below this is not worth a re-entry
+LADDER_ATTEMPT_STRIDE = 100         # re-entry k of leg i is tagged tp(i + 100*k)
+
+
+def _ladder_sl_price(side: str, ref_price: float, loss_usd: float, volume: float,
+                     min_d: float | None) -> tuple[float, float]:
+    """SL price so that `volume` lots lose `loss_usd` from `ref_price`, never
+    closer than the broker's stops level. Returns (sl_price, planned_loss_usd)."""
+    dist = loss_usd / (volume * USD_PER_POINT_PER_LOT)
+    if min_d and dist < min_d:
+        dist = min_d          # broker floor: the planned loss grows slightly
+    sl = ref_price - dist if side == "buy" else ref_price + dist
+    return round(sl, 2), round(dist * volume * USD_PER_POINT_PER_LOT, 2)
+
+
+def _leg_cap(acc: dict | None) -> float:
+    """Most USD one stop may lose on this account (dashboard Max SL per trade)."""
+    return float((acc or {}).get("max_sl") or DEFAULT_MAX_SL_PER_TRADE)
+
+
+def _ladder_plan(acc: dict, plan: dict | None, side: str, entry: float,
+                 total_vol: float, n_legs: int) -> tuple[dict | None, dict[int, dict]]:
+    """Account-specific copy of the shared plan with each leg's stop limited to
+    the account's Max SL per trade. Returns (plan, {leg index: ladder meta}).
+
+    * Trade SL set: each leg's budget is Trade SL / legs, first stop = min(cap,
+      budget) — the channel's SL is not used.
+    * No Trade SL: the channel's SL stands unless one leg would lose more than
+      the cap there; then that leg stops at the cap and re-enters until the
+      channel's SL distance (its budget) is used.
+    Legs without meta keep the plan's SL and never re-enter."""
+    if plan is None or n_legs <= 0:
+        return plan, {}
+    vol_each = round(total_vol / n_legs, 2)
+    if vol_each <= 0:
+        return plan, {}
+    cap = _leg_cap(acc)
+    ref = plan.get("cur") if plan.get("use_market") and plan.get("cur") else entry
+    min_d = plan.get("min_d")
+    trade_sl = acc.get("trade_sl")
+    levels, metas = [], {}
+    for i, (o_sl, tp) in enumerate(plan["levels"], start=1):
+        if trade_sl:
+            budget = float(trade_sl) / n_legs
+        else:
+            budget = abs(ref - o_sl) * vol_each * USD_PER_POINT_PER_LOT
+            if budget <= cap + 0.01:
+                levels.append((o_sl, tp))          # channel SL within the cap
+                continue
+        sl, planned = _ladder_sl_price(side, ref, min(cap, budget), vol_each, min_d)
+        levels.append((sl, tp))
+        metas[i] = {"budget": round(budget, 2), "cap": cap, "used": planned,
+                    "last": planned, "attempt": 0}
+    if not metas:
+        return plan, {}
+    acc_plan = dict(plan)
+    acc_plan["levels"] = levels
+    return acc_plan, metas
+
+
+def _dd_room(acc: dict | None, extra_loss_usd: float) -> bool:
+    """True when losing `extra_loss_usd` more would still leave equity above
+    every drawdown floor (+ buffer) of the account. True when the account has no
+    floors or its equity isn't known yet."""
+    ub = (acc or {}).get("ub_id") or ""
+    st, cfg = _dd_state.get(ub), _dd_cfg.get(ub)
+    if not st or not cfg or st.get("equity") is None:
+        return True
+    left = float(st["equity"]) - extra_loss_usd
+    return all(f is None or left > float(f) + DD_BUFFER
+               for f in (cfg.get("daily_dd_floor"), cfg.get("max_dd_floor")))
+
+
+async def _ladder_reenter(loop, pos: dict, msg_id: int, o: dict, label: str, pnl) -> dict | None:
+    """After leg `o` was stopped out, re-enter it at market with the same TP and
+    the next chunk of its Trade SL budget. Returns the new slice, or None."""
+    lad = o.get("ladder")
+    if not lad or lad.get("stopped") or lad.get("reentered"):
+        return None
+    # Only a real stop-out (a loss of at least half the planned chunk) re-enters
+    # — not a breakeven / tiny-loss close.
+    if pnl is None or float(pnl) > -0.5 * float(lad.get("last") or lad["used"]):
+        return None
+    remaining = float(lad["budget"]) - float(lad["used"])
+    if remaining < LADDER_MIN_CHUNK_USD:
+        return None
+    acc = next((a for a in ACCOUNTS if a["label"] == label), None)
+    if acc is None or acc not in _entry_accounts():
+        return None                      # paused, unreachable or drawdown-blocked
+    lad["reentered"] = True              # one re-entry per stopped leg, success or not
+    client, side, symbol = acc["client"], pos["side"], pos["instrument"]
+    px = await loop.run_in_executor(None, lambda: client.get_symbol_price(symbol))
+    if not px:
+        log.warning("[%s:%s] TP%s re-entry skipped — no price", msg_id, label, o["tp_index"])
+        return None
+    min_d = await loop.run_in_executor(None, lambda: client.stops_level_price(symbol))
+    ref = px["ask"] if side == "buy" else px["bid"]
+    tp = o.get("tp")
+    if tp is not None and ((side == "buy" and tp <= ref + min_d) or
+                           (side == "sell" and tp >= ref - min_d)):
+        log.info("[%s:%s] TP%s re-entry skipped — price already at/through TP %.2f",
+                 msg_id, label, o["tp_index"], tp)
+        return None
+    vol = float(o["volume"])
+    chunk = min(float(lad["cap"]), remaining)
+    if not _dd_room(acc, chunk):
+        log.warning("[%s:%s] TP%s re-entry skipped — a $%.2f stop would reach the drawdown "
+                    "limit", msg_id, label, o["tp_index"], chunk)
+        return None
+    sl, planned = _ladder_sl_price(side, ref, chunk, vol, min_d)
+    attempt = int(lad.get("attempt", 0)) + 1
+    idx = int(lad["base"]) + LADDER_ATTEMPT_STRIDE * attempt
+    tid = await loop.run_in_executor(None, lambda: client.place_market_order_full(
+        side, symbol, vol, sl, tp, f"tg-{msg_id}-tp{idx}"))
+    if not tid:
+        log.error("[%s:%s] TP%s re-entry order FAILED", msg_id, label, o["tp_index"])
+        return None
+    new = {"tp_index": idx, "tp": tp, "ticket_id": tid, "kind": "market", "volume": vol,
+           "entry": ref, "sl": sl, "account": label, "broker_state": "filled",
+           # A market fill we just placed: count it as seen so a fast stop-out is
+           # still concluded from its absence (never left dangling).
+           "observed": True, "miss": 0,
+           "ladder": {"budget": lad["budget"], "cap": lad["cap"],
+                      "used": round(float(lad["used"]) + planned, 2), "last": planned,
+                      "attempt": attempt, "base": lad["base"]}}
+    await loop.run_in_executor(None, lambda: db.insert_order(msg_id, new))
+    log.warning("[%s:%s] RE-ENTRY %d of leg %s: %s %.2f @ %.2f SL %.2f (-$%.2f) TP %s "
+                "— budget used %.2f/%.2f", msg_id, label, attempt, lad["base"], side, vol, ref,
+                sl, planned, "open" if tp is None else tp, new["ladder"]["used"], lad["budget"])
+    return new
+
+
+async def place_order(msg_id: int, sig: dict, accounts: list[dict] | None = None) -> dict:
     """Place one MetaAPI order per TP at the NEAR edge of the entry zone, shared SL.
 
     The near edge is the price the market touches first as it retraces into the
@@ -410,7 +761,7 @@ async def place_order(msg_id: int, sig: dict) -> dict:
     # reference (first/primary) account's price for the market-vs-limit call —
     # instead of letting each account re-decide against its own price/spec, which
     # is what made neymar2 widen a TP differently and miss fills primary caught.
-    accounts = _entry_accounts()
+    accounts = _entry_accounts() if accounts is None else accounts
     stops = await asyncio.gather(*(
         loop.run_in_executor(None, lambda c=acc["client"]: c.stops_level_price(sig["instrument"]))
         for acc in accounts), return_exceptions=True)
@@ -439,10 +790,11 @@ async def place_order(msg_id: int, sig: dict) -> dict:
         else:
             total_vol = acc["risk_usd"] / (risk_pts * USD_PER_POINT_PER_LOT)
         total_vol = max(total_vol, MIN_LOT * len(otps))
+        acc_plan, ladders = _ladder_plan(acc, plan, sig["side"], entry_mid, total_vol, len(otps))
         try:
             submitted = await loop.run_in_executor(
                 None,
-                lambda c=client, v=total_vol: c.submit_signal_orders(
+                lambda c=client, v=total_vol, pl=acc_plan: c.submit_signal_orders(
                     side=sig["side"],
                     symbol=sig["instrument"],
                     entry=entry_mid,
@@ -450,7 +802,7 @@ async def place_order(msg_id: int, sig: dict) -> dict:
                     tps=otps,
                     total_volume=v,
                     msg_id=msg_id,
-                    plan=plan,
+                    plan=pl,
                 ),
             )
         except Exception:
@@ -467,6 +819,8 @@ async def place_order(msg_id: int, sig: dict) -> dict:
             o["broker_state"] = "filled" if o.get("kind") == "market" else "pending"
             o["observed"] = False
             o["miss"] = 0
+            if o["tp_index"] in ladders:
+                o["ladder"] = dict(ladders[o["tp_index"]], base=o["tp_index"])
         if not submitted:
             log.warning("[%s:%s] no orders submitted for this account", msg_id, label)
         acct_vol = (round(sum(float(o["volume"]) for o in submitted), 2)
@@ -505,7 +859,15 @@ async def place_order(msg_id: int, sig: dict) -> dict:
     }
 
 
-async def modify_sl(msg_id: int, new_sl: float):
+async def modify_sl(msg_id: int, new_sl: float, *, managed: bool = True):
+    """Move the stop of every leg of a signal.
+
+    managed=True (channel "move SL to X" / typo fix), per account:
+      * a leg that would lose more than Max SL per trade at X stops at the cap
+        instead and re-enters after that stop until X's loss is used (ladder);
+      * a move that ADDS risk is skipped when the worst case (every leg stopped
+        + remaining re-entries) would take equity to a drawdown floor.
+    managed=False (breakeven): every leg goes to X, re-entries end."""
     key = f"{REDIS_PREFIX}:signal:{msg_id}"
     pos_json = await r.get(key)
     if not pos_json:
@@ -513,15 +875,64 @@ async def modify_sl(msg_id: int, new_sl: float):
     pos = json.loads(pos_json)
     pos["sl"] = new_sl
     pos["sl_history"] = pos.get("sl_history", []) + [{"sl": new_sl, "at": datetime.now(timezone.utc).isoformat()}]
-
     loop = asyncio.get_running_loop()
-    for o in pos.get("orders", []):
-        client = ACCOUNTS_BY_LABEL.get(o.get("account", "primary"))
+    buy = pos["side"] == "buy"
+    sign = 1 if buy else -1
+    live = [o for o in pos.get("orders", []) if o.get("broker_state") not in ("closed", "cancelled")]
+
+    by_label: dict[str, list[dict]] = {}
+    for o in live:
+        by_label.setdefault(o.get("account", "primary"), []).append(o)
+    for label, legs in by_label.items():
+        client = ACCOUNTS_BY_LABEL.get(label)
         if client is None:
             continue
-        # POSITION_MODIFY only applies once filled; pending limits ignore the call.
-        # Safe to attempt either way — MetaAPI returns an error we log and move on.
-        await loop.run_in_executor(None, client.modify_position_sl, o["ticket_id"], new_sl)
+        acc = next((a for a in ACCOUNTS if a["label"] == label), None)
+        targets: list[tuple[dict, float, dict | None]] = []
+        if managed:
+            cap = _leg_cap(acc)
+            px = await loop.run_in_executor(None, lambda c=client: c.get_symbol_price(pos["instrument"]))
+            cur = (px["bid"] if buy else px["ask"]) if px else None
+            new_risk = old_risk = 0.0
+            for o in legs:
+                v = float(o["volume"])
+                e = float(o.get("fill_price") or o.get("entry") or pos["entry_mid"])
+                target_loss = max(0.0, (e - new_sl) * sign) * v * USD_PER_POINT_PER_LOT
+                if target_loss > cap + 0.01:
+                    eff = round(e - sign * cap / (v * USD_PER_POINT_PER_LOT), 2)
+                    lad = o.get("ladder") or {}
+                    meta = {"budget": round(target_loss, 2), "cap": cap, "used": cap, "last": cap,
+                            "attempt": lad.get("attempt", 0), "base": lad.get("base", o["tp_index"])}
+                else:
+                    eff, meta = new_sl, None
+                targets.append((o, eff, meta))
+                if cur is not None:
+                    new_risk += max(0.0, (cur - eff) * sign) * v * USD_PER_POINT_PER_LOT
+                    new_risk += (meta["budget"] - meta["used"]) if meta else 0.0
+                    old_sl = float(o.get("sl") or pos["sl"])
+                    old_risk += max(0.0, (cur - old_sl) * sign) * v * USD_PER_POINT_PER_LOT
+                    old_lad = o.get("ladder") or {}
+                    if old_lad and not old_lad.get("stopped"):
+                        old_risk += max(0.0, float(old_lad["budget"]) - float(old_lad["used"]))
+            if cur is not None and new_risk > old_risk and not _dd_room(acc, new_risk):
+                log.warning("[%s:%s] SL move to %.2f SKIPPED — worst-case loss $%.2f would reach "
+                            "the drawdown limit; keeping the current stop", msg_id, label,
+                            new_sl, new_risk)
+                continue
+        else:
+            targets = [(o, new_sl, None) for o in legs]
+
+        for o, eff, meta in targets:
+            # POSITION_MODIFY only applies once filled; pending limits ignore the call.
+            await loop.run_in_executor(None, client.modify_position_sl, o["ticket_id"], eff)
+            o["sl"] = eff
+            if meta:
+                o["ladder"] = meta                  # re-enter after this capped stop
+            elif o.get("ladder"):
+                o["ladder"]["stopped"] = True       # stop within the cap: no re-entries
+        if managed and any(m for _, _, m in targets):
+            log.info("[%s:%s] SL %.2f exceeds $%.0f per trade — legs stopped at the cap and will "
+                     "re-enter up to it", msg_id, label, new_sl, _leg_cap(acc))
 
     await r.set(key, json.dumps(pos))
     await loop.run_in_executor(None, db.update_sl, msg_id, new_sl)
@@ -534,7 +945,7 @@ async def move_to_breakeven(msg_id: int):
     if not pos_json:
         return
     pos = json.loads(pos_json)
-    await modify_sl(msg_id, pos["entry_mid"])
+    await modify_sl(msg_id, pos["entry_mid"], managed=False)
 
 
 async def apply_management(msg_id: int, text: str, parent_id: int | None) -> dict | None:
@@ -565,7 +976,10 @@ async def apply_management(msg_id: int, text: str, parent_id: int | None) -> dic
         await modify_sl(target, action["move_sl"])
     elif action.get("breakeven"):
         log.info("[%s] management: breakeven (signal %s)", msg_id, target)
-        await move_to_breakeven(target)
+        if BE_KEEP_LEGS > 0:
+            await breakeven_partial(target)
+        else:
+            await move_to_breakeven(target)
 
     if action.get("close") == "all":
         log.info("[%s] management: close all (signal %s)", msg_id, target)
@@ -582,21 +996,9 @@ async def apply_management(msg_id: int, text: str, parent_id: int | None) -> dic
     return action
 
 
-async def close_order(msg_id: int, reason: str):
-    key = f"{REDIS_PREFIX}:signal:{msg_id}"
-    pos_json = await r.get(key)
-    if not pos_json:
-        return
-    pos = json.loads(pos_json)
-
-    loop = asyncio.get_running_loop()
-
-    # Close at the broker AND settle each leg in the same pass. Ending a signal
-    # from a channel reply takes it out of the ':open' set, so reconcile_broker
-    # can never revisit it — whatever we fail to record here is lost for good.
-    # (Signal 11001, 2026-08-10: legs 2-4 sat 'filled' with NULL realized while
-    # the broker had paid +25.24/+25.36/+24.72.)
-    for o in pos.get("orders", []):
+async def _close_slices(loop, msg_id: int, slices: list[dict], reason: str) -> None:
+    """Close / cancel these slices at the broker and settle each one."""
+    for o in slices:
         client = ACCOUNTS_BY_LABEL.get(o.get("account", "primary"))
         if client is None:
             continue
@@ -620,6 +1022,60 @@ async def close_order(msg_id: int, reason: str):
             await loop.run_in_executor(None, db.record_slice_close,
                                        msg_id, o["tp_index"], o["ticket_id"],
                                        "cancelled", None)
+
+
+
+async def breakeven_partial(msg_id: int) -> None:
+    """Channel said breakeven / zero risk: exit every open leg except the
+    BE_KEEP_LEGS with the farthest TPs; those keep running with SL at entry."""
+    key = f"{REDIS_PREFIX}:signal:{msg_id}"
+    pos_json = await r.get(key)
+    if not pos_json:
+        return
+    pos = json.loads(pos_json)
+    for o in pos.get("orders", []):
+        if o.get("ladder"):
+            o["ladder"]["stopped"] = True     # no more SL re-entries after breakeven
+    live = [o for o in pos.get("orders", []) if o.get("broker_state") not in ("closed", "cancelled")]
+    buy = pos["side"] == "buy"
+    # Farthest TP first; the open-ended runner (tp None) counts as the farthest.
+    far = sorted(live, key=lambda o: (o.get("tp") is None,
+                                      (o.get("tp") or 0) * (1 if buy else -1),
+                                      o["tp_index"]), reverse=True)
+    keep, close = far[:BE_KEEP_LEGS], far[BE_KEEP_LEGS:]
+    loop = asyncio.get_running_loop()
+    if close:
+        await _close_slices(loop, msg_id, close, "breakeven_exit")
+        for o in close:                       # flatten their dashboard rows now
+            if o.get("broker_state") == "closed":
+                await _conclude_slice_row(loop, APIS_BY_LABEL.get(o.get("account", "primary")),
+                                          pos, o, "breakeven_exit")
+    for o in keep:
+        client = ACCOUNTS_BY_LABEL.get(o.get("account", "primary"))
+        if client is not None and o.get("broker_state") == "filled":
+            await loop.run_in_executor(None, client.modify_position_sl, o["ticket_id"],
+                                       pos["entry_mid"])
+        o["sl"] = pos["entry_mid"]
+    await r.set(key, json.dumps(pos))
+    log.info("[%s] BREAKEVEN: exited %d leg(s), kept %d at entry %.2f (%s)", msg_id,
+             len(close), len(keep), pos["entry_mid"], "DRY" if DRY_RUN else "LIVE")
+
+
+async def close_order(msg_id: int, reason: str):
+    key = f"{REDIS_PREFIX}:signal:{msg_id}"
+    pos_json = await r.get(key)
+    if not pos_json:
+        return
+    pos = json.loads(pos_json)
+
+    loop = asyncio.get_running_loop()
+
+    # Close at the broker AND settle each leg in the same pass. Ending a signal
+    # from a channel reply takes it out of the ':open' set, so reconcile_broker
+    # can never revisit it — whatever we fail to record here is lost for good.
+    # (Signal 11001, 2026-08-10: legs 2-4 sat 'filled' with NULL realized while
+    # the broker had paid +25.24/+25.36/+24.72.)
+    await _close_slices(loop, msg_id, pos.get("orders", []), reason)
 
     pos["status"] = f"closed_{reason}"
     pos["closed_at"] = datetime.now(timezone.utc).isoformat()
@@ -847,6 +1303,7 @@ async def reconcile_broker() -> None:
         pos = json.loads(pos_json)
         sid_i = int(sid)
         changed = False
+        stopped_legs: list[tuple[dict, str, object]] = []
 
         for o in pos.get("orders", []):
             label = o.get("account", "primary")
@@ -906,12 +1363,21 @@ async def reconcile_broker() -> None:
                         # lived (2026-09-18: hours behind a breakeven stop).
                         await _conclude_slice_row(loop, APIS_BY_LABEL.get(label), pos, o,
                                                   f"broker_{reason}")
+                        if reason == "sl" and o.get("ladder"):
+                            stopped_legs.append((o, label, pnl))
                     else:                              # pending -> gone, never filled
                         o["broker_state"] = "cancelled"
                         await loop.run_in_executor(None, db.record_slice_close,
                                                    sid_i, idx, o["ticket_id"], "cancelled", None)
                         log.info("[%s:%s] TP%d CANCELLED unfilled (broker)", sid_i, label, idx)
                     changed = True
+
+        # Trade SL ladder: re-enter stopped legs that still have budget.
+        for o, label, pnl in stopped_legs:
+            new = await _ladder_reenter(loop, pos, sid_i, o, label, pnl)
+            if new:
+                pos["orders"].append(new)
+            changed = True   # persist the ladder bookkeeping either way
 
         if changed:
             await r.set(key, json.dumps(pos))
@@ -1011,9 +1477,11 @@ async def _classify_open_signals(open_ids) -> tuple[list[str], list[str], bool]:
     loop = asyncio.get_running_loop()
     symbol = next(iter(ALLOWED_INSTRUMENTS))
     all_positions: list[dict] = []
-    for acc in ACCOUNTS:
-        client = acc["client"]
-        positions = await loop.run_in_executor(None, lambda c=client: c.get_open_positions(symbol))
+    # All accounts are queried AT ONCE (this runs before every entry).
+    results = await asyncio.gather(*(
+        loop.run_in_executor(None, lambda c=acc["client"]: c.get_open_positions(symbol))
+        for acc in ACCOUNTS))
+    for acc, positions in zip(list(ACCOUNTS), results):
         if positions is None:
             if acc.get("source") == "db":
                 acc["healthy"] = False  # excluded from this signal's entries
@@ -1062,6 +1530,10 @@ async def handle_new_signal(msg) -> None:
     if bad:
         log.warning(f"[{msg.id}] malformed signal ({bad}) — skip")
         return
+    t_recv = time.monotonic()
+    # Tell the other copy-trader about this signal right away (VIP priority).
+    asyncio.get_running_loop().run_in_executor(
+        None, db.record_channel_signal, CHANNEL, msg.id, sig)
     # Repost guard. The no-pyramiding check below already stops a duplicate from
     # opening a SECOND live position, but it cannot tell a repost from a genuine
     # re-entry: when the first copy is still an unfilled pending limit it
@@ -1081,7 +1553,7 @@ async def handle_new_signal(msg) -> None:
     # New entries only — replies, closes, sweeps, and broker reconciliation are
     # never gated. DB unreachable -> nothing is entered (fail-closed).
     loop = asyncio.get_running_loop()
-    db_ok = await refresh_accounts()
+    db_ok = await refresh_accounts(load_new=False)
     if not db_ok or not any(a.get("entries", True) for a in ACCOUNTS):
         why = ("manager_gate (strategy paused)" if db_ok
                else "manager_gate (DB unreachable — fail-closed)")
@@ -1114,9 +1586,31 @@ async def handle_new_signal(msg) -> None:
 
     log.info(f"[{msg.id}] NEW SIGNAL {sig['side']} {sig['instrument']} "
              f"entry={sig['entry_low']}-{sig['entry_high']} SL={sig['sl']} TPs={sig['tps']}")
-    pos = await place_order(msg.id, sig)
+    posted_at = msg.date.astimezone(timezone.utc).isoformat()
+    accounts = _entry_accounts()
+    if PRIORITY_CHANNEL and accounts:
+        shared = [a for a in accounts if _meta_id(a) in _priority_meta]
+        if shared:
+            accounts = [a for a in accounts if a not in shared]
+            vip_id = await loop.run_in_executor(None, lambda: db.find_channel_match(
+                PRIORITY_CHANNEL, sig, PRIORITY_MATCH_SEC, PRIORITY_TOLERANCE))
+            labels = {a["label"] for a in shared}
+            if vip_id is not None:
+                log.warning(f"[{msg.id}] VIP already posted this trade (msg {vip_id}) — "
+                            f"{sorted(labels)} left to the VIP bot")
+                await loop.run_in_executor(None, lambda: _record_signals(
+                    sig, status="REJECTED", rejection_reason=f"vip_priority (VIP msg {vip_id})",
+                    signal_at=posted_at, only_labels=labels))
+            else:
+                asyncio.create_task(_deferred_priority_entry(msg.id, sig, shared, text, posted_at))
+        if not accounts:
+            return
+    pos = await place_order(msg.id, sig, accounts)
+    log.info("[%s] orders sent %.2fs after receipt, %.1fs after the post", msg.id,
+             time.monotonic() - t_recv,
+             (datetime.now(timezone.utc) - msg.date.astimezone(timezone.utc)).total_seconds())
     pos["raw"] = text
-    pos["posted_at"] = msg.date.astimezone(timezone.utc).isoformat()
+    pos["posted_at"] = posted_at
     # Only track the signal if at least one slice actually hit the broker. A
     # registration when orders=[] wedges the no-pyramiding guard until the 12h
     # stale sweep — costing every subsequent signal of the session.
@@ -1135,7 +1629,7 @@ async def handle_new_signal(msg) -> None:
     # Surface this signal on the dashboard Signals tab: one row per account that
     # got orders (PLACED), one per account that the broker rejected (REJECTED).
     placed = {o.get("account", "primary") for o in pos["orders"]}
-    reject = {a["label"] for a in _entry_accounts()} - placed
+    reject = {a["label"] for a in accounts} - placed
     reason = (f"TG @{CHANNEL} | zone {sig['entry_low']}-{sig['entry_high']} "
               f"| SL {sig['sl']} | TP {sig['tps']}")
     await loop.run_in_executor(None, lambda: _record_signals(
@@ -1145,6 +1639,61 @@ async def handle_new_signal(msg) -> None:
         await loop.run_in_executor(None, lambda: _record_signals(
             sig, status="REJECTED", rejection_reason="no orders on this account",
             signal_at=pos.get("posted_at"), only_labels=reject))
+
+
+async def _deferred_priority_entry(msg_id: int, sig: dict, shared: list[dict],
+                                   text: str, posted_at: str) -> None:
+    """Neymar posted first: give VIP PRIORITY_WAIT_SEC to post the same trade
+    before the accounts shared with the VIP bot take the Neymar one."""
+    loop = asyncio.get_running_loop()
+    labels = {a["label"] for a in shared}
+    try:
+        deadline = loop.time() + PRIORITY_WAIT_SEC
+        while loop.time() < deadline:
+            await asyncio.sleep(0.5)
+            vip_id = await loop.run_in_executor(None, lambda: db.find_channel_match(
+                PRIORITY_CHANNEL, sig, PRIORITY_MATCH_SEC, PRIORITY_TOLERANCE))
+            if vip_id is not None:
+                log.warning(f"[{msg_id}] VIP posted the same trade (msg {vip_id}) — "
+                            f"{sorted(labels)} left to the VIP bot")
+                await loop.run_in_executor(None, lambda: _record_signals(
+                    sig, status="REJECTED", rejection_reason=f"vip_priority (VIP msg {vip_id})",
+                    signal_at=posted_at, only_labels=labels))
+                return
+        key = f"{REDIS_PREFIX}:signal:{msg_id}"
+        existing = await r.get(key)
+        if existing and str(json.loads(existing).get("status", "")).startswith("closed"):
+            return                              # the channel already ended this signal
+        accounts = [a for a in shared if a in _entry_accounts()]
+        if not accounts:
+            return
+        log.info(f"[{msg_id}] no VIP match within {PRIORITY_WAIT_SEC:.0f}s — "
+                 f"trading {sorted(a['label'] for a in accounts)}")
+        pos2 = await place_order(msg_id, sig, accounts)
+        placed = {o.get("account", "primary") for o in pos2["orders"]}
+        if pos2["orders"]:
+            existing = await r.get(key)
+            if existing:
+                pos = json.loads(existing)
+                pos["orders"].extend(pos2["orders"])
+                await r.set(key, json.dumps(pos))
+                for o in pos2["orders"]:
+                    await loop.run_in_executor(None, lambda o=o: db.insert_order(msg_id, o))
+            else:
+                pos2["raw"], pos2["posted_at"] = text, posted_at
+                await r.set(key, json.dumps(pos2))
+                await r.sadd(f"{REDIS_PREFIX}:open", str(msg_id))
+                await loop.run_in_executor(None, lambda: db.insert_signal(pos2, CHANNEL))
+            await loop.run_in_executor(None, lambda: _record_signals(
+                sig, status="PLACED", reason=f"TG @{CHANNEL} (no VIP match)",
+                signal_at=posted_at, only_labels=placed))
+        missing = {a["label"] for a in accounts} - placed
+        if missing:
+            await loop.run_in_executor(None, lambda: _record_signals(
+                sig, status="REJECTED", rejection_reason="no orders on this account",
+                signal_at=posted_at, only_labels=missing))
+    except Exception as e:
+        log.exception(f"[{msg_id}] deferred VIP-priority entry failed: {e}")
 
 
 async def handle_reply(msg) -> None:
@@ -1170,7 +1719,9 @@ async def handle_reply(msg) -> None:
     outcome = classify_outcome(text)
     if not outcome:
         return
-    if outcome.get("tp_hit") == 1 or outcome.get("breakeven"):
+    if outcome.get("breakeven") and BE_KEEP_LEGS > 0:
+        await breakeven_partial(parent_id)          # "set breakeven / zero risk"
+    elif outcome.get("tp_hit") == 1 or outcome.get("breakeven"):
         await move_to_breakeven(parent_id)
     if outcome.get("tp_hit") == 3 or "all 3 tps" in text.lower():
         await close_order(parent_id, "tp3")
@@ -1252,6 +1803,7 @@ async def main(args):
     asyncio.create_task(_stale_sweeper())
     asyncio.create_task(_position_poller())
     asyncio.create_task(_account_refresher())
+    asyncio.create_task(_drawdown_guard())
     await client.run_until_disconnected()
 
 

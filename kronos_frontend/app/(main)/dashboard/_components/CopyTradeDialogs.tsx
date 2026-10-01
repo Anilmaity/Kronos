@@ -2,6 +2,7 @@
 // Popups for the Telegram copy-trade tabs (Neymar / Neymar VIP):
 //   AddCopyTradeDialog — "Add Data": put another broker account on the tab
 //   PriceDialog        — change an account's fixed lot ("Price")
+//   RiskDialog         — Trade SL + the account's Daily / Max drawdown
 // The copy-trader trades every account on the tab at its Price — the TOTAL lot
 // per signal, split evenly across the signal's TP legs (min 0.01 per leg).
 import React, { useEffect, useState } from "react";
@@ -13,6 +14,7 @@ import {
   ADD_COPY_TRADE_ACCOUNT,
   GET_COPY_TRADE_ACCOUNT_OPTIONS,
   SET_COPY_TRADE_LOT,
+  UPDATE_COPY_TRADE_RISK,
 } from "@/GraphQL/strategyControls";
 import {
   Dialog,
@@ -33,11 +35,12 @@ interface BrokerOption {
   metaAccountId: string | null;
   hasToken: boolean;
   isActive: boolean;
+  ddEquity: string | null;
   userstrategys: { id: string; strategy: { id: string } | null }[];
 }
 
 const LOT_HELP =
-  "Total lot per signal, split across the signal's TP legs (e.g. 0.1 with 3 TPs = 3 × 0.03). Minimum 0.01 per leg.";
+  "Total lot per signal, split over its 5 trades (e.g. 0.1 = 5 × 0.02). Each trade is at least 0.01, so below 0.05 still places 5 × 0.01.";
 
 // Mirrors the backend's parse_lot: 0.01 – 100 in steps of 0.01.
 export const lotError = (raw: string): string | null => {
@@ -81,6 +84,108 @@ const buttonStyle = (primary: boolean, disabled = false): React.CSSProperties =>
   cursor: disabled ? "not-allowed" : "pointer",
 });
 
+// ── Stop loss / drawdown fields (shared by Add Data and the RiskDialog) ──────
+export interface RiskForm {
+  tradeSl: string;
+  maxSl: string;
+  dailyFloor: string;
+  maxFloor: string;
+  dailyOffset: string;
+  maxOffset: string;
+}
+
+export const emptyRisk = (): RiskForm => ({
+  tradeSl: "",
+  maxSl: "90",
+  dailyFloor: "",
+  maxFloor: "",
+  dailyOffset: "230",
+  maxOffset: "470",
+});
+
+const num = (v: string): number | null => (v.trim() === "" ? null : Number(v));
+const DD_BUFFER = 10;
+
+export const riskError = (f: RiskForm, equity?: number | null): string | null => {
+  const fields: [string, string][] = [
+    ["Trade SL", f.tradeSl],
+    ["Max SL per trade", f.maxSl],
+    ["Daily drawdown", f.dailyFloor],
+    ["Max drawdown", f.maxFloor],
+    ["Daily reset amount", f.dailyOffset],
+    ["Max reset amount", f.maxOffset],
+  ];
+  for (const [label, raw] of fields) {
+    const v = num(raw);
+    if (v !== null && (!Number.isFinite(v) || v <= 0)) return `${label} must be greater than 0`;
+  }
+  if (equity) {
+    for (const [label, raw] of [["Daily drawdown", f.dailyFloor], ["Max drawdown", f.maxFloor]] as const) {
+      const v = num(raw);
+      if (v !== null && v >= equity - DD_BUFFER)
+        return `${label} must be below the current equity ${equity.toFixed(2)} (minus ${DD_BUFFER})`;
+    }
+  }
+  return null;
+};
+
+export const riskVariables = (f: RiskForm) => {
+  const tradeSl = num(f.tradeSl);
+  const dailyFloor = num(f.dailyFloor);
+  const maxFloor = num(f.maxFloor);
+  return {
+    tradeSlUsd: tradeSl,
+    maxSlPerTradeUsd: num(f.maxSl),
+    dailyDdFloor: dailyFloor,
+    maxDdFloor: maxFloor,
+    dailyDdOffset: dailyFloor === null ? null : num(f.dailyOffset),
+    maxDdOffset: maxFloor === null ? null : num(f.maxOffset),
+  };
+};
+
+const RiskFields = ({ form, setForm }: { form: RiskForm; setForm: (f: RiskForm) => void }) => {
+  const field = (key: keyof RiskForm, label: string, placeholder: string, help?: string) => (
+    <div className="flex flex-col gap-1">
+      <span style={labelStyle}>{label}</span>
+      <input
+        type="number"
+        inputMode="decimal"
+        min={0}
+        step={0.01}
+        style={fieldStyle}
+        placeholder={placeholder}
+        value={form[key]}
+        onChange={(e) => setForm({ ...form, [key]: e.target.value })}
+      />
+      {help && <span style={{ fontSize: "11px", color: "var(--tv-text-3)" }}>{help}</span>}
+    </div>
+  );
+  return (
+    <>
+      <div className="grid grid-cols-2 gap-3">
+        {field("tradeSl", "Trade SL (USD)", "Channel SL",
+          "Total loss allowed for one signal, split across its legs. Empty = channel's SL.")}
+        {field("maxSl", "Max SL per trade (USD)", "90",
+          "No single trade risks more (also caps the channel's SL). A stopped trade re-enters until its share is used.")}
+      </div>
+      <div className="grid grid-cols-2 gap-3">
+        {field("dailyFloor", "Daily drawdown (equity)", "Optional",
+          "Equity floor for today. Reaching it closes every trade on the account.")}
+        {field("maxFloor", "Max drawdown (equity)", "Optional",
+          "Overall equity floor. Reaching it closes every trade on the account.")}
+      </div>
+      {(form.dailyFloor.trim() !== "" || form.maxFloor.trim() !== "") && (
+        <div className="grid grid-cols-2 gap-3">
+          {field("dailyOffset", "Daily reset (USD below equity)", "230",
+            "Each new broker day: daily floor = that day's equity − this.")}
+          {field("maxOffset", "Max reset (USD below equity)", "470",
+            "Each new broker day: max floor = that day's equity − this.")}
+        </div>
+      )}
+    </>
+  );
+};
+
 const brokerName = (b: BrokerOption) =>
   b.label || b.name || b.accountHolderName || b.metaAccountId || b.id.slice(0, 8);
 
@@ -101,12 +206,14 @@ export const AddCopyTradeDialog = ({
   const [loading, setLoading] = useState(false);
   const [brokerId, setBrokerId] = useState("");
   const [lot, setLot] = useState("0.1");
+  const [risk, setRisk] = useState<RiskForm>(emptyRisk());
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
     if (!open) return;
     setBrokerId("");
     setLot("0.1");
+    setRisk(emptyRisk());
     setLoading(true);
     client
       .query({ query: GET_COPY_TRADE_ACCOUNT_OPTIONS, fetchPolicy: "no-cache" })
@@ -122,8 +229,11 @@ export const AddCopyTradeDialog = ({
   );
   const usable = (b: BrokerOption) => b.isActive && Boolean(b.metaAccountId) && b.hasToken;
 
+  const selected = brokers.find((b) => b.id === brokerId);
+  const equity = selected?.ddEquity ? Number(selected.ddEquity) : null;
   const err = lotError(lot);
-  const canSave = Boolean(brokerId) && !err && !saving;
+  const rErr = riskError(risk, equity);
+  const canSave = Boolean(brokerId) && !err && !rErr && !saving;
 
   const save = () => {
     if (!canSave) return;
@@ -131,7 +241,7 @@ export const AddCopyTradeDialog = ({
     client
       .mutate({
         mutation: ADD_COPY_TRADE_ACCOUNT,
-        variables: { source, userBrokerId: brokerId, lotSize: Number(lot) },
+        variables: { source, userBrokerId: brokerId, lotSize: Number(lot), ...riskVariables(risk) },
         fetchPolicy: "no-cache",
       })
       .then(({ data }) => {
@@ -150,7 +260,7 @@ export const AddCopyTradeDialog = ({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent>
+      <DialogContent className="max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>Add Data</DialogTitle>
           <DialogDescription>
@@ -212,6 +322,14 @@ export const AddCopyTradeDialog = ({
               {err ?? LOT_HELP}
             </span>
           </div>
+
+          <RiskFields form={risk} setForm={setRisk} />
+          {equity !== null && (
+            <span style={{ fontSize: "12px", color: "var(--tv-text-3)" }}>
+              Current equity: {equity.toFixed(2)}
+            </span>
+          )}
+          {rErr && <span style={{ fontSize: "12px", color: "var(--tv-down)" }}>{rErr}</span>}
         </div>
 
         <DialogFooter className="gap-2">
@@ -318,3 +436,136 @@ export const PriceDialog = ({
 // "0.1 lot" for a fixed Price, "Auto" for the bot's risk-based sizing.
 export const formatLot = (lotSize: string | null | undefined) =>
   lotSize ? `${Number(lotSize)} lot` : "Auto";
+
+export const RiskDialog = ({
+  open,
+  onOpenChange,
+  userStrategyId,
+  accountName,
+  initial,
+  equity,
+  onSaved,
+}: {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  userStrategyId: string;
+  accountName: string;
+  initial: RiskForm;
+  equity: number | null;
+  onSaved: () => void;
+}) => {
+  const [risk, setRisk] = useState<RiskForm>(initial);
+  const [saving, setSaving] = useState(false);
+
+  useEffect(() => {
+    if (open) setRisk(initial);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [open]);
+
+  const err = riskError(risk, equity);
+
+  const save = () => {
+    if (err || saving) return;
+    setSaving(true);
+    client
+      .mutate({
+        mutation: UPDATE_COPY_TRADE_RISK,
+        variables: { userStrategyId, ...riskVariables(risk) },
+        fetchPolicy: "no-cache",
+      })
+      .then(({ data }) => {
+        const res = data.UpdateCopyTradeRisk;
+        if (res.Ok) {
+          toast.success("Stop loss & drawdown saved");
+          onOpenChange(false);
+          onSaved();
+        } else {
+          toast.error(res.Response);
+        }
+      })
+      .catch((e) => middleware(e))
+      .finally(() => setSaving(false));
+  };
+
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="max-h-[90vh] overflow-y-auto">
+        <DialogHeader>
+          <DialogTitle>Stop Loss &amp; Drawdown — {accountName}</DialogTitle>
+          <DialogDescription>
+            Trade SL applies from the next signal. Drawdown floors are per MT5 account (shared by
+            both Neymar tabs) and are checked every 2 seconds.
+            {equity !== null ? ` Current equity: ${equity.toFixed(2)}.` : ""}
+          </DialogDescription>
+        </DialogHeader>
+        <div className="flex flex-col gap-4 py-2">
+          <RiskFields form={risk} setForm={setRisk} />
+          {err && <span style={{ fontSize: "12px", color: "var(--tv-down)" }}>{err}</span>}
+        </div>
+        <DialogFooter className="gap-2">
+          <button style={buttonStyle(false)} onClick={() => onOpenChange(false)}>
+            Cancel
+          </button>
+          <button style={buttonStyle(true, Boolean(err) || saving)} disabled={Boolean(err) || saving} onClick={save}>
+            {saving ? "Saving…" : "Save"}
+          </button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+};
+
+const str = (v: string | null | undefined) => (v ? String(Number(v)) : "");
+
+// Prefill for RiskDialog from a row + its account.
+export const riskFromRow = (
+  us: { tradeSlUsd?: string | null; maxSlPerTradeUsd?: string | null },
+  ub: {
+    dailyDdFloor?: string | null;
+    maxDdFloor?: string | null;
+    dailyDdOffset?: string | null;
+    maxDdOffset?: string | null;
+  }
+): RiskForm => ({
+  tradeSl: str(us.tradeSlUsd),
+  maxSl: str(us.maxSlPerTradeUsd) || "90",
+  dailyFloor: str(ub.dailyDdFloor),
+  maxFloor: str(ub.maxDdFloor),
+  dailyOffset: str(ub.dailyDdOffset) || "230",
+  maxOffset: str(ub.maxDdOffset) || "470",
+});
+
+export const formatUsd = (v: string | null | undefined) =>
+  v ? Number(v).toLocaleString("en-US", { maximumFractionDigits: 2 }) : "—";
+
+// Guard status written by the copy-trader -> short label + colour.
+export const ddStatusLabel = (status: string | null | undefined): { text: string; color: string } | null => {
+  switch (status) {
+    case "breached_daily":
+      return { text: "Daily DD hit — closed", color: "var(--tv-down)" };
+    case "breached_max":
+      return { text: "Max DD hit — closed", color: "var(--tv-down)" };
+    case "near_daily":
+    case "near_max":
+    case "blocked_today":
+      return { text: "Blocked today", color: "var(--tv-down)" };
+    case "floor_above_equity":
+      return { text: "Floor ≥ equity — check", color: "var(--tv-down)" };
+    default:
+      return null;
+  }
+};
+
+// Column widths of the copy-trade tab table (header and rows must match).
+export const CT_COL = {
+  no: "w-[5%]",
+  name: "w-[14%]",
+  open: "w-[9%]",
+  price: "w-[8%]",
+  tradeSl: "w-[10%]",
+  daily: "w-[12%]",
+  max: "w-[12%]",
+  status: "w-[10%]",
+  pnl: "w-[10%]",
+  actions: "w-[10%]",
+};

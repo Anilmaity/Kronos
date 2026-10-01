@@ -1,6 +1,6 @@
 import graphene
 
-from apis.copy_trade import SOURCE_STRATEGY_IDS, parse_lot
+from apis.copy_trade import SOURCE_STRATEGY_IDS, apply_drawdown, parse_lot, parse_risk
 from apis.models import UserStrategy, Strategy, UserBroker
 from apis.schema.utils import user_authenticate
 from apis.schema.types.user_strategy_type import UserStrategyType
@@ -22,9 +22,16 @@ class AddCopyTradeAccount(graphene.Mutation):
         source = graphene.String(required=True)
         user_broker_id = graphene.String(required=True)
         lot_size = graphene.Float(required=True)
+        # Optional stop loss / drawdown (see apis/copy_trade.py).
+        trade_sl_usd = graphene.Float()
+        max_sl_per_trade_usd = graphene.Float()
+        daily_dd_floor = graphene.Float()
+        max_dd_floor = graphene.Float()
+        daily_dd_offset = graphene.Float()
+        max_dd_offset = graphene.Float()
 
     @user_authenticate
-    def mutate(self, info, source, user_broker_id, lot_size):
+    def mutate(self, info, source, user_broker_id, lot_size, **risk_args):
         def fail(msg):
             return AddCopyTradeAccount(UserStrategy=None, Response=msg, Ok=False)
 
@@ -48,6 +55,10 @@ class AddCopyTradeAccount(graphene.Mutation):
         if not (userbroker.meta_account_id or "").strip() or not userbroker.meta_api_token_enc:
             return fail("Account has no MetaAPI account id / token — add them in Accounts first")
 
+        risk, err = parse_risk(**risk_args, last_equity=userbroker.dd_equity)
+        if err:
+            return fail(err)
+
         if UserStrategy.objects.filter(
             user_broker=userbroker, strategy_id__in=strategy_ids
         ).exists():
@@ -64,7 +75,15 @@ class AddCopyTradeAccount(graphene.Mutation):
             name=strategy.name,
             multiplyer=1,
             lot_size=lot,
+            trade_sl_usd=risk["trade_sl_usd"],
+            max_sl_per_trade_usd=risk["max_sl_per_trade_usd"],
             is_active=True,
             deployed=True,
         )
+        # Drawdown is per MT5 account: only overwrite it when this popup set one,
+        # so adding the account to the second tab doesn't clear the first's.
+        if risk["daily_dd_floor"] is not None or risk["max_dd_floor"] is not None:
+            fields = apply_drawdown(userbroker, risk)
+            if fields:
+                userbroker.save(update_fields=fields + ["modified_at"])
         return AddCopyTradeAccount(UserStrategy=userstrategy, Response="Success", Ok=True)

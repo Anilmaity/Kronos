@@ -387,7 +387,8 @@ def load_account_rows(strategy_id: str, user_strategy_ids: list[str]) -> list[di
                 """
                 SELECT us.id::text, us.strategy_id::text, us.lot_size, us.is_active,
                        us.deployed, us.archived, ub.id::text, ub.meta_account_id,
-                       ub.meta_api_token_enc, ub.is_active
+                       ub.meta_api_token_enc, ub.is_active,
+                       us.trade_sl_usd, us.max_sl_per_trade_usd
                   FROM apis_userstrategy us
                   JOIN apis_userbroker ub ON ub.id = us.user_broker_id
                  WHERE us.strategy_id::text = %s OR us.id::text = ANY(%s)
@@ -399,12 +400,87 @@ def load_account_rows(strategy_id: str, user_strategy_ids: list[str]) -> list[di
         log.warning("load_account_rows: DB read failed (%s)", e)
         return None
     keys = ("user_strategy_id", "strategy_id", "lot_size", "us_active", "deployed",
-            "archived", "user_broker_id", "meta_account_id", "token_enc", "broker_active")
+            "archived", "user_broker_id", "meta_account_id", "token_enc", "broker_active",
+            "trade_sl_usd", "max_sl_per_trade_usd")
     out = []
     for row in rows:
         d = dict(zip(keys, row))
-        d["lot_size"] = float(d["lot_size"]) if d["lot_size"] is not None else None
+        for k in ("lot_size", "trade_sl_usd", "max_sl_per_trade_usd"):
+            d[k] = float(d[k]) if d[k] is not None else None
         d["entries"] = bool(d["us_active"]) and bool(d["deployed"]) and not d["archived"] \
             and bool(d["broker_active"])
         out.append(d)
     return out
+
+
+# ── Drawdown guard state (apis_userbroker) ─────────────────────────────────────
+_DD_COLS = ("daily_dd_floor", "max_dd_floor", "daily_dd_offset", "max_dd_offset",
+            "dd_day", "dd_blocked_day")
+
+
+def load_drawdown_rows(user_broker_ids: list[str]) -> dict[str, dict] | None:
+    """{user_broker_id: {daily_dd_floor, max_dd_floor, daily_dd_offset,
+    max_dd_offset, dd_day, dd_blocked_day}} (money as float, days as date).
+    None when the DB can't be read."""
+    if not user_broker_ids:
+        return {}
+    try:
+        with _default_dashboard._connect() as conn, conn.cursor() as cur:
+            cur.execute(
+                f"SELECT id::text, {', '.join(_DD_COLS)} FROM apis_userbroker "
+                f"WHERE id::text = ANY(%s)",
+                (list(user_broker_ids),),
+            )
+            rows = cur.fetchall()
+    except Exception as e:
+        log.warning("load_drawdown_rows: DB read failed (%s)", e)
+        return None
+    out = {}
+    for row in rows:
+        d = dict(zip(_DD_COLS, row[1:]))
+        for k in ("daily_dd_floor", "max_dd_floor", "daily_dd_offset", "max_dd_offset"):
+            d[k] = float(d[k]) if d[k] is not None else None
+        out[row[0]] = d
+    return out
+
+
+_DD_WRITABLE = {"daily_dd_floor", "max_dd_floor", "dd_day", "dd_blocked_day", "dd_status",
+                "dd_equity", "dd_equity_at"}
+
+
+def save_drawdown(user_broker_id: str, **fields) -> bool:
+    """Write guard state back to apis_userbroker (shown on the Neymar tabs)."""
+    cols = [k for k in fields if k in _DD_WRITABLE]
+    if not cols:
+        return True
+    try:
+        with _default_dashboard._connect() as conn, conn.cursor() as cur:
+            cur.execute(
+                f"UPDATE apis_userbroker SET {', '.join(f'{c} = %s' for c in cols)}, "
+                f"modified_at = now() WHERE id::text = %s",
+                [fields[c] for c in cols] + [user_broker_id],
+            )
+        return True
+    except Exception as e:
+        log.warning("save_drawdown %s failed: %s", user_broker_id, e)
+        return False
+
+
+def load_strategy_meta_accounts(strategy_id: str) -> set[str] | None:
+    """MetaAPI account ids of every account that is live (deployed, active, not
+    archived, broker active) on `strategy_id` — used to find the accounts the
+    Neymar bot shares with the VIP bot. None on DB error."""
+    try:
+        with _default_dashboard._connect() as conn, conn.cursor() as cur:
+            cur.execute(
+                """SELECT DISTINCT ub.meta_account_id
+                     FROM apis_userstrategy us
+                     JOIN apis_userbroker ub ON ub.id = us.user_broker_id
+                    WHERE us.strategy_id::text = %s AND us.deployed AND us.is_active
+                      AND NOT us.archived AND ub.is_active AND ub.meta_account_id <> ''""",
+                (strategy_id,),
+            )
+            return {r[0].strip() for r in cur.fetchall() if r[0]}
+    except Exception as e:
+        log.warning("load_strategy_meta_accounts: DB read failed (%s)", e)
+        return None

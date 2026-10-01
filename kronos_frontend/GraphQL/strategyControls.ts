@@ -79,8 +79,28 @@ export const GET_ARCHIVED_STRATEGIES = gql`
 // ── Telegram copy-trade tabs (Neymar / Neymar VIP) ─────────────────────────────
 // Add a broker account to a copy-trade tab at a fixed total lot per signal.
 export const ADD_COPY_TRADE_ACCOUNT = gql`
-  mutation AddCopyTradeAccount($source: String!, $userBrokerId: String!, $lotSize: Float!) {
-    AddCopyTradeAccount(source: $source, userBrokerId: $userBrokerId, lotSize: $lotSize) {
+  mutation AddCopyTradeAccount(
+    $source: String!
+    $userBrokerId: String!
+    $lotSize: Float!
+    $tradeSlUsd: Float
+    $maxSlPerTradeUsd: Float
+    $dailyDdFloor: Float
+    $maxDdFloor: Float
+    $dailyDdOffset: Float
+    $maxDdOffset: Float
+  ) {
+    AddCopyTradeAccount(
+      source: $source
+      userBrokerId: $userBrokerId
+      lotSize: $lotSize
+      tradeSlUsd: $tradeSlUsd
+      maxSlPerTradeUsd: $maxSlPerTradeUsd
+      dailyDdFloor: $dailyDdFloor
+      maxDdFloor: $maxDdFloor
+      dailyDdOffset: $dailyDdOffset
+      maxDdOffset: $maxDdOffset
+    ) {
       Ok
       Response
     }
@@ -109,6 +129,7 @@ export const GET_COPY_TRADE_ACCOUNT_OPTIONS = gql`
         metaAccountId
         hasToken
         isActive
+        ddEquity
         userstrategys {
           id
           strategy {
@@ -116,6 +137,32 @@ export const GET_COPY_TRADE_ACCOUNT_OPTIONS = gql`
           }
         }
       }
+    }
+  }
+`;
+
+// Trade SL + the account's Daily / Max drawdown. Every field is sent; null clears it.
+export const UPDATE_COPY_TRADE_RISK = gql`
+  mutation UpdateCopyTradeRisk(
+    $userStrategyId: String!
+    $tradeSlUsd: Float
+    $maxSlPerTradeUsd: Float
+    $dailyDdFloor: Float
+    $maxDdFloor: Float
+    $dailyDdOffset: Float
+    $maxDdOffset: Float
+  ) {
+    UpdateCopyTradeRisk(
+      userStrategyId: $userStrategyId
+      tradeSlUsd: $tradeSlUsd
+      maxSlPerTradeUsd: $maxSlPerTradeUsd
+      dailyDdFloor: $dailyDdFloor
+      maxDdFloor: $maxDdFloor
+      dailyDdOffset: $dailyDdOffset
+      maxDdOffset: $maxDdOffset
+    ) {
+      Ok
+      Response
     }
   }
 `;

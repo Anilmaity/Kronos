@@ -103,6 +103,7 @@ def init_schema() -> bool:
         ddl = _render_ddl(_SCHEMA_PATH.read_text(encoding="utf-8"), _PREFIX)
         with _connect() as conn, conn.cursor() as cur:
             cur.execute(ddl)
+            cur.execute(_XCHAN_DDL)
         log.info("[db] schema initialised")
         return True
     except Exception as e:
@@ -157,6 +158,79 @@ def insert_signal(pos: dict, channel: str) -> None:
                 )
     except Exception as e:
         log.error("[db] insert_signal msg_id=%s failed: %s", pos.get("msg_id"), e)
+
+
+# ── Cross-channel signal log (VIP priority) ─────────────────────────────────────
+# One table SHARED by every copy-trader (deliberately not prefixed): each bot
+# records every signal the moment it arrives, so the Neymar bot can see that
+# VIP already posted the same trade and leave shared accounts to the VIP bot.
+_XCHAN_DDL = """
+CREATE TABLE IF NOT EXISTS kronos_xchan_signals (
+    channel      TEXT        NOT NULL,
+    msg_id       BIGINT      NOT NULL,
+    side         TEXT        NOT NULL,
+    entry_low    NUMERIC     NOT NULL,
+    entry_high   NUMERIC     NOT NULL,
+    received_at  TIMESTAMPTZ NOT NULL DEFAULT now(),
+    PRIMARY KEY (channel, msg_id)
+);
+CREATE INDEX IF NOT EXISTS kronos_xchan_signals_recent ON kronos_xchan_signals (received_at);
+"""
+
+
+def record_channel_signal(channel: str, msg_id: int, sig: dict) -> None:
+    try:
+        with _connect() as conn, conn.cursor() as cur:
+            cur.execute(
+                """INSERT INTO kronos_xchan_signals (channel, msg_id, side, entry_low, entry_high)
+                   VALUES (%s, %s, %s, %s, %s) ON CONFLICT DO NOTHING""",
+                (channel, msg_id, sig["side"], sig["entry_low"], sig["entry_high"]),
+            )
+    except Exception as e:
+        log.warning("[db] record_channel_signal %s/%s failed: %s", channel, msg_id, e)
+
+
+def find_channel_match(channel: str, sig: dict, within_sec: float,
+                       tolerance: float) -> int | None:
+    """msg_id of a signal `channel` posted in the last `within_sec` seconds with
+    the same side and an entry zone within `tolerance` price of `sig`'s
+    (overlapping zones always match), else None. None on DB error too."""
+    try:
+        with _connect() as conn, conn.cursor() as cur:
+            cur.execute(
+                """SELECT msg_id FROM kronos_xchan_signals
+                    WHERE channel = %s AND side = %s
+                      AND received_at >= now() - make_interval(secs => %s)
+                      AND entry_low  <= %s + %s
+                      AND entry_high >= %s - %s
+                    ORDER BY received_at DESC LIMIT 1""",
+                (channel, sig["side"], within_sec,
+                 sig["entry_high"], tolerance, sig["entry_low"], tolerance),
+            )
+            row = cur.fetchone()
+        return int(row[0]) if row else None
+    except Exception as e:
+        log.warning("[db] find_channel_match failed: %s", e)
+        return None
+
+
+def insert_order(msg_id: int, o: dict) -> None:
+    """Persist one extra slice of an already-recorded signal (an SL re-entry)."""
+    try:
+        with _connect() as conn, conn.cursor() as cur:
+            cur.execute(
+                f"""
+                INSERT INTO {_T_ORDERS} (
+                    ticket_id, msg_id, tp_index, kind,
+                    volume, entry, sl, tp, account
+                ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
+                ON CONFLICT (ticket_id) DO NOTHING
+                """,
+                (str(o["ticket_id"]), msg_id, o["tp_index"], o["kind"], o["volume"],
+                 o["entry"], o["sl"], o["tp"], o.get("account", "primary")),
+            )
+    except Exception as e:
+        log.error("[db] insert_order msg_id=%s tp=%s failed: %s", msg_id, o.get("tp_index"), e)
 
 
 def record_update(msg_id: int, kind: str, payload: dict) -> None:

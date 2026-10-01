@@ -33,6 +33,8 @@ from __future__ import annotations
 import logging
 import os
 import time
+from concurrent.futures import ThreadPoolExecutor
+from datetime import datetime
 from typing import Literal
 
 import requests
@@ -433,6 +435,65 @@ class MetaApiClient:
                           self.label, position_id)
             return None
 
+    # ── Drawdown guard support ─────────────────────────────────────────────
+    def get_account_information(self) -> dict | None:
+        """{'equity': float, 'balance': float, ...} or None when unavailable.
+
+        Single fast attempt (no retry/backoff): the drawdown guard polls every
+        couple of seconds and must never stall on one slow call — it just reads
+        again on the next tick."""
+        if self.dry_run or not self._token or not self._account:
+            return None
+        try:
+            url = (f"{self._resolve_trading_url()}/users/current/accounts/{self._account}"
+                   f"/account-information")
+            resp = requests.get(url, headers=self._headers(), timeout=5)
+            resp.raise_for_status()
+            d = resp.json()
+            if d.get("equity") is None:
+                return None
+            d["equity"] = float(d["equity"])
+            if d.get("balance") is not None:
+                d["balance"] = float(d["balance"])
+            return d
+        except Exception as e:
+            log.warning("[MetaAPI:%s] account-information failed: %s", self.label, e)
+            return None
+
+    def get_broker_time(self) -> datetime | None:
+        """The broker server's wall-clock time (naive) — its trading day starts at
+        broker midnight. None when unavailable."""
+        if self.dry_run or not self._token or not self._account:
+            return None
+        try:
+            url = (f"{self._resolve_trading_url()}/users/current/accounts/{self._account}"
+                   f"/server-time")
+            resp = requests.get(url, headers=self._headers(), timeout=5)
+            resp.raise_for_status()
+            raw = str(resp.json().get("brokerTime") or "")
+            return datetime.strptime(raw[:19], "%Y-%m-%d %H:%M:%S") if raw else None
+        except Exception as e:
+            log.warning("[MetaAPI:%s] server-time failed: %s", self.label, e)
+            return None
+
+    def close_everything(self) -> dict:
+        """Close EVERY open position and cancel EVERY pending order on this
+        account (any symbol, any source) — the drawdown-breach action. Closes run
+        in parallel so the account is flat as fast as the broker allows.
+        Returns {'positions': n, 'orders': n, 'failed': n, 'complete': bool}."""
+        positions = self.get_open_positions() or []
+        orders = self.get_pending_orders() or []
+        jobs = ([(self.close_position, str(p.get("id"))) for p in positions if p.get("id")] +
+                [(self.cancel_order, str(o.get("id"))) for o in orders if o.get("id")])
+        failed = 0
+        if jobs:
+            with ThreadPoolExecutor(max_workers=min(16, len(jobs))) as ex:
+                for ok in ex.map(lambda j: j[0](j[1]), jobs):
+                    failed += 0 if ok else 1
+        left = self.get_open_positions()
+        return {"positions": len(positions), "orders": len(orders), "failed": failed,
+                "complete": left is not None and len(left) == 0}
+
     def stops_level_price(self, symbol: str) -> float:
         """The broker's minimum SL/TP distance for `symbol` (from the cached spec)."""
         broker = _SYMBOL_MAP.get(symbol, symbol)
@@ -510,15 +571,14 @@ class MetaApiClient:
                         msg_id, self.label, total_volume, len(tps))
             return []
 
-        submitted: list[dict] = []
-        for i, (o_sl, o_tp) in enumerate(levels, start=1):
+        def place_leg(i: int, o_sl: float, o_tp: float | None) -> dict | None:
+            """Place one TP leg; returns its slice dict or None on failure."""
             comment = f"tg-{msg_id}-tp{i}"
+            kind = "market" if use_market else "limit"
             if use_market:
                 tid = self.place_market_order_full(side, symbol, vol_each, o_sl, o_tp, comment)
-                kind = "market"
             else:
                 tid, retcode = self.place_limit_order(side, symbol, vol_each, entry, o_sl, o_tp, cur, comment)
-                kind = "limit"
                 # Price moved to the wrong side of the limit between plan and trade
                 # (the recurring INVALID_PRICE drop) — enter at market instead of
                 # aborting the whole signal, as long as we're not chasing into the
@@ -535,25 +595,38 @@ class MetaApiClient:
                                     "— falling back to market", msg_id, self.label, i, entry, cur2)
                         tid = self.place_market_order_full(side, symbol, vol_each, o_sl, o_tp, comment)
                         kind = "market"
-                        if tid:
-                            use_market = True  # remaining slices go straight to market
                     else:
                         log.warning("[%s:%s] TP%d limit rejected INVALID_PRICE and market unsafe "
                                     "(cur=%s sl=%.2f) — not chasing", msg_id, self.label, i, cur2, o_sl)
             if not tid:
-                log.error("[%s:%s] order placement failed for TP%d — aborting remaining slices",
-                          msg_id, self.label, i)
-                for prev in submitted:
-                    if prev["kind"] == "limit":
-                        self.cancel_order(prev["ticket_id"])
-                    else:
-                        self.close_position(prev["ticket_id"])
-                return []
-            submitted.append({"tp_index": i, "tp": o_tp, "ticket_id": tid, "kind": kind,
-                              "volume": vol_each, "entry": entry, "sl": o_sl})
+                return None
             log.info("[%s:%s] %s order placed | TP%d=%s vol=%.2f ticket=%s",
-                     msg_id, self.label, kind, i,
-                     "open" if o_tp is None else o_tp, vol_each, tid)
+                     msg_id, self.label, kind, i, "open" if o_tp is None else o_tp, vol_each, tid)
+            return {"tp_index": i, "tp": o_tp, "ticket_id": tid, "kind": kind,
+                    "volume": vol_each, "entry": entry, "sl": o_sl}
+
+        # All legs go to the broker AT ONCE (each REST order is ~0.3-0.7s; placing
+        # them one by one delayed the last leg by seconds). All-or-nothing as
+        # before: if any leg fails, the legs that did go in are cancelled/closed.
+        legs = list(enumerate(levels, start=1))
+        if len(legs) == 1:
+            results = [place_leg(1, *levels[0])]
+        else:
+            with ThreadPoolExecutor(max_workers=len(legs)) as ex:
+                results = list(ex.map(lambda leg: place_leg(leg[0], *leg[1]), legs))
+        if any(r is None for r in results):
+            failed = [i for (i, _), r in zip(legs, results) if r is None]
+            log.error("[%s:%s] order placement failed for TP%s — rolling back the other legs",
+                      msg_id, self.label, ",".join(map(str, failed)))
+            for prev in results:
+                if prev is None:
+                    continue
+                if prev["kind"] == "limit":
+                    self.cancel_order(prev["ticket_id"])
+                else:
+                    self.close_position(prev["ticket_id"])
+            return []
+        submitted: list[dict] = list(results)
         return submitted
 
 
