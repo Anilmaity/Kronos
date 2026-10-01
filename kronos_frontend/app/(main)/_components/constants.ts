@@ -8,7 +8,7 @@ import {
   MdCandlestickChart,
 } from "react-icons/md";
 import { HiChartPie, HiDocumentText } from "react-icons/hi";
-import { FaRectangleList } from "react-icons/fa6";
+import { FaRectangleList, FaTelegram, FaCrown } from "react-icons/fa6";
 import { IoSettingsOutline, IoFlashOutline } from "react-icons/io5";
 
 export interface SidebarLinks {
@@ -23,6 +23,16 @@ export const sidebarLinkArray: SidebarLinkArrayProps[] = [
     title: "Dashboard",
     path: "/dashboard",
     icon: MdDashboard,
+  },
+  {
+    title: "Neymar",
+    path: "/neymar-copy",
+    icon: FaTelegram,
+  },
+  {
+    title: "Neymar VIP",
+    path: "/neymar-vip",
+    icon: FaCrown,
   },
   {
     title: "Chart",

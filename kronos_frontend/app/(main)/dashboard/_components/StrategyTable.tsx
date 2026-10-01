@@ -19,15 +19,19 @@ import StrategyTableRow from "./StrategyTableRow";
 import { dateFormatter } from "@/utils/dateFormatter";
 import { gql } from "@apollo/client";
 import { client } from "@/GraphQL/client";
+import { StrategySource, matchesSource } from "./strategySources";
 
 interface StrategyTableProps {
   selectedDate: Date;
   brokerIds: string[];
+  // Limit the table to one strategy family (e.g. the Neymar copy-traders); all strategies when omitted.
+  source?: StrategySource;
 }
 
 const StrategyTable: React.FC<StrategyTableProps> = ({
   selectedDate,
   brokerIds,
+  source,
 }) => {
   let global_index = 0;
   const { expandIndex, setExpandIndex } = useExpandIndex();
@@ -124,7 +128,15 @@ const StrategyTable: React.FC<StrategyTableProps> = ({
         fetchPolicy: "no-cache",
       });
 
-      const userbrokers = data.getuserdata?.userbrokers ?? [];
+      const allBrokers: UserExchangeSetProps[] = data.getuserdata?.userbrokers ?? [];
+      const userbrokers = source
+        ? allBrokers
+            .map((broker) => ({
+              ...broker,
+              userstrategys: broker.userstrategys.filter((s) => matchesSource(s, source)),
+            }))
+            .filter((broker) => broker.userstrategys.length > 0)
+        : allBrokers;
       setTableData(userbrokers);
 
       const sum = userbrokers.reduce(
@@ -165,7 +177,7 @@ const StrategyTable: React.FC<StrategyTableProps> = ({
     // Clean up the interval to prevent memory leaks
     return () => clearInterval(intervalId);
 
-  }, [brokerIds, userStrategyIds, selectedDate]);
+  }, [brokerIds, userStrategyIds, selectedDate, source]);
 
   useEffect(() => {
     // Fetch data when strategyChangeHappend

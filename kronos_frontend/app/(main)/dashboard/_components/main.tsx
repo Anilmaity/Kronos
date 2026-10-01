@@ -3,8 +3,15 @@ import React, { useState } from "react";
 
 import StrategyTable from "./StrategyTable";
 import DatePicker from "@/app/(main)/dashboard/_components/DatePicker";
+import { StrategySource } from "./strategySources";
 
-const DashboardPage = () => {
+const DashboardPage = ({
+  label = "01 — Dashboard",
+  source,
+}: {
+  label?: string;
+  source?: StrategySource;
+}) => {
   const [brokerIds] = useState<string[]>([]);
   const [isLoading] = useState(false);
 
@@ -49,7 +56,7 @@ const DashboardPage = () => {
               color: "var(--tv-text-3)",
             }}
           >
-            01 — Dashboard
+            {label}
           </span>
         </div>
 
@@ -76,7 +83,7 @@ const DashboardPage = () => {
 
       {/* ── Positions ── */}
       <div className="w-full">
-        <StrategyTable selectedDate={selectedDate} brokerIds={brokerIds} />
+        <StrategyTable selectedDate={selectedDate} brokerIds={brokerIds} source={source} />
       </div>
     </div>
   );
