@@ -90,7 +90,12 @@ async def main() -> int:
     acc.update(lot=0.05, trade_sl=None, max_sl=None, entries=True, healthy=True, ub_id="e2e-ub")
     lt.LEG_COUNT, lt.BE_KEEP_LEGS, lt.ACT_ON_MANAGEMENT = 5, 2, True
 
-    info = client.get_account_information() or {}
+    info = {}
+    for _ in range(6):                               # MetaAPI blips: retry the safety check
+        info = client.get_account_information() or {}
+        if info:
+            break
+        await asyncio.sleep(2)
     if info.get("type") != "ACCOUNT_TRADE_MODE_DEMO":
         print(f"REFUSING: account type is {info.get('type')!r}, not demo")
         return 2

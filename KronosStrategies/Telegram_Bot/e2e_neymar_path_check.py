@@ -60,7 +60,12 @@ async def main():
     await lt.refresh_accounts()                      # loads _priority_meta (VIP accounts)
     acc = lt.ACCOUNTS[0]
     c = acc["client"]
-    info = c.get_account_information() or c.get_account_information() or {}
+    info = {}
+    for _ in range(6):                               # MetaAPI blips: retry the safety check
+        info = c.get_account_information() or {}
+        if info:
+            break
+        await asyncio.sleep(2)
     if info.get("type") != "ACCOUNT_TRADE_MODE_DEMO" or c.get_open_positions():
         print("REFUSE: not demo or not flat")
         return
@@ -90,9 +95,15 @@ async def main():
         text, _ = signal_text(c)
         t0 = time.monotonic()
         await lt.handle_new_signal(msg(990803, text))
-        await asyncio.sleep(lt.PRIORITY_WAIT_SEC + 4)
-        legs = tagged(c, 990803)
-        check("C: no VIP match -> Neymar trades after the 10s wait", len(legs) == 5,
+        # The deferred entry runs in the background; during a MetaAPI outage its
+        # legs keep retrying (up to 45s) — wait for them instead of a fixed time.
+        legs = []
+        while time.monotonic() - t0 < lt.PRIORITY_WAIT_SEC + 50:
+            await asyncio.sleep(1)
+            legs = tagged(c, 990803)
+            if len(legs) >= 5:
+                break
+        check("C: no VIP match -> Neymar trades after the VIP wait", len(legs) == 5,
               f"{len(legs)} legs, {time.monotonic() - t0:.1f}s after the message")
         check("C: 5 x 0.04 lot", all(abs(p["volume"] - 0.04) < 1e-9 for p in legs), str([p["volume"] for p in legs]))
         dists = [round(p["openPrice"] - p["stopLoss"], 2) for p in legs]
