@@ -103,10 +103,10 @@ MIN_LOT = float(os.getenv("MIN_LOT", "0.01"))
 # OFF, so the free channel keeps placing exactly the numeric TPs it always did.
 TP_OPEN_LEG = os.getenv("TG_TP_OPEN_LEG", "false").lower() == "true"
 
-# Act on position-management messages (breakeven / move SL / close). Default OFF
-# for the same reason: the free channel's copy must not change behaviour because
-# a second source was added.
-ACT_ON_MANAGEMENT = os.getenv("TG_ACT_ON_MANAGEMENT", "false").lower() == "true"
+# Act on position-management messages (breakeven / move SL / close / "trade
+# failed"). ON for both channels (2026-10-01: the operator wants breakeven ->
+# exit 3 keep 2 and "trade failed" -> exit all on Neymar as well as VIP).
+ACT_ON_MANAGEMENT = os.getenv("TG_ACT_ON_MANAGEMENT", "true").lower() == "true"
 
 # Drop a signal identical to one already seen within this many seconds. The VIP
 # channel reposts 145 of its 315 signals (24%), often the same text twice in the
