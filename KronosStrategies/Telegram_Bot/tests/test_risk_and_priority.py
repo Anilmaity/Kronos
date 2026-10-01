@@ -180,7 +180,7 @@ def _guard(monkeypatch, client, cfg, ticks=1):
 
 def _cfg(daily=4500.0, mx_=4000.0, dd_day=date(2026, 10, 1), blocked=None):
     return {"daily_dd_floor": daily, "max_dd_floor": mx_, "daily_dd_offset": 230.0,
-            "max_dd_offset": 470.0, "dd_day": dd_day, "dd_blocked_day": blocked}
+            "max_dd_offset": 500.0, "dd_day": dd_day, "dd_blocked_day": blocked}
 
 
 def test_guard_ok_above_floors(monkeypatch):
@@ -236,7 +236,7 @@ def test_guard_new_broker_day_resets_floors_from_equity(monkeypatch):
     cfg = _cfg(dd_day=date(2026, 10, 1), blocked=date(2026, 10, 1))
     saved = _guard(monkeypatch, c, cfg)
     assert saved[0]["daily_dd_floor"] == 4390.0     # 4620 - 230
-    assert saved[0]["max_dd_floor"] == 4150.0       # 4620 - 470
+    assert saved[0]["max_dd_floor"] == 4120.0       # 4620 - 500
     assert saved[0]["dd_day"] == date(2026, 10, 2)
     assert not lt._dd_blocked({"ub_id": "ub-1"})    # yesterday's block is over
     assert c.closed == 0
@@ -373,7 +373,7 @@ class _ModBroker:
     def get_symbol_price(self, symbol):
         return {"bid": self.bid, "ask": self.bid + 0.2}
 
-    def modify_position_sl(self, t, sl):
+    def modify_position_sl(self, t, sl, tp=None):
         self.moved.append((t, sl))
         return True
 

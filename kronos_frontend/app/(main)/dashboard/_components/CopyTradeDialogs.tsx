@@ -13,6 +13,7 @@ import { middleware } from "@/GraphQL/middleware";
 import {
   ADD_COPY_TRADE_ACCOUNT,
   GET_COPY_TRADE_ACCOUNT_OPTIONS,
+  GET_COPY_TRADE_EQUITY,
   SET_COPY_TRADE_LOT,
   UPDATE_COPY_TRADE_RISK,
 } from "@/GraphQL/strategyControls";
@@ -100,7 +101,7 @@ export const emptyRisk = (): RiskForm => ({
   dailyFloor: "",
   maxFloor: "",
   dailyOffset: "230",
-  maxOffset: "470",
+  maxOffset: "500",
 });
 
 const num = (v: string): number | null => (v.trim() === "" ? null : Number(v));
@@ -143,7 +144,54 @@ export const riskVariables = (f: RiskForm) => {
   };
 };
 
-const RiskFields = ({ form, setForm }: { form: RiskForm; setForm: (f: RiskForm) => void }) => {
+// Polls an account's equity every 3s while `active` (the copy-trader refreshes it every 3s).
+export const useLiveEquity = (userBrokerId: string | undefined, active: boolean) => {
+  const [equity, setEquity] = useState<number | null>(null);
+  useEffect(() => {
+    setEquity(null);
+    if (!active || !userBrokerId) return;
+    let stop = false;
+    const load = () =>
+      client
+        .query({ query: GET_COPY_TRADE_EQUITY, fetchPolicy: "no-cache" })
+        .then(({ data }) => {
+          const b = (data.getuserdata?.userbrokers ?? []).find(
+            (x: { id: string }) => x.id === userBrokerId
+          );
+          if (!stop) setEquity(b?.ddEquity ? Number(b.ddEquity) : null);
+        })
+        .catch(() => undefined);
+    load();
+    const id = setInterval(load, 3000);
+    return () => {
+      stop = true;
+      clearInterval(id);
+    };
+  }, [userBrokerId, active]);
+  return equity;
+};
+
+const EquityLine = ({ equity, floor }: { equity: number | null; floor: string }) => {
+  if (equity === null) return null;
+  const f = floor.trim() === "" ? null : Number(floor);
+  const room = f !== null && Number.isFinite(f) ? equity - f : null;
+  return (
+    <span style={{ fontSize: "11px", color: room !== null && room <= 10 ? "var(--tv-down)" : "var(--tv-up)" }}>
+      Live equity {equity.toFixed(2)}
+      {room !== null ? ` · room ${room.toFixed(2)}` : ""}
+    </span>
+  );
+};
+
+const RiskFields = ({
+  form,
+  setForm,
+  equity = null,
+}: {
+  form: RiskForm;
+  setForm: (f: RiskForm) => void;
+  equity?: number | null;
+}) => {
   const field = (key: keyof RiskForm, label: string, placeholder: string, help?: string) => (
     <div className="flex flex-col gap-1">
       <span style={labelStyle}>{label}</span>
@@ -169,16 +217,22 @@ const RiskFields = ({ form, setForm }: { form: RiskForm; setForm: (f: RiskForm) 
           "No single trade risks more (also caps the channel's SL). A stopped trade re-enters until its share is used.")}
       </div>
       <div className="grid grid-cols-2 gap-3">
-        {field("dailyFloor", "Daily drawdown (equity)", "Optional",
-          "Equity floor for today. Reaching it closes every trade on the account.")}
-        {field("maxFloor", "Max drawdown (equity)", "Optional",
-          "Overall equity floor. Reaching it closes every trade on the account.")}
+        <div className="flex flex-col gap-1">
+          {field("dailyFloor", "Daily drawdown (equity)", "Optional",
+            "Equity floor for today. Reaching it closes every trade on the account.")}
+          <EquityLine equity={equity} floor={form.dailyFloor} />
+        </div>
+        <div className="flex flex-col gap-1">
+          {field("maxFloor", "Max drawdown (equity)", "Optional",
+            "Overall equity floor. Reaching it closes every trade on the account.")}
+          <EquityLine equity={equity} floor={form.maxFloor} />
+        </div>
       </div>
       {(form.dailyFloor.trim() !== "" || form.maxFloor.trim() !== "") && (
         <div className="grid grid-cols-2 gap-3">
           {field("dailyOffset", "Daily reset (USD below equity)", "230",
             "Each new broker day: daily floor = that day's equity − this.")}
-          {field("maxOffset", "Max reset (USD below equity)", "470",
+          {field("maxOffset", "Max reset (USD below equity)", "500",
             "Each new broker day: max floor = that day's equity − this.")}
         </div>
       )}
@@ -230,7 +284,8 @@ export const AddCopyTradeDialog = ({
   const usable = (b: BrokerOption) => b.isActive && Boolean(b.metaAccountId) && b.hasToken;
 
   const selected = brokers.find((b) => b.id === brokerId);
-  const equity = selected?.ddEquity ? Number(selected.ddEquity) : null;
+  const liveEquity = useLiveEquity(brokerId || undefined, open);
+  const equity = liveEquity ?? (selected?.ddEquity ? Number(selected.ddEquity) : null);
   const err = lotError(lot);
   const rErr = riskError(risk, equity);
   const canSave = Boolean(brokerId) && !err && !rErr && !saving;
@@ -323,10 +378,11 @@ export const AddCopyTradeDialog = ({
             </span>
           </div>
 
-          <RiskFields form={risk} setForm={setRisk} />
-          {equity !== null && (
+          <RiskFields form={risk} setForm={setRisk} equity={equity} />
+          {brokerId && equity === null && (
             <span style={{ fontSize: "12px", color: "var(--tv-text-3)" }}>
-              Current equity: {equity.toFixed(2)}
+              Equity appears here once the copy-trader has read this account (new accounts: after
+              they are added).
             </span>
           )}
           {rErr && <span style={{ fontSize: "12px", color: "var(--tv-down)" }}>{rErr}</span>}
@@ -495,11 +551,10 @@ export const RiskDialog = ({
           <DialogDescription>
             Trade SL applies from the next signal. Drawdown floors are per MT5 account (shared by
             both Neymar tabs) and are checked every 2 seconds.
-            {equity !== null ? ` Current equity: ${equity.toFixed(2)}.` : ""}
           </DialogDescription>
         </DialogHeader>
         <div className="flex flex-col gap-4 py-2">
-          <RiskFields form={risk} setForm={setRisk} />
+          <RiskFields form={risk} setForm={setRisk} equity={equity} />
           {err && <span style={{ fontSize: "12px", color: "var(--tv-down)" }}>{err}</span>}
         </div>
         <DialogFooter className="gap-2">
@@ -532,7 +587,7 @@ export const riskFromRow = (
   dailyFloor: str(ub.dailyDdFloor),
   maxFloor: str(ub.maxDdFloor),
   dailyOffset: str(ub.dailyDdOffset) || "230",
-  maxOffset: str(ub.maxDdOffset) || "470",
+  maxOffset: str(ub.maxDdOffset) || "500",
 });
 
 export const formatUsd = (v: string | null | undefined) =>

@@ -156,7 +156,7 @@ class RiskSettingsTests(CopyTradeTestBase):
         self.assertEqual(b.daily_dd_floor, Decimal("4550.00"))
         self.assertEqual(b.max_dd_floor, Decimal("4000.00"))
         self.assertEqual(b.daily_dd_offset, Decimal("230.00"))            # default reset amounts
-        self.assertEqual(b.max_dd_offset, Decimal("470.00"))
+        self.assertEqual(b.max_dd_offset, Decimal("500.00"))
 
     def test_add_without_risk_keeps_channel_sl_and_no_drawdown(self):
         b = self.broker()

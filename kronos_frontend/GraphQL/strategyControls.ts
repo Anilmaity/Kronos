@@ -166,3 +166,20 @@ export const UPDATE_COPY_TRADE_RISK = gql`
     }
   }
 `;
+
+// Live equity + drawdown state per account (polled every few seconds on the Neymar tabs).
+export const GET_COPY_TRADE_EQUITY = gql`
+  query GetCopyTradeEquity {
+    getuserdata {
+      userbrokers {
+        id
+        ddEquity
+        ddEquityAt
+        ddStatus
+        ddBlockedDay
+        dailyDdFloor
+        maxDdFloor
+      }
+    }
+  }
+`;

@@ -334,17 +334,17 @@ def _entry_accounts() -> list[dict]:
 #                                 next broker day
 #   * equity <= floor + buffer -> no new trades until the next broker day
 #   * new broker day (broker midnight) -> floors reset from that day's starting
-#     equity: daily = equity - daily offset (230), max = equity - max offset (470)
+#     equity: daily = equity - daily offset (230), max = equity - max offset (500)
 # A floor that is already at/above equity when first seen (a typo) blocks new
 # trades but never auto-closes — it closes only after equity was seen above it.
 DD_POLL_SEC = float(os.getenv("TG_DD_POLL_SEC", "2"))
 DD_BUFFER = float(os.getenv("TG_DD_BUFFER_USD", "10"))
 DD_CONFIG_REFRESH_SEC = 10
-DD_EQUITY_WRITE_SEC = 15
+DD_EQUITY_WRITE_SEC = 3          # equity shown live on the Neymar tabs
 DD_CLOSE_RETRY_SEC = 5
 DD_BROKER_TIME_REFRESH_SEC = 1800
 DEFAULT_DAILY_DD_OFFSET = 230.0
-DEFAULT_MAX_DD_OFFSET = 470.0
+DEFAULT_MAX_DD_OFFSET = 500.0
 _dd_state: dict[str, dict] = {}       # user_broker_id -> guard state
 _dd_cfg: dict[str, dict] = {}         # user_broker_id -> DB settings (refreshed)
 _dd_cfg_at = 0.0
@@ -924,7 +924,8 @@ async def modify_sl(msg_id: int, new_sl: float, *, managed: bool = True):
 
         for o, eff, meta in targets:
             # POSITION_MODIFY only applies once filled; pending limits ignore the call.
-            await loop.run_in_executor(None, client.modify_position_sl, o["ticket_id"], eff)
+            await loop.run_in_executor(None, client.modify_position_sl, o["ticket_id"], eff,
+                                       o.get("tp"))   # keep the TP (see modify_position_sl)
             o["sl"] = eff
             if meta:
                 o["ladder"] = meta                  # re-enter after this capped stop
@@ -1054,7 +1055,7 @@ async def breakeven_partial(msg_id: int) -> None:
         client = ACCOUNTS_BY_LABEL.get(o.get("account", "primary"))
         if client is not None and o.get("broker_state") == "filled":
             await loop.run_in_executor(None, client.modify_position_sl, o["ticket_id"],
-                                       pos["entry_mid"])
+                                       pos["entry_mid"], o.get("tp"))
         o["sl"] = pos["entry_mid"]
     await r.set(key, json.dumps(pos))
     log.info("[%s] BREAKEVEN: exited %d leg(s), kept %d at entry %.2f (%s)", msg_id,
@@ -1324,6 +1325,10 @@ async def reconcile_broker() -> None:
                     o["broker_state"], o["kind"], o["fill_price"] = "filled", "market", fp
                     await loop.run_in_executor(None, db.record_fill, sid_i, idx, o["ticket_id"], fp)
                     log.info("[%s:%s] TP%d FILLED @ %.2f (broker)", sid_i, label, idx, fp)
+                elif o.get("fill_price") is None and bpos.get("openPrice") is not None:
+                    # Market legs are born "filled": record the broker's real fill
+                    # so SL caps / moves are measured from it, not the plan entry.
+                    o["fill_price"] = float(bpos["openPrice"])
                 # Capture the broker's POSITION id (distinct from our order ticket
                 # for limit fills) so we can pull this slice's real close deal from
                 # history once it leaves the broker.

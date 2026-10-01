@@ -44,6 +44,7 @@ EXPECTED_QUERY_FIELDS = [
 
 EXPECTED_MUTATION_FIELDS = [
     "AddAccount",
+    "AddCopyTradeAccount",
     "AddStrategy",
     "AddStrategyAction",
     "ArchiveStrategy",
@@ -61,12 +62,14 @@ EXPECTED_MUTATION_FIELDS = [
     "Login",
     "PauseStrategy",
     "RunManagerBacktest",
+    "SetCopyTradeLot",
     "SetManagerMode",
     "SetUserStrategyMultiplier",
     "ToggleRiskProfile",
     "ToggleTrailingStoploss",
     "UnarchiveStrategy",
     "UpdateAccount",
+    "UpdateCopyTradeRisk",
     "UpdateManagerConfig",
     "UpdateStrategyAction",
     "UpdateUser",

@@ -71,7 +71,7 @@ class _Broker:
         self.cancelled.append(t)
         return True
 
-    def modify_position_sl(self, t, sl):
+    def modify_position_sl(self, t, sl, tp=None):
         self.moved.append((t, sl))
         return True
 
@@ -104,3 +104,35 @@ def test_breakeven_exits_three_keeps_two_farthest_at_entry(monkeypatch):
     assert states == {"t1": "closed", "t2": "closed", "t3": "closed",
                       "t4": "filled", "t5": "filled"}
     assert all(o["ladder"]["stopped"] for o in pos["orders"])   # no re-entries after BE
+
+
+def test_sl_modify_keeps_the_take_profit(monkeypatch):
+    """MetaAPI POSITION_MODIFY with only stopLoss REMOVES the TP (seen live on
+    the demo account) — the TP must always be re-sent."""
+    import metaapi_orders as mx
+    c = mx.MetaApiClient("tok", "acct", dry_run=False, label="x")
+    sent = []
+    monkeypatch.setattr(c, "_trade", lambda payload: sent.append(payload) or {"ok": 1})
+    c.modify_position_sl("p1", 1999.0, 2015.0)
+    c.modify_position_sl("p2", 1999.0)                  # open-ended runner: no TP
+    assert sent[0] == {"actionType": "POSITION_MODIFY", "positionId": "p1",
+                       "stopLoss": 1999.0, "takeProfit": 2015.0}
+    assert "takeProfit" not in sent[1]
+
+
+def test_bot_passes_each_legs_tp_when_moving_sl(monkeypatch):
+    broker = _Broker()
+    calls = []
+    broker.modify_position_sl = lambda t, sl, tp=None: calls.append((t, sl, tp)) or True
+    monkeypatch.setattr(lt, "BE_KEEP_LEGS", 2)
+    monkeypatch.setattr(lt, "ACCOUNTS_BY_LABEL", {"primary": broker})
+    monkeypatch.setattr(lt, "APIS_BY_LABEL", {"primary": None})
+    monkeypatch.setattr(lt.db, "record_slice_close", lambda *a, **k: None)
+    orders = [{"tp_index": i, "tp": tp, "ticket_id": f"t{i}", "kind": "market", "volume": 0.02,
+               "broker_state": "filled", "account": "primary"}
+              for i, tp in enumerate([2005.0, 2010.0, 2015.0], start=1)]
+    key = f"{lt.REDIS_PREFIX}:signal:43"
+    store = _Store({key: json.dumps({"side": "buy", "entry_mid": 2000.0, "orders": orders})})
+    monkeypatch.setattr(lt, "r", store)
+    asyncio.run(lt.breakeven_partial(43))
+    assert sorted(calls) == [("t2", 2000.0, 2010.0), ("t3", 2000.0, 2015.0)]

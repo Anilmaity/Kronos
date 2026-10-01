@@ -44,7 +44,7 @@ def parse_lot(value) -> tuple[Decimal | None, str | None]:
 # ── Stop loss / drawdown settings ─────────────────────────────────────────────
 DEFAULT_MAX_SL_PER_TRADE = Decimal("90")
 DEFAULT_DAILY_DD_OFFSET = Decimal("230")
-DEFAULT_MAX_DD_OFFSET = Decimal("470")
+DEFAULT_MAX_DD_OFFSET = Decimal("500")
 # Equity within this many USD above a floor = no new trades for the day; the
 # copy-trader uses the same buffer.
 DD_BUFFER = Decimal("10")
@@ -72,7 +72,7 @@ def parse_risk(*, trade_sl_usd=None, max_sl_per_trade_usd=None, daily_dd_floor=N
     """Validate the stop-loss / drawdown fields of the Add Data / settings popups.
 
     Returns ({field: Decimal | None}, None) or (None, error). Defaults: max SL per
-    trade 90 when a Trade SL is set (empty otherwise = the copy-trader's $90); day-reset offsets 230 / 470 when a floor is set.
+    trade 90 when a Trade SL is set (empty otherwise = the copy-trader's $90); day-reset offsets 230 / 500 when a floor is set.
     A floor at or above the last known equity (minus the buffer) is refused — it
     would close every trade / block the account the moment it is saved.
     """

@@ -21,6 +21,7 @@ import { gql } from "@apollo/client";
 import { client } from "@/GraphQL/client";
 import { StrategySource, matchesSource } from "./strategySources";
 import { CT_COL } from "./CopyTradeDialogs";
+import { GET_COPY_TRADE_EQUITY } from "@/GraphQL/strategyControls";
 
 interface StrategyTableProps {
   selectedDate: Date;
@@ -61,6 +62,26 @@ const StrategyTable: React.FC<StrategyTableProps> = ({
       setRemovedIds([]);
     }
   }, [removedKey]);
+
+  // Live equity / drawdown state every 3s on the copy-trade tabs (the full
+  // table refresh below runs every 15s).
+  useEffect(() => {
+    if (!copyTrade) return;
+    const poll = () =>
+      client
+        .query({ query: GET_COPY_TRADE_EQUITY, fetchPolicy: "no-cache" })
+        .then(({ data }) => {
+          const live = new Map<string, Partial<UserExchangeSetProps>>(
+            (data.getuserdata?.userbrokers ?? []).map((b: Partial<UserExchangeSetProps>) => [b.id, b])
+          );
+          setTableData((prev) =>
+            prev.map((b) => (live.has(b.id) ? { ...b, ...live.get(b.id) } : b))
+          );
+        })
+        .catch(() => undefined);
+    const id = setInterval(poll, 3000);
+    return () => clearInterval(id);
+  }, [copyTrade]);
 
   const saveRemovedIds = (ids: string[]) => {
     setRemovedIds(ids);

@@ -261,7 +261,10 @@ const StrategyTableRow: React.FC<StrategyTableRowProps> = ({
             <span>{formatUsd(account?.dailyDdFloor)}</span>
             {equity !== null && <span style={small}>equity {formatUsd(account?.ddEquity)}</span>}
           </div>
-          <div className={`tnum ${CT_COL.max} text-center`}>{formatUsd(account?.maxDdFloor)}</div>
+          <div className={`tnum ${CT_COL.max} text-center flex flex-col`}>
+            <span>{formatUsd(account?.maxDdFloor)}</span>
+            {equity !== null && <span style={small}>equity {formatUsd(account?.ddEquity)}</span>}
+          </div>
           <div className={`${CT_COL.status} flex flex-col items-center justify-center gap-1`}>
             <span
               style={{

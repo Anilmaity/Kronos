@@ -316,12 +316,19 @@ class MetaApiClient:
         retcode = None if tid else (resp.get("stringCode") or resp.get("numericCode"))
         return tid, retcode
 
-    def modify_position_sl(self, position_id: str, new_sl: float) -> bool:
+    def modify_position_sl(self, position_id: str, new_sl: float,
+                           take_profit: float | None = None) -> bool:
+        """Move a position's stop. ALWAYS pass the leg's take-profit: MetaAPI's
+        POSITION_MODIFY with only stopLoss REMOVES the TP at the broker (verified
+        on the demo account 2026-10-01). take_profit=None leaves no TP — right
+        only for the open-ended runner leg."""
         if position_id == "dry-run":
             log.info("[DRY:%s] modify_position_sl position=%s sl=%s", self.label, position_id, new_sl)
             return True
         payload = {"actionType": "POSITION_MODIFY", "positionId": position_id,
                    "stopLoss": round(new_sl, 2)}
+        if take_profit is not None:
+            payload["takeProfit"] = round(take_profit, 2)
         return self._trade(payload) is not None
 
     def cancel_order(self, order_id: str) -> bool:
@@ -652,8 +659,9 @@ def place_limit_order(side: Side, symbol: str, volume: float, entry: float,
                                              current_price, comment)
 
 
-def modify_position_sl(position_id: str, new_sl: float) -> bool:
-    return _default_client.modify_position_sl(position_id, new_sl)
+def modify_position_sl(position_id: str, new_sl: float,
+                       take_profit: float | None = None) -> bool:
+    return _default_client.modify_position_sl(position_id, new_sl, take_profit)
 
 
 def cancel_order(order_id: str) -> bool:
