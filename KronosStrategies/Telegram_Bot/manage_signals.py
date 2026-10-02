@@ -34,6 +34,18 @@ MOVE_SL_RE = re.compile(
     r"(?:move\s+)?(?:the\s+)?(?:sl|stop(?:\s*loss)?)\s*(?:to|@|at)\s*(\d+(?:\.\d+)?)",
     re.IGNORECASE)
 
+# Looser phrasing where words sit between the stop and the price: "I am adjusting
+# SL to one more time for large volume 4179", "SL adjusted for big volume 4179".
+# Needs a move verb next to SL/stop (so "SL hit -50 pips" never matches) and a
+# 4+ digit price (so stray small numbers like "50 pips" are never read as a level).
+ADJUST_SL_RE = re.compile(
+    r"(?:\b(?:adjust|move|shift|set|chang|updat|modif|trail)\w*\s+(?:the\s+|my\s+|our\s+)?"
+    r"(?:sl|stop(?:\s*loss)?)\b"
+    r"|\b(?:sl|stop(?:\s*loss)?)\s+(?:is\s+|has\s+been\s+|been\s+)?"
+    r"(?:adjust|moved|shift|chang|updat|modif|trail)\w*)"
+    r"[^\d\n]{0,60}?(\d{4,}(?:\.\d+)?)",
+    re.IGNORECASE)
+
 # Breakeven, in the many ways this channel says it. "move sl to entry" lands here
 # rather than in MOVE_SL_RE because "entry" is not a number.
 # `e[nm][tr][tr]y` deliberately also matches the channel's live misspellings of
@@ -81,7 +93,7 @@ def classify_management(text: str) -> dict | None:
     t = text or ""
     out: dict = {}
 
-    m = MOVE_SL_RE.search(t)
+    m = MOVE_SL_RE.search(t) or ADJUST_SL_RE.search(t)
     if m:
         out["move_sl"] = float(m.group(1))
     elif BREAKEVEN_RE.search(t):

@@ -54,6 +54,26 @@ def test_numeric_move_beats_breakeven():
     assert "breakeven" not in out
 
 
+@pytest.mark.parametrize("text", [
+    "I am adjusting SL to one more time for large volume 4179",
+    "i am adjusting sl one more time for large volume 4179 🙏",
+    "SL adjusted for large volume 4179",
+    "Move my stop loss again for big volume 4179",
+])
+def test_adjust_sl_with_words_before_the_price(text):
+    """Neymar 2026-10-02: words between "SL" and the price must not lose the move."""
+    assert classify_management(text)["move_sl"] == 4179.0
+
+
+@pytest.mark.parametrize("text", [
+    "SL hit -50 pips",
+    "Hit SL 4179",
+    "TP1 hit move sl to entry now",
+])
+def test_adjust_sl_needs_a_move_verb_and_a_price(text):
+    assert "move_sl" not in (classify_management(text) or {})
+
+
 # ─────────────────────── closes ───────────────────────
 
 def test_close_all():
