@@ -490,6 +490,9 @@ _VARIATION_STRATEGY_NAME = {
     # EMA20/200 gate, TP 2.5R) — 3y-validated spec v3, deployed PAUSED
     # (arm OFF, paper) pending live-fill measurement.
     "KRONOS_S100_M3_COMBO":        "S100 M3 Combo Scalper",
+    # Discretionary (2026-10-06): a Claude Code session on reaper decides,
+    # claude_trade.py executes under claude_guard's limits.
+    "claude_strategy":             "Claude Strategy",
 }
 
 
