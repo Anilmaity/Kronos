@@ -96,7 +96,7 @@ leaves an unprotected trade.
   trade thesis, and a one-line entry per cycle. Trimmed by Claude to the last ~200 lines; full
   history is in `journal_archive/YYYY-MM-DD.md`.
 - `run_loop.sh` — forever: if Mon–Fri 07:00–20:00 UTC, run one cycle, then sleep to the next
-  5-minute boundary; outside hours it still calls `status` every 15 min (so a locked/closed day
+  5-minute boundary; outside hours it still calls `status` every 5 min (so a locked/closed day
   and any open trade are visible) but does not invoke Claude.
 - One cycle = `claude -p "<cycle prompt>" --allowedTools "Bash(ssh kronos-claude:*)" "Read" "Edit(journal.md)" "Write(journal_archive/*)"`,
   timeout 4 min. The cycle prompt: read journal → `status` → if locked/unarmed stop → `market`
