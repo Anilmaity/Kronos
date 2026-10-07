@@ -13,7 +13,8 @@ only what is in `journal.md` and what the box tells you.
 | `ssh kronos-claude market --tf 5m,15m,1h --bars 120` | candles `[time_utc, o, h, l, c]` per timeframe + `ltp`. Timeframes: 1m 5m 15m 1h 4h 1d; bars ≤ 300 |
 | `ssh kronos-claude open --side BUY --sl 4125.5 --tp 4140 --why <one-line reason>` | market entry at the current price; `placed`, `reason`, `position` |
 | `ssh kronos-claude close --why <one-line reason>` | closes the open position |
-| `journal.md` (Read / Edit / Write) | your memory between cycles |
+| `journal.md` (Read / Edit / Write) | your memory between cycles (today's state + log) |
+| `lessons.md` (Read / Edit / Write) | your permanent learning file — kept across days, never archived |
 | `journal_archive/YYYY-MM-DD.md` (Write) | where trimmed journal days go |
 
 `--why` must be the **last** argument. Every command answers with one JSON line.
@@ -32,7 +33,8 @@ only what is in `journal.md` and what the box tells you.
 
 ## Each cycle
 
-1. Read `journal.md` — the **State** section first.
+1. Read `lessons.md` (the **Active rules** apply to every decision), then `journal.md` — the
+   **State** section first.
 2. `ssh kronos-claude status`.
    - `day_locked` set or `armed` false → add one log line saying so, stop.
 3. `ssh kronos-claude market --tf 5m,15m,1h --bars 120`. Once per session (or when the
@@ -45,6 +47,9 @@ only what is in `journal.md` and what the box tells you.
      it, or price reclaiming the swept level). Otherwise let the SL/TP work.
    - **HOLD** — open trade, idea intact.
 5. Update `journal.md` (see format) — always, even on a skip.
+6. **If a trade closed since the last cycle** (journal says a trade was open, `status` shows
+   none, or `realized_today_usd` changed), write its post-mortem in `lessons.md` this cycle
+   (see *Learning from mistakes*).
 
 ## Method (ICT/SMC)
 
@@ -83,6 +88,30 @@ only what is in `journal.md` and what the box tells you.
 At the first cycle of a new UTC day: move the previous day's Log lines to
 `journal_archive/<that date>.md` (create it), reset the State's day fields, keep the bias
 and lessons that still apply. Keep the whole file under ~200 lines.
+
+## Learning from mistakes — `lessons.md`
+
+Every closed trade gets a **post-mortem** in `lessons.md`, win or lose:
+
+```
+### T1 · 2026-10-06 10:50 BUY 0.09 @4159.24 SL 4156.5 TP 4170 → SL 11:07, −$25
+- Thesis: …            - What actually happened next: … (use the candles, not memory)
+- Mistake or variance? one of: MISTAKE (rule broken / bad read) · VARIANCE (good trade, lost)
+- Change: the rule you add/sharpen, or "none — variance"
+```
+
+Also post-mortem **near-misses that teach something** (a skipped A+ setup that ran, a
+broker error, a chase you avoided) in one line under *Notes*.
+
+Keep an **Active rules** list at the top of `lessons.md` — at most 15 short, testable rules,
+each citing the trade(s) that earned it (`[T1]`). Rules:
+- Only evidence-based: a rule needs at least one cited trade or near-miss. One loss is
+  weak evidence — prefer sharpening an existing rule over adding a new one.
+- Separate MISTAKE from VARIANCE honestly; do not add rules to "fix" plain variance.
+- Rules may tighten selectivity or placement (e.g. "SL beyond the sweep wick + 1.0 pt");
+  they can never loosen the box limits — those are not yours.
+- Once a week (Monday's first cycle) merge, reword or drop rules that later trades
+  contradicted, and keep a running scorecard line: trades · wins · losses · net USD.
 
 ## Rules of conduct
 

@@ -8,6 +8,7 @@ DST="$HOME/claude-strategy"
 mkdir -p "$DST/logs" "$DST/journal_archive"
 cp "$SRC/CLAUDE.md" "$SRC/cycle_prompt.md" "$SRC/run_loop.sh" "$SRC/start.sh" "$DST/"
 chmod +x "$DST/run_loop.sh" "$DST/start.sh"
+[ -f "$DST/lessons.md" ] || cp "$SRC/lessons.seed.md" "$DST/lessons.md"
 [ -f "$DST/journal.md" ] || printf '# Claude Strategy journal\n\n## State\n- (first cycle: build the HTF bias)\n\n## Log\n' > "$DST/journal.md"
 
 grep -q '^Host kronos-claude$' ~/.ssh/config 2>/dev/null || cat >> ~/.ssh/config <<'SSH'

@@ -21,6 +21,7 @@ while true; do
          claude -p "$prompt" \
            --allowedTools "Bash(ssh kronos-claude:*)" "Read" "Edit(journal.md)" \
                           "Write(journal.md)" "Write(journal_archive/**)" \
+                          "Edit(lessons.md)" "Write(lessons.md)" \
          2>&1 | tee -a "$log"; [ "${PIPESTATUS[0]}" -eq 0 ]; then
       fails=0
     else
