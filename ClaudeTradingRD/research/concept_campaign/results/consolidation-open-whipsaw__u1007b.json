@@ -1,0 +1,214 @@
+{
+ "concept_id": "consolidation-open-whipsaw",
+ "reading": "u1007b",
+ "testable": true,
+ "test_type": "rate",
+ "claim": "-",
+ "operationalization": {
+  "rules": [
+   "outcome: after first breach, first 5m close held beyond the breached boundary -> opposite boundary NOT reached (breakout)",
+   "range = trading-day high/low 18:00-09:30 NY (>=600 M1 bars), weekdays, no bias filter",
+   "first breach = first 5m bar 09:30-16:00 NY with high>RH or low<RL; both-sides bar drops the day; scan stops at an opposite-side breach",
+   "decision = that 5m bar's close; ref = its close; outcome = M1 touch of the opposite boundary until 16:00 NY",
+   "null = same distance/direction from the last close, same M1 bar count, random moment +/-30d at same NY clock +/-15 min"
+  ],
+  "params": {
+   "range_start": "18:00",
+   "range_end": "09:30",
+   "session": "09:30-16:00 NY",
+   "close_tf": "5min",
+   "horizon_end": "16:00",
+   "day_open_hour": 18,
+   "null_tod_tol_min": 15,
+   "null_window_days": 30,
+   "min_pre_m1": 600
+  }
+ },
+ "params_source": {
+  "range_start": "method_spec: \u00a71.4 daily candle opens 18:00 NY (canon); same range as library readings a/b",
+  "range_end": "corpus: xraklBJHW5k the 9:30 open (pre-open range); h1ZQWWQDhKA 'we haven't really left the range of morning open'",
+  "session": "declared-before-run: equity session the 09:30 anchor belongs to (as readings a/b)",
+  "close_tf": "corpus: h1ZQWWQDhKA 'you don't want to see us close back in the range' spoken over a 5-minute chart (draft timeframes htf 5m)",
+  "horizon_end": "declared-before-run: source gives no time limit; 16:00 NY ends the session",
+  "day_open_hour": "session_window_fit: 18:00 NY roll settled",
+  "null_tod_tol_min": "declared-before-run: hold NY clock fixed (trap 9), as readings a/b",
+  "null_window_days": "phase3: locked +/-30-day regime window",
+  "min_pre_m1": "declared-before-run: skip stub sessions (trap 6), as readings a/b"
+ },
+ "n": 1043,
+ "span": {
+  "start": "2016-01-04 14:50:00+00:00",
+  "end": "2026-07-22 13:35:00+00:00",
+  "years": 10.543
+ },
+ "avg_R": null,
+ "avg_R_gross": null,
+ "win_rate": null,
+ "pf": null,
+ "observed_rate": 0.06519654841802493,
+ "null_rate": 0.06730584851390221,
+ "lift": 0.9686609686609685,
+ "control": {
+  "rate": 0.06730584851390221,
+  "reps": 5,
+  "kind": "null_fn x5"
+ },
+ "diff": -0.002109300095877273,
+ "ci_lo": -0.018408437200383636,
+ "ci_hi": 0.014381591562799445,
+ "ci_method": "day_block",
+ "p": 0.8009180816338247,
+ "halves": {
+  "H1": {
+   "n": 447,
+   "diff": 0.0008948545861297563,
+   "ci_lo": -0.02550335570469798,
+   "ci_hi": 0.02685682326621924,
+   "ci_method": "iid",
+   "p": 0.9465872746826938,
+   "start": "2016-01-04 14:50:00+00:00",
+   "end": "2020-12-31 15:40:00+00:00"
+  },
+  "H2": {
+   "n": 596,
+   "diff": -0.004362416107382562,
+   "ci_lo": -0.027516778523489938,
+   "ci_hi": 0.01812080536912751,
+   "ci_method": "iid",
+   "p": 0.7078843360520723,
+   "start": "2021-01-06 15:30:00+00:00",
+   "end": "2026-07-22 13:35:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 223,
+   "diff": 0.006278026905829598,
+   "ci_lo": -0.03049327354260089,
+   "ci_hi": 0.04753363228699551,
+   "ci_method": "iid",
+   "p": 0.7524606195662962,
+   "start": "2016-01-04 14:50:00+00:00",
+   "end": "2018-08-17 15:30:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 249,
+   "diff": -0.0032128514056224966,
+   "ci_lo": -0.03614457831325302,
+   "ci_hi": 0.03295180722891566,
+   "ci_method": "iid",
+   "p": 0.8553714314915881,
+   "start": "2018-08-23 18:55:00+00:00",
+   "end": "2021-03-31 13:35:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 296,
+   "diff": -0.002027027027027034,
+   "ci_lo": -0.03445945945945946,
+   "ci_hi": 0.03380067567567566,
+   "ci_method": "iid",
+   "p": 0.9073318170699254,
+   "start": "2021-04-13 13:35:00+00:00",
+   "end": "2023-12-01 15:25:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 275,
+   "diff": -0.008000000000000007,
+   "ci_lo": -0.03927272727272727,
+   "ci_hi": 0.02327272727272727,
+   "ci_method": "iid",
+   "p": 0.6160993925757927,
+   "start": "2023-12-04 15:25:00+00:00",
+   "end": "2026-07-22 13:35:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.02343513777102597,
+ "mde_threshold": 0.016826462128475553,
+ "power_floor_n": 2024,
+ "verdict": "UNDERPOWERED",
+ "verdict_detail": "CI contains 0; MDE 0.0234 vs threshold 0.0168, effective n 1043 (power floor n=2024, have 1043)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 1045,
+  "min_slack_min": 0.0,
+  "passed": true,
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 94,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "kind",
+    "side",
+    "rh",
+    "rl",
+    "ref"
+   ],
+   "ignored": [],
+   "lookback": "20D",
+   "recent": "1D",
+   "events_fp": "a4627d49cc1331a9",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "reps": 5,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "mde_threshold": null,
+  "cluster": null,
+  "outcome_horizon": "1 days 00:00:00",
+  "null_kind": "null_fn x5"
+ },
+ "notes": "",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/update_20261007/consolidation-open-whipsaw.py",
+ "runtime_sec": 0.15,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-10-07T06:13:57+00:00",
+ "dropped": {
+  "nan_rows": 2
+ },
+ "null_kind": "null_fn x5",
+ "events_fp": "a4627d49cc1331a9",
+ "predictors_probed": true,
+ "ci_components": {
+  "phase3_iid": [
+   -0.017646212847555135,
+   0.014765100671140938
+  ],
+  "day_block": [
+   -0.018408437200383636,
+   0.014381591562799445
+  ]
+ },
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 1043,
+  "n_clusters": null,
+  "n_eff": 1043
+ },
+ "run_id": "74eb38ff19684833a888bd2eb9bc60a9",
+ "hyp_key": "e3e979238331a5bf"
+}

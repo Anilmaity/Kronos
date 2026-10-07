@@ -1,0 +1,254 @@
+{
+ "concept_id": "large-wick-target-adjustment",
+ "reading": "u1007a",
+ "testable": true,
+ "test_type": "trade",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "entry: 1h CISD (series_open, 2/2 swings, max_wait 3, min_series 1), decide at the confirming 1h close, enter next M1 open, stop at the protected swing, hold 10h",
+   "running 18:00 NY day: O = first M1 open 18:00-19:00 NY, H/L running high/low, P = confirm close; large wick = opposing run > 1.0 x max(direction*(P-O),0)",
+   "ordered ladder strictly in trade direction: short P > O > L > PDL, long P < O < H < PDH (rung1 daily open, rung2 intraday extreme, rung3 PDL/PDH)",
+   "target = rung 3 (PDL short / PDH long); claim '+' vs matched random entry"
+  ],
+  "params": {
+   "entry_tf": "1h",
+   "max_hold": "10h",
+   "daily_open": "18:00 NY",
+   "pdx_min_coverage": 0.5,
+   "ctrl_tod_tol_min": 30,
+   "wick_cut": 1.0,
+   "open_max_delay_min": 60,
+   "target": "rung 3 previous-day extreme"
+  }
+ },
+ "params_source": {
+  "entry_tf": "phase3: meta/conjunction_preregistration.md \u00a71.8-1.13 (locked rung-0 config) \u2014 the concept changes targets only",
+  "max_hold": "phase3: 10 entry-TF bars (\u00a71.13)",
+  "daily_open": "method_spec \u00a71.4: 18:00 NY daily candle (same as prior readings a/b)",
+  "pdx_min_coverage": "declared-before-run: README trap 6, skip stub sessions",
+  "ctrl_tod_tol_min": "declared-before-run (audit, decided from event clock profiles, not outcomes): README trap 9 - not a timing concept but events cluster in NY hours (u1007a 18-01 NY share 0.107 vs base 0.313; u1007b complement 0.536 vs gated 0.232)",
+  "wick_cut": "threshold_fits: large wick = opposing_run/|body| > 1.0 (grade A; same as readings a/b)",
+  "open_max_delay_min": "declared-before-run: first traded minute of reopen hour",
+  "target": "corpus: K7XVj2w3CP4 'daily open, then it would be intraday lows, then previous day low' / 'It's always in that order.'"
+ },
+ "n": 1211,
+ "span": {
+  "start": "2016-01-05 16:00:00+00:00",
+  "end": "2026-07-22 19:00:00+00:00",
+  "years": 10.543
+ },
+ "avg_R": -0.05134987064223698,
+ "avg_R_gross": -0.011349870642236966,
+ "win_rate": 0.43352601156069365,
+ "pf": 0.8827088866255903,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "n": 5909,
+  "avg_R": -0.033488396652551294,
+  "win_rate": 0.41326789642917583,
+  "pf": 0.9276883726892291,
+  "sd_R": 1.1701367698205425,
+  "exit_mix": {
+   "stop": 0.3856828566593332,
+   "target": 0.16855643932983586,
+   "time": 0.44576070401083095
+  },
+  "avg_R_gross": 0.006511603347448728,
+  "reps": 5,
+  "fill_rate": 0.97588769611891
+ },
+ "diff": -0.017861473989685683,
+ "ci_lo": -0.09142689200385029,
+ "ci_hi": 0.06173048739441975,
+ "ci_method": "phase3_block",
+ "p": 0.6475641911204314,
+ "halves": {
+  "H1": {
+   "n": 603,
+   "diff": 0.020179151003115278,
+   "ci_lo": -0.08462308525861238,
+   "ci_hi": 0.11893974366576768,
+   "ci_method": "block",
+   "p": 0.6975855011484134,
+   "start": "2016-01-05 16:00:00+00:00",
+   "end": "2020-12-29 22:00:00+00:00"
+  },
+  "H2": {
+   "n": 608,
+   "diff": -0.04369837261978296,
+   "ci_lo": -0.14905757211210593,
+   "ci_hi": 0.068253007179706,
+   "ci_method": "block",
+   "p": 0.43055207490434255,
+   "start": "2021-01-14 15:00:00+00:00",
+   "end": "2026-07-22 19:00:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 336,
+   "diff": -0.004164624255867583,
+   "ci_lo": -0.15800085505732311,
+   "ci_hi": 0.1392258611061763,
+   "ci_method": "block",
+   "p": 0.9561986172917598,
+   "start": "2016-01-05 16:00:00+00:00",
+   "end": "2018-08-21 10:00:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 296,
+   "diff": 0.06092281748088228,
+   "ci_lo": -0.06026419625858629,
+   "ci_hi": 0.20008980662267017,
+   "ci_method": "iid",
+   "p": 0.3590049126786779,
+   "start": "2018-08-29 09:00:00+00:00",
+   "end": "2021-04-07 16:00:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 277,
+   "diff": -0.057560321510193344,
+   "ci_lo": -0.23027149616276607,
+   "ci_hi": 0.10446031373173822,
+   "ci_method": "block",
+   "p": 0.5002674857700669,
+   "start": "2021-04-12 10:00:00+00:00",
+   "end": "2023-11-29 09:00:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 302,
+   "diff": -0.05006424751345394,
+   "ci_lo": -0.1846783197998088,
+   "ci_hi": 0.08868113205160898,
+   "ci_method": "iid",
+   "p": 0.472811063722633,
+   "start": "2023-12-05 08:00:00+00:00",
+   "end": "2026-07-22 19:00:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.10946206582404125,
+ "mde_threshold": 0.1,
+ "power_floor_n": 1452,
+ "verdict": "UNDERPOWERED",
+ "verdict_detail": "CI contains 0; MDE 0.1095 vs threshold 0.1000, effective n 1012 (power floor n=1452, have 1211)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 1211,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 300.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 108,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "target_px"
+   ],
+   "ignored": [],
+   "lookback": "20D",
+   "recent": "1D",
+   "events_fp": "ae93017588077907",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "10h",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": 30,
+  "entry_mode": "next_open",
+  "hold_basis": "clock",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "Tests the new third rung (PDL/PDH) held through the ordered ladder; rung 1 (daily open) was reading b. Order itself is geometric given the ladder filter, so only reachability of rung 3 is scored.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/update_20261007/large-wick-target-adjustment.py",
+ "runtime_sec": 0.32,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-10-07T06:17:27+00:00",
+ "n_events_in": 1224,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 0,
+  "target_not_beyond_entry": 0,
+  "no_bars_in_hold": 13
+ },
+ "events_fp": "ae93017588077907",
+ "sd_R": 1.013544131412579,
+ "exit_mix": {
+  "stop": 0.3501238645747316,
+  "target": 0.16515276630883569,
+  "time": 0.4847233691164327
+ },
+ "trades_per_year": 114.8578940534926,
+ "ci_components": {
+  "phase3_block": [
+   -0.09142689200385029,
+   0.06173048739441975
+  ],
+  "day_block": [
+   -0.08056085812347623,
+   0.057772125623908106
+  ]
+ },
+ "diff_win": 0.020258115131517818,
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 1012,
+  "n_clusters": null,
+  "n_eff": 1012
+ },
+ "ties": {
+  "real_ambiguous": 0.0008257638315441783,
+  "control_ambiguous": 0.0008461668641056016,
+  "real_gap_stop": 0.004128819157720892,
+  "control_gap_stop": 0.004907767811812489,
+  "verdict_stop_first": "UNDERPOWERED"
+ },
+ "ctrl_overlap": 0.014723303435437467,
+ "exposure_bars": {
+  "real_mean": 531.1007431874484,
+  "control_mean": 529.9405990861397,
+  "hold_basis": "clock"
+ },
+ "run_id": "5cdcd68dc71a43da8585e95c925d3fb2",
+ "hyp_key": "999365d9e873ca96"
+}

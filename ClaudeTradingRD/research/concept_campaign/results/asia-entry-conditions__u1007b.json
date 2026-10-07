@@ -1,0 +1,278 @@
+{
+ "concept_id": "asia-entry-conditions",
+ "reading": "u1007b",
+ "testable": true,
+ "test_type": "trade",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "daily candles on the 18:00 NY roll; stub sessions (<600 M1) dropped; previous day = the preceding real session; D = one-sided daily C2 closure (spec 3.2)",
+   "bias: D's extreme confirmed by a 1h CISD inside D (D's extreme, the opposing 1h series that made it, a later 1h close through the series' first open before D closes; spec 2.4)",
+   "method 1: swing = latest-confirmed intact candidate among D's extreme and same-direction 1h CISD extremes inside D (series_open, 2/2, max_wait 3) confirmed by D's close; if 0 < dir*(D close - swing) <= 0.25 x ADR20 (mean range of the last 20 real days incl. D): decide at D's close, enter at the C3 open (18:00 NY), stop = swing, 2R",
+   "method 2 (only if method 1 does not qualify): Asia = [C3 open, 02:00 NY); a forex-grid 4H candle closing inside Asia that is a one-sided C2 closure in D's direction; the first same-direction 15m CISD (locked config) with its extreme after that 4H close, confirmed within the next 4H candle and inside Asia; void if C3 traded beyond D's extreme or the 4H C2 extreme before confirmation; enter next M1 open, stop = the 15m protected swing, 2R",
+   "one trade per day; exit at stop / 2R / end of C3 (17:00 NY), hold in trading minutes (hold_basis='bars'); matched control +/-30d, same NY clock +/-30 min",
+   "monthly bias: the last CLOSED month's previous-candle engine (continuation or reversal closure vs the prior month) implies D's direction for the month C3 trades in; inside / both-sides months give no bias (no trade)"
+  ],
+  "params": {
+   "stub_filter_min_m1": 600,
+   "c2": "one-sided daily, 18:00 NY roll",
+   "bias": "daily C2 + 1h CISD at D's extreme (spec 2.4)",
+   "cisd": {
+    "level_rule": "series_open",
+    "left": 2,
+    "right": 2,
+    "max_wait": 3,
+    "min_series": 1
+   },
+   "swing_pick": "latest intact",
+   "prox_adr_mult": 0.25,
+   "adr_n": 20,
+   "grid4h": "forex",
+   "asia_window": "18:00-02:00 NY",
+   "ltf_entry": "15min",
+   "rr": 2.0,
+   "max_hold": "to C3 end 17:00 NY",
+   "hold_basis": "bars",
+   "ctrl_tod_tol_min": 30,
+   "htf_bias": "monthly previous-candle engine, no trend fallback"
+  }
+ },
+ "params_source": {
+  "stub_filter_min_m1": "declared-before-run: README trap 6 stub sessions (time_own_03a convention)",
+  "c2": "method_spec: \u00a73.2 C2 closure; corpus: BgVkJf0kMo4 'a candle two closure in which we can expect the following candle or candle three to have an expansion'",
+  "bias": "corpus: BgVkJf0kMo4 'you really do need a bias' / 'We have a candle two closure on the daily paired with an hourly change in the state of delivery'; method_spec \u00a72.4 C2 + hourly CISD",
+  "cisd": "phase3: locked CISD config (series_open, 2/2, max_wait 3, min_series 1)",
+  "swing_pick": "method_spec: \u00a73.8 'Each new protected swing supersedes the last'; corpus: BgVkJf0kMo4 'We have a new protected swing and then we have another protected swing'",
+  "prox_adr_mult": "declared-before-run: 'very close in proximity to the open of candle three' is unbounded (draft ambiguity); 0.25 ADR puts the 2R target within half an average day (method_spec \u00a75 ADR budget caps targets)",
+  "adr_n": "declared-before-run: ADR20 of real days (risk_own_01b average-daily-range-targeting precedent; method_spec \u00a75 gives no lookback [GAP])",
+  "grid4h": "session_window_fit: forex 4H grid for gold (carried as a knob, README trap 8)",
+  "asia_window": "declared-before-run: Asia = day open 18:00 to the London killzone start 02:00 NY (killzones.yaml via session_window_fit; time_own_03a session partition); the source gives no clock times (draft ambiguity)",
+  "ltf_entry": "corpus: BgVkJf0kMo4 'go down to the 4-hour and 15-minute fractal model and trade the standard fractal model using an intra-candle change in the state of delivery'",
+  "rr": "corpus: BgVkJf0kMo4 'Then I can look for two R' / 'we could look for two R'",
+  "max_hold": "corpus: BgVkJf0kMo4 'expecting the daily range to play out' and 'take my entry, go to bed' -> declared-before-run: time exit at the end of C3",
+  "hold_basis": "declared-before-run: README trap 7, holds cross the 17:00 halt / weekend",
+  "ctrl_tod_tol_min": "declared-before-run: entries cluster at the 18:00 reopen and in Asia; hold the NY clock fixed (README trap 9, Session Timing on Gold)",
+  "htf_bias": "corpus: BgVkJf0kMo4 'We have a nice monthly reversal candle and we have going into this new monthly candle a bullish bias'; method_spec \u00a72.3 previous-candle engine; declared-before-run: no inside-bar trend fallback (unbounded history)"
+ },
+ "n": 54,
+ "span": {
+  "start": "2016-03-03 05:00:00+00:00",
+  "end": "2026-07-09 22:00:00+00:00",
+  "years": 10.349
+ },
+ "avg_R": 0.002992424336296157,
+ "avg_R_gross": 0.042992424336296194,
+ "win_rate": 0.35185185185185186,
+ "pf": 1.0044357170914233,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "n": 270,
+  "avg_R": 0.05555943275903554,
+  "win_rate": 0.3814814814814815,
+  "pf": 1.086815441145045,
+  "sd_R": 1.4179486736455669,
+  "exit_mix": {
+   "stop": 0.6148148148148148,
+   "target": 0.34444444444444444,
+   "time": 0.040740740740740744
+  },
+  "avg_R_gross": 0.09555943275903556,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": -0.052567008422739384,
+ "ci_lo": -0.45904867596946913,
+ "ci_hi": 0.37674130829180735,
+ "ci_method": "phase3_iid",
+ "p": 0.8052612572377036,
+ "halves": {
+  "H1": {
+   "n": 29,
+   "diff": -0.08109553979765603,
+   "ci_lo": -0.6526501500520318,
+   "ci_hi": 0.4945281776775227,
+   "ci_method": "iid",
+   "p": 0.7816995987081726,
+   "start": "2016-03-03 05:00:00+00:00",
+   "end": "2020-10-14 22:00:00+00:00"
+  },
+  "H2": {
+   "n": 25,
+   "diff": -0.019473912027836,
+   "ci_lo": -0.6245458290339411,
+   "ci_hi": 0.5578188648363512,
+   "ci_method": "iid",
+   "p": 0.948522401989691,
+   "start": "2021-03-11 23:00:00+00:00",
+   "end": "2026-07-09 22:00:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 18,
+   "diff": -0.3285189226058977,
+   "ci_lo": -1.0304483119498316,
+   "ci_hi": 0.37001422360061575,
+   "ci_method": "iid",
+   "p": 0.35781722391573867,
+   "start": "2016-03-03 05:00:00+00:00",
+   "end": "2018-08-10 02:45:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 12,
+   "diff": 0.5467974960645111,
+   "ci_lo": -0.35574806811721066,
+   "ci_hi": 1.4405960015951993,
+   "ci_method": "iid",
+   "p": 0.2327890774599014,
+   "start": "2019-03-18 22:00:00+00:00",
+   "end": "2021-03-11 23:00:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 13,
+   "diff": -0.1407300474324653,
+   "ci_lo": -0.9276706537430471,
+   "ci_hi": 0.6933481130129859,
+   "ci_method": "iid",
+   "p": 0.7336218065802225,
+   "start": "2021-04-20 02:45:00+00:00",
+   "end": "2023-11-30 23:00:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 11,
+   "diff": -0.15066883491580457,
+   "ci_lo": -0.9977852384199728,
+   "ci_hi": 0.7766038923569227,
+   "ci_method": "iid",
+   "p": 0.73924514702659,
+   "start": "2024-03-18 22:00:00+00:00",
+   "end": "2026-07-09 22:00:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.5973417580773495,
+ "mde_threshold": 0.1,
+ "power_floor_n": 1927,
+ "verdict": "UNDERPOWERED",
+ "verdict_detail": "CI contains 0; MDE 0.5973 vs threshold 0.1000, effective n 54 (power floor n=1927, have 54)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 54,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 2885.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 26,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "rr",
+    "max_hold",
+    "method"
+   ],
+   "ignored": [],
+   "lookback": "100D",
+   "recent": "1D",
+   "events_fp": "2d4db0b7862c1c95",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "per-row column",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": 30,
+  "entry_mode": "next_open",
+  "hold_basis": "bars",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "Reading b: adds the monthly bias of his first example to reading a. Vault rerun checks: trap 5 raw M1 recompute of the real book {'n': 54, 'avg_R_gross_raw': 0.043, 'median_stop_pt': 3.682, 'spread_cost_R_median': 0.082} vs harness avg_R_gross 0.042992424336296194; descriptive method split (not a separate test) {'m1': {'n': 36, 'avg_R_net': 0.1086, 'diff_vs_ctrl': 0.0439}, 'm2': {'n': 18, 'avg_R_net': -0.2083, 'diff_vs_ctrl': -0.2455}}. Campaign lesson 2: cost cancels in the differential; 'spread_cost_R_median' is what a 0.3 pt spread costs per trade. Not modelled: case (b) open near drawn liquidity (not demonstrated), the reversal-day variant (needs SMT; a different setup on the forming C2), the optional hourly CISD paired with the 4H closure, EQ/wick eyeballing, trailing.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/update_20261007/asia-entry-conditions.py",
+ "runtime_sec": 0.03,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-10-07T06:46:47+00:00",
+ "n_events_in": 56,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 2,
+  "target_not_beyond_entry": 0,
+  "no_bars_in_hold": 0
+ },
+ "events_fp": "2d4db0b7862c1c95",
+ "sd_R": 1.432674378802028,
+ "exit_mix": {
+  "stop": 0.6481481481481481,
+  "target": 0.3333333333333333,
+  "time": 0.018518518518518517
+ },
+ "trades_per_year": 5.217857142857143,
+ "ci_components": {
+  "phase3_iid": [
+   -0.45904867596946913,
+   0.37674130829180735
+  ],
+  "day_block": [
+   -0.446253029216495,
+   0.3728752224764113
+  ]
+ },
+ "diff_win": -0.029629629629629617,
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 54,
+  "n_clusters": null,
+  "n_eff": 54
+ },
+ "ties": {
+  "real_ambiguous": 0.0,
+  "control_ambiguous": 0.0,
+  "real_gap_stop": 0.018518518518518517,
+  "control_gap_stop": 0.022222222222222223,
+  "verdict_stop_first": "UNDERPOWERED"
+ },
+ "ctrl_overlap": 0.0,
+ "exposure_bars": {
+  "real_mean": 1253.3333333333333,
+  "control_mean": 1253.3333333333333,
+  "hold_basis": "bars"
+ },
+ "run_id": "953d378c62f3473da3bde19e091ecd50",
+ "hyp_key": "c116492d8901abff"
+}

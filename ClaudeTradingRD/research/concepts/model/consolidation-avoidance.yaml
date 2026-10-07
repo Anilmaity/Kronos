@@ -7,23 +7,43 @@ definition: 'Consolidation is treated as a state to be avoided rather than trade
   the range rather than being a breakout.
 
   '
+variants:
+  definition:
+  - 'Restated live under the name ''range deviation'': when price is consolidating he does
+    not expect a breakout, he expects a deviation - price trades outside the range and comes
+    back in. On a consolidation day the expectation after a target is hit is a return into
+    the range, so the only way to profit is to catch a move and take profit repeatedly rather
+    than hold; a trader long off the open who never took profit made nothing. He stays away
+    because with no expansion expected there is no risk-to-reward to define.'
 category: model
-status: specified
+status: contested
 aliases:
 - don't trade consolidation
 - ranging price action
+- range deviation
+- consolidation day
 preconditions:
 - A range with a definable high and low has formed.
+- Price is inside a defined range (in the example a double inside day, neither previous-day
+  extreme taken).
 detection_rules:
 - Range high and range low can both be marked and price has traded between them without displacing.
 - After a sweep of one boundary, ask whether it is being bought/sold back into the range (fade)
   or breaking out; treat the fade as the default expectation.
+- A range deviation = price trades outside a range and then closes back inside it.
+- While consolidating, default expectation is deviation and return, not breakout.
+- After a target at a range extreme is hit on a consolidation day, expect price back inside
+  the range.
+- Do not hold for expansion on a range day; take profit at each target or stay out.
 invalidation:
 - Price displaces out of the range and produces a continuation from a new swing.
+- Price leaves the range and does not close back inside it (see consolidation-open-whipsaw).
 measurable:
 - Frequency with which a consolidation-boundary sweep returns to the opposite boundary vs
   breaks out.
 - Realised expectancy of setups taken while the daily/4H state is classified as consolidation.
+- share of range-boundary breaches that close back inside within N bars
+- P&L of hold-to-close vs take-profit-at-range-extreme on inside days
 sources:
 - video_id: aqnY1yZvfYs
   title: New York Open Live Q&A
@@ -31,14 +51,31 @@ sources:
   title: New York Open Live Q&A
 - video_id: 00iZXPAdR5A
   title: New York Open Live Q&A
+- video_id: h1ZQWWQDhKA
+  title: TTrades MNQ Cup - Afternoon Session
+  quote: you don't expect it to break out. you expect it to deviate
+- video_id: h1ZQWWQDhKA
+  title: TTrades MNQ Cup - Afternoon Session
+  quote: So normally we hit a target come back into the range
+- video_id: h1ZQWWQDhKA
+  title: TTrades MNQ Cup - Afternoon Session
+  quote: the only way to really get profit like that on a range day
 ambiguities:
 - No quantitative definition of a range/consolidation is given (bar count, range vs ATR, etc.).
 - He notes months of index consolidation as a reason he barely traded - so this is also a
   regime filter, but with no stated measurement.
+- '''Range'' is undefined beyond the day''s example (morning open range / previous-day range);
+  no width or duration bound.'
+- He says range deviation, inducement and AMD are different words for the same thing, so the
+  alias set is his, not a distinct concept.
 related:
 - expansion-sequence-quality
 - continuation-failure-short-term-target
 - continuation-over-reversal
+- consolidation-phase
+- consolidation-open-whipsaw
+- consolidation-range-no-trade
+- power-of-three-amd
 timeframes:
   htf:
   - 1D
@@ -57,5 +94,6 @@ execution:
   targets: If traded at all, the target is the opposite side of the range.
 contributing_units:
 - sunday_sessions_live_q_a_02
-draft_count: 1
+- update_20261007_live_02
+draft_count: 2
 voice: ttrades

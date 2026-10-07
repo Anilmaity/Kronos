@@ -1,0 +1,60 @@
+id: invalidation-trade
+name: Invalidation Trade (trading the failure of a valid model)
+category: model
+status: contested
+aliases:
+- soft invalidation
+- a closure through the EQ does not equal switch bias
+definition: This stream contradicts the library reading that a close through the EQ flips the bias. He
+  took a loss on an NQ long because traders read a close over the daily EQ as bullish; he calls the EQ
+  break a 'soft invalidation'. A closure through the EQ means the candle has gone too high to form a SMALL
+  wick and expand; it now has a LARGE wick, so he keeps the bearish bias and only adjusts targets (daily
+  open, liquidity around the open, intraday lows). The bias is only invalidated when the EQ break is paired
+  with other things - structure and the daily profile. He repeats this four times in the stream.
+timeframes:
+  htf:
+  - 1D
+  ltf:
+  - 15m
+  - 3m
+  - 1m
+  fractal: true
+preconditions:
+- A daily bias with a daily profile supporting it.
+- Price closes through the daily EQ against the bias.
+detection_rules:
+- A close through the EQ alone does NOT switch bias.
+- Reclassify the candle as large-wick and move targets back toward the daily open, liquidity around the
+  open and intraday lows/highs.
+- Switch bias only when the EQ break coincides with opposing structure AND an opposing daily profile.
+invalidation:
+- Opposing structure plus opposing daily profile alongside the EQ break.
+measurable:
+- after a close through the daily EQ against the bias, frequency the day still closes back toward / beyond
+  the open in the original direction
+sources:
+- video_id: 4rNC3QXxC20
+  title: New York Open Live Q&A
+  quote: It's a soft invalidation.
+- video_id: 4rNC3QXxC20
+  title: New York Open Live Q&A
+  quote: A closure through the EQ does not equal switch bias.
+- video_id: 4rNC3QXxC20
+  title: New York Open Live Q&A
+  quote: it can mean the invalidation of the bias when it's paired with other things
+- video_id: 4rNC3QXxC20
+  title: New York Open Live Q&A
+  quote: it's formed too large of a wick for me to expect it
+ambiguities:
+- '''Paired with other things'' is only partly named (structure, daily profile); no full list.'
+- Conflicts with library rules stating the bias flips on an EQ close - recorded as contested.
+related:
+- large-wick-target-adjustment
+- equilibrium-eq
+- upper-half-eq-expansion-filter
+- daily-profile-confirmation
+voice: ttrades
+python_detector: null
+contributing_units:
+- update_20261007_live_05
+draft_count: 1

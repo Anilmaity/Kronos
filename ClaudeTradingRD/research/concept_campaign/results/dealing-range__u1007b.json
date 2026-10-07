@@ -1,0 +1,305 @@
+{
+ "concept_id": "dealing-range",
+ "reading": "u1007b",
+ "testable": true,
+ "test_type": "gate",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "HTF 1h bars (UTC-aligned build_bars). C2 (method_spec \u00a73.2): bullish low[k] < low[k-1] and close[k] > low[k-1]; bearish high[k] > high[k-1] and close[k] < high[k-1]; no POI/CISD gate on C2",
+   "1h dealing range (bullish): near = C2 low (invalidation), far = the high of the swing that made it: walking back from k-1, first bar i with high[i] > high[i-1], high[i-2] and high[i] >= all highs in (i, k]; wicks; cap 120 bars else no setup. Bearish mirror",
+   "window = C3 and C4: entries decided after C2's close and at or before the close of the 2nd 1h bar after C2",
+   "entry model: 5m rung-0 CISD (series_open, 2/2, max_wait 3) in the C2 direction, decided at its 5m close; owned by the latest same-direction C2 closed before it; dropped if since C2's close price traded through the C2 extreme (void) or took the far end (spent)",
+   "stop = CISD protected swing; target 2R; time exit 50 min; enter next M1 open",
+   "location p = (entry close - near) / (far - near) for longs, mirrored for shorts: 0 at the C2 extreme, 1 at target",
+   "p_1h = location in the 1h C2 range (reading a's range; reading b's inner range)",
+   "outer range (b only): same C2 / walk-back / C3+C4 window / void / spent rules on 1D candles (18:00 NY roll, sessions with <= 600 M1 are not candles, so the previous REAL day is C1); p_1d = location in it",
+   "cluster = the owning setup (a: 1h C2; b: daily C2), several 5m entries per setup",
+   "book b = base rows that also sit in a live same-direction daily C2 range; gate (nesting): p_1d <= 0.5 AND p_1h <= 0.5 (favourable half, EQ inclusive, of both). claim +"
+  ],
+  "params": {
+   "min_m1": 600,
+   "htf": "1h",
+   "ltf": "5min",
+   "c2": "spec \u00a73.2 sweep + close back inside",
+   "swing": "left 2 + dominance to the extreme",
+   "extremes": "wicks",
+   "cap_bars": 120,
+   "window": "C3+C4",
+   "entry": "5m CISD series_open 2/2 max_wait 3",
+   "stop": "protected swing",
+   "rr": 2.0,
+   "max_hold": "50min",
+   "grid4h": "n/a (1h/5m only)",
+   "half": 0.5
+  }
+ },
+ "params_source": {
+  "min_m1": "declared-before-run: daily stub guard 600 M1 (fractal-model-c2 u1007 value); corpus rVRk4MLTJSs 'bank holiday Monday. It doesn't count'",
+  "htf": "corpus: yb3Te7tiGRk 'we have a new setup here, but on the hourly and 5 minute'",
+  "ltf": "corpus: yb3Te7tiGRk 'where would be the dealing range for the 5minut? From this high to this low'",
+  "c2": "method_spec: \u00a73.2 C2 test low[i] < low[i-1] AND close[i] > low[i-1]; corpus yb3Te7tiGRk 'we have a candle 2 closure'",
+  "swing": "corpus: yb3Te7tiGRk 'find the swing high that made this swing low' + 'this is not always going to be candle one'; phase3: left=2 of the locked 2/2 fractal, right side = dominance up to the C2 bar (declared-before-run so C1 can qualify)",
+  "extremes": "declared-before-run: wick vs body unstated (draft ambiguity); wicks as in every prior range reading",
+  "cap_bars": "declared-before-run: walk-back cap 120 bars ('continue until we find that swing high' gives no limit)",
+  "window": "method_spec: \u00a73.4 'from C5 onward, treat a new phase of price as likely'; corpus yb3Te7tiGRk 'trade candle three'",
+  "entry": "phase3: rung-0 CISD config (series_open, 2/2, max_wait 3); method_spec \u00a73.5 model = HTF closure + LTF CISD",
+  "stop": "corpus: yb3Te7tiGRk 'Put my stop on that protected high'",
+  "rr": "corpus: yb3Te7tiGRk 'I can get 2R prior to this high being taken out'",
+  "max_hold": "phase3: 10 entry-TF bars (\u00a71.13) = 10 x 5m",
+  "grid4h": "declared-before-run: no 4h bars are read",
+  "half": "corpus: yb3Te7tiGRk 'you use multiple dealing ranges and you shorten [short in] the premium of both' + 'It's okay if I'm entering right around that EQ point' (EQ inclusive)"
+ },
+ "n": 3713,
+ "span": {
+  "start": "2016-01-18 02:05:00+00:00",
+  "end": "2026-07-21 15:25:00+00:00",
+  "years": 10.505
+ },
+ "avg_R": -0.04966211354507384,
+ "avg_R_gross": -0.009662113545073812,
+ "win_rate": 0.408564503097226,
+ "pf": 0.8960281889585834,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "avg_R_gated": -0.04035027978823762,
+  "avg_R_complement": -0.0456546336030459,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": -0.008599444709836226,
+ "ci_lo": -0.06513832633073875,
+ "ci_hi": 0.04544129146376006,
+ "ci_method": "day_block",
+ "p": 0.7604872337581589,
+ "halves": {
+  "H1": {
+   "n": 3981,
+   "diff": 0.014680188553683436,
+   "ci_lo": -0.05703209718440574,
+   "ci_hi": 0.08163021130133344,
+   "ci_method": "block",
+   "p": 0.6781396639510345,
+   "start": "2016-01-18 02:05:00+00:00",
+   "end": "2020-12-30 21:40:00+00:00",
+   "n_gated": 1838
+  },
+  "H2": {
+   "n": 3946,
+   "diff": -0.03201024844693679,
+   "ci_lo": -0.10641937062834493,
+   "ci_hi": 0.038183845772903346,
+   "ci_method": "iid",
+   "p": 0.3855371594303949,
+   "start": "2021-01-07 02:00:00+00:00",
+   "end": "2026-07-21 15:25:00+00:00",
+   "n_gated": 1875
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 2174,
+   "diff": -0.0011036206497084511,
+   "ci_lo": -0.09167787556813194,
+   "ci_hi": 0.096584472890295,
+   "ci_method": "block",
+   "p": 0.9816668843572468,
+   "start": "2016-01-18 02:05:00+00:00",
+   "end": "2018-08-20 16:10:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 2047,
+   "diff": 0.03222995628154469,
+   "ci_lo": -0.06698046134619891,
+   "ci_hi": 0.13872218216266827,
+   "ci_method": "block",
+   "p": 0.5390942729416142,
+   "start": "2018-08-22 23:35:00+00:00",
+   "end": "2021-04-12 06:50:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 1965,
+   "diff": -0.11650446522207905,
+   "ci_lo": -0.21920032346245538,
+   "ci_hi": -0.014408461924014722,
+   "ci_method": "block",
+   "p": 0.025746384759381433,
+   "start": "2021-04-13 02:15:00+00:00",
+   "end": "2023-11-20 10:40:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 1741,
+   "diff": 0.055991243928383984,
+   "ci_lo": -0.05896186474066158,
+   "ci_hi": 0.15900864271220366,
+   "ci_method": "iid",
+   "p": 0.3139670873713167,
+   "start": "2023-12-04 23:10:00+00:00",
+   "end": "2026-07-21 15:25:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.07903160428426262,
+ "mde_threshold": 0.1,
+ "power_floor_n": 2320,
+ "verdict": "NULL",
+ "verdict_detail": "CI contains 0; powered (MDE 0.0790 <= 0.1000)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 7927,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "gate_mask_checked": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 12.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 644,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "rr",
+    "px",
+    "p_1h",
+    "p_1d",
+    "setup",
+    "setup_d",
+    "gate_a",
+    "gate_b"
+   ],
+   "ignored": [],
+   "lookback": "200D",
+   "recent": "1D",
+   "events_fp": "77f8e8c0e07c335f",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "50min",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": null,
+  "entry_mode": "next_open",
+  "hold_basis": "clock",
+  "mde_threshold": null,
+  "cluster": "column:setup_d",
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "TTrades yb3Te7tiGRk swing-anchored (C2-first) dealing range. 7941 events on 4710 1h C2 setups (1029 clusters); gate firing rate 0.469. The plain half split is not re-run as new: NULL on 4 prior range definitions (dealing-range, premium-discount-equilibrium a/b, premium-discount a/b, upper-half-positioning). Prior reading dealing-range.json untouched. Pre-run correction (no outcome seen): nesting was first drafted as 1h-outer / 5m-CISD-inner; the 5m CISD close sits at the top of its own 5m range by construction (median p 0.96 on a 2-month slice) and the video's nesting is daily/hourly outer with hourly/5m inner, so b was re-mapped to daily-outer / 1h-inner before any test ran.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/update_20261007/dealing-range.py",
+ "runtime_sec": 0.81,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-10-07T06:46:01+00:00",
+ "n_events_in": 7941,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 1,
+  "target_not_beyond_entry": 0,
+  "no_bars_in_hold": 13
+ },
+ "n_complement": 4214,
+ "gate_firing_rate": 0.4683991421723224,
+ "events_fp": "77f8e8c0e07c335f",
+ "mask_fp": "71a020046f3e4078",
+ "mask_col": "gate_b",
+ "exit_mix": {
+  "stop": 0.3848639913816321,
+  "target": 0.13304605440344736,
+  "time": 0.48208995421492057
+ },
+ "gated_vs_own_control": {
+  "diff": -0.009311833756836224,
+  "ci_lo": -0.04824435791095182,
+  "ci_hi": 0.028914839186167014,
+  "p": 0.636163086554179
+ },
+ "complement": {
+  "n": 4214,
+  "avg_R": -0.046367022650045886,
+  "win_rate": 0.42358803986710963,
+  "pf": 0.8970472013187542,
+  "sd_R": 1.0193914962815753,
+  "exit_mix": {
+   "stop": 0.355719031798766,
+   "target": 0.12339819648789749,
+   "time": 0.5208827717133365
+  },
+  "vs_own_control": {
+   "diff": -0.000712389046999988,
+   "ci_lo": -0.03429176668488264,
+   "ci_hi": 0.03299138955353751,
+   "p": 0.9668941792343686
+  }
+ },
+ "ci_components": {
+  "phase3_iid": [
+   -0.057248247131799754,
+   0.04468088651699914
+  ],
+  "day_block": [
+   -0.06513832633073875,
+   0.04544129146376006
+  ],
+  "cluster": [
+   -0.0629527848692924,
+   0.04143643269090735
+  ]
+ },
+ "diff_meaning": "mean(R-ctrl | gated) - mean(R-ctrl | complement)",
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_eff_gated": 835,
+  "n_eff_complement": 892,
+  "n_eff": 835
+ },
+ "ties": {
+  "real_ambiguous": 0.0005046045162104201,
+  "control_ambiguous": 0.0009335183549892772,
+  "real_gap_stop": 0.011858206130944873,
+  "control_gap_stop": 0.010445313485555696,
+  "gated_excess": -0.0007002423915970914,
+  "complement_excess": -0.00018984337921215002,
+  "verdict_stop_first": "NULL"
+ },
+ "ctrl_overlap": 0.005424498549262016,
+ "exposure_bars": {
+  "real_mean": 48.6901728270468,
+  "control_mean": 48.63002396871452,
+  "hold_basis": "clock"
+ },
+ "run_id": "47cae2f3288a40efad38ff9557d28781",
+ "hyp_key": "17271e1598a499ec"
+}

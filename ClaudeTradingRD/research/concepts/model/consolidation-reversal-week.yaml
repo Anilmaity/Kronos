@@ -4,6 +4,22 @@ variants:
   name:
   - Consolidation Reversal (weekly profile)
   definition:
+  - 'SHORTS EVIDENCE. After a large-range move the following candles are read as a consolidation
+    or a retracement ("a large range to a small range"), which is taken as a continuation
+    signal toward the other side of the range / the range high. On the lower timeframe he
+    finds the series of candles that made the low and asks whether price has closed over it;
+    it has, so a continuation is looked for on Friday. The protected low must not be taken
+    out; price is expected to form its lower wick in that area and trade higher. In the worked
+    example price dips slightly below, with an SMT on the low, and still expands through the
+    other side of the range.
+
+    '
+  - AM Trades' handling of a week that gives nothing early. If Monday through Wednesday produce
+    no engagement of a higher-timeframe PD array and price is simply consolidating in an internal
+    range, he calls for a Thursday consolidation reversal. On Thursday he marks out the external
+    high and the external low of that three-day consolidation and looks for a manipulation
+    of one of them, which then sets up the weekly profile and the expansion into Thursday
+    and Friday.
   - 'The residual profile for a week that produced neither a classic expansion nor a midweek
     reversal. Monday, Tuesday and Wednesday consolidate - no expansion through Wednesday -
     and are marked as a consolidation range. Thursday then manipulates that range: in the
@@ -14,24 +30,45 @@ variants:
     the Thursday reversal itself may be traded as a small wick.
 
     '
-definition: AM Trades' handling of a week that gives nothing early. If Monday through Wednesday
-  produce no engagement of a higher-timeframe PD array and price is simply consolidating in
-  an internal range, he calls for a Thursday consolidation reversal. On Thursday he marks
-  out the external high and the external low of that three-day consolidation and looks for
-  a manipulation of one of them, which then sets up the weekly profile and the expansion into
-  Thursday and Friday.
+definition: 'TTrades'' own Shorts walkthrough of a bullish consolidation reversal week. Wednesday
+  prints a bearish expansion candle, and he explicitly refuses to call Wednesday the low of
+  the week on that candle ("let another day play out"). Thursday then forms a candle 2 closure
+  that is also ideal because it forms a protected swing in the same bar. With consolidation
+  through Wednesday and a Thursday reversal, Friday is expected to expand. Confirmation is
+  taken on the hourly: from Thursday''s low, price must close through the series of down-close
+  candles (change in the state of delivery), after which a new continuation forms; Friday
+  then expands higher off Thursday''s reversal.
+
+  '
 category: model
 status: contested
 aliases:
 - Thursday consolidation reversal
 - consolidation reversal
 preconditions:
+- Weekly bias exists (bullish in the worked case).
+- Monday-Wednesday consolidate; Wednesday may itself be a bearish expansion candle.
 - Monday to Wednesday with no higher-timeframe PD array engagement.
 - Price consolidating in an internal range.
 - No expansion through Wednesday, so a classic expansion week is ruled out.
 - Because the week consolidated, a midweek reversal is also ruled out.
 - A directional bias exists for the week.
 detection_rules:
+- Do not treat Wednesday as the weekly low/high when Wednesday is an expansion candle against
+  the bias.
+- Thursday must print a candle 2 closure (reversal); best case it is an ideal closure that
+  also forms a protected swing.
+- On the hourly, from Thursday's extreme, require a close through the series of opposing (down-close
+  for bullish) candles.
+- After that CISD, a new continuation (new protected swing) forms; then look for Friday to
+  expand.
+- Classify the candles after a large-range expansion as consolidation or retracement (large
+  range -> small range).
+- Target the opposite side of that range (the range high in the bullish case).
+- On the lower timeframe, require a close over the series of candles that made the low before
+  calling the continuation.
+- The continuation day (Friday in the example) should form its lower wick above that low and
+  trade higher.
 - Confirm that Monday-Wednesday offered no trade and no HTF PD array engagement.
 - On Thursday, mark the external high and the external low of the Monday-Wednesday range.
 - Look for a manipulation (sweep) of one of those two levels on Thursday.
@@ -46,6 +83,10 @@ detection_rules:
   find the series of candles that made it, require a close through.'
 - Friday is then traded as the continuation / expansion day.
 invalidation:
+- Wednesday's expansion candle is not a reversal - no profile is called on it.
+- No hourly change in the state of delivery from Thursday's extreme.
+- Price takes out the low the continuation was built from (tolerance for an SMT-marked marginal
+  break is not quantified).
 - No manipulation of either external level on Thursday.
 - The candidate day closes as an opposing expansion candle - do not call the reversal, let
   another day play out.
@@ -53,6 +94,8 @@ invalidation:
 - After the new continuation forms, price takes out the low (bullish case) that the continuation
   was built from.
 measurable:
+- Friday expansion rate when Thursday is an ideal C2 closure after a Mon-Wed consolidation
+  vs a non-ideal one
 - frequency of a Thursday sweep of a 3-day consolidation's external levels
 - expansion size Thursday-Friday after such a sweep
 - frequency of weeks where Mon-Wed consolidate and Thursday sweeps the range
@@ -62,6 +105,27 @@ measurable:
   only one of them
 - size of the Friday range relative to the Mon-Wed consolidation range
 sources:
+- video_id: 8nXRD4mm_-o
+  title: Breaking Down the Consolidation Reversal Weekly Profile
+  quote: I would not trust myself to say that Wednesday has formed a low
+- video_id: 8nXRD4mm_-o
+  title: Breaking Down the Consolidation Reversal Weekly Profile
+  quote: it's an ideal candle two closure as it also forms a protected swing
+- video_id: 8nXRD4mm_-o
+  title: Breaking Down the Consolidation Reversal Weekly Profile
+  quote: For Friday to expand because we have a consolidation reversal profile.
+- video_id: 8nXRD4mm_-o
+  title: Breaking Down the Consolidation Reversal Weekly Profile
+  quote: have we closed through the series of down closed candles?
+- video_id: BJL66W1m-c4
+  title: Consolidation Reversal → Expansion
+  quote: A large range to a small range. We can be looking for a continuation.
+- video_id: BJL66W1m-c4
+  title: Consolidation Reversal → Expansion
+  quote: So, we don't want to see price do what? Take out this low.
+- video_id: BJL66W1m-c4
+  title: Consolidation Reversal → Expansion
+  quote: We have an SMT on the low, but then we expand through
 - video_id: wGYde-h84cs
   title: Live Q&A with AM Trades - Weekly Profile
   quote: I'm marking out the external high and low
@@ -72,6 +136,19 @@ sources:
   title: Weekly Profile for Daily Bias - Consolidation Reversal
   quote: consolidation Monday, Tuesday and Wednesday and then we're looking for a manipulation
 ambiguities:
+- The Short does not state which external level of the Mon-Wed range Thursday swept; it only
+  says Thursday formed a reversal / candle 2 closure.
+- Here Wednesday is a bearish expansion candle, yet the period is still called a "consolidation
+  through Wednesday" - no rule reconciles an expansion day inside the consolidation leg.
+- No Friday entry, stop or target is given; only the expansion is shown.
+- The clip says 'consolidation or a retracement' and never decides which; both are treated
+  as the same continuation signal.
+- The lower timeframe used for the close-over check is not named ('zooming in').
+- Again price trades 'a little bit lower' than the invalidation low with an SMT and still
+  works; how far a break is tolerated is unstated - same ambiguity as the existing entry.
+- The weekdays of the large and small ranges are not stated, only that the continuation is
+  looked for on Friday; whether this is the Monday-Wednesday consolidation of the library
+  definition is inferred from the title only.
 - Whether Wednesday's close or Thursday's open defines the consolidation boundary is not stated.
 - No rule handles a Thursday that sweeps both sides.
 - No bound is given on how much movement disqualifies Mon/Tue/Wed from being a 'consolidation';
@@ -87,11 +164,17 @@ ambiguities:
 - One example shows price dipping below the invalidation low with an SMT before still expanding;
   how far below is tolerable is not stated.
 related:
+- ideal-formation
+- hourly-cisd-confirmation
+- protected-swing
+- fractal-model-c2
+- continuation-signature
+- consolidation-vs-retracement-test
+- smt-divergence
 - hourly-cisd-manipulation-confirmation
 - weekly-profile-not-predicted-in-advance
 - no-monday-rule
 - weekly-profile-framework
-- hourly-cisd-confirmation
 - midweek-reversal-week
 - thursday-counter-week
 guest_sources:
@@ -105,9 +188,8 @@ timeframes:
   - 1H
   fractal: false
 execution:
-  bias: Toward the opposite side of the consolidation range, away from the Thursday manipulation.
-  entry: Friday (preferred), after the hourly change in the state of delivery inside Thursday.
-    The Thursday reversal day itself is tradeable but is explicitly the less-preferred option.
+  bias: Direction of Thursday's reversal (with the weekly bias).
+  entry: Friday expansion after the hourly CISD and the new continuation inside Thursday.
   stop: Beyond the Thursday extreme; the ideal Thursday candle 2 closure also forms a protected
     swing, which supplies the invalidation.
   targets:
@@ -117,7 +199,8 @@ execution:
   - average daily range
 contributing_units:
 - live_stream_guests_02
+- update_20261007_shorts_02
+- update_20261007_shorts_04
 - weekly_profile_series_01
-draft_count: 2
-voice: guest
-voice_playlist: mixed
+draft_count: 4
+voice: mixed

@@ -10,6 +10,11 @@ definition: 'PRIMARY-SOURCE READING (this unit): after an expansion, exactly two
   on every new candle close.'
 variants:
   definition:
+  - 'Applied at a target: after price expands lower and hits its first target (a previous
+    low), he asks whether the reaction is a retracement, a reversal, or a consolidation. In
+    the example it is a consolidation, which he calls a continuation signature, and price
+    continues lower to the second target. Used here as the hold-or-exit decision between sequential
+    targets.'
   - 'Two signatures indicate that price will continue through a level rather than reverse
     from it. Consolidation continuation: price expands into the objective and consolidates;
     the continuation is confirmed when price engages the consolidation high, prints opposing
@@ -29,6 +34,7 @@ aliases:
 - failure swings
 preconditions:
 - An expansion leg has just completed and an objective is still open.
+- Price has expanded into and hit a first target, with a further target beyond it.
 - Price has expanded into a relevant level or objective.
 detection_rules:
 - 'After an expansion, classify the next price action as one of three: consolidation, retracement,
@@ -41,6 +47,9 @@ detection_rules:
 - If the current candle does not decide, let another candle close before acting.
 - A breakout signature (closing over the previous high) also continues, without requiring
   the sweep of the range low.
+- After the first target is hit, classify the reaction as retracement, reversal or consolidation.
+- Consolidation at the first target = continuation signature; expect the next target to be
+  reached.
 - 'Consolidation continuation: price engages the consolidation high, prints opposing candles,
   and closes back through the high without holding above it.'
 - 'Retracement continuation: deep pullback leaving failure swings - stacked highs close together
@@ -52,11 +61,13 @@ detection_rules:
 - Failure swings on the opposing side of an internal-range tag imply continuation, not reversal.
 invalidation:
 - Price displaces aggressively back into the range instead of consolidating or retracing.
+- A reversal at the first target (not defined mechanically in this Short).
 - The consolidation high is successfully manipulated (swept and held) - reversal becomes possible
   instead.
 measurable:
 - empirical continuation rate given each of the three post-expansion labels
 - how often the ambiguous case resolves on the very next close
+- probability of reaching target 2 after a consolidation at target 1 vs after a retracement
 - continuation rate after a failed manipulation of the consolidation high
 - continuation rate after an inside bar at a level
 sources:
@@ -72,6 +83,12 @@ sources:
 - video_id: WFqLwOp2pXw
   title: How To Trade Consolidation - Phases Of Price
   quote: this would be a breakout signature as we are now closing over these highs
+- video_id: CEm1Bnhvb2I
+  title: Make Targets Simple Using the Fractal Model
+  quote: Do we get a retracement or a reversal?
+- video_id: CEm1Bnhvb2I
+  title: Make Targets Simple Using the Fractal Model
+  quote: we get a consolidation, which is a continuation signature, and we trade lower.
 - video_id: J_EeS2_2CAM
   title: GxTradez | Phases of Price & Profiles For Expansion
 ambiguities:
@@ -79,6 +96,9 @@ ambiguities:
   of the three with a crisp test (price internal to a high and a low).
 - The breakout branch - continuation without a sweep - is mentioned in the consolidation and
   expansion videos but no condition is given for when a breakout is trusted over a sweep.
+- Here a retracement is listed alongside reversal as the non-consolidation outcome, whereas
+  the library entry counts a retracement as a continuation signature too; the Short does not
+  say what a retracement at target 1 would mean.
 - '''Failure swing'' is defined by contrast with manipulation (no sweep) rather than positively.'
 - '''Deep'' vs ''shallow'' retracement is not quantified.'
 related:
@@ -87,6 +107,8 @@ related:
 - retracement-phase
 - reversal-signature
 - expansion-signature
+- draw-on-liquidity
+- consolidation
 - phases-of-price-transitions
 - trade-away-from-manipulation
 timeframes:
@@ -101,7 +123,8 @@ timeframes:
 contributing_units:
 - build_a_model_intro_to_ttrades_fractal_model_01
 - t_talks_02
-draft_count: 2
+- update_20261007_shorts_03
+draft_count: 3
 voice: ttrades
 voice_playlist: mixed
 guest_sources:

@@ -1,0 +1,284 @@
+{
+ "concept_id": "no-bank-holiday-trading",
+ "reading": "u1007va",
+ "testable": true,
+ "test_type": "gate",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "baseline book: phase-3 bare 15min CISD (series_open level, 2/2 swings, max_wait 3), decide at the confirming bar close, enter next M1 open, stop at protected swing, 2R, hold 150min",
+   "blocked = decision on a US bank-holiday session (Federal Reserve holiday schedule; Sat holidays not observed, Sun -> Mon); session = 18:00 NY roll",
+   "allowed = all other decisions",
+   "claim '+' = allowed (non-holiday) beats blocked, control-adjusted"
+  ],
+  "params": {
+   "baseline": "bare CISD",
+   "baseline_tf": "15min",
+   "level_rule": "series_open",
+   "swing": "2/2",
+   "max_wait": 3,
+   "rr": 2.0,
+   "max_hold": "150min",
+   "calendar": "117 dates 2015..2026",
+   "block_rule": "blocked = decision on a US bank-holiday session (Federal Reserve holiday schedule; Sat holidays not observed, Sun -> Mon); session = 18:00 NY roll",
+   "session": "cl.session_date, 18:00 NY roll",
+   "hold_basis": "bars"
+  }
+ },
+ "params_source": {
+  "baseline": "phase3: meta/conjunction_preregistration.md \u00a71.8-1.13 (locked rung-0 config); max hold = 10 entry-TF periods (\u00a75.5)",
+  "baseline_tf": "phase3: meta/conjunction_preregistration.md \u00a71.8-1.13 (locked rung-0 config); max hold = 10 entry-TF periods (\u00a75.5)",
+  "level_rule": "phase3: meta/conjunction_preregistration.md \u00a71.8-1.13 (locked rung-0 config); max hold = 10 entry-TF periods (\u00a75.5)",
+  "swing": "phase3: meta/conjunction_preregistration.md \u00a71.8-1.13 (locked rung-0 config); max hold = 10 entry-TF periods (\u00a75.5)",
+  "max_wait": "phase3: meta/conjunction_preregistration.md \u00a71.8-1.13 (locked rung-0 config); max hold = 10 entry-TF periods (\u00a75.5)",
+  "rr": "phase3: meta/conjunction_preregistration.md \u00a71.8-1.13 (locked rung-0 config); max hold = 10 entry-TF periods (\u00a75.5)",
+  "max_hold": "phase3: meta/conjunction_preregistration.md \u00a71.8-1.13 (locked rung-0 config); max hold = 10 entry-TF periods (\u00a75.5)",
+  "calendar": "declared-before-run: 'bank holiday' read literally as the US Federal Reserve Bank holiday schedule (he trades the NY clock); corpus: wa9m30UHrm0 'Uh I don't trade it. Do something else with my life.'",
+  "block_rule": "declared-before-run: 'bank holiday' read literally as the US Federal Reserve Bank holiday schedule (he trades the NY clock); corpus: wa9m30UHrm0 'Uh I don't trade it. Do something else with my life.'",
+  "session": "method_spec: \u00a71.4 New York + DST, day rolls at 18:00 NY (session_window_fit)",
+  "hold_basis": "declared-before-run: holiday sessions halt early (13:00/14:30 NY; bar-count probe of the data, no outcomes); wall-clock holds would truncate the blocked arm only (README trap 7); phase3: \u00a75.5 max hold = 10 entry-TF periods = 150 trading minutes"
+ },
+ "n": 31868,
+ "span": {
+  "start": "2016-01-04 00:30:00+00:00",
+  "end": "2026-07-23 02:15:00+00:00",
+  "years": 10.549
+ },
+ "avg_R": -0.04163042501591364,
+ "avg_R_gross": -0.0016304250159136142,
+ "win_rate": 0.4159972386092632,
+ "pf": 0.9093087739193592,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "avg_R_gated": -0.043158671453134755,
+  "avg_R_complement": -0.02077436080831264,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": 0.10456038491513052,
+ "ci_lo": 0.02559862519608741,
+ "ci_hi": 0.18200958729625563,
+ "ci_method": "day_block",
+ "p": 0.008781038985967462,
+ "halves": {
+  "H1": {
+   "n": 15678,
+   "diff": 0.0728875312187707,
+   "ci_lo": -0.030735309673394436,
+   "ci_hi": 0.18311086761048373,
+   "ci_method": "iid",
+   "p": 0.1815257642775301,
+   "start": "2016-01-04 00:30:00+00:00",
+   "end": "2020-12-31 19:15:00+00:00",
+   "n_gated": 15271
+  },
+  "H2": {
+   "n": 17137,
+   "diff": 0.12755918971747457,
+   "ci_lo": 0.03298798124382883,
+   "ci_hi": 0.21713767666829276,
+   "ci_method": "iid",
+   "p": 0.006621448572875105,
+   "start": "2021-01-03 23:45:00+00:00",
+   "end": "2026-07-23 02:15:00+00:00",
+   "n_gated": 16597
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 8224,
+   "diff": 0.09547158444180293,
+   "ci_lo": -0.06297311594384249,
+   "ci_hi": 0.26133441205043934,
+   "ci_method": "iid",
+   "p": 0.24851173655936085,
+   "start": "2016-01-04 00:30:00+00:00",
+   "end": "2018-08-22 08:45:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 8282,
+   "diff": 0.044425999611345655,
+   "ci_lo": -0.10398869295932812,
+   "ci_hi": 0.18700001253047635,
+   "ci_method": "iid",
+   "p": 0.5495293295135814,
+   "start": "2018-08-22 11:45:00+00:00",
+   "end": "2021-04-12 08:15:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 8188,
+   "diff": 0.19593311427556698,
+   "ci_lo": 0.05812119855519232,
+   "ci_hi": 0.3118302838157707,
+   "ci_method": "iid",
+   "p": 0.0024678051510988027,
+   "start": "2021-04-12 09:30:00+00:00",
+   "end": "2023-12-01 17:00:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 8121,
+   "diff": 0.057219326604917964,
+   "ci_lo": -0.07709087892426643,
+   "ci_hi": 0.1866991868505934,
+   "ci_method": "iid",
+   "p": 0.39516896256157924,
+   "start": "2023-12-04 04:00:00+00:00",
+   "end": "2026-07-23 02:15:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.11178741172169485,
+ "mde_threshold": 0.1,
+ "power_floor_n": 1184,
+ "verdict": "UNDERPOWERED",
+ "verdict_detail": "CI excludes 0 in claimed direction but not powered: n=947, effective n=86, MDE=0.1118 vs 0.1000, floor 200; power floor n=39824",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 32815,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "gate_mask_checked": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 4383.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 2341,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "rr",
+    "allowed_us",
+    "allowed_uk"
+   ],
+   "ignored": [],
+   "lookback": "30D",
+   "recent": "1D",
+   "events_fp": "c4cf19cb34b079a2",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "150min",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": null,
+  "entry_mode": "next_open",
+  "hold_basis": "bars",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "Vault-context rerun of u1007a (same detector, calendars, settings and hyp_key; u1007a kept). New concept (update_20261007_live_13), not in batches.json. Source is a one-line viewer Q&A on an indices stream with no holiday list and no reason; two calendars pre-declared. Probe of the M1 feed: Christmas/New Year (and UK Good Friday) sessions have 0 bars. Blocked sessions with events = 86 < 200 effective-n floor, so EDGE/NULL are unreachable by construction (vault trap 6). Diagnostics (no exclusions): {'late_entry_share_blocked': 0.0158, 'late_entry_share_allowed': 0.0039, 'blocked_trades_spanning_2025-12-25_spike': 0}. The blocked arm's NY-clock mix differs (holiday sessions halt at 13:00 NY), and the default control is not time-of-day matched (README: a timing concept is tested as gate_test).",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/update_20261007/no-bank-holiday-trading.py",
+ "runtime_sec": 1.85,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-10-07T06:32:42+00:00",
+ "n_events_in": 32827,
+ "dropped": {
+  "no_bar_after_decision": 1,
+  "stop_not_beyond_entry": 11,
+  "target_not_beyond_entry": 0,
+  "no_bars_in_hold": 0
+ },
+ "n_complement": 947,
+ "gate_firing_rate": 0.9711412463812281,
+ "events_fp": "c4cf19cb34b079a2",
+ "mask_fp": "4c8fa5a4714e9a08",
+ "mask_col": "allowed_us",
+ "exit_mix": {
+  "stop": 0.3665432408685829,
+  "target": 0.13238985816493035,
+  "time": 0.5010669009664868
+ },
+ "gated_vs_own_control": {
+  "diff": 0.0015282464372211174,
+  "ci_lo": -0.011486171986799455,
+  "ci_hi": 0.014708591367899895,
+  "p": 0.8191058448934682
+ },
+ "complement": {
+  "n": 947,
+  "avg_R": -0.12380649928622202,
+  "win_rate": 0.3938753959873284,
+  "pf": 0.7400500097791163,
+  "sd_R": 0.9748924343567145,
+  "exit_mix": {
+   "stop": 0.368532206969377,
+   "target": 0.09503695881731784,
+   "time": 0.5364308342133052
+  },
+  "vs_own_control": {
+   "diff": -0.10303213847790937,
+   "ci_lo": -0.1709531339144247,
+   "ci_hi": -0.029156462452788127,
+   "p": 0.004395434167172888
+  }
+ },
+ "ci_components": {
+  "phase3_iid": [
+   0.03375482567060979,
+   0.17559520774900725
+  ],
+  "day_block": [
+   0.02559862519608741,
+   0.18200958729625563
+  ]
+ },
+ "diff_meaning": "mean(R-ctrl | gated) - mean(R-ctrl | complement)",
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_eff_gated": 2637,
+  "n_eff_complement": 86,
+  "n_eff": 86
+ },
+ "ties": {
+  "real_ambiguous": 0.0006399512418101478,
+  "control_ambiguous": 0.0004144446137437148,
+  "real_gap_stop": 0.010604906292853877,
+  "control_gap_stop": 0.008819137589516989,
+  "gated_excess": 0.00023220785741182379,
+  "complement_excess": 0.0,
+  "verdict_stop_first": "UNDERPOWERED"
+ },
+ "ctrl_overlap": 0.06564071308852659,
+ "exposure_bars": {
+  "real_mean": 149.99865914977906,
+  "control_mean": 149.99890903550207,
+  "hold_basis": "bars"
+ },
+ "run_id": "ab7b3fb17e4f4aa09ba7bb1ac6192b41",
+ "hyp_key": "b4819433609d61bd"
+}

@@ -1,0 +1,271 @@
+{
+ "concept_id": "invalidation-trade",
+ "reading": "u1007b",
+ "testable": true,
+ "test_type": "trade",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "bias: daily C2/C3 (C2-open ref) closure on D + same-direction 1h CISD inside D (scope range)",
+   "EQ close: FIRST 1h close of session D+1 beyond EQ=(D high+D low)/2 against the bias, in a session that OPENED on the bias side of the EQ (a close through it)",
+   "opposing structure: 1h CISD (series_open, 2/2, max_wait 3) opposite to the bias confirmed in session D+1 at/before the EQ-break bar; daily profile NOT modelled",
+   "trade the ORIGINAL bias at the break close (next M1 open); target = session open (18:00 NY); stop = prior day D's extreme on the break side (PDH for bearish bias); exit 17:00 NY; skip if stop < 0.10 x D range or open not beyond price",
+   "only EQ closes WITHOUT opposing structure"
+  ],
+  "params": {
+   "eq": "50% of prior day range",
+   "aligned_tf": "1h",
+   "target": "daily open",
+   "stop": "prior day extreme on the break side",
+   "structure": "opposing 1h CISD",
+   "level_rule": "series_open",
+   "swing": "2/2",
+   "max_wait": 3,
+   "min_risk_frac": 0.1,
+   "stub_filter_min_m1": 600,
+   "cisd_scope": "range",
+   "c3_reference": "c2_open",
+   "hold_basis": "bars",
+   "eq_cross": "session open on the bias side of the EQ",
+   "ctrl_tod_tol_min": 30
+  }
+ },
+ "params_source": {
+  "eq": "corpus: 4rNC3QXxC20 'A closure through the EQ does not equal switch bias'",
+  "aligned_tf": "corpus: invalidation-trade library ambiguity 'in the worked example the EQ was read on the hourly'",
+  "target": "corpus: 4rNC3QXxC20 'you adjust where your targets would be around the daily open'",
+  "stop": "corpus: 4rNC3QXxC20 'doesn't automatically mean that it's going to go to previous day high' (PDH = the hard invalidation); declared after u1007a returned n=24",
+  "structure": "corpus: 4rNC3QXxC20 'there's nothing bullish in here. No structure.'",
+  "level_rule": "phase3: locked CISD level rule",
+  "swing": "phase3: locked swing 2/2",
+  "max_wait": "phase3: locked max_wait=3",
+  "min_risk_frac": "declared-before-run: degenerate-stop guard, _common.MIN_RISK_FRAC",
+  "stub_filter_min_m1": "declared-before-run: README trap 6 stub sessions",
+  "cisd_scope": "phase3: locked primary cisd_scope=range",
+  "c3_reference": "phase3: locked primary C3 reference (Reading A)",
+  "hold_basis": "declared-before-run: README trap 7; the sibling library readings of this exact intraday frame showed >10% real/control exposure gaps on clock basis",
+  "eq_cross": "corpus: 4rNC3QXxC20 'just cuz it goes over the EQ' / 'A closure through the EQ' / 'it's gone too high to form a small wick' (the wick from the open must cross the EQ); audit fix, declared before the re-run",
+  "ctrl_tod_tol_min": "declared-before-run: README trap 9 / vault Concept Campaign lesson 3 - not a timing concept but decisions cluster at 19:00-23:00 NY (66% in the first run); audit fix"
+ },
+ "n": 128,
+ "span": {
+  "start": "2016-01-20 01:00:00+00:00",
+  "end": "2026-07-15 02:00:00+00:00",
+  "years": 10.483
+ },
+ "avg_R": -0.01157752137151382,
+ "avg_R_gross": 0.028422478628486195,
+ "win_rate": 0.6328125,
+ "pf": 0.9593078698756207,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "n": 640,
+  "avg_R": -0.0013076807823782816,
+  "win_rate": 0.64375,
+  "pf": 0.9956678941407706,
+  "sd_R": 0.7702951692228832,
+  "exit_mix": {
+   "stop": 0.265625,
+   "target": 0.6140625,
+   "time": 0.1203125
+  },
+  "avg_R_gross": 0.03869231921762172,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": -0.010269840589135538,
+ "ci_lo": -0.14077372206605795,
+ "ci_hi": 0.12321648074933904,
+ "ci_method": "day_block",
+ "p": 0.8787969827486877,
+ "halves": {
+  "H1": {
+   "n": 69,
+   "diff": -0.14506146480919252,
+   "ci_lo": -0.3206969194087422,
+   "ci_hi": 0.023841728464449947,
+   "ci_method": "iid",
+   "p": 0.09885882968180683,
+   "start": "2016-01-20 01:00:00+00:00",
+   "end": "2020-12-14 01:00:00+00:00"
+  },
+  "H2": {
+   "n": 59,
+   "diff": 0.14736782163432088,
+   "ci_lo": -0.03644187437821969,
+   "ci_hi": 0.3252016754900047,
+   "ci_method": "iid",
+   "p": 0.11018775682486324,
+   "start": "2021-04-23 02:00:00+00:00",
+   "end": "2026-07-15 02:00:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 35,
+   "diff": -0.16664159645299942,
+   "ci_lo": -0.4331633401797977,
+   "ci_hi": 0.09975844656598265,
+   "ci_method": "iid",
+   "p": 0.22029687927630331,
+   "start": "2016-01-20 01:00:00+00:00",
+   "end": "2018-08-01 05:00:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 34,
+   "diff": -0.12284662341115593,
+   "ci_lo": -0.3618109100871695,
+   "ci_hi": 0.11375350603119186,
+   "ci_method": "iid",
+   "p": 0.3112579005377149,
+   "start": "2018-08-31 02:00:00+00:00",
+   "end": "2020-12-14 01:00:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 28,
+   "diff": 0.1670042859026048,
+   "ci_lo": -0.10866623535348319,
+   "ci_hi": 0.4382164450569508,
+   "ci_method": "iid",
+   "p": 0.23128787648841456,
+   "start": "2021-04-23 02:00:00+00:00",
+   "end": "2023-08-29 12:00:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 31,
+   "diff": 0.12963166035974186,
+   "ci_lo": -0.13926685341723538,
+   "ci_hi": 0.36755070733588074,
+   "ci_method": "iid",
+   "p": 0.3160429543065644,
+   "start": "2024-01-23 04:00:00+00:00",
+   "end": "2026-07-15 02:00:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.1886746369715398,
+ "mde_threshold": 0.1,
+ "power_floor_n": 456,
+ "verdict": "UNDERPOWERED",
+ "verdict_detail": "CI contains 0; MDE 0.1887 vs threshold 0.1000, effective n 128 (power floor n=456, have 128)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 128,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 0.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 25,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "target_px",
+    "max_hold",
+    "no_opp"
+   ],
+   "ignored": [],
+   "lookback": "20D",
+   "recent": "1D",
+   "events_fp": "fc92fb080dbdbb6d",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "per-row column",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": 30,
+  "entry_mode": "next_open",
+  "hold_basis": "bars",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "Tests ONLY the new soft-invalidation claim (update_20261007_live_05). Daily-profile pairing is discretionary and not modelled. AUDIT 2026-10-07 re-run: EQ close now requires a genuine close through the EQ (session opened on the bias side) and the control holds the NY clock +/-30 min.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/update_20261007/invalidation-trade.py",
+ "runtime_sec": 0.08,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-10-07T06:18:44+00:00",
+ "n_events_in": 128,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 0,
+  "target_not_beyond_entry": 0,
+  "no_bars_in_hold": 0
+ },
+ "events_fp": "fc92fb080dbdbb6d",
+ "sd_R": 0.6789651830584658,
+ "exit_mix": {
+  "stop": 0.234375,
+  "target": 0.5703125,
+  "time": 0.1953125
+ },
+ "trades_per_year": 12.209976495168451,
+ "ci_components": {
+  "phase3_block": [
+   -0.13450987777161935,
+   0.1289113765605187
+  ],
+  "day_block": [
+   -0.14077372206605795,
+   0.12321648074933904
+  ]
+ },
+ "diff_win": -0.010937500000000044,
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 128,
+  "n_clusters": null,
+  "n_eff": 128
+ },
+ "ties": {
+  "real_ambiguous": 0.0,
+  "control_ambiguous": 0.0,
+  "real_gap_stop": 0.0,
+  "control_gap_stop": 0.0046875,
+  "verdict_stop_first": "UNDERPOWERED"
+ },
+ "ctrl_overlap": 0.0015625,
+ "exposure_bars": {
+  "real_mean": 1022.8125,
+  "control_mean": 1022.8125,
+  "hold_basis": "bars"
+ },
+ "run_id": "9c80e829d37e4ddeba51a456e6fd3331",
+ "hyp_key": "878e3688881f6f82"
+}

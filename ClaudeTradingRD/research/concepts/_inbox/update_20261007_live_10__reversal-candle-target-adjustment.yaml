@@ -1,0 +1,46 @@
+id: reversal-candle-target-adjustment
+name: Reversal Candle - Adjust Targets, Do Not Expect Expansion Past The Open
+category: model
+status: specified
+voice: ttrades
+definition: On a daily reversal day the intraday targets are the daily open and the PREVIOUS DAY'S EQ,
+  chosen according to wick size; he states lower expectations for the move and stops after those targets
+  print. A small wick on the reversal candle leaves room for continuation beyond them.
+detection_rules:
+- Classify the day as a reversal day (expansion into a higher-timeframe target, then reversal).
+- 'Targets: daily open, then previous day EQ; the choice is conditioned on wick size.'
+- If the previous EQ is already hit with only a small wick, a continuation higher is still possible.
+- Once price is back to the daily open on a reversal day, treat the day's objective as done.
+execution:
+  bias: Back into the prior range.
+  entry: 15m/1m fractal model after the weakest asset reverses.
+  stop: Below the reversal low.
+  targets:
+  - daily open
+  - previous day EQ
+measurable:
+- hit rate of the daily open vs previous-day EQ on reversal days
+sources:
+- video_id: GRc5FVB5tdg
+  title: New York Open Live Q&A
+  quote: your targets back towards the daily open to the previous EQ
+- video_id: GRc5FVB5tdg
+  title: New York Open Live Q&A
+  quote: We're back towards that daily open, which on a reversal day, that's the
+ambiguities:
+- How wick size selects between the daily open and the previous EQ is not stated.
+- Which daily open (18:00 or midnight) is not specified in this stream.
+related:
+- large-wick-target-adjustment
+- equilibrium-eq
+timeframes:
+  htf:
+  - 1D
+  - 4H
+  - 1H
+  ltf:
+  - 15m
+  - 1m
+  fractal: true
+python_detector: null
+notes: Unit update_20261007_live_10; NY open stream on index futures (NQ/ES/YM); no timestamps in transcript.

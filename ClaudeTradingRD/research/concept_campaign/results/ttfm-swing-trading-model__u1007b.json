@@ -1,0 +1,291 @@
+{
+ "concept_id": "ttfm-swing-trading-model",
+ "reading": "u1007b",
+ "testable": true,
+ "test_type": "gate",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "weekly bias: last weekly candle closed by the day's first 1H close is a weekly C2 closure, else C3 (Reading A); draw = that week's high (bull) / low (bear) = previous week's high/low; live only while the week-to-date high < draw (low > draw) at the decision",
+   "daily swing: the previous non-stub (>=600 M1) 18:00-NY day P is a daily C2 (else C3) closure in the bias direction with a 1H CISD (series_open) inside it",
+   "entry: on day D's 1H bars, IC-CISD at the forming daily wick (running extreme, opposing series' first open, first later 1H close through it; new extreme re-derives; confirmed series consumed); the confirming 1H bar starts in fx Asia 20:00-00:00 NY or fx NY AM 07:00-10:00 NY; D's extreme has not taken P's extreme",
+   "decide at the 1H close (top of the hour), enter next M1 open, stop = D's extreme so far, 2R, time exit at D's 17:00 NY close, hold in trading minutes",
+   "u1007b: first qualifying event per trading day per session; gate_test gate = Asia session vs NY AM session, claim '+'; controls at any hour (timing is the claim)"
+  ],
+  "params": {
+   "bias_tf": "1W",
+   "weekly_bias": "C2 else C3 (Reading A); draw = previous week's high/low, untaken",
+   "swing_tf": "1D",
+   "daily_closure": "C2 else C3 + 1H CISD inside",
+   "entry_tf": "1h",
+   "entry": "IC-CISD at the day's running extreme (series_open, series <= 10, run within 2 bars)",
+   "sessions": "fx_asia 20:00-00:00 NY, fx_ny_am 07:00-10:00 NY (confirm-bar start)",
+   "invalidation": "D's extreme beyond P's extreme",
+   "rr": 2.0,
+   "exit": "D 17:00 NY close",
+   "day_open_hour": 18,
+   "min_day_m1": 600,
+   "hold_basis": "bars",
+   "grid4h": "n/a (no 4H bars read)"
+  }
+ },
+ "params_source": {
+  "bias_tf": "corpus: cWDnzI3lpUk 'The first thing to start with is a weekly bias.'",
+  "weekly_bias": "corpus: cWDnzI3lpUk 'is price going to reach for previous week's high or previous week's low?' / 'a candle two or a candle three closure on the weekly'",
+  "swing_tf": "corpus: cWDnzI3lpUk 'look to align daily swing points with that bias'",
+  "daily_closure": "corpus: cWDnzI3lpUk 'A candle two or a candle three closure with a change in the state of delivery'",
+  "entry_tf": "corpus: cWDnzI3lpUk 'it would really be 1 minute taking a look at the top of every hour'",
+  "entry": "corpus: cWDnzI3lpUk 'the go-to is always going to be an intra-candle change in the state of delivery' / 'just letting that daily wick form and then looking to trade away'; method_spec \u00a74.2 series_open",
+  "sessions": "corpus: cWDnzI3lpUk 'focus on Asia session, see if I can position myself for the day' / 'If that doesn't work, then I can check the New York session.'; windows: killzones.yaml forex Asia 20-00, NY AM 07-10 (vault Session Timing on Gold)",
+  "invalidation": "corpus: ttfm-swing-trading-model yaml invalidation 'The daily swing point's protected swing is taken out.'",
+  "rr": "corpus: cWDnzI3lpUk 'not only can you many times get 2R in the same daily range'",
+  "exit": "corpus: cWDnzI3lpUk '2R in the same daily range' (the weekly-range hold is the prior reading's target)",
+  "day_open_hour": "session_window_fit: settled 18:00 NY daily candle",
+  "min_day_m1": "declared-before-run: README trap 6 stub sessions (as weekly-profile-framework)",
+  "hold_basis": "declared-before-run (README trap 7): the hold ends at 17:00 NY, controls +-30d can span the halt/weekend, so hold in trading minutes",
+  "grid4h": "declared-before-run: no 4H bars are read"
+ },
+ "n": 22,
+ "span": {
+  "start": "2016-03-02 02:00:00+00:00",
+  "end": "2026-04-22 12:00:00+00:00",
+  "years": 10.138
+ },
+ "avg_R": -0.007960863623308693,
+ "avg_R_gross": 0.03203913637669134,
+ "win_rate": 0.36363636363636365,
+ "pf": 0.9879797335549343,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "avg_R_gated": -0.16900565948129684,
+  "avg_R_complement": -0.00598570574556772,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": 0.266376120705865,
+ "ci_lo": -0.4463558153278952,
+ "ci_hi": 1.0082530230553124,
+ "ci_method": "day_block",
+ "p": 0.47285645302130613,
+ "halves": {
+  "H1": {
+   "n": 20,
+   "diff": -0.15695968758546264,
+   "ci_lo": -0.9377336784919945,
+   "ci_hi": 0.6772641585204292,
+   "ci_method": "iid",
+   "p": 0.703223235872922,
+   "start": "2016-03-02 02:00:00+00:00",
+   "end": "2020-10-23 14:00:00+00:00",
+   "n_gated": 14
+  },
+  "H2": {
+   "n": 20,
+   "diff": 0.8051094960613733,
+   "ci_lo": -0.3057891329853062,
+   "ci_hi": 1.9444149891490636,
+   "ci_method": "iid",
+   "p": 0.16075803710064945,
+   "start": "2021-07-13 14:00:00+00:00",
+   "end": "2026-04-22 12:00:00+00:00",
+   "n_gated": 8
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 12,
+   "diff": -0.06947124349694507,
+   "ci_lo": -1.3359993559676342,
+   "ci_hi": 1.1454388501979822,
+   "ci_method": "iid",
+   "p": 0.9126126221350084,
+   "start": "2016-03-02 02:00:00+00:00",
+   "end": "2018-05-10 02:00:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 8,
+   "diff": -0.6073240982779566,
+   "ci_lo": -1.3392714940264865,
+   "ci_hi": 0.06702629850676343,
+   "ci_method": "iid",
+   "p": 0.09048192146473895,
+   "start": "2018-10-01 13:00:00+00:00",
+   "end": "2020-10-23 14:00:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 9,
+   "diff": 0.8121922984071542,
+   "ci_lo": -0.7719607348006223,
+   "ci_hi": 2.549731783804523,
+   "ci_method": "iid",
+   "p": 0.3378269192487091,
+   "start": "2021-07-13 14:00:00+00:00",
+   "end": "2023-08-07 13:00:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 11,
+   "diff": 0.7252179517152707,
+   "ci_lo": -0.7082376734114464,
+   "ci_hi": 2.3545829589200533,
+   "ci_method": "iid",
+   "p": 0.3533221149308853,
+   "start": "2024-02-29 02:00:00+00:00",
+   "end": "2026-04-22 12:00:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 1.0396135598617677,
+ "mde_threshold": 0.1,
+ "power_floor_n": 1946,
+ "verdict": "UNTESTABLE",
+ "verdict_detail": "n=22 (other arm 18) below N_MIN_ANY=30",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 40,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "gate_mask_checked": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 0.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 20,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "rr",
+    "max_hold",
+    "asia"
+   ],
+   "ignored": [],
+   "lookback": "60D",
+   "recent": "1D",
+   "events_fp": "91b1c9141daee826",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "per-row column",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": null,
+  "entry_mode": "next_open",
+  "hold_basis": "bars",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "Asia-first preference for US time zones, scored as Asia entries vs NY entries of the same model, each against its own matched control. The source hedges it ('this is really working on any session'). u1007b descriptive: gated/all n=22: median stop 3.49 pt, gross +0.032R, net at 0.45 pt -0.090R / 0.6 pt -0.131R spread; complement n=18: median stop 10.95 pt, gross -0.071R, net at 0.45 pt -0.124R / 0.6 pt -0.142R spread",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/update_20261007/ttfm-swing-trading-model.py",
+ "runtime_sec": 0.19,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-10-07T06:36:20+00:00",
+ "n_events_in": 40,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 0,
+  "target_not_beyond_entry": 0,
+  "no_bars_in_hold": 0
+ },
+ "n_complement": 18,
+ "gate_firing_rate": 0.55,
+ "events_fp": "91b1c9141daee826",
+ "mask_fp": "8e9c47ed53cd6a79",
+ "mask_col": "asia",
+ "exit_mix": {
+  "stop": 0.6363636363636364,
+  "target": 0.3181818181818182,
+  "time": 0.045454545454545456
+ },
+ "gated_vs_own_control": {
+  "diff": 0.16104479585798814,
+  "ci_lo": -0.47290854952041866,
+  "ci_hi": 0.8469426794702094,
+  "p": 0.6324371483684841
+ },
+ "complement": {
+  "n": 18,
+  "avg_R": -0.1113170305934445,
+  "win_rate": 0.5,
+  "pf": 0.720807918415353,
+  "sd_R": 0.8475184317593052,
+  "exit_mix": {
+   "stop": 0.2777777777777778,
+   "target": 0.05555555555555555,
+   "time": 0.6666666666666666
+  },
+  "vs_own_control": {
+   "diff": -0.10533132484787677,
+   "ci_lo": -0.5526536129658491,
+   "ci_hi": 0.3573570883977648,
+   "p": 0.6500294570598741
+  }
+ },
+ "ci_components": {
+  "phase3_iid": [
+   -0.42285229528100016,
+   0.9896689704863116
+  ],
+  "day_block": [
+   -0.4463558153278952,
+   1.0082530230553124
+  ]
+ },
+ "diff_meaning": "mean(R-ctrl | gated) - mean(R-ctrl | complement)",
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_eff_gated": 22,
+  "n_eff_complement": 18,
+  "n_eff": 18
+ },
+ "ties": {
+  "real_ambiguous": 0.0,
+  "control_ambiguous": 0.0,
+  "real_gap_stop": 0.05,
+  "control_gap_stop": 0.01,
+  "gated_excess": 0.0,
+  "complement_excess": 0.0,
+  "verdict_stop_first": "UNTESTABLE"
+ },
+ "ctrl_overlap": 0.0,
+ "exposure_bars": {
+  "real_mean": 837.0,
+  "control_mean": 837.0,
+  "hold_basis": "bars"
+ },
+ "run_id": "2a74254df09c43d39c7317bc6302f00e",
+ "hyp_key": "0d3eab673df61976"
+}

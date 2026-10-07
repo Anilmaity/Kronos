@@ -1,0 +1,273 @@
+{
+ "concept_id": "intraday-reversal",
+ "reading": "u1007b",
+ "testable": true,
+ "test_type": "trade",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "forex-grid 4H C2 (spec 3.2, one-sided) whose extreme is the NY trading day's running extreme (18:00 roll)",
+   "a 1H CISD inside C2 at its extreme, confirmed before the 4H close (hourly first, then the 4H closure)",
+   "15m continuation: most recent 15m CISD (series_open, 2/2, max_wait 3) in the C2 direction confirmed inside C2, swing after the C2-extreme 15m bar, intact through and beyond the C2 close",
+   "decide at the C2 close, enter at the C3 open (next M1 open); stop on that 15m swing; 2R; exit at 17:00 NY (end of the trading day; C2s closing at 17:00 have no session left)"
+  ],
+  "params": {
+   "c2": "4h forex one-sided",
+   "ordering": "1h CISD before 4H close",
+   "confirm_1h": "cisd_in_candle series_open",
+   "day_extreme": "running NY-day extreme",
+   "cisd_detector": "series_open,2/2,max_wait3",
+   "entry_tf": "15min",
+   "continuation": "swing after C2 extreme, intact, beyond C2 close",
+   "entry": "C3 open",
+   "stop": "15m continuation swing",
+   "rr": 2.0,
+   "max_hold": "to 17:00 NY day end",
+   "grid4h": "forex",
+   "day_open_hour": 18,
+   "smt": "not required",
+   "correlated_target": "not modelled",
+   "ctrl_grid": "4h",
+   "ctrl_tod_tol_min": 30
+  }
+ },
+ "params_source": {
+  "rr": "corpus: wa9m30UHrm0 'And then you look for this to either hit 2R'; BgVkJf0kMo4 'our stop on that new continuation's low and then look for 2R'",
+  "stop": "corpus: wa9m30UHrm0 'So, then you can enter on a protected swing.' (draft execution.stop 'Beyond the protected swing.')",
+  "entry_tf": "corpus: wa9m30UHrm0 'Use a 4-hour 15-minute model.'",
+  "cisd_detector": "phase3: detectors.cisd series_open (method_spec 4.2 default), 2/2 swings, max_wait 3 -- the bare-CISD rung-0 detector, on 1h and 15min",
+  "day_extreme": "corpus: wa9m30UHrm0 'How do you confirm the high of the day?'; library intraday-reversal.yaml 'That extreme is then treated as the low of the day'",
+  "max_hold": "corpus: wa9m30UHrm0 'So, then from 6:00 a.m. and on, you expect this high to be' [in]; BgVkJf0kMo4 'either going to get stopped out or it's going to hit TP' -> hold to the end of the NY trading day (17:00 NY), per-row wall clock, no halt inside",
+  "grid4h": "method_spec: forex 4H grid 17/21/01/05/09/13 NY (README trap 8 default; vault: the grid is a knob, recorded here)",
+  "day_open_hour": "session_window_fit: 18:00 NY daily candle (settled)",
+  "ctrl_tod_tol_min": "declared-before-run: README trap 9 / vault Concept Campaign lesson 3 -- not a timing concept but events cluster at 4H/1H closes and in session hours, so the control holds the NY clock +/-30 min (also keeps the rest-of-day hold comparable)",
+  "smt": "declared-before-run: not required -- wa9m30UHrm0 'We have a little SMT on this previous high' is supportive; BgVkJf0kMo4 needs it only on a 'reversal day', which is not defined",
+  "correlated_target": "declared-before-run: the YM-target exit needs NQ/YM; 2R only (silver analogue tested as cross-asset-target-transfer)",
+  "ordering": "corpus: BgVkJf0kMo4 'I'm going to want to wait for a 4-hour candle closure' (after the hourly confirmation) -> 1H CISD confirmed inside C2 before its close",
+  "c2": "corpus: BgVkJf0kMo4 'On this 4-hour candle closure, I have now confirmed a candle two closure.' (method_spec 3.2, one-sided)",
+  "confirm_1h": "phase3/model_own_04b: _helpers.cisd_in_candle (C2 extreme, opposing 1H series, close through the series' first open before the 4H close)",
+  "continuation": "corpus: BgVkJf0kMo4 'formed prior to the open of this new higher time frame candle'; 'So, we have that reversal. We have a new continuation.' -> most recent 15m CISD inside C2 with its swing after the C2-extreme 15m bar, intact and beyond the C2 close",
+  "entry": "corpus: BgVkJf0kMo4 'That means we can enter.' -> decide at the C2 close, enter C3 open",
+  "ctrl_grid": "declared-before-run: decisions occur only at 4H closes, so controls are drawn on the 4H forex close grid (positional-entry u1007a precedent)"
+ },
+ "n": 516,
+ "span": {
+  "start": "2016-01-18 06:00:00+00:00",
+  "end": "2026-07-14 09:00:00+00:00",
+  "years": 10.486
+ },
+ "avg_R": -0.0018617317229473772,
+ "avg_R_gross": 0.038138268277052634,
+ "win_rate": 0.37790697674418605,
+ "pf": 0.9966381755322281,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "n": 2567,
+  "avg_R": -0.027754635441809145,
+  "win_rate": 0.38215816127775615,
+  "pf": 0.9511816909387365,
+  "sd_R": 1.2434826122868792,
+  "exit_mix": {
+   "stop": 0.5122711336190106,
+   "target": 0.23724191663420335,
+   "time": 0.25048694974678615
+  },
+  "avg_R_gross": 0.012245364558190874,
+  "reps": 5,
+  "fill_rate": 0.9949612403100775
+ },
+ "diff": 0.025892903718861767,
+ "ci_lo": -0.09490007731008025,
+ "ci_hi": 0.14597285132262752,
+ "ci_method": "phase3_iid",
+ "p": 0.6734797925284529,
+ "halves": {
+  "H1": {
+   "n": 248,
+   "diff": 0.012945508965572235,
+   "ci_lo": -0.167052966109755,
+   "ci_hi": 0.19417957879535758,
+   "ci_method": "iid",
+   "p": 0.8882818138655562,
+   "start": "2016-01-18 06:00:00+00:00",
+   "end": "2020-12-17 06:00:00+00:00"
+  },
+  "H2": {
+   "n": 268,
+   "diff": 0.03555373927931634,
+   "ci_lo": -0.12571752481854537,
+   "ci_hi": 0.20435568732439197,
+   "ci_method": "iid",
+   "p": 0.6728543032213494,
+   "start": "2021-02-10 10:00:00+00:00",
+   "end": "2026-07-14 09:00:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 132,
+   "diff": 0.02400717237243253,
+   "ci_lo": -0.19181531917760294,
+   "ci_hi": 0.2768947532155145,
+   "ci_method": "iid",
+   "p": 0.8408726394451729,
+   "start": "2016-01-18 06:00:00+00:00",
+   "end": "2018-08-10 17:00:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 124,
+   "diff": 0.018163099748508837,
+   "ci_lo": -0.21360215767231364,
+   "ci_hi": 0.2576101952711587,
+   "ci_method": "iid",
+   "p": 0.8799004204013341,
+   "start": "2018-08-28 13:00:00+00:00",
+   "end": "2021-04-09 05:00:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 133,
+   "diff": -0.0029710519879712263,
+   "ci_lo": -0.21705854964704657,
+   "ci_hi": 0.21058765788870892,
+   "ci_method": "iid",
+   "p": 0.9782734836329676,
+   "start": "2021-04-15 05:00:00+00:00",
+   "end": "2023-11-30 06:00:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 127,
+   "diff": 0.060731237344430436,
+   "ci_lo": -0.179298096015704,
+   "ci_hi": 0.30793260670435985,
+   "ci_method": "iid",
+   "p": 0.6251232324029297,
+   "start": "2023-12-05 14:00:00+00:00",
+   "end": "2026-07-14 09:00:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.17215264764135071,
+ "mde_threshold": 0.1,
+ "power_floor_n": 1530,
+ "verdict": "UNDERPOWERED",
+ "verdict_detail": "CI contains 0; MDE 0.1722 vs threshold 0.1000, effective n 468 (power floor n=1530, have 516)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 516,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 2.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 51,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "rr",
+    "max_hold"
+   ],
+   "ignored": [],
+   "lookback": "10D",
+   "recent": "1D",
+   "events_fp": "1216306ab1ff9e24",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "per-row column",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "4h",
+  "ctrl_tod_tol_min": 30,
+  "entry_mode": "next_open",
+  "hold_basis": "clock",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "edu_03 (BgVkJf0kMo4): ordered hourly CISD -> 4H C2 closure -> 15m continuation before the next 4H open, enter, 2R. Subset of positional-entry__a's book (4H C2 + 15m CISD, C3-open entry, 2R) plus the 1H-CISD and day-extreme gates. median stop 4.06 pt (p25 2.19, p75 7.43); a 0.30 pt spread costs ~0.07R at the median stop (cost cancels in diff; vault Concept Campaign lesson 2)",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/update_20261007/intraday-reversal.py",
+ "runtime_sec": 0.08,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-10-07T06:36:41+00:00",
+ "n_events_in": 516,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 0,
+  "target_not_beyond_entry": 0,
+  "no_bars_in_hold": 0
+ },
+ "events_fp": "1216306ab1ff9e24",
+ "sd_R": 1.2440035742429416,
+ "exit_mix": {
+  "stop": 0.4844961240310077,
+  "target": 0.23837209302325582,
+  "time": 0.2771317829457364
+ },
+ "trades_per_year": 49.208616187989556,
+ "ci_components": {
+  "phase3_iid": [
+   -0.09490007731008025,
+   0.14597285132262752
+  ],
+  "day_block": [
+   -0.09563019834442334,
+   0.14087808554995523
+  ]
+ },
+ "diff_win": -0.004251184533570096,
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 468,
+  "n_clusters": null,
+  "n_eff": 468
+ },
+ "ties": {
+  "real_ambiguous": 0.0,
+  "control_ambiguous": 0.00038955979742890534,
+  "real_gap_stop": 0.005813953488372093,
+  "control_gap_stop": 0.004674717569146864,
+  "verdict_stop_first": "UNDERPOWERED"
+ },
+ "ctrl_overlap": 0.04440981690689521,
+ "exposure_bars": {
+  "real_mean": 691.2519379844962,
+  "control_mean": 690.5434359174134,
+  "hold_basis": "clock"
+ },
+ "run_id": "69027c29a0044664ab265112514b3ed0",
+ "hyp_key": "c8a564e2d69db215"
+}

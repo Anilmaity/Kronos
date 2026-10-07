@@ -8,8 +8,25 @@ definition: 'Before taking an entry he estimates the expected daily range by loo
   indicator.
 
   '
+variants:
+  definition:
+  - 'Applied on gold in the London model: a 4-hour candle 2 with ''a little bit of a wick''
+    is still traded because the daily range of recent expansion candles is around 100 points
+    and the day is only halfway through it, so ''we still have a lot of range left''. The
+    wick is judged against the remaining daily range, not in isolation.
+
+    '
+  - 'Adds a volatility input: he checks the VIX (or just the daily chart) to set range expectations.
+    With the VIX at the low of a big range he holds lower expectations for the day''s range.
+    He also notes that the day''s move had already made most of a daily range and that recent
+    days were smaller-range, so further expansion was not expected.'
+  - 'The ''rope'' analogy for daily range (e.g. ~500 points on NQ). The amount of range the
+    overnight sessions have already used governs what New York can deliver: if Asia forms
+    the low and London expands, little is expected in New York; if the overnight uses no range
+    and New York reverses, New York is expected to use the remaining range. Applied live:
+    NQ had already expanded to the daily level, so he did not expect much more range.'
 category: risk
-status: underspecified
+status: contested
 aliases:
 - daily range created
 - how much range is left
@@ -20,22 +37,57 @@ detection_rules:
 - Treat the typical value as the expected range for today.
 - Measure today's range so far and compute the remainder.
 - Near the top of the expected range, reject new entries in the same direction.
+- Estimate the daily range of recent expansion candles (gold example ~100 points).
+- If roughly half or more remains, a moderate 4-hour wick does not disqualify the trade.
+- When the VIX is at the low of its recent range, lower the expected daily range.
+- Estimate typical daily range (eyeballed, e.g. ~500 pts NQ).
+- At the NY open, measure the range already produced by Asia and London.
+- If overnight already produced the low/high and most of the range, lower NY expansion expectations
+  / skip continuation entries.
+- If overnight produced little range and NY reverses, expect NY to deliver the remaining range.
 invalidation:
 - An unusually large day where the range materially exceeds the recent norm.
 measurable:
 - trade outcome bucketed by percentage of expected daily range already consumed at entry
+- outcome by fraction of expected daily range remaining at entry
 sources:
 - video_id: 0AYGNc9czYc
   title: New York Open Live Q&A
 - video_id: egV_gABTQks
   title: (CPI) New York Open Live Q&A
+- video_id: tUbrCewFdCU
+  title: How to Trade London Using TTrades Fractal Model
+  quote: our daily range of these expansion candles around 100 points
+- video_id: tUbrCewFdCU
+  title: How to Trade London Using TTrades Fractal Model
+  quote: We have a small enough wick to still allow for range
+- video_id: rVRk4MLTJSs
+  title: New York Open Live Q&A
+  quote: can use the VIX to help with your expectations on range.
+- video_id: rVRk4MLTJSs
+  title: New York Open Live Q&A
+  quote: I have lower expectations for the daily range.
+- video_id: 9H15ZZvaKPQ
+  title: New York Open Live Q&A
+  quote: How much range have we already used going into here?
+- video_id: 9H15ZZvaKPQ
+  title: New York Open Live Q&A
+  quote: London expands, do I expect much in New York? No.
 ambiguities:
 - No lookback length or statistic (mean, median, percentile) is specified.
 - The bulk of the range is not defined as a percentage.
+- Halfway is the only threshold implied; the 100-point figure is one example on gold futures.
+- No VIX level or lookback is given; 'low of this range' is read by eye.
+- No threshold for 'used all the rope' is given.
+- Anomaly days (e.g. 1,400-point days) are acknowledged as exceptions.
 related:
 - three-entry-quality-criteria
 - dont-trade-after-expansion
 - time-based-exit-htf-close
+- small-wick-expansion-rule
+- ttfm-favorite-daily-4h-15m
+- average-daily-range
+- large-range-day-targeting
 timeframes:
   htf:
   - 1D
@@ -51,5 +103,8 @@ execution:
   - Constrained by the remaining expected range
 contributing_units:
 - sunday_sessions_live_q_a_01
-draft_count: 1
+- update_20261007_edu_02
+- update_20261007_live_03
+- update_20261007_live_04
+draft_count: 4
 voice: ttrades

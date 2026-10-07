@@ -1,0 +1,287 @@
+{
+ "concept_id": "fomc-nfp-cpi-only",
+ "reading": "u1007b",
+ "testable": true,
+ "test_type": "gate",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "baseline book: phase-3 bare 15min CISD (series_open level, 2/2 swings, max_wait 3), decide at the confirming bar close, enter next M1 open, stop at protected swing, 2R, hold 150min",
+   "blocked = decision whose 150-min hold window contains an NFP (08:30 NY) or FOMC (14:00 NY) release (no hold through / no entry right before)",
+   "allowed = all other decisions"
+  ],
+  "params": {
+   "baseline": "bare CISD",
+   "baseline_tf": "15min",
+   "level_rule": "series_open",
+   "swing": "2/2",
+   "max_wait": 3,
+   "rr": 2.0,
+   "max_hold": "150min",
+   "calendar": "NFP (BLS rule + early-January deferral, 138 dates to 2026-07) + FOMC scheduled statements (81 dates 2016-01..2026-03); CPI absent",
+   "release_times": "NFP 08:30 NY, FOMC 14:00 NY",
+   "block_rule": "blocked = decision whose 150-min hold window contains an NFP (08:30 NY) or FOMC (14:00 NY) release (no hold through / no entry right before)"
+  }
+ },
+ "params_source": {
+  "baseline": "phase3: meta/conjunction_preregistration.md \u00a71.8-1.13 (locked rung-0 config); max hold = 10 entry-TF periods (\u00a75.5)",
+  "baseline_tf": "phase3: meta/conjunction_preregistration.md \u00a71.8-1.13 (locked rung-0 config); max hold = 10 entry-TF periods (\u00a75.5)",
+  "level_rule": "phase3: meta/conjunction_preregistration.md \u00a71.8-1.13 (locked rung-0 config); max hold = 10 entry-TF periods (\u00a75.5)",
+  "swing": "phase3: meta/conjunction_preregistration.md \u00a71.8-1.13 (locked rung-0 config); max hold = 10 entry-TF periods (\u00a75.5)",
+  "max_wait": "phase3: meta/conjunction_preregistration.md \u00a71.8-1.13 (locked rung-0 config); max hold = 10 entry-TF periods (\u00a75.5)",
+  "rr": "phase3: meta/conjunction_preregistration.md \u00a71.8-1.13 (locked rung-0 config); max hold = 10 entry-TF periods (\u00a75.5)",
+  "max_hold": "phase3: meta/conjunction_preregistration.md \u00a71.8-1.13 (locked rung-0 config); max hold = 10 entry-TF periods (\u00a75.5)",
+  "calendar": "declared-before-run: FOMC/NFP calendars from time_own_02b/_common.py (typed before any run there), NFP corrected for the BLS early-January deferral (Jan 2/3 rule date -> +7d; event_gate.py OVERRIDES_NFP 2025-01-10, 2026-01-09); CPI omitted: no verified CPI dataset, not typed from memory",
+  "release_times": "declared-before-run: official release times 08:30 ET (Employment Situation), 14:00 ET (FOMC statement)",
+  "block_rule": "corpus: uW55Tuk-ngY 'volatile news events that I tend to not trade through or hold something intraday ... I just won't trade the session before or right prior to it'; wa9m30UHrm0 'Don't trade right before it'; window = book's own max hold"
+ },
+ "n": 32491,
+ "span": {
+  "start": "2016-01-04 00:30:00+00:00",
+  "end": "2026-07-23 02:15:00+00:00",
+  "years": 10.549
+ },
+ "avg_R": -0.043049563476316284,
+ "avg_R_gross": -0.003049563476316272,
+ "win_rate": 0.4169154535102028,
+ "pf": 0.9032411396993644,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "avg_R_gated": -0.03956386596210051,
+  "avg_R_complement": -0.11960416853396633,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": 0.031547531820229104,
+ "ci_lo": -0.14915238359226765,
+ "ci_hi": 0.20134539678375685,
+ "ci_method": "day_block",
+ "p": 0.7242203377264957,
+ "halves": {
+  "H1": {
+   "n": 15651,
+   "diff": 0.026092913702960314,
+   "ci_lo": -0.23856483750810684,
+   "ci_hi": 0.2793913638113111,
+   "ci_method": "iid",
+   "p": 0.8434574414062364,
+   "start": "2016-01-04 00:30:00+00:00",
+   "end": "2020-12-31 19:15:00+00:00",
+   "n_gated": 15532
+  },
+  "H2": {
+   "n": 17092,
+   "diff": 0.036233814761759735,
+   "ci_lo": -0.21453046816493704,
+   "ci_hi": 0.26581000483427253,
+   "ci_method": "iid",
+   "p": 0.767463542463553,
+   "start": "2021-01-03 23:45:00+00:00",
+   "end": "2026-07-23 02:15:00+00:00",
+   "n_gated": 16959
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 8212,
+   "diff": -0.2153662966419868,
+   "ci_lo": -0.5925442891090877,
+   "ci_hi": 0.167258728335984,
+   "ci_method": "iid",
+   "p": 0.2665234704551743,
+   "start": "2016-01-04 00:30:00+00:00",
+   "end": "2018-08-22 08:45:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 8264,
+   "diff": 0.3180509174184335,
+   "ci_lo": 0.019220704481107888,
+   "ci_hi": 0.6075806635573743,
+   "ci_method": "iid",
+   "p": 0.034090187814191465,
+   "start": "2018-08-22 11:45:00+00:00",
+   "end": "2021-04-12 08:15:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 8162,
+   "diff": -0.017850209541629216,
+   "ci_lo": -0.37932165634803827,
+   "ci_hi": 0.3126100668840336,
+   "ci_method": "iid",
+   "p": 0.9194513006987981,
+   "start": "2021-04-12 09:30:00+00:00",
+   "end": "2023-12-01 17:00:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 8105,
+   "diff": 0.0786153142524411,
+   "ci_lo": -0.2604483257193384,
+   "ci_hi": 0.3755200029434299,
+   "ci_method": "iid",
+   "p": 0.6279867551465429,
+   "start": "2023-12-04 04:00:00+00:00",
+   "end": "2026-07-23 02:15:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.25050187759437537,
+ "mde_threshold": 0.1,
+ "power_floor_n": 1582,
+ "verdict": "UNDERPOWERED",
+ "verdict_detail": "CI contains 0; MDE 0.2505 vs threshold 0.1000, effective n 168 (power floor n=203885, have 252)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 32743,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "gate_mask_checked": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 64.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 2341,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "rr",
+    "allowed_a",
+    "allowed_b"
+   ],
+   "ignored": [],
+   "lookback": "30D",
+   "recent": "1D",
+   "events_fp": "11bb72fd62330d33",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "150min",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": null,
+  "entry_mode": "next_open",
+  "hold_basis": "clock",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "AUDIT 2026-10-07: NFP calendar corrected (3 January dates were one week early in _common.nfp_dates). CPI releases are not blocked (no verified calendar) -> attenuates toward 0. FOMC dates after 2026-03 omitted. PMI/PPI/oil-inventory clauses not scored (no calendar; oil not traded). 'Session before' not mapped to clock; u1007b uses the book's 150-min hold as the 'right prior' window.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/update_20261007/fomc-nfp-cpi-only.py",
+ "runtime_sec": 2.14,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-10-07T06:14:13+00:00",
+ "n_events_in": 32827,
+ "dropped": {
+  "no_bar_after_decision": 1,
+  "stop_not_beyond_entry": 11,
+  "target_not_beyond_entry": 0,
+  "no_bars_in_hold": 72
+ },
+ "n_complement": 252,
+ "gate_firing_rate": 0.9923036985004429,
+ "events_fp": "11bb72fd62330d33",
+ "mask_fp": "c2af09830b1c78e4",
+ "mask_col": "allowed_b",
+ "exit_mix": {
+  "stop": 0.34877350650949496,
+  "target": 0.12335723738881536,
+  "time": 0.5278692561016897
+ },
+ "gated_vs_own_control": {
+  "diff": -0.003485697514215777,
+  "ci_lo": -0.016127759790041024,
+  "ci_hi": 0.008899436627603488,
+  "p": 0.58509796163974
+ },
+ "complement": {
+  "n": 252,
+  "avg_R": -0.1546373978684112,
+  "win_rate": 0.3134920634920635,
+  "pf": 0.7739587906343444,
+  "sd_R": 1.2930846117042194,
+  "exit_mix": {
+   "stop": 0.6428571428571429,
+   "target": 0.24206349206349206,
+   "time": 0.11507936507936507
+  },
+  "vs_own_control": {
+   "diff": -0.03503322933444489,
+   "ci_lo": -0.21134683887346242,
+   "ci_hi": 0.13925784697812746,
+   "p": 0.6952885712922474
+  }
+ },
+ "ci_components": {
+  "phase3_iid": [
+   -0.13275646643211841,
+   0.2032021675312993
+  ],
+  "day_block": [
+   -0.14915238359226765,
+   0.20134539678375685
+  ]
+ },
+ "diff_meaning": "mean(R-ctrl | gated) - mean(R-ctrl | complement)",
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_eff_gated": 2723,
+  "n_eff_complement": 168,
+  "n_eff": 168
+ },
+ "ties": {
+  "real_ambiguous": 0.0005191949424304431,
+  "control_ambiguous": 0.00042146412973765386,
+  "real_gap_stop": 0.008337659957853587,
+  "control_gap_stop": 0.0071771065571267145,
+  "gated_excess": -8.002215998276446e-05,
+  "complement_excess": 0.023015873015873014,
+  "diff_5050": -0.003096310943554579,
+  "ci_5050": [
+   -0.1799932599738782,
+   0.16302741370430374
+  ],
+  "verdict_5050": "UNDERPOWERED",
+  "verdict_stop_first": "UNDERPOWERED"
+ },
+ "ctrl_overlap": 0.06628592370888434,
+ "exposure_bars": {
+  "real_mean": 143.2580704272669,
+  "control_mean": 142.88333384234798,
+  "hold_basis": "clock"
+ },
+ "run_id": "53a3a489389c4cd98a55c71647e7af49",
+ "hyp_key": "e85169caf7e98a17"
+}

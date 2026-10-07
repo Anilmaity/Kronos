@@ -1,0 +1,287 @@
+{
+ "concept_id": "cisd",
+ "reading": "u1007b",
+ "testable": true,
+ "test_type": "gate",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "baseline = cisd__a book: 15m bars; CISD via detectors.cisd.cisd_events level_rule=series_open, swing 2/2, max_wait 3, min_series 1; POI gate (swing pairing) ON, evaluated on bars up to the confirming bar; decide at confirming close, enter next M1 open, stop protected swing, 2R, 150 min",
+   "consolidation = inside candle (structural, no volatility criterion), state read at the decision",
+   "gate (kept) = NOT (running high/low of the 4H candle holding the confirming 15m bar, through that bar, inside the prior 4H candle's range), forex grid; claim +"
+  ],
+  "params": {
+   "tf": "15min",
+   "level_rule": "series_open",
+   "swing": "2/2",
+   "max_wait": 3,
+   "min_series": 1,
+   "poi_gate": "on",
+   "stop": "protected_swing",
+   "rr": 2.0,
+   "max_hold": "150min",
+   "inside": "wick range, non-strict (<=, >=); running extremes of the developing candle",
+   "ctrl_tod_tol_min": 30,
+   "htf": "4h",
+   "grid4h": "forex"
+  }
+ },
+ "params_source": {
+  "tf": "corpus: 9YVBe-20Hdg 'Why don't I consider this 15-minute CISD?'",
+  "level_rule": "method_spec: \u00a74.2 [P] first-candle open (cisd__a reading a)",
+  "swing": "phase3: locked 2/2 fractal",
+  "max_wait": "phase3: \u00a71.8 max_wait=3",
+  "min_series": "phase3: \u00a71.8 min_series=1",
+  "poi_gate": "corpus: 9YVBe-20Hdg 'It's not paired with any sort of swing point' -> library POI gate (cisd__a)",
+  "stop": "method_spec: \u00a75.1 protected swing",
+  "rr": "phase3: \u00a71.12 2R fixed",
+  "max_hold": "phase3: \u00a71.13 10 entry-TF bars",
+  "inside": "corpus: 9YVBe-20Hdg 'We're inside that candle ... So that's just consolidation'; 'I don't define a CISD by volatility' -> no range/ATR criterion",
+  "ctrl_tod_tol_min": "declared-before-run: README trap 9 \u2014 the inside-so-far state clusters by NY hour while the concept is not about timing; control holds the clock",
+  "htf": "method_spec: \u00a71.3 favourite stack Daily/4H/15m \u2014 4H is the 15m CISD's HTF",
+  "grid4h": "session_window_fit: forex grid for gold (knob, phase3 caveat)"
+ },
+ "n": 17044,
+ "span": {
+  "start": "2016-01-04 23:45:00+00:00",
+  "end": "2026-07-23 02:15:00+00:00",
+  "years": 10.546
+ },
+ "avg_R": -0.046708456389517,
+ "avg_R_gross": -0.006708456389516981,
+ "win_rate": 0.4219080028162403,
+ "pf": 0.8894781581559941,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "avg_R_gated": -0.036094281182325334,
+  "avg_R_complement": -0.051728280884155035,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": -0.02374773421733812,
+ "ci_lo": -0.053127690963848784,
+ "ci_hi": 0.0034169957182453655,
+ "ci_method": "phase3_iid",
+ "p": 0.09970240759190557,
+ "halves": {
+  "H1": {
+   "n": 12743,
+   "diff": -0.03352257999993222,
+   "ci_lo": -0.07579307926667771,
+   "ci_hi": 0.008544981929970186,
+   "ci_method": "iid",
+   "p": 0.11921244828100659,
+   "start": "2016-01-04 23:45:00+00:00",
+   "end": "2020-12-31 19:15:00+00:00",
+   "n_gated": 8024
+  },
+  "H2": {
+   "n": 13885,
+   "diff": -0.014679240802402658,
+   "ci_lo": -0.0530592652245662,
+   "ci_hi": 0.02188299125806965,
+   "ci_method": "block",
+   "p": 0.4425988588181338,
+   "start": "2021-01-03 23:45:00+00:00",
+   "end": "2026-07-23 02:15:00+00:00",
+   "n_gated": 9020
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 6698,
+   "diff": -0.024388007904597934,
+   "ci_lo": -0.07974446894545345,
+   "ci_hi": 0.028993444683115335,
+   "ci_method": "iid",
+   "p": 0.37930849209746637,
+   "start": "2016-01-04 23:45:00+00:00",
+   "end": "2018-08-22 08:00:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 6730,
+   "diff": -0.03626342318604858,
+   "ci_lo": -0.09524421962718448,
+   "ci_hi": 0.016501317242679912,
+   "ci_method": "iid",
+   "p": 0.20334232670255847,
+   "start": "2018-08-22 11:45:00+00:00",
+   "end": "2021-04-12 08:15:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 6647,
+   "diff": -0.033072445575586924,
+   "ci_lo": -0.08984383950015247,
+   "ci_hi": 0.021611348728200225,
+   "ci_method": "block",
+   "p": 0.24475953795075767,
+   "start": "2021-04-12 09:30:00+00:00",
+   "end": "2023-12-01 14:15:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 6553,
+   "diff": -0.001137335903001102,
+   "ci_lo": -0.0558174775384638,
+   "ci_hi": 0.05722699574819743,
+   "ci_method": "iid",
+   "p": 0.9685409940286146,
+   "start": "2023-12-04 04:00:00+00:00",
+   "end": "2026-07-23 02:15:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.04041266728323958,
+ "mde_threshold": 0.1,
+ "power_floor_n": 1566,
+ "verdict": "NULL",
+ "verdict_detail": "CI contains 0; powered (MDE 0.0404 <= 0.1000)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 26628,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "gate_mask_checked": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 64.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 1949,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "rr",
+    "not_cons_d",
+    "not_cons_4h"
+   ],
+   "ignored": [],
+   "lookback": "20D",
+   "recent": "1D",
+   "events_fp": "f6b51d32a3f7e323",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "150min",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": 30,
+  "entry_mode": "next_open",
+  "hold_basis": "clock",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "Tests only the new claim (9YVBe-20Hdg): exclude CISDs formed inside consolidation, on the swing-paired (POI-on) book. Prior bare-CISD consolidation gates: consolidation-avoidance__a/b NEGATIVE (inside-consolidation CISDs did better), consolidation-range-no-trade__a NULL. 'Against bias' (cross-index strength) not tested: needs NQ/ES/YM. Rerun with vault context: same pre-declared readings; gate flags verified against an independent raw-M1 recomputation.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/update_20261007/cisd.py",
+ "runtime_sec": 1.41,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-10-07T06:24:19+00:00",
+ "n_events_in": 26701,
+ "dropped": {
+  "no_bar_after_decision": 1,
+  "stop_not_beyond_entry": 9,
+  "target_not_beyond_entry": 0,
+  "no_bars_in_hold": 63
+ },
+ "n_complement": 9584,
+ "gate_firing_rate": 0.6400781132642331,
+ "events_fp": "f6b51d32a3f7e323",
+ "mask_fp": "2df0000ec9fa4607",
+ "mask_col": "not_cons_4h",
+ "exit_mix": {
+  "stop": 0.31952593287960573,
+  "target": 0.1064890870687632,
+  "time": 0.5739849800516311
+ },
+ "gated_vs_own_control": {
+  "diff": -0.010614175207191663,
+  "ci_lo": -0.0271704886518907,
+  "ci_hi": 0.004340828824364141,
+  "p": 0.18670935079752674
+ },
+ "complement": {
+  "n": 9584,
+  "avg_R": -0.03859472187400858,
+  "win_rate": 0.41058013355592654,
+  "pf": 0.9179628554237318,
+  "sd_R": 1.065333810840974,
+  "exit_mix": {
+   "stop": 0.38219949916527546,
+   "target": 0.14273789649415694,
+   "time": 0.47506260434056763
+  },
+  "vs_own_control": {
+   "diff": 0.013133559010146456,
+   "ci_lo": -0.01039246836734181,
+   "ci_hi": 0.03703129178451898,
+   "p": 0.27766186404072124
+  }
+ },
+ "ci_components": {
+  "phase3_iid": [
+   -0.053127690963848784,
+   0.0034169957182453655
+  ],
+  "day_block": [
+   -0.05153515765742762,
+   0.0032328397454605474
+  ]
+ },
+ "diff_meaning": "mean(R-ctrl | gated) - mean(R-ctrl | complement)",
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_eff_gated": 2718,
+  "n_eff_complement": 2610,
+  "n_eff": 2610
+ },
+ "ties": {
+  "real_ambiguous": 0.00048820790145711284,
+  "control_ambiguous": 0.00045816433829052125,
+  "real_gap_stop": 0.007923989785188523,
+  "control_gap_stop": 0.0072329878323569175,
+  "gated_excess": 5.867167331612298e-05,
+  "complement_excess": -2.0868113522537586e-05,
+  "verdict_stop_first": "NULL"
+ },
+ "ctrl_overlap": 0.05532522157127835,
+ "exposure_bars": {
+  "real_mean": 143.3452380952381,
+  "control_mean": 143.32581493165088,
+  "hold_basis": "clock"
+ },
+ "run_id": "39eb9f992bfc42d78ff4b746fd4e570f",
+ "hyp_key": "db88005a10d5edc6"
+}

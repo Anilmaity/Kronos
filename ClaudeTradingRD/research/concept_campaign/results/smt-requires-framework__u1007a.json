@@ -1,0 +1,283 @@
+{
+ "concept_id": "smt-requires-framework",
+ "reading": "u1007a",
+ "testable": true,
+ "test_type": "gate",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "base: every hourly gold/XAG SMT (detectors.bias.smt_events, 2/2 swings, 20-bar lookback), traded in gold in its direction at the next M1 open after the SMT bar close; stop 1 x ATR14(1h), 1R, 10h",
+   "gate external: gold's reference level for the SMT (held level if gold held, swept level if gold swept) is at/beyond gold's 1h range extreme over the 23 bars before the SMT bar (bearish: level >= max high; bullish: level <= min low)",
+   "complement = SMT at an internal level (a higher high / lower low already inside the range)"
+  ],
+  "params": {
+   "tf": "1h",
+   "correlate": "XAG_USD H1",
+   "smt_lookback": 20,
+   "swing": "2/2",
+   "range_span_bars": 23,
+   "stop_atr": 1.0,
+   "atr_n": 14,
+   "rr": 1.0,
+   "max_hold": "10h",
+   "ctrl_tod_tol_min": 30,
+   "base": "all SMTs"
+  }
+ },
+ "params_source": {
+  "tf": "declared-before-run: silver held only at H1 (prior reading)",
+  "correlate": "corpus: 'they just need to be correlated' (silver is allowed)",
+  "smt_lookback": "phase3: detectors.bias.smt_events default",
+  "swing": "phase3: 2/2 swings (\u00a71.8)",
+  "range_span_bars": "declared-before-run: the SMT's own search span (lookback 20 + right 2 + swing bar); corpus uW55Tuk-ngY 'I want SMT off the external range high' gives no range length",
+  "stop_atr": "declared-before-run (prior reading)",
+  "atr_n": "declared-before-run",
+  "rr": "declared-before-run (prior reading)",
+  "max_hold": "phase3: 10 entry-TF bars (\u00a71.13)",
+  "ctrl_tod_tol_min": "declared-before-run: README trap 9",
+  "base": "corpus: uW55Tuk-ngY 'SMT is a confirmation to a setup' -> reading b keeps the prior reading's model-first gate; reading a tests the external rule alone"
+ },
+ "n": 2317,
+ "span": {
+  "start": "2016-01-04 16:00:00+00:00",
+  "end": "2026-07-21 21:00:00+00:00",
+  "years": 10.543
+ },
+ "avg_R": -0.06676555555434648,
+ "avg_R_gross": -0.02676555555434646,
+ "win_rate": 0.48486140724946697,
+ "pf": 0.8684807915441646,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "avg_R_gated": -0.04782775128503762,
+  "avg_R_complement": -0.04219883716232684,
+  "reps": 5,
+  "fill_rate": 0.9899985913508945
+ },
+ "diff": -0.02092811632449042,
+ "ci_lo": -0.07590415938523594,
+ "ci_hi": 0.03386932657610019,
+ "ci_method": "day_block",
+ "p": 0.45486609264164185,
+ "halves": {
+  "H1": {
+   "n": 3322,
+   "diff": 0.042682239208688695,
+   "ci_lo": -0.03709175872099396,
+   "ci_hi": 0.1184991922810248,
+   "ci_method": "iid",
+   "p": 0.282227909050098,
+   "start": "2016-01-04 16:00:00+00:00",
+   "end": "2020-12-31 21:00:00+00:00",
+   "n_gated": 1092
+  },
+  "H2": {
+   "n": 3777,
+   "diff": -0.07701332422343982,
+   "ci_lo": -0.14678054859016876,
+   "ci_hi": -0.005956693402811803,
+   "ci_method": "iid",
+   "p": 0.03205545898625134,
+   "start": "2021-01-04 17:00:00+00:00",
+   "end": "2026-07-21 21:00:00+00:00",
+   "n_gated": 1225
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 1725,
+   "diff": 0.06354237737767891,
+   "ci_lo": -0.05654602532866172,
+   "ci_hi": 0.18844339892495404,
+   "ci_method": "block",
+   "p": 0.30929461840332473,
+   "start": "2016-01-04 16:00:00+00:00",
+   "end": "2018-08-22 07:00:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 1779,
+   "diff": -0.0077706041464651425,
+   "ci_lo": -0.11740961220648613,
+   "ci_hi": 0.10326727312926853,
+   "ci_method": "iid",
+   "p": 0.8902160693919412,
+   "start": "2018-08-22 19:00:00+00:00",
+   "end": "2021-04-12 02:00:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 1813,
+   "diff": -0.11727045133958988,
+   "ci_lo": -0.21573681969292796,
+   "ci_hi": -0.013337102471718197,
+   "ci_method": "iid",
+   "p": 0.023134428582436736,
+   "start": "2021-04-12 12:00:00+00:00",
+   "end": "2023-12-01 11:00:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 1782,
+   "diff": -0.01527813555541559,
+   "ci_lo": -0.1166893380008468,
+   "ci_hi": 0.0947151219344287,
+   "ci_method": "iid",
+   "p": 0.7769530125985229,
+   "start": "2023-12-04 14:00:00+00:00",
+   "end": "2026-07-21 21:00:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.0784554593010356,
+ "mde_threshold": 0.1,
+ "power_floor_n": 1427,
+ "verdict": "NULL",
+ "verdict_detail": "CI contains 0; powered (MDE 0.0785 <= 0.1000)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 7099,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "gate_mask_checked": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 300.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 499,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_dist",
+    "rr",
+    "model_first",
+    "external"
+   ],
+   "ignored": [],
+   "lookback": "20D",
+   "recent": "1D",
+   "events_fp": "8125c20a3ca337ae",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "10h",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": 30,
+  "entry_mode": "next_open",
+  "hold_basis": "clock",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "Tests only the new external-vs-internal claim. Range = gold's own 1h range over the SMT search span; silver's position in its range is not required. The on-chart example (NQ 1m at the 10:00 open) is not reproducible: only XAG H1 exists.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/update_20261007/smt-requires-framework.py",
+ "runtime_sec": 0.7,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-10-07T06:19:20+00:00",
+ "n_events_in": 7136,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 0,
+  "target_not_beyond_entry": 0,
+  "no_bars_in_hold": 37
+ },
+ "n_complement": 4711,
+ "gate_firing_rate": 0.33032821524158335,
+ "events_fp": "8125c20a3ca337ae",
+ "mask_fp": "81182567ad5ffc69",
+ "mask_col": "external",
+ "exit_mix": {
+  "stop": 0.47420042643923244,
+  "target": 0.4460554371002132,
+  "time": 0.07974413646055437
+ },
+ "gated_vs_own_control": {
+  "diff": -0.0210491171762138,
+  "ci_lo": -0.06494564019613228,
+  "ci_hi": 0.022370265270348383,
+  "p": 0.3446735337568221
+ },
+ "complement": {
+  "n": 4754,
+  "avg_R": -0.043677534946101264,
+  "win_rate": 0.49621371476651244,
+  "pf": 0.9124801852776837,
+  "sd_R": 0.9714875324836987,
+  "exit_mix": {
+   "stop": 0.4692890197728229,
+   "target": 0.4638199411022297,
+   "time": 0.06689103912494741
+  },
+  "vs_own_control": {
+   "diff": -0.00012100085172338237,
+   "ci_lo": -0.03233527980077492,
+   "ci_hi": 0.030252613977299354,
+   "p": 0.9939533882306159
+  }
+ },
+ "ci_components": {
+  "phase3_iid": [
+   -0.07278172599733321,
+   0.02928721626136914
+  ],
+  "day_block": [
+   -0.07590415938523594,
+   0.03386932657610019
+  ]
+ },
+ "diff_meaning": "mean(R-ctrl | gated) - mean(R-ctrl | complement)",
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_eff_gated": 1688,
+  "n_eff_complement": 2278,
+  "n_eff": 1688
+ },
+ "ties": {
+  "real_ambiguous": 0.000704324552753909,
+  "control_ambiguous": 0.0007968127490039841,
+  "real_gap_stop": 0.0061980560642343994,
+  "control_gap_stop": 0.0069721115537848604,
+  "gated_excess": 0.0007768666378938282,
+  "complement_excess": -0.0005094459774994694,
+  "verdict_stop_first": "NULL"
+ },
+ "ctrl_overlap": 0.06881047239612977,
+ "exposure_bars": {
+  "real_mean": 553.7934920411326,
+  "control_mean": 552.7959021058623,
+  "hold_basis": "clock"
+ },
+ "run_id": "4407841c72ba4487afba887d1a98385a",
+ "hyp_key": "7a0f988a57267ee9"
+}

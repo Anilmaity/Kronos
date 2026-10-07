@@ -1,22 +1,36 @@
 id: inside-day-three-levels
 name: Inside Day — Only Three Points Of Interest
-definition: 'When the current daily candle is an inside day (its range contained by the previous
-  day''s), he reduces the chart to exactly three levels and refuses to use anything else:
-  previous day high, previous day EQ, and — only if the EQ fails — previous day low. He states
-  the cut-off plainly: "I only have three points of interest. That''s all I''m looking for."
-  In the session shown, price traded below previous day EQ intraday and he did not treat that
-  as an invalidation of the bullish bias, reading it instead as a sweep of the liquidity resting
-  around the EQ of the range, and stayed bullish to previous day high.
+definition: 'Adds the double inside day case: when neither side of the previous day''s range
+  has been taken (he calls the session a double inside day) the day is consolidation by definition,
+  and his stated expectation is that price sits around the EQ and the opening price.'
+variants:
+  definition:
+  - 'Restated for an index inside day: the only reference points are previous day high, previous
+    day low and the EQ; a reaction around the EQ gives potential for a move lower.'
+  - 'When the current daily candle is an inside day (its range contained by the previous day''s),
+    he reduces the chart to exactly three levels and refuses to use anything else: previous
+    day high, previous day EQ, and — only if the EQ fails — previous day low. He states the
+    cut-off plainly: "I only have three points of interest. That''s all I''m looking for."
+    In the session shown, price traded below previous day EQ intraday and he did not treat
+    that as an invalidation of the bullish bias, reading it instead as a sweep of the liquidity
+    resting around the EQ of the range, and stayed bullish to previous day high.
 
-  '
+    '
 category: liquidity
-status: specified
+status: contested
 aliases:
+- double inside day
+- previous day high, previous day low, EQ
 - previous day high, previous day EQ, previous day low
 - stuck inside day
 preconditions:
+- Current day has taken neither previous-day high nor previous-day low; previous day was itself
+  inside.
 - The current daily candle is inside the previous daily candle's range.
 detection_rules:
+- 'Double inside day: two consecutive daily ranges each contained by the prior one.'
+- On such a day expect price to oscillate around the range EQ and the daily opening price.
+- On an inside day mark only PDH, PDL and the EQ.
 - On an inside day, mark only previous day high, previous day EQ and previous day low.
 - Do not add intraday fair value gaps or other arrays as points of interest on such a day.
 - 'Work from the EQ first: a reaction there projects toward previous day high (bullish case).'
@@ -24,17 +38,36 @@ detection_rules:
 - A close through previous day EQ is not automatically a bias invalidation — read it as a
   sweep of the liquidity around the EQ.
 invalidation:
+- Either previous-day extreme is taken.
 - Explicit invalidation of the bias is not the EQ close; he says only to focus on invalidation
   of bias, which is left undefined for this case.
 measurable:
+- mean distance of intraday closes from daily open and range EQ on double inside days vs other
+  days
 - reaction rate at previous day EQ on inside days
 - share of inside days that reach previous day high or low
 - outcome of flipping bias on an EQ close versus holding
 sources:
+- video_id: h1ZQWWQDhKA
+  title: TTrades MNQ Cup - Afternoon Session
+  quote: We are double inside day
+- video_id: h1ZQWWQDhKA
+  title: TTrades MNQ Cup - Afternoon Session
+  quote: normally we're just going to be right around the EQ and the opening price
+- video_id: 4rNC3QXxC20
+  title: New York Open Live Q&A
+  quote: Usually on a day like this, the only reference points I have
+- video_id: 4rNC3QXxC20
+  title: New York Open Live Q&A
+  quote: your reference points are previous day high, previous day low EQ.
 - video_id: G1IIdQ3RAkY
   title: New York Open Live Q&A
   quote: I only have three points of interest. That's all I'm looking for.
 ambiguities:
+- Whether 'double inside day' means two consecutive inside days or simply an inside day that
+  has taken neither side is ambiguous from the caption ('previous days high, previous day's
+  high').
+- Which EQ (previous day, or the current range) is meant is not stated.
 - He states elsewhere in the same stream that he has a mechanical procedure for trading an
   inside day but deliberately will not publish it, so the actual inside-day entry model is
   missing from the corpus by design.
@@ -42,20 +75,21 @@ ambiguities:
   the EQ close is not it.
 - Whether the EQ used is the previous day's body EQ or full-range EQ is not stated here.
 related:
+- daily-bias-candle-formation
+- consolidation-avoidance
+- inside-day
 - equilibrium-eq
 - previous-period-high-low
-- daily-bias-candle-formation
 - draw-on-liquidity
 timeframes:
   htf:
   - 1D
   - 1H
-  ltf:
-  - 15m
-  - 5m
-  - 3m
+  ltf: []
   fractal: false
 contributing_units:
 - live_streams_02
-draft_count: 1
+- update_20261007_live_02
+- update_20261007_live_05
+draft_count: 3
 voice: ttrades

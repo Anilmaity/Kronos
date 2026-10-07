@@ -1,0 +1,216 @@
+{
+ "concept_id": "fractal-model-c2",
+ "reading": "u1007a",
+ "testable": true,
+ "test_type": "rate",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "daily candles = NY trading day rolling 18:00; days with <= 600 M1 are not candles (holiday rule): C1 = the previous REAL trading day, C3 = the next REAL trading day",
+   "C2 day, intraday: the first 1h close of the day back above C1's low after the day traded below it (bullish) / back below C1's high after trading above it (bearish); one event per day",
+   "kept only if both targets are still ahead at that close: C1 EQ ((C1 high + C1 low)/2) and C1's opposite extreme untaken by the day so far",
+   "decide at that 1h close_time (all inputs closed: C1 bar, the day's 1h bars); scan M1 from the next bar",
+   "T2 = C1's opposite extreme (previous day high for bullish); EQ lies between price and T2 so a T2 touch passes EQ first (EQ hit rate reported in notes)",
+   "null: same signed distances (T2, C2 extreme) from the first M1 open, same M1-bar windows, at 5 random moments on other days within +/-30d at the same NY clock hour (tod_tol 30 min on the :00 grid), same direction",
+   "rows with no M1 bar left in the C2 day are unscored (NaN)",
+   "hit = C1's opposite extreme (T2) touched in the rest of the C2 trading day"
+  ],
+  "params": {
+   "tf": "1D",
+   "day_open_hour": 18,
+   "min_m1": 600,
+   "ltf": "1h",
+   "c2_trigger": "first 1h close back inside C1 after sweeping C1's extreme",
+   "targets": "T1 = C1 EQ (scope: ahead), T2 = C1 opposite extreme (scored)",
+   "horizon_a": "rest of the C2 trading day (M1 bars)",
+   "null": "distance + bar-count matched, same NY hour, +/-30d, 5 reps",
+   "null_tod_tol_min": 30
+  }
+ },
+ "params_source": {
+  "tf": "corpus: rVRk4MLTJSs 'on my C2 daily candle, what's our target on this?'",
+  "day_open_hour": "session_window_fit: settled 18:00 NY daily roll",
+  "min_m1": "corpus: rVRk4MLTJSs 'bank holiday Monday. It doesn't count' -> stub days are not candles; 600 = worked example stub guard",
+  "ltf": "corpus: nwbHvFCh0bo 'the daily with the 1 hour' (timeframe-alignment-pairs)",
+  "c2_trigger": "corpus: JoFxG1TrnDA 'take out its previous candle's high and then close back below it'; 0fhZ_jpespw 'we can apply it to any time frame'; rVRk4MLTJSs 'form a reversal with a small wick ... trade this back into the right range'",
+  "targets": "corpus: rVRk4MLTJSs 'First target's the EQ. second target, previous day high' + 'Our target is half of this and then this' (EQ = 50% of the previous candle); spoken live on the C2 day ('ES is a lot closer to hitting previous day high')",
+  "horizon_a": "corpus: rVRk4MLTJSs targets of 'my C2 daily candle' -> delivered within that candle",
+  "null": "declared-before-run: README rate_test pattern (same distance, same bars, +/-30d matched moments)",
+  "null_tod_tol_min": "declared-before-run: README trap 9 + vault Concept Campaign lesson 3 (rate nulls must match time of day)"
+ },
+ "n": 1847,
+ "span": {
+  "start": "2016-01-06 08:00:00+00:00",
+  "end": "2026-07-21 03:00:00+00:00",
+  "years": 10.535
+ },
+ "avg_R": null,
+ "avg_R_gross": null,
+ "win_rate": null,
+ "pf": null,
+ "observed_rate": 0.14564158094206822,
+ "null_rate": 0.1530048727666486,
+ "lift": 0.9518754423213024,
+ "control": {
+  "rate": 0.1530048727666486,
+  "reps": 5,
+  "kind": "null_fn x5"
+ },
+ "diff": -0.007363291824580398,
+ "ci_lo": -0.024688684353003674,
+ "ci_hi": 0.009639956686519933,
+ "ci_method": "day_block",
+ "p": 0.4004591317281816,
+ "halves": {
+  "H1": {
+   "n": 880,
+   "diff": -0.002727272727272745,
+   "ci_lo": -0.02954545454545454,
+   "ci_hi": 0.024102272727272677,
+   "ci_method": "iid",
+   "p": 0.8420467319343449,
+   "start": "2016-01-06 08:00:00+00:00",
+   "end": "2020-12-31 03:00:00+00:00"
+  },
+  "H2": {
+   "n": 967,
+   "diff": -0.011582213029989658,
+   "ci_lo": -0.03703205791106516,
+   "ci_hi": 0.014276111685625675,
+   "ci_method": "iid",
+   "p": 0.37622274317053556,
+   "start": "2021-01-05 00:00:00+00:00",
+   "end": "2026-07-21 03:00:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 466,
+   "diff": 0.009871244635193122,
+   "ci_lo": -0.02792918454935623,
+   "ci_hi": 0.04679184549356223,
+   "ci_method": "iid",
+   "p": 0.6045602885701505,
+   "start": "2016-01-06 08:00:00+00:00",
+   "end": "2018-08-22 01:00:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 468,
+   "diff": -0.011538461538461525,
+   "ci_lo": -0.0491559829059829,
+   "ci_hi": 0.026933760683760688,
+   "ci_method": "iid",
+   "p": 0.552225319964476,
+   "start": "2018-08-23 02:00:00+00:00",
+   "end": "2021-04-09 14:00:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 477,
+   "diff": -0.014255765199161469,
+   "ci_lo": -0.04863731656184486,
+   "ci_hi": 0.02054507337526204,
+   "ci_method": "iid",
+   "p": 0.4192386943538755,
+   "start": "2021-04-12 15:00:00+00:00",
+   "end": "2023-12-01 10:00:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 436,
+   "diff": -0.013761467889908258,
+   "ci_lo": -0.0468119266055046,
+   "ci_hi": 0.023394495412844052,
+   "ci_method": "iid",
+   "p": 0.4422720103573357,
+   "start": "2023-12-04 08:00:00+00:00",
+   "end": "2026-07-21 03:00:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.024534788854977372,
+ "mde_threshold": 0.03825121819166215,
+ "power_floor_n": 760,
+ "verdict": "NULL",
+ "verdict_detail": "CI contains 0; powered (MDE 0.0245 <= 0.0383)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 1856,
+  "min_slack_min": 0.0,
+  "passed": true,
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 150,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "target_px",
+    "eq_px",
+    "sweep_px"
+   ],
+   "ignored": [],
+   "lookback": "10D",
+   "recent": "1D",
+   "events_fp": "68c8541937d9e078",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "reps": 5,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "mde_threshold": null,
+  "cluster": null,
+  "outcome_horizon": "1 days 00:00:00",
+  "null_kind": "null_fn x5"
+ },
+ "notes": "AUDIT 2026-10-07 (vault context): fixed - first version scored C2's own far extreme during C3; the source names the previous day's (C1's) high as the target of the C2 day itself, spoken live on that day. Diagnostics: {'events': 1856, 'scorable_a': 1847, 'scorable_b': 1847, 'bull_share': 0.469, 'eq_hit_rate_bull_rest_of_C2': 0.46, 'median_rest_of_C2_range_real': 16.49, 'median_rest_of_C2_range_null_rep0': 16.46, 'median_target_dist_over_rest_range_real': 1.125}",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/update_20261007/fractal-model-c2.py",
+ "runtime_sec": 0.25,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-10-07T06:22:25+00:00",
+ "dropped": {
+  "nan_rows": 9
+ },
+ "null_kind": "null_fn x5",
+ "events_fp": "68c8541937d9e078",
+ "predictors_probed": true,
+ "ci_components": {
+  "phase3_iid": [
+   -0.02458040064970221,
+   0.009315105576610703
+  ],
+  "day_block": [
+   -0.024688684353003674,
+   0.009639956686519933
+  ]
+ },
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 1847,
+  "n_clusters": null,
+  "n_eff": 1847
+ },
+ "run_id": "030908be30a74724825b86aaa34c4feb",
+ "hyp_key": "7dfb55e49f42d40b"
+}

@@ -2,8 +2,21 @@ id: no-shorting-below-lows
 name: Do Not Short Below Lows (trade back into the range instead)
 variants:
   name:
+  - Do Not Short Below Lows
   - Do Not Short Below Lows (sell at the open or in the wick instead)
   definition:
+  - 'Gold made most of the daily range to the previous day low; he would never enter short
+    there unless already short from higher and holding runners. When price then broke below
+    the previous day low with a 1-minute failure to manipulate and a new continuation, that
+    continuation was a place to trail the stop to, not one he would enter, because of location.
+
+    '
+  - 'Restated twice under live questioning as the reason for declining an otherwise valid-looking
+    short. Once price is already trading below the lows that were the targets, and a decent
+    part of the daily range has been spent, there is no drawn liquidity left below to trade
+    toward, so it is not a place to be looking short. The same logic is given for gold making
+    a new low late in the day: rather than sell below the lows he waits for a new day with
+    a new candle and fresh expansion potential.'
   - 'A location filter he states as close to a personal absolute as anything in this unit:
     he is almost never interested in shorting below lows, because that is exactly where his
     losses come from — price runs the low and reverses. If a late short must be taken, the
@@ -32,15 +45,17 @@ variants:
     - he will not enter long above a range high away from the daily open.
 
     '
-definition: 'Restated twice under live questioning as the reason for declining an otherwise
-  valid-looking short. Once price is already trading below the lows that were the targets,
-  and a decent part of the daily range has been spent, there is no drawn liquidity left below
-  to trade toward, so it is not a place to be looking short. The same logic is given for gold
-  making a new low late in the day: rather than sell below the lows he waits for a new day
-  with a new candle and fresh expansion potential.'
+  - 'Restated live: after several days of expansion into a daily low that was a target, he
+    will not short there; he shorted from higher up into that low and now only looks for a
+    retracement or reversal back up.'
+definition: 'Restated for a day where London had already expanded into and through the previous
+  day low: in New York the only frame he allows is a retracement back into the range; he will
+  not short below the lows because it is a location problem, and he generally avoids New York
+  on such reversal-type days that fight the daily range.'
 category: entry
 status: contested
 aliases:
+- trail to it, don't enter it
 - short before it runs the low
 - don't enter at the lowest lows
 - selling around the daily open
@@ -54,6 +69,12 @@ preconditions:
 - A directional daily bias and a marked previous day high / low.
 - Price has swept a prior low and is now trading beneath it.
 detection_rules:
+- If the overnight session already expanded through a relevant level (e.g. PDL), do not initiate
+  shorts beneath it in New York.
+- The only New York frame is a retracement back into the range, with reduced targets (daily
+  open, intraday highs).
+- If price is below the previous day low / has made the daily range to it, take no new short.
+- A continuation printed there is used only as a trailing-stop reference for an existing short.
 - Check whether price is already below the drawn target lows.
 - Check how much of the daily range has already been covered.
 - If both, do not enter short - there is no remaining drawn liquidity to trade toward.
@@ -78,12 +99,15 @@ detection_rules:
 - Longs become valid once the change in state of delivery prints at that confluence.
 - 'Mirror: do not enter long above a range high, away from the daily open - the window was
   near the daily open or mid-range before the high was taken.'
+- Price expanded into a higher-timeframe target low -> no new shorts; look for longs back
+  into the range.
 invalidation:
 - Not applicable — this is a location filter.
 - The daily candle's wick is exceeded.
 - Price continuing lower without forming a swing point - no trade exists yet.
 - The range objective above being reached before entry.
 measurable:
+- R of shorts initiated below the previous day low vs above it.
 - expectancy of shorts entered below the day's target lows vs above them
 - R of shorts initiated below a prior low versus above it
 - reversal rate immediately after a prior low is run
@@ -92,6 +116,24 @@ measurable:
 - outcome of shorts initiated below a swept low vs waits for the swing point
 - how often the last-impulse-leg range choice differs from alternative range choices
 sources:
+- video_id: K7XVj2w3CP4
+  title: New York Open Live Q&A
+  quote: I'm not trying to short down here below the lows.
+- video_id: K7XVj2w3CP4
+  title: New York Open Live Q&A
+  quote: It's like a location thing.
+- video_id: K7XVj2w3CP4
+  title: New York Open Live Q&A
+  quote: the only way to frame something in the New York session for me
+- video_id: KBJAGgkXdeI
+  title: New York Open Live Q&A
+  quote: This is not a continuation I would personally enter because of the location.
+- video_id: KBJAGgkXdeI
+  title: New York Open Live Q&A
+  quote: So, this is a continuation where I would trail my stop to.
+- video_id: KBJAGgkXdeI
+  title: New York Open Live Q&A
+  quote: I would never be entering short into here
 - video_id: xraklBJHW5k
   title: New York Open Live Q&A
   quote: This is not where it makes sense to be looking short
@@ -114,6 +156,12 @@ sources:
   title: TTrades Sunday Session - Live Q&A
 - video_id: wM1s7UivQ08
   title: New York Open Live Q&A
+- video_id: GRc5FVB5tdg
+  title: New York Open Live Q&A
+  quote: We don't want to short below this low, right?
+- video_id: GRc5FVB5tdg
+  title: New York Open Live Q&A
+  quote: I'm a fan of shorting up in the range, not at the low
 ambiguities:
 - How far below the lows the rule starts to bite is not quantified; both examples were visually
   obvious.
@@ -134,6 +182,11 @@ ambiguities:
 - Whether all three of discount, imbalance and overlapping order block are required or whether
   one suffices is not stated - he lists them together in one worked example.
 related:
+- dont-trade-after-expansion
+- no-fading-the-daily-candle
+- large-wick-target-adjustment
+- failure-to-manipulate
+- breakeven-after-new-protected-swing
 - average-daily-range
 - gap-open-adr-budget
 - expansion-exhaustion-avoid-price
@@ -142,20 +195,17 @@ related:
 - range-edge-trading
 - htf-opening-price-entry
 - relative-strength-asset-selection
-- dont-trade-after-expansion
 - phases-of-price
 - order-block
 - liquidity-sweep
 - premium-discount
+- reversal-candle-target-adjustment
 timeframes:
   htf:
-  - 1H
-  - 15m
+  - 1D
   ltf:
-  - 5m
-  - 3m
   - 1m
-  fractal: true
+  fractal: false
 execution:
   bias: Direction of the daily candle.
   entry: At the daily open or in the wick.
@@ -167,5 +217,8 @@ contributing_units:
 - live_streams_02
 - live_streams_04
 - sunday_sessions_live_q_a_03
-draft_count: 4
+- update_20261007_live_08
+- update_20261007_live_10
+- update_20261007_live_11
+draft_count: 7
 voice: ttrades

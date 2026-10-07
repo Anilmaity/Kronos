@@ -1,0 +1,90 @@
+id: pdh-pdl-continuation-adr-gate
+name: Continuation Through PDH / PDL Gated By Remaining ADR And Open Targets
+aliases:
+- ADR with previous day high / low
+- no more fakeouts
+- do we have enough daily range left
+- capped out our daily range
+category: risk
+status: underspecified
+voice: ttrades
+definition: 'After previous day high (bullish) or previous day low (bearish) has been taken, a continuation through
+  it is only expected when three things hold: (1) a meaningful part of the average daily range is still unused,
+  measured from the extreme the day has already made; (2) there is an open target beyond the PDH/PDL that lies within
+  (or price is clearly reaching for) that remaining range; (3) the higher-timeframe target has not already been
+  taken - a late expansion day (his example: candle 4 after multiple days of expansion) that takes PDH/PDL AND its
+  target is not expected to continue. When the gate fails he expects consolidation, retracement or reversal and
+  waits for the next daily open to get new range.'
+timeframes:
+  htf:
+  - 1D
+  ltf: []
+  fractal: false
+preconditions:
+- A daily bias / draw exists (he defers to his easy daily bias video).
+- An ADR value for the instrument (see average-daily-range).
+- PDH (bullish) or PDL (bearish) is being, or has just been, taken.
+detection_rules:
+- At the moment PDH/PDL is taken, compute range used = |day's extreme so far - current price| (high-to-low of the
+  day so far).
+- 'Remaining = ADR - range used. If most of the ADR is used (worked cases: ~700-800 of ~900; ~115 of ~116 after
+  a large wick), do NOT seek continuation.'
+- 'If a lot of ADR remains (worked cases: PDH 40-50 points away with ADR ~870; ~50 used of ~100-105), continuation
+  is valid.'
+- Require an open target (old highs/lows, failure swings) beyond PDH/PDL within the remaining ADR.
+- If the day is a late expansion day (candle 4 after multiple expansion days) and it takes both PDH/PDL and the
+  HTF target, do not expect continuation even with ADR left.
+- Once the ADR is reached and targets are hit, stop looking for continuations that day.
+invalidation:
+- ADR mostly used before PDH/PDL is reached (large opposing move consumed time and range).
+- HTF target already taken on a late expansion day.
+execution:
+  bias: Continuation of the daily bias through PDH/PDL only when the gate passes; otherwise expect consolidation
+    / retracement / reversal.
+  entry: Early in the daily candle, around the opening price, before targets are taken (no LTF entry shown in this
+    video).
+  stop: Not specified in this video.
+  targets:
+  - open target beyond PDH/PDL within remaining ADR
+measurable:
+- P(day extends >= X points beyond PDH/PDL | fraction of ADR used at the break), bucketed (e.g. <50%, 50-80%, >80%)
+- same conditioned on an open swing target within remaining ADR
+- same conditioned on day index in the expansion sequence (candle 3 vs candle 4+) and HTF target already taken
+sources:
+- video_id: 3OIq9HmckH8
+  title: How to Use Average Daily Range (ADR) with PDH / PDL — No More Fakeouts
+  quote: previous day high or previous day low can be the easiest draws on liquidity
+- video_id: 3OIq9HmckH8
+  title: How to Use Average Daily Range (ADR) with PDH / PDL — No More Fakeouts
+  quote: we don't have much ADR or daily range left
+- video_id: 3OIq9HmckH8
+  title: How to Use Average Daily Range (ADR) with PDH / PDL — No More Fakeouts
+  quote: Do we have open targets?
+- video_id: 3OIq9HmckH8
+  title: How to Use Average Daily Range (ADR) with PDH / PDL — No More Fakeouts
+  quote: after we've had multiple days of expansion, we take out a target
+- video_id: 3OIq9HmckH8
+  title: How to Use Average Daily Range (ADR) with PDH / PDL — No More Fakeouts
+  quote: I'm not generally expecting a continuation above previous day high here
+- video_id: 3OIq9HmckH8
+  title: How to Use Average Daily Range (ADR) with PDH / PDL — No More Fakeouts
+  quote: we have not capped our daily range
+ambiguities:
+- '''Most of the daily range'' is never given as a percentage; examples range from ~78% to ~100% used as ''no continuation''
+  and ~50% as ''continuation valid''.'
+- ADR lookback length not stated (slide uses 3 days and says use more).
+- 'Whether range used is measured from the day''s open or from the day''s extreme: examples measure from the extreme
+  (high for bearish days).'
+- '''Understand the phases of price and what a failure to manipulate or a breakout signature looks like'' is required
+  but not defined here.'
+- A target 'beyond reach' of ADR is still accepted in one bearish slide example - no tolerance stated.
+related:
+- average-daily-range
+- adr-remaining-filter
+- daily-range-budget
+- three-entry-quality-criteria
+- previous-period-high-low
+- reversal-candle-target-adjustment
+- expansion-exhaustion-avoid-price
+- small-wick-expansion-rule
+python_detector: null

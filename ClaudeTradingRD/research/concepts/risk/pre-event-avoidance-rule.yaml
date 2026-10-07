@@ -1,19 +1,28 @@
 id: pre-event-avoidance-rule
 name: Avoid The Days Before High Impact News; Never Hold Through A Release
-definition: 'A scheduling rule derived from the news tiering. Days that precede a high-impact
-  event are treated as accumulated and are avoided; the days after the event are where the
-  opportunity is expected, because the weekly range has by then been shaped. No position is
-  opened before, or held through, a high- or medium-impact release.
+definition: 'He states an explicit exception to never holding through a release: intraday
+  positions are not held through CPI or NFP, but a position entered on the daily chart (a
+  higher-timeframe trade) is held through CPI/NFP, which he says he has done. He also does
+  not trade right during a Fed announcement.'
+variants:
+  definition:
+  - 'A scheduling rule derived from the news tiering. Days that precede a high-impact event
+    are treated as accumulated and are avoided; the days after the event are where the opportunity
+    is expected, because the weekly range has by then been shaped. No position is opened before,
+    or held through, a high- or medium-impact release.
 
-  '
+    '
 category: risk
-status: specified
+status: contested
 aliases:
 - avoid the days prior
 - trade the days after
 preconditions:
 - The week's events have been tiered (see news-impact-tiering).
 detection_rules:
+- 'Intraday position open before CPI/NFP: close or do not hold through the release.'
+- 'Position entered on the daily chart: may be held through CPI/NFP.'
+- Do not enter during the Fed announcement itself.
 - If a high-impact event exists in the week, mark every day before it as avoid.
 - Mark the days after the high-impact event as eligible for trades.
 - If no high-impact event exists in the week, no day-level restriction applies from this rule
@@ -24,19 +33,33 @@ detection_rules:
 invalidation:
 - Not applicable.
 measurable:
+- outcome of daily-entry trades held through CPI/NFP vs closed before
 - P&L of trades taken on avoid days versus eligible days
 - adverse excursion of positions held through medium-impact releases
 - proportion of weekly range formed after the high-impact event
 sources:
+- video_id: K7XVj2w3CP4
+  title: New York Open Live Q&A
+  quote: hold through CPI NFP unless I'm in a higher higher time frame trade.
+- video_id: K7XVj2w3CP4
+  title: New York Open Live Q&A
+  quote: if I'm entering on the daily chart, I'll hold through CPI NFP
+- video_id: K7XVj2w3CP4
+  title: New York Open Live Q&A
+  quote: Obviously, don't trade right during the Fed announcement
 - video_id: QmGJFxfSHxM
   title: AM Trades | Blending The Economic Calendar, Daily Chart, & Weekly Profiles
 ambiguities:
+- Whether a 4H-entry trade counts as 'higher time frame' for the exception is not stated;
+  only the daily is named.
 - How many days before a high-impact event are avoided is only shown per example (Thursday
   before Friday NFP; Monday-Wednesday before a Wednesday FOMC), never stated as a count.
 - An exception is allowed for a 'really specific and convincing signature in price' on a pre-event
   day, but that signature is defined only by the one Tuesday NFP-week example.
 - '''In certain scenarios'' for holding through low-impact events is not specified.'
 related:
+- news-events-ignored
+- economic-calendar-filter
 - news-impact-tiering
 - nfp-week-protocol
 - fomc-week-protocol
@@ -55,7 +78,9 @@ execution:
   targets: []
 contributing_units:
 - t_talks_01
-draft_count: 1
-voice: guest
+- update_20261007_live_08
+draft_count: 2
+voice: ttrades
+voice_playlist: mixed
 guest_sources:
 - AM Trades | Blending The Economic Calendar, Daily Chart, & Weekly Profiles

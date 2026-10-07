@@ -1,21 +1,34 @@
 id: options-expiry-3x-rule
 name: Options Expiry = 3x The Expected Time To Target
-definition: 'Asked for advice for someone starting with options, he names the failure mode
-  - buying short-dated options and losing to theta decay - and gives one numeric rule against
-  it. Estimate how long the idea should take to reach its target, then buy expiry at three
-  times that horizon: a week becomes three weeks or a month, a month becomes three, four or
-  five months. He uses options for swing exposure rather than intraday (QQQ options for swings,
-  QQQM shares for the longer-term hold because of lower fees).
+definition: 'In this stream he states the expiry multiple as FOUR times the expected time-to-target
+  (a one-week idea gets four weeks; a one-day idea gets about a week), contradicting the 3x
+  figure recorded from eIPM-D8RrSQ. He adds a strike rule: buy slightly out of the money (or
+  near/in the money when chop is expected) so the initial move puts the contract in the money
+  and delta/gamma drive the return, because far-OTM contracts decay each day they are not
+  in the money. He does not use short-dated options for swings.'
+variants:
+  definition:
+  - 'Asked for advice for someone starting with options, he names the failure mode - buying
+    short-dated options and losing to theta decay - and gives one numeric rule against it.
+    Estimate how long the idea should take to reach its target, then buy expiry at three times
+    that horizon: a week becomes three weeks or a month, a month becomes three, four or five
+    months. He uses options for swing exposure rather than intraday (QQQ options for swings,
+    QQQM shares for the longer-term hold because of lower fees).
 
-  '
+    '
 category: risk
-status: specified
+status: contested
 aliases:
 - 3x the time
 - theta decay
 preconditions:
 - A directional idea with an estimated time-to-target.
 detection_rules:
+- Estimate the time for the idea to reach its target.
+- Select an expiry four times that estimate (one day -> about one week).
+- 'Strike: slightly out of the money; move to near or in the money when chop before the move
+  is expected.'
+- Do not buy far-OTM contracts whose value depends on the move arriving quickly.
 - Estimate the time for price to reach the target.
 - Select an expiry at least three times that estimate.
 - Do not buy short-dated options against a multi-week idea.
@@ -25,13 +38,30 @@ measurable:
 - realised time-to-target distribution vs the 3x expiry assumption
 - P&L attribution split between direction and time decay
 sources:
+- video_id: uW55Tuk-ngY
+  title: New York Open Live Q&A
+  quote: I'm giving myself four times the amount of time I think it'll take
+- video_id: uW55Tuk-ngY
+  title: New York Open Live Q&A
+  quote: I prefer to be slightly out of the money
+- video_id: uW55Tuk-ngY
+  title: New York Open Live Q&A
+  quote: I don't really do shortdated options uh for swings.
 - video_id: eIPM-D8RrSQ
   title: New York Open Live Q&A
   quote: I usually buy three weeks out or a month out
 ambiguities:
+- 3x (eIPM-D8RrSQ) vs 4x (this stream) - the multiple is not stable across streams; kept as
+  contested.
+- '"One day -> a week" is about 5x trading days, so the multiple is a rough heuristic, not
+  a formula.'
+- 'Worked trade: QQQ puts, 715 strike, expiry October 2nd, bought at Friday close - the strike/expiry
+  relation to the target is not quantified.'
 - No method is given for estimating the time-to-target in the first place.
 - Nothing is said about strike selection, delta or position sizing.
 related:
+- options-proxy-execution
+- chart-futures-execute-elsewhere
 - position-sizing-fixed-risk
 - time-based-exit-htf-close
 timeframes:
@@ -47,5 +77,6 @@ execution:
   targets: null
 contributing_units:
 - live_streams_04
-draft_count: 1
+- update_20261007_live_06
+draft_count: 2
 voice: ttrades

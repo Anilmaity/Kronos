@@ -1,0 +1,271 @@
+{
+ "concept_id": "ic-cisd",
+ "reading": "u1007b",
+ "testable": true,
+ "test_type": "trade",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "NY trading day (18:00 roll); bias-source day and the two before it need >= 600 M1; day k-1 must be the previous session (<= 4 calendar days)",
+   "bias for day k: day k-1 is a daily C2 closure (no further confirmation)",
+   "1h CISD (series_open, 2/2, mw3, ms1) with POI gate, in the bias direction, extreme bar and confirm bar inside day k, extreme beyond day k's open (wick side)",
+   "IC-CISD extreme = day k's running extreme at the confirm close (second sweep of any earlier candidate)",
+   "aggressive move out: 4 1h bars from the close-through, range >= 1.5x and travel beyond the CISD level >= 0.65x the prior 4-bar range; extreme intact and PDH (PDL) untraded through the 4th bar",
+   "first such setup per day: limit at low + (PDH - low)/3 (2R to PDH), live from the 4th bar's close to 17:00 NY, cancelled if PDH trades first; no fill = no trade",
+   "fill emulated: decide at the close of the first M1 bar reaching L; next M1 open; stop = the low; target = PDH; 600 trading minutes; control NY clock +/-30 min"
+  ],
+  "params": {
+   "pairing": "1D/1h",
+   "cisd": "phase3+poi",
+   "wick_side": true,
+   "day_open": "18:00 NY",
+   "stub_filter_min_m1": 600,
+   "max_hold": "600min",
+   "hold_basis": "bars",
+   "ctrl_tod_tol_min": 30,
+   "grid4h": "n/a",
+   "bias": "C2",
+   "bias_survival": "PDH-only",
+   "second_sweep": "day running extreme",
+   "aggressive": "N=4 r=1.5 d=0.65",
+   "entry": "limit 2R to PDH",
+   "order_life": "to 17:00 NY, cancel on PDH",
+   "no_fill": "no trade",
+   "per_day": 1,
+   "target": "PDH/PDL",
+   "exec_tf": "1h"
+  }
+ },
+ "params_source": {
+  "pairing": "corpus: cWDnzI3lpUk 'use the daily and hourly fractal model for an entry' / 'the go-to is always going to be an intra-candle change'",
+  "cisd": "phase3: \u00a71.8 series_open, 2/2, max_wait 3, min_series 1; POI gate per ic-cisd.yaml (same cisd_with_poi code as prior readings a/b)",
+  "wick_side": "corpus: RX8vtP3PLYk 'we let the wick form. Now, we're trying to trade the body' => IC-CISD extreme beyond day k's open",
+  "day_open": "session_window_fit: NY trading day rolling 18:00 (settled)",
+  "stub_filter_min_m1": "declared-before-run: README trap 6, bias source days need >= 600 M1",
+  "max_hold": "phase3: \u00a71.13 10 entry-TF bars (600 trading minutes on 1h)",
+  "hold_basis": "declared-before-run: README trap 7, the 10-bar hold is trading time; late-day 1h entries cross the 17:00 NY halt and the weekend",
+  "ctrl_tod_tol_min": "declared-before-run: README trap 9 / campaign lesson 3, the concept is not about timing but 1h decisions and limit fills cluster on the NY clock",
+  "grid4h": "declared-before-run: n/a, no 4H bars read (1D 18:00 NY + 1h only)",
+  "bias": "corpus: Kv6Y8IA7jYs 'here we have a candle to closure' => day k-1 daily C2 closure (detectors.fractal.c2_events via daily_closures), day k = candle 3",
+  "bias_survival": "corpus: Kv6Y8IA7jYs 'I wouldn't invalidate my bias because it's not a reversal off of previous' => no adverse-run invalidation; a trade through PDH ends the day",
+  "second_sweep": "corpus: Kv6Y8IA7jYs 'Really hard to trust this level here. So, I'd need another sweep.' => the accepted IC-CISD extreme is the day's running extreme at its confirm close",
+  "aggressive": "threshold_fits: displacement == aggressive; magnitude gate N=4, r=1.5, d=0.65 from the close-through, reference = the CISD level (component a = the close-through itself)",
+  "entry": "corpus: Kv6Y8IA7jYs 'putting my stop on the low and being able to get 2R to that high' + 'retest entry' => limit L = low + (PDH - low)/3",
+  "order_life": "declared-before-run: the limit rests until 17:00 NY of candle 3 (the daily candle being traded); cancelled if PDH trades first (no 2R left to that high)",
+  "no_fill": "corpus: Kv6Y8IA7jYs 'we'll see if we get tagged in, and if not, we don't.'",
+  "per_day": "corpus: Kv6Y8IA7jYs one setup per candle 3 => one order per day",
+  "target": "corpus: Kv6Y8IA7jYs 'What is my target? That daily high there.' => PDH (= candle 2 high)",
+  "exec_tf": "corpus: cWDnzI3lpUk daily + hourly model (the Short names no execution TF)"
+ },
+ "n": 9,
+ "span": {
+  "start": "2016-05-13 16:07:00+00:00",
+  "end": "2026-07-15 15:15:00+00:00",
+  "years": 10.168
+ },
+ "avg_R": -0.7213452357886693,
+ "avg_R_gross": -0.6813452357886692,
+ "win_rate": 0.1111111111111111,
+ "pf": 0.16421576023392714,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "n": 45,
+  "avg_R": -0.19661067911128324,
+  "win_rate": 0.3111111111111111,
+  "pf": 0.7054684252531463,
+  "sd_R": 1.2930458864562093,
+  "exit_mix": {
+   "stop": 0.6,
+   "target": 0.06666666666666667,
+   "time": 0.3333333333333333
+  },
+  "avg_R_gross": -0.15661067911128324,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": -0.524734556677386,
+ "ci_lo": -1.0853378294525422,
+ "ci_hi": 0.12257640134966727,
+ "ci_method": "phase3_iid",
+ "p": 0.0885922792472475,
+ "halves": {
+  "H1": {
+   "n": 7,
+   "diff": -0.6169733152717216,
+   "ci_lo": -1.3196333632620245,
+   "ci_hi": 0.24475990744794252,
+   "ci_method": "iid",
+   "p": 0.1221139887075263,
+   "start": "2016-05-13 16:07:00+00:00",
+   "end": "2019-05-07 14:02:00+00:00"
+  },
+  "H2": {
+   "n": 2,
+   "diff": -0.2018989015972109,
+   "ci_lo": -0.6289611360239025,
+   "ci_hi": 0.2251633328294806,
+   "ci_method": "iid",
+   "p": 0.35413582097340707,
+   "start": "2023-05-11 11:10:00+00:00",
+   "end": "2026-07-15 15:15:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 5,
+   "diff": -0.5451488750414073,
+   "ci_lo": -1.3591938488283186,
+   "ci_hi": 0.5158485539286671,
+   "ci_method": "iid",
+   "p": 0.2544205284313095,
+   "start": "2016-05-13 16:07:00+00:00",
+   "end": "2018-07-20 05:01:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 2,
+   "diff": -0.7965344158475076,
+   "ci_lo": -1.5702223897474572,
+   "ci_hi": -0.022846441947557805,
+   "ci_method": "iid",
+   "p": 0.043607895388141305,
+   "start": "2019-04-01 16:01:00+00:00",
+   "end": "2019-05-07 14:02:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 1,
+   "start": "2023-05-11 11:10:00+00:00",
+   "end": "2023-05-11 11:10:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 1,
+   "start": "2026-07-15 15:15:00+00:00",
+   "end": "2026-07-15 15:15:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.8633001397734877,
+ "mde_threshold": 0.1,
+ "power_floor_n": 671,
+ "verdict": "UNTESTABLE",
+ "verdict_detail": "n=9 (other arm None) below N_MIN_ANY=30",
+ "sanity_flags": [
+  "differential -20.0pp outside +/-15pp"
+ ],
+ "lookahead": {
+  "rows_checked": 9,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 0.0
+  },
+  "probe": {
+   "sampled": 9,
+   "n_targeted": 9,
+   "n_cuts": 200,
+   "events_compared": 10,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "target_px"
+   ],
+   "ignored": [],
+   "lookback": "20D",
+   "recent": "1D",
+   "events_fp": "6856ff89e07361d8",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "600min",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": 30,
+  "entry_mode": "next_open",
+  "hold_basis": "bars",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "New claims only; prior readings a/b (4H/15m) untouched. NOT tested: 'prior to 9:30, I want to use the 15-minute candle' (RX8vtP3PLYk). It is said in passing inside an hourly/5-minute indices example; the draft itself flags whether 15m replaces the HTF candle or the confirmation TF as undecided, and the corpus's own session-open-volume-nyse maps 9:30 to the NYSE open (forex uses 8:30), so moving it to gold would need an invented parameter. 'Stated origin' (created to mechanise let-the-wick-form) is not a testable claim. Neighbour, not a repeat: phase-3's 1H swing stack (1h CISD / 1D / 1W bias) was underpowered at R4 (n=103).",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/update_20261007/ic-cisd.py",
+ "runtime_sec": 0.01,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-10-07T06:41:08+00:00",
+ "n_events_in": 9,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 0,
+  "target_not_beyond_entry": 0,
+  "no_bars_in_hold": 0
+ },
+ "events_fp": "6856ff89e07361d8",
+ "sd_R": 0.7708013987748553,
+ "exit_mix": {
+  "stop": 0.7777777777777778,
+  "target": 0.0,
+  "time": 0.2222222222222222
+ },
+ "trades_per_year": 0.8850969305331179,
+ "ci_components": {
+  "phase3_iid": [
+   -1.0853378294525422,
+   0.12257640134966727
+  ],
+  "day_block": [
+   -1.0847287920377644,
+   0.06726892434268221
+  ]
+ },
+ "diff_win": -0.2,
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 9,
+  "n_clusters": null,
+  "n_eff": 9
+ },
+ "ties": {
+  "real_ambiguous": 0.0,
+  "control_ambiguous": 0.0,
+  "real_gap_stop": 0.0,
+  "control_gap_stop": 0.022222222222222223,
+  "verdict_stop_first": "UNTESTABLE"
+ },
+ "ctrl_overlap": 0.0,
+ "exposure_bars": {
+  "real_mean": 600.0,
+  "control_mean": 600.0,
+  "hold_basis": "bars"
+ },
+ "run_id": "a8ceb075ec9d4b23915ed30c715f480f",
+ "hyp_key": "483add1ed78b7a15"
+}

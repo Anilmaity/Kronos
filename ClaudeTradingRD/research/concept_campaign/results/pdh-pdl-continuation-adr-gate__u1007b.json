@@ -1,0 +1,303 @@
+{
+ "concept_id": "pdh-pdl-continuation-adr-gate",
+ "reading": "u1007b",
+ "testable": true,
+ "test_type": "gate",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "trading day rolls 18:00 NY; real day = >= 600 M1 bars; PDH/PDL = last completed real day's high/low",
+   "event: first M1 bar of the session whose high > PDH (long) / low < PDL (short), not the session's first bar; decide at its close, enter next M1 open",
+   "ADR = mean H-L of the last 14 completed real days; range used = running day high - low through the break bar",
+   "trade: continuation in the break direction, stop and target 0.5 x ADR each side of entry (rr 1), exit at the trading-day close (17:00 NY)",
+   "control: same direction/distances/hold, +/-30 d, NY clock +/-30 min; statistic = control-adjusted R, gated - complement",
+   "gate: range used <= 0.5 x ADR AND an open target (nearest untraded prior daily high above the running high / low below the running low, within 20 real days) lying within the ADR projected from the day's low (high)",
+   "AND NOT (late expansion day: prior 2 real days each closed beyond the predecessor's high/low in the break direction, AND the previous week's high/low already traded through by the break bar)"
+  ],
+  "params": {
+   "event": "first in-session M1 take of the prior real day's high (long) / low (short)",
+   "day_open": "18:00 NY",
+   "min_day_m1": 600,
+   "gap_open_take": "excluded",
+   "adr": "mean H-L of last 14 completed real days",
+   "adr_days": 14,
+   "range_used": "running day high - running day low through the break bar",
+   "used_cut": 0.5,
+   "stop_target": "symmetric 0.5 x ADR from entry, rr 1",
+   "max_hold": "to the trading-day close (17:00 NY), per row",
+   "ctrl_tod_tol_min": 30,
+   "target_lookback_days": 20,
+   "open_target": "nearest prior daily high (low) above (below) the day's running high (low), i.e. the lowest untraded old high, within the lookback",
+   "target_within": "target <= day running low + ADR (long), >= running high - ADR (short); no tolerance",
+   "late_day": "prior 2 real days each closed beyond its predecessor's high (long) / low (short) -> today is candle 4+",
+   "htf_target": "previous ISO week high (long) / low (short); taken = week's running extreme through the break bar beyond it"
+  }
+ },
+ "params_source": {
+  "event": "corpus: 3OIq9HmckH8 'when can I actually trade after previous day high is taken out?'",
+  "day_open": "session_window_fit: settled 18:00 NY daily roll",
+  "min_day_m1": "declared-before-run: days with < 600 M1 bars are data-hole stubs (README trap 6); PDH/PDL and ADR read from real days only",
+  "gap_open_take": "declared-before-run: a day that OPENS beyond PDH/PDL has no in-session take; the reopen is a gap artefact (vault Session Timing on Gold)",
+  "adr": "corpus: 3OIq9HmckH8 'You get the total range divided by the total days' (mean H-L)",
+  "adr_days": "declared-before-run: 3OIq9HmckH8 slide uses three days and adds 'Ideally, you use a few more'; he reads a chart ADR indicator ('just average daily range under technicals'), taken at its common default length 14",
+  "range_used": "corpus: 3OIq9HmckH8 'If this is the high, where does our 115 lie?' (ADR projected from the day's opposite extreme)",
+  "used_cut": "corpus: 3OIq9HmckH8 'We've gone 50. That's half of the daily range' = continuation valid; failing cases ~78-100% used ('the range is 900 and we've already gone 700'); 'most of the daily range' read literally as more than half",
+  "stop_target": "declared-before-run: stop 'Not specified in this video'; 0.5 ADR is the further move the gate-boundary case expects ('We've gone 50 ... What can we go reach for? Around 100'); symmetric stop keeps the book volatility-neutral (vault: volatility clusters)",
+  "max_hold": "corpus: 3OIq9HmckH8 'That's when I'd want to wait for a new daily candle, so I have new range'",
+  "ctrl_tod_tol_min": "declared-before-run: range used grows through the day, so the gate correlates with NY clock; README trap 9 / vault 'rate nulls must match time of day'",
+  "target_lookback_days": "declared-before-run: 'open targets to the left' on the daily chart read as one month (20 real days) of daily candles",
+  "open_target": "corpus: 3OIq9HmckH8 'Do we have open targets?' / 'looking at our previous highs over here'",
+  "target_within": "corpus: 3OIq9HmckH8 'It's within the daily range'; the one 'beyond reach' slide gives no tolerance (draft ambiguity) -> none",
+  "late_day": "corpus: 3OIq9HmckH8 'in candle four here after we've had multiple days of expansion' -> two prior expansion closes",
+  "htf_target": "declared-before-run: 'higher time frame target' relative to the daily = the weekly level; previous-period-high-low lists PWH/PWL as draws; at the PDH/PDL break a daily open target cannot already be taken, so the weekly reading is the only decidable one"
+ },
+ "n": 905,
+ "span": {
+  "start": "2016-02-01 00:09:00+00:00",
+  "end": "2026-07-22 00:08:00+00:00",
+  "years": 10.467
+ },
+ "avg_R": -0.027634177321961183,
+ "avg_R_gross": 0.01236582267803883,
+ "win_rate": 0.4850828729281768,
+ "pf": 0.9329683143025871,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "avg_R_gated": -0.04467328327738018,
+  "avg_R_complement": -0.023047810262691072,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": 0.017807975371049455,
+ "ci_lo": -0.05601394839380125,
+ "ci_hi": 0.09416305056382168,
+ "ci_method": "phase3_iid",
+ "p": 0.6420569846885388,
+ "halves": {
+  "H1": {
+   "n": 1148,
+   "diff": -0.009551628811587934,
+   "ci_lo": -0.11928472905360948,
+   "ci_hi": 0.0960931682645535,
+   "ci_method": "iid",
+   "p": 0.8619897349446505,
+   "start": "2016-02-01 00:09:00+00:00",
+   "end": "2020-12-30 23:12:00+00:00",
+   "n_gated": 411
+  },
+  "H2": {
+   "n": 1292,
+   "diff": 0.04073025350700149,
+   "ci_lo": -0.06561348482600247,
+   "ci_hi": 0.14083286814853843,
+   "ci_method": "iid",
+   "p": 0.43930273661330277,
+   "start": "2021-01-04 23:17:00+00:00",
+   "end": "2026-07-22 00:08:00+00:00",
+   "n_gated": 494
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 604,
+   "diff": -0.009594594741675969,
+   "ci_lo": -0.15220699222442258,
+   "ci_hi": 0.15480908297259963,
+   "ci_method": "iid",
+   "p": 0.9025013658558146,
+   "start": "2016-02-01 00:09:00+00:00",
+   "end": "2018-08-22 00:25:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 606,
+   "diff": -0.018330104824751954,
+   "ci_lo": -0.16227933045898954,
+   "ci_hi": 0.11489855143166812,
+   "ci_method": "iid",
+   "p": 0.7954581505144919,
+   "start": "2018-08-23 01:01:00+00:00",
+   "end": "2021-04-09 13:08:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 638,
+   "diff": 0.0011995436911299423,
+   "ci_lo": -0.14475821748266063,
+   "ci_hi": 0.16076936762579844,
+   "ci_method": "iid",
+   "p": 0.9877208967529919,
+   "start": "2021-04-12 14:36:00+00:00",
+   "end": "2023-12-01 09:30:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 592,
+   "diff": 0.08269249523759638,
+   "ci_lo": -0.06856575496972475,
+   "ci_hi": 0.24116581155013156,
+   "ci_method": "iid",
+   "p": 0.2953085783792399,
+   "start": "2023-12-04 15:26:00+00:00",
+   "end": "2026-07-22 00:08:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.10733197845080115,
+ "mde_threshold": 0.1,
+ "power_floor_n": 1043,
+ "verdict": "UNDERPOWERED",
+ "verdict_detail": "CI contains 0; MDE 0.1073 vs threshold 0.1000, effective n 902 (power floor n=1043, have 905)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 2440,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "gate_mask_checked": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 16.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 197,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_dist",
+    "rr",
+    "max_hold",
+    "adr",
+    "frac_used",
+    "has_target",
+    "late",
+    "htf_taken",
+    "gate_adr",
+    "gate_full"
+   ],
+   "ignored": [],
+   "lookback": "60D",
+   "recent": "1D",
+   "events_fp": "9886516187ebaac4",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "per-row column",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": 30,
+  "entry_mode": "next_open",
+  "hold_basis": "clock",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "New concept from _inbox update_20261007_edu_03 (not in batches.json, allow_unknown_id). Both readings share one baseline frame and one probe. Daily-bias precondition not modelled: it affects both arms of the gate. Clause 3 evaluated at the break moment with the weekly level as HTF target.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/update_20261007/pdh-pdl-continuation-adr-gate.py",
+ "runtime_sec": 0.31,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-10-07T06:40:07+00:00",
+ "n_events_in": 2440,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 0,
+  "target_not_beyond_entry": 0,
+  "no_bars_in_hold": 0
+ },
+ "n_complement": 1535,
+ "gate_firing_rate": 0.3709016393442623,
+ "events_fp": "9886516187ebaac4",
+ "mask_fp": "dfae3e560c8a4018",
+ "mask_col": "gate_full",
+ "exit_mix": {
+  "stop": 0.33259668508287293,
+  "target": 0.3569060773480663,
+  "time": 0.3104972375690608
+ },
+ "gated_vs_own_control": {
+  "diff": 0.017039105955419,
+  "ci_lo": -0.044789821714948504,
+  "ci_hi": 0.07997785997227558,
+  "p": 0.5924206572484596
+ },
+ "complement": {
+  "n": 1535,
+  "avg_R": -0.023816679678321524,
+  "win_rate": 0.48859934853420195,
+  "pf": 0.9356876882263495,
+  "sd_R": 0.8036262606432449,
+  "exit_mix": {
+   "stop": 0.2781758957654723,
+   "target": 0.3009771986970684,
+   "time": 0.4208469055374593
+  },
+  "vs_own_control": {
+   "diff": -0.0007688694156304521,
+   "ci_lo": -0.046289880566031553,
+   "ci_hi": 0.04671046148172612,
+   "p": 0.9741470457750716
+  }
+ },
+ "ci_components": {
+  "phase3_iid": [
+   -0.05601394839380125,
+   0.09416305056382168
+  ],
+  "day_block": [
+   -0.05379966877057128,
+   0.09118814726758988
+  ]
+ },
+ "diff_meaning": "mean(R-ctrl | gated) - mean(R-ctrl | complement)",
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_eff_gated": 902,
+  "n_eff_complement": 1408,
+  "n_eff": 902
+ },
+ "ties": {
+  "real_ambiguous": 0.000819672131147541,
+  "control_ambiguous": 0.0006557377049180328,
+  "real_gap_stop": 0.0020491803278688526,
+  "control_gap_stop": 0.0020491803278688526,
+  "gated_excess": 0.0015469613259668506,
+  "complement_excess": -0.0006514657980456026,
+  "verdict_stop_first": "UNDERPOWERED"
+ },
+ "ctrl_overlap": 0.0004918032786885246,
+ "exposure_bars": {
+  "real_mean": 828.6836065573771,
+  "control_mean": 818.7727049180328,
+  "hold_basis": "clock"
+ },
+ "run_id": "fc408243a26c45c0aee528840bfe8aa7",
+ "hyp_key": "c2a187b5aaa04e4a"
+}

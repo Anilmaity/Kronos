@@ -11,6 +11,16 @@ definition: 'The channel''s own version of the rule (the library previously held
   reasoning that if he is wrong the higher low forms in exactly that area.'
 variants:
   definition:
+  - 'ADR mechanism for the target cut: a large opposing move ''is using time and range''.
+    Projecting the ADR from the extreme of that large wick shows the farther target is no
+    longer reachable today, and the reachable level (in his examples PDH or PDL) becomes the
+    day''s target. He will not trade beyond that level the same day and waits for the new
+    daily open for new range; with a small wick respecting the EQ / T-spot the farther target
+    would have stayed in reach.'
+  - On a daily reversal day the intraday targets are the daily open and the PREVIOUS DAY'S
+    EQ, chosen according to wick size; he states lower expectations for the move and stops
+    after those targets print. A small wick on the reversal candle leaves room for continuation
+    beyond them.
   - 'When the daily candle being traded has a large opposing wick, it is classified as a reversal
     candle rather than a reversal-into-expansion candle. Such a candle is not expected to
     displace past its own opening price, so targets are reduced to objectives inside the current
@@ -42,6 +52,15 @@ detection_rules:
   target around the open.
 - On the daily specifically, this is executed on the lower timeframes back toward the daily
   open; on the 4-hour he prefers to skip and wait for the next candle.
+- Measure the opposing run (wick) of the current daily candle.
+- Project ADR from the wick extreme in the bias direction.
+- If the projection ends at/near PDH/PDL rather than the farther target, PDH/PDL is the day's
+  target; no continuation beyond it until the next day.
+- Classify the day as a reversal day (expansion into a higher-timeframe target, then reversal).
+- 'Targets: daily open, then previous day EQ; the choice is conditioned on wick size.'
+- If the previous EQ is already hit with only a small wick, a continuation higher is still
+  possible.
+- Once price is back to the daily open on a reversal day, treat the day's objective as done.
 - 'Classify the daily candle: large opposing wick -> reversal candle.'
 - Confirm the opposing extreme of the day is a session high/low that did not tag a key level
   (low-resistance liquidity).
@@ -54,6 +73,8 @@ invalidation:
 measurable:
 - hit rate of the return-to-open target on large-opposing-run candles
 - R difference between taking the open vs holding for the session extreme
+- hit rate of the farther target same-day vs next-day, split by wick size as fraction of ADR
+- hit rate of the daily open vs previous-day EQ on reversal days
 - frequency with which large-wick daily candles close beyond their open
 - R achieved with reduced targets vs full targets on these days
 sources:
@@ -69,6 +90,21 @@ sources:
 - video_id: SlWxhzhLo3A
   title: 'Wick Size Matters: The Key to Understanding Reversal and Expansion Candles'
   quote: make a bunch of failure swings and then we can trade that reversal
+- video_id: 3OIq9HmckH8
+  title: How to Use Average Daily Range (ADR) with PDH / PDL — No More Fakeouts
+  quote: when we have a large opposing move, this is using time and range
+- video_id: 3OIq9HmckH8
+  title: How to Use Average Daily Range (ADR) with PDH / PDL — No More Fakeouts
+  quote: better to wait for the new candle or the new daily open
+- video_id: 3OIq9HmckH8
+  title: How to Use Average Daily Range (ADR) with PDH / PDL — No More Fakeouts
+  quote: but not really until the following day most of the time
+- video_id: GRc5FVB5tdg
+  title: New York Open Live Q&A
+  quote: your targets back towards the daily open to the previous EQ
+- video_id: GRc5FVB5tdg
+  title: New York Open Live Q&A
+  quote: We're back towards that daily open, which on a reversal day, that's the
 - video_id: J_EeS2_2CAM
   title: GxTradez | Phases of Price & Profiles For Expansion
 ambiguities:
@@ -77,6 +113,11 @@ ambiguities:
   open a target may sit and still count is not stated.'
 - He gives the failure-swing / protected-swing test as the escalation rule but does not say
   how many failure swings are enough.
+- What counts as 'large' vs 'small' wick is deferred to his wick-size video; in the ADR ~400
+  and ~116 examples the wick consumed roughly a third or more of ADR, but no threshold is
+  stated.
+- How wick size selects between the daily open and the previous EQ is not stated.
+- Which daily open (18:00 or midnight) is not specified in this stream.
 - This exception applies only to the daily timeframe; the speaker says 4-hour reversal candles
   are not traded at all, with one unstated exception.
 - '''Large'' wick remains unquantified.'
@@ -87,6 +128,9 @@ related:
 - htf-opening-price-entry
 - failure-swing
 - protected-swing
+- pdh-pdl-continuation-adr-gate
+- large-wick-target-adjustment
+- equilibrium-eq
 - small-wick-supports-expansion
 - daily-candle-profile-open-low-first
 timeframes:
@@ -109,7 +153,9 @@ execution:
 contributing_units:
 - build_a_model_intro_to_ttrades_fractal_model_03
 - t_talks_02
-draft_count: 2
+- update_20261007_edu_03
+- update_20261007_live_10
+draft_count: 4
 voice: ttrades
 voice_playlist: mixed
 guest_sources:

@@ -1,14 +1,21 @@
 id: entry-timeframe-elevation
 name: Entry Timeframe Elevation (root-cause fix for stop-outs)
-definition: 'The standard answer given to the most repeated viewer complaint - ''my bias is
-  right but I get stopped out and then it goes to target''. The diagnosis is that the entry
-  timeframe is too low, and the fix is to move the entry up one timeframe. He is explicit
-  that the alternative fix - simply widening the stop - is wrong, because it destroys the
-  risk-to-reward and forces a position-size change; the problem is the timing of the entry,
-  not the stop distance. Worked concretely: a trader pairing H1 with M5 entries should enter
-  on M15 instead.'
+definition: 'Two statements in this stream. A standing personal rule: before the 9:30 open
+  he trades only the 15-minute or higher, to avoid pre-open chop; after the open any timeframe
+  is allowed. And the standard diagnosis for a viewer who blew an account shorting NQ across
+  15m/1m/5m/15s charts: get off the 1-minute, use higher timeframes; dropping down is driven
+  by fear of missing the move, and the higher timeframe does not cause a missed move, only
+  fewer stop-outs.
+
+  '
 variants:
   definition:
+  - 'The standard answer given to the most repeated viewer complaint - ''my bias is right
+    but I get stopped out and then it goes to target''. The diagnosis is that the entry timeframe
+    is too low, and the fix is to move the entry up one timeframe. He is explicit that the
+    alternative fix - simply widening the stop - is wrong, because it destroys the risk-to-reward
+    and forces a position-size change; the problem is the timing of the entry, not the stop
+    distance. Worked concretely: a trader pairing H1 with M5 entries should enter on M15 instead.'
   - 'The single fix he gives twice in one stream, and quizzes the chat on: if you are repeatedly
     stopped out and the market then does exactly what you expected, the problem is the entry
     timeframe, not the read. Traders sit on the 1-minute or 3-minute, get stopped by structure
@@ -26,16 +33,25 @@ variants:
     up one step: M1/M3 to M5, M5 to M15, M15 to H1.
 
     '
+  - 'Restated: if you see direction but keep getting stopped out before the move, move up
+    one timeframe for entries (5-minute to 15-minute). If the problem is not entering at all,
+    base the trade on an invalidation and take it.'
+  - 'Restated: in choppy conditions he does not drop to a lower timeframe, because that is
+    how losses are forced after missing the trend.'
 category: psychology
 status: contested
 aliases:
 - move up a time frame or two
 - go up a timeframe
 - stop getting swept
+- move up one time frame
 preconditions:
 - A repeated pattern of being stopped out on trades whose direction was correct.
 - A recurring pattern of correct bias with premature stop-outs, or of entry stress.
 detection_rules:
+- 'Before 09:30 New York: entry timeframe floor = 15-minute.'
+- 'After 09:30: no timeframe floor.'
+- 'Repeated chop-outs on 1-minute: move execution up (15-minute in the NQ example).'
 - 'Symptom: bias correct, stopped out, target subsequently reached.'
 - 'Fix: raise the execution timeframe by one step within the timeframe-pairing ladder (e.g.
   H1/M5 becomes H1/M15).'
@@ -50,15 +66,30 @@ detection_rules:
 - If stop-outs precede the intended move, or entries feel rushed, elevate one timeframe step.
 - Separately note that the model itself is timeframe-agnostic - only a daily framework and
   a wick to trade away from are required.
+- Repeated stop-outs on 5m entries -> execute on 15m.
+- When price is choppy, do not refine entries to lower timeframes.
 invalidation:
 - Not applicable — this is a corrective procedure.
 - n/a
 measurable:
+- stop-out rate of pre-09:30 entries on 15m vs 5m/1m
 - stop-out rate and expectancy of the same signal executed on two adjacent timeframes
 - stop-out rate of the same signal executed at 1m/3m versus 5m/15m
 - share of stop-outs whose stop sat inside a higher-timeframe array
 - MAE and stop-out rate by entry timeframe on the same signal set.
 sources:
+- video_id: wa9m30UHrm0
+  title: New York Open Live Q&A
+  quote: If I trade prior to 9:30, I'm going to use the 15-minute
+- video_id: wa9m30UHrm0
+  title: New York Open Live Q&A
+  quote: That keeps me from getting chopped up prior to the open.
+- video_id: wa9m30UHrm0
+  title: New York Open Live Q&A
+  quote: Get off the 15-minute and 1-minute and use the higher time frames.
+- video_id: wa9m30UHrm0
+  title: New York Open Live Q&A
+  quote: You're not going to miss the move cuz of a higher time frame.
 - video_id: m0wTBdUe7gs
   title: New York Open Live Q&A
   quote: move up one time frame or entry
@@ -75,7 +106,19 @@ sources:
   title: New York Open Live Q&A
 - video_id: yud7TpE2AMs
   title: New York Open Live Q&A
+- video_id: 4rNC3QXxC20
+  title: New York Open Live Q&A
+  quote: Move up one time frame.
+- video_id: 4rNC3QXxC20
+  title: New York Open Live Q&A
+  quote: just go to the 15-minute for entries.
+- video_id: uW55Tuk-ngY
+  title: New York Open Live Q&A
+  quote: when things are choppy, I don't go to the lower time frame
 ambiguities:
+- '''Get off the 15-minute and 1-minute'' is self-contradictory as captioned - he then calls
+  the 15-minute trade straightforward; the 1-minute is the target of the advice.'
+- The 9:30 rule is stated for index futures; not stated for gold or FX.
 - How far to keep elevating if the problem persists is not addressed.
 - The ladder of legal timeframe pairs is referenced ('my time frame alignment video') but
   not enumerated in these streams beyond H4/M15, D/H1 and H1/M5.
@@ -85,8 +128,9 @@ ambiguities:
 - No test is given for when elevation has gone too far (the trade becoming untradeable on
   risk).
 related:
-- timeframe-alignment-pairs
+- daily-wick-confirmation-timeframes
 - timeframe-pairing
+- timeframe-alignment-pairs
 - invalidation-first-timeframe-selection
 - stop-loss-placement
 - root-cause-diagnosis
@@ -110,5 +154,8 @@ contributing_units:
 - live_streams_01
 - live_streams_02
 - sunday_sessions_live_q_a_02
-draft_count: 3
+- update_20261007_live_05
+- update_20261007_live_06
+- update_20261007_live_13
+draft_count: 6
 voice: ttrades

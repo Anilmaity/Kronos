@@ -1,21 +1,27 @@
 id: small-wick-supports-expansion
 name: Small Wick Supports Expansion
-definition: 'Wick size is used as the primary filter for whether a candle is tradeable. A
-  candle whose opposing wick is small - price did not trade far from its open before expanding
-  - supports expansion and can be traded. A candle with a large opposing wick does not support
-  expansion. The distinction produces two named candle types: a "reversal into expansion candle"
-  (small wick, tradeable) and a "reversal candle" (large wick, not tradeable on the 4-hour;
-  on the daily it is traded only with reduced targets).
+definition: 'Gold example: after a sweep of last Friday''s low and SMT off the daily low,
+  the daily is a small-wick reversal, so he expects expansion to the previous day high, noting
+  there is enough daily range left and the correlated assets have not taken it yet.'
+variants:
+  definition:
+  - 'Wick size is used as the primary filter for whether a candle is tradeable. A candle whose
+    opposing wick is small - price did not trade far from its open before expanding - supports
+    expansion and can be traded. A candle with a large opposing wick does not support expansion.
+    The distinction produces two named candle types: a "reversal into expansion candle" (small
+    wick, tradeable) and a "reversal candle" (large wick, not tradeable on the 4-hour; on
+    the daily it is traded only with reduced targets).
 
-  '
+    '
 category: structure
-status: underspecified
+status: contested
 aliases:
 - wick size matters
 - reversal into expansion candle vs reversal candle
 preconditions:
 - A candle has closed at or from a key level.
 detection_rules:
+- Small-wick daily reversal plus remaining daily range -> target previous day high (bullish).
 - Measure the opposing wick relative to the candle body / range.
 - Small opposing wick -> the candle supports expansion and may be traded.
 - Large opposing wick -> the candle does not support expansion; on the 4-hour, wait for the
@@ -27,6 +33,12 @@ measurable:
 - forward expansion distance conditioned on wick-to-range ratio buckets
 - win rate of entries inside small-wick vs large-wick candles
 sources:
+- video_id: K7XVj2w3CP4
+  title: New York Open Live Q&A
+  quote: we have a small wick reversal. It supports expansion.
+- video_id: K7XVj2w3CP4
+  title: New York Open Live Q&A
+  quote: We have enough daily range to reach for previous day high.
 - video_id: J_EeS2_2CAM
   title: GxTradez | Phases of Price & Profiles For Expansion
 ambiguities:
@@ -34,6 +46,8 @@ ambiguities:
 - The upper-half-EQ rule is offered as the mechanical proxy but only applies to the following
   candle, not to the candle being classified.
 related:
+- large-wick-target-adjustment
+- wick-size-test
 - upper-half-eq-expansion-filter
 - expansion-signature
 - reversal-candle-target-adjustment
@@ -46,7 +60,9 @@ timeframes:
   fractal: true
 contributing_units:
 - t_talks_02
-draft_count: 1
-voice: guest
+- update_20261007_live_08
+draft_count: 2
+voice: ttrades
+voice_playlist: mixed
 guest_sources:
 - GxTradez | Phases of Price & Profiles For Expansion

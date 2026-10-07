@@ -1,0 +1,217 @@
+{
+ "concept_id": "positional-entry-before-open",
+ "reading": "u1007a",
+ "testable": true,
+ "test_type": "rate",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "15m bars, 2/2 fractal swings; only swings formed in the current trading day (18:00 NY roll) count",
+   "decision 09:30 NY = close of the full 09:15 15m bar",
+   "bull case: a 15m bar starting in [08:30, 09:30) traded above an intact same-day swing high confirmed before it, and >= 2 intact same-day 15m swing lows (never traded below) exist at 09:30; bear case mirrored",
+   "hit: any of the first 30 M1 bars from 09:30 trades to the nearest stacked swing (low <= level / high >= level)",
+   "null: 5 moments +/-30d at the same NY minute (09:30), same side, distance from the M1 open scaled by local vol ratio (mean M1 range, 60 bars before), same 30-bar horizon"
+  ],
+  "params": {
+   "tf": "15min",
+   "swing": "2/2",
+   "decision": "09:30 NY",
+   "sweep_window": "08:30-09:30",
+   "short_term_scope": "current trading day",
+   "min_stack": 2,
+   "target_swing": "nearest",
+   "horizon_bars": 30,
+   "mirror": true,
+   "null": "tod 0, +/-30d, vol-scaled distance",
+   "vol_bars": 60
+  }
+ },
+ "params_source": {
+  "tf": "corpus: rTomJ8URFnw 'Entry prior to 9:30. Use M15 or greater' (pre-open chart TF); U4j-fZD-FJk 'Really only if uh it's a 15-minute valid setup'",
+  "swing": "phase3: locked 2/2 fractal (conjunction_preregistration 1.8)",
+  "decision": "corpus: Hlwq1dRjBZo 'This isn't an open where I would try to trade through the open' (09:30 equity open; same stream '9:30 open in volatility')",
+  "sweep_window": "declared-before-run: 'just' taken = by a 15m bar starting in the hour before the open [08:30, 09:30); Hlwq1dRjBZo 'We have taken out this short-term high' said at the open",
+  "short_term_scope": "declared-before-run: 'short-term' swings = 15m swings formed in the current trading day (18:00 NY roll, session_window_fit)",
+  "min_stack": "corpus: Hlwq1dRjBZo 'protected swings lined up' (plural; no count given, draft ambiguity) -> declared-before-run minimum 2",
+  "target_swing": "corpus: Hlwq1dRjBZo 'we go run out that protected swing before we actually get the continuation' -> the nearest stacked swing",
+  "horizon_bars": "corpus draft measurable (update_20261007_live_09): 'run within the first 30 minutes after 9:30'; Hlwq1dRjBZo 'better off waiting for 10 a.m.'",
+  "mirror": "corpus: Hlwq1dRjBZo 'after taking out something' (mechanism stated generally) -> declared-before-run: bear mirror included",
+  "null": "declared-before-run: 5 moments +/-30d (phase3 locked), same NY minute 09:30 (tod_tol 0; 09:30 is gold's volatility step, session-open-volume-nyse), same side, distance x local-vol ratio (concept campaign 2026-09-23 lesson 3: rate nulls must match time of day and local volatility)",
+  "vol_bars": "declared-before-run: local volatility = mean M1 high-low over the 60 M1 bars before the moment"
+ },
+ "n": 1376,
+ "span": {
+  "start": "2016-01-06 14:30:00+00:00",
+  "end": "2026-07-22 13:30:00+00:00",
+  "years": 10.538
+ },
+ "avg_R": null,
+ "avg_R_gross": null,
+ "win_rate": null,
+ "pf": null,
+ "observed_rate": 0.1816860465116279,
+ "null_rate": 0.18008720930232558,
+ "lift": 1.0088781275221952,
+ "control": {
+  "rate": 0.18008720930232558,
+  "reps": 5,
+  "kind": "null_fn x5"
+ },
+ "diff": 0.0015988372093023173,
+ "ci_lo": -0.020348837209302306,
+ "ci_hi": 0.0236954941860465,
+ "ci_method": "phase3_iid",
+ "p": 0.8868463033997385,
+ "halves": {
+  "H1": {
+   "n": 668,
+   "diff": 0.010479041916167664,
+   "ci_lo": -0.021863772455089813,
+   "ci_hi": 0.04431137724550899,
+   "ci_method": "iid",
+   "p": 0.5347754062010257,
+   "start": "2016-01-06 14:30:00+00:00",
+   "end": "2020-12-31 14:30:00+00:00"
+  },
+  "H2": {
+   "n": 708,
+   "diff": -0.006779661016949129,
+   "ci_lo": -0.03926553672316385,
+   "ci_hi": 0.02853107344632766,
+   "ci_method": "iid",
+   "p": 0.6950635337265654,
+   "start": "2021-01-07 14:30:00+00:00",
+   "end": "2026-07-22 13:30:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 364,
+   "diff": 0.02087912087912086,
+   "ci_lo": -0.024189560439560463,
+   "ci_hi": 0.0659478021978022,
+   "ci_method": "iid",
+   "p": 0.3638786596536482,
+   "start": "2016-01-06 14:30:00+00:00",
+   "end": "2018-08-17 13:30:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 338,
+   "diff": -0.004733727810650873,
+   "ci_lo": -0.054467455621301786,
+   "ci_hi": 0.039659763313609445,
+   "ci_method": "iid",
+   "p": 0.8437210394322301,
+   "start": "2018-08-23 13:30:00+00:00",
+   "end": "2021-04-08 13:30:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 302,
+   "diff": -0.0019867549668874107,
+   "ci_lo": -0.0516887417218543,
+   "ci_hi": 0.05298013245033112,
+   "ci_method": "iid",
+   "p": 0.940687759125651,
+   "start": "2021-04-13 13:30:00+00:00",
+   "end": "2023-11-30 14:30:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 372,
+   "diff": -0.008602150537634384,
+   "ci_lo": -0.05806451612903224,
+   "ci_hi": 0.04516129032258062,
+   "ci_method": "iid",
+   "p": 0.7439245529818018,
+   "start": "2023-12-04 14:30:00+00:00",
+   "end": "2026-07-22 13:30:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.03147862363090298,
+ "mde_threshold": 0.045021802325581395,
+ "power_floor_n": 673,
+ "verdict": "NULL",
+ "verdict_detail": "CI contains 0; powered (MDE 0.0315 <= 0.0450)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 1376,
+  "min_slack_min": 0.0,
+  "passed": true,
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 103,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "level",
+    "n_stack",
+    "take_time"
+   ],
+   "ignored": [],
+   "lookback": "20D",
+   "recent": "1D",
+   "events_fp": "d1e147d447895119",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "reps": 5,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "mde_threshold": null,
+  "cluster": null,
+  "outcome_horizon": "1 days 00:00:00",
+  "null_kind": "null_fn x5"
+ },
+ "notes": "Tests only the live_09 negative case: after a pre-open take of a short-term extreme with protected swings stacked behind, the nearest one is run in the first 30 min more than a vol- and clock-matched equidistant level. Indices' 09:30 open applied to gold as a clock time; the source stream was trading NQ (vault: gold's volatility step is at 09:30, not 08:30). Vault rerun: trap 5 raw recompute of the observed rate = 0.1817 (matches harness); share of trading days with an event = 0.489. A NULL here does not separate 'after a pre-open take' from 'stacked swings' (no structural split was pre-declared).",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/update_20261007/positional-entry-before-open.py",
+ "runtime_sec": 0.18,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-10-07T06:24:46+00:00",
+ "dropped": {
+  "nan_rows": 0
+ },
+ "null_kind": "null_fn x5",
+ "events_fp": "d1e147d447895119",
+ "predictors_probed": true,
+ "ci_components": {
+  "phase3_iid": [
+   -0.020348837209302306,
+   0.0236954941860465
+  ],
+  "day_block": [
+   -0.018236763583738384,
+   0.022306336727305583
+  ]
+ },
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 1333,
+  "n_clusters": null,
+  "n_eff": 1333
+ },
+ "run_id": "0f7c5eb41b074ac8b5f4e73c4df407c4",
+ "hyp_key": "76282a5391b90816"
+}

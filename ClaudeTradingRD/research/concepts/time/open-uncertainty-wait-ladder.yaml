@@ -1,0 +1,63 @@
+id: open-uncertainty-wait-ladder
+name: 'Unclear Open: Wait 5 Minutes, Then 15, Then 10:00'
+definition: 'When the New York open cannot be read, the prescription is to wait in fixed escalating
+  steps rather than enter: wait for the first 5 minutes to close; if still unclear, wait for
+  the 15-minute; if still unclear, wait for 10:00 a.m. (the new 4-hour open). A companion
+  rule given in the same ''lesson'': if the 9:30 move does not get a continuation, the session
+  is chopped and the next decision point is 10:00. In the worked session the strength between
+  NQ/ES/YM switched repeatedly after 9:30, no continuation formed, and he stood aside until
+  10:00, when YM (the weakest) reversed.'
+category: time
+status: specified
+aliases:
+- just wait longer
+- if you don't know what is going on, wait
+- chopped, wait for 10
+preconditions:
+- New York index session (09:30 open).
+- No clear directional read at the open (e.g. correlated assets switching strength).
+detection_rules:
+- At 09:30, if direction is unclear, take no entry until the first 5-minute candle (09:30-09:35)
+  has closed.
+- If still unclear after the 5-minute close, wait for the first 15-minute candle (09:30-09:45)
+  to close.
+- If still unclear, wait for 10:00 (new 4-hour/hourly/15m open) before framing.
+- If the 09:30 move produces no continuation, classify the session as chop and defer to 10:00.
+invalidation:
+- A clear continuation from the 09:30 move resolves the uncertainty and ends the wait.
+measurable:
+- P&L of entries taken 09:30-09:35 vs after 09:35, 09:45 and 10:00 on days with an indecisive
+  open
+- share of chopped 09:30 opens (no continuation) that produce a directional move after 10:00
+sources:
+- video_id: rTomJ8URFnw
+  title: New York Open Live Q&A
+  quote: Just wait five minutes. If you still don't, wait for 15.
+- video_id: rTomJ8URFnw
+  title: New York Open Live Q&A
+  quote: If you don't know what's going on, just wait longer.
+- video_id: rTomJ8URFnw
+  title: New York Open Live Q&A
+  quote: move doesn't get a continuation, it's chopped. Wait for 10:00
+ambiguities:
+- '''Don''t know what is going on'' is not defined mechanically; in the example it coincided
+  with correlated indices switching relative strength.'
+- '''Continuation'' of the 9:30 move has no distance or time threshold.'
+- The 5m/15m steps are presumably candle closes from 09:30 New York; the timezone is not stated
+  in this video.
+related:
+- ten-am-candle-alignment
+- nine-thirty-expansion-invalidation
+- wait-for-candle-close
+- relative-strength-weakness
+timeframes:
+  htf:
+  - 4H
+  ltf:
+  - 5m
+  - 15m
+  fractal: false
+contributing_units:
+- update_20261007_live_12
+draft_count: 1
+voice: ttrades

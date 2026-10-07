@@ -1,0 +1,51 @@
+id: wick-trust-test
+name: Let the Wick Form, Trade the Body
+category: structure
+status: specified
+voice: ttrades
+definition: >
+  Dedicated primary-source lesson (RX8vtP3PLYk) for the rule. Before any entry he asks one
+  question of the higher-timeframe candle being traded: has it formed its wick yet? If yes,
+  there is a protected swing to trade away from; if no, there is nothing to trade away from
+  and he waits. The stated failure mode of entering before the wick forms is that you get
+  stopped out and become the liquidity for the wick to form. The question is re-asked after
+  every lower-timeframe candle closure until it can be answered yes, and the yes is given by
+  a lower-timeframe change in the state of delivery (or intra-candle CISD) that creates a
+  protected swing inside the higher-timeframe candle.
+detection_rules:
+  - "After each lower-timeframe closure inside the higher-timeframe candle, ask: do I trust that this extreme will not be taken out? If no, keep waiting."
+  - "A shallow sweep into a gap that only consolidates, or a reach that leaves equal highs/lows close to the extreme, is answered 'no' - the wick is not formed."
+  - "The answer becomes 'yes' only after a closure through the series of opposing candles into an important level (high, low or fair value gap) - a protected swing."
+  - "If the CISD does not look clean on the working timeframe, adjust the timeframe (example: hourly -> 30-minute) and re-read the closure."
+  - "Give-up rule (bearish worked example): after repeated failed attempts, allow 'one more high' as the last spot to look for the wick; if price keeps disrespecting the gap, abandon the idea and look at the next day."
+  - "A protected swing that forms against the higher-timeframe trend, after the range extreme on that side has already been taken and with failure swings left on the other side, is ignored; wait for it to be invalidated and a new protected swing in the trend direction to form."
+  - "Series vs single candle: if the lower timeframe shows a swing high/low already shifting inside the move, a single opposing candle can be used as the CISD series instead of the whole range."
+execution:
+  bias: "Direction of the higher-timeframe candle."
+  entry: "After the wick is anticipated (protected swing formed), near the higher-timeframe opening price."
+  stop: "On the wick / protected swing - if the wick is formed that stop should not be taken out."
+  targets: ["2R", "the opposite side of the range", "the gap or higher-timeframe target marked"]
+measurable:
+  - "share of entries taken before vs after the first LTF CISD inside the HTF candle, and their stop-out rates"
+  - "hit rate of the 'last chance one more high' variant vs skipping the day"
+sources:
+  - video_id: RX8vtP3PLYk
+    title: "Let The Wick Form, Trade The Body (Stop Getting Stopped Out)"
+    quote: "did this higher time frame candle form its wick yet?"
+  - video_id: RX8vtP3PLYk
+    title: "Let The Wick Form, Trade The Body (Stop Getting Stopped Out)"
+    quote: "we're going to be the liquidity for the wick to form"
+  - video_id: RX8vtP3PLYk
+    title: "Let The Wick Form, Trade The Body (Stop Getting Stopped Out)"
+    quote: "this would be kind of our last chance before I give up on the idea"
+  - video_id: RX8vtP3PLYk
+    title: "Let The Wick Form, Trade The Body (Stop Getting Stopped Out)"
+    quote: "you can always adjust your time frames a little"
+  - video_id: cWDnzI3lpUk
+    title: "How to Trade With a 9-5 Job (TTrades Fractal Model Explained)"
+    quote: "let the daily wick form, and then trade away"
+ambiguities:
+  - "'One more high' as the last chance is a single worked example, not a stated count; no clock-time cutoff is given."
+  - "The choice between a single opposing candle and the full series is justified by a lower-timeframe structure shift that is shown, not defined."
+  - "'Do I trust' remains a discretionary judgement; the IC-CISD is offered as its mechanical stand-in."
+related: ["ic-cisd", "htf-opening-price-entry", "protected-swing", "cisd", "relevant-swing-separation"]

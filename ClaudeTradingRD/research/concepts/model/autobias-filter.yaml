@@ -1,46 +1,82 @@
 id: autobias-filter
 name: Autobias (higher-timeframe direction filter)
-definition: A directional filter that aligns the model being traded with a fractal one or
-  two timeframes above it and then suppresses everything that opposes it. Autobias 1 aligns
-  with the fractal one timeframe up - on a 5-minute chart it only permits setups when the
-  4-hour model agrees. Autobias 2 goes two timeframes up instead, so from a 5-minute chart
-  the daily/hourly model sets the direction. In his worked example the daily/hourly model
-  is bearish, so with autobias 2 on, no bullish setup prints anywhere inside that day even
-  though one forms mechanically.
+definition: 'Live explanation of the indicator setting. On an H1/M5 model viewed on the 5-minute
+  chart, autobias 1 looks one timeframe up and shows the setup only if there is ALSO a valid
+  4-hour/15-minute fractal model; autobias 2 looks two timeframes up (daily/H1) and shows
+  only setups agreeing with the daily model - demonstrated live, a bullish 5-minute setup
+  disappears because the daily is bearish. When a viewer asks what to do if autobias 1 is
+  bullish and autobias 2 bearish, he refuses to give a mechanical tiebreak: stop pattern trading
+  the indicator and decide your own bias.'
+variants:
+  definition:
+  - A directional filter that aligns the model being traded with a fractal one or two timeframes
+    above it and then suppresses everything that opposes it. Autobias 1 aligns with the fractal
+    one timeframe up - on a 5-minute chart it only permits setups when the 4-hour model agrees.
+    Autobias 2 goes two timeframes up instead, so from a 5-minute chart the daily/hourly model
+    sets the direction. In his worked example the daily/hourly model is bearish, so with autobias
+    2 on, no bullish setup prints anywhere inside that day even though one forms mechanically.
+  - 'Live description of the indicator setting: neutral prints both bullish and bearish models;
+    bearish/bullish show only that side; autobias references the higher timeframe (with the
+    4-hour bullish it would only look for longs). He personally leaves it on neutral to see
+    all swings and make his own decisions.'
 category: model
-status: specified
+status: contested
 aliases:
 - autobias one
 - autobias 2
 preconditions:
 - A higher-timeframe fractal model exists and has a direction.
+- n/a
 detection_rules:
+- Autobias 1 on an H1/M5 model requires a valid H4/M15 model in the same direction.
+- Autobias 2 on an H1/M5 model requires agreement with the D1/H1 model.
 - 'Autobias 1: take the direction of the fractal one timeframe above the one being traded;
   permit only setups in that direction.'
 - 'Autobias 2: take the direction of the fractal two timeframes above instead.'
 - The filter holds for the whole higher-timeframe period - in the example, bearish for the
   entire day.
 - Neutral shows both bullish and bearish models; bullish/bearish force one side manually.
+- Neutral = both sides drawn; his own default setting.
 invalidation:
 - The governing higher-timeframe model changes direction.
+- n/a
 measurable:
 - setup count and win rate with autobias 1 vs autobias 2 vs neutral
 - share of counter-bias setups suppressed per day
+- n/a
 sources:
+- video_id: rVRk4MLTJSs
+  title: New York Open Live Q&A
+  quote: Autobias one will take a look up one time frame and look for a model
+- video_id: rVRk4MLTJSs
+  title: New York Open Live Q&A
+  quote: Autobias 2, two time frames up.
+- video_id: rVRk4MLTJSs
+  title: New York Open Live Q&A
+  quote: stop trying to just strictly pattern trade it and decide if you were bullish
 - video_id: sdZkE-naNiY
   title: TTrades Indicator Updates - Walkthrough and Q&A
   quote: Autobias means it's aligning a higher time frame with a lower time frame
+- video_id: h1ZQWWQDhKA
+  title: TTrades MNQ Cup - Afternoon Session
+  quote: But I leave it in neutral personally because I want to see all the swings
 ambiguities:
+- No resolution rule is given when autobias 1 and autobias 2 disagree; it is left to discretionary
+  bias.
 - How the governing higher-timeframe direction is computed (last closure? last CISD?) is not
   stated.
 - 'Corpus conflict: elsewhere he says the exact timeframe alignment does not matter as long
   as all timeframes point the same way, while autobias enforces a fixed one- or two-step relationship
   (see timeframe-alignment-pairs).'
+- 'Contrast with the autobias recommendation elsewhere: the filter exists, but its author
+  does not use it.'
 related:
 - timeframe-alignment-pairs
 - automatic-fractal-pairing
+- pattern-trading-error
 - timeframe-alignment
 - daily-bias-c2-c3-h1-cisd
+- ttfm-indicator-settings
 timeframes:
   htf:
   - 1D
@@ -52,5 +88,7 @@ timeframes:
   fractal: true
 contributing_units:
 - live_streams_05
-draft_count: 1
+- update_20261007_live_02
+- update_20261007_live_03
+draft_count: 3
 voice: ttrades

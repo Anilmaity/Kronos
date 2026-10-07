@@ -20,6 +20,10 @@ variants:
     for a retest instead of entering at market, and skipping a setup entirely are all presented
     as ways to satisfy the 2R constraint. The complementary rule for getting more than 2R
     is to combine a lower-timeframe invalidation with a higher-timeframe target.'
+  - 'In TTrades'' own voice (the library had this arithmetic mainly from a guest): habitually
+    closing early stems from fear. On a 2R system the break-even win rate is 34%; taking profit
+    at 1:1 instead changes the system so the break-even win rate becomes 50%. He reframes
+    ''locking in profits'' as forcing yourself to need a higher win rate.'
   - 'Two guests give the same target doctrine from opposite directions. Trader T uses a fixed
     2R on every trade and defends it psychologically rather than statistically: the worse
     outcome is not missing an extension past 2R, it is watching price reach 2R and then come
@@ -32,6 +36,10 @@ variants:
     own data says.
 
     '
+  - Responding to a viewer backtest of his 4H/15m model (viewer-reported 40-48% win rate,
+    average RR 1.64), he says an average below 2R is not his model - he does not really trade
+    under 2R and often takes more; he talks about 2R on YouTube because many people mismanage
+    positions.
   - 'A small set of stated risk constraints: a 2R minimum on entries, no management of a position
     until 2R has been reached, and a win-rate/R relationship - a 50% win rate is not viable
     at 1R but is viable at 1.5R and at 2R. When there is no strong higher timeframe bias he
@@ -56,6 +64,7 @@ aliases:
 - look for two R
 - 2R minimum
 - 34% break-even
+- taking profit early
 - fixed 2R
 - 2.2R for the spread
 - why not 1:1
@@ -64,6 +73,7 @@ aliases:
 preconditions:
 - A valid model with a defined invalidation.
 - A defined stop (protected swing) and a defined target (drawn liquidity or projection).
+- A system with a planned 2R target.
 - A stop distance is fixed, so R is well defined before entry.
 - An entry with a defined stop, so R is computable.
 - A trade with a defined stop and a structural target.
@@ -91,6 +101,9 @@ detection_rules:
   at 4R, 5.63R, 8R).
 - Do not seek entries after the objective has already been hit -- a new phase of price is
   due.
+- Break-even win rate at 2R = 34% (his figure); at 1R = 50%.
+- Exiting before the planned target changes the system's break-even win rate; treat early
+  exits as a system change, not a lock-in.
 - 'Trader T: take profit at a fixed 2R; set the order at about 2.2R so the spread does not
   prevent the fill.'
 - 'Trader T: if 2R is further than the structure allows, tighten the ENTRY (move the limit)
@@ -99,6 +112,7 @@ detection_rules:
 - 'Ben: take profit around 2R-2.5R, with 3R-3.5R preferred, and let part of the position run.'
 - 'Ben''s procedure for choosing your own multiple: log 20-50 trades at each of 1R, 1.5R and
   2R and read the result off your own data rather than adopting someone else''s number.'
+- Do not take trades whose planned reward is under 2R.
 - Require at least 2R to the intended target before taking the entry; if the stop is too wide
   for 2R, do not take it (this is the pre-open case).
 - Do not manage the position until 2R is reached.
@@ -122,6 +136,8 @@ measurable:
   rate
 - 'realised average R and win rate over a large sample (his 5-trade demo: 80%, 2.79R)'
 - share of setups rejected on the R constraint alone
+- realized average R vs planned R
+- break-even win rate implied by realized average R
 - expectancy at 1R, 1.5R, 2R, 2.5R and 3R on the same entry list - exactly the experiment
   Ben prescribes
 - how often price reaches 2R and then returns to the stop (Trader T's stated fear, made testable)
@@ -170,6 +186,18 @@ sources:
   title: 'Stop Losses in Trading: Know When You''re Wrong'
 - video_id: eywpZT3z6GQ
   title: TTrades Scalping Model - Simple Day Trading Strategy
+- video_id: tCDsDlYQ1gw
+  title: Taking Profit Early Forces You to Have a Higher Win Rate
+  quote: The root cause of this is what? Fear.
+- video_id: tCDsDlYQ1gw
+  title: Taking Profit Early Forces You to Have a Higher Win Rate
+  quote: A 34% win rate to break even.
+- video_id: tCDsDlYQ1gw
+  title: Taking Profit Early Forces You to Have a Higher Win Rate
+  quote: now you have to win 50% of the time to break even.
+- video_id: tCDsDlYQ1gw
+  title: Taking Profit Early Forces You to Have a Higher Win Rate
+  quote: I take profit early here. I now have to have a higher win rate.
 - video_id: wCtxmWe4KNc
   title: Back Testing Live Session With Trader T
   quote: I really like 2R I find it's just peace of mind
@@ -179,6 +207,15 @@ sources:
 - video_id: yRmKkR4CojU
   title: Fractalizing Entries -Q&A with Ben - ICT Concepts
   quote: forcing yourself to be break even at fifty percent win rate
+- video_id: K7XVj2w3CP4
+  title: New York Open Live Q&A
+  quote: I don't really trade less than two R on things.
+- video_id: K7XVj2w3CP4
+  title: New York Open Live Q&A
+  quote: I wouldn't be using an average RR of less than two on that.
+- video_id: K7XVj2w3CP4
+  title: New York Open Live Q&A
+  quote: on YouTube, it's best to make videos talking about 2R
 - video_id: bMkRomKEunU
   title: New York Open Live Q&A
 - video_id: r7yW6ou1LDs
@@ -200,6 +237,7 @@ ambiguities:
 - The 34% figure ignores costs and partials; no commission/slippage assumption is stated.
 - Moving the stop to the bodies changes R by changing the denominator, which he acknowledges
   as 'manipulating the risk-to-reward' without bounding how far it may go.
+- 34% is his rounding; exact break-even at 2R without costs is 33.3%.
 - Trader T's 2R is not derived from anything - it is stated as a personal preference that
   removes a decision.
 - Ben gives a band (2R-3.5R) rather than a rule, and does not say what selects a value inside
@@ -208,6 +246,7 @@ ambiguities:
   between entry and target.
 - Ben's 20-50 trade sample is far too small to separate these multiples statistically, and
   he does not say so.
+- The 40-48% / 1.64R numbers are a viewer's claim, unverified.
 - '''Manage after 2R'' and the trailing-by-opposing-candles demonstration (which would exit
   well before 2R) are not reconciled.'
 - '''Most of my position'' at the partial is not given as a percentage.'
@@ -225,8 +264,11 @@ related:
 - breakeven-after-new-protected-swing
 - stop-loss-placement
 - realistic-r-expectations
+- position-sizing-fixed-risk
+- root-cause-diagnosis
 - cancel-limit-after-target-run
 - stop-size-reduction
+- position-sizing
 - trailing-stop-opposing-candles
 - max-one-trade-per-day
 - failure-swing
@@ -255,5 +297,7 @@ contributing_units:
 - live_stream_guests_01
 - live_stream_guests_02
 - sunday_sessions_live_q_a_03
-draft_count: 6
+- update_20261007_live_08
+- update_20261007_shorts_03
+draft_count: 8
 voice: mixed

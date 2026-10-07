@@ -1,0 +1,293 @@
+{
+ "concept_id": "open-uncertainty-wait-ladder",
+ "reading": "u1007b",
+ "testable": true,
+ "test_type": "gate",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "baseline: 5m bare CISD (series_open, 2/2 swings, max_wait 3), decide at the confirming 5m close, enter next M1 open, stop = protected swing, 2R, 50 min exit; only decisions in [09:30, 10:30) New York",
+   "9:30 move = direction of the first 5m candle 09:30-09:35 (doji = no move)",
+   "continuation = first later 5m candle (closing 09:40..09:55) whose close is beyond the 9:30 candle's high (up move) / low (down move)",
+   "gate (permitted): decision >= 10:00, or decision at/after the continuation close",
+   "complement (forbidden, 'chopped'): decisions in [09:30, 10:00) with no continuation yet (09:30 and 09:35 always)",
+   "rows in [09:40, 10:00) on a date with no 09:30 5m candle are dropped"
+  ],
+  "params": {
+   "baseline_tf": "5min",
+   "cisd": {
+    "level_rule": "series_open",
+    "left": 2,
+    "right": 2,
+    "max_wait": 3,
+    "min_series": 1
+   },
+   "rr": 2.0,
+   "max_hold": "50min",
+   "band": [
+    [
+     "09:30",
+     "10:30"
+    ]
+   ],
+   "deadline": "10:00",
+   "tz": "America/New_York",
+   "move_bar": "5min 09:30-09:35",
+   "continuation": "5m close beyond the 9:30 candle's extreme, before 10:00"
+  }
+ },
+ "params_source": {
+  "baseline_tf": "declared-before-run: 5m CISD book = finest phase-3 locked stack; corpus LTF for the NY window is 15m/5m (entry-time-window timeframes.ltf)",
+  "cisd": "phase3: locked CISD config (conjunction_preregistration 1.8-1.13: series_open, 2/2, max_wait 3)",
+  "rr": "phase3: 2R target (conjunction_preregistration locked config)",
+  "max_hold": "phase3: 10 entry-TF bars (conjunction_preregistration 1.13) = 50 min on 5m",
+  "band": "declared-before-run: same band as entry-time-window u1007b ([09:30,10:30), equal 30-min arm after 10:00) so only the conditional element changes; corpus: rTomJ8URFnw 'Wait for 10:00 a.m.'",
+  "deadline": "corpus: rTomJ8URFnw 'If you still don't, wait for 10:00 a.m.'",
+  "tz": "session_window_fit: America/New_York with DST (settled, 99.8% of 605 daily breaks resume at 18:00 NY)",
+  "move_bar": "corpus: rTomJ8URFnw 'most people are probably better off waiting 5 minutes' (the 9:30 move is read on the first 5m close)",
+  "continuation": "corpus: rTomJ8URFnw 'If 9:30 move doesn't get a continuation, it's chopped.'; threshold_fits: structural displacement = candle closes beyond the reference level (hard gate, grade A)"
+ },
+ "n": 2903,
+ "span": {
+  "start": "2016-01-04 14:50:00+00:00",
+  "end": "2026-07-21 14:05:00+00:00",
+  "years": 10.541
+ },
+ "avg_R": -0.021771122299036223,
+ "avg_R_gross": 0.0182288777009638,
+ "win_rate": 0.4395452979676197,
+ "pf": 0.943715522990775,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "avg_R_gated": -0.04624656204381461,
+  "avg_R_complement": -0.034245734964728616,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": 0.020999658090751137,
+ "ci_lo": -0.05510658749402903,
+ "ci_hi": 0.0918589572121912,
+ "ci_method": "phase3_block",
+ "p": 0.5754031267561385,
+ "halves": {
+  "H1": {
+   "n": 2133,
+   "diff": 0.035643687177159725,
+   "ci_lo": -0.04767001140863763,
+   "ci_hi": 0.13313990667939035,
+   "ci_method": "iid",
+   "p": 0.43967092832502214,
+   "start": "2016-01-04 14:50:00+00:00",
+   "end": "2020-12-31 15:25:00+00:00",
+   "n_gated": 1409
+  },
+  "H2": {
+   "n": 2315,
+   "diff": 0.007700574324245304,
+   "ci_lo": -0.10941690641387256,
+   "ci_hi": 0.12767853415601885,
+   "ci_method": "block",
+   "p": 0.89869145283961,
+   "start": "2021-01-04 14:35:00+00:00",
+   "end": "2026-07-21 14:05:00+00:00",
+   "n_gated": 1494
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 1122,
+   "diff": 0.033328197313817934,
+   "ci_lo": -0.1025345237637926,
+   "ci_hi": 0.15329312848703444,
+   "ci_method": "iid",
+   "p": 0.609580435365407,
+   "start": "2016-01-04 14:50:00+00:00",
+   "end": "2018-08-21 14:15:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 1126,
+   "diff": 0.048536704642351186,
+   "ci_lo": -0.09068869761095293,
+   "ci_hi": 0.18690420766980528,
+   "ci_method": "iid",
+   "p": 0.49309561138046115,
+   "start": "2018-08-22 13:55:00+00:00",
+   "end": "2021-04-09 13:55:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 1124,
+   "diff": -0.018135721494211027,
+   "ci_lo": -0.18558852746506688,
+   "ci_hi": 0.14701917426451058,
+   "ci_method": "block",
+   "p": 0.8307518041487171,
+   "start": "2021-04-12 14:25:00+00:00",
+   "end": "2023-12-01 14:35:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 1076,
+   "diff": 0.016012262078766173,
+   "ci_lo": -0.1521629506429788,
+   "ci_hi": 0.18418675690796227,
+   "ci_method": "block",
+   "p": 0.8519648041453942,
+   "start": "2023-12-04 15:00:00+00:00",
+   "end": "2026-07-21 14:05:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.10503674189061023,
+ "mde_threshold": 0.1,
+ "power_floor_n": 1705,
+ "verdict": "UNDERPOWERED",
+ "verdict_detail": "CI contains 0; MDE 0.1050 vs threshold 0.1000, effective n 1295 (power floor n=3203, have 1545)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 4448,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "gate_mask_checked": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 5.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 304,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "rr",
+    "permitted",
+    "gate_at"
+   ],
+   "ignored": [],
+   "lookback": "10D",
+   "recent": "1D",
+   "events_fp": "cda34fff70939b83",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "50min",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": null,
+  "entry_mode": "next_open",
+  "hold_basis": "clock",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "New concept (update_20261007_live_12), not yet in batches.json. Reading b: the companion chop rule. No distance/time threshold for 'continuation' in the source; close beyond the opening 5m candle's extreme before 10:00 is the declared structural reading.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/update_20261007/open-uncertainty-wait-ladder.py",
+ "runtime_sec": 0.4,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-10-07T05:27:43+00:00",
+ "n_events_in": 4448,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 0,
+  "target_not_beyond_entry": 0,
+  "no_bars_in_hold": 0
+ },
+ "n_complement": 1545,
+ "gate_firing_rate": 0.6526528776978417,
+ "events_fp": "cda34fff70939b83",
+ "mask_fp": "692fd96ca66ed38c",
+ "mask_col": "permitted",
+ "exit_mix": {
+  "stop": 0.2755769893213917,
+  "target": 0.08990699276610403,
+  "time": 0.6345160179125043
+ },
+ "gated_vs_own_control": {
+  "diff": 0.024475439744778386,
+  "ci_lo": -0.011195410950221479,
+  "ci_hi": 0.06250048673270127,
+  "p": 0.192963226827376
+ },
+ "complement": {
+  "n": 1545,
+  "avg_R": -0.030769953310701356,
+  "win_rate": 0.4168284789644013,
+  "pf": 0.9353386053260407,
+  "sd_R": 1.080239834466108,
+  "exit_mix": {
+   "stop": 0.3877022653721683,
+   "target": 0.15145631067961166,
+   "time": 0.4608414239482201
+  },
+  "vs_own_control": {
+   "diff": 0.00347578165402726,
+   "ci_lo": -0.05999755708081345,
+   "ci_hi": 0.06785664132411533,
+   "p": 0.9151338929326456
+  }
+ },
+ "ci_components": {
+  "phase3_block": [
+   -0.05510658749402903,
+   0.0918589572121912
+  ],
+  "day_block": [
+   -0.04920519868141905,
+   0.08710820139152246
+  ]
+ },
+ "diff_meaning": "mean(R-ctrl | gated) - mean(R-ctrl | complement)",
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_eff_gated": 2092,
+  "n_eff_complement": 1295,
+  "n_eff": 1295
+ },
+ "ties": {
+  "real_ambiguous": 0.0,
+  "control_ambiguous": 4.496402877697842e-05,
+  "real_gap_stop": 0.002697841726618705,
+  "control_gap_stop": 0.0020233812949640288,
+  "gated_excess": 0.0,
+  "complement_excess": -0.00012944983818770228,
+  "verdict_stop_first": "UNDERPOWERED"
+ },
+ "ctrl_overlap": 0.0031025179856115108,
+ "exposure_bars": {
+  "real_mean": 49.97009892086331,
+  "control_mean": 48.684757194244604,
+  "hold_basis": "clock"
+ },
+ "run_id": "3fcc542136184e598eedcc5b8675646f",
+ "hyp_key": "62da289c96ebd30d"
+}

@@ -1,0 +1,263 @@
+{
+ "concept_id": "reversal-candle-target-adjustment",
+ "reading": "u1007a",
+ "testable": true,
+ "test_type": "trade",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "1h CISD (series_open, 2/2, max_wait 3), extreme formed today = today's running low (bull) / high (bear) at the confirm close, confirm close still beyond the 18:00 NY open (opposing run in play); decide at the 1h close_time, enter next M1 open, stop at the protected swing, flat 17:00 NY",
+   "control holds the NY clock (+/-30 min) so its hold window and time-of-day volatility match the real trade",
+   "reversal day: today's extreme beyond the previous day's low (bull) / high (bear); first such CISD per day (= prior reading a's events)",
+   "target = previous day's EQ (PDH+PDL)/2, kept only if ahead of the confirm close"
+  ],
+  "params": {
+   "exec_tf": "1h",
+   "cisd": "series_open, swing 2/2, max_wait 3",
+   "reversal_candle": "confirm close still beyond the 18:00 open (opposing run in play)",
+   "daily_open": "18:00 NY",
+   "exit": "17:00 NY session close",
+   "one_per_day": true,
+   "prev_day": "last complete trading day with n_m1 >= 600",
+   "grid4h": "n/a",
+   "ctrl_tod_tol_min": 30,
+   "key_level": "previous day low/high taken by today's extreme",
+   "target": "previous complete day's wick-to-wick 50% (EQ)",
+   "eq": "whole-candle wick-to-wick 50%"
+  }
+ },
+ "params_source": {
+  "exec_tf": "method_spec: \u00a72.4 daily wick confirmed by an hourly CISD (as prior a/b)",
+  "cisd": "phase3: locked CISD config",
+  "reversal_candle": "threshold_fits: large wick = opposing_run/|body| > 1.0; live proxy as prior reading a/b (declared-before-run)",
+  "daily_open": "method_spec: \u00a71.4 daily open 18:00 canon",
+  "exit": "corpus: 3OIq9HmckH8 'better to wait for the new candle or the new daily open'",
+  "one_per_day": "method_spec: \u00a72.4 only one CISD per day",
+  "prev_day": "declared-before-run: README trap 6, skip stub sessions",
+  "grid4h": "declared-before-run: no 4h bars used",
+  "ctrl_tod_tol_min": "declared-before-run: README trap 9 + vault Backtest Methodology Traps / Session Timing on Gold - events cluster in NY hours and every hold ends at 17:00 NY, so the control holds the clock",
+  "key_level": "corpus: reversal-candle-target-adjustment precondition 'The day's extreme formed from a key level' (as prior a/b)",
+  "target": "corpus: GRc5FVB5tdg 'your targets back towards the daily open to the previous EQ'",
+  "eq": "corpus: GRc5FVB5tdg 'already hit the previous EQ'; equilibrium-eq a/b wick-to-wick 50% (declared-before-run)"
+ },
+ "n": 426,
+ "span": {
+  "start": "2016-01-12 20:00:00+00:00",
+  "end": "2026-07-22 19:00:00+00:00",
+  "years": 10.522
+ },
+ "avg_R": -0.044536732878595914,
+ "avg_R_gross": -0.004536732878595906,
+ "win_rate": 0.4788732394366197,
+ "pf": 0.8489560408005773,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "n": 2130,
+  "avg_R": -0.04252723732513075,
+  "win_rate": 0.4779342723004695,
+  "pf": 0.8600083232079657,
+  "sd_R": 0.7774651500439597,
+  "exit_mix": {
+   "stop": 0.21830985915492956,
+   "target": 0.271830985915493,
+   "time": 0.5098591549295775
+  },
+  "avg_R_gross": -0.0025272373251307343,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": -0.0020094955534651626,
+ "ci_lo": -0.08728047679394382,
+ "ci_hi": 0.091551400299595,
+ "ci_method": "phase3_block",
+ "p": 0.964866626732184,
+ "halves": {
+  "H1": {
+   "n": 220,
+   "diff": -0.04822091985196082,
+   "ci_lo": -0.1515027730586838,
+   "ci_hi": 0.05167086659624855,
+   "ci_method": "iid",
+   "p": 0.3521900548850347,
+   "start": "2016-01-12 20:00:00+00:00",
+   "end": "2020-12-28 07:00:00+00:00"
+  },
+  "H2": {
+   "n": 206,
+   "diff": 0.04734251097890881,
+   "ci_lo": -0.087649492841278,
+   "ci_hi": 0.18853064463202449,
+   "ci_method": "block",
+   "p": 0.5016155485660849,
+   "start": "2021-01-19 14:00:00+00:00",
+   "end": "2026-07-22 19:00:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 123,
+   "diff": -0.05930820134017867,
+   "ci_lo": -0.20084609100372586,
+   "ci_hi": 0.08532026203153627,
+   "ci_method": "iid",
+   "p": 0.4165574680428892,
+   "start": "2016-01-12 20:00:00+00:00",
+   "end": "2018-08-21 10:00:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 106,
+   "diff": -0.0172684859113241,
+   "ci_lo": -0.18023702982246645,
+   "ci_hi": 0.13538233527365956,
+   "ci_method": "block",
+   "p": 0.8301797285866676,
+   "start": "2018-08-31 12:00:00+00:00",
+   "end": "2021-04-06 10:00:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 100,
+   "diff": 0.11215481098847879,
+   "ci_lo": -0.08213707564241926,
+   "ci_hi": 0.3307372094130718,
+   "ci_method": "block",
+   "p": 0.28695521370864163,
+   "start": "2021-04-21 11:00:00+00:00",
+   "end": "2023-11-21 12:00:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 97,
+   "diff": -0.030372762197749602,
+   "ci_lo": -0.18927216355977958,
+   "ci_hi": 0.12458561369096753,
+   "ci_method": "iid",
+   "p": 0.7044348514176539,
+   "start": "2023-12-14 18:00:00+00:00",
+   "end": "2026-07-22 19:00:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.12781171092609406,
+ "mde_threshold": 0.1,
+ "power_floor_n": 696,
+ "verdict": "UNDERPOWERED",
+ "verdict_detail": "CI contains 0; MDE 0.1278 vs threshold 0.1000, effective n 426 (power floor n=696, have 426)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 426,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 1.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 33,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "target_px",
+    "max_hold"
+   ],
+   "ignored": [],
+   "lookback": "60D",
+   "recent": "1D",
+   "events_fp": "ee132fc7723edc1a",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "per-row column",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": 30,
+  "entry_mode": "next_open",
+  "hold_basis": "clock",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "Rerun with vault context. New named target only (previous-day EQ). The wick-size rule choosing open vs EQ is unstated in the source, so EQ is scored on every reversal day where it is ahead; the open target is prior reading a (NULL). Source stream is index futures, discretionary. Control holds the NY clock (README trap 9).",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/update_20261007/reversal-candle-target-adjustment.py",
+ "runtime_sec": 0.11,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-10-07T06:26:04+00:00",
+ "n_events_in": 426,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 0,
+  "target_not_beyond_entry": 0,
+  "no_bars_in_hold": 0
+ },
+ "events_fp": "ee132fc7723edc1a",
+ "sd_R": 0.7138592982048382,
+ "exit_mix": {
+  "stop": 0.19014084507042253,
+  "target": 0.29107981220657275,
+  "time": 0.5187793427230047
+ },
+ "trades_per_year": 40.488290398126466,
+ "ci_components": {
+  "phase3_block": [
+   -0.08728047679394382,
+   0.091551400299595
+  ],
+  "day_block": [
+   -0.07901854484121847,
+   0.07902683081311705
+  ]
+ },
+ "diff_win": 0.000938967136150215,
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 426,
+  "n_clusters": null,
+  "n_eff": 426
+ },
+ "ties": {
+  "real_ambiguous": 0.0,
+  "control_ambiguous": 0.0,
+  "real_gap_stop": 0.002347417840375587,
+  "control_gap_stop": 0.0014084507042253522,
+  "verdict_stop_first": "UNDERPOWERED"
+ },
+ "ctrl_overlap": 0.006572769953051643,
+ "exposure_bars": {
+  "real_mean": 418.5093896713615,
+  "control_mean": 422.5793427230047,
+  "hold_basis": "clock"
+ },
+ "run_id": "4000fb2d4c7f4bcdab4481084e8530ad",
+ "hyp_key": "9efa2f8dcd982c5e"
+}

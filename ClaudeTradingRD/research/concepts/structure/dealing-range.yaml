@@ -1,19 +1,51 @@
 id: dealing-range
 name: Dealing Range
-definition: 'The range price is currently trading inside, defined by the nearest visible high
-  and the nearest visible low at the zoom level you are working at. His stated method is deliberately
-  naive: zoom in, look at where price actually is, take that high and that low, and fib between
-  them. The important consequence he draws is that dealing ranges NEST - what is external
-  liquidity at one zoom becomes internal liquidity when you zoom out - so there is no single
-  correct dealing range, only the one appropriate to where price is trading now. A dealing
-  range whose extremes price has already left behind is discarded and a wider one taken.'
+definition: 'In the TTFM "Dealing Ranges" video the dealing range is anchored mechanically
+  to a valid fractal model rather than to the nearest visible high/low. Start from the candle
+  2 extreme being traded away from (the C2 low for a long). On the higher-timeframe candles,
+  walk back to the opposite swing that "made" that extreme - the swing high from which the
+  leg into the C2 low began; this is not necessarily candle 1. The range from that swing to
+  the C2 extreme is the dealing range: the far end is the overall higher-timeframe target,
+  the near end is the invalidation. Its 0.5 splits premium (upper 50%) from discount (lower
+  50%). Long in discount, short in premium, because that is where 2R is reachable before the
+  dealing-range target is taken. He separates this explicitly from his EQ concept: candle
+  3 must still respect the EQ of candle 2 for expansion, while the dealing range is the larger
+  range governing where to enter. Ranges are fractal and nest; best R comes from entering
+  in the premium (discount) of BOTH the higher-timeframe and the lower-timeframe dealing range,
+  taking first profits at the inner range''s target and holding runners to the outer one.
+
+  '
+variants:
+  definition:
+  - 'The range price is currently trading inside, defined by the nearest visible high and
+    the nearest visible low at the zoom level you are working at. His stated method is deliberately
+    naive: zoom in, look at where price actually is, take that high and that low, and fib
+    between them. The important consequence he draws is that dealing ranges NEST - what is
+    external liquidity at one zoom becomes internal liquidity when you zoom out - so there
+    is no single correct dealing range, only the one appropriate to where price is trading
+    now. A dealing range whose extremes price has already left behind is discarded and a wider
+    one taken.'
 category: structure
-status: specified
+status: contested
 aliases:
+- overall dealing range
+- the overall range that we are trading within
 - the range price is trading in
 preconditions:
+- A valid fractal model exists (a candle 2 closure / reversal to trade away from).
 - A chart at the zoom level matching the timeframe you intend to trade.
 detection_rules:
+- Identify the swing extreme being traded away from (the candle 2 high or low).
+- On the higher-timeframe candles, follow price back to the opposite swing point that made
+  that extreme; continue past candle 1 if needed until that swing is found.
+- Dealing range = that swing to the traded-away-from extreme; mark 0.5 (Gann box or 0.5 Fibonacci).
+- Bullish setup - take longs around the EQ or in the discount (lower 50%); reject longs high
+  in the premium.
+- Bearish setup - take shorts around the EQ or in the premium (upper 50%); at 25% of the range
+  or lower he is 'not really looking for shorts' (mirror for longs at 75%+ by inference).
+- Nested ranges - mark the lower-timeframe setup's own dealing range as well; the best entries
+  sit in the premium (shorts) of both the inner and the outer range.
+- Swing points define the range mechanically even when the target end is only failure swings.
 - Zoom to where price is currently trading.
 - Take the nearest high and the nearest low bounding that price action; that pair is the dealing
   range.
@@ -23,11 +55,36 @@ detection_rules:
 - 'Expect nesting: external liquidity of the inner range is internal liquidity of the outer
   range.'
 invalidation:
+- Price trades through the near (invalidation) end of the range - the model is void.
+- Price has already taken the target end - the range is spent; look for the opposite side
+  instead (in the worked 15m/1m example, longs at the high after the target was taken 'doesn't
+  make sense').
 - Price trades outside the marked high/low - the range must be redrawn wider.
 measurable:
+- R achieved by entry location within the swing-anchored dealing range (deciles)
+- share of setups entered below 25% of a bearish range that reach 2R before the range low
+- agreement rate between the swing-anchored range and the naive nearest-high/low range
 - how often the naive nearest-high/nearest-low range agrees with a swing-based range
 - frequency of range redraws per session
 sources:
+- video_id: yb3Te7tiGRk
+  title: Understanding Dealing Ranges in Trading (Get Better Risk Reward)
+  quote: Dealing ranges are the overall range that we are trading within or trading towards
+- video_id: yb3Te7tiGRk
+  title: Understanding Dealing Ranges in Trading (Get Better Risk Reward)
+  quote: find the swing high that made this swing low
+- video_id: yb3Te7tiGRk
+  title: Understanding Dealing Ranges in Trading (Get Better Risk Reward)
+  quote: this is not always going to be candle one
+- video_id: yb3Te7tiGRk
+  title: Understanding Dealing Ranges in Trading (Get Better Risk Reward)
+  quote: don't get this confused with my equilibrium concept
+- video_id: yb3Te7tiGRk
+  title: Understanding Dealing Ranges in Trading (Get Better Risk Reward)
+  quote: As I get to 25% of the range or lower
+- video_id: yb3Te7tiGRk
+  title: Understanding Dealing Ranges in Trading (Get Better Risk Reward)
+  quote: you use multiple dealing ranges and you shorten the premium of both
 - video_id: CAuN4tvLInQ
   title: Choosing Dealing Ranges & Displacement Ranges - ICT Concepts
   quote: here's a high here's a low that is your dealing range
@@ -35,28 +92,48 @@ sources:
   title: Choosing Dealing Ranges & Displacement Ranges - ICT Concepts
   quote: as you zoom out that external liquidity becomes internal liquidity
 ambiguities:
+- Conflicts with the library's naive 'zoom in, nearest high and low' definition (CAuN4tvLInQ);
+  this video anchors the range to the C2 extreme and the swing that created it - hence contested.
+- '"The swing high that made this swing low" is not defined beyond walking back on higher-timeframe
+  candles; which swing definition (3-bar fractal or otherwise) is not stated.'
+- The 25% cutoff is stated only for shorts; the 75% mirror for longs is inferred.
+- He marks the range on higher-timeframe candles but says he 'prefers to do it on the lower
+  time frame' - wick vs body extremes not stated.
+- Caption 'shorten the premium' = 'short in the premium'; 'gone box' = Gann box.
 - '''Zoom your screen in'' is a UI instruction, not a bar-count or swing definition - two
   traders at different zoom levels get different ranges. Decidable only once the zoom/lookback
   is fixed.'
 - No rule selects among nested ranges other than 'where is price trading'.
 - Wicks vs bodies for the range extremes is not stated here.
 related:
-- displacement-range
 - premium-discount
+- upper-half-positioning
+- equilibrium-eq
+- risk-reward-minimum
+- partial-profit-taking
+- displacement-range
 - internal-external-range-liquidity
 - external-range-liquidity
 - market-curve-side
 timeframes:
   htf:
   - 1D
-  - 4H
   - 1H
   ltf:
   - 15m
   - 5m
   - 1m
   fractal: true
+execution:
+  bias: From the fractal model (candle 2 / candle 3 closure).
+  entry: Any model entry located in the discount (longs) or premium (shorts) of the dealing
+    range, EQ acceptable.
+  stop: The protected swing / candle 2 extreme.
+  targets:
+  - 2R before the dealing-range target
+  - Inner dealing-range target for partials, outer dealing-range target for runners
 contributing_units:
 - education_ict_01
-draft_count: 1
+- update_20261007_edu_02
+draft_count: 2
 voice: ttrades

@@ -1,0 +1,287 @@
+{
+ "concept_id": "cross-asset-reversal-confirmation",
+ "reading": "u1007a",
+ "testable": true,
+ "test_type": "gate",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "pair: gold (traded) vs silver XAG_USD H1 (OANDA), silver bars closed by the decision only",
+   "strength = % change from the 18:00-NY trading-day open to the latest closed 1h bar",
+   "baseline: phase-3 bare 1h gold CISD (series_open, swing 2/2, max_wait 3), stop protected swing, 2R, 10h; kept when gold long & gold stronger, or gold short & gold weaker",
+   "sample: silver reversed in (t-3h, t]: shallow or deep form (below)",
+   "shallow ('another sweep'): silver 1h bar took the latest confirmed 2/2 swing low, closed back above it, low stayed >= prior 20-bar low (mirror highs for shorts)",
+   "deep ('all the way to the deeper low'): silver bar took the prior 20-bar low and closed back above it; if both forms occur in the window the event counts as deep",
+   "gate = shallow; complement = deep; claim '+' (shallow form better)",
+   "untested parts: 5m closure (no silver 5m data), proximity-tell (needs >=3 correlates), fresh-SMT condition not separately required"
+  ],
+  "params": {
+   "tf": "1h",
+   "level_rule": "series_open",
+   "swing": "2/2",
+   "max_wait": 3,
+   "rr": 2.0,
+   "max_hold": "10h",
+   "strength": "pct change from 18:00 NY open",
+   "correlate": "XAG_USD H1",
+   "deep_lookback": 20,
+   "swing_fractal": "2/2",
+   "window_h": 3
+  }
+ },
+ "params_source": {
+  "tf": "corpus: cross-asset-reversal-confirmation.yaml timeframes htf 1H",
+  "level_rule": "phase3: meta/conjunction_preregistration.md \u00a71.8-1.13 (locked config)",
+  "swing": "phase3: meta/conjunction_preregistration.md \u00a71.8-1.13 (locked config)",
+  "max_wait": "phase3: meta/conjunction_preregistration.md \u00a71.8-1.13 (locked config)",
+  "rr": "phase3: meta/conjunction_preregistration.md \u00a71.8-1.13 (locked config)",
+  "max_hold": "phase3: 10 entry-TF bars (\u00a71.13)",
+  "strength": "method_spec: \u00a72.6 'Separation \u2014 distance travelled from the shared reference'",
+  "correlate": "method_spec: \u00a72.6 SMT/PSP with the correlated asset (silver)",
+  "deep_lookback": "phase3: lookback 20 knob; corpus Hlwq1dRjBZo 'not a run all the way down to the deeper low' -> deeper low = prior 20-bar extreme (declared-before-run)",
+  "swing_fractal": "corpus: Hlwq1dRjBZo 'I like another sweep personally' -> sweep of the latest swing low; swing def = phase3 2/2 (declared-before-run)",
+  "window_h": "phase3/prior reading a: 'the next couple of candles' -> 3h (reused, not refit)"
+ },
+ "n": 680,
+ "span": {
+  "start": "2016-01-05 16:00:00+00:00",
+  "end": "2026-07-16 12:00:00+00:00",
+  "years": 10.524
+ },
+ "avg_R": -0.011246062424675832,
+ "avg_R_gross": 0.028753937575324188,
+ "win_rate": 0.42205882352941176,
+ "pf": 0.9745994118206444,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "avg_R_gated": -0.05881964497106982,
+  "avg_R_complement": -0.057702201469388203,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": -0.07301864943212162,
+ "ci_lo": -0.2125426367360884,
+ "ci_hi": 0.06851353906214107,
+ "ci_method": "day_block",
+ "p": 0.308487498251794,
+ "halves": {
+  "H1": {
+   "n": 476,
+   "diff": -0.11199366019267652,
+   "ci_lo": -0.321902693369521,
+   "ci_hi": 0.10292481615099403,
+   "ci_method": "iid",
+   "p": 0.30142738769523625,
+   "start": "2016-01-05 16:00:00+00:00",
+   "end": "2020-12-29 10:00:00+00:00",
+   "n_gated": 324
+  },
+  "H2": {
+   "n": 599,
+   "diff": -0.059821563076302015,
+   "ci_lo": -0.23062018312665244,
+   "ci_hi": 0.12133912131395955,
+   "ci_method": "iid",
+   "p": 0.5052452658770097,
+   "start": "2021-01-12 14:00:00+00:00",
+   "end": "2026-07-16 12:00:00+00:00",
+   "n_gated": 356
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 249,
+   "diff": -0.195943926356487,
+   "ci_lo": -0.5202566347227794,
+   "ci_hi": 0.097870923320987,
+   "ci_method": "iid",
+   "p": 0.2140148048526173,
+   "start": "2016-01-05 16:00:00+00:00",
+   "end": "2018-08-22 04:00:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 249,
+   "diff": -0.028665531002554333,
+   "ci_lo": -0.28983908779280726,
+   "ci_hi": 0.24461742357373242,
+   "ci_method": "iid",
+   "p": 0.8334764471997789,
+   "start": "2018-08-27 14:00:00+00:00",
+   "end": "2021-04-08 05:00:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 321,
+   "diff": -0.1667702402532949,
+   "ci_lo": -0.41409056844010084,
+   "ci_hi": 0.0768395024944247,
+   "ci_method": "iid",
+   "p": 0.18298841563471305,
+   "start": "2021-04-14 05:00:00+00:00",
+   "end": "2023-12-01 16:00:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 256,
+   "diff": 0.08094286356695198,
+   "ci_lo": -0.19971030109784887,
+   "ci_hi": 0.33625670130622476,
+   "ci_method": "iid",
+   "p": 0.5538534221838756,
+   "start": "2023-12-06 19:00:00+00:00",
+   "end": "2026-07-16 12:00:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.2008717421018148,
+ "mde_threshold": 0.1,
+ "power_floor_n": 1594,
+ "verdict": "UNDERPOWERED",
+ "verdict_detail": "CI contains 0; MDE 0.2009 vs threshold 0.1000, effective n 361 (power floor n=2744, have 395)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 1075,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "gate_mask_checked": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 60.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 91,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "rr",
+    "shallow"
+   ],
+   "ignored": [],
+   "lookback": "20D",
+   "recent": "1D",
+   "events_fp": "cc7a8e1e70bc4604",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "10h",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": null,
+  "entry_mode": "next_open",
+  "hold_basis": "clock",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "Tests only live_09's second-sweep vs deep-run preference. live_01's 5m closure and live_08's proximity tell are not testable with a gold/silver H1 pair.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/update_20261007/cross-asset-reversal-confirmation.py",
+ "runtime_sec": 0.34,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-10-07T06:13:14+00:00",
+ "n_events_in": 1081,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 0,
+  "target_not_beyond_entry": 0,
+  "no_bars_in_hold": 6
+ },
+ "n_complement": 395,
+ "gate_firing_rate": 0.6325581395348837,
+ "events_fp": "cc7a8e1e70bc4604",
+ "mask_fp": "735551e587197b08",
+ "mask_col": "shallow",
+ "exit_mix": {
+  "stop": 0.35294117647058826,
+  "target": 0.15294117647058825,
+  "time": 0.49411764705882355
+ },
+ "gated_vs_own_control": {
+  "diff": 0.04757358254639399,
+  "ci_lo": -0.048585326815408586,
+  "ci_hi": 0.14140720763681533,
+  "p": 0.3263271779379707
+ },
+ "complement": {
+  "n": 395,
+  "avg_R": 0.0628900305091274,
+  "win_rate": 0.46582278481012657,
+  "pf": 1.1622892803504072,
+  "sd_R": 1.0287556539486264,
+  "exit_mix": {
+   "stop": 0.3037974683544304,
+   "target": 0.14430379746835442,
+   "time": 0.5518987341772152
+  },
+  "vs_own_control": {
+   "diff": 0.12059223197851561,
+   "ci_lo": 0.010833187564500012,
+   "ci_hi": 0.22940199982260476,
+   "p": 0.030559297761336347
+  }
+ },
+ "ci_components": {
+  "phase3_iid": [
+   -0.20578741888087615,
+   0.05818104163463379
+  ],
+  "day_block": [
+   -0.2125426367360884,
+   0.06851353906214107
+  ]
+ },
+ "diff_meaning": "mean(R-ctrl | gated) - mean(R-ctrl | complement)",
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_eff_gated": 595,
+  "n_eff_complement": 361,
+  "n_eff": 361
+ },
+ "ties": {
+  "real_ambiguous": 0.0,
+  "control_ambiguous": 0.0,
+  "real_gap_stop": 0.004651162790697674,
+  "control_gap_stop": 0.004651162790697674,
+  "gated_excess": 0.0,
+  "complement_excess": 0.0,
+  "verdict_stop_first": "UNDERPOWERED"
+ },
+ "ctrl_overlap": 0.010046511627906977,
+ "exposure_bars": {
+  "real_mean": 542.9125581395349,
+  "control_mean": 549.789023255814,
+  "hold_basis": "clock"
+ },
+ "run_id": "9391a7541834494abf55ebcbc7ef2ab4",
+ "hyp_key": "244facfca02c4e89"
+}

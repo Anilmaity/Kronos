@@ -11,6 +11,13 @@ definition: 'He confirms directly that he uses average daily range rather than a
   '
 variants:
   definition:
+  - 'This unit adds TTrades'' first explicit arithmetic definition: ADR = total high-to-low
+    range of N daily candles divided by N (slide: 297 + 379 + 314 = 990 points over 3 days
+    = 330), with ''ideally a few more'' than three days. He names the TradingView ''Average
+    Daily Range'' technical indicator and says to change its timeframe setting from chart
+    to daily - yet in the same video says he likes to eyeball the ADR off how big recent candles
+    are. The ADR is laid on the current day from the extreme already made to judge what is
+    still reachable.'
   - 'Asked three separate times how he finds ADR, he gives the same manual procedure and explicitly
     rejects the indicator: an ADR indicator averages all previous ranges, including the quiet
     ones, whereas he only looks at the expansion candles. The method is to scroll the daily
@@ -50,11 +57,14 @@ variants:
     range.
 
     '
+  - Learning in-stream that ATR includes overnight gaps while ADR counts only the candle range,
+    he keeps ADR because he cares about the candle range, not the gap.
 category: risk
 status: contested
 aliases:
 - ADR
 - daily range
+- average daily range
 - how do you calculate ADR
 - average true range
 - how much are these going
@@ -70,6 +80,10 @@ detection_rules:
 - If a whole average daily range is already covered, treat further continuation as low-value
   and require a nearby objective to stay involved.
 - Do not compute it as an indicator.
+- ADR = sum(daily high - low over N days) / N; N unspecified, > 3 recommended.
+- 'TradingView: add ''Average Daily Range'' (technicals), set its timeframe to daily.'
+- Project ADR from the current day's extreme; levels beyond that projection are not realistic
+  targets today.
 - Read the ranges of the recent expansion days only; ignore quiet and consolidation days.
 - 'Take the band those expansion ranges occupy as today''s expectation (his examples: gold
   100-170 points, NQ 400-500, ES 38-75).'
@@ -94,6 +108,7 @@ detection_rules:
 - If the target lies inside the expected range, keep it; if materially beyond, downgrade or
   drop it.
 - Allow a larger range on scheduled high-volatility days.
+- Measure daily range high-to-low, excluding gaps (ADR, not ATR).
 invalidation:
 - n/a - a filter.
 - An anomalous outsized day, which he treats as rare and not to be anticipated.
@@ -101,6 +116,7 @@ invalidation:
 measurable:
 - hit rate of targets lying inside versus beyond the remaining eyeballed range
 - comparison of his eyeballed figure against ATR(n) on the same instrument
+- agreement between eyeballed ADR and indicator ADR at N=5/10/14/20
 - distribution of daily ranges split into expansion vs non-expansion days
 - expectancy of entries taken after the expansion-day band was already covered
 - difference between a standard ADR(n) and the expansion-only mean
@@ -125,6 +141,18 @@ sources:
 - video_id: c7nk7ypJHN4
   title: New York Open Live Q&A
   quote: 300 400 points which I think is fine for an average daily range
+- video_id: 3OIq9HmckH8
+  title: How to Use Average Daily Range (ADR) with PDH / PDL — No More Fakeouts
+  quote: You get the total range divided by the total days
+- video_id: 3OIq9HmckH8
+  title: How to Use Average Daily Range (ADR) with PDH / PDL — No More Fakeouts
+  quote: we have an average daily range of 330 points
+- video_id: 3OIq9HmckH8
+  title: How to Use Average Daily Range (ADR) with PDH / PDL — No More Fakeouts
+  quote: Go ahead and turn it on to daily
+- video_id: 3OIq9HmckH8
+  title: How to Use Average Daily Range (ADR) with PDH / PDL — No More Fakeouts
+  quote: I like to eyeball the ADR
 - video_id: eIPM-D8RrSQ
   title: New York Open Live Q&A
   quote: I'm just focusing on the expansion ones
@@ -150,6 +178,9 @@ sources:
   title: New York Open Live Q&A
 - video_id: 00iZXPAdR5A
   title: New York Open Live Q&A
+- video_id: uW55Tuk-ngY
+  title: New York Open Live Q&A
+  quote: I'm car caring more about the actual range of the candle, not the gap.
 ambiguities:
 - No lookback length, no averaging method, no session basis (RTH vs full session) - he explicitly
   says he does not use an indicator.
@@ -157,6 +188,10 @@ ambiguities:
   or currencies.
 - '"Already made a whole average daily range" is not turned into a hard no-trade rule; it
   downgrades rather than blocks.'
+- Library variants say he rejects an ADR indicator and only reads recent expansion candles;
+  here he recommends the indicator AND eyeballing - contested on method, not on use.
+- Indicator lookback not stated; worked ADRs (~950, ~880, ~400, ~116, ~105) given for unnamed
+  instruments.
 - No lookback length is given. He scrolls 'lately' in one stream and 'this month' in another.
 - No rule separates an expansion day from a normal day when reading the chart - it is eyeballed.
 - Whether the band is the mean, the max, or the modal range is never stated; he quotes a range
@@ -181,6 +216,8 @@ related:
 - daily-range-budget
 - expansion-exhaustion-avoid-price
 - harder-target-behind-protected-swing
+- pdh-pdl-continuation-adr-gate
+- adr-remaining-filter
 - dont-trade-after-expansion
 - point-of-interest
 - gap-open-adr-budget
@@ -205,5 +242,7 @@ contributing_units:
 - live_streams_03
 - live_streams_04
 - sunday_sessions_live_q_a_02
-draft_count: 5
+- update_20261007_edu_03
+- update_20261007_live_06
+draft_count: 7
 voice: ttrades

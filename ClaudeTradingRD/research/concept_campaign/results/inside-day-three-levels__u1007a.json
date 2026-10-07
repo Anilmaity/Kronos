@@ -1,0 +1,210 @@
+{
+ "concept_id": "inside-day-three-levels",
+ "reading": "u1007a",
+ "testable": true,
+ "test_type": "rate",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "trading day rolls 18:00 NY; daily opening price = open of the day's first M1 bar",
+   "PD = last completed trading day with >= 600 M1 bars",
+   "decision at the close of the 11:59 NY M1 bar (12:00 NY); days missing that bar skipped",
+   "inside so far: running day high < PDH and running low > PDL at the decision",
+   "double inside = PD inside its own previous day AND today inside so far",
+   "hit: price touches the daily opening price (from the decision-bar open toward it) by end of trading day, M1-bar horizon",
+   "null: mirror level - same decision moment, same distance, same M1-bar horizon, opposite side of the decision price (holds local volatility, clock and day fixed)"
+  ],
+  "params": {
+   "day_open_hour": 18,
+   "min_prev_day_bars": 600,
+   "decision_ny": "12:00",
+   "double_inside": "consecutive inside days",
+   "level": "daily opening price (18:00 NY open)",
+   "horizon": "rest of trading day, M1 bars",
+   "null": "mirror level, same moment/distance/horizon"
+  }
+ },
+ "params_source": {
+  "day_open_hour": "session_window_fit: settled 18:00 NY daily roll",
+  "min_prev_day_bars": "declared-before-run: skip stub sessions (trap 6), as prior reading",
+  "decision_ny": "corpus: h1ZQWWQDhKA title 'TTrades MNQ Cup - Afternoon Session'; declared-before-run 12:00 NY as afternoon start",
+  "double_inside": "corpus: h1ZQWWQDhKA 'We are double inside day' - reading a: two consecutive inside days (draft detection rule)",
+  "level": "corpus: h1ZQWWQDhKA 'normally we're just going to be right around the EQ and the opening price'; opening price = the new element (EQ tested in prior reading)",
+  "horizon": "declared-before-run: claim is about the current day",
+  "null": "declared-before-run: audit 2026-10-07 (pre-fix diagnostic disclosed in notes); vault Concept Campaign 2026-09-23 lesson 3 'rate nulls must match time of day and local volatility'; the first run's random-moment null matched the clock only, and inside-so-far days are a low-volatility selection (afternoon range event/null 0.78 a, 0.92 b); mirror has no free parameter"
+ },
+ "n": 37,
+ "span": {
+  "start": "2016-01-22 17:00:00+00:00",
+  "end": "2026-04-07 16:00:00+00:00",
+  "years": 10.204
+ },
+ "avg_R": null,
+ "avg_R_gross": null,
+ "win_rate": null,
+ "pf": null,
+ "observed_rate": 0.2972972972972973,
+ "null_rate": 0.43243243243243246,
+ "lift": 0.6875,
+ "control": {
+  "rate": 0.43243243243243246,
+  "reps": 1,
+  "kind": "null array x1"
+ },
+ "diff": -0.13513513513513514,
+ "ci_lo": -0.35135135135135137,
+ "ci_hi": 0.08108108108108109,
+ "ci_method": "phase3_iid",
+ "p": 0.2205836980874493,
+ "halves": {
+  "H1": {
+   "n": 19,
+   "diff": -0.3157894736842105,
+   "ci_lo": -0.5276315789473685,
+   "ci_hi": -0.10394736842105383,
+   "ci_method": "iid",
+   "p": 0.003481429278218077,
+   "start": "2016-01-22 17:00:00+00:00",
+   "end": "2020-07-10 16:00:00+00:00"
+  },
+  "H2": {
+   "n": 18,
+   "diff": 0.05555555555555558,
+   "ci_lo": -0.27777777777777773,
+   "ci_hi": 0.3888888888888889,
+   "ci_method": "iid",
+   "p": 0.743924552981801,
+   "start": "2021-01-26 17:00:00+00:00",
+   "end": "2026-04-07 16:00:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 9,
+   "diff": -0.2222222222222222,
+   "ci_lo": -0.5555555555555556,
+   "ci_hi": 0.0,
+   "ci_method": "iid",
+   "p": 0.11688785373597266,
+   "start": "2016-01-22 17:00:00+00:00",
+   "end": "2018-08-07 16:00:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 11,
+   "diff": -0.36363636363636365,
+   "ci_lo": -0.7272727272727273,
+   "ci_hi": 0.0,
+   "ci_method": "iid",
+   "p": 0.04999999819288483,
+   "start": "2018-09-25 16:00:00+00:00",
+   "end": "2021-01-26 17:00:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 12,
+   "diff": 0.0,
+   "ci_lo": -0.4166666666666667,
+   "ci_hi": 0.41666666666666663,
+   "ci_method": "iid",
+   "p": 1.0,
+   "start": "2021-06-16 16:00:00+00:00",
+   "end": "2023-11-23 17:00:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 5,
+   "diff": 0.19999999999999996,
+   "ci_lo": -0.4,
+   "ci_hi": 0.8,
+   "ci_method": "iid",
+   "p": 0.5135491419701349,
+   "start": "2024-10-25 16:00:00+00:00",
+   "end": "2026-04-07 16:00:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.3090608338255745,
+ "mde_threshold": 0.05,
+ "power_floor_n": 1414,
+ "verdict": "UNDERPOWERED",
+ "verdict_detail": "CI contains 0; MDE 0.3091 vs threshold 0.0500, effective n 37 (power floor n=1414, have 37)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 37,
+  "min_slack_min": 0.0,
+  "passed": true,
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 21,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "day_open",
+    "pdh",
+    "pdl"
+   ],
+   "ignored": [],
+   "lookback": "10D",
+   "recent": "1D",
+   "events_fp": "a0559b62506daa17",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "reps": 5,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "mde_threshold": null,
+  "cluster": null,
+  "outcome_horizon": "1 days 00:00:00",
+  "null_kind": "null array x1"
+ },
+ "notes": "Tests the opening-price magnet only; the PD-EQ part of the claim overlaps the prior reading. Inside-day read causally (inside so far at 12:00 NY). MNQ source applied to XAUUSD. AUDIT re-run: null changed from random moments (clock-matched only) to the same-moment mirror level. Disclosure: the mirror touch rates were computed in a pre-fix diagnostic (open 0.297 vs mirror 0.432 a; 0.318 vs 0.365 b) alongside the volatility check that motivated the change. Mirror caveat: a continuation (intraday momentum) day favours the mirror, which is the alternative the claim denies.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/update_20261007/inside-day-three-levels.py",
+ "runtime_sec": 0.02,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-10-07T06:13:51+00:00",
+ "dropped": {
+  "nan_rows": 0
+ },
+ "null_kind": "null array x1",
+ "events_fp": "a0559b62506daa17",
+ "predictors_probed": true,
+ "ci_components": {
+  "phase3_iid": [
+   -0.35135135135135137,
+   0.08108108108108109
+  ],
+  "day_block": [
+   -0.2709459459459459,
+   0.0006756756756719871
+  ]
+ },
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 37,
+  "n_clusters": null,
+  "n_eff": 37
+ },
+ "run_id": "c5c956cd6fcb43ce90290a9df99742ad",
+ "hyp_key": "b188f03a58dab555"
+}

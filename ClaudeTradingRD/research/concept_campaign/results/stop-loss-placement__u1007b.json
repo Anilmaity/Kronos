@@ -1,0 +1,279 @@
+{
+ "concept_id": "stop-loss-placement",
+ "reading": "u1007b",
+ "testable": true,
+ "test_type": "gate",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "entries: 1h CISD (series_open, 2/2 swings, max_wait 3), decide at the confirming bar close, enter next M1 open",
+   "target: prior completed trading day's high (long) / low (short), min_coverage 0.5; must lie beyond the confirm close",
+   "condition: R with the stop at the protected swing (wick extreme) < 2 and R with the EQ stop >= 2 (the same 2R floor gates the trade taken), both measured from the confirm close (the decision-time price; fill is the next M1 open)",
+   "EQ = midpoint of the protected swing and the farthest price from it over swing bar..confirm bar (reversal leg); EQ stop placed at EQ; rows with EQ not strictly between the confirm close and swing dropped",
+   "no management short of the stop: exit only at stop, target or 10h",
+   "test: same entries stacked; gated = EQ stop, complement = protected-swing stop, same target price; claim + (EQ better)"
+  ],
+  "params": {
+   "tf": "1h",
+   "max_hold": "10h",
+   "target": "PDH/PDL",
+   "rr_floor": 2.0,
+   "eq_leg": "protected swing -> farthest extreme through confirm bar",
+   "eq_buffer": 0.0,
+   "grid4h": "n/a (no 4h bars)",
+   "pd_min_coverage": 0.5
+  }
+ },
+ "params_source": {
+  "tf": "corpus: uW55Tuk-ngY 'I use the daily and hourly uh for myself'; phase3: meta/conjunction_preregistration.md \u00a71.8-1.13 (locked rung-0 config)",
+  "max_hold": "phase3: meta/conjunction_preregistration.md \u00a71.8-1.13 (locked rung-0 config)",
+  "target": "declared-before-run: draw for a daily reversal ('a reversal on this day') = prior day's opposite extreme; the chart draw is not stated",
+  "rr_floor": "corpus: uW55Tuk-ngY 'I'm not even getting 2 R. Not worth it for me.' + 'It's like five R.' (floor applies to the swing placement rejected AND the EQ trade taken)",
+  "eq_leg": "declared-before-run: draft ambiguity (daily candle vs reversal leg vs swing); the reversal leg on the entry TF is the draft's rule text",
+  "eq_buffer": "corpus: uW55Tuk-ngY 'So, I just put it above the EQ.' (no buffer stated)",
+  "grid4h": "declared-before-run: no 4h bars used",
+  "pd_min_coverage": "declared-before-run: README trap 6 stub-session skip"
+ },
+ "n": 2041,
+ "span": {
+  "start": "2016-01-05 04:00:00+00:00",
+  "end": "2026-07-21 02:00:00+00:00",
+  "years": 10.538
+ },
+ "avg_R": -0.017485439012909693,
+ "avg_R_gross": 0.02251456098709027,
+ "win_rate": 0.2792748652621264,
+ "pf": 0.9757687282584239,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "avg_R_gated": -0.06433423800859658,
+  "avg_R_complement": -0.04459779092468498,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": 0.021548028401879894,
+ "ci_lo": -0.08312230272306126,
+ "ci_hi": 0.12554078187904932,
+ "ci_method": "phase3_block",
+ "p": 0.6856248697141668,
+ "halves": {
+  "H1": {
+   "n": 2006,
+   "diff": 0.08884907098587966,
+   "ci_lo": -0.06366745325312266,
+   "ci_hi": 0.251037507466403,
+   "ci_method": "block",
+   "p": 0.2684264299405704,
+   "start": "2016-01-05 04:00:00+00:00",
+   "end": "2020-12-31 05:00:00+00:00",
+   "n_gated": 1001
+  },
+  "H2": {
+   "n": 2082,
+   "diff": -0.04328336393749075,
+   "ci_lo": -0.19075488612709723,
+   "ci_hi": 0.09691945595909486,
+   "ci_method": "block",
+   "p": 0.5553309349654849,
+   "start": "2021-01-06 05:00:00+00:00",
+   "end": "2026-07-21 02:00:00+00:00",
+   "n_gated": 1040
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 1035,
+   "diff": 0.16017619243659353,
+   "ci_lo": -0.0683557366090091,
+   "ci_hi": 0.3881293190192828,
+   "ci_method": "iid",
+   "p": 0.16898738053586687,
+   "start": "2016-01-05 04:00:00+00:00",
+   "end": "2018-08-17 14:00:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 1073,
+   "diff": 0.028920465971039415,
+   "ci_lo": -0.17323867396065398,
+   "ci_hi": 0.21638714726323274,
+   "ci_method": "iid",
+   "p": 0.7710807039837335,
+   "start": "2018-08-22 16:00:00+00:00",
+   "end": "2021-04-12 05:00:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 1035,
+   "diff": -0.00452284357970727,
+   "ci_lo": -0.2325749075058295,
+   "ci_hi": 0.20289748713777414,
+   "ci_method": "block",
+   "p": 0.9675250023461557,
+   "start": "2021-04-13 13:00:00+00:00",
+   "end": "2023-12-01 00:00:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 945,
+   "diff": -0.10996248182682722,
+   "ci_lo": -0.3279592662609845,
+   "ci_hi": 0.08752705283490154,
+   "ci_method": "block",
+   "p": 0.2995276106131358,
+   "start": "2023-12-04 09:00:00+00:00",
+   "end": "2026-07-21 02:00:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.14913216974265958,
+ "mde_threshold": 0.1,
+ "power_floor_n": 4540,
+ "verdict": "UNDERPOWERED",
+ "verdict_detail": "CI contains 0; MDE 0.1491 vs threshold 0.1000, effective n 1444 (power floor n=4540, have 2041)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 4088,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "gate_mask_checked": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 300.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 318,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "target_px",
+    "eq_stop"
+   ],
+   "ignored": [],
+   "lookback": "20D",
+   "recent": "1D",
+   "events_fp": "e1056a482fd7866a",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "10h",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": null,
+  "entry_mode": "next_open",
+  "hold_basis": "clock",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "Stacked variant rows on identical entries; each arm adjusted by its own geometry-matched control. AUDIT 2026-10-07 (vault context): fixed \u2014 entries restricted to those whose EQ stop clears the source's 2R floor.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/update_20261007/stop-loss-placement.py",
+ "runtime_sec": 0.3,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-10-07T06:20:02+00:00",
+ "n_events_in": 4122,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 8,
+  "target_not_beyond_entry": 0,
+  "no_bars_in_hold": 26
+ },
+ "n_complement": 2047,
+ "gate_firing_rate": 0.49926614481409004,
+ "events_fp": "e1056a482fd7866a",
+ "mask_fp": "00a48a17ad3a1beb",
+ "mask_col": "eq_stop",
+ "exit_mix": {
+  "stop": 0.6756491915727585,
+  "target": 0.15727584517393434,
+  "time": 0.1670749632533072
+ },
+ "gated_vs_own_control": {
+  "diff": 0.04684879899568689,
+  "ci_lo": -0.04932353066208113,
+  "ci_hi": 0.1466030707176235,
+  "p": 0.34859923547880034
+ },
+ "complement": {
+  "n": 2047,
+  "avg_R": -0.019297020330878063,
+  "win_rate": 0.47337567171470446,
+  "pf": 0.9530866660835617,
+  "sd_R": 0.9135869546372575,
+  "exit_mix": {
+   "stop": 0.32926233512457254,
+   "target": 0.28676111382510994,
+   "time": 0.3839765510503175
+  },
+  "vs_own_control": {
+   "diff": 0.025300770593806917,
+   "ci_lo": -0.02267828341806199,
+   "ci_hi": 0.07344313285334032,
+   "p": 0.30217010039223224
+  }
+ },
+ "ci_components": {
+  "phase3_block": [
+   -0.08312230272306126,
+   0.12554078187904932
+  ],
+  "day_block": [
+   -0.061168753127103646,
+   0.11051385753736409
+  ]
+ },
+ "diff_meaning": "mean(R-ctrl | gated) - mean(R-ctrl | complement)",
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_eff_gated": 1444,
+  "n_eff_complement": 1446,
+  "n_eff": 1444
+ },
+ "ties": {
+  "real_ambiguous": 0.0007338551859099804,
+  "control_ambiguous": 0.0003913894324853229,
+  "real_gap_stop": 0.01296477495107632,
+  "control_gap_stop": 0.00939334637964775,
+  "gated_excess": 0.0005879470847623715,
+  "complement_excess": 9.770395701025895e-05,
+  "verdict_stop_first": "UNDERPOWERED"
+ },
+ "ctrl_overlap": 0.016487279843444228,
+ "exposure_bars": {
+  "real_mean": 552.5670254403132,
+  "control_mean": 548.0007338551859,
+  "hold_basis": "clock"
+ },
+ "run_id": "868233056b6e44a591fb685c6b5d1488",
+ "hyp_key": "c00d9bde61e29f2f"
+}

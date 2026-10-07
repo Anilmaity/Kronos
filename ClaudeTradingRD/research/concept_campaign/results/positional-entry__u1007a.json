@@ -1,0 +1,289 @@
+{
+ "concept_id": "positional-entry",
+ "reading": "u1007a",
+ "testable": true,
+ "test_type": "gate",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "base: 4h forex-grid C2 (method_spec 3.2, one-sided); most recent 15m CISD (series_open, 2/2, max_wait 3) in the C2 direction confirmed inside C2, swing intact at the C2 close, beyond the C2 close and beyond C2's EQ; decide at the C2 close, enter C3 open, stop on the swing, 2R, 240 trading min (entry_own_02a reading a)",
+   "deep run: C2 opposing run (open -> low for a long, open -> high for a short) > 1.0 x body",
+   "failure swings: 15m 2/2 swing highs (long; lows for short) strictly between the run origin (highest 15m high from the C1 open to the protected extreme) and the protected extreme; >= 2",
+   "gate trusted = not (deep run and failure swings); claim '+': trusted beats untrusted on control-adjusted R"
+  ],
+  "params": {
+   "base_book": "entry_own_02a reading a",
+   "htf": "4h",
+   "grid4h": "forex",
+   "ltf": "15min",
+   "selection": "protected swing beyond C2 EQ (wick-to-wick 50%)",
+   "deep_run": "C2 opposing run > 1.0 x body",
+   "failure_swings": ">= 2 15m 2/2 counter-swings inside the run",
+   "gate": "trusted",
+   "rr": 2.0,
+   "max_hold": "240min",
+   "hold_basis": "bars",
+   "ctrl_grid": "4h",
+   "ctrl_tod_tol_min": 30
+  }
+ },
+ "params_source": {
+  "rr": "corpus: YAML execution targets '2R'; cWDnzI3lpUk 'You can see that goes and hits our two R'",
+  "hold_basis": "declared-before-run: decisions sit at HTF closes, including the Friday close before the weekend (trap 7)",
+  "base_book": "phase3: entry_own_02a reading a construct, unchanged (the draft 'adds a confidence and deep-run gate to the existing EQ-selection')",
+  "htf": "corpus: Hlwq1dRjBZo 'let the 4hour candle form whatever wick'; library reading a 4H",
+  "grid4h": "session_window_fit: forex grid (knob, trap 8)",
+  "ltf": "corpus: YAML ltf 15m; library reading a",
+  "selection": "corpus: xMFd_kfmIqI 'the stop on candle two is above the EQ of candle two'",
+  "deep_run": "threshold_fits: large wick / reversal candle = opposing_run/|close-open| > 1.0 (grade A); corpus: Hlwq1dRjBZo 'Larger wick. Now we're at failure swings.' / 'just how deep this ran'",
+  "failure_swings": "corpus: Hlwq1dRjBZo 'how deep this ran that makes so many failure swings' (he marks four); declared-before-run: >= 2 confirmed 15m 2/2 counter-swings between the run origin (from the C1 open) and the protected extreme (plural; 2/2 = phase3 fractal)",
+  "gate": "corpus: Hlwq1dRjBZo 'To me I can't trust this low' -> trusted = not (deep and failure swings)",
+  "max_hold": "declared-before-run: hold for the C3 candle (4h of trading time), as reading a",
+  "ctrl_grid": "declared-before-run (rerun): decisions sit on the 4h forex close grid, one in six at the 17:00 NY close with entry at the 18:00 reopen; controls drawn on the same grid (vault Session Timing on Gold: the reopen is a gap artefact)",
+  "ctrl_tod_tol_min": "declared-before-run (rerun): README trap 9, the concept is not about timing but its events sit at six NY slots; 30 min on the 4h grid = same slot"
+ },
+ "n": 2159,
+ "span": {
+  "start": "2016-01-04 18:00:00+00:00",
+  "end": "2026-07-23 01:00:00+00:00",
+  "years": 10.546
+ },
+ "avg_R": -0.01778725007561094,
+ "avg_R_gross": 0.02221274992438908,
+ "win_rate": 0.4321445113478462,
+ "pf": 0.9551372743565958,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "avg_R_gated": -0.03869930986339114,
+  "avg_R_complement": -0.044072769651516026,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": 0.0006972058391164042,
+ "ci_lo": -0.07916702674907893,
+ "ci_hi": 0.08411363775156815,
+ "ci_method": "phase3_iid",
+ "p": 0.9866456077073753,
+ "halves": {
+  "H1": {
+   "n": 1597,
+   "diff": 0.0010053764947219324,
+   "ci_lo": -0.11817514927424799,
+   "ci_hi": 0.12242693419002026,
+   "ci_method": "iid",
+   "p": 0.986931429783252,
+   "start": "2016-01-04 18:00:00+00:00",
+   "end": "2020-12-31 18:00:00+00:00",
+   "n_gated": 936
+  },
+  "H2": {
+   "n": 1891,
+   "diff": 0.006748112460959026,
+   "ci_lo": -0.10445957387512168,
+   "ci_hi": 0.10844900207603854,
+   "ci_method": "iid",
+   "p": 0.901123937549183,
+   "start": "2021-01-04 18:00:00+00:00",
+   "end": "2026-07-23 01:00:00+00:00",
+   "n_gated": 1223
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 811,
+   "diff": -0.007051695224542508,
+   "ci_lo": -0.16763377933429438,
+   "ci_hi": 0.15105134186712266,
+   "ci_method": "iid",
+   "p": 0.9308797019651416,
+   "start": "2016-01-04 18:00:00+00:00",
+   "end": "2018-08-21 09:00:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 882,
+   "diff": 0.012264768026516049,
+   "ci_lo": -0.16033255920425188,
+   "ci_hi": 0.1858970405573803,
+   "ci_method": "iid",
+   "p": 0.889561772018483,
+   "start": "2018-08-22 21:00:00+00:00",
+   "end": "2021-04-08 05:00:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 915,
+   "diff": -0.03406506138137645,
+   "ci_lo": -0.180968167827591,
+   "ci_hi": 0.10740933589188571,
+   "ci_method": "iid",
+   "p": 0.6433300571595103,
+   "start": "2021-04-12 09:00:00+00:00",
+   "end": "2023-11-30 06:00:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 880,
+   "diff": 0.03916969637487084,
+   "ci_lo": -0.11581907337700519,
+   "ci_hi": 0.19600595350866515,
+   "ci_method": "iid",
+   "p": 0.622437174262946,
+   "start": "2023-12-05 10:00:00+00:00",
+   "end": "2026-07-23 01:00:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.1166972098607539,
+ "mde_threshold": 0.1,
+ "power_floor_n": 1810,
+ "verdict": "UNDERPOWERED",
+ "verdict_detail": "CI contains 0; MDE 0.1167 vs threshold 0.1000, effective n 1091 (power floor n=2941, have 1329)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 3488,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "gate_mask_checked": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 4383.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 241,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "rr",
+    "deep",
+    "n_fs",
+    "trusted"
+   ],
+   "ignored": [],
+   "lookback": "20D",
+   "recent": "1D",
+   "events_fp": "1f1fcded9ec05502",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "240min",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "4h",
+  "ctrl_tod_tol_min": 30,
+  "entry_mode": "next_open",
+  "hold_basis": "bars",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "Tests only the live_09 gate on the existing reading-a book. 'Confidence in the bias' is discretionary and not modelled; the concrete trigger he shows (deep run leaving failure swings) is. The alternative action ('let the 4H wick form first') is not traded here; the complement arm is what positioning anyway would earn. Design note (before any test call, no outcome seen): the run window was first cut at the C2 open; a detector-only dry run showed the gate firing on 2.6% of events because a 2/2 fractal rarely fits two swings inside one 4h candle, so the run origin was moved once to the C1 open (the decline into C2's sweep) and then frozen. RERUN with vault context: the first u1007a run (controls on any :00 minute) gave UNDERPOWERED, diff +0.012R [-0.071, +0.099], MDE 0.121, n 2159/1329; this run holds the 4h slot in the control (ctrl_grid 4h, tod 30). Traps checked: swings counted need 2 right bars, all before the CISD confirm (>= extreme + 3 bars) inside C2, so no in-progress bar is read; both arms stop at a fresh protected swing, so the structural-stop confound cancels in the gate differential. Spread lesson (cost cancels in diff): gated n=2159 median stop 5.63 pt (0.30 pt spread = 0.053R); complement n=1329 median stop 3.58 pt (0.30 pt spread = 0.084R).",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/update_20261007/positional-entry.py",
+ "runtime_sec": 0.44,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-10-07T06:24:10+00:00",
+ "n_events_in": 3496,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 8,
+  "target_not_beyond_entry": 0,
+  "no_bars_in_hold": 0
+ },
+ "n_complement": 1329,
+ "gate_firing_rate": 0.6189793577981652,
+ "events_fp": "1f1fcded9ec05502",
+ "mask_fp": "9fe260ec5ac8584d",
+ "mask_col": "trusted",
+ "exit_mix": {
+  "stop": 0.29411764705882354,
+  "target": 0.10421491431218156,
+  "time": 0.6016674386289949
+ },
+ "gated_vs_own_control": {
+  "diff": 0.0209120597877802,
+  "ci_lo": -0.02343556037279748,
+  "ci_hi": 0.0645034039840331,
+  "p": 0.35125041426433984
+ },
+ "complement": {
+  "n": 1329,
+  "avg_R": -0.02385791570285223,
+  "win_rate": 0.418359668924003,
+  "pf": 0.9511831607708091,
+  "sd_R": 1.1491733592480264,
+  "exit_mix": {
+   "stop": 0.40105342362678703,
+   "target": 0.1617757712565839,
+   "time": 0.43717080511662904
+  },
+  "vs_own_control": {
+   "diff": 0.020214853948663795,
+   "ci_lo": -0.04606154749200864,
+   "ci_hi": 0.09201075850090516,
+   "p": 0.5660302012182455
+  }
+ },
+ "ci_components": {
+  "phase3_iid": [
+   -0.07916702674907893,
+   0.08411363775156815
+  ],
+  "day_block": [
+   -0.08050444635190847,
+   0.07843371069914674
+  ]
+ },
+ "diff_meaning": "mean(R-ctrl | gated) - mean(R-ctrl | complement)",
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_eff_gated": 1556,
+  "n_eff_complement": 1091,
+  "n_eff": 1091
+ },
+ "ties": {
+  "real_ambiguous": 0.0011467889908256881,
+  "control_ambiguous": 0.00040137614678899085,
+  "real_gap_stop": 0.008027522935779817,
+  "control_gap_stop": 0.006536697247706422,
+  "gated_excess": -0.00027790643816581756,
+  "complement_excess": 0.0024078254326561324,
+  "verdict_stop_first": "UNDERPOWERED"
+ },
+ "ctrl_overlap": 0.13297018348623854,
+ "exposure_bars": {
+  "real_mean": 239.98509174311926,
+  "control_mean": 240.0,
+  "hold_basis": "bars"
+ },
+ "run_id": "c52cf8f500e3475cb58a1ab122eba026",
+ "hyp_key": "282e76e96f935777"
+}

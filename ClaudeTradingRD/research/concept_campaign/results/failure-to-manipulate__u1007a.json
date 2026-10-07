@@ -1,0 +1,216 @@
+{
+ "concept_id": "failure-to-manipulate",
+ "reading": "u1007a",
+ "testable": true,
+ "test_type": "rate",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "1h bars (18:00 NY roll); PDL/PDH = last complete trading day with >= 600 M1 bars",
+   "break = first 1h bar of the day trading below PDL (mirror above PDH)",
+   "first 1h CISD (series_open, swing 2/2, max_wait 3, min_series 1) confirmed at/after the break bar close, with its extreme at/after the break bar, before 17:00 NY: opposite direction = reversal (no event); same direction = failure to manipulate (new continuation, new protected swing) -> event at its confirming close",
+   "hit = any M1 trade beyond the day's running extreme (closed 1h bars up to the decision; low for a PDL failure, high for a PDH failure) before 17:00 NY, horizon in M1 bars",
+   "null = same signed distance from the next M1 open in local-volatility units (distance x vol_random / vol_event, vol = mean M1 high-low over the 240 M1 bars closed before the moment), same M1-bar horizon, at matched random moments (sample_times reps 5, +/-30d, NY clock +/-30 min)",
+   "claim '+': after a failure to manipulate the day is trending, price continues beyond the extreme more often than at random"
+  ],
+  "params": {
+   "tf": "1h",
+   "level": "PDL/PDH",
+   "min_day_m1": 600,
+   "cisd": "series_open, swing 2/2, max_wait 3, min_series 1",
+   "continuation": "first post-break CISD same direction",
+   "session_end": "17:00 NY",
+   "grid4h": "n/a (1h)",
+   "null_vol_bars": 240,
+   "null_tod_tol_min": 30
+  }
+ },
+ "params_source": {
+  "tf": "corpus: 8yt3jn8L6O4 'usually on the hourly or 30-minute time frame paired with a daily time frame' (1h picked, the first named)",
+  "level": "corpus: wa9m30UHrm0 'Here's our previous day low. ... We trade through it'; 9YVBe-20Hdg 'go towards its previous day low'",
+  "min_day_m1": "declared-before-run: trap 6 stub sessions skipped (same as prior reading)",
+  "cisd": "phase3: locked CISD config; corpus 8yt3jn8L6O4 'failing to form a change in the state of delivery in the other direction'",
+  "continuation": "corpus: 8yt3jn8L6O4 'a bearish continuation, a new protected swing' / 'I'm going to first wait for a continuation to form'",
+  "grid4h": "declared-before-run: not used (1h bars, 18:00 NY day roll; trap 8)",
+  "session_end": "corpus: wa9m30UHrm0 'Don't try to catch lows on a trend day' (one session); declared 17:00 NY close",
+  "hit": "corpus: wa9m30UHrm0 'we form a continuation, which means lower, which means hello, the market is trending'",
+  "null_vol_bars": "declared-before-run: campaign lesson 3 (rate nulls must match local volatility); 240 M1 bars = 4 trading hours, spans the break-to-CISD sequence",
+  "null_tod_tol_min": "declared-before-run: trap 9 / campaign lesson 3, PDH/PDL breaks cluster in London/NY hours"
+ },
+ "n": 759,
+ "span": {
+  "start": "2016-01-06 17:00:00+00:00",
+  "end": "2026-07-21 17:00:00+00:00",
+  "years": 10.538
+ },
+ "avg_R": null,
+ "avg_R_gross": null,
+ "win_rate": null,
+ "pf": null,
+ "observed_rate": 0.6587615283267457,
+ "null_rate": 0.6880105401844532,
+ "lift": 0.9574875526618155,
+ "control": {
+  "rate": 0.6880105401844532,
+  "reps": 5,
+  "kind": "null_fn x5"
+ },
+ "diff": -0.029249011857707452,
+ "ci_lo": -0.06588274044795793,
+ "ci_hi": 0.006594202898550688,
+ "ci_method": "phase3_iid",
+ "p": 0.11366375724157113,
+ "halves": {
+  "H1": {
+   "n": 347,
+   "diff": -0.025936599423631024,
+   "ci_lo": -0.08645533141210382,
+   "ci_hi": 0.03170028818443804,
+   "ci_method": "iid",
+   "p": 0.389528911687688,
+   "start": "2016-01-06 17:00:00+00:00",
+   "end": "2020-12-17 06:00:00+00:00"
+  },
+  "H2": {
+   "n": 412,
+   "diff": -0.03203883495145621,
+   "ci_lo": -0.08544902912621358,
+   "ci_hi": 0.025242718446601864,
+   "ci_method": "iid",
+   "p": 0.25654647722511814,
+   "start": "2021-01-04 09:00:00+00:00",
+   "end": "2026-07-21 17:00:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 182,
+   "diff": -0.04175824175824172,
+   "ci_lo": -0.12090659340659342,
+   "ci_hi": 0.049478021978022105,
+   "ci_method": "iid",
+   "p": 0.33670066651044356,
+   "start": "2016-01-06 17:00:00+00:00",
+   "end": "2018-08-20 19:00:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 189,
+   "diff": -0.014814814814814836,
+   "ci_lo": -0.09738095238095233,
+   "ci_hi": 0.071957671957672,
+   "ci_method": "iid",
+   "p": 0.7316435118380868,
+   "start": "2018-08-23 10:00:00+00:00",
+   "end": "2021-04-08 12:00:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 187,
+   "diff": -0.07272727272727275,
+   "ci_lo": -0.1583155080213904,
+   "ci_hi": 0.01283422459893047,
+   "ci_method": "iid",
+   "p": 0.09577136203945621,
+   "start": "2021-04-27 05:00:00+00:00",
+   "end": "2023-11-30 18:00:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 201,
+   "diff": 0.008955223880596996,
+   "ci_lo": -0.06373134328358215,
+   "ci_hi": 0.08358208955223878,
+   "ci_method": "iid",
+   "p": 0.8116534659531999,
+   "start": "2023-12-11 11:00:00+00:00",
+   "end": "2026-07-21 17:00:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.05179950175753951,
+ "mde_threshold": 0.05,
+ "power_floor_n": 815,
+ "verdict": "UNDERPOWERED",
+ "verdict_detail": "CI contains 0; MDE 0.0518 vs threshold 0.0500, effective n 757 (power floor n=815, have 759)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 759,
+  "min_slack_min": 0.0,
+  "passed": true,
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 78,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "rr",
+    "lvl",
+    "bias_ok"
+   ],
+   "ignored": [],
+   "lookback": "20D",
+   "recent": "1D",
+   "events_fp": "15406b7f3aca2d27",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "reps": 5,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "mde_threshold": null,
+  "cluster": null,
+  "outcome_horizon": "1 days 00:00:00",
+  "null_kind": "null_fn x5"
+ },
+ "notes": "Rerun with vault context: logic identical to the first u1007 run. Single-asset XAUUSD reading; the cross-asset drag (YM->ES->NQ) and the discretionary HTF-candle override are not tested. PDL-as-magnet is not re-tested (previous-period-high-low). The trade-test control matches stop distance, not placement (campaign lesson 1); cost 0.04R is below the real ~0.6 pt spread on short stops (lesson 2) and cancels in diff.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/update_20261007/failure-to-manipulate.py",
+ "runtime_sec": 0.11,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-10-07T06:22:45+00:00",
+ "dropped": {
+  "nan_rows": 0
+ },
+ "null_kind": "null_fn x5",
+ "events_fp": "15406b7f3aca2d27",
+ "predictors_probed": true,
+ "ci_components": {
+  "phase3_iid": [
+   -0.06588274044795793,
+   0.006594202898550688
+  ],
+  "day_block": [
+   -0.06009422549459426,
+   0.002108036890644494
+  ]
+ },
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 757,
+  "n_clusters": null,
+  "n_eff": 757
+ },
+ "run_id": "424539e3754c45cdbf7b7f33b58382fd",
+ "hyp_key": "df956f728f46aba3"
+}

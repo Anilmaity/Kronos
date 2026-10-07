@@ -1,0 +1,221 @@
+{
+ "concept_id": "gold-daily-gap-reaction",
+ "reading": "u1007a",
+ "testable": true,
+ "test_type": "rate",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "1D bars (18:00 NY roll); daily FVG = three candles whose 1st and 3rd wicks do not overlap (detectors.primitives.fair_value_gaps); all three days need >= 600 M1 bars",
+   "first touch: first M1 bar within 13,800 M1 bars (~10 trading days) after the 3rd daily candle closes that trades into the near edge (bullish gap below: low <= gap high); decision = that M1 bar's close; skip if it closes beyond the far edge",
+   "swing high above (bullish) / low below (bearish) = extreme of the leg between gap completion and the touch",
+   "outcome = 1 if price reaches that extreme (M1 high/low) before any 1h candle closes beyond the gap's far edge, within the next 46 1h candles; else 0 (distances from the touch close, applied from the next M1 open)",
+   "null = same two distances, same 46-candle race, at matched random moments (+/-30 d, 5 reps, locked seed) at the same NY time of day (+/-30 min); clustered by gap"
+  ],
+  "params": {
+   "fvg_tf": "1D",
+   "day_roll": "18:00 NY",
+   "return_bars": 13800,
+   "race_tf": "1h",
+   "race_bars": 46,
+   "min_m1": 600,
+   "invalidation": "1h close beyond far edge",
+   "target": "leg extreme (swing high above)",
+   "cluster": "fvg_time",
+   "null_tod_tol_min": 30
+  }
+ },
+ "params_source": {
+  "fvg_tf": "corpus: h1ZQWWQDhKA 'gold did reach into that weekly that daily gap' / 'we reach down to this daily imbalance'",
+  "day_roll": "method_spec: concept_lab default 1D bars roll at 18:00 NY (README trap 8)",
+  "return_bars": "declared-before-run: source gives no recency window; a gap's first return counted within ~10 trading days",
+  "race_tf": "corpus: h1ZQWWQDhKA 'the hourly chart. If we can get some nice displacement out of this daily gap'",
+  "race_bars": "corpus: h1ZQWWQDhKA 'probably tomorrow or maybe tonight in Asia could look to target this high' -> ~2 trading days",
+  "min_m1": "method_spec: README trap 6 stub sessions; skip gaps built on days with < 600 M1 bars",
+  "invalidation": "corpus: draft invalidation 'price closes through it', read on his hourly execution chart",
+  "target": "corpus: h1ZQWWQDhKA 'target this high up here' -> the swing high the pullback came from",
+  "cluster": "declared-before-run: one gap is one setup",
+  "null_tod_tol_min": "declared-before-run: README trap 9 + vault Concept Campaign 2026-09-23 lesson 3 (rate nulls must match time of day); not a timing concept, touches cluster 2.1-2.5x in 08-11 NY"
+ },
+ "n": 446,
+ "span": {
+  "start": "2016-01-12 10:47:00+00:00",
+  "end": "2026-07-07 05:21:00+00:00",
+  "years": 10.48
+ },
+ "avg_R": null,
+ "avg_R_gross": null,
+ "win_rate": null,
+ "pf": null,
+ "observed_rate": 0.2825112107623318,
+ "null_rate": 0.28430493273542606,
+ "lift": 0.9936908517350155,
+ "control": {
+  "rate": 0.28430493273542606,
+  "reps": 5,
+  "kind": "null_fn x5"
+ },
+ "diff": -0.0017937219730941867,
+ "ci_lo": -0.046188340807174905,
+ "ci_hi": 0.04485426008968606,
+ "ci_method": "phase3_iid",
+ "p": 0.9384402188189882,
+ "halves": {
+  "H1": {
+   "n": 207,
+   "diff": -0.0009661835748792091,
+   "ci_lo": -0.07826086956521741,
+   "ci_hi": 0.07830917874396136,
+   "ci_method": "block",
+   "p": 0.9807013573603797,
+   "start": "2016-01-12 10:47:00+00:00",
+   "end": "2020-12-21 10:07:00+00:00"
+  },
+  "H2": {
+   "n": 239,
+   "diff": -0.002510460251046065,
+   "ci_lo": -0.07366108786610884,
+   "ci_hi": 0.06947698744769872,
+   "ci_method": "iid",
+   "p": 0.9451881690050458,
+   "start": "2021-01-06 12:44:00+00:00",
+   "end": "2026-07-07 05:21:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 104,
+   "diff": 0.05576923076923074,
+   "ci_lo": -0.061586538461538345,
+   "ci_hi": 0.15769230769230785,
+   "ci_method": "block",
+   "p": 0.31878585026150547,
+   "start": "2016-01-12 10:47:00+00:00",
+   "end": "2018-08-17 19:26:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 112,
+   "diff": -0.0625,
+   "ci_lo": -0.14111607142857147,
+   "ci_hi": 0.021428571428571408,
+   "ci_method": "iid",
+   "p": 0.13174645122849288,
+   "start": "2018-08-22 11:12:00+00:00",
+   "end": "2021-03-31 17:12:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 103,
+   "diff": 0.011650485436893232,
+   "ci_lo": -0.09902912621359217,
+   "ci_hi": 0.11655339805825239,
+   "ci_method": "iid",
+   "p": 0.8322316362862685,
+   "start": "2021-04-29 14:01:00+00:00",
+   "end": "2023-11-30 13:55:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 127,
+   "diff": -0.006299212598425308,
+   "ci_lo": -0.10236220472440946,
+   "ci_hi": 0.08818897637795264,
+   "ci_method": "iid",
+   "p": 0.8968952487814417,
+   "start": "2023-12-05 15:42:00+00:00",
+   "end": "2026-07-07 05:21:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.06506843621455094,
+ "mde_threshold": 0.05,
+ "power_floor_n": 756,
+ "verdict": "UNDERPOWERED",
+ "verdict_detail": "CI contains 0; MDE 0.0651 vs threshold 0.0500, effective n 409 (power floor n=756, have 446)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 446,
+  "min_slack_min": 0.0,
+  "passed": true,
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 56,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "fvg_time",
+    "decision_time",
+    "direction",
+    "near_edge",
+    "far_edge",
+    "leg_extreme",
+    "touch_close",
+    "available_at"
+   ],
+   "ignored": [],
+   "lookback": "45D",
+   "recent": "1D",
+   "events_fp": "3bac4bb35dfe20e7",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "reps": 5,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "mde_threshold": null,
+  "cluster": "array",
+  "outcome_horizon": "1 days 00:00:00",
+  "null_kind": "null_fn x5"
+ },
+ "notes": "Tests the draft's measurable (first-touch reaction rate of daily FVGs on XAUUSD) over the full certified span; the 'has been lately' recency qualifier cannot be pinned to a period. Displacement-confirmed entry is not separately tested (entry model unstated). AUDIT 2026-10-07: null now holds NY time of day +/-30 min (first run did not). Overlaps the 2026-09-23 internal-external-range-liquidity IRL->ERL leg (daily FVG first tag -> swing high, pooled, UNDERPOWERED); that reading was not refuted.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/update_20261007/gold-daily-gap-reaction.py",
+ "runtime_sec": 0.1,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-10-07T06:12:36+00:00",
+ "dropped": {
+  "nan_rows": 0
+ },
+ "null_kind": "null_fn x5",
+ "events_fp": "3bac4bb35dfe20e7",
+ "predictors_probed": true,
+ "ci_components": {
+  "phase3_iid": [
+   -0.046188340807174905,
+   0.04485426008968606
+  ],
+  "day_block": [
+   -0.0402787235647652,
+   0.03571628315755808
+  ],
+  "cluster": [
+   -0.038565022421524875,
+   0.03721973094170362
+  ]
+ },
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 409,
+  "n_clusters": 446,
+  "n_eff": 409
+ },
+ "run_id": "1a227ef29f7a4176bc34f35f87685d21",
+ "hyp_key": "a23e3d305d1aeebe"
+}

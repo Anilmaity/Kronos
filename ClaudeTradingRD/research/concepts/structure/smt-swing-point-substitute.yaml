@@ -34,6 +34,11 @@ variants:
     the structure and this one has not, the unswept low is treated as protected and the setup
     is traded as if the breaker had formed, with the stop on that low. He flags the substitution
     as more discretionary than the rest, because what forms is not a true breaker.
+  - His indicator marked nothing because mechanically the model needed a sweep of the high;
+    with SMT present he still treats the candle as a candle 2 reversal.
+  - 'Repeat evidence: a day that takes out the previous day low and closes above it, with
+    SMT present, is allowed to be treated as a candle 2 closure or a swing point inside an
+    intraweek-reversal week.'
 category: structure
 status: contested
 aliases:
@@ -44,6 +49,7 @@ aliases:
 - SMT off the previous day high
 - paired with smt
 - consider this low protected
+- treat this like a candle two
 preconditions:
 - A named correlated asset is being watched (ES/NQ/YM; gold vs gold-euro/gold-pound; EU/GU
   vs DXY).
@@ -52,6 +58,7 @@ preconditions:
 - A correlated instrument is being watched alongside the traded instrument.
 - A candidate swing point or reversal day exists on the traded instrument.
 - A correlated asset is being watched alongside the traded one.
+- Bullish bias; the day sweeps the previous day low.
 detection_rules:
 - This asset fails to take out the relevant high/low; the correlated asset does take it out.
 - 'Treat the level as manipulated: use the opposing candles that made the failure swing as
@@ -77,6 +84,9 @@ detection_rules:
   and this one did not - treat the low as protected.'
 - Under the exception, mark the up-close candles as the breaker once price closes through
   them and place the stop on the unswept low.
+- No sweep but SMT on the swing -> may treat the candle as candle 2.
+- Previous day low taken, close back above, plus SMT -> treat the day as candle 2 / swing
+  point.
 invalidation:
 - The correlated asset that swept fails to reverse.
 - Both assets take the level -- there is no divergence and the ordinary sweep requirement
@@ -85,6 +95,7 @@ invalidation:
   Consolidation Reversal example an SMT appears on a low that is briefly taken out, and the
   trade still works, so SMT is not used as an invalidation signal.
 - Price trading below the low that was treated as protected.
+- Not stated.
 measurable:
 - hit rate of SMT-substituted protected swings vs swept ones
 - how often the SMT-hit-target rule would have closed a trade early
@@ -130,6 +141,15 @@ sources:
   quote: yes it does unless it is paired with smt
 - video_id: WwmS47Gb3M0
   title: The "Twitter Model" The MMXM Trader - ICT Concepts
+- video_id: 4rNC3QXxC20
+  title: New York Open Live Q&A
+  quote: mechanically with my model, this isn't a setup
+- video_id: 4rNC3QXxC20
+  title: New York Open Live Q&A
+  quote: because of the SMT, you can still treat this like a candle
+- video_id: W67tJ6fmAuc
+  title: Intraweek Reversal Breakdown
+  quote: treat this like a candle two closure
 ambiguities:
 - No rule for which correlated asset is authoritative when two disagree.
 - How close the failure swing must be to the correlated asset's swept level is not stated.
@@ -153,6 +173,7 @@ ambiguities:
   SMT to count.
 - He calls the substitution 'a little bit more discretionary', so it is not mechanically decidable
   as stated.
+- The SMT instrument is garbled in captions ('RB').
 related:
 - smt-divergence
 - smt-requires-framework
@@ -181,6 +202,8 @@ contributing_units:
 - build_a_model_intro_to_ttrades_fractal_model_01
 - build_a_model_intro_to_ttrades_fractal_model_02
 - education_ict_updated_02
+- update_20261007_live_05
+- update_20261007_shorts_03
 - weekly_profile_series_01
-draft_count: 4
+draft_count: 6
 voice: ttrades

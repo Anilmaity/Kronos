@@ -1,0 +1,225 @@
+{
+ "concept_id": "average-daily-range",
+ "reading": "u1007a",
+ "testable": true,
+ "test_type": "rate",
+ "claim": "-",
+ "operationalization": {
+  "rules": [
+   "trading day rolls 18:00 NY; decisions at every NY hour close 19:00..16:00 inside the day",
+   "ADR = mean(high - low) of the last 14 COMPLETED real trading days (n_m1 >= 600), as of the decision",
+   "kept: running day range (M1 closed by the decision) < ADR, so both caps lie beyond the day's extremes",
+   "caps projected from the day's extreme: up = running low + ADR (above), down = running high - ADR (below); one row each",
+   "hit = price reaches the cap before the trading day closes (M1, horizon = M1 bars left in the day)",
+   "null = matched random moments (reps 5, +/-30 d, same NY minute: tod_tol 30 on the :00 grid), same side, same M1-bar horizon, same distance from the next M1 open scaled by local vol (mean M1 high-low over the 240 M1 bars closed before the moment)",
+   "claim '-': the ADR projection caps the day - caps are reached less often than equidistant (vol-matched) levels"
+  ],
+  "params": {
+   "adr_lookback_days": 14,
+   "adr_average": "mean of H-L (sum / N)",
+   "adr_days": "completed real days only",
+   "stub_day_min_n_m1": 600,
+   "day_roll": "18:00 NY",
+   "decision_grid": "NY hour closes 19:00..16:00",
+   "projection_anchor": "day's running extreme (opposite side)",
+   "outcome_window": "decision -> trading-day close, M1 bars",
+   "null_reps": 5,
+   "null_window_days": 30,
+   "null_tod_tol_min": 30,
+   "null_vol_bars": 240,
+   "grid4h": "n/a"
+  }
+ },
+ "params_source": {
+  "adr_lookback_days": "corpus: 3OIq9HmckH8 'Go ahead and turn it on to daily' - only the timeframe is changed, so the TradingView 'Average Daily Range' default length 14 applies (declared-before-run)",
+  "adr_average": "corpus: 3OIq9HmckH8 'You get the total range divided by the total days'",
+  "adr_days": "declared-before-run: non-repainting reading of the daily ADR indicator (trap 9: no in-progress daily bar)",
+  "stub_day_min_n_m1": "declared-before-run: skip data-hole stub days (README trap 6), as prior readings",
+  "day_roll": "session_window_fit: settled 18:00 NY daily roll",
+  "decision_grid": "declared-before-run: the projection is re-read through the day ('how much further we could go'); every hour close",
+  "projection_anchor": "corpus: 3OIq9HmckH8 'If this is the high, where does our 115 lie?'",
+  "outcome_window": "corpus: 3OIq9HmckH8 'there's not too much range left in the day'",
+  "null_reps": "method_spec: locked reps=5",
+  "null_window_days": "method_spec: locked window_days=30",
+  "null_tod_tol_min": "declared-before-run: README trap 9 / campaign lesson 3 (rate nulls must match time of day)",
+  "null_vol_bars": "declared-before-run: campaign 2026-09-23 lesson 3 (rate nulls must match local volatility); running range < ADR selects calm days; 240 M1 bars = 4 trading hours, as sibling update_20261007 scripts",
+  "grid4h": "declared-before-run: no 4h bars used"
+ },
+ "n": 102048,
+ "span": {
+  "start": "2016-01-22 00:00:00+00:00",
+  "end": "2026-07-23 04:00:00+00:00",
+  "years": 10.5
+ },
+ "avg_R": null,
+ "avg_R_gross": null,
+ "win_rate": null,
+ "pf": null,
+ "observed_rate": 0.141609830667921,
+ "null_rate": 0.1497530573847601,
+ "lift": 0.9456223007459758,
+ "control": {
+  "rate": 0.1497530573847601,
+  "reps": 5,
+  "kind": "null_fn x5"
+ },
+ "diff": -0.00814332132342413,
+ "ci_lo": -0.015221459462315002,
+ "ci_hi": -0.0012261026906419184,
+ "ci_method": "day_block",
+ "p": 0.022557646903934313,
+ "halves": {
+  "H1": {
+   "n": 48596,
+   "diff": -0.01325623508107665,
+   "ci_lo": -0.021156628117503396,
+   "ci_hi": -0.0052474226273422344,
+   "ci_method": "block",
+   "p": 0.0010898090949361557,
+   "start": "2016-01-22 00:00:00+00:00",
+   "end": "2020-12-31 21:00:00+00:00"
+  },
+  "H2": {
+   "n": 53452,
+   "diff": -0.003494724238569197,
+   "ci_lo": -0.010783600239430445,
+   "ci_hi": 0.004720777520054707,
+   "ci_method": "block",
+   "p": 0.37693310478310105,
+   "start": "2021-01-04 00:00:00+00:00",
+   "end": "2026-07-23 04:00:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 25712,
+   "diff": -0.01334007467330428,
+   "ci_lo": -0.024241696484121795,
+   "ci_hi": -0.001338042548215568,
+   "ci_method": "block",
+   "p": 0.022422421820897168,
+   "start": "2016-01-22 00:00:00+00:00",
+   "end": "2018-08-22 11:00:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 25436,
+   "diff": -0.01256486869004561,
+   "ci_lo": -0.02262973738008136,
+   "ci_hi": -0.0012541280075378588,
+   "ci_method": "block",
+   "p": 0.021212202817464634,
+   "start": "2018-08-22 12:00:00+00:00",
+   "end": "2021-04-12 08:00:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 26096,
+   "diff": -0.008622011036174132,
+   "ci_lo": -0.01896190987123209,
+   "ci_hi": 0.0010336833231284358,
+   "ci_method": "block",
+   "p": 0.0909790740096332,
+   "start": "2021-04-12 09:00:00+00:00",
+   "end": "2023-12-01 16:00:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 24804,
+   "diff": 0.002281890017739041,
+   "ci_lo": -0.00894654088049361,
+   "ci_hi": 0.014772012578626871,
+   "ci_method": "block",
+   "p": 0.7060811800313246,
+   "start": "2023-12-05 00:00:00+00:00",
+   "end": "2026-07-23 04:00:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.010002525965060516,
+ "mde_threshold": 0.03743826434619003,
+ "power_floor_n": 7285,
+ "verdict": "EDGE",
+ "verdict_detail": "CI excludes 0 in claimed direction; halves agree (H1 -0.0133, H2 -0.0035); powered",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 102694,
+  "min_slack_min": 0.0,
+  "passed": true,
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 7598,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "day_close",
+    "adr",
+    "run_hi",
+    "run_lo",
+    "side",
+    "cap",
+    "available_at"
+   ],
+   "ignored": [],
+   "lookback": "40D",
+   "recent": "1D",
+   "events_fp": "b618ba630163b893",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "reps": 5,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "mde_threshold": null,
+  "cluster": null,
+  "outcome_horizon": "1 days 00:00:00",
+  "null_kind": "null_fn x5"
+ },
+ "notes": "New claim only: explicit ADR formula/indicator projected from the day's extreme as a cap. Rows share the day's outcome (two caps x up to 22 hour closes); day-block CI, n_eff = days. Caveat: cap levels always lie beyond the day's running extreme, while the equidistant null level may lie inside its own day's range; extremes acting as resistance would favour the claim, as liquidity draws against it. Vol scaling uses a 4h trailing window; volatility persistence beyond it is not matched.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/update_20261007/average-daily-range.py",
+ "runtime_sec": 6.22,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-10-07T06:41:01+00:00",
+ "dropped": {
+  "nan_rows": 646
+ },
+ "null_kind": "null_fn x5",
+ "events_fp": "b618ba630163b893",
+ "predictors_probed": true,
+ "ci_components": {
+  "phase3_block": [
+   -0.013756884015405693,
+   -0.0020066537316204476
+  ],
+  "day_block": [
+   -0.015221459462315002,
+   -0.0012261026906419184
+  ]
+ },
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 2698,
+  "n_clusters": null,
+  "n_eff": 2698
+ },
+ "run_id": "1382e96a92f24d1a926a860aef36bfcd",
+ "hyp_key": "bc2e6e52368ddb6e"
+}

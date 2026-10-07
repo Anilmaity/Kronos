@@ -1,0 +1,50 @@
+id: intraday-reversal
+name: "Intraday Reversal (4-hour closure plus hourly CISD)"
+category: model
+status: underspecified
+voice: ttrades
+definition: >
+  Worked live on NQ for a high of the day, with the two confirmations stated as ALTERNATIVES
+  ("either ... or"): (a) an hourly CISD - an hourly consolidation, a sweep of the consolidation
+  high, then a close through the series of up-close candles that made that high; or (b) a
+  4-hour candle closure, ideally a candle 3 closure. After either, the high is expected to hold
+  (in the example "from 6:00 a.m. and on") and a 4-hour / 15-minute model is used for entry:
+  a small SMT at the previous high, entry on the 15-minute protected swing, exit at 2R or when
+  the correlated asset (YM) hits its own target.
+timeframes:
+  htf: ["4H", "1H"]
+  ltf: ["15m"]
+  fractal: false
+detection_rules:
+  - "Confirmation A: hourly consolidation, sweep of its high, hourly close through the up-close candles that made the high (bearish case)."
+  - "Confirmation B: a 4-hour candle closure, ideally a candle 3 closure; either A or B suffices."
+  - "After confirmation, treat the extreme as the high of the day and drop to the 15-minute."
+  - "Entry on the 15-minute protected swing; an SMT at the previous high is supportive."
+execution:
+  bias: "Away from the confirmed daily extreme."
+  entry: "15-minute protected swing after the hourly CISD or 4-hour closure."
+  stop: "Beyond the protected swing."
+  targets: ["2R", "the correlated asset reaching its own target", "previous lows"]
+measurable:
+  - "hit rate of 2R from the 15m protected-swing entry after hourly CISD vs after 4H C3 closure"
+sources:
+  - video_id: wa9m30UHrm0
+    title: "New York Open Live Q&A"
+    quote: "Hourly change in the state delivery. We have a consolidation."
+  - video_id: wa9m30UHrm0
+    title: "New York Open Live Q&A"
+    quote: "So, then from 6:00 a.m. and on, you expect this high to be"
+  - video_id: wa9m30UHrm0
+    title: "New York Open Live Q&A"
+    quote: "Or you can use a 4-hour candle closure."
+  - video_id: wa9m30UHrm0
+    title: "New York Open Live Q&A"
+    quote: "So, then you can enter on a protected swing."
+  - video_id: wa9m30UHrm0
+    title: "New York Open Live Q&A"
+    quote: "And then you look for this to either hit 2R"
+ambiguities:
+  - "Here the hourly CISD and 4-hour closure are alternatives; the library definition combines them ('plus'). Read as either-suffices in this stream."
+  - "6:00 a.m. is the time of the hourly CISD on that day, not a stated rule; timezone is not named (New York implied)."
+  - "Which candle the 'candle three closure' counts from (which 4-hour C1) is not shown in text."
+related: ["daily-wick-confirmation-timeframes", "ttfm-favorite-daily-4h-15m", "protected-swing", "cross-asset-target-transfer"]

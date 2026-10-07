@@ -1,13 +1,8 @@
 id: timeframe-alignment-pairs
 name: Timeframe Pairing and Alignment
-definition: 'Every model is a pair: a higher timeframe supplying the candle closure and an
-  aligned lower timeframe supplying the change in the state of delivery. The pairs actually
-  named in this unit are DAILY -> HOURLY, 4-HOUR -> 15-MINUTE, HOURLY -> 5-MINUTE, and (used
-  once, when the 15-minute was unclean) HOURLY -> 3-MINUTE. The full model stack for an intraday
-  trade is daily bias -> 4-hour swing point -> 15-minute execution. Targets are always read
-  from the HIGHER timeframe of the pair. The indicator''s ''automatic'' mode applies these
-  pairings by itself.'
 variants:
+  name:
+  - Timeframe Alignment Pairs
   definition:
   - 'Pairs used explicitly in this unit, with the alignment condition attached. The model
     runs on a pair - hourly with 5-minute, daily with hourly, 15-minute with 1-minute, 30-minute
@@ -25,6 +20,10 @@ variants:
     the daily. A separate Short shows the escape hatch used live: when the execution timeframe
     is messy, step UP one timeframe (15-minute to 30-minute) to get a clear series of opposing
     candles for the change in the state of delivery.'
+  - 'Lifestyle allocation of pairs: with a 9-to-5 job trade the daily/hourly fractal; when
+    off work trade the 4-hour/15-minute. On the 4H/15m you rarely miss moves - you mainly
+    miss moves by not trading candle 2 in New York. For the overnight session he uses the
+    15-minute because lower timeframes are sloppy there.'
   - 'Bias comes from the daily and hourly charts. Beyond that the exact pairing does not matter:
     H4 with M15, H1 with M5, or M30 with M3 are all acceptable, because the goal is only that
     all the timeframes point the same direction. The entry timeframe follows the swing timeframe
@@ -40,8 +39,17 @@ variants:
     state of delivery. He uses every timeframe below the daily as nested inside it and refines
     downward - 4-hour tells him whether there is anything to frame, then the hourly, then
     the 15-minute.'
+  - 'Top-down answer given in chat: to enter on the 3-minute use the 30-minute, with bias
+    from the 4-hour/daily.'
   category:
   - time
+definition: 'Every model is a pair: a higher timeframe supplying the candle closure and an
+  aligned lower timeframe supplying the change in the state of delivery. The pairs actually
+  named in this unit are DAILY -> HOURLY, 4-HOUR -> 15-MINUTE, HOURLY -> 5-MINUTE, and (used
+  once, when the 15-minute was unclean) HOURLY -> 3-MINUTE. The full model stack for an intraday
+  trade is daily bias -> 4-hour swing point -> 15-minute execution. Targets are always read
+  from the HIGHER timeframe of the pair. The indicator''s ''automatic'' mode applies these
+  pairings by itself.'
 category: model
 status: contested
 aliases:
@@ -49,6 +57,8 @@ aliases:
 - fractal pairing
 - time frame alignment
 - locked to the hourly and 5 minutes
+- daily and hourly fractal
+- 4 hour and 15
 - what timeframes do you use
 - H4 M15, H1 M5, M30 M3
 preconditions:
@@ -80,6 +90,8 @@ detection_rules:
 - If the paired execution timeframe is messy, step up one timeframe to find a clear series
   of opposing candles for the change in the state of delivery (15-minute -> 30-minute in the
   worked case).
+- 'Employed: 1D/1H pair. Available intraday: 4H/15m pair.'
+- Overnight session executions on the 15-minute.
 - Take direction from the daily plus hourly.
 - 'Pick a HTF/LTF pair one or two steps down: H4/M15, H1/M5, or M30/M3.'
 - Verify each selected timeframe is pointing the same direction before entering.
@@ -142,6 +154,18 @@ sources:
 - video_id: cS8942LZ5Uw
   title: London Forms Reversal➜ New York Continuation Off That Reversal
   quote: since this is a little bit messy, I will go up one time frame
+- video_id: 4rNC3QXxC20
+  title: New York Open Live Q&A
+  quote: if you have to work a 9 to5, the daily and hourly fractal
+- video_id: 4rNC3QXxC20
+  title: New York Open Live Q&A
+  quote: if you're off work trading the 4 hour and 15
+- video_id: 4rNC3QXxC20
+  title: New York Open Live Q&A
+  quote: You really only miss moves if you don't trade C2 in New York.
+- video_id: 4rNC3QXxC20
+  title: New York Open Live Q&A
+  quote: if I'm going to be trading overnight session, I just use the 15-minute
 - video_id: uzPGXVYpVGc
   title: Candle 2 Confirmations - Live Lesson, Q&A
 - video_id: egV_gABTQks
@@ -154,6 +178,12 @@ sources:
 - video_id: yNgx9OAefuI
   title: New York Open Live Q&A
   quote: Use a 15-minute change in the stage delivery
+- video_id: 9H15ZZvaKPQ
+  title: New York Open Live Q&A
+  quote: You want to enter on the 3 minute, probably want to use the 30 minute.
+- video_id: 9H15ZZvaKPQ
+  title: New York Open Live Q&A
+  quote: you want to have some sort of bias from H4 daily.
 ambiguities:
 - The pairing is stated as a fixed table but is also allowed to flex by one step for cleanliness
   - no rule says when flexing is permitted.
@@ -190,6 +220,7 @@ related:
 - entry-timeframe-elevation
 - ttfm-favorite-daily-4h-15m
 - top-down-analysis-procedure
+- htf-narrative-floor-fifteen-minute
 - invalidation-first-timeframe-selection
 - daily-bias-c2-c3-h1-cisd
 - weekly-chart-not-used
@@ -219,5 +250,7 @@ contributing_units:
 - live_streams_01
 - shorts_02
 - sunday_sessions_live_q_a_01
-draft_count: 5
+- update_20261007_live_04
+- update_20261007_live_05
+draft_count: 7
 voice: ttrades

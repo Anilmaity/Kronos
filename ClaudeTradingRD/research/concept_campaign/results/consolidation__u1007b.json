@@ -1,0 +1,206 @@
+{
+ "concept_id": "consolidation",
+ "reading": "u1007b",
+ "testable": true,
+ "test_type": "rate",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "consolidation day: completed NY trading day D inside D-1 AND D-1 inside D-2 (nested inside days); all involved sessions > 600 M1 bars",
+   "decide at that day's close_time; levels = the inside day's high and low",
+   "hit = session D+1 (its M1-bar count) takes neither the high nor the low (stays rangebound)",
+   "null: same distances above and below the first M1 open, same bar count, at 5 random OTHER session closes within +/-30 days (full sessions not flagged by this reading; window starts at the 18:00 NY reopen like the real one); claim '+'"
+  ],
+  "params": {
+   "tf": "1D",
+   "day_open_hour": 18,
+   "inside": "wick range, non-strict (<=, >=)",
+   "nested": true,
+   "horizon": "next session, M1 bars",
+   "min_session_bars": 600,
+   "null_grid": "closes of full sessions not flagged by the reading (session-anchored)"
+  }
+ },
+ "params_source": {
+  "tf": "corpus: ES-R3ByDYrY 'yesterday was a consolidation' (daily candle)",
+  "day_open_hour": "session_window_fit: settled 18:00 NY daily roll",
+  "inside": "corpus: ES-R3ByDYrY 'price fails to take out a previous range'",
+  "nested": "corpus: 9YVBe-20Hdg 'inside day inside day pretty much just a consolidation ... we're inside that candle and then we're inside that candle'",
+  "horizon": "corpus: 9YVBe-20Hdg 'we're just rangebound' / ES-R3ByDYrY 'Is price more likely to go to previous day high or previous day low' (next session vs the day's range)",
+  "min_session_bars": "declared-before-run: harness example_rate stub-day filter n_m1 > 600",
+  "null_grid": "declared-before-run (audit): README trap 9 (events all at one NY clock point -> hold the clock) + vault Concept Campaign 2026-09-23 lesson 3; the any-minute null is offset on all days (three-candle-outcomes NEGATIVE -1.78pp)"
+ },
+ "n": 28,
+ "span": {
+  "start": "2016-01-22 23:00:00+00:00",
+  "end": "2026-02-26 23:00:00+00:00",
+  "years": 10.097
+ },
+ "avg_R": null,
+ "avg_R_gross": null,
+ "win_rate": null,
+ "pf": null,
+ "observed_rate": 0.07142857142857142,
+ "null_rate": 0.0642857142857143,
+ "lift": 1.111111111111111,
+ "control": {
+  "rate": 0.0642857142857143,
+  "reps": 5,
+  "kind": "null_fn x5"
+ },
+ "diff": 0.007142857142857145,
+ "ci_lo": -0.10714285714285716,
+ "ci_hi": 0.12857142857142856,
+ "ci_method": "day_block",
+ "p": 0.9054451406126078,
+ "halves": {
+  "H1": {
+   "n": 15,
+   "diff": 0.039999999999999994,
+   "ci_lo": -0.14666666666666667,
+   "ci_hi": 0.26666666666666666,
+   "ci_method": "iid",
+   "p": 0.7044295555423957,
+   "start": "2016-01-22 23:00:00+00:00",
+   "end": "2020-03-18 22:00:00+00:00"
+  },
+  "H2": {
+   "n": 13,
+   "diff": -0.03076923076923077,
+   "ci_lo": -0.09230769230769233,
+   "ci_hi": 0.0,
+   "ci_method": "iid",
+   "p": 0.19133409883844585,
+   "start": "2021-01-26 23:00:00+00:00",
+   "end": "2026-02-26 23:00:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 9,
+   "diff": 0.17777777777777776,
+   "ci_lo": -0.08888888888888889,
+   "ci_hi": 0.4444444444444444,
+   "ci_method": "iid",
+   "p": 0.19133409883844585,
+   "start": "2016-01-22 23:00:00+00:00",
+   "end": "2018-08-07 22:00:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 7,
+   "diff": -0.14285714285714285,
+   "ci_lo": -0.3714285714285715,
+   "ci_hi": 0.0,
+   "ci_method": "iid",
+   "p": 0.1316403861093989,
+   "start": "2018-09-25 22:00:00+00:00",
+   "end": "2021-01-26 23:00:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 9,
+   "diff": -0.044444444444444446,
+   "ci_lo": -0.13333333333333336,
+   "ci_hi": 0.0,
+   "ci_method": "iid",
+   "p": 0.19133409883844585,
+   "start": "2022-03-03 23:00:00+00:00",
+   "end": "2023-11-23 23:00:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 3,
+   "diff": 0.0,
+   "ci_lo": 0.0,
+   "ci_hi": 0.0,
+   "ci_method": "iid",
+   "p": null,
+   "start": "2025-04-29 22:00:00+00:00",
+   "end": "2026-02-26 23:00:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.1684657491522439,
+ "mde_threshold": 0.016071428571428573,
+ "power_floor_n": 3077,
+ "verdict": "UNTESTABLE",
+ "verdict_detail": "n=28 (other arm None) below N_MIN_ANY=30",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 28,
+  "min_slack_min": 0.0,
+  "passed": true,
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 21,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "hi",
+    "lo"
+   ],
+   "ignored": [],
+   "lookback": "20D",
+   "recent": "1D",
+   "events_fp": "fa8187a333e02510",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "reps": 5,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "mde_threshold": null,
+  "cluster": null,
+  "outcome_horizon": "1 days 00:00:00",
+  "null_kind": "null_fn x5"
+ },
+ "notes": "TTrades update 2026-10-07 positive inside-day rule; prior no-displacement gate reading untouched. Monthly nested-inside variant not tested. AUDIT rerun: null changed from any-minute moments to other session closes. Absolute distances kept: lag-1 volatility clustering (quiet day -> quiet next day) is NOT removed, so a positive diff would not be inside-bar-specific.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/update_20261007/consolidation.py",
+ "runtime_sec": 0.02,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-10-07T06:14:18+00:00",
+ "dropped": {
+  "nan_rows": 0
+ },
+ "null_kind": "null_fn x5",
+ "events_fp": "fa8187a333e02510",
+ "predictors_probed": true,
+ "ci_components": {
+  "phase3_block": [
+   -0.10000000000000002,
+   0.11428571428571427
+  ],
+  "day_block": [
+   -0.10714285714285716,
+   0.12857142857142856
+  ]
+ },
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 28,
+  "n_clusters": null,
+  "n_eff": 28
+ },
+ "run_id": "b0c7fc56f9894065ada4e43b6a2b63b8",
+ "hyp_key": "9444ae31600dc065"
+}

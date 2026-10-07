@@ -105,6 +105,10 @@ variants:
     is titled "CISD - Orderblock Formation".
 
     '
+  - 'Answering why a visible 15-minute CISD on NQ was ignored: it was not paired with a swing
+    point and it went against the established bias (NQ the bullish asset). He states volatility
+    is NOT part of the CISD definition; the exclusion is consolidation - do not use a CISD
+    formed inside consolidation.'
   - 'Live-Q&A refinement of what counts as the ''series of candles'' a CISD must close through.
     Two viewer setups are rejected on exactly this point. A single small opposing candle is
     not a series: he will not treat one tiny consolidation candle as the structure, and instead
@@ -112,6 +116,14 @@ variants:
     is: locate the low (or high), locate the series of candles that produced it, and require
     a close over (or under) that level - if no such series can be pointed at, there is no
     CISD.'
+  - 'Answer to ''difference between OB and CISD'': a CISD is the order block that changes
+    the trend. An order block already in line with the prevailing trend is just an order block
+    or a continuation; once a CISD is confirmed, subsequent same-direction protected swings/order
+    blocks are not CISDs. He dates his own switch away from ''market structure shift'' to
+    before his November 2023 CISD video.'
+  - 'Live example: after YM swept its 4H low, he wanted a 3-minute CISD whose level happened
+    to be the opening price of the 4H candle - a close over that level would confirm; it never
+    closed and no trade was taken.'
   category:
   - structure
 definition: 'THE adjudicating definition in the corpus, from the video whose entire subject
@@ -273,6 +285,9 @@ detection_rules:
 - On firing, the run is also validated as an order block at cisd_level.
 - Multiple sequential CISDs can occur in one leg, each creating a further order block that
   'supports price lower'.
+- Ignore a CISD not paired with a swing point.
+- Ignore a CISD that opposes the day's bias for that asset.
+- Do not require volatility; do exclude CISDs formed within consolidation.
 - Find the extreme (the low for a bullish CISD, the high for a bearish one).
 - Find the series of candles that made that extreme - the structural point, not the nearest
   single candle.
@@ -281,6 +296,10 @@ detection_rules:
   not a CISD.
 - If no series of candles can be identified at the extreme, the setup is not a CISD regardless
   of what price did.
+- Label a close-through as a CISD only if it flips the prevailing direction; same-direction
+  ones are continuation order blocks.
+- '3m CISD after a 4H-low sweep: require a 3m close above the CISD level (here coinciding
+  with the 4H candle open).'
 invalidation:
 - Price never closes beyond the opening price of the opposing series.
 - The CISD occurs but price then continues against it — he warns explicitly that an earlier
@@ -492,12 +511,30 @@ sources:
   title: Internal & External Liquidity (Daily Bias) - ICT Concepts
 - video_id: uDJI2AbyyCs
   title: Inversion Fair Value Gaps (IFVG) - ICT Concepts
+- video_id: 9YVBe-20Hdg
+  title: New York Open Live Q&A
+  quote: It's not paired with any sort of swing point, right?
+- video_id: 9YVBe-20Hdg
+  title: New York Open Live Q&A
+  quote: I don't define a CISD by volatility.
+- video_id: 9YVBe-20Hdg
+  title: New York Open Live Q&A
+  quote: you don't want to use a CISD within cons consolidation
 - video_id: NESSCPMzWR0
   title: New York Open Live Q&A
   quote: I'm looking for the actual structural point
 - video_id: yNgx9OAefuI
   title: New York Open Live Q&A
   quote: Where is a series of candles
+- video_id: rVRk4MLTJSs
+  title: New York Open Live Q&A
+  quote: CISD is the order block that changes the trend
+- video_id: rVRk4MLTJSs
+  title: New York Open Live Q&A
+  quote: This is just an order block or a continuation
+- video_id: K7XVj2w3CP4
+  title: New York Open Live Q&A
+  quote: close over that level, which is just the opening price of the 4hour candle.
 ambiguities:
 - The word 'displacement' appears in the PDF definition ('close and displacement below the
   opening price') but every chart narration reduces it to 'we close below the series of up
@@ -606,6 +643,8 @@ ambiguities:
 - '''Insignificant'' is the word used to disqualify a candle; no size or range threshold is
   attached to it.'
 - The auto-captioner renders CISD variously as 'CSD', 'CISD' and 'CIS'; all are the same term.
+- Whether the 4H opening price is generally the CISD level or only coincided that day is not
+  stated.
 related:
 - market-structure-shift
 - order-block
@@ -641,6 +680,9 @@ related:
 - power-of-three-amd
 - internal-external-rotation
 - smart-money-reversal
+- consolidation
+- one-cisd-per-day
+- htf-opening-price-entry
 timeframes:
   htf:
   - 1D
@@ -674,5 +716,8 @@ contributing_units:
 - sunday_sessions_live_q_a_02
 - sunday_sessions_live_q_a_03
 - the_foundation_01
-draft_count: 13
+- update_20261007_live_03
+- update_20261007_live_07
+- update_20261007_live_08
+draft_count: 16
 voice: ttrades

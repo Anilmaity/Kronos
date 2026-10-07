@@ -1,0 +1,262 @@
+{
+ "concept_id": "exit-when-target-nearly-hit",
+ "reading": "u1007a",
+ "testable": true,
+ "test_type": "trade",
+ "claim": "-",
+ "operationalization": {
+  "rules": [
+   "parent: 15m rung-0 CISD (series_open, 2/2, max_wait 3), entry next M1 open, protected-swing stop, 2R target, 150min hold, resolved on M1",
+   "near target: parent's favourable excursion reaches within 0.1R of the target before any stop/target hit",
+   "reversing: first M1 bar at/after that touch whose close is >= 0.1R back off the trade's high-water mark (bar must not touch stop or target)",
+   "decide at that bar's close; continue in the parent direction with the parent's stop, target and remaining hold",
+   "claim -: holding from the near-target reversal is worse than a matched random entry of the same geometry -> exiting beats holding"
+  ],
+  "params": {
+   "parent_tf": "15min",
+   "level_rule": "series_open",
+   "swing": "2/2",
+   "max_wait": 3,
+   "min_series": 1,
+   "rr": 2.0,
+   "parent_hold": "150min",
+   "near_R": 0.1,
+   "rev_R": 0.1,
+   "grid4h": "n/a",
+   "ctrl_tod_tol_min": 30
+  }
+ },
+ "params_source": {
+  "parent_tf": "phase3: primary stack entry TF (README gate example)",
+  "level_rule": "phase3: meta/conjunction_preregistration.md \u00a71.8-1.13 (locked rung-0 config)",
+  "swing": "phase3: meta/conjunction_preregistration.md \u00a71.8-1.13 (locked rung-0 config)",
+  "max_wait": "phase3: meta/conjunction_preregistration.md \u00a71.8-1.13 (locked rung-0 config)",
+  "min_series": "phase3: meta/conjunction_preregistration.md \u00a71.8-1.13 (locked rung-0 config)",
+  "rr": "phase3: meta/conjunction_preregistration.md \u00a71.8-1.13 (locked rung-0 config)",
+  "parent_hold": "phase3: 10 entry-TF bars (\u00a71.13), as in the concept_lab README examples",
+  "near_R": "corpus: h1ZQWWQDhKA 'not taking your profit if it's like one point away' -- one MNQ point on an intraday target is a few % of the target distance; declared-before-run as 5% of the 2R target = 0.1R",
+  "rev_R": "corpus: h1ZQWWQDhKA 'one point away and price is reversing' -- 'reversing' undefined; declared-before-run as a close one more 'point' (0.1R) back off the high-water mark",
+  "grid4h": "declared-before-run: no 4h bars used",
+  "ctrl_tod_tol_min": "declared-before-run: README trap 9 -- not a timing concept, but events cluster by NY hour (0.3x-2.7x the M1 base rate; audit 2026-10-07), so the control holds the NY clock fixed"
+ },
+ "n": 1366,
+ "span": {
+  "start": "2016-01-06 08:54:00+00:00",
+  "end": "2026-07-21 01:07:00+00:00",
+  "years": 10.535
+ },
+ "avg_R": -0.04096109565020816,
+ "avg_R_gross": -0.0009610956502081558,
+ "win_rate": 0.7254758418740849,
+ "pf": 0.5608587134470526,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "n": 6830,
+  "avg_R": -0.04182506980480162,
+  "win_rate": 0.7134699853587115,
+  "pf": 0.5598442623760963,
+  "sd_R": 0.2853583339267662,
+  "exit_mix": {
+   "stop": 0.04172767203513909,
+   "target": 0.729428989751098,
+   "time": 0.22884333821376282
+  },
+  "avg_R_gross": -0.0018250698048016146,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": 0.0008639741545934596,
+ "ci_lo": -0.016438199680447185,
+ "ci_hi": 0.017066382775254012,
+ "ci_method": "phase3_block",
+ "p": 0.9194852180731461,
+ "halves": {
+  "H1": {
+   "n": 657,
+   "diff": 0.016646013788801244,
+   "ci_lo": -0.005482901945027657,
+   "ci_hi": 0.03650519969498759,
+   "ci_method": "iid",
+   "p": 0.12017495477280875,
+   "start": "2016-01-06 08:54:00+00:00",
+   "end": "2020-12-24 14:24:00+00:00"
+  },
+  "H2": {
+   "n": 709,
+   "diff": -0.013760567509263404,
+   "ci_lo": -0.04120516256802413,
+   "ci_hi": 0.009347154270408437,
+   "ci_method": "block",
+   "p": 0.2859619046828774,
+   "start": "2021-01-04 08:19:00+00:00",
+   "end": "2026-07-21 01:07:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 351,
+   "diff": 0.022028358189918922,
+   "ci_lo": -0.004617448814919279,
+   "ci_hi": 0.04834623112115049,
+   "ci_method": "iid",
+   "p": 0.10302657864881053,
+   "start": "2016-01-06 08:54:00+00:00",
+   "end": "2018-08-22 09:00:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 341,
+   "diff": 0.01006167771854212,
+   "ci_lo": -0.021353140121885796,
+   "ci_hi": 0.0403486005904045,
+   "ci_method": "iid",
+   "p": 0.522679132382035,
+   "start": "2018-08-27 13:49:00+00:00",
+   "end": "2021-04-12 01:52:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 345,
+   "diff": -0.03864453900740347,
+   "ci_lo": -0.07765013014376945,
+   "ci_hi": -0.006759489021292655,
+   "ci_method": "block",
+   "p": 0.03260888089139214,
+   "start": "2021-04-15 05:53:00+00:00",
+   "end": "2023-11-29 00:51:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 329,
+   "diff": 0.010181060261533287,
+   "ci_lo": -0.025680685949800865,
+   "ci_hi": 0.044656581343019114,
+   "ci_method": "block",
+   "p": 0.5704457552530355,
+   "start": "2023-12-06 07:48:00+00:00",
+   "end": "2026-07-21 01:07:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.023945831566078674,
+ "mde_threshold": 0.1,
+ "power_floor_n": 200,
+ "verdict": "NULL",
+ "verdict_detail": "CI contains 0; powered (MDE 0.0239 <= 0.1000)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 1366,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 2.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 112,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "target_px",
+    "max_hold"
+   ],
+   "ignored": [],
+   "lookback": "20D",
+   "recent": "1D",
+   "events_fp": "ebccc84ec14ce3f3",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "per-row column",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": 30,
+  "entry_mode": "next_open",
+  "hold_basis": "clock",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "Single pre-declared reading. The source gives one MNQ example and says 'to each their own'. The control geometry (target ~0.2R, stop ~2R away) implies a high base win rate, so the sanity floor may bind.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/update_20261007/exit-when-target-nearly-hit.py",
+ "runtime_sec": 0.21,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-10-07T06:13:31+00:00",
+ "n_events_in": 1369,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 0,
+  "target_not_beyond_entry": 1,
+  "no_bars_in_hold": 2
+ },
+ "events_fp": "ebccc84ec14ce3f3",
+ "sd_R": 0.2595993701251549,
+ "exit_mix": {
+  "stop": 0.03733528550512445,
+  "target": 0.7430453879941434,
+  "time": 0.21961932650073207
+ },
+ "trades_per_year": 129.65995322245323,
+ "ci_components": {
+  "phase3_block": [
+   -0.016438199680447185,
+   0.017066382775254012
+  ],
+  "day_block": [
+   -0.015543217044084253,
+   0.01614071865334364
+  ]
+ },
+ "diff_win": 0.012005856515373337,
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 1104,
+  "n_clusters": null,
+  "n_eff": 1104
+ },
+ "ties": {
+  "real_ambiguous": 0.0,
+  "control_ambiguous": 0.00014641288433382137,
+  "real_gap_stop": 0.0007320644216691069,
+  "control_gap_stop": 0.0007320644216691069,
+  "verdict_stop_first": "NULL"
+ },
+ "ctrl_overlap": 0.00043923865300146415,
+ "exposure_bars": {
+  "real_mean": 71.07027818448023,
+  "control_mean": 70.99707174231332,
+  "hold_basis": "clock"
+ },
+ "run_id": "0281f48f9a30401ea1309e07f2df37c7",
+ "hyp_key": "9e5471ba63744604"
+}

@@ -1,14 +1,25 @@
 id: range-edge-trading
-name: Trade The Edges Of A Range, Into The Range
-definition: 'Inside a consolidation, the only trades he will take are at the edges of the
-  range, going back into the range. He explicitly refuses to trade in the middle of a range
-  trying to exit it. Applied to a specific instrument this becomes an entry-window rule: once
-  the range high has already been taken, a long is no longer available - the entry had to
-  happen near the daily open or mid-range, before the high was taken.
+name: Range Edge Trading
+variants:
+  name:
+  - Trade The Edges Of A Range, Into The Range
+  definition:
+  - 'Inside a consolidation, the only trades he will take are at the edges of the range, going
+    back into the range. He explicitly refuses to trade in the middle of a range trying to
+    exit it. Applied to a specific instrument this becomes an entry-window rule: once the
+    range high has already been taken, a long is no longer available - the entry had to happen
+    near the daily open or mid-range, before the high was taken.
 
-  '
+    '
+definition: 'Co-host Nick''s pre-open rule for the consolidating markets of the prior month:
+  look at where liquidity was taken and trade the opposite way. His live short: relatively
+  equal highs on NQ were taken (stopping out his first short), then price closed below ~260
+  and retested it; he entered on a 3-minute structure break with displacement, added on the
+  retest, used the 9:30 open candle with no bottom wick as the level, and targeted the 8-9
+  a.m. low; invalidation was a new 15m/5m gap or a 5-minute close back above 230 (sic). TTrades
+  says Nick normally trades breaker blocks.'
 category: model
-status: specified
+status: contested
 aliases:
 - edges of the range
 - range trading rule
@@ -16,6 +27,9 @@ preconditions:
 - The instrument has been classified as consolidating (see phases-of-price).
 - The range high and low are marked.
 detection_rules:
+- In a consolidating regime, identify which side's liquidity was just taken; trade toward
+  the other side.
+- 'Entry: structure break with displacement after the sweep; add on retest.'
 - Only look for entries at the range extremes, directed back toward the middle/opposite side.
 - Do not take a trade positioned in the middle of the range aiming to break out of it.
 - Do not enter long above the range high, away from the daily open; the window closes once
@@ -31,30 +45,51 @@ measurable:
 - how often the range EQ is reached from an edge entry
 - frequency of the range low being swept before the range actually resolves lower
 sources:
+- video_id: ES-R3ByDYrY
+  title: TTrades MNQ Cup - Morning Session
+  quote: where was liquidity taken and then trade the opposite way
+- video_id: ES-R3ByDYrY
+  title: TTrades MNQ Cup - Morning Session
+  quote: the 930 open, how it had no wick at the bottom
+- video_id: ES-R3ByDYrY
+  title: TTrades MNQ Cup - Morning Session
+  quote: You you you you will enter right here on the structure break
+- video_id: ES-R3ByDYrY
+  title: TTrades MNQ Cup - Morning Session
+  quote: close above 230 on the 5minute chart
+- video_id: ES-R3ByDYrY
+  title: TTrades MNQ Cup - Morning Session
+  quote: Nick normally trades breaker blocks
 - video_id: bMkRomKEunU
   title: New York Open Live Q&A
 - video_id: wM1s7UivQ08
   title: New York Open Live Q&A
 ambiguities:
+- '''230'' vs the ''260'' level he named earlier is likely a caption or speech slip; prices
+  are NQ point suffixes only.'
+- No definition of 'consolidating market' beyond 'the past month'.
 - '''Edge'' vs ''middle'' has no boundary - the EQ is used as a target but not stated as the
   dividing line.'
 - Interacts with consolidation-range-no-trade, where he says he has no interest at all in
   a consolidating asset; the two are reconciled only by the range being large enough to have
   tradeable edges.
 related:
+- consolidation-sweep-entry
+- relatively-equal-highs-lows
 - consolidation-range-no-trade
 - phases-of-price
 - premium-discount
 - relevant-level
+guest_sources:
+- Nick (co-host)
 timeframes:
   htf:
-  - 1D
-  - 4H
-  ltf:
-  - 1H
+  - 30m
   - 15m
-  - 5m
-  fractal: true
+  ltf:
+  - 3m
+  - 1m
+  fractal: false
 execution:
   bias: Back into the range from the edge.
   entry: At the edge with confirmation; near the daily open or mid-range before the extreme
@@ -66,5 +101,7 @@ execution:
   - equal lows/highs inside the range
 contributing_units:
 - sunday_sessions_live_q_a_03
-draft_count: 1
-voice: ttrades
+- update_20261007_live_01
+draft_count: 2
+voice: guest
+voice_playlist: ttrades

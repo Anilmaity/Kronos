@@ -46,6 +46,7 @@ _last_call = [0.0]
 _blocks = [0]            # consecutive bot/cookie-looking failures
 DELAY = [1.5]            # min seconds between any two outbound requests
 COOKIES_FROM = [""]      # e.g. "chrome" -> yt-dlp --cookies-from-browser chrome
+API_FIRST = [False]      # --api-first: since 2026-10 yt-dlp captions 429 on every IP
 
 BLOCK_PAT = re.compile(r"cookie|not a bot|sign in|blocked|429|too many", re.I)
 
@@ -245,7 +246,7 @@ def fetch_one(v: dict, attempts: int = 3) -> dict:
         # every call to it is a wasted request against the rate limit that is the
         # actual bottleneck. It stays as a fallback because it still succeeds on
         # some videos yt-dlp refuses.
-        for fn in (via_ytdlp, via_api):
+        for fn in ((via_api, via_ytdlp) if API_FIRST[0] else (via_ytdlp, via_api)):
             try:
                 text, src = fn(vid)
                 _write(vid, v, text, src)
@@ -277,8 +278,12 @@ def main() -> int:
                     help="min seconds between outbound requests (global)")
     ap.add_argument("--cookies-from-browser", default="",
                     help="pass a browser name (e.g. chrome) to yt-dlp to clear bot checks")
+    ap.add_argument("--api-first", action="store_true",
+                    help="try youtube-transcript-api before yt-dlp (2026-10: yt-dlp's "
+                         "timedtext route returns 429 on every IP; the API still works)")
     args = ap.parse_args()
     DELAY[0] = args.delay
+    API_FIRST[0] = args.api_first
     COOKIES_FROM[0] = args.cookies_from_browser
 
     vids = load_videos()

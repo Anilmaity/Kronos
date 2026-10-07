@@ -59,6 +59,12 @@ variants:
     market structure video identifies which low that is in trend terms: it is the low that
     made the new high, before price came back and broke it - the pivot whose break ends the
     trend.'
+  - 'Asked when a protected swing fails and price re-sweeps it before continuing in the trend
+    direction, he answers that it usually happens after some significant liquidity has been
+    taken out: price reaches toward the final target, technically fails, re-sweeps the protected
+    swing and then goes. He says he is working on a video and does not know how to explain
+    it mechanically yet. Separately, a protected swing that also forms the candle closure
+    is his ''ideal formation'' (gold example).'
   - 'Two live refinements. First, the mechanical formation rule stated aloud: once price closes
     over the level, that swing is protected - the close is what protects it, and until the
     close happens the low is not protected. Second, a quality filter: a swing whose sweep
@@ -90,6 +96,15 @@ variants:
     a pre-open positional entry.
 
     '
+  - 'Reaffirmed live: a wick into the T-spot does not by itself make a protected swing; it
+    becomes protected only on a closure over the series of down-close candles that made the
+    low. Anticipating that close and trading with a stop beneath is allowed as a reversal-style
+    entry.'
+  - 'Answering why the TTFM indicator on the 3-minute did not mark a protected swing at a
+    visible low: there was no fair value gap, so it does not qualify; he allows that a trader
+    could still choose to use that low discretionarily.
+
+    '
 definition: 'A protected swing is a high or low that is expected to hold while the trend continues;
   it is the model''s invalidation level and, per this unit, the thing entries are actually
   built on. There are three constructions, all of which are ''point of interest, then closure
@@ -113,6 +128,7 @@ aliases:
 - protected swing
 - dot and line
 - protected swing point
+- protected swings turned on
 preconditions:
 - A directional read exists; protected swings are tracked in the direction of trend.
 - 'An identified important level: a swing high/low to be swept, or a fair value gap.'
@@ -196,6 +212,8 @@ detection_rules:
   break is what shifts the trend.
 - 'Daily instance: price trades back into a fair value gap while sweeping the previous day
   low, closes back inside, and that forms the protected low for the following day.'
+- Flag elevated re-sweep risk of a protected swing once significant liquidity has already
+  been taken in the trend direction.
 - A swing becomes protected when price closes over (or under) the level.
 - Before that close, the swing is not protected and is not tradeable as an invalidation.
 - Filter out swings whose sweep is negligible - near-equal highs with barely any reach.
@@ -223,6 +241,9 @@ detection_rules:
   protected swing again - that close is the entry.
 - For a pre-open positional entry the protected swing must already exist before 09:30, with
   all timeframes aligned.
+- Wick into a point of interest alone is not sufficient.
+- Require the 15-minute close over the down-close series that made the low.
+- No fair value gap reached (and no sweep) -> the indicator does not print a protected swing.
 invalidation:
 - Price trades through the protected extreme - the trend read is over.
 - A protected swing that is 'instantly invalidated' after forming signals consolidation or
@@ -348,6 +369,15 @@ sources:
 - video_id: sgAnVR6RSDg
   title: Understanding Market Structure For Trading
   quote: the low that made the new high before price came and broke it
+- video_id: 4rNC3QXxC20
+  title: New York Open Live Q&A
+  quote: When would you expect a protected swing to fail
+- video_id: 4rNC3QXxC20
+  title: New York Open Live Q&A
+  quote: It is when we have taken out some sort of significant liquidity
+- video_id: 4rNC3QXxC20
+  title: New York Open Live Q&A
+  quote: I just don't know how to explain it that mechanically.
 - video_id: NESSCPMzWR0
   title: New York Open Live Q&A
   quote: When this closes over, this swing is protected
@@ -370,6 +400,15 @@ sources:
   title: New York Open Live Q&A
 - video_id: wM1s7UivQ08
   title: New York Open Live Q&A
+- video_id: GRc5FVB5tdg
+  title: New York Open Live Q&A
+  quote: It doesn't automatically make it a protected swing until you get the closure
+- video_id: GRc5FVB5tdg
+  title: New York Open Live Q&A
+  quote: the series of downclo candles that made that low
+- video_id: KBJAGgkXdeI
+  title: New York Open Live Q&A
+  quote: There's no fair value gap, right?
 ambiguities:
 - '''The series of opposing candles that made the extreme'' is judged by eye; in several examples
   he chooses a different candle from the one the mechanical reading would pick, justifying
@@ -419,6 +458,8 @@ ambiguities:
   this unit is the closest the corpus comes and it is still the reader joining them.
 - Whether the close back over must be a body close is not stated.
 - No rule for how many protected swings may be stacked before the original is discarded.
+- '''Significant liquidity'' is not defined; he declines to give a mechanical rule.'
+- He does not use 'double purge' terminology.
 - '''Some sort of reach'' is the filter and is never quantified - no minimum sweep depth in
   points, ticks or fraction of range.'
 - His own indicator marks the shallow case as a protected swing, so the filter is discretionary
@@ -437,6 +478,7 @@ ambiguities:
   quantified; he rejected a live setup on this basis without giving a threshold.'
 - '''Stop on the bodies'' does not specify which bodies.'
 - Whether the retracement into the fair value gap is mandatory or merely typical is not stated.
+- Whether a swept low without any FVG would print on the indicator is not addressed here.
 related:
 - cisd
 - ic-cisd
@@ -465,6 +507,9 @@ related:
 - standard-deviation-projection
 - swing-forming-candle-selection
 - positional-entry-before-open
+- one-minute-premature-entry
+- t-spot
+- ttfm-indicator-settings
 timeframes:
   htf:
   - 1D
@@ -496,5 +541,8 @@ contributing_units:
 - sunday_sessions_live_q_a_02
 - sunday_sessions_live_q_a_03
 - the_foundation_02
-draft_count: 11
+- update_20261007_live_05
+- update_20261007_live_10
+- update_20261007_live_11
+draft_count: 14
 voice: ttrades

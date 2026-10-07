@@ -1,0 +1,60 @@
+id: no-bias-reaction-day
+name: No-Bias Reaction Day (scalp only, wait for the 9:45 15m)
+definition: 'On a day where he states he has no bias - daily and monthly inside/consolidating
+  and the market awaiting an FOMC rate decision - he calls the session a reaction game: wait
+  until 9:45 so that a 15-minute candle has formed, react to which correlated asset reverses
+  or fails, treat anything taken as a scalp (about 2R on the 1-minute), and do not hold for
+  a large expansion. He names exactly two scalp opportunities on the day (ES short, NQ long)
+  and declines both for himself.'
+category: model
+status: underspecified
+preconditions:
+- No higher-timeframe bias (consolidation / inside candles).
+- Scheduled FOMC later in the day.
+detection_rules:
+- Classify the day as no-bias when the daily is an inside day inside a prior inside candle
+  (consolidation).
+- Do not act on the 9:30 open; wait for the 9:30-9:45 15-minute candle to complete.
+- Then read which correlated asset reacts at its level (reaction game).
+- Any trade is a scalp (~2R on 1m); do not hold for expansion.
+measurable:
+- win rate / R of 1m scalps after 9:45 on inside-day pre-FOMC sessions vs normal days
+sources:
+- video_id: 9YVBe-20Hdg
+  title: New York Open Live Q&A
+  quote: days like you don't have a bias. It's just a reaction game
+- video_id: 9YVBe-20Hdg
+  title: New York Open Live Q&A
+  quote: 9:45 cuz that gives us a 15-minute candle that's formed
+- video_id: 9YVBe-20Hdg
+  title: New York Open Live Q&A
+  quote: you're not trying to hold for a huge expansion
+- video_id: 9YVBe-20Hdg
+  title: New York Open Live Q&A
+  quote: If you were scalping, there's two opportunities.
+ambiguities:
+- Conflicts with his own rule in the same stream ('have a bias before you look to trade',
+  see pattern-trading-error); he reconciles it only by calling such trades scalps he personally
+  is not interested in.
+- Stop placement for these scalps is not stated.
+related:
+- pattern-trading-error
+- consolidation
+- fomc-nfp-cpi-only
+- consolidation-open-whipsaw
+timeframes:
+  htf:
+  - 15m
+  ltf:
+  - 1m
+  fractal: false
+execution:
+  bias: Taken from the reaction, not pre-set.
+  entry: 1-minute continuation after the 9:45 15m candle.
+  stop: Not stated.
+  targets:
+  - ~2R
+contributing_units:
+- update_20261007_live_07
+draft_count: 1
+voice: ttrades

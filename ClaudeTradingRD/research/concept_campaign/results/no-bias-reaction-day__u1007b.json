@@ -1,0 +1,258 @@
+{
+ "concept_id": "no-bias-reaction-day",
+ "reading": "u1007b",
+ "testable": true,
+ "test_type": "trade",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "no-bias = scheduled FOMC statement day AND today (18:00->09:45) inside previous day",
+   "decision 09:45 NY after the 09:30-09:45 15m candle closes; direction = that candle's colour (doji dropped)",
+   "entry next M1 open; stop at the 15m candle's opposite extreme; target 2R; max hold 240 min",
+   "control = harness matched random entry (same direction/stop/target geometry, +/-30 d)"
+  ],
+  "params": {
+   "day_roll": "18:00 NY",
+   "min_m1_day": 600,
+   "reaction_candle": "15m 09:30-09:45 NY",
+   "direction": "15m candle close vs open",
+   "stop": "15m candle opposite extreme",
+   "rr": 2.0,
+   "max_hold": "240min",
+   "today_inside": "18:00->09:45 range within prior day H/L",
+   "no_bias_rule": "no-bias = scheduled FOMC statement day AND today (18:00->09:45) inside previous day"
+  }
+ },
+ "params_source": {
+  "day_roll": "method_spec: README trap 8, day rolls 18:00 NY",
+  "min_m1_day": "method_spec: README trap 6, skip stub sessions",
+  "reaction_candle": "corpus: 9YVBe-20Hdg '9:45 cuz that gives us a 15-minute candle that's formed. And that usually tells us what happens'",
+  "direction": "declared-before-run: 'it's just a reaction game' -- correlated-asset read unavailable; gold's own 15m reaction used",
+  "stop": "corpus: 9YVBe-20Hdg 'I put my stop loss on the protected swing' -> the formed 15m candle's opposite extreme",
+  "rr": "corpus: 9YVBe-20Hdg 'You get two R ... if you want to trade the one minute and scalp things'",
+  "max_hold": "corpus: 9YVBe-20Hdg 'you're not trying to hold for a huge expansion'; declared-before-run: flat by 13:45, before the 14:00 FOMC statement",
+  "today_inside": "corpus: 9YVBe-20Hdg 'we're inside day. So inside day inside day pretty much just a consolidation'",
+  "no_bias_rule": "corpus: 9YVBe-20Hdg 'I think the market's just waiting for the rate announcement' / 'I don't really have a bias today ... the market's waiting for a Fed rate'; calendar declared-before-run in time_own_03b/_common.py (federalreserve.gov fomccalendars, every scheduled statement day 2016-2026)"
+ },
+ "n": 29,
+ "span": {
+  "start": "2016-01-27 14:45:00+00:00",
+  "end": "2026-06-17 13:45:00+00:00",
+  "years": 10.385
+ },
+ "avg_R": 0.28719750068037575,
+ "avg_R_gross": 0.3271975006803758,
+ "win_rate": 0.4827586206896552,
+ "pf": 1.5338927897263404,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "n": 145,
+  "avg_R": 0.1408848098192699,
+  "win_rate": 0.42758620689655175,
+  "pf": 1.261839685405479,
+  "sd_R": 1.3393705338165556,
+  "exit_mix": {
+   "stop": 0.47586206896551725,
+   "target": 0.31724137931034485,
+   "time": 0.20689655172413793
+  },
+  "avg_R_gross": 0.1808848098192699,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": 0.14631269086110585,
+ "ci_lo": -0.4368706447202842,
+ "ci_hi": 0.7188888056333216,
+ "ci_method": "phase3_iid",
+ "p": 0.6197243944178772,
+ "halves": {
+  "H1": {
+   "n": 13,
+   "diff": -0.3069385369468387,
+   "ci_lo": -1.0856354986817454,
+   "ci_hi": 0.5142921892239001,
+   "ci_method": "iid",
+   "p": 0.45203927750395856,
+   "start": "2016-01-27 14:45:00+00:00",
+   "end": "2020-07-29 13:45:00+00:00"
+  },
+  "H2": {
+   "n": 16,
+   "diff": 0.5145793134550609,
+   "ci_lo": -0.27093688232096946,
+   "ci_hi": 1.2026978190388855,
+   "ci_method": "iid",
+   "p": 0.17106123230982964,
+   "start": "2021-03-17 13:45:00+00:00",
+   "end": "2026-06-17 13:45:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 8,
+   "diff": -0.07311047626708858,
+   "ci_lo": -1.068230875648307,
+   "ci_hi": 0.9770542870276657,
+   "ci_method": "iid",
+   "p": 0.8885642338742851,
+   "start": "2016-01-27 14:45:00+00:00",
+   "end": "2018-08-01 13:45:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 6,
+   "diff": -0.16755286169536562,
+   "ci_lo": -1.302681411889609,
+   "ci_hi": 1.0524242715006558,
+   "ci_method": "iid",
+   "p": 0.7803358483622811,
+   "start": "2019-06-19 13:45:00+00:00",
+   "end": "2021-03-17 13:45:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 8,
+   "diff": 0.3892317761626423,
+   "ci_lo": -0.6632093911674831,
+   "ci_hi": 1.5098175654291794,
+   "ci_method": "iid",
+   "p": 0.4825943296954756,
+   "start": "2021-06-16 13:45:00+00:00",
+   "end": "2023-06-14 13:45:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 7,
+   "diff": 0.3884878294256907,
+   "ci_lo": -0.7172190484330896,
+   "ci_hi": 1.4504357741317089,
+   "ci_method": "iid",
+   "p": 0.4823481882345203,
+   "start": "2024-03-20 13:45:00+00:00",
+   "end": "2026-06-17 13:45:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.8260249524274187,
+ "mde_threshold": 0.1,
+ "power_floor_n": 1979,
+ "verdict": "UNTESTABLE",
+ "verdict_detail": "n=29 (other arm None) below N_MIN_ANY=30",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 29,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 0.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 23,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "rr",
+    "prev_inside",
+    "fomc"
+   ],
+   "ignored": [],
+   "lookback": "20D",
+   "recent": "1D",
+   "events_fp": "44518c43b06b47e4",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "240min",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": null,
+  "entry_mode": "next_open",
+  "hold_basis": "clock",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "Correlated-asset reaction (ES/NQ/YM) not available; gold's own 15m candle stands in. FOMC calendar: time_own_03b (complete through 2026-07-29; audit fix, was time_own_02b ending 2026-03-18).",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/update_20261007/no-bias-reaction-day.py",
+ "runtime_sec": 0.02,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-10-07T06:21:51+00:00",
+ "n_events_in": 29,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 0,
+  "target_not_beyond_entry": 0,
+  "no_bars_in_hold": 0
+ },
+ "events_fp": "44518c43b06b47e4",
+ "sd_R": 1.4650458398434354,
+ "exit_mix": {
+  "stop": 0.5172413793103449,
+  "target": 0.41379310344827586,
+  "time": 0.06896551724137931
+ },
+ "trades_per_year": 2.79257843395729,
+ "ci_components": {
+  "phase3_iid": [
+   -0.4368706447202842,
+   0.7188888056333216
+  ],
+  "day_block": [
+   -0.3984280960110584,
+   0.7040458162584836
+  ]
+ },
+ "diff_win": 0.05517241379310345,
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 29,
+  "n_clusters": null,
+  "n_eff": 29
+ },
+ "ties": {
+  "real_ambiguous": 0.0,
+  "control_ambiguous": 0.0,
+  "real_gap_stop": 0.0,
+  "control_gap_stop": 0.006896551724137931,
+  "verdict_stop_first": "UNTESTABLE"
+ },
+ "ctrl_overlap": 0.0,
+ "exposure_bars": {
+  "real_mean": 239.72413793103448,
+  "control_mean": 220.71724137931034,
+  "hold_basis": "clock"
+ },
+ "run_id": "1a6729c429b44508bacedb64aa7fa2d5",
+ "hyp_key": "683c3beade1515d3"
+}

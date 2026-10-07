@@ -1,0 +1,218 @@
+{
+ "concept_id": "daily-range-budget",
+ "reading": "u1007b",
+ "testable": true,
+ "test_type": "rate",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "4H closes inside the trading day, futures grid (22/02/06/10/14 NY)",
+   "expected = median H-L of last 3 completed real days; remaining = 1 - running day H-L / expected",
+   "observed rows: remaining >= 0.50; null: same 4H slot on days with remaining < 0.50 within +/-30 d, 5 draws (seeded)",
+   "outcome = the day extends beyond its running high or low by >= 0.25 x expected before the trading day closes",
+   "claim +: with half or more of the range left the day still delivers range"
+  ],
+  "params": {
+   "expected_range": "median H-L of last 3 completed real days",
+   "lookback_days": 3,
+   "day_open": "18:00 NY",
+   "stub_day_min_n_m1": 600,
+   "ext_frac": 0.25,
+   "outcome_window": "decision -> trading-day close",
+   "null_reps": 5,
+   "null_window_days": 30,
+   "grid4h": "futures",
+   "remaining_cut": 0.5
+  }
+ },
+ "params_source": {
+  "expected_range": "corpus: 0AYGNc9czYc 'from the high to the low, 658 points ... 740 ... 540 ... around 600, 500, 600 points' (median declared-before-run, as prior reading)",
+  "lookback_days": "corpus: 0AYGNc9czYc worked example reads three daily candles",
+  "day_open": "session_window_fit: settled 18:00 NY daily roll",
+  "stub_day_min_n_m1": "declared-before-run: skip data-hole stub days (README trap 6)",
+  "ext_frac": "declared-before-run: 9H15ZZvaKPQ 'We could sure expand a little more, but I'm not expecting price to just go send up here' -> 'much' NY range read as a further >= 25% of the expected daily range",
+  "outcome_window": "corpus: 9H15ZZvaKPQ 'use the rest of the range' (within the day)",
+  "null_reps": "method_spec: locked reps=5",
+  "null_window_days": "method_spec: locked window_days=30",
+  "grid4h": "declared-before-run: tUbrCewFdCU example is gold futures (100 points), CME 4H opens 18/22/02/06/10/14 NY",
+  "remaining_cut": "corpus: tUbrCewFdCU 'daily range of these expansion candles around 100 points, you know, we're halfway through it ... we still have a lot of range left'"
+ },
+ "n": 5610,
+ "span": {
+  "start": "2016-01-11 03:00:00+00:00",
+  "end": "2026-07-23 02:00:00+00:00",
+  "years": 10.527
+ },
+ "avg_R": null,
+ "avg_R_gross": null,
+ "win_rate": null,
+ "pf": null,
+ "observed_rate": 0.7001782531194296,
+ "null_rate": 0.6955080213903744,
+ "lift": 1.006714849556615,
+ "control": {
+  "rate": 0.6955080213903744,
+  "reps": 5,
+  "kind": "null array x5"
+ },
+ "diff": 0.00467023172905523,
+ "ci_lo": -0.019002673796797476,
+ "ci_hi": 0.028415329768266034,
+ "ci_method": "phase3_block",
+ "p": 0.6994400873516318,
+ "halves": {
+  "H1": {
+   "n": 2654,
+   "diff": 0.001582516955538793,
+   "ci_lo": -0.03031838733985725,
+   "ci_hi": 0.035958929917115474,
+   "ci_method": "block",
+   "p": 0.9254293591950675,
+   "start": "2016-01-11 03:00:00+00:00",
+   "end": "2020-12-29 15:00:00+00:00"
+  },
+  "H2": {
+   "n": 2956,
+   "diff": 0.007442489851150147,
+   "ci_lo": -0.024715832205673065,
+   "ci_hi": 0.03735284167795316,
+   "ci_method": "block",
+   "p": 0.6383349013223636,
+   "start": "2021-01-07 03:00:00+00:00",
+   "end": "2026-07-23 02:00:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 1394,
+   "diff": -0.03342898134863692,
+   "ci_lo": -0.07434361549497737,
+   "ci_hi": 0.005738880918221945,
+   "ci_method": "block",
+   "p": 0.10177626464122703,
+   "start": "2016-01-11 03:00:00+00:00",
+   "end": "2018-08-22 06:00:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 1401,
+   "diff": 0.04111349036402567,
+   "ci_lo": -0.010745895788721286,
+   "ci_hi": 0.09237330478230063,
+   "ci_method": "block",
+   "p": 0.1180831363310424,
+   "start": "2018-08-24 02:00:00+00:00",
+   "end": "2021-04-12 06:00:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 1570,
+   "diff": -0.008789808917197273,
+   "ci_lo": -0.052745222929933014,
+   "ci_hi": 0.04053503184713676,
+   "ci_method": "block",
+   "p": 0.7118480380198734,
+   "start": "2021-04-12 10:00:00+00:00",
+   "end": "2023-12-01 07:00:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 1245,
+   "diff": 0.02329317269076303,
+   "ci_lo": -0.026839357429717853,
+   "ci_hi": 0.07486345381526119,
+   "ci_method": "block",
+   "p": 0.36929860260517616,
+   "start": "2023-12-05 03:00:00+00:00",
+   "end": "2026-07-23 02:00:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.033889797852875984,
+ "mde_threshold": 0.05,
+ "power_floor_n": 2578,
+ "verdict": "NULL",
+ "verdict_detail": "CI contains 0; powered (MDE 0.0339 <= 0.0500)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 5629,
+  "min_slack_min": 0.0,
+  "passed": true,
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 424,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "day",
+    "slot",
+    "decision_time",
+    "day_close",
+    "expected",
+    "run_hi",
+    "run_lo",
+    "consumed",
+    "available_at"
+   ],
+   "ignored": [],
+   "lookback": "20D",
+   "recent": "1D",
+   "events_fp": "46d924f16ddcf965",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "reps": 5,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "mde_threshold": null,
+  "cluster": null,
+  "outcome_horizon": "1 days 00:00:00",
+  "null_kind": "null array x5"
+ },
+ "notes": "Comparison group = the complementary consumption bucket on nearby days (regime-matched by +/-30 days and same slot), passed as the null array. Predictor known at decision: expected range from completed days, running range from M1 closed by the decision. Outcome is day-level, day-block CI.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/update_20261007/daily-range-budget.py",
+ "runtime_sec": 0.48,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-10-07T06:19:38+00:00",
+ "dropped": {
+  "nan_rows": 19
+ },
+ "null_kind": "null array x5",
+ "events_fp": "46d924f16ddcf965",
+ "predictors_probed": true,
+ "ci_components": {
+  "phase3_block": [
+   -0.019002673796797476,
+   0.028415329768266034
+  ],
+  "day_block": [
+   -0.01435864851564282,
+   0.02427044459415682
+  ]
+ },
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 2252,
+  "n_clusters": null,
+  "n_eff": 2252
+ },
+ "run_id": "abb376680fcb4b7cbbbb69fd5ed14e7b",
+ "hyp_key": "47f4daa4d307811e"
+}

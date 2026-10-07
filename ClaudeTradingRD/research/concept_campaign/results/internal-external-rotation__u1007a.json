@@ -1,0 +1,266 @@
+{
+ "concept_id": "internal-external-rotation",
+ "reading": "u1007a",
+ "testable": true,
+ "test_type": "trade",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "1h bars (18:00 NY day roll). External = 3-bar fractal swing (a high with a lower high each side, mirror), known at the close of its right-hand bar. Internal = 3-bar wick FVG known at its third bar's close; active until a close beyond its far edge, until a C2 has fired at it, or 72 bars old",
+   "C2 (method_spec \u00a73.2): bearish high[j] > high[j-1] AND close[j] < high[j-1]; mirror. C3 closures not used",
+   "leg 1 (internal -> external): bearish C2 whose high reaches an active bearish FVG and closes not above its top -> short at the close (next M1 open), stop = C2 high, target = the most recent confirmed swing low before C2 (the swing low that made the swing high), untaken through C2, below the close, <= 72 bars old; mirror",
+   "leg 2 (external -> internal): bearish C2 that trades above an untaken confirmed swing high (<= 72 bars) -> short, stop = C2 high, target = top of the nearest bullish FVG below that no bar has traded into (bar j included); mirror",
+   "bars firing both directions or both legs are dropped; exit at stop/target or after 600 trading M1 bars",
+   "u1007a: trade_test on leg 1 only"
+  ],
+  "params": {
+   "tf": "1h",
+   "swing": "1/1 (3-bar fractal)",
+   "fvg": "3-bar wick gap",
+   "c2_test": "high>prior high & close<prior high (mirror)",
+   "closure": "C2 only",
+   "target_leg1": "most recent swing before C2",
+   "target_leg2": "near edge of nearest untouched opposite FVG",
+   "stop": "C2 extreme",
+   "lookback_bars": 72,
+   "fvg_life": "until closed through / used by one C2 / 72 bars",
+   "grid4h": "n/a (1h only)",
+   "max_hold": "600min",
+   "hold_basis": "bars"
+  }
+ },
+ "params_source": {
+  "tf": "corpus: vMq1l8Zzzjw example 2 'We now have internal liquidity here on the hourly chart'; declared-before-run",
+  "swing": "corpus: vMq1l8Zzzjw 'we have a candle with a lower high on each side' (3-bar fractal, method_spec \u00a71.1)",
+  "fvg": "corpus: vMq1l8Zzzjw 'the wick of candle one does not overlap with the wick of candle three'",
+  "c2_test": "method_spec: \u00a73.2 C2 test (bearish high[i]>high[i-1] AND close[i]<high[i-1]); corpus vMq1l8Zzzjw 'a candle two closure at a fair value gap'",
+  "closure": "declared-before-run: draft ambiguity - C3 closure mentioned, only C2 cases shown; claim names C2",
+  "target_leg1": "corpus: vMq1l8Zzzjw 'always simply going to be the swing low that made the swing high'",
+  "target_leg2": "corpus: vMq1l8Zzzjw 'reach back up into that fair value gap' -> near edge; 'a mitigated FVG is no longer the draw' (library rule)",
+  "stop": "method_spec: \u00a75 stop is the protected swing = C2's extreme",
+  "lookback_bars": "corpus: relevant-swing-lookback 'hourly chart -> three days' (method_spec \u00a71.1)",
+  "fvg_life": "declared-before-run: his example 1 has the C2 one candle AFTER the first reach into the FVG, so a touched FVG stays active until closed through (IFVG test) or used",
+  "grid4h": "declared-before-run: no 4h bars read",
+  "max_hold": "phase3: 10 entry-TF periods hold convention",
+  "hold_basis": "declared-before-run: README trap 7 - 10h holds cross halts"
+ },
+ "n": 4755,
+ "span": {
+  "start": "2016-01-04 02:00:00+00:00",
+  "end": "2026-07-22 21:00:00+00:00",
+  "years": 10.546
+ },
+ "avg_R": 0.017451828318990746,
+ "avg_R_gross": 0.05745182831899077,
+ "win_rate": 0.4035751840168244,
+ "pf": 1.0286183490019678,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "n": 23775,
+  "avg_R": -0.035574112276663,
+  "win_rate": 0.3916298633017876,
+  "pf": 0.9430280708516275,
+  "sd_R": 1.7289626940127352,
+  "exit_mix": {
+   "stop": 0.5922187171398527,
+   "target": 0.36021030494216616,
+   "time": 0.047570977917981074
+  },
+  "avg_R_gross": 0.004425887723337017,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": 0.05302594059565375,
+ "ci_lo": -0.0007328336256976802,
+ "ci_hi": 0.10939781269763212,
+ "ci_method": "phase3_iid",
+ "p": 0.059109855598942745,
+ "halves": {
+  "H1": {
+   "n": 2223,
+   "diff": 0.06573860173423042,
+   "ci_lo": -0.01741307272092311,
+   "ci_hi": 0.15562102958595697,
+   "ci_method": "iid",
+   "p": 0.1364222352474229,
+   "start": "2016-01-04 02:00:00+00:00",
+   "end": "2020-12-31 09:00:00+00:00"
+  },
+  "H2": {
+   "n": 2532,
+   "diff": 0.041864706112614315,
+   "ci_lo": -0.03177387740295265,
+   "ci_hi": 0.11049649015328353,
+   "ci_method": "iid",
+   "p": 0.2487116627053886,
+   "start": "2021-01-04 05:00:00+00:00",
+   "end": "2026-07-22 21:00:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 1165,
+   "diff": 0.09817714277222475,
+   "ci_lo": -0.021134227390402917,
+   "ci_hi": 0.2191711078701162,
+   "ci_method": "iid",
+   "p": 0.1092677520335845,
+   "start": "2016-01-04 02:00:00+00:00",
+   "end": "2018-08-22 05:00:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 1176,
+   "diff": 0.012680543649097174,
+   "ci_lo": -0.09873913580047151,
+   "ci_hi": 0.1250088938809912,
+   "ci_method": "iid",
+   "p": 0.8241929641471496,
+   "start": "2018-08-22 16:00:00+00:00",
+   "end": "2021-04-12 04:00:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 1219,
+   "diff": 0.02879837803255489,
+   "ci_lo": -0.07171771045852067,
+   "ci_hi": 0.14677711565731577,
+   "ci_method": "iid",
+   "p": 0.6053934226947386,
+   "start": "2021-04-14 15:00:00+00:00",
+   "end": "2023-12-01 20:00:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 1195,
+   "diff": 0.07342630464407453,
+   "ci_lo": -0.030639164650874302,
+   "ci_hi": 0.1729825137974223,
+   "ci_method": "iid",
+   "p": 0.1574992595489363,
+   "start": "2023-12-04 04:00:00+00:00",
+   "end": "2026-07-22 21:00:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.07871072294688726,
+ "mde_threshold": 0.1,
+ "power_floor_n": 2946,
+ "verdict": "NULL",
+ "verdict_detail": "CI contains 0; powered (MDE 0.0787 <= 0.1000)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 4755,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 4380.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 347,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "target_px"
+   ],
+   "ignored": [],
+   "lookback": "20D",
+   "recent": "1D",
+   "events_fp": "3e50c5ce80f56139",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "600min",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": null,
+  "entry_mode": "next_open",
+  "hold_basis": "bars",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "New-claim reading (update_20261007_edu_03); prior readings a/b untouched. Entry/stop at the C2 close/extreme: a stop at a fresh candle extreme is the campaign's known stop-placement confound (Concept Campaign lesson 1), and cost is the harness default, so read any differential with that in mind.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/update_20261007/internal-external-rotation.py",
+ "runtime_sec": 0.73,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-10-07T06:40:17+00:00",
+ "n_events_in": 4771,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 11,
+  "target_not_beyond_entry": 5,
+  "no_bars_in_hold": 0
+ },
+ "events_fp": "3e50c5ce80f56139",
+ "sd_R": 1.7565119481416038,
+ "exit_mix": {
+  "stop": 0.5789695057833859,
+  "target": 0.3762355415352261,
+  "time": 0.044794952681388014
+ },
+ "trades_per_year": 450.87324766355135,
+ "ci_components": {
+  "phase3_iid": [
+   -0.0007328336256976802,
+   0.10939781269763212
+  ],
+  "day_block": [
+   0.001402649187574049,
+   0.10769989030045163
+  ]
+ },
+ "diff_win": 0.011945320715036789,
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 2386,
+  "n_clusters": null,
+  "n_eff": 2386
+ },
+ "ties": {
+  "real_ambiguous": 0.0006309148264984228,
+  "control_ambiguous": 0.0010094637223974764,
+  "real_gap_stop": 0.016403785488958992,
+  "control_gap_stop": 0.014847528916929548,
+  "verdict_stop_first": "NULL"
+ },
+ "ctrl_overlap": 0.04033648790746583,
+ "exposure_bars": {
+  "real_mean": 599.9503680336488,
+  "control_mean": 599.9429652996845,
+  "hold_basis": "bars"
+ },
+ "run_id": "5e66b8c475ab4149978b6220d84f8490",
+ "hyp_key": "e8051cd3812f1729"
+}

@@ -1,0 +1,264 @@
+{
+ "concept_id": "ttfm-favorite-daily-4h-15m",
+ "reading": "u1007a",
+ "testable": true,
+ "test_type": "trade",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "bias: the previous complete session (>=600 M1) is a daily C2: low < prior-day low and close > it (bull); mirror bear; two-sided skipped",
+   "4h (forex grid, NY, DST): a same-direction 4h C2 (low < previous 4h low, close > it; mirror) whose candle opens at 21:00 or 01:00 NY (the London-model reversal candle)",
+   "failure swing: the C2's extreme does not exceed the highest high (bear) / lowest low (bull) of the 4h bars since the most recent 2/2 4h swing confirmed before C2 opened; a failure-swing C2 is kept only with 4h SMT: silver (XAG H1 on gold's 4h bar span) took its own corresponding high/low during the C2 candle; missing silver = dropped",
+   "inside 4h C3 (the next 4h candle): first 15m CISD in that direction, confirmed in C3, extreme formed in C3 (intra-candle CISD), extreme holding the upper (bull) / lower (bear) half of the C2 range",
+   "enter next M1 open after the 15m confirm close; stop = protected swing; 2R; time exit at the close of the 4h candle after C3",
+   "control: matched random entries, NY clock held within +-30 min",
+   "not applied: the deep-15m-run SMT gate (needs 15m silver; 'very deep' unquantified), the daily-range-left wick allowance (eyeballed 100 pt), daily C3 bias"
+  ],
+  "params": {
+   "daily_bias": "previous session daily C2",
+   "grid4h": "forex",
+   "c2_open_hours_ny": [
+    21,
+    1
+   ],
+   "h4_c2": "sweep previous 4h extreme, close back inside",
+   "failure_swing": "C2 extreme not beyond the 4h extreme since the last confirmed 2/2 swing",
+   "smt": "XAG_USD H1 aggregated to gold 4h bar spans; silver takes its reference extreme",
+   "half_rule": "15m CISD extreme holds the upper (bull) / lower (bear) half of the 4h C2",
+   "cisd": "15m, series_open, swing 2/2, max_wait 3; first per 4h C3, extreme in C3",
+   "rr": 2.0,
+   "max_hold": "per-row: until the close of the 4h candle after C3",
+   "ctrl_tod_tol_min": 30
+  }
+ },
+ "params_source": {
+  "daily_bias": "corpus: tUbrCewFdCU 'using a candle two or a candle three closure' (C2 kept as in the library reading; C3 not part of the new claim)",
+  "grid4h": "corpus: tUbrCewFdCU 'the timings will be off by an hour due to their higher time frame opens'; session_window_fit: forex grid for gold, knob recorded",
+  "c2_open_hours_ny": "corpus: tUbrCewFdCU 'usually the 2200 candle or the 2:00 a.m. candle' (forex = one hour earlier)",
+  "h4_c2": "corpus: tUbrCewFdCU 'swept out its previous candle and then close below'",
+  "failure_swing": "corpus: tUbrCewFdCU 'it did fail to take out this previous high'; phase3: locked 2/2 swing",
+  "smt": "corpus: tUbrCewFdCU 'I would prefer there to be SMT here'; correlate held at H1 only (smt-divergence u1007a precedent)",
+  "half_rule": "corpus: zJLaABC_hM8 'The lower half of this 4-hour candle' (library reading)",
+  "cisd": "phase3: locked CISD config; corpus: tUbrCewFdCU 'waiting for the intra-candle change in the state of delivery'",
+  "rr": "corpus: tUbrCewFdCU 'Right there we hit our 2R'",
+  "max_hold": "corpus: tUbrCewFdCU 'hold this for the duration of this higher time frame candle and potentially even the next'",
+  "ctrl_tod_tol_min": "declared-before-run: README trap 9; events are confined by construction to the 01:00-13:00 NY C3/C4 span, and the source puts the edge in the HTF wick alignment, not the clock ('I don't really care too much about kill zones')"
+ },
+ "n": 13,
+ "span": {
+  "start": "2018-02-16 12:45:00+00:00",
+  "end": "2026-04-08 10:15:00+00:00",
+  "years": 8.137
+ },
+ "avg_R": -0.43390636354198986,
+ "avg_R_gross": -0.39390636354198993,
+ "win_rate": 0.23076923076923078,
+ "pf": 0.45761704557251276,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "n": 65,
+  "avg_R": -0.11651863676315499,
+  "win_rate": 0.3076923076923077,
+  "pf": 0.8347763068732601,
+  "sd_R": 1.371501762147178,
+  "exit_mix": {
+   "stop": 0.6615384615384615,
+   "target": 0.2923076923076923,
+   "time": 0.046153846153846156
+  },
+  "avg_R_gross": -0.07651863676315497,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": -0.31738772677883487,
+ "ci_lo": -1.0789361511596651,
+ "ci_hi": 0.5451572718779207,
+ "ci_method": "day_block",
+ "p": 0.4436464529858052,
+ "halves": {
+  "H1": {
+   "n": 6,
+   "diff": -0.7188259109311717,
+   "ci_lo": -1.3,
+   "ci_hi": -0.037321749887534755,
+   "ci_method": "iid",
+   "p": 0.025643872366451922,
+   "start": "2018-02-16 12:45:00+00:00",
+   "end": "2020-10-26 11:30:00+00:00"
+  },
+  "H2": {
+   "n": 7,
+   "diff": 0.026702145351739426,
+   "ci_lo": -1.0875835689339748,
+   "ci_hi": 1.1945323465824056,
+   "ci_method": "iid",
+   "p": 0.9634174174146194,
+   "start": "2022-05-19 11:30:00+00:00",
+   "end": "2026-04-08 10:15:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 1,
+   "start": "2018-02-16 12:45:00+00:00",
+   "end": "2018-02-16 12:45:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 5,
+   "diff": -1.08,
+   "ci_lo": -1.4400000000000002,
+   "ci_hi": -0.72,
+   "ci_method": "iid",
+   "p": 4.1053425476534724e-09,
+   "start": "2019-01-17 07:15:00+00:00",
+   "end": "2020-10-26 11:30:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 3,
+   "diff": 0.062305005820722584,
+   "ci_lo": -1.675389988358555,
+   "ci_hi": 2.0,
+   "ci_method": "iid",
+   "p": 0.9470192450141242,
+   "start": "2022-05-19 11:30:00+00:00",
+   "end": "2022-10-21 11:30:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 4,
+   "diff": 2.0539125955565396e-15,
+   "ci_lo": -1.199999999999994,
+   "ci_hi": 1.350000000000004,
+   "ci_method": "iid",
+   "p": 0.9999999999999974,
+   "start": "2025-05-29 06:30:00+00:00",
+   "end": "2026-04-08 10:15:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 1.1607447311738266,
+ "mde_threshold": 0.1,
+ "power_floor_n": 1752,
+ "verdict": "UNTESTABLE",
+ "verdict_detail": "n=13 (other arm None) below N_MIN_ANY=30",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 13,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 0.0
+  },
+  "probe": {
+   "sampled": 13,
+   "n_targeted": 13,
+   "n_cuts": 200,
+   "events_compared": 15,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "rr",
+    "max_hold",
+    "fail_swing",
+    "c2_hour"
+   ],
+   "ignored": [],
+   "lookback": "20D",
+   "recent": "1D",
+   "events_fp": "221d869b7aa7441b",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "per-row column",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": 30,
+  "entry_mode": "next_open",
+  "hold_basis": "clock",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "London-window + 4h failure-swing SMT version of the library reading (ttfm-favorite-daily-4h-15m.json, UNDERPOWERED n=242). Events 13, failure-swing C2s kept with SMT 3; median stop 4.30 pt, 7.7% under 1 pt. Control matches stop distance, not placement at a fresh extreme (campaign lesson 1). Deep-15m-run SMT not applied (no 15m silver).",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/update_20261007/ttfm-favorite-daily-4h-15m.py",
+ "runtime_sec": 0.06,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-10-07T06:38:57+00:00",
+ "n_events_in": 13,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 0,
+  "target_not_beyond_entry": 0,
+  "no_bars_in_hold": 0
+ },
+ "events_fp": "221d869b7aa7441b",
+ "sd_R": 1.181662462829169,
+ "exit_mix": {
+  "stop": 0.7692307692307693,
+  "target": 0.15384615384615385,
+  "time": 0.07692307692307693
+ },
+ "trades_per_year": 1.5976615074024225,
+ "ci_components": {
+  "phase3_iid": [
+   -0.9549555924489286,
+   0.43591159838482235
+  ],
+  "day_block": [
+   -1.0789361511596651,
+   0.5451572718779207
+  ]
+ },
+ "diff_win": -0.07692307692307693,
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 13,
+  "n_clusters": null,
+  "n_eff": 13
+ },
+ "ties": {
+  "real_ambiguous": 0.0,
+  "control_ambiguous": 0.0,
+  "real_gap_stop": 0.0,
+  "control_gap_stop": 0.0,
+  "verdict_stop_first": "UNTESTABLE"
+ },
+ "ctrl_overlap": 0.0,
+ "exposure_bars": {
+  "real_mean": 358.6923076923077,
+  "control_mean": 360.7076923076923,
+  "hold_basis": "clock"
+ },
+ "run_id": "cefd2ae375074d91b67aa3c5b0487add",
+ "hyp_key": "340bcb99a79cfb2e"
+}

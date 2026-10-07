@@ -1,0 +1,275 @@
+{
+ "concept_id": "upper-half-eq-expansion-filter",
+ "reading": "u1007b",
+ "testable": true,
+ "test_type": "gate",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "A = complete 5m candle, body >= 50% of range, close in bottom 25% (bearish expansion; bull mirror top 25%)",
+   "B = next contiguous complete 5m candle closing opposite to A (the reaction); decide at B's close; trade against A",
+   "stop = B.low (long) / B.high (short); 2R; hold 50min",
+   "gate: B took out A's low (high) AND B's M1 low minute came before its M1 high minute (high before low for shorts); tie -> fail"
+  ],
+  "params": {
+   "htf": "5min",
+   "expansion": "see rules",
+   "reaction": "see rules",
+   "gate": "see rules",
+   "rr": 2.0,
+   "max_hold": "50min",
+   "full_bars": true
+  }
+ },
+ "params_source": {
+  "htf": "corpus: 9H15ZZvaKPQ 'this is a fivem minute' (the candles discussed are 5m)",
+  "expansion": "corpus: 9H15ZZvaKPQ 'This is kind of a bearish expansion candle. Usually we'll close in the low' -> declared-before-run body >= 0.5 range, close in bottom 25%",
+  "reaction": "corpus: 9H15ZZvaKPQ 'And then you have a bullish reaction' -> B closes bullish",
+  "gate": "corpus: 9H15ZZvaKPQ 'go lower first, right? Take out the previous candle's low. And then you have a bullish reaction' + 'it pointed its upper wick first which is more bearish'",
+  "rr": "corpus: library YAML execution '2R (stated in the 4th-day example)'",
+  "max_hold": "phase3: 10 entry-TF bars (meta/conjunction_preregistration.md \u00a71.8-1.16) = 10 x 5m",
+  "full_bars": "declared-before-run: complete bars only (n_m1 == minutes), README trap 6"
+ },
+ "n": 69610,
+ "span": {
+  "start": "2016-01-03 23:45:00+00:00",
+  "end": "2026-07-23 03:55:00+00:00",
+  "years": 10.549
+ },
+ "avg_R": -0.03037651278033975,
+ "avg_R_gross": 0.009623487219660278,
+ "win_rate": 0.3654790978307714,
+ "pf": 0.9521967560562334,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "avg_R_gated": -0.03900674582882244,
+  "avg_R_complement": -0.048753261136271646,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": -0.03245144224330068,
+ "ci_lo": -0.04850809921674583,
+ "ci_hi": -0.01563552592352539,
+ "ci_method": "phase3_iid",
+ "p": 0.00010896500458557653,
+ "halves": {
+  "H1": {
+   "n": 54396,
+   "diff": -0.04252383083705016,
+   "ci_lo": -0.06906251400285783,
+   "ci_hi": -0.018196372377971712,
+   "ci_method": "iid",
+   "p": 0.0010490169398066867,
+   "start": "2016-01-03 23:45:00+00:00",
+   "end": "2020-12-31 20:40:00+00:00",
+   "n_gated": 28564
+  },
+  "H2": {
+   "n": 73449,
+   "diff": -0.02379915903204998,
+   "ci_lo": -0.04708113001858636,
+   "ci_hi": -0.003113281365275354,
+   "ci_method": "block",
+   "p": 0.03385452023437157,
+   "start": "2021-01-03 23:40:00+00:00",
+   "end": "2026-07-23 03:55:00+00:00",
+   "n_gated": 41046
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 26304,
+   "diff": -0.060831551459756966,
+   "ci_lo": -0.09706476297277601,
+   "ci_hi": -0.022647009479432056,
+   "ci_method": "iid",
+   "p": 0.001354008353444108,
+   "start": "2016-01-03 23:45:00+00:00",
+   "end": "2018-08-22 10:15:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 31937,
+   "diff": -0.031607942300324376,
+   "ci_lo": -0.064275333531804,
+   "ci_hi": 0.0022825974034317983,
+   "ci_method": "iid",
+   "p": 0.06266667018274143,
+   "start": "2018-08-22 11:45:00+00:00",
+   "end": "2021-04-12 08:35:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 36067,
+   "diff": -0.0032807665537657148,
+   "ci_lo": -0.03350362723327108,
+   "ci_hi": 0.02597873818631114,
+   "ci_method": "iid",
+   "p": 0.8288281677793032,
+   "start": "2021-04-12 08:55:00+00:00",
+   "end": "2023-12-01 21:55:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 33537,
+   "diff": -0.041063339346746684,
+   "ci_lo": -0.07160828892162646,
+   "ci_hi": -0.011482990576066067,
+   "ci_method": "iid",
+   "p": 0.007424809969036003,
+   "start": "2023-12-03 23:55:00+00:00",
+   "end": "2026-07-23 03:55:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.023494132608988475,
+ "mde_threshold": 0.1,
+ "power_floor_n": 3215,
+ "verdict": "NEGATIVE",
+ "verdict_detail": "CI excludes 0 against the claim (+)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 127845,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "gate_mask_checked": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 6.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 9174,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "rr",
+    "gate"
+   ],
+   "ignored": [],
+   "lookback": "5D",
+   "recent": "1D",
+   "events_fp": "0736d72527a4c3ec",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "50min",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": null,
+  "entry_mode": "next_open",
+  "hold_basis": "clock",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "TTrades live Q&A 9H15ZZvaKPQ refinement; gate firing rate 0.544 on 128348 events. Prior readings __a/__b untouched.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/update_20261007/upper-half-eq-expansion-filter.py",
+ "runtime_sec": 5.3,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-10-07T06:17:59+00:00",
+ "n_events_in": 128348,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 271,
+  "target_not_beyond_entry": 0,
+  "no_bars_in_hold": 232
+ },
+ "n_complement": 58235,
+ "gate_firing_rate": 0.5444874652899996,
+ "events_fp": "0736d72527a4c3ec",
+ "mask_fp": "30b377312a8bae8a",
+ "mask_col": "gate",
+ "exit_mix": {
+  "stop": 0.5958626634104295,
+  "target": 0.27879614997845137,
+  "time": 0.1253411866111191
+ },
+ "gated_vs_own_control": {
+  "diff": 0.008630233048482688,
+  "ci_lo": -0.002529217879410263,
+  "ci_hi": 0.019300490504142537,
+  "p": 0.12120921415254073
+ },
+ "complement": {
+  "n": 58235,
+  "avg_R": -0.007671585844488281,
+  "win_rate": 0.3635614321284451,
+  "pf": 0.9881129390989883,
+  "sd_R": 1.3715555930793815,
+  "exit_mix": {
+   "stop": 0.6091697432815317,
+   "target": 0.30538336052202286,
+   "time": 0.08544689619644544
+  },
+  "vs_own_control": {
+   "diff": 0.041081675291783366,
+   "ci_lo": 0.02931332739018789,
+   "ci_hi": 0.05329119047600778,
+   "p": 1.86680330804414e-11
+  }
+ },
+ "ci_components": {
+  "phase3_iid": [
+   -0.04850809921674583,
+   -0.01563552592352539
+  ],
+  "day_block": [
+   -0.04777356614134768,
+   -0.01625543453060502
+  ]
+ },
+ "diff_meaning": "mean(R-ctrl | gated) - mean(R-ctrl | complement)",
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_eff_gated": 2722,
+  "n_eff_complement": 2719,
+  "n_eff": 2719
+ },
+ "ties": {
+  "real_ambiguous": 0.007423051351245649,
+  "control_ambiguous": 0.01697367906449216,
+  "real_gap_stop": 0.019453244162853454,
+  "control_gap_stop": 0.016548163792091987,
+  "gated_excess": -0.0063036919982761095,
+  "complement_excess": -0.013431785009015198,
+  "verdict_stop_first": "NEGATIVE"
+ },
+ "ctrl_overlap": 0.08803629394970472,
+ "exposure_bars": {
+  "real_mean": 48.972982908991355,
+  "control_mean": 48.75571825257148,
+  "hold_basis": "clock"
+ },
+ "run_id": "d8c61db4ec3649e3b0c0eb9bb65a8b67",
+ "hyp_key": "f7367cd19e06b631"
+}

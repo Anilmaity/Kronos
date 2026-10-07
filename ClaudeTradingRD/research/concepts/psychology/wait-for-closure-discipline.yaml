@@ -1,36 +1,71 @@
 id: wait-for-closure-discipline
 name: Backtest-to-Live Gap Comes From Acting Before the Candle Closes
-definition: 'His stated single most common diagnosis for a trader who backtests well and loses
-  live: in the backtest every candle is already closed, so the rules are applied to closed
-  candles; live, the trader acts on a still-forming candle and anticipates a closure that
-  never happens. The corrective is to wait for the actual closure in live trading, exactly
-  as the backtest did.'
+definition: 'Repeated live at Nick when he entered on the 15-second before the 5-minute candle
+  closed: wait for the five-minute closure; only once the 5-minute closes does a valid model
+  exist.'
+variants:
+  definition:
+  - 'His stated single most common diagnosis for a trader who backtests well and loses live:
+    in the backtest every candle is already closed, so the rules are applied to closed candles;
+    live, the trader acts on a still-forming candle and anticipates a closure that never happens.
+    The corrective is to wait for the actual closure in live trading, exactly as the backtest
+    did.'
+  - 'Restated with a second cause: besides acting on unclosed candles, live traders actively
+    manage trades (moving the stop) whereas in backtests they skip forward to stop or target.
+    Remedy: stop interfering with trades and wait for closures.'
 category: psychology
-status: specified
+status: contested
+preconditions:
+- n/a
 detection_rules:
+- No entry on the execution timeframe until the paired higher-timeframe candle has closed.
 - Every rule in the model is evaluated on a closed candle of the relevant timeframe.
 - A still-forming candle produces no signal, however it currently looks.
 - The same closure discipline must hold in backtest and live, or the two are not measuring
   the same system.
+- Evaluate rules on closed candles only.
+- Do not move the stop or intervene between entry and stop/target, mirroring the backtest.
+invalidation:
+- n/a
 measurable:
+- win rate of pre-close vs post-close entries
 - difference in signal count and expectancy between a closed-bar detector and one allowed
   to fire intrabar
 sources:
+- video_id: h1ZQWWQDhKA
+  title: TTrades MNQ Cup - Afternoon Session
+  quote: Wait for a five minute closure, bro.
+- video_id: h1ZQWWQDhKA
+  title: TTrades MNQ Cup - Afternoon Session
+  quote: Now we got a fivem minute closure. See, now you actually have a valid model
 - video_id: xraklBJHW5k
   title: New York Open Live Q&A
   quote: you wait for closures in back testing
+- video_id: uW55Tuk-ngY
+  title: New York Open Live Q&A
+  quote: Stop messing with your trades. Wait for your closures.
 ambiguities:
+- Speaker attribution by turn-taking (Nick is the one entering).
 - The intracandle CISD (ic-cisd) is an explicit exception in his own model - it fires inside
   a higher-timeframe candle - so 'wait for the closure' means the closure of the timeframe
   the rule is written on, not of every timeframe.
 - He also says elsewhere to reverse engineer before ever backtesting, but does not define
   what reverse engineering means procedurally.
 related:
+- indicator-print-conditions
 - ic-cisd
 - wick-trust-test
 - time-based-exit-htf-close
 - pattern-trading-error
+timeframes:
+  htf:
+  - 5m
+  ltf:
+  - 15s
+  fractal: true
 contributing_units:
 - live_streams_01
-draft_count: 1
+- update_20261007_live_02
+- update_20261007_live_06
+draft_count: 3
 voice: ttrades

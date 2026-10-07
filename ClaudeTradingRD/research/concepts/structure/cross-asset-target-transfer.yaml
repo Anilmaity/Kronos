@@ -1,11 +1,21 @@
 id: cross-asset-target-transfer
-name: Take Profit On One Asset When The Correlated Asset Hits Its Target
-definition: 'Corroborated in TTrades'' own voice in the dedicated SMT lesson: when he is positioned
-  in ES and the level he actually cares about is on NASDAQ, he exits the ES position at the
-  moment NASDAQ tags that level. In the worked example NASDAQ takes the lows at 8:35, creating
-  an SMT at the lows, and that SMT - on the OTHER instrument - is what closes the ES short.'
+name: Cross-Asset Target Transfer
 variants:
+  name:
+  - Take Profit On One Asset When The Correlated Asset Hits Its Target
   definition:
+  - 'Index version stated as a general rule: the strongest asset''s reaction level is the
+    target for the weakest. In the example YM (stronger, already expanded, consolidating)
+    is watched for its previous day low; the moment YM hits its previous day low is the exit
+    on the NQ short, because NQ (weakest) is expected to expand to catch up. NQ retraced from
+    there.
+
+    '
+  - 'Corroborated in TTrades'' own voice in the dedicated SMT lesson: when he is positioned
+    in ES and the level he actually cares about is on NASDAQ, he exits the ES position at
+    the moment NASDAQ tags that level. In the worked example NASDAQ takes the lows at 8:35,
+    creating an SMT at the lows, and that SMT - on the OTHER instrument - is what closes the
+    ES short.'
   - 'A target that exists on a *different* instrument''s chart. In the Je7cd9HJUBE session
     NQ has already run past every level on its own chart, so he sets the NQ exit by reference
     to ES: ES still has an unswept low, and the moment ES takes that low is the moment to
@@ -15,15 +25,27 @@ variants:
     He sets a price alert on the *other* chart to implement it.
 
     '
+definition: 'FX version of the rule: he is bullish the dollar into a daily gap, which frames
+  bearish continuations on EUR and GBP (he prefers GBP). A GBP/EUR short can be held until
+  DXY reaches that gap - a good profit-taking target - or, it being an expansion day, generally
+  until the close.
+
+  '
 category: structure
 status: contested
 aliases:
+- hold the pound short until the dollar hits its gap
 - the target isn't on this chart
 - ES hits its low, that's the target on NQ
 preconditions:
 - Two correlated instruments, one leading and one lagging.
 - The traded instrument has no remaining level of its own in the direction of the trade.
 detection_rules:
+- Mark the DXY draw (daily gap) before the open.
+- Exit GBPUSD/EURUSD shorts when DXY tags that draw; otherwise on an expansion day hold to
+  the close.
+- Rank the indices; mark the previous day low (short case) on the strongest asset.
+- Short the weakest asset; exit when the strongest asset tags its previous day low.
 - Identify the objective level on the correlated instrument, not only on the traded one.
 - Exit the traded instrument when the correlated instrument tags that level.
 - An SMT forming at that moment (one asset takes the level, the other does not) is the specific
@@ -37,10 +59,27 @@ invalidation:
 - The correlated instrument stops advancing toward its level — the transfer target is stale
   and the time-based exit governs.
 measurable:
+- R of GBP shorts exited at DXY target vs at the close.
+- give-back on NQ after YM tags its previous day low vs holding
 - realised R exiting on the correlated asset's tag vs holding for the traded asset's own level
 - give-back after the correlated-level exit versus holding
 - how often the traded asset turns within N bars of the correlated asset tagging its level
 sources:
+- video_id: KBJAGgkXdeI
+  title: New York Open Live Q&A
+  quote: So that would frame any sort of bearish continuation on euro or pound
+- video_id: KBJAGgkXdeI
+  title: New York Open Live Q&A
+  quote: you can hold until the dollar hits that level a good profit taking target
+- video_id: KBJAGgkXdeI
+  title: New York Open Live Q&A
+  quote: can generally hold till the close.
+- video_id: wa9m30UHrm0
+  title: New York Open Live Q&A
+  quote: you can use the strongest one to consider a target on the not strongest one
+- video_id: wa9m30UHrm0
+  title: New York Open Live Q&A
+  quote: YM hit previous day low. This would be my target on NQ.
 - video_id: q1NmxUTm4n4
   title: SMT Divergence - ICT Concepts
   quote: sometimes I will use Nasdaq hitting price targets as my price target for ES
@@ -48,12 +87,19 @@ sources:
   title: New York Open Live Q&A
   quote: you can take profit on one asset because the other asset hits a target
 ambiguities:
+- Which 'close' (session or daily) is meant is not stated.
+- Strongest/weakest here is judged by expansion beyond the previous day low; the labels then
+  flip within the same session (see relative-strength-weakness).
 - '''Sometimes'' - no rule says when this substitution applies.'
 - Which correlated instrument supplies the transferred target is chosen by eye from the strength
   ranking; no rule is given when two lag.
 - Whether the exit is on the tag or on a reaction at that level is not stated.
 - The technique is demonstrated on index futures only; nothing is said about metals or FX.
 related:
+- intermarket-correlation-not-used
+- currency-pairing-opposition
+- relative-strength-weakness
+- intraday-reversal
 - smt-divergence
 - relative-strength-asset-selection
 - target-liquidity-and-imbalances
@@ -62,13 +108,14 @@ related:
 - ten-am-candle-alignment
 timeframes:
   htf:
-  - 15m
+  - 1D
   ltf:
-  - 2m
-  - 1m
-  fractal: true
+  - 5m
+  fractal: false
 contributing_units:
 - education_ict_02
 - live_streams_02
-draft_count: 2
+- update_20261007_live_11
+- update_20261007_live_13
+draft_count: 4
 voice: ttrades

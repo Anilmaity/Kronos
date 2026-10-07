@@ -1,19 +1,8 @@
 id: prop-firm-drawdown-sizing
 name: Prop Firm Sizing Off The Drawdown
-definition: 'The one place in this unit where TTrades states a risk principle in his own words,
-  and the guest had just stated its arithmetic counterpart. Trader T''s version: on a prop
-  account you only have the drawdown to play with, so hitting the profit target is effectively
-  doubling the money you actually control. TTrades'' version, offered immediately after and
-  in his own framing: a 25,000 dollar account with a 1,500 dollar drawdown is treated by most
-  people as a 25,000 dollar account when in reality it is a 1,500 dollar account. Trader T''s
-  implementation follows from it - he risks 0.5 percent per trade on funded accounts (having
-  previously used 1 percent and found it too aggressive when only 10 percent of the balance
-  is available), averages roughly 3-7 percent a month on them, and deliberately pushes risk
-  up to about 1 percent during a challenge to get it passed. He was funded with 400k at FTMO
-  plus 300k at a second firm, about 700k total.
-
-  '
 variants:
+  name:
+  - Prop Firm Drawdown Sizing
   definition:
   - 'The only place in this unit where risk per trade is given as a number. He frames evaluation
     sizing as a money-versus-time trade-off and gives three tiers as a percentage of the account''s
@@ -36,6 +25,12 @@ variants:
     on the capital genuinely at risk. He applies the same lens to cost, totalling evaluation
     fee plus activation fee per firm and noting that a cheaper evaluation is the better buy
     for anyone likely to fail several attempts.'
+  - 'A size ceiling stated in passing during the stream: trading more than two minis (or two
+    minis) on a 50k funded account is called simply not profitable.'
+  - Trailing-drawdown rule with arithmetic. On a $1,500 trailing drawdown, risking $700 per
+    trade means a $1,500 gain followed by a give-back to break-even ends the account, whereas
+    risking $100 leaves $1,400 of buffer. On trailing (especially intraday-trailing) accounts
+    risk less per trade and get leverage by running more accounts instead.
   - 'On a funded/evaluation account the nominal account size is not the capital at risk —
     the drawdown allowance is. Sizing off the headline number therefore massively understates
     real risk (1% of a $25,000 account is roughly 1.7% of a $1,500 drawdown). The rule given
@@ -45,6 +40,19 @@ variants:
     firms.
 
     '
+definition: 'The one place in this unit where TTrades states a risk principle in his own words,
+  and the guest had just stated its arithmetic counterpart. Trader T''s version: on a prop
+  account you only have the drawdown to play with, so hitting the profit target is effectively
+  doubling the money you actually control. TTrades'' version, offered immediately after and
+  in his own framing: a 25,000 dollar account with a 1,500 dollar drawdown is treated by most
+  people as a 25,000 dollar account when in reality it is a 1,500 dollar account. Trader T''s
+  implementation follows from it - he risks 0.5 percent per trade on funded accounts (having
+  previously used 1 percent and found it too aggressive when only 10 percent of the balance
+  is available), averages roughly 3-7 percent a month on them, and deliberately pushes risk
+  up to about 1 percent during a challenge to get it passed. He was funded with 400k at FTMO
+  plus 300k at a second firm, about 700k total.
+
+  '
 category: risk
 status: contested
 aliases:
@@ -86,6 +94,10 @@ detection_rules:
 - Compare offers on required_return and on total cost = evaluation fee + activation fee.
 - If several failed attempts are likely, weight the evaluation fee more heavily than the activation
   fee.
+- On a 50k funded account, keep size under two NQ/ES minis.
+- 'If account drawdown is trailing/intraday-trailing, cap per-trade risk at a small fraction
+  of the drawdown (example: $100 of $1,500).'
+- Scale exposure across multiple accounts rather than raising per-account risk.
 - effective_capital := max_drawdown (NOT the nominal account size).
 - risk_per_trade := 7% to 10% of effective_capital during an evaluation.
 - 'Sanity check: consecutive_losses_to_failure = effective_capital / risk_per_trade, target
@@ -139,6 +151,19 @@ sources:
 - video_id: dtsrR8dX2Ro
   title: Intro To Futures Trading & Prop Firms
   quote: the other important thing to note is the draw down to profit Target ratio
+- video_id: ES-R3ByDYrY
+  title: TTrades MNQ Cup - Morning Session
+  quote: two minis on 50k funded account
+- video_id: ES-R3ByDYrY
+  title: TTrades MNQ Cup - Morning Session
+  quote: you're you're just not profitable
+- video_id: 9H15ZZvaKPQ
+  title: New York Open Live Q&A
+  quote: when you have trailing or intraday trailing specifically accounts, you need to risk
+    less money
+- video_id: 9H15ZZvaKPQ
+  title: New York Open Live Q&A
+  quote: risking less and using more accounts if you want to get leverage.
 - video_id: 0OjlQ91TZiU
   title: Position Sizing For Trading - Futures & Forex
   quote: I'm not looking to risk 1% of the overall account size
@@ -167,6 +192,12 @@ ambiguities:
   ~ $200) are partial and date-specific.
 - No risk-per-trade percentage is given in this video - that comes from other units under
   this id.
+- Speaker attribution is unclear - the line falls in a TTrades/Nick back-and-forth with no
+  speaker marks, hence voice mixed.
+- The transcript reads 'trade two more than a mini or two minis', so whether two minis is
+  allowed or already too much is ambiguous.
+- Instrument (NQ vs ES mini) and drawdown size of the 50k account are not stated.
+- No explicit percentage of drawdown is stated beyond the $100/$1,500 example (~6.7%).
 - The post-funding risk reduction is not quantified.
 - Trailing versus static drawdown (a major difference between prop firms) is not addressed.
 - Daily loss limits, which usually bind before the total drawdown, are not mentioned.
@@ -199,5 +230,7 @@ contributing_units:
 - live_streams_02
 - resources_01
 - the_foundation_01
-draft_count: 4
+- update_20261007_live_01
+- update_20261007_live_04
+draft_count: 6
 voice: mixed

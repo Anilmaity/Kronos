@@ -5,6 +5,11 @@ variants:
   - Premium To Discount And Back, Via A Gap Or A Liquidity Run
   - Internal ↔ External Range Liquidity Rotation
   definition:
+  - 'Internal liquidity is a fair value gap; external liquidity is simply highs and lows (swing
+    highs/lows, i.e. buyside and sellside liquidity). The rotation: when price sweeps external
+    liquidity and CANNOT displace through it, it is likely to reach back for internal liquidity;
+    once it respects that fair value gap and closes away, the expectation is a move back to
+    external liquidity. Price moves from external to internal and back to external.'
   - 'Two guests give the same oscillation model in different vocabulary. Finessee_Fx calls
     it ping pong: price hits a PD array in premium at the top, then goes lower to search for
     an OPPOSING discount PD array - possibly on a lower timeframe - and once it hits that
@@ -45,11 +50,14 @@ variants:
     the same rotation is re-described as higher low -> higher high -> higher low, where each
     higher low is a reaction in internal range liquidity and each higher high is external
     range liquidity taken.'
-definition: 'Internal liquidity is a fair value gap; external liquidity is simply highs and
-  lows (swing highs/lows, i.e. buyside and sellside liquidity). The rotation: when price sweeps
-  external liquidity and CANNOT displace through it, it is likely to reach back for internal
-  liquidity; once it respects that fair value gap and closes away, the expectation is a move
-  back to external liquidity. Price moves from external to internal and back to external.'
+definition: 'TTrades'' own version in a dedicated video. Internal liquidity = a fair value
+  gap (C1 wick and C3 wick do not overlap); external liquidity = a high or low, a swing point
+  (a high with a lower high each side). The market moves between the two, but the rotation
+  is only acted on when a candle 2 (or candle 3) closure prints at the level: C2 closure at
+  an FVG -> trade C3/C4 toward external; after external is taken, a C2 closure there -> trade
+  back into the FVG. The external target after a reversal at internal liquidity is ''the swing
+  low that made the swing high'' (mirror for bullish). Trading FVG -> external with the HTF
+  trend is called easier than trading the retracement back in.'
 category: model
 status: contested
 aliases:
@@ -71,6 +79,15 @@ preconditions:
 - At least one unfilled fair value gap, or the willingness to wait until one forms.
 - A range with identifiable swing extremes and at least one fair value gap.
 detection_rules:
+- Mark FVGs (internal) and 3-bar swing points (external).
+- At an FVG, require a candle 2 closure (reversal) before expecting a move to external.
+- Target = the swing low that made the swing high (bearish) / the swing high that made the
+  swing low (bullish).
+- After external is taken, require a C2 closure there before expecting a move back into internal;
+  do not assume it.
+- A strong candle closing at the FVG with only a small wick is not a reversal signal - wait
+  for the next candle.
+- Prefer the with-trend leg (FVG -> external) over the counter-leg (external -> FVG).
 - 'Mark external liquidity: swing highs (high with a lower high each side) and swing lows.'
 - 'Mark internal liquidity: unmitigated fair value gaps inside the range.'
 - 'External -> internal: price sweeps a swing extreme and fails to displace through it; the
@@ -131,6 +148,7 @@ invalidation:
   leg may go to internal liquidity or to the other side of the range instead - the rotation
   stops being tradeable.
 measurable:
+- P(reach the swing that made the swing | C2 closure at FVG) vs unconditional FVG touch
 - completion rate of each rotation leg by timeframe
 - hit rate of the opposing-array target after an array on the other side is tagged
 - outcome of legs that never returned to equilibrium (Ben's stop-hunt classification) versus
@@ -145,6 +163,24 @@ measurable:
 - completion rate of the external -> internal -> external sequence by timeframe
 - frequency of skipped legs
 sources:
+- video_id: vMq1l8Zzzjw
+  title: Internal & External Liquidity Using the TTrades Fractal Model
+  quote: Internal liquidity is a fair value gap
+- video_id: vMq1l8Zzzjw
+  title: Internal & External Liquidity Using the TTrades Fractal Model
+  quote: External liquidity is a high or a low, a swing point in the market
+- video_id: vMq1l8Zzzjw
+  title: Internal & External Liquidity Using the TTrades Fractal Model
+  quote: the market will move between internal and external liquidity
+- video_id: vMq1l8Zzzjw
+  title: Internal & External Liquidity Using the TTrades Fractal Model
+  quote: not just blindly thinking it should go to internal liquidity
+- video_id: vMq1l8Zzzjw
+  title: Internal & External Liquidity Using the TTrades Fractal Model
+  quote: always simply going to be the swing low that made the swing high
+- video_id: vMq1l8Zzzjw
+  title: Internal & External Liquidity Using the TTrades Fractal Model
+  quote: easier time trading from fair value gaps inside the higher time frame trend
 - video_id: mwmWNCTEYtY
   title: Internal & External Liquidity Model
   quote: internal liquidity is just a fair value Gap
@@ -189,6 +225,10 @@ sources:
   title: Trading IRL & ERL With Order Blocks! - ICT Concepts
   quote: we expect price to move from internal to external and external to internal
 ambiguities:
+- He uses a target he himself calls a non-relevant failure swing in example 1; how relevance
+  interacts with the 'swing that made the swing' rule is not resolved.
+- Whether a C3 closure (rather than C2) at the FVG also qualifies is mentioned ('candle two
+  or a candle three closure') but only C2 cases are shown.
 - When several unmitigated FVGs sit inside the range, no rule selects which is the draw —
   he uses proximity and premium/discount informally.
 - '''Cannot displace through'' is the usual unquantified judgement.'
@@ -221,6 +261,8 @@ ambiguities:
   is not specified.
 related:
 - internal-external-liquidity-model
+- fractal-model-c2
+- fractal-model-c3
 - fair-value-gap
 - failure-to-displace
 - universal-models
@@ -270,5 +312,6 @@ contributing_units:
 - live_stream_guests_03
 - shorts_02
 - the_foundation_01
-draft_count: 6
+- update_20261007_edu_03
+draft_count: 7
 voice: mixed

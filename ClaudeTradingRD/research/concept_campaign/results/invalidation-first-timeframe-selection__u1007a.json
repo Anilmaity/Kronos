@@ -1,0 +1,265 @@
+{
+ "concept_id": "invalidation-first-timeframe-selection",
+ "reading": "u1007a",
+ "testable": true,
+ "test_type": "trade",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "5m bars. Continuation leg = FIRED displacement: a close beyond the latest confirmed unbroken 2/2 swing whose 4-bar window from the break has range >= 1.5x and travel beyond the level >= 0.65x the prior 4-bar range; leg origin = extreme between the broken swing and the break",
+   "no-gap trigger: no same-direction 5m FVG stamped on bars leg_origin+2 .. fire bar",
+   "step down to 3m: most recent same-direction 3m FVG whose first bar starts at/after the 5m leg-origin bar and whose third bar closes <= the 5m fire close, with far edge beyond the 5m close and not touched by any M1 bar since the gap formed; none -> no trade",
+   "decide at the 5m fire-bar close, enter next M1 open (harness), stop = 3m gap far edge (gap low long / gap high short), no buffer",
+   "target 2R; time exit 50 min; test: trade_test vs matched random entries (same direction, stop and target distance, +/-30 days, NY time of day +/-30 min), claim +"
+  ],
+  "params": {
+   "exec_tf": "5min",
+   "lower_tf": "3min",
+   "swing": "2/2",
+   "disp_N": 4,
+   "disp_r": 1.5,
+   "disp_d": 0.65,
+   "no_gap_window": "leg_origin+2..fire",
+   "gap_pick": "most recent untouched 3m gap inside the leg",
+   "stop_buffer": 0.0,
+   "rr": 2.0,
+   "max_hold": "50min",
+   "ctrl_tod_tol_min": 30,
+   "grid4h": "n/a (no 4h bars)"
+  }
+ },
+ "params_source": {
+  "exec_tf": "corpus: rTomJ8URFnw 'Watch the 5m minute for the closure' / 'here on the 5m minute'",
+  "lower_tf": "corpus: rTomJ8URFnw 'So you go to the 3 minute, which is your next lower time frame.'",
+  "swing": "phase3: locked 2/2 fractal",
+  "disp_N": "threshold_fits: displacement magnitude gate default N=4",
+  "disp_r": "threshold_fits: displacement magnitude gate default r=1.5",
+  "disp_d": "threshold_fits: displacement magnitude gate default d=0.65",
+  "no_gap_window": "declared-before-run: 'we know there's no gap here' read as no 5m FVG inside the current leg; the source gives no distance rule for 'too far' (draft ambiguity), so the nearest 5m gap is then beyond the leg origin",
+  "gap_pick": "corpus: rTomJ8URFnw 'then you have a gap right now' + 'that high should remain' (gap edge must still hold); declared-before-run: most recent such gap",
+  "stop_buffer": "corpus: rTomJ8URFnw 'I wouldn't want to put a stop all the way up there' (stop at the gap; no buffer stated)",
+  "rr": "method_spec: \u00a75 2R normal (library execution.targets 'Sized in R from that stop; 2R described as normal')",
+  "max_hold": "phase3: 10 entry-TF bars (\u00a71.13) -> 10 x 5m = 50 min",
+  "ctrl_tod_tol_min": "declared-before-run: README trap 9, displacement events cluster in hours and the concept is not about timing",
+  "grid4h": "declared-before-run: no 4h bars used"
+ },
+ "n": 804,
+ "span": {
+  "start": "2016-01-07 12:55:00+00:00",
+  "end": "2026-07-13 18:05:00+00:00",
+  "years": 10.513
+ },
+ "avg_R": -0.07020360700381069,
+ "avg_R_gross": -0.030203607003810667,
+ "win_rate": 0.3644278606965174,
+ "pf": 0.8841024044028175,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "n": 4020,
+  "avg_R": -0.03818101778747498,
+  "win_rate": 0.38159203980099504,
+  "pf": 0.9335943095101976,
+  "sd_R": 1.240920707469328,
+  "exit_mix": {
+   "stop": 0.5196517412935323,
+   "target": 0.22711442786069652,
+   "time": 0.25323383084577117
+  },
+  "avg_R_gross": 0.0018189822125250327,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": -0.03202258921633571,
+ "ci_lo": -0.13113860343163627,
+ "ci_hi": 0.06113700760117827,
+ "ci_method": "day_block",
+ "p": 0.51385596533565,
+ "halves": {
+  "H1": {
+   "n": 404,
+   "diff": 0.01709554709571346,
+   "ci_lo": -0.11699421935859634,
+   "ci_hi": 0.1509099894180054,
+   "ci_method": "iid",
+   "p": 0.8024797907897031,
+   "start": "2016-01-07 12:55:00+00:00",
+   "end": "2020-12-30 07:50:00+00:00"
+  },
+  "H2": {
+   "n": 400,
+   "diff": -0.08163190689150535,
+   "ci_lo": -0.21810606960236126,
+   "ci_hi": 0.05352046035057208,
+   "ci_method": "iid",
+   "p": 0.23877437836111143,
+   "start": "2021-01-04 02:00:00+00:00",
+   "end": "2026-07-13 18:05:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 219,
+   "diff": 0.03981871839312088,
+   "ci_lo": -0.13685923483009838,
+   "ci_hi": 0.22390141763969168,
+   "ci_method": "iid",
+   "p": 0.6652621855229534,
+   "start": "2016-01-07 12:55:00+00:00",
+   "end": "2018-08-20 01:45:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 196,
+   "diff": 7.837294474566381e-05,
+   "ci_lo": -0.19013537014356963,
+   "ci_hi": 0.2089414742867771,
+   "ci_method": "iid",
+   "p": 0.9993857746390279,
+   "start": "2018-08-24 00:10:00+00:00",
+   "end": "2021-03-25 23:45:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 208,
+   "diff": -0.13289888744012723,
+   "ci_lo": -0.3044774284450598,
+   "ci_hi": 0.06299008170202036,
+   "ci_method": "iid",
+   "p": 0.1562820415947896,
+   "start": "2021-04-14 22:50:00+00:00",
+   "end": "2023-11-30 21:15:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 181,
+   "diff": -0.037783721368237946,
+   "ci_lo": -0.2306662807269495,
+   "ci_hi": 0.15532497249208974,
+   "ci_method": "iid",
+   "p": 0.701191933689309,
+   "start": "2023-12-07 13:45:00+00:00",
+   "end": "2026-07-13 18:05:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.13741999029966054,
+ "mde_threshold": 0.1,
+ "power_floor_n": 1519,
+ "verdict": "UNDERPOWERED",
+ "verdict_detail": "CI contains 0; MDE 0.1374 vs threshold 0.1000, effective n 708 (power floor n=1519, have 804)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 804,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 2.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 76,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "rr"
+   ],
+   "ignored": [],
+   "lookback": "20D",
+   "recent": "1D",
+   "events_fp": "bb9d4d38a1f6df49",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "50min",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": 30,
+  "entry_mode": "next_open",
+  "hold_basis": "clock",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "New claim only (5m no-gap -> 3m gap stop). Prior readings a/b untouched. Market entry at the 5m closure; the source took no trade, so entry is framing. Source example is NASDAQ, not gold. Rerun with vault context (same rules). Stop distance pt q10/50/90 {'q10': 0.28, 'q50': 1.002, 'q90': 3.596}; a 0.30pt spread costs a median 0.30R per trade, which the 0.04R modelled cost understates (cancels in diff, not in avg_R).",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/update_20261007/invalidation-first-timeframe-selection.py",
+ "runtime_sec": 0.16,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-10-07T06:27:03+00:00",
+ "n_events_in": 807,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 2,
+  "target_not_beyond_entry": 0,
+  "no_bars_in_hold": 1
+ },
+ "events_fp": "bb9d4d38a1f6df49",
+ "sd_R": 1.2543547153415835,
+ "exit_mix": {
+  "stop": 0.554726368159204,
+  "target": 0.2263681592039801,
+  "time": 0.21890547263681592
+ },
+ "trades_per_year": 76.47421875,
+ "ci_components": {
+  "phase3_iid": [
+   -0.12695153814751053,
+   0.0631291730887707
+  ],
+  "day_block": [
+   -0.13113860343163627,
+   0.06113700760117827
+  ]
+ },
+ "diff_win": -0.01716417910447765,
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 708,
+  "n_clusters": null,
+  "n_eff": 708
+ },
+ "ties": {
+  "real_ambiguous": 0.007462686567164179,
+  "control_ambiguous": 0.011442786069651741,
+  "real_gap_stop": 0.018656716417910446,
+  "control_gap_stop": 0.020398009950248756,
+  "verdict_stop_first": "UNDERPOWERED"
+ },
+ "ctrl_overlap": 0.0,
+ "exposure_bars": {
+  "real_mean": 48.66542288557214,
+  "control_mean": 48.712189054726366,
+  "hold_basis": "clock"
+ },
+ "run_id": "ff9e2b44947042fe8ee9edf3633208dd",
+ "hyp_key": "d411998bda604861"
+}

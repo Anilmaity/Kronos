@@ -1,0 +1,284 @@
+{
+ "concept_id": "opposing-run",
+ "reading": "u1007a",
+ "testable": true,
+ "test_type": "gate",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "every 4h candle (forex grid 17/21/01/05/09/13 NY); measure at candle open + 120 min from M1 bars closed by then (>= 60 of them); intended direction = sign(price - candle open); opposing run = open -> extreme against it",
+   "keep only DEEP opposing runs: opposing_run / (high - low so far) > 0.30 (complement of the prior reading's shallow gate)",
+   "baseline: enter next M1 open in that direction, stop = the opposing extreme so far, no target, exit at the candle's scheduled close (120 min clock)",
+   "gate smt: within the candle's first 120 min exactly one of gold (M1) / silver (XAG_USD H1, the two H1 bars closed by the decision) traded beyond its own previous-4h-candle extreme on the opposing side (low if bullish-so-far, high if bearish-so-far); previous candle = the previous 4h bucket present in the data",
+   "rows without silver H1 coverage in either window are dropped"
+  ],
+  "params": {
+   "tf": "4h",
+   "grid4h": "forex",
+   "mid_min": 120,
+   "max_hold": "120min",
+   "hold_basis": "clock",
+   "min_m1_first_half": 60,
+   "deep_cut_range": 0.3,
+   "target": "none (time exit at candle close)",
+   "correlate": "XAG_USD H1",
+   "smt_level": "previous 4h candle opposing extreme",
+   "smt_form": "symmetric (exactly one asset takes it)"
+  }
+ },
+ "params_source": {
+  "tf": "corpus: prior reading opposing-run (structure_own_04a): YAML timeframes htf [1D, 4H, 1H]; same frame so only the SMT requirement differs",
+  "grid4h": "session_window_fit: forex 4H grid for gold (17/21/01/05/09/13 NY); carried as a knob per Conjunction Test",
+  "mid_min": "declared-before-run: prior reading: measure live at half the candle's period (SlWxhzhLo3A 'we use almost half the time')",
+  "max_hold": "declared-before-run: prior reading: to the candle's scheduled close - the expansion in question ('less likely to expand')",
+  "hold_basis": "declared-before-run: prior reading: clock, the exit is the candle's own close time",
+  "min_m1_first_half": "declared-before-run: prior reading: stub guard (README trap 6)",
+  "deep_cut_range": "threshold_fits: prior reading cut_range 0.30 (threshold_fits small wick, grade C); draft ambiguity: '\"Deep\" is not quantified' -> deep := not shallow",
+  "target": "corpus: prior reading: no target given for the expansion; time exit",
+  "correlate": "corpus: uW55Tuk-ngY compares ES/YM (indices); for gold the campaign's correlate is silver (rVRk4MLTJSs 'I was using silver for this'), held at H1 only",
+  "smt_level": "declared-before-run: uW55Tuk-ngY 'Do we have it as another SMT? Perfectly equalized' - SMT at the swing the opposing run made; the candle-level reference is the previous candle's extreme",
+  "smt_form": "declared-before-run: classic SMT = one asset makes the new extreme, the other fails (uW55Tuk-ngY 'We have no sort of SMT off this high')"
+ },
+ "n": 1201,
+ "span": {
+  "start": "2016-01-04 16:00:00+00:00",
+  "end": "2026-07-23 03:00:00+00:00",
+  "years": 10.546
+ },
+ "avg_R": -0.057527684231830266,
+ "avg_R_gross": -0.017527684231830255,
+ "win_rate": 0.42547876769358867,
+ "pf": 0.8516759533433415,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "avg_R_gated": -0.04372977618900325,
+  "avg_R_complement": -0.04769675660119488,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": -0.0074788665570351305,
+ "ci_lo": -0.0786819179180964,
+ "ci_hi": 0.06467708758682784,
+ "ci_method": "day_block",
+ "p": 0.8379644173273124,
+ "halves": {
+  "H1": {
+   "n": 2558,
+   "diff": 0.02774700984163548,
+   "ci_lo": -0.08337592017546351,
+   "ci_hi": 0.1465883366428338,
+   "ci_method": "iid",
+   "p": 0.6362343149768319,
+   "start": "2016-01-04 16:00:00+00:00",
+   "end": "2020-12-31 20:00:00+00:00",
+   "n_gated": 583
+  },
+  "H2": {
+   "n": 2667,
+   "diff": -0.04033057962506142,
+   "ci_lo": -0.12399954219175038,
+   "ci_hi": 0.06124286329571529,
+   "ci_method": "iid",
+   "p": 0.3934162757120449,
+   "start": "2021-01-04 12:00:00+00:00",
+   "end": "2026-07-23 03:00:00+00:00",
+   "n_gated": 618
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 1324,
+   "diff": 0.012415756379817802,
+   "ci_lo": -0.12950089385373337,
+   "ci_hi": 0.15594313460568265,
+   "ci_method": "iid",
+   "p": 0.8646151044948203,
+   "start": "2016-01-04 16:00:00+00:00",
+   "end": "2018-08-22 03:00:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 1382,
+   "diff": 0.02995765692012179,
+   "ci_lo": -0.11616684284238589,
+   "ci_hi": 0.1785642839282367,
+   "ci_method": "iid",
+   "p": 0.6903079081246484,
+   "start": "2018-08-22 19:00:00+00:00",
+   "end": "2021-04-12 07:00:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 1273,
+   "diff": -0.0019207930653755007,
+   "ci_lo": -0.13674352410711307,
+   "ci_hi": 0.15698740674166595,
+   "ci_method": "iid",
+   "p": 0.9795496149184694,
+   "start": "2021-04-13 11:00:00+00:00",
+   "end": "2023-12-01 20:00:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 1246,
+   "diff": -0.06970109782679278,
+   "ci_lo": -0.19531193915873787,
+   "ci_hi": 0.05180368236189075,
+   "ci_method": "iid",
+   "p": 0.2688782179368205,
+   "start": "2023-12-04 04:00:00+00:00",
+   "end": "2026-07-23 03:00:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.10245913686106307,
+ "mde_threshold": 0.1,
+ "power_floor_n": 1261,
+ "verdict": "UNDERPOWERED",
+ "verdict_detail": "CI contains 0; MDE 0.1025 vs threshold 0.1000, effective n 1001 (power floor n=1261, have 1201)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 5225,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "gate_mask_checked": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 11.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 401,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "rr",
+    "smt"
+   ],
+   "ignored": [],
+   "lookback": "20D",
+   "recent": "1D",
+   "events_fp": "29eb8ccdcd561f9e",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "120min",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": null,
+  "entry_mode": "next_open",
+  "hold_basis": "clock",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "gate firing rate 0.230 among deep-run candles. Tests only the new 'deep run needs another SMT' requirement; 'less likely to expand' is the prior reading's complement. Source SMT was ES/YM; silver H1 used as gold's correlate.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/update_20261007/opposing-run.py",
+ "runtime_sec": 0.64,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-10-07T06:20:01+00:00",
+ "n_events_in": 5226,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 0,
+  "target_not_beyond_entry": 0,
+  "no_bars_in_hold": 1
+ },
+ "n_complement": 4024,
+ "gate_firing_rate": 0.22985645933014354,
+ "events_fp": "29eb8ccdcd561f9e",
+ "mask_fp": "399d6211879fb03d",
+ "mask_col": "smt",
+ "exit_mix": {
+  "stop": 0.27477102414654453,
+  "target": 0.0,
+  "time": 0.7252289758534555
+ },
+ "gated_vs_own_control": {
+  "diff": -0.013797908042827017,
+  "ci_lo": -0.07592321750007713,
+  "ci_hi": 0.05090594212492707,
+  "p": 0.6697770392772224
+ },
+ "complement": {
+  "n": 4024,
+  "avg_R": -0.054015798086986776,
+  "win_rate": 0.4140159045725646,
+  "pf": 0.8647598719810142,
+  "sd_R": 1.043442869768866,
+  "exit_mix": {
+   "stop": 0.2875248508946322,
+   "target": 0.0,
+   "time": 0.7124751491053678
+  },
+  "vs_own_control": {
+   "diff": -0.006319041485791897,
+   "ci_lo": -0.043529900674029676,
+   "ci_hi": 0.030252369368680768,
+   "p": 0.7370819820681663
+  }
+ },
+ "ci_components": {
+  "phase3_iid": [
+   -0.0745374261593886,
+   0.06459032357583991
+  ],
+  "day_block": [
+   -0.0786819179180964,
+   0.06467708758682784
+  ]
+ },
+ "diff_meaning": "mean(R-ctrl | gated) - mean(R-ctrl | complement)",
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_eff_gated": 1001,
+  "n_eff_complement": 2221,
+  "n_eff": 1001
+ },
+ "ties": {
+  "real_ambiguous": 0.0,
+  "control_ambiguous": 0.0,
+  "real_gap_stop": 0.006507177033492823,
+  "control_gap_stop": 0.005090909090909091,
+  "gated_excess": 0.0,
+  "complement_excess": 0.0,
+  "verdict_stop_first": "UNDERPOWERED"
+ },
+ "ctrl_overlap": 0.04336842105263158,
+ "exposure_bars": {
+  "real_mean": 118.4911004784689,
+  "control_mean": 115.9066028708134,
+  "hold_basis": "clock"
+ },
+ "run_id": "7382c5f152b541969ab08805c5f4867a",
+ "hyp_key": "15dece4070d1f76f"
+}

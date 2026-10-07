@@ -1,0 +1,62 @@
+id: consolidation
+name: Consolidation
+category: structure
+status: underspecified
+voice: ttrades
+aliases:
+- inside day
+- inside day after inside day
+definition: 'Asked live how he mechanically defines a consolidation, he gives a one-line positive rule: price fails
+  to take out a previous range. He applies it to the daily chart on the spot - the previous day was a consolidation
+  (an inside day), and the current day is ''by definition so far also a consolidation'' because it has not left
+  the prior day''s range. This fills the gap the library entry records (whether an inside bar counts): in this stream,
+  it does. The stated handling is to typically avoid such days; if forced to trade one (the competition), the single
+  question to ask is whether price is more likely to reach the previous day high or the previous day low, and that
+  answer is the bias.'
+timeframes:
+  htf:
+  - 1D
+  ltf:
+  - 1m
+  - 5m
+  - 15m
+  fractal: false
+preconditions:
+- A completed previous range (the previous daily candle in the worked case) with a defined high and low.
+detection_rules:
+- Consolidation = the current candle has not traded beyond the previous candle's high nor its low (inside candle).
+- Consecutive inside days are each a consolidation ('inside day after inside day').
+- 'Default handling: avoid trading the inside range.'
+- If trading anyway, set bias by judging which of previous day high / previous day low price is more likely to reach
+  next.
+invalidation:
+- Price trades beyond the previous range's high or low - the day is no longer a consolidation by this definition.
+measurable:
+- frequency of inside days on NQ/ES daily
+- conditional probability that the day after an inside day takes the PDH vs the PDL
+- daily range of inside days vs non-inside days
+sources:
+- video_id: ES-R3ByDYrY
+  title: TTrades MNQ Cup - Morning Session
+  quote: How do you mechanically define a consolidation
+- video_id: ES-R3ByDYrY
+  title: TTrades MNQ Cup - Morning Session
+  quote: price fails to take out a previous range
+- video_id: ES-R3ByDYrY
+  title: TTrades MNQ Cup - Morning Session
+  quote: you either typically avoid them
+- video_id: ES-R3ByDYrY
+  title: TTrades MNQ Cup - Morning Session
+  quote: Is price more likely to go to previous day high or previous day low
+ambiguities:
+- Stated for the daily candle while the day is still forming ('so far'); whether a single wick beyond the prior
+  range ends the consolidation, or a close is required, is not said.
+- This rule is an inside-bar test and conflicts with the library's earlier negative test (higher highs/lows without
+  displacement can also be consolidation); the two are compatible only if both are sufficient conditions.
+- How to decide which of PDH/PDL is 'more likely' is not given here; he later reads it from a closure over the daily
+  open (see notes).
+related:
+- inside-day-three-levels
+- three-candle-outcomes
+- consolidation-avoidance
+- daily-bias-framework

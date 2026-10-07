@@ -1,0 +1,256 @@
+{
+ "concept_id": "partial-profit-taking",
+ "reading": "u1007b",
+ "testable": true,
+ "test_type": "trade",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "traded asset gold; correlated asset silver (XAG_USD H1 joined on gold's 1h labels)",
+   "target = each asset's own previous trading-day high/low (18:00 NY roll)",
+   "event = silver's first 1h bar of the trading day whose high reaches silver's PDH (low reaches PDL) while gold has NOT taken its own PDH (PDL) through that bar; decide at the bar's close (detector = cross-asset-target-transfer reading b, 2026-09-23, unchanged)",
+   "the partial says gold's move is done: trade gold against the move (short at a high tag, long at a low tag), next M1 open, stop 1.0 x ATR14(gold 1h), target 1R, 10h",
+   "control: matched random same-direction entries, +/-30 d, NY time of day +/-30 min",
+   "claim '+': gold turns more than at a matched random moment (=> the partial is warranted)"
+  ],
+  "params": {
+   "tf": "1h",
+   "level": "PDH/PDL per asset",
+   "correlate": "XAG_USD H1",
+   "min_coverage": 0.5,
+   "stop_atr": 1.0,
+   "rr": 1.0,
+   "max_hold": "10h",
+   "ctrl_tod_tol_min": 30
+  }
+ },
+ "params_source": {
+  "tf": "phase3: 1h rung-0 timeframe; silver correlate exists only at H1",
+  "level": "corpus: uW55Tuk-ngY 'ES took out my target, right? Which is TP.' / 'ES already took out this low' \u2014 the target is the correlated asset's level; previous-day high/low as in cross-asset-target-transfer b (method_spec \u00a72.7)",
+  "correlate": "phase3 correlate file XAG_USD H1 (gold's correlated metal), as cross-asset-target-transfer b",
+  "min_coverage": "declared-before-run: skip stub sessions for gold PDH/PDL (README trap 6)",
+  "stop_atr": "declared-before-run (2026-09-23, cross-asset-target-transfer b): symmetric 1.0 x ATR14(gold 1h) barrier; the source gives no distance",
+  "rr": "declared-before-run (2026-09-23, cross-asset-target-transfer b): 1R turn test",
+  "max_hold": "phase3: 10 entry-TF periods (1h)",
+  "ctrl_tod_tol_min": "declared-before-run: README trap 9 \u2014 PDH/PDL tags cluster in NY hours; same control as u1007a"
+ },
+ "n": 1198,
+ "span": {
+  "start": "2016-01-08 19:00:00+00:00",
+  "end": "2026-07-20 01:00:00+00:00",
+  "years": 10.527
+ },
+ "avg_R": -0.08223783089415289,
+ "avg_R_gross": -0.04223783089415286,
+ "win_rate": 0.4774624373956594,
+ "pf": 0.8424131424609724,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "n": 5985,
+  "avg_R": -0.04528556297890881,
+  "win_rate": 0.49273182957393485,
+  "pf": 0.9081371556366586,
+  "sd_R": 0.9624556651166514,
+  "exit_mix": {
+   "stop": 0.45881370091896406,
+   "target": 0.45363408521303256,
+   "time": 0.08755221386800334
+  },
+  "avg_R_gross": -0.005285562978908779,
+  "reps": 5,
+  "fill_rate": 0.9991652754590985
+ },
+ "diff": -0.03695226791524408,
+ "ci_lo": -0.09839802748604223,
+ "ci_hi": 0.025476237923686657,
+ "ci_method": "phase3_iid",
+ "p": 0.24226961186765464,
+ "halves": {
+  "H1": {
+   "n": 503,
+   "diff": -0.07419876918693895,
+   "ci_lo": -0.1632598024964949,
+   "ci_hi": 0.01503446499078094,
+   "ci_method": "iid",
+   "p": 0.10282420117856812,
+   "start": "2016-01-08 19:00:00+00:00",
+   "end": "2020-12-24 02:00:00+00:00"
+  },
+  "H2": {
+   "n": 695,
+   "diff": -0.008576544127393414,
+   "ci_lo": -0.08659702506295593,
+   "ci_hi": 0.07937707783682915,
+   "ci_method": "block",
+   "p": 0.839480270301111,
+   "start": "2021-01-13 00:00:00+00:00",
+   "end": "2026-07-20 01:00:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 263,
+   "diff": -0.11406459311127266,
+   "ci_lo": -0.23681235252578356,
+   "ci_hi": 0.018321361793224657,
+   "ci_method": "iid",
+   "p": 0.07968574336679686,
+   "start": "2016-01-08 19:00:00+00:00",
+   "end": "2018-08-22 07:00:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 266,
+   "diff": -0.04419061772578528,
+   "ci_lo": -0.17609344792365433,
+   "ci_hi": 0.08507351730319367,
+   "ci_method": "iid",
+   "p": 0.5071580714280408,
+   "start": "2018-08-29 08:00:00+00:00",
+   "end": "2021-04-04 23:00:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 333,
+   "diff": -0.011602352538642058,
+   "ci_lo": -0.13330866125984375,
+   "ci_hi": 0.11094235298016504,
+   "ci_method": "block",
+   "p": 0.8522852023053521,
+   "start": "2021-04-12 14:00:00+00:00",
+   "end": "2023-12-01 00:00:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 336,
+   "diff": 0.006994546785821135,
+   "ci_lo": -0.11462185764988457,
+   "ci_hi": 0.13055423616307132,
+   "ci_method": "iid",
+   "p": 0.9109579504159014,
+   "start": "2023-12-04 15:00:00+00:00",
+   "end": "2026-07-20 01:00:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.08853333118820429,
+ "mde_threshold": 0.1,
+ "power_floor_n": 940,
+ "verdict": "NULL",
+ "verdict_detail": "CI contains 0; powered (MDE 0.0885 <= 0.1000)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 1198,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 64.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 104,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_dist",
+    "rr"
+   ],
+   "ignored": [],
+   "lookback": "20D",
+   "recent": "1D",
+   "events_fp": "9693344a12395a58",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "10h",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": 30,
+  "entry_mode": "next_open",
+  "hold_basis": "clock",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "AUDIT 2026-10-07: was UNTESTABLE ('XAUUSD M1 only'), which is false \u2014 silver H1 is the campaign's correlate. Same hypothesis and frame as cross-asset-target-transfer b (2026-09-23, NULL -0.053R, unmatched ToD); re-scored here with a ToD-matched control \u2014 a replication, not independent evidence. Gold/silver stands in for ES/NQ.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/update_20261007/partial-profit-taking.py",
+ "runtime_sec": 0.3,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-10-07T06:25:58+00:00",
+ "n_events_in": 1199,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 0,
+  "target_not_beyond_entry": 0,
+  "no_bars_in_hold": 1
+ },
+ "events_fp": "9693344a12395a58",
+ "sd_R": 0.973700199619317,
+ "exit_mix": {
+  "stop": 0.49248747913188645,
+  "target": 0.44490818030050083,
+  "time": 0.06260434056761269
+ },
+ "trades_per_year": 113.80221066319896,
+ "ci_components": {
+  "phase3_iid": [
+   -0.09839802748604223,
+   0.025476237923686657
+  ],
+  "day_block": [
+   -0.09614913865424825,
+   0.026280179450687256
+  ]
+ },
+ "diff_win": -0.015269392178275443,
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 1171,
+  "n_clusters": null,
+  "n_eff": 1171
+ },
+ "ties": {
+  "real_ambiguous": 0.0008347245409015025,
+  "control_ambiguous": 0.0005012531328320802,
+  "real_gap_stop": 0.00333889816360601,
+  "control_gap_stop": 0.007351712614870509,
+  "verdict_stop_first": "NULL"
+ },
+ "ctrl_overlap": 0.01620718462823726,
+ "exposure_bars": {
+  "real_mean": 568.1510851419032,
+  "control_mean": 566.3005847953216,
+  "hold_basis": "clock"
+ },
+ "run_id": "462efa84e5324417ba1b9d314a65dace",
+ "hyp_key": "060f73969213e860"
+}

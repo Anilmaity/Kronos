@@ -11,6 +11,25 @@ definition: 'Two Shorts run the Thursday Counter live. The setup is multiple con
   '
 variants:
   definition:
+  - 'SHORTS EVIDENCE, explicitly "not a perfect example". Monday, Tuesday and Wednesday expand
+    higher; Thursday does not take out Wednesday''s high but is still called a Thursday counter
+    because it counters the range. Even without catching the reversal day, the profile gives
+    Friday''s bias: trade toward the weekly open and the current week''s low, which it does.
+    He adds an intermarket reading: on ES / NQ the reversal formed on Wednesday, so the week
+    is really a Thursday continuation of a midweek reversal, and using that one could have
+    looked for the reversal on Wednesday in the traded asset as well.
+
+    '
+  - 'A FAILED Thursday counter shown deliberately. Monday, Tuesday and Wednesday expand away
+    from the weekly open (up); Thursday is expected to counter and Friday to continue lower
+    back toward the weekly open. The ideal requirement is that the daily candle''s wick high
+    forms in the "lower half", in the T-spot - open, form a high, then form a continuation
+    to trade lower. Instead price grinds up, dips, reaches into an intraday fair value gap
+    and expands through it (consolidating rather than continuing), then respects an inversion
+    and trades through the high. Stated lesson: a weekly profile forming does not mean it
+    will work; it is not 100%.
+
+    '
   - 'A week in which Monday, Tuesday and Wednesday all expand away from the weekly open without
     creating a significant low (in an upward expansion) or high, leaving the week with no
     meaningful internal swing point, after which Thursday prints a candle 2 closure that counters
@@ -27,6 +46,7 @@ status: contested
 aliases:
 - Thursday counter
 preconditions:
+- Mon-Wed expansion away from the weekly open.
 - Monday, Tuesday and Wednesday expand away from the weekly open in one direction.
 - No significant low (upward expansion) or high (downward expansion) is created inside the
   week during those three days.
@@ -39,6 +59,15 @@ detection_rules:
 - Require a change in the state of delivery on the hourly to confirm the counter.
 - Trade the continuation inside Thursday, or wait for Friday as the continuation day back
   into the range.
+- Thursday need not take out Wednesday's extreme to count as countering the range.
+- After Mon-Wed expansion and a Thursday counter, Friday's targets are the weekly open and
+  the current week's opposite extreme.
+- 'Intermarket reclassification: if correlated indices (ES / NQ) reversed on Wednesday, treat
+  the week as a midweek reversal and look for the reversal on Wednesday in the traded asset
+  too.'
+- On the continuation day, require the daily wick to form in the T-spot and an intraday continuation
+  to form from it.
+- Require the intraday fair value gap to be respected for the continuation.
 - Confirm the Mon-Wed run has no significant internal swing point; a low belonging to the
   prior Friday does not count as an internal low.
 - Thursday prints a candle 2 closure countering the range - after a close on the high this
@@ -51,6 +80,9 @@ detection_rules:
   the range.'
 invalidation:
 - Thursday expands with the prior three days instead of countering.
+- Price expands through the intraday fair value gap instead of respecting it - treat as consolidation,
+  not continuation.
+- Price respects an opposing inversion and trades through the daily high.
 - Price expands through the fair value gap it was supposed to respect on the continuation
   day, rather than reacting from it.
 - No hourly change in the state of delivery inside Thursday - the daily wick is unconfirmed.
@@ -59,6 +91,9 @@ invalidation:
 measurable:
 - frequency of Thursday countering after three expansion days into a level
 - R outcome of the Thursday-intraday branch vs the Friday branch
+- how often a correlated index's weekly reversal day precedes the traded asset's by one day,
+  and the hit rate of trading the earlier day
+- failure rate of Thursday-counter weeks; share failing via FVG expansion-through
 - frequency of weeks with three unanchored expansion days followed by a Thursday counter
 - hit rate of Friday reaching the weekly open, and separately the current week's extreme
 - how often the weekly-open target lies beyond one average daily range on Friday's open
@@ -76,6 +111,30 @@ sources:
 - video_id: _VquvUgdQmA
   title: Using EURGBP for Relative Strength
   quote: So, we can anticipate Friday back into the range.
+- video_id: wbhjwy2A3UU
+  title: Thursday Counter Profile → Friday Bias
+  quote: I would still consider this a Thursday counter as Thursday is countering the range.
+- video_id: wbhjwy2A3UU
+  title: Thursday Counter Profile → Friday Bias
+  quote: Friday to trade in towards that weekly open as well as the current
+- video_id: wbhjwy2A3UU
+  title: Thursday Counter Profile → Friday Bias
+  quote: So, it's actually a Thursday continuation of a midweek reversal.
+- video_id: wbhjwy2A3UU
+  title: Thursday Counter Profile → Friday Bias
+  quote: looking for a reversal on this day as the other assets reversed on Wednesday
+- video_id: zxglNIJSIZo
+  title: Just Because a Weekly Profile Forms, Doesn’t Mean It Will Play Out
+  quote: form the wick of the daily candle in this lower half in this T spot
+- video_id: zxglNIJSIZo
+  title: Just Because a Weekly Profile Forms, Doesn’t Mean It Will Play Out
+  quote: we expand through this fair value gap.
+- video_id: zxglNIJSIZo
+  title: Just Because a Weekly Profile Forms, Doesn’t Mean It Will Play Out
+  quote: It is not 100%. Things do fail.
+- video_id: zxglNIJSIZo
+  title: Just Because a Weekly Profile Forms, Doesn’t Mean It Will Play Out
+  quote: We respect this inversion and we end up trading through the high.
 - video_id: uPUNOi_R9fA
   title: Weekly Profile for Daily Bias - Thursday Counter
   quote: Monday, Tuesday and Wednesday expand away without creating a significant low
@@ -83,6 +142,14 @@ ambiguities:
 - '''A relevant level'' is the trigger for expecting the counter and is not defined here.'
 - No rule is given for choosing the Thursday-intraday branch over waiting for Friday.
 - Whether the SMT is required or merely present in the example is not stated.
+- The traded asset in the example is not named in the transcript.
+- Whether the Wednesday reversal in ES/NQ should be confirmed with its own candle 2 + hourly
+  CISD before being transferred is not stated.
+- This sits uneasily with intermarket-correlation-not-used and with cross-asset-reversal-confirmation,
+  which is a same-time requirement rather than a one-day lead.
+- '"Lower half" for a bearish wick high is odd (one would expect the upper half / premium);
+  the reference range is not stated, so the side cannot be decided from the transcript.'
+- Unclear whether the failed day is Thursday or Friday.
 - '''Significant low'' is the load-bearing precondition and is never quantified. In one example
   a low is disqualified as ''not really... quite close to this low enough to consider a failure
   swing'', which is a visual judgement.'
@@ -101,6 +168,11 @@ related:
 - smt-divergence
 - phases-of-price
 - midweek-reversal-week
+- cross-asset-reversal-confirmation
+- weekly-open-as-fair-value
+- t-spot
+- weekly-profile-not-predicted-in-advance
+- invalidation-trade
 - hourly-cisd-confirmation
 - consolidation-reversal-week
 - smt-swing-point-substitute
@@ -126,6 +198,8 @@ execution:
   - previous day's low or high
 contributing_units:
 - shorts_04
+- update_20261007_shorts_02
+- update_20261007_shorts_04
 - weekly_profile_series_01
-draft_count: 2
+draft_count: 4
 voice: ttrades

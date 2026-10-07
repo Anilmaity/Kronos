@@ -3,13 +3,36 @@ name: Relative Strength & Weakness (ES / NQ / YM)
 variants:
   name:
   - Relative Strength & Weakness (ES / NQ)
+  - Relative Strength / Weakness
   definition:
+  - 'A daily ranking of the three correlated index futures (ES, NQ, YM) into strongest, middle
+    and weakest, derived from three inputs only: SMT at the relevant level, candle closures
+    on lower timeframes, and structure/separation from the target. Longs are taken on the
+    strongest asset and shorts on the weakest; the lagging asset is never traded. ES is treated
+    as structurally the middle asset. The ranking is re-derived every day after the directional
+    bias is set, and it can flip intraday.
+
+    '
+  - 'Live reading for a bearish day: the weakest index is the one with the most expansion
+    beyond its previous day low (NQ); an index that has already hit its target and is consolidating
+    is called the stronger one (YM). The ranking flipped twice in the session: once NQ hit
+    its target it became the stronger and YM the weakest, so he would no longer short NQ.
+    He says relative strength is hard to explain mechanically and promises a dedicated video.
+
+    '
   - SHORTS EVIDENCE isolating one of the three named inputs - SEPARATION - and showing how
     it is measured. The same previous high is marked on both correlated assets, and the question
     asked of each is how CLOSE it is to that shared high. In the worked example the S&P sits
     only a few points away while the Nasdaq is quite far away; that difference in separation
     is itself the relative strength reading. He states this is one of three things to combine,
     and that practising the combination is what builds the understanding.
+  - 'Vocabulary restated: leading means strongest and lagging means weakest, readable simply
+    from the candles (4H: one bright green, one bright red, one consolidating). He shows why
+    it matters: an entry at 9:30 on the middle asset went nowhere while the strongest trended.'
+  - 'Live evidence that the ranking flips intraday: pre-open NQ strongest/YM weakest; after
+    9:30 ES held up when it should have been lowest, then NQ became weakest, then YM weak/NQ
+    strong again. He resolves the ''which is lying'' question only by waiting for candle closures
+    (first 5, maybe 15 minutes) and states that if both are lying the result is consolidation.'
   - 'Relative strength or weakness is simply one of two correlated assets being more bullish
     or more bearish than the other. The three things he judges it on are named explicitly:
     swing points, candle closures, and the size of the candle. Concretely - which asset takes
@@ -17,12 +40,18 @@ variants:
     of a shared order block and which closes outside it; which asset respects an order block''s
     mean threshold and which trades straight through; and which produces the larger candle
     out of the same level.'
-definition: 'A daily ranking of the three correlated index futures (ES, NQ, YM) into strongest,
-  middle and weakest, derived from three inputs only: SMT at the relevant level, candle closures
-  on lower timeframes, and structure/separation from the target. Longs are taken on the strongest
-  asset and shorts on the weakest; the lagging asset is never traded. ES is treated as structurally
-  the middle asset. The ranking is re-derived every day after the directional bias is set,
-  and it can flip intraday.
+  - YM is mainly used as a relative-strength indicator to trade the other indices rather than
+    traded itself.
+definition: 'Dedicated full-guide lesson (yH4eYwUgdTY), generalised beyond the index triad
+  to any correlated pair (ES/NQ, gold futures vs gold-GBP, gold futures vs gold-euro). Rule:
+  long the stronger asset, short the weaker. Three inputs, in the order taught: (1) SMT -
+  at the same shared low the asset making the higher low is stronger, the one making the lower
+  low weaker (mirrored at highs); (2) structure/separation - used when SMT is NOT present:
+  measure each asset''s distance from the same extreme; the greater the separation from the
+  low, the stronger the asset (closer to a shared high = stronger); (3) candle closures -
+  the ''more advanced'' input, read candle by candle at the same timestamps. It must only
+  be used on correlated assets and never alone - a higher-timeframe framework and strategy
+  come first.
 
   '
 category: structure
@@ -40,6 +69,23 @@ preconditions:
 - A shared reference level (a previous high or low) exists on both.
 - Two correlated assets charted side by side on the same timeframe (ES and NQ here).
 detection_rules:
+- Correlated assets only; mark the SAME swing (same-timeframe high/low) on both.
+- 'SMT: asset that makes a higher low (bull) / higher high (bear side reversed) at the shared
+  level is stronger; lower low / lower high is weaker.'
+- 'If no SMT exists (neither or both took the level), use separation: the asset farther from
+  the shared low is stronger; the asset farther below a shared high is weaker.'
+- 'Candle-2 closure test: both assets sweep the prior low; the one whose C2 closes back above
+  C1''s low is stronger, the one that cannot close back inside is weaker.'
+- 'CISD-closure test: the asset whose candle closes through the level validating the change
+  in state of delivery shows the move (weakness on a bearish CISD); the asset that cannot
+  close through it is stronger on that side.'
+- 'Body test: a candle closing over its previous candle''s body vs a doji / inside close at
+  the same time marks the stronger asset; an engulfing bearish candle vs a doji marks the
+  weaker.'
+- Multiple SMTs on different timeframes can stack; when they agree they reinforce the same
+  ranking.
+- 'Re-read continuously: closures can show strength switching between the assets later in
+  the move.'
 - 'Check SMT at the reference level: the asset that failed to take the level is the strong
   one on that side.'
 - Compare candle closures on a lower timeframe (30m/15m) across the three assets; the weakest
@@ -47,10 +93,17 @@ detection_rules:
 - 'Compare separation from the target: the asset closest to the downside target is weakest
   for shorts.'
 - Rank the three; ES is expected to sit in the middle.
+- 'Short case: weakest = the asset with the largest expansion beyond its previous day low.'
+- An asset that has reached its target and is consolidating is re-labelled the stronger asset.
+- After the weakest asset hits its target, re-rank; the former weakest may become strongest.
 - Mark the SAME previous high (or low) on both assets.
 - Measure how far each asset currently sits from that shared level.
 - The asset closer to the level is the stronger one on that side; the further asset is weaker.
 - Combine separation with the other two inputs rather than using it alone.
+- Label the strongest of the triad 'leading', the weakest 'lagging', the other 'middle', from
+  the same-timeframe candles.
+- Repeated strength switches between the correlated indices after the open are read as consolidation/chop,
+  not a tradeable divergence.
 - Mark a swing point that both assets formed on the same date.
 - 'Strength test 1 (swing points): the asset that takes out the shared swing point is relatively
   stronger; the one that cannot reach it is relatively weaker.'
@@ -61,19 +114,44 @@ detection_rules:
   candle is the stronger one in that direction.'
 - SMT (one asset makes a higher high while the other makes a lower high) is a fourth read
   of the same thing.
+- Use YM to rank strength; execute on NQ/ES rather than YM.
 invalidation:
 - The ranking flips intraday; the flip typically occurs at a higher low (bullish) and after
   the leading asset has hit its targets.
 - The correlation itself changing - see ratio-chart-reversal-lead.
 measurable:
+- forward R of the model on the asset ranked stronger vs weaker by each of the three tests
+- agreement rate between SMT, separation and closure tests
 - Per-day agreement rate between the three ranking inputs (SMT, closures, separation).
 - Realised R of the ranked-strongest vs ranked-weakest vs middle asset on the same idea.
 - Frequency and time-of-day of intraday strength flips.
+- frequency of ranking flips immediately after the weakest asset tags its target
 - correlation between separation-rank at a level and which asset takes the level first
 - forward return spread between the near and far asset
 - agreement rate between the three tests on the same bar
 - 'persistence: how long the stronger asset stays stronger once identified'
 sources:
+- video_id: yH4eYwUgdTY
+  title: Relative Strength & Weakness + SMT Divergence (Full Guide)
+  quote: generally I want to be longing the stronger asset and shorting the weaker asset
+- video_id: yH4eYwUgdTY
+  title: Relative Strength & Weakness + SMT Divergence (Full Guide)
+  quote: this is what I use when SMT is not present
+- video_id: yH4eYwUgdTY
+  title: Relative Strength & Weakness + SMT Divergence (Full Guide)
+  quote: The greater the separation, the stronger the asset.
+- video_id: yH4eYwUgdTY
+  title: Relative Strength & Weakness + SMT Divergence (Full Guide)
+  quote: we can't close bullish or back above candle one's low
+- video_id: yH4eYwUgdTY
+  title: Relative Strength & Weakness + SMT Divergence (Full Guide)
+  quote: candles that create the change in the state of delivery or continuation
+- video_id: yH4eYwUgdTY
+  title: Relative Strength & Weakness + SMT Divergence (Full Guide)
+  quote: you can only do this with correlated assets
+- video_id: yH4eYwUgdTY
+  title: Relative Strength & Weakness + SMT Divergence (Full Guide)
+  quote: this shouldn't be used alone
 - video_id: aqnY1yZvfYs
   title: New York Open Live Q&A
 - video_id: Qv6Ux_Z8VrA
@@ -83,22 +161,58 @@ sources:
   quote: I prefer not to trade the lagging or middle assets
 - video_id: 00iZXPAdR5A
   title: New York Open Live Q&A
+- video_id: wa9m30UHrm0
+  title: New York Open Live Q&A
+  quote: It has the most expansion, right? Especially beyond its previous day low.
+- video_id: wa9m30UHrm0
+  title: New York Open Live Q&A
+  quote: Already expanded so it's consolidating or becoming the stronger asset while NQ catches
+    up.
+- video_id: wa9m30UHrm0
+  title: New York Open Live Q&A
+  quote: Because here NQ is weakest, it hits its target, and then YM becomes the weakest.
 - video_id: Gpp8vicZo10
   title: Asset Separation Shows Relative Strength & Weakness
   quote: the separation between those assets also shows you the relative strength and weakness
 - video_id: Gpp8vicZo10
   title: Asset Separation Shows Relative Strength & Weakness
   quote: How close are we to that high on Nasdaq
+- video_id: K7XVj2w3CP4
+  title: New York Open Live Q&A
+  quote: When I'm talking about leading or lagging, just think about strongest or weakest.
+- video_id: K7XVj2w3CP4
+  title: New York Open Live Q&A
+  quote: That's why like relative strength is so important.
+- video_id: rTomJ8URFnw
+  title: New York Open Live Q&A
+  quote: You just kind of wait for closures to tell you, right?
+- video_id: rTomJ8URFnw
+  title: New York Open Live Q&A
+  quote: They could both be lying and then you end up with a consolidation
 - video_id: c_mh19e3mhI
   title: The Best Relative Strength Indicator For ES & NQ - ICT
   quote: the main things I look for in judging relative strength or weakness is Swing points
+- video_id: 9YVBe-20Hdg
+  title: New York Open Live Q&A
+  quote: I use it more as a relative strength indicator to trade the other assets.
 ambiguities:
+- The three inputs are again not weighted; one example shows only closures differing, another
+  only SMT, and he says not all three will show up.
+- Separation is visual; 'a few points' vs 'quite far' on ES/NQ is not normalised across instruments.
+- Strength in one example 'switched' later in the move; no rule says whether to change the
+  traded asset.
+- In the gold vs gold-GBP example both assets reached the target, so the selection payoff
+  is not demonstrated.
 - The three inputs are never weighted or ordered when they disagree.
 - In aqnY1yZvfYs he tells struggling traders to default to ES (the middle asset) because it
   'does what actually is happening'; in yud7TpE2AMs he says he prefers NOT to trade the lagging
   or middle asset. Advice for beginners vs his own practice.
 - No rule is given for whether to switch assets after an intraday strength flip; in aqnY1yZvfYs
   he explicitly refuses to.
+- He admits it is 'a hard concept to try to conceptualize and explain mechanically'; no numeric
+  measure is given.
+- '''Stronger'' for a consolidating asset after a down move conflicts with the separation
+  reading (closest to the target = weakest).'
 - Separation is measured in POINTS, which is not comparable across instruments with different
   point values - no normalisation (ATR, percentage) is given.
 - The other two of the 'three things' are referred to but not named in this Short.
@@ -109,8 +223,14 @@ ambiguities:
 - Which shared swing point to use is chosen visually (he uses one dated the same day).
 related:
 - smt-divergence
+- relevant-swing-separation
+- gold-correlated-assets
+- fake-smt-strength-switch
+- smt-requires-framework
 - relevant-swings-separation
 - draw-on-liquidity
+- cross-asset-target-transfer
+- failure-to-manipulate
 - relative-strength-asset-selection
 - correlated-triads
 - es-nq-ratio-chart
@@ -127,13 +247,19 @@ timeframes:
   - 1m
   fractal: false
 execution:
-  bias: Same as the day bias.
-  entry: Take the setup on the strongest asset for longs / weakest asset for shorts only.
-  stop: As per the entry model on the chosen asset.
-  targets: The chosen asset's own previous-day / equal-high-or-low objectives.
+  bias: From the higher-timeframe framework, not from relative strength.
+  entry: Per the model, on the stronger asset for longs, the weaker for shorts.
+  stop: Per the entry model.
+  targets:
+  - Per the entry model
 contributing_units:
 - education_ict_updated_02
 - shorts_01
 - sunday_sessions_live_q_a_02
-draft_count: 3
+- update_20261007_edu_01
+- update_20261007_live_07
+- update_20261007_live_08
+- update_20261007_live_12
+- update_20261007_live_13
+draft_count: 8
 voice: ttrades

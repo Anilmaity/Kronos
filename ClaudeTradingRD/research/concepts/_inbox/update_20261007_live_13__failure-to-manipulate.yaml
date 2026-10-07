@@ -1,0 +1,34 @@
+id: failure-to-manipulate
+name: "Failure To Manipulate (deflated to phases of price)"
+category: structure
+status: specified
+voice: ttrades
+definition: >
+  Adds the consequence: when price trades through the previous day low and forms a
+  continuation instead of a reversal (no move back into the range, no bullish CISD), the
+  failure to manipulate marks a trending day. On such a day he will not try to catch lows -
+  the long side is off for the session ("either bearish or nothing"). Read as a cascade across
+  indices: YM fails to manipulate its low, so ES is expected to its low, so NQ heads for its lows.
+detection_rules:
+  - "Price trades through previous day low and forms a continuation (no reversal, no bullish CISD back into the range)."
+  - "Classify the day as trending: no counter-trend (long) entries for the rest of the session."
+  - "Expect correlated indices to run to their own corresponding lows."
+measurable:
+  - "intraday range and close location on days where PDL is broken without a reversal vs with one"
+  - "expectancy of long entries after a failed PDL manipulation"
+sources:
+  - video_id: wa9m30UHrm0
+    title: "New York Open Live Q&A"
+    quote: "Do we form a reversal here? No, we form a continuation"
+  - video_id: wa9m30UHrm0
+    title: "New York Open Live Q&A"
+    quote: "which means lower, which means hello, the market is trending."
+  - video_id: wa9m30UHrm0
+    title: "New York Open Live Q&A"
+    quote: "Don't try to catch lows on a trend day."
+  - video_id: wa9m30UHrm0
+    title: "New York Open Live Q&A"
+    quote: "Did we manipulate it? No, we're continuing lower."
+ambiguities:
+  - "No time limit is given for how long the reversal may take before the day is declared trending."
+related: ["no-fading-the-daily-candle", "phases-of-price", "continuation-over-reversal"]

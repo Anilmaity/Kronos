@@ -4,6 +4,13 @@ variants:
   name:
   - Let the Wick Form, Trade the Body (Wick Trust Test)
   definition:
+  - 'The instruction he asks the viewer to repeat internally, and the operational core of
+    the model: do not try to catch the extreme of the higher-timeframe candle; let its wick
+    form, confirm the wick with a lower-timeframe protected swing / change in the state of
+    delivery, and then trade the body. His stated reason is failure-mode-driven -- trying
+    to catch the wick means being continuously stopped out. The same procedure is applied
+    recursively: the daily wick is confirmed by the 4-hour, the 4-hour wick by the 15-minute,
+    and so on.'
   - 'This unit supplies the confirmation half of the test in unusually plain terms: a wick
     is not confirmed by its shape alone. A shallow run above the previous extreme with no
     change in the state of delivery is explicitly shown failing, and he states that without
@@ -28,12 +35,16 @@ variants:
     not, the extreme is a trusted invalidation.
 
     '
-definition: 'The instruction he asks the viewer to repeat internally, and the operational
-  core of the model: do not try to catch the extreme of the higher-timeframe candle; let its
-  wick form, confirm the wick with a lower-timeframe protected swing / change in the state
-  of delivery, and then trade the body. His stated reason is failure-mode-driven -- trying
-  to catch the wick means being continuously stopped out. The same procedure is applied recursively:
-  the daily wick is confirmed by the 4-hour, the 4-hour wick by the 15-minute, and so on.'
+definition: 'Dedicated primary-source lesson (RX8vtP3PLYk) for the rule. Before any entry
+  he asks one question of the higher-timeframe candle being traded: has it formed its wick
+  yet? If yes, there is a protected swing to trade away from; if no, there is nothing to trade
+  away from and he waits. The stated failure mode of entering before the wick forms is that
+  you get stopped out and become the liquidity for the wick to form. The question is re-asked
+  after every lower-timeframe candle closure until it can be answered yes, and the yes is
+  given by a lower-timeframe change in the state of delivery (or intra-candle CISD) that creates
+  a protected swing inside the higher-timeframe candle.
+
+  '
 category: structure
 status: contested
 aliases:
@@ -53,6 +64,23 @@ preconditions:
 - A higher-timeframe candle has opened and price has traded into the anticipated wick-formation
   area.
 detection_rules:
+- 'After each lower-timeframe closure inside the higher-timeframe candle, ask: do I trust
+  that this extreme will not be taken out? If no, keep waiting.'
+- A shallow sweep into a gap that only consolidates, or a reach that leaves equal highs/lows
+  close to the extreme, is answered 'no' - the wick is not formed.
+- The answer becomes 'yes' only after a closure through the series of opposing candles into
+  an important level (high, low or fair value gap) - a protected swing.
+- 'If the CISD does not look clean on the working timeframe, adjust the timeframe (example:
+  hourly -> 30-minute) and re-read the closure.'
+- 'Give-up rule (bearish worked example): after repeated failed attempts, allow ''one more
+  high'' as the last spot to look for the wick; if price keeps disrespecting the gap, abandon
+  the idea and look at the next day.'
+- A protected swing that forms against the higher-timeframe trend, after the range extreme
+  on that side has already been taken and with failure swings left on the other side, is ignored;
+  wait for it to be invalidated and a new protected swing in the trend direction to form.
+- 'Series vs single candle: if the lower timeframe shows a swing high/low already shifting
+  inside the move, a single opposing candle can be used as the CISD series instead of the
+  whole range.'
 - Let the higher-timeframe candle open and put in its counter-directional wick.
 - On the paired lower timeframe, require a change in the state of delivery / protected swing
   inside that wick.
@@ -95,6 +123,9 @@ invalidation:
 - Price consolidates at the extreme instead of displacing away, so the wick is likely to be
   extended.
 measurable:
+- share of entries taken before vs after the first LTF CISD inside the HTF candle, and their
+  stop-out rates
+- hit rate of the 'last chance one more high' variant vs skipping the day
 - stop-out rate of wick-catching entries vs body entries
 - time from higher-timeframe candle open to wick confirmation
 - rate at which a shallow-run extreme without a CISD is subsequently exceeded
@@ -107,6 +138,21 @@ measurable:
 - frequency with which an extreme meeting all three detection rules is subsequently exceeded
 - stop-out rate of entries placed against untrusted vs trusted extremes
 sources:
+- video_id: RX8vtP3PLYk
+  title: Let The Wick Form, Trade The Body (Stop Getting Stopped Out)
+  quote: did this higher time frame candle form its wick yet?
+- video_id: RX8vtP3PLYk
+  title: Let The Wick Form, Trade The Body (Stop Getting Stopped Out)
+  quote: we're going to be the liquidity for the wick to form
+- video_id: RX8vtP3PLYk
+  title: Let The Wick Form, Trade The Body (Stop Getting Stopped Out)
+  quote: this would be kind of our last chance before I give up on the idea
+- video_id: RX8vtP3PLYk
+  title: Let The Wick Form, Trade The Body (Stop Getting Stopped Out)
+  quote: you can always adjust your time frames a little
+- video_id: cWDnzI3lpUk
+  title: How to Trade With a 9-5 Job (TTrades Fractal Model Explained)
+  quote: let the daily wick form, and then trade away
 - video_id: FAKWJ-1NlLE
   title: Trading The 4 Hour Power Of Three - OHLC / OLHC
   quote: I need to let the wick form and then look to trade the body
@@ -144,6 +190,12 @@ sources:
 - video_id: egV_gABTQks
   title: (CPI) New York Open Live Q&A
 ambiguities:
+- '''One more high'' as the last chance is a single worked example, not a stated count; no
+  clock-time cutoff is given.'
+- The choice between a single opposing candle and the full series is justified by a lower-timeframe
+  structure shift that is shown, not defined.
+- '''Do I trust'' remains a discretionary judgement; the IC-CISD is offered as its mechanical
+  stand-in.'
 - 'No deadline is given: how late into the higher-timeframe candle the wick may still form
   before the candle is abandoned is not stated (only that expansion candles ''have so much
   range and so much time'').'
@@ -163,10 +215,13 @@ ambiguities:
   candle time or range.
 - Shallow reach is judged visually against the candle body with no numeric threshold.
 related:
-- small-wick-expansion-rule
+- ic-cisd
+- htf-opening-price-entry
 - protected-swing
-- power-of-three-amd
 - cisd
+- relevant-swing-separation
+- small-wick-expansion-rule
+- power-of-three-amd
 - opposing-run
 - hourly-cisd-confirmation
 - continuation-timing
@@ -191,16 +246,21 @@ timeframes:
   - 1m
   fractal: true
 execution:
-  bias: Away from the trusted wick.
-  entry: After the wick is trusted, on the CISD or the following continuation.
-  stop: Beyond the trusted wick extreme.
+  bias: Direction of the higher-timeframe candle.
+  entry: After the wick is anticipated (protected swing formed), near the higher-timeframe
+    opening price.
+  stop: On the wick / protected swing - if the wick is formed that stop should not be taken
+    out.
   targets:
-  - Drawn liquidity in the direction of the body
+  - 2R
+  - the opposite side of the range
+  - the gap or higher-timeframe target marked
 contributing_units:
 - build_a_model_intro_to_ttrades_fractal_model_02
 - build_a_model_intro_to_ttrades_fractal_model_03
 - shorts_01
 - sunday_sessions_live_q_a_01
 - the_foundation_02
-draft_count: 5
+- update_20261007_edu_01
+draft_count: 6
 voice: ttrades

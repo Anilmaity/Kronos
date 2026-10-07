@@ -1,0 +1,295 @@
+{
+ "concept_id": "open-uncertainty-wait-ladder",
+ "reading": "u1007va",
+ "testable": true,
+ "test_type": "gate",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "baseline: 5m bare CISD (series_open, 2/2 swings, max_wait 3), decide at the confirming 5m close, enter next M1 open, stop = protected swing, 2R, 50 min exit; only decisions in [09:35, 10:00) New York",
+   "ladder steps: first 5m candle 09:30-09:35 (closed 09:35), first 15m candle 09:30-09:45 (closed 09:45); a step 'reads' if opposing_run/|body| <= 1.0 (expansion candle; doji never reads)",
+   "gate (permitted): decision >= 10:00; or decision in [09:35, 09:45) and the 5m step read; or decision in [09:45, 10:00) and the 5m or 15m step read",
+   "complement (forbidden): decisions in [09:35, 10:00) while no step so far has read",
+   "excluded: 09:30 decisions (no step closed: always forbidden) and >= 10:00 (always permitted), so only the staged condition separates the arms",
+   "rows whose consulted step candle is missing are dropped (not passed)"
+  ],
+  "params": {
+   "baseline_tf": "5min",
+   "cisd": {
+    "level_rule": "series_open",
+    "left": 2,
+    "right": 2,
+    "max_wait": 3,
+    "min_series": 1
+   },
+   "rr": 2.0,
+   "max_hold": "50min",
+   "band": [
+    [
+     "09:35",
+     "10:00"
+    ]
+   ],
+   "deadline": "10:00",
+   "tz": "America/New_York",
+   "step1": "5min close 09:35",
+   "step2": "15min close 09:45",
+   "wick_cut": 1.0
+  }
+ },
+ "params_source": {
+  "baseline_tf": "declared-before-run: 5m CISD book = finest phase-3 locked stack; corpus LTF for the NY window is 15m/5m (entry-time-window timeframes.ltf)",
+  "cisd": "phase3: locked CISD config (conjunction_preregistration 1.8-1.13: series_open, 2/2, max_wait 3)",
+  "rr": "phase3: 2R target (conjunction_preregistration locked config)",
+  "max_hold": "phase3: 10 entry-TF bars (conjunction_preregistration 1.13) = 50 min on 5m",
+  "band": "declared-before-run: [09:35, 10:00) = the minutes where a ladder step has closed and the verdict depends on readability; vault: Concept Campaign 2026-09-23 (gold volatility step is 09:30 NY, 73.6% Holm) for the 09:30 anchor; isolation from the unconditional 10:00 deferral already tested NULL (entry-time-window u1007b) and same-clock arms per vault Session Timing on Gold / Backtest Methodology Traps",
+  "deadline": "corpus: rTomJ8URFnw 'If you still don't, wait for 10:00 a.m.'",
+  "tz": "session_window_fit: America/New_York with DST (settled, 99.8% of 605 daily breaks resume at 18:00 NY)",
+  "step1": "corpus: rTomJ8URFnw 'Just wait five minutes.'",
+  "step2": "corpus: rTomJ8URFnw 'If you still don't, wait for 15.'",
+  "wick_cut": "threshold_fits: small wick / expansion candle opposing_run/|body| <= 1.0 (grade A); corpus rTomJ8URFnw 'wait for closures to tell you' (readable = decisive closure)"
+ },
+ "n": 1669,
+ "span": {
+  "start": "2016-01-04 14:50:00+00:00",
+  "end": "2026-07-21 13:40:00+00:00",
+  "years": 10.541
+ },
+ "avg_R": -0.04245256835890546,
+ "avg_R_gross": -0.0024525683589054405,
+ "win_rate": 0.41461953265428403,
+ "pf": 0.9050597468986242,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "avg_R_gated": -0.038466496660201514,
+  "avg_R_complement": -0.03561806018931156,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": -0.11689984768838102,
+ "ci_lo": -0.26473091478526106,
+ "ci_hi": 0.0139577154158005,
+ "ci_method": "phase3_block",
+ "p": 0.10012071578620474,
+ "halves": {
+  "H1": {
+   "n": 996,
+   "diff": -0.1267649330514628,
+   "ci_lo": -0.33493061084213704,
+   "ci_hi": 0.0793340666352945,
+   "ci_method": "block",
+   "p": 0.23033458862209116,
+   "start": "2016-01-04 14:50:00+00:00",
+   "end": "2020-12-31 14:55:00+00:00",
+   "n_gated": 796
+  },
+  "H2": {
+   "n": 1071,
+   "diff": -0.1080114160991145,
+   "ci_lo": -0.2949540877736466,
+   "ci_hi": 0.07001662313215894,
+   "ci_method": "iid",
+   "p": 0.2460142819599795,
+   "start": "2021-01-04 14:35:00+00:00",
+   "end": "2026-07-21 13:40:00+00:00",
+   "n_gated": 873
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 508,
+   "diff": -0.0027424003959957213,
+   "ci_lo": -0.2924308229723066,
+   "ci_hi": 0.30039230970770225,
+   "ci_method": "block",
+   "p": 0.985532280776662,
+   "start": "2016-01-04 14:50:00+00:00",
+   "end": "2018-08-20 13:45:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 541,
+   "diff": -0.20391856965901273,
+   "ci_lo": -0.4663189965667453,
+   "ci_hi": 0.031305231936832524,
+   "ci_method": "block",
+   "p": 0.10820257662071552,
+   "start": "2018-08-22 13:55:00+00:00",
+   "end": "2021-04-09 13:55:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 494,
+   "diff": -0.11537804538322466,
+   "ci_lo": -0.37542868356165354,
+   "ci_hi": 0.14399805929215137,
+   "ci_method": "iid",
+   "p": 0.3839087618086844,
+   "start": "2021-04-13 13:35:00+00:00",
+   "end": "2023-12-01 14:35:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 524,
+   "diff": -0.1508273699912095,
+   "ci_lo": -0.4415681060577946,
+   "ci_hi": 0.13413325533805154,
+   "ci_method": "iid",
+   "p": 0.30443098868465546,
+   "start": "2023-12-05 14:55:00+00:00",
+   "end": "2026-07-21 13:40:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.19917964973893423,
+ "mde_threshold": 0.1,
+ "power_floor_n": 1579,
+ "verdict": "UNDERPOWERED",
+ "verdict_detail": "CI contains 0; MDE 0.1992 vs threshold 0.1000, effective n 351 (power floor n=6622, have 398)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 2067,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "gate_mask_checked": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 5.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 154,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "rr",
+    "permitted",
+    "gate_at"
+   ],
+   "ignored": [],
+   "lookback": "10D",
+   "recent": "1D",
+   "events_fp": "75f2e8d17410abbf",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "50min",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": null,
+  "entry_mode": "next_open",
+  "hold_basis": "clock",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "New concept (update_20261007_live_12), not yet in batches.json. Rerun with vault context: tests ONLY the staged condition, both arms inside the pre-10:00 window; the unconditional 10:00 deferral (entry-time-window u1007b, NULL) and the always-forbidden first-5-minute rows are excluded. Reading a: the staged ladder with readability = a decisive (expansion) closure of the 5m / 15m opening candle. Price-only proxy: the source's 'unreadable' is correlated indices switching strength, not available for gold.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/update_20261007/open-uncertainty-wait-ladder.py",
+ "runtime_sec": 0.51,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-10-07T06:31:04+00:00",
+ "n_events_in": 2067,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 0,
+  "target_not_beyond_entry": 0,
+  "no_bars_in_hold": 0
+ },
+ "n_complement": 398,
+ "gate_firing_rate": 0.8074504112239961,
+ "events_fp": "75f2e8d17410abbf",
+ "mask_fp": "fe381bd65b69c021",
+ "mask_col": "permitted",
+ "exit_mix": {
+  "stop": 0.341521869382864,
+  "target": 0.12222887956860395,
+  "time": 0.536249251048532
+ },
+ "gated_vs_own_control": {
+  "diff": -0.003986071698703943,
+  "ci_lo": -0.0551012493007213,
+  "ci_hi": 0.05085292894497227,
+  "p": 0.8827606744959949
+ },
+ "complement": {
+  "n": 398,
+  "avg_R": 0.07729571580036552,
+  "win_rate": 0.4798994974874372,
+  "pf": 1.1748180160873045,
+  "sd_R": 1.1182358390810825,
+  "exit_mix": {
+   "stop": 0.37185929648241206,
+   "target": 0.17336683417085427,
+   "time": 0.4547738693467337
+  },
+  "vs_own_control": {
+   "diff": 0.11291377598967708,
+   "ci_lo": -0.01110790421737377,
+   "ci_hi": 0.24092909979086838,
+   "p": 0.07906341758942888
+  }
+ },
+ "ci_components": {
+  "phase3_block": [
+   -0.26473091478526106,
+   0.0139577154158005
+  ],
+  "day_block": [
+   -0.2379676007166881,
+   0.015858598095903967
+  ]
+ },
+ "diff_meaning": "mean(R-ctrl | gated) - mean(R-ctrl | complement)",
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_eff_gated": 1454,
+  "n_eff_complement": 351,
+  "n_eff": 351
+ },
+ "ties": {
+  "real_ambiguous": 0.0,
+  "control_ambiguous": 9.675858732462506e-05,
+  "real_gap_stop": 0.0038703434929850023,
+  "control_gap_stop": 0.0017416545718432512,
+  "gated_excess": -0.00011983223487118035,
+  "complement_excess": 0.0,
+  "verdict_stop_first": "UNDERPOWERED"
+ },
+ "ctrl_overlap": 0.0012578616352201257,
+ "exposure_bars": {
+  "real_mean": 49.98306724721819,
+  "control_mean": 48.62467343976778,
+  "hold_basis": "clock"
+ },
+ "run_id": "046de34d9a80408884ff1a52ce480db8",
+ "hyp_key": "e634d72b5a424eec"
+}

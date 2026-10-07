@@ -1,0 +1,256 @@
+{
+ "concept_id": "stop-loss-placement",
+ "reading": "u1007a",
+ "testable": true,
+ "test_type": "trade",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "entries: 1h CISD (series_open, 2/2 swings, max_wait 3), decide at the confirming bar close, enter next M1 open",
+   "target: prior completed trading day's high (long) / low (short), min_coverage 0.5; must lie beyond the confirm close",
+   "condition: R with the stop at the protected swing (wick extreme) < 2 and R with the EQ stop >= 2 (the same 2R floor gates the trade taken), both measured from the confirm close (the decision-time price; fill is the next M1 open)",
+   "EQ = midpoint of the protected swing and the farthest price from it over swing bar..confirm bar (reversal leg); EQ stop placed at EQ; rows with EQ not strictly between the confirm close and swing dropped",
+   "no management short of the stop: exit only at stop, target or 10h",
+   "test: EQ-stop trades vs matched random-entry control, claim +"
+  ],
+  "params": {
+   "tf": "1h",
+   "max_hold": "10h",
+   "target": "PDH/PDL",
+   "rr_floor": 2.0,
+   "eq_leg": "protected swing -> farthest extreme through confirm bar",
+   "eq_buffer": 0.0,
+   "grid4h": "n/a (no 4h bars)",
+   "pd_min_coverage": 0.5
+  }
+ },
+ "params_source": {
+  "tf": "corpus: uW55Tuk-ngY 'I use the daily and hourly uh for myself'; phase3: meta/conjunction_preregistration.md \u00a71.8-1.13 (locked rung-0 config)",
+  "max_hold": "phase3: meta/conjunction_preregistration.md \u00a71.8-1.13 (locked rung-0 config)",
+  "target": "declared-before-run: draw for a daily reversal ('a reversal on this day') = prior day's opposite extreme; the chart draw is not stated",
+  "rr_floor": "corpus: uW55Tuk-ngY 'I'm not even getting 2 R. Not worth it for me.' + 'It's like five R.' (floor applies to the swing placement rejected AND the EQ trade taken)",
+  "eq_leg": "declared-before-run: draft ambiguity (daily candle vs reversal leg vs swing); the reversal leg on the entry TF is the draft's rule text",
+  "eq_buffer": "corpus: uW55Tuk-ngY 'So, I just put it above the EQ.' (no buffer stated)",
+  "grid4h": "declared-before-run: no 4h bars used",
+  "pd_min_coverage": "declared-before-run: README trap 6 stub-session skip"
+ },
+ "n": 2041,
+ "span": {
+  "start": "2016-01-05 04:00:00+00:00",
+  "end": "2026-07-21 02:00:00+00:00",
+  "years": 10.538
+ },
+ "avg_R": -0.017485439012909693,
+ "avg_R_gross": 0.02251456098709027,
+ "win_rate": 0.2792748652621264,
+ "pf": 0.9757687282584239,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "n": 10205,
+  "avg_R": -0.008100231597047968,
+  "win_rate": 0.27966682998530135,
+  "pf": 0.9888042815210879,
+  "sd_R": 2.1178453526056003,
+  "exit_mix": {
+   "stop": 0.6798628123468888,
+   "target": 0.15894169524742774,
+   "time": 0.16119549240568348
+  },
+  "avg_R_gross": 0.031899768402952035,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": -0.009385207415861725,
+ "ci_lo": -0.10994353316554151,
+ "ci_hi": 0.09292656680052339,
+ "ci_method": "phase3_block",
+ "p": 0.856097331920986,
+ "halves": {
+  "H1": {
+   "n": 1001,
+   "diff": 0.009140327056429323,
+   "ci_lo": -0.130295637307298,
+   "ci_hi": 0.15575370802654312,
+   "ci_method": "iid",
+   "p": 0.9003208095269358,
+   "start": "2016-01-05 04:00:00+00:00",
+   "end": "2020-12-31 05:00:00+00:00"
+  },
+  "H2": {
+   "n": 1040,
+   "diff": -0.027216034345441856,
+   "ci_lo": -0.18554162259395215,
+   "ci_hi": 0.11649316363922305,
+   "ci_method": "block",
+   "p": 0.7239230985168612,
+   "start": "2021-01-06 05:00:00+00:00",
+   "end": "2026-07-21 02:00:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 516,
+   "diff": 0.00787814486075742,
+   "ci_lo": -0.19465471739958864,
+   "ci_hi": 0.22314495584053573,
+   "ci_method": "iid",
+   "p": 0.9410778340004372,
+   "start": "2016-01-05 04:00:00+00:00",
+   "end": "2018-08-17 14:00:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 536,
+   "diff": 0.03412922478956113,
+   "ci_lo": -0.13991235838920674,
+   "ci_hi": 0.22698350246636814,
+   "ci_method": "iid",
+   "p": 0.7153817856348107,
+   "start": "2018-08-22 16:00:00+00:00",
+   "end": "2021-04-12 05:00:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 517,
+   "diff": -0.01051833248841584,
+   "ci_lo": -0.26792779916015735,
+   "ci_hi": 0.22599888345873462,
+   "ci_method": "block",
+   "p": 0.9334729275555566,
+   "start": "2021-04-13 13:00:00+00:00",
+   "end": "2023-12-01 00:00:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 472,
+   "diff": -0.0764313933784288,
+   "ci_lo": -0.26842987294862564,
+   "ci_hi": 0.11887208997784013,
+   "ci_method": "block",
+   "p": 0.43918453893841436,
+   "start": "2023-12-04 09:00:00+00:00",
+   "end": "2026-07-21 02:00:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.14499190521188857,
+ "mde_threshold": 0.1,
+ "power_floor_n": 4291,
+ "verdict": "UNDERPOWERED",
+ "verdict_detail": "CI contains 0; MDE 0.1450 vs threshold 0.1000, effective n 1444 (power floor n=4291, have 2041)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 2041,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 300.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 164,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "target_px"
+   ],
+   "ignored": [],
+   "lookback": "20D",
+   "recent": "1D",
+   "events_fp": "e3b83385c983962d",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "10h",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": null,
+  "entry_mode": "next_open",
+  "hold_basis": "clock",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "New claim only (EQ alternative when swing stop < 2R). Prior reading 'a' untouched. AUDIT 2026-10-07 (vault context): fixed \u2014 EQ trades below the source's own 2R floor (prior run median EQ RR 2.07, q10 0.47) are no longer scored.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/update_20261007/stop-loss-placement.py",
+ "runtime_sec": 0.45,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-10-07T06:19:56+00:00",
+ "n_events_in": 2061,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 7,
+  "target_not_beyond_entry": 0,
+  "no_bars_in_hold": 13
+ },
+ "events_fp": "e3b83385c983962d",
+ "sd_R": 1.9997890903204494,
+ "exit_mix": {
+  "stop": 0.6756491915727585,
+  "target": 0.15727584517393434,
+  "time": 0.1670749632533072
+ },
+ "trades_per_year": 193.6802416212003,
+ "ci_components": {
+  "phase3_block": [
+   -0.10994353316554151,
+   0.09292656680052339
+  ],
+  "day_block": [
+   -0.10946653259044586,
+   0.09012331717762403
+  ]
+ },
+ "diff_win": -0.00039196472317493125,
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 1444,
+  "n_clusters": null,
+  "n_eff": 1444
+ },
+ "ties": {
+  "real_ambiguous": 0.0009799118079372856,
+  "control_ambiguous": 0.0003919647231749143,
+  "real_gap_stop": 0.022048015678588925,
+  "control_gap_stop": 0.016560509554140127,
+  "verdict_stop_first": "UNDERPOWERED"
+ },
+ "ctrl_overlap": 0.01832435080842724,
+ "exposure_bars": {
+  "real_mean": 552.6771190592847,
+  "control_mean": 549.2164625183733,
+  "hold_basis": "clock"
+ },
+ "run_id": "ec54560249d74f5e8f9d5d99d5ac926a",
+ "hyp_key": "0565d02275bf8c82"
+}

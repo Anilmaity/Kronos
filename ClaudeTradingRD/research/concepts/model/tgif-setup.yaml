@@ -1,16 +1,24 @@
 id: tgif-setup
 name: TGIF Setup
-definition: 'SHORTS EVIDENCE showing the full weekly qualification then the Friday execution.
-  The week runs: expansion, a retracement into Monday, a Tuesday candle 2 closure (described
-  as ideal), then continuation on Wednesday and Thursday into an objective - here a high to
-  the left. Once the objective is hit, all the requirements for a valid TGIF are met and the
-  trade is the reversal back. If Thursday has not formed the reversal on the hourly, Friday
-  is expected to form it: take the previous high, then require either candlestick confirmation
-  or a change in the state of delivery. With a candle 2 closure in hand, mark 0.5 of the wick
-  and wait for price to reach up into it, print an intra-candle change in the state of delivery,
-  and trade lower.'
+definition: 'Live checklist walk-through on a Friday that he REJECTS as a TGIF. He ticks the
+  requirements aloud: Monday/Tuesday high (present), expansion through Thursday, weekly objective.
+  Wednesday was a consolidation, so the week had expansion Tuesday and Thursday but not three
+  consecutive days, and his closing review states it is not a TGIF because of that consolidation.
+  He adds an execution requirement: even with a qualifying week the lower timeframe must line
+  up - he normally wants a sweep of the previous day low traded back in, framed with SMT.
+  The only way to have traded this week''s TGIF would have been overnight, assuming the low
+  of the week had formed, which he did not trust.'
 variants:
   definition:
+  - 'SHORTS EVIDENCE showing the full weekly qualification then the Friday execution. The
+    week runs: expansion, a retracement into Monday, a Tuesday candle 2 closure (described
+    as ideal), then continuation on Wednesday and Thursday into an objective - here a high
+    to the left. Once the objective is hit, all the requirements for a valid TGIF are met
+    and the trade is the reversal back. If Thursday has not formed the reversal on the hourly,
+    Friday is expected to form it: take the previous high, then require either candlestick
+    confirmation or a change in the state of delivery. With a candle 2 closure in hand, mark
+    0.5 of the wick and wait for price to reach up into it, print an intra-candle change in
+    the state of delivery, and trade lower.'
   - 'A Friday trade of the weekly candle''s wick back into the weekly range. Three conditions
     are required together: the weekly extreme formed Monday or Tuesday, expansion ran through
     Thursday, and a weekly objective was actually reached. The third condition is the one
@@ -26,6 +34,12 @@ variants:
     is the same as elsewhere: drop to the hourly, require an hourly change in the state of
     delivery, then look for the move back into the range on Friday, which in this case was
     choppy but did deliver.'
+  - 'Negative Short: Tuesday forms the high of the week, Wednesday and Thursday both expand,
+    but no relevant level has been hit. Therefore he does not look for Friday to return into
+    the weekly range to form the weekly wick; he expects continuation toward the target instead,
+    and price does reach lower. TGIF does not apply until the relevant level is hit.
+
+    '
   - 'A Friday-only trade of the weekly candle''s wick, defined on top of a classic expansion
     week. In a bullish week it is the move from the wick high back down toward the close;
     in a bearish week, from the wick low back up toward the close. Three conditions must all
@@ -41,9 +55,12 @@ category: model
 status: contested
 aliases:
 - TGIF
+- TGIF profile
 - Friday back into the weekly range
 - TGIF setup
 preconditions:
+- Weekly extreme formed Monday or Tuesday.
+- Expansion through Thursday with no intervening consolidation day.
 - The week has already delivered expansion and a mid-week continuation.
 - A weekly objective (a high or low to the left) has been reached.
 - Weekly high (bearish TGIF) or low (bullish TGIF) formed on Monday or Tuesday.
@@ -53,6 +70,7 @@ preconditions:
 - Ideally SMT against the correlated asset at the Friday origin (gasoline vs oil in the worked
   example), which is what validated the opposing candles as an order block.
 - A weekly objective was reached before Friday.
+- Weekly high (bearish week) on Tuesday with Wednesday and Thursday expansion.
 - A classic expansion week is in progress.
 - 'Bullish: the low of the week formed on Monday or Tuesday. Bearish: the high of the week
   formed on Monday or Tuesday.'
@@ -60,6 +78,12 @@ preconditions:
 - A key level or the drawn liquidity has been hit. If it has not, TGIF does not apply - expect
   continuation into that level instead.
 detection_rules:
+- Treat a Wednesday consolidation inside the Tuesday-Thursday run as disqualifying - the required
+  read is multiple consecutive days of expansion, not expansion on two of three days.
+- 'On Friday, require lower-timeframe price action that lines up: a sweep of the previous
+  day low (bullish case) traded back in, ideally with SMT.'
+- Do not take a TGIF that could only have been entered overnight on the assumption that the
+  week's extreme had already formed.
 - Require the week's objective to be hit before calling the TGIF valid.
 - Check on the hourly whether Thursday already formed the reversal; if not, expect Friday
   to.
@@ -80,6 +104,8 @@ detection_rules:
 - 'Execution: drop to the hourly and require an hourly change in the state of delivery.'
 - Then look for the move back into the range on Friday.
 - Accept an imperfect shape - not every weekly profile is picture perfect.
+- Before calling TGIF, check whether a relevant level has been hit; if none, expect Friday
+  continuation toward the target, not a retrace into the range.
 - Verify the Monday-or-Tuesday weekly extreme.
 - Verify two to three days of expansion through Thursday.
 - Verify a relevant level has been reached; a level already traded through does not count,
@@ -94,15 +120,20 @@ detection_rules:
   form an intra-candle change in the state of delivery there, then trade away.
 - Mark the weekly range high to low and take 20 to 30% as the retracement area to trade into.
 invalidation:
+- A consolidation day between the Monday/Tuesday extreme and Thursday.
 - No weekly objective reached - the setup does not exist.
 - Price fails to validate a new order block at the origin, so the low/high is not yet valid.
 - Price closes back through the most recent invalidation point.
 - No hourly change in the state of delivery forms - no trade.
+- No relevant level hit by Thursday - TGIF is not applicable.
 - No key level has been hit - the setup does not exist and continuation is expected instead.
 - The level was reached but price did not reverse off it (only a small retracement then continuation).
 - The fair value gaps that would have been the level have already been traded through, so
   they are no longer relevant.
 measurable:
+- Friday outcome on weeks with three consecutive expansion days vs weeks with a mid-week consolidation
+  day
+- share of qualifying TGIF Fridays that open with a previous-day-low sweep
 - share of weeks where the objective is reached by Thursday close
 - hit rate of the 0.5-of-wick zone on Friday
 - frequency of weeks meeting all three conditions vs structure-only weeks
@@ -115,6 +146,18 @@ measurable:
 - distribution of the actual Friday retracement depth as a fraction of the weekly range
 - comparative outcome when Thursday formed the reversal versus when Friday had to form it
 sources:
+- video_id: 4rNC3QXxC20
+  title: New York Open Live Q&A
+  quote: What are the requirements for a TGIF profile?
+- video_id: 4rNC3QXxC20
+  title: New York Open Live Q&A
+  quote: Expansion through Thursday.
+- video_id: 4rNC3QXxC20
+  title: New York Open Live Q&A
+  quote: It's not TGIF because we have this consolidation.
+- video_id: 4rNC3QXxC20
+  title: New York Open Live Q&A
+  quote: Normally, I like to see a sweep of the previous day low
 - video_id: hTsltdflraY
   title: Breaking Down the TGIF Weekly Profile
   quote: all the requirements have been met for a valid TGIF
@@ -136,12 +179,23 @@ sources:
 - video_id: _-aPdmLe6zw
   title: Not Every TGIF Weekly Profile Will Be Picture Perfect
   quote: Thursday forms the reversal and this is where Friday is the continuation day
+- video_id: lGew8anIeLA
+  title: TGIF Doesn't Apply Until the Relevant Level Is Hit
+  quote: Well, we have never hit any relevant level.
+- video_id: lGew8anIeLA
+  title: TGIF Doesn't Apply Until the Relevant Level Is Hit
+  quote: where I'd want to see a continuation to reach for this target.
 - video_id: _CSO5Mf7CM8
   title: Weekly Profile - TGIF Setup
   quote: TGIF is going to be looking to trade that wick low to the close
 - video_id: Qt7Ek4keMzs
   title: Weekly Profile for Daily Bias - Classic Expansion
 ambiguities:
+- He first says 'Expansion through Thursday' and then corrects to 'three days of expansion'
+  - whether a consolidation day anywhere in Tue-Thu disqualifies, or only Wednesday, is not
+  stated.
+- Whether the weekly objective was met is left open ('I could say, yeah, we hit this low').
+- The day is an index day (NQ/ES/YM); no gold-specific statement.
 - '''Candlestick confirmation'' as an alternative to a CISD is not defined.'
 - No target is stated for the Friday reversal leg in this Short.
 - 'TRANSCRIPT ARTIFACT: ''candle 2'' is auto-captioned as ''candle to''.'
@@ -155,6 +209,7 @@ ambiguities:
 - No target is given for the Friday continuation beyond "back into the range".
 - '"Not everyone is picture perfect" licenses accepting degraded shapes but gives no floor
   on how degraded is still tradeable.'
+- The target / relevant level is not named in the transcript.
 - The 20-30% band is described as 'the area we want to see price go back up to', not as an
   order-placement rule; whether to enter at 0.2, at 0.3, or on a reaction anywhere inside
   the band is not stated.
@@ -169,6 +224,9 @@ ambiguities:
   it is defined only on top of classic expansion.
 - No instrument is named in any TGIF example.
 related:
+- weekly-profile-alignment
+- smt-divergence
+- consolidation-reversal-week
 - half-wick-respect
 - weekly-profile-framework
 - ic-cisd
@@ -181,13 +239,13 @@ related:
 - midweek-reversal-week
 - thursday-counter-week
 - hourly-cisd-confirmation
+- level-to-trade-away-from
 timeframes:
   htf:
   - 1W
   - 1D
   ltf:
   - 1H
-  - 15m
   fractal: false
 execution:
   bias: Counter to the week's expansion, back into the weekly range.
@@ -201,6 +259,8 @@ contributing_units:
 - shorts_01
 - shorts_02
 - sunday_sessions_live_q_a_03
+- update_20261007_live_05
+- update_20261007_shorts_04
 - weekly_profile_series_01
-draft_count: 4
+draft_count: 6
 voice: ttrades

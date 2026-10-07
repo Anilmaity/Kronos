@@ -1,0 +1,270 @@
+{
+ "concept_id": "reversal-candle-target-adjustment",
+ "reading": "u1007b",
+ "testable": true,
+ "test_type": "trade",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "1h CISD (series_open, 2/2, max_wait 3), extreme formed today = today's running low (bull) / high (bear) at the confirm close, confirm close still beyond the 18:00 NY open (opposing run in play); decide at the 1h close_time, enter next M1 open, stop at the protected swing, flat 17:00 NY",
+   "control holds the NY clock (+/-30 min) so its hold window and time-of-day volatility match the real trade",
+   "large opposing wick: today's running low (bull) is below the previous day's EQ (the wick did not respect the EQ); bear mirrors",
+   "ADR = mean H-L of the last 20 complete real days (n_m1 >= 600), as of the decision (in-progress day never read)",
+   "projection = wick extreme (today's low so far, bull) + ADR (minus for bear)",
+   "kept only if PDH (bull) / PDL (bear) is ahead of the confirm close and within the projection (PDH <= wick_low + ADR); first such CISD per day",
+   "target = PDH (bull) / PDL (bear); no trade beyond it (flat at 17:00 NY)"
+  ],
+  "params": {
+   "exec_tf": "1h",
+   "cisd": "series_open, swing 2/2, max_wait 3",
+   "reversal_candle": "confirm close still beyond the 18:00 open (opposing run in play)",
+   "daily_open": "18:00 NY",
+   "exit": "17:00 NY session close",
+   "one_per_day": true,
+   "prev_day": "last complete trading day with n_m1 >= 600",
+   "grid4h": "n/a",
+   "ctrl_tod_tol_min": 30,
+   "large_wick": "wick extreme beyond the previous complete day's EQ (PDH+PDL)/2",
+   "adr": "ADR(20) mean of H-L, completed real days",
+   "projection_anchor": "today's running extreme at the confirm close (the CISD extreme)",
+   "reach_rule": "target within wick_extreme +/- ADR (no tolerance band)",
+   "target": "previous complete day's high (long) / low (short)"
+  }
+ },
+ "params_source": {
+  "exec_tf": "method_spec: \u00a72.4 daily wick confirmed by an hourly CISD (as prior a/b)",
+  "cisd": "phase3: locked CISD config",
+  "reversal_candle": "threshold_fits: large wick = opposing_run/|body| > 1.0; live proxy as prior reading a/b (declared-before-run)",
+  "daily_open": "method_spec: \u00a71.4 daily open 18:00 canon",
+  "exit": "corpus: 3OIq9HmckH8 'better to wait for the new candle or the new daily open'",
+  "one_per_day": "method_spec: \u00a72.4 only one CISD per day",
+  "prev_day": "declared-before-run: README trap 6, skip stub sessions",
+  "grid4h": "declared-before-run: no 4h bars used",
+  "ctrl_tod_tol_min": "declared-before-run: README trap 9 + vault Backtest Methodology Traps / Session Timing on Gold - events cluster in NY hours and every hold ends at 17:00 NY, so the control holds the clock",
+  "large_wick": "corpus: 3OIq9HmckH8 'if we had a small wick respecting the EQ, we could still get up to these highs' (T-spot alternative withheld at source; declared-before-run)",
+  "adr": "corpus: 3OIq9HmckH8 'total range divided by the total days' / 'Ideally, you use a few more' - length unstated; 20 as average-daily-range__a (declared-before-run)",
+  "projection_anchor": "corpus: 3OIq9HmckH8 'If this is the high, where does our 115 lie? Right at this previous day's low'",
+  "reach_rule": "corpus: 3OIq9HmckH8 'when we have a large opposing move, this is using time and range'; 'at/near' tolerance unstated -> plain reachability (declared-before-run)",
+  "target": "corpus: 3OIq9HmckH8 'we have our previous day's high here ... this is our target now'"
+ },
+ "n": 384,
+ "span": {
+  "start": "2016-02-19 14:00:00+00:00",
+  "end": "2026-07-15 12:00:00+00:00",
+  "years": 10.398
+ },
+ "avg_R": -0.042646058614003196,
+ "avg_R_gross": -0.00264605861400318,
+ "win_rate": 0.4348958333333333,
+ "pf": 0.8977485123545186,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "n": 1920,
+  "avg_R": -0.019429242180631055,
+  "win_rate": 0.4296875,
+  "pf": 0.9549976435454689,
+  "sd_R": 1.0790363605090676,
+  "exit_mix": {
+   "stop": 0.35833333333333334,
+   "target": 0.246875,
+   "time": 0.39479166666666665
+  },
+  "avg_R_gross": 0.020570757819368967,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": -0.02321681643337214,
+ "ci_lo": -0.14238186676196682,
+ "ci_hi": 0.08981848882213991,
+ "ci_method": "day_block",
+ "p": 0.6951036879521819,
+ "halves": {
+  "H1": {
+   "n": 195,
+   "diff": -0.022990178672042838,
+   "ci_lo": -0.17137132023780752,
+   "ci_hi": 0.12004883851661517,
+   "ci_method": "iid",
+   "p": 0.7571361620621073,
+   "start": "2016-02-19 14:00:00+00:00",
+   "end": "2020-12-24 12:00:00+00:00"
+  },
+  "H2": {
+   "n": 189,
+   "diff": -0.02345064904426746,
+   "ci_lo": -0.20491908778732731,
+   "ci_hi": 0.15810709662216274,
+   "ci_method": "block",
+   "p": 0.8000995630575802,
+   "start": "2021-01-15 13:00:00+00:00",
+   "end": "2026-07-15 12:00:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 106,
+   "diff": 0.025875001534960883,
+   "ci_lo": -0.1791308699252601,
+   "ci_hi": 0.23802954967259218,
+   "ci_method": "iid",
+   "p": 0.8078973935226214,
+   "start": "2016-02-19 14:00:00+00:00",
+   "end": "2018-08-09 10:00:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 101,
+   "diff": 0.009122146000480185,
+   "ci_lo": -0.20513522960642264,
+   "ci_hi": 0.21155884031527816,
+   "ci_method": "block",
+   "p": 0.9316143332103997,
+   "start": "2018-09-05 19:00:00+00:00",
+   "end": "2021-04-07 16:00:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 88,
+   "diff": -0.0685893722357235,
+   "ci_lo": -0.293494522133795,
+   "ci_hi": 0.15313849114268327,
+   "ci_method": "iid",
+   "p": 0.5471855734589864,
+   "start": "2021-04-12 10:00:00+00:00",
+   "end": "2023-11-23 11:00:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 89,
+   "diff": -0.07352224339804034,
+   "ci_lo": -0.3285797912312475,
+   "ci_hi": 0.19082871158528786,
+   "ci_method": "block",
+   "p": 0.578986606100957,
+   "start": "2023-12-06 12:00:00+00:00",
+   "end": "2026-07-15 12:00:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.16595433212015623,
+ "mde_threshold": 0.1,
+ "power_floor_n": 1058,
+ "verdict": "UNDERPOWERED",
+ "verdict_detail": "CI contains 0; MDE 0.1660 vs threshold 0.1000, effective n 384 (power floor n=1058, have 384)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 384,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 0.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 37,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "target_px",
+    "max_hold"
+   ],
+   "ignored": [],
+   "lookback": "60D",
+   "recent": "1D",
+   "events_fp": "d11a81f02e94fc5f",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "per-row column",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": 30,
+  "entry_mode": "next_open",
+  "hold_basis": "clock",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "Rerun with vault context. Scores the large-wick case of the ADR-from-wick-extreme rule: wick beyond the PD EQ, projection reaches PDH/PDL, which is the target. The first pass also kept small-wick days. The 'farther target' it replaces (open targets, failure swings) is discretionary and not modelled. The no-continuation-beyond-PDH/PDL half is the pdh-pdl-continuation-adr-gate concept and is not scored here. Vault: PDH/PDL are reached slightly less often than an equidistant level (previous-period-high-low). Control holds the NY clock (README trap 9).",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/update_20261007/reversal-candle-target-adjustment.py",
+ "runtime_sec": 0.06,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-10-07T06:26:17+00:00",
+ "n_events_in": 384,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 0,
+  "target_not_beyond_entry": 0,
+  "no_bars_in_hold": 0
+ },
+ "events_fp": "d11a81f02e94fc5f",
+ "sd_R": 0.9978880072460905,
+ "exit_mix": {
+  "stop": 0.3359375,
+  "target": 0.23697916666666666,
+  "time": 0.4270833333333333
+ },
+ "trades_per_year": 36.92890995260664,
+ "ci_components": {
+  "phase3_iid": [
+   -0.13326792016162553,
+   0.08399134221700688
+  ],
+  "day_block": [
+   -0.14238186676196682,
+   0.08981848882213991
+  ]
+ },
+ "diff_win": 0.005208333333333315,
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 384,
+  "n_clusters": null,
+  "n_eff": 384
+ },
+ "ties": {
+  "real_ambiguous": 0.0,
+  "control_ambiguous": 0.0005208333333333333,
+  "real_gap_stop": 0.0,
+  "control_gap_stop": 0.005729166666666666,
+  "verdict_stop_first": "UNDERPOWERED"
+ },
+ "ctrl_overlap": 0.007291666666666667,
+ "exposure_bars": {
+  "real_mean": 514.7838541666666,
+  "control_mean": 517.2114583333333,
+  "hold_basis": "clock"
+ },
+ "run_id": "aa995be27fe844628f98734be4fdce7b",
+ "hyp_key": "8eb754843aeaf461"
+}

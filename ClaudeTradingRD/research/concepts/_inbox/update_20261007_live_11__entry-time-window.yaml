@@ -1,0 +1,38 @@
+id: entry-time-window
+name: "Entry Time Window"
+aliases: ["wait for 9:30", "wait 15 minutes after 9:30"]
+category: time
+status: contested
+voice: ttrades
+definition: >
+  A no-direction protocol for the New York open. When there is no clear direction off the
+  open he waits in steps - five, fifteen, then thirty minutes after 9:30 - before deciding,
+  and says that waiting is a key thing because those first candles usually help. Separately,
+  on a day where expansion is anticipated, a 15-minute candle that prints as a reversal
+  candle off the open is not traded; he would rather wait for the 10:00 candle. If the day
+  stays rangebound, 9:30 often just generates volatility to one side and then holds the range.
+timeframes:
+  htf: ["30m", "15m"]
+  ltf: ["5m", "3m"]
+  fractal: false
+preconditions:
+  - "No clear directional read on the asset at 9:30."
+detection_rules:
+  - "At 9:30 with no direction, take no trade; re-check at 9:35, 9:45 and 10:00."
+  - "On an anticipated expansion day, if the opening 15m candle is a reversal candle, skip it and wait for 10:00."
+measurable:
+  - "Directional accuracy of the 9:30-9:35, 9:30-9:45 and 9:30-10:00 moves on no-bias days."
+sources:
+  - video_id: KBJAGgkXdeI
+    title: "New York Open Live Q&A"
+    quote: "which means wait five, wait 15 minutes, wait 30 minutes"
+  - video_id: KBJAGgkXdeI
+    title: "New York Open Live Q&A"
+    quote: "wait for 5 minutes after 9:30, wait for 15 minutes after 9:30"
+  - video_id: KBJAGgkXdeI
+    title: "New York Open Live Q&A"
+    quote: "You'd rather just wait for 10:00 a.m."
+ambiguities:
+  - "What the 5/15/30-minute checkpoints must show to end the wait is not stated."
+python_detector: null
+related: ["ten-am-candle-alignment", "consolidation-open-whipsaw", "pattern-trading-error"]

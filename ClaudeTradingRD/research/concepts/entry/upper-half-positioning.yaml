@@ -1,34 +1,58 @@
 id: upper-half-positioning
 name: Position in the Upper Half of the Swing-to-Target Range
-definition: 'When shorting toward a target, the entry should be located in the upper 50% of
-  the distance between the swing being traded away from and the target (mirrored for longs).
-  Once price has traded into the lower half of that distance there is nothing meaningful left
-  to risk against and the trade should not be taken; that zone is more likely to become a
-  consolidation.
+definition: 'The dedicated dealing-range video restates the rule with a numeric floor: shorts
+  are taken in the premium or around the EQ of the range from the swing being traded away
+  from to the target; at 25% of that range or lower he is no longer looking for shorts because
+  2R is unavailable before the target. Entries near the target also risk a new phase of price
+  (consolidation or reversal) and ''keep you out of consolidation moves'' when avoided.
 
   '
+variants:
+  definition:
+  - 'When shorting toward a target, the entry should be located in the upper 50% of the distance
+    between the swing being traded away from and the target (mirrored for longs). Once price
+    has traded into the lower half of that distance there is nothing meaningful left to risk
+    against and the trade should not be taken; that zone is more likely to become a consolidation.
+
+    '
 category: entry
-status: specified
+status: contested
 aliases:
+- short in a premium of the dealing range
 - first short-term target
 - upper 50 percent
 preconditions:
+- A swing to trade away from and a defined target exist (the dealing range).
 - A swing to trade away from and a defined target both exist.
 detection_rules:
+- Shorts acceptable from the EQ upward; reject shorts at or below 25% of the swing-to-target
+  range.
+- Mirror for longs (reject above 75%, inferred).
 - Measure from the swing extreme to the target.
 - Take entries only in the half of that range nearer the swing.
 - Reject entries in the half nearer the target.
 invalidation:
+- Entry location at or beyond 25% from the target end.
 - Price is already in the half nearer the target.
 measurable:
+- 2R hit rate of shorts by entry location (above EQ, EQ-25%, below 25%)
 - reward-to-risk distribution of entries by position within the swing-to-target range
 sources:
+- video_id: yb3Te7tiGRk
+  title: Understanding Dealing Ranges in Trading (Get Better Risk Reward)
+  quote: that is where I'm not really looking for shorts
+- video_id: yb3Te7tiGRk
+  title: Understanding Dealing Ranges in Trading (Get Better Risk Reward)
+  quote: It's okay if I'm entering right around that EQ point
 - video_id: uzPGXVYpVGc
   title: Candle 2 Confirmations - Live Lesson, Q&A
 ambiguities:
+- Between the EQ and 25% is a grey zone; he calls a setup there worse but not forbidden.
 - He notes that once inside the lower half you would actually want the consolidation but cannot
   trade it, without saying what would make it tradeable.
 related:
+- dealing-range
+- premium-discount
 - cisd-skip-at-target
 - three-entry-quality-criteria
 - dont-trade-after-expansion
@@ -50,5 +74,6 @@ execution:
   - The defined target
 contributing_units:
 - sunday_sessions_live_q_a_01
-draft_count: 1
+- update_20261007_edu_02
+draft_count: 2
 voice: ttrades

@@ -1,0 +1,297 @@
+{
+ "concept_id": "tgif-setup",
+ "reading": "u1007b",
+ "testable": true,
+ "test_type": "gate",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "week: Mon/Tue extreme, Thursday expansion day making the opposite Mon..Thu extreme",
+   "weekly objective: Mon..Thu low <= previous week's low (bearish week; mirrored)",
+   "Friday: 1h sweep of Thursday's low (bearish week) then first 1h close back above -> long next M1 open; stop at sweep low; target week low + 0.25 x range; exit Fri 17:00 NY",
+   "mirrored for bullish weeks",
+   "gate = Wednesday expansion day"
+  ],
+  "params": {
+   "extreme_days": "Mon,Tue",
+   "thursday_expansion": "Thu expansion day making Mon..Thu extreme",
+   "expansion_day": "close beyond open AND beyond prior day extreme",
+   "friday_entry": "first 1h close back inside Thu low/high after sweep",
+   "no_overnight_assumption": "sweep required",
+   "stop": "Friday sweep extreme",
+   "retracement": 0.25,
+   "exit": "Friday 17:00 NY",
+   "day_open_hour": 18,
+   "min_coverage": 0.5,
+   "hold_basis": "bars",
+   "smt": "dropped (optional confluence)",
+   "objective": "previous week's low (bearish week) / high reached Mon..Thu"
+  }
+ },
+ "params_source": {
+  "extreme_days": "corpus: 4rNC3QXxC20 'It' be Monday, Tuesday high. Do we have that? Yeah'",
+  "thursday_expansion": "corpus: 4rNC3QXxC20 'Expansion through Thursday' / 'Thursday sure expands'; Thursday makes the Mon..Thu extreme declared-before-run",
+  "expansion_day": "declared-before-run: no threshold in source; expansion = close in the week's direction AND beyond the previous day's extreme, else consolidation",
+  "gate": "corpus: 4rNC3QXxC20 'Wednesday's a consolidation ... No, it's three days of expansion. Multiple days expansion' (a: any Tue-Thu, b: Wednesday only \u2014 the draft's stated ambiguity)",
+  "friday_entry": "corpus: 4rNC3QXxC20 'Normally, I like to see a sweep of the previous day low, then trading that back in' / 'So, we go to the hourly' -> first 1h close back inside Thursday's extreme after a sweep",
+  "no_overnight_assumption": "corpus: 4rNC3QXxC20 'the only way ... would have been overnight, assuming that this formed the low of the week. I don't really trust that' -> no entry without a prior PDL sweep",
+  "stop": "declared-before-run: the Friday sweep extreme (the invalidation of 'trading that back in')",
+  "retracement": "corpus: _CSO5Mf7CM8 'a retracement of 20 to 30% of the weekly range' \u2014 midpoint 0.25 (same as prior readings a/b)",
+  "exit": "corpus: 4rNC3QXxC20 'It's trading the weekly candle' -> Friday trade, exit Friday 17:00 NY",
+  "day_open_hour": "session_window_fit: settled 18:00 NY daily roll",
+  "min_coverage": "declared-before-run: drop stub sessions (README trap 6)",
+  "hold_basis": "declared-before-run: Friday exit in trading minutes (README trap 7)",
+  "smt": "corpus: 4rNC3QXxC20 'usually I want to frame that off the previous day low and have SMT' (draft: 'ideally with SMT'; library ambiguity: SMT required vs confluence unsettled) -> read as optional confluence and dropped. Not a data limit: XAG H1 exists (vault trap 7)",
+  "objective": "corpus: 4rNC3QXxC20 'Last thing, it's weekly objective' (a stated TGIF requirement) + method_spec: \u00a72.5 TGIF = classic-expansion week 'whose weekly objective has been hit'; \u00a75.2 previous-period extreme -> previous week's low (bearish week) / high reached Mon..Thu, as in readings a/b"
+ },
+ "n": 34,
+ "span": {
+  "start": "2016-03-04 13:00:00+00:00",
+  "end": "2025-10-17 02:00:00+00:00",
+  "years": 9.618
+ },
+ "avg_R": 0.10064443179290072,
+ "avg_R_gross": 0.14064443179290073,
+ "win_rate": 0.35294117647058826,
+ "pf": 1.151273310262658,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "avg_R_gated": -0.2198337983392502,
+  "avg_R_complement": -0.2807432463333158,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": 0.17652259202486398,
+ "ci_lo": -0.6900220782961657,
+ "ci_hi": 1.0759313604363656,
+ "ci_method": "day_block",
+ "p": 0.6951828583825379,
+ "halves": {
+  "H1": {
+   "n": 28,
+   "diff": -0.14213830784676534,
+   "ci_lo": -1.3229002572453534,
+   "ci_hi": 0.9137704456030313,
+   "ci_method": "iid",
+   "p": 0.8032774601706729,
+   "start": "2016-03-04 13:00:00+00:00",
+   "end": "2020-11-06 13:00:00+00:00",
+   "n_gated": 17
+  },
+  "H2": {
+   "n": 31,
+   "diff": 0.5057799568973997,
+   "ci_lo": -0.7361826684350995,
+   "ci_hi": 1.8081033711215542,
+   "ci_method": "iid",
+   "p": 0.43583567512601995,
+   "start": "2021-02-19 01:00:00+00:00",
+   "end": "2025-10-17 02:00:00+00:00",
+   "n_gated": 17
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 17,
+   "diff": -1.1227116934829888,
+   "ci_lo": -2.401450424667226,
+   "ci_hi": -0.03997630943230828,
+   "ci_method": "iid",
+   "p": 0.062371599069785,
+   "start": "2016-03-04 13:00:00+00:00",
+   "end": "2018-08-03 02:00:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 13,
+   "diff": 1.2884675336994227,
+   "ci_lo": 0.45537803688971357,
+   "ci_hi": 2.2972821422791756,
+   "ci_method": "iid",
+   "p": 0.006104626825157184,
+   "start": "2018-09-28 08:00:00+00:00",
+   "end": "2021-03-05 01:00:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 19,
+   "diff": 1.3364975314029306,
+   "ci_lo": -0.5178878784082283,
+   "ci_hi": 3.418427683700429,
+   "ci_method": "iid",
+   "p": 0.18321090593214498,
+   "start": "2021-05-07 06:00:00+00:00",
+   "end": "2023-10-20 00:00:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 10,
+   "diff": -0.773583352678783,
+   "ci_lo": -2.6085287260404963,
+   "ci_hi": 0.5654048671515688,
+   "ci_method": "iid",
+   "p": 0.3393730825675603,
+   "start": "2024-04-11 23:00:00+00:00",
+   "end": "2025-10-17 02:00:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 1.262132535253576,
+ "mde_threshold": 0.1,
+ "power_floor_n": 3983,
+ "verdict": "UNTESTABLE",
+ "verdict_detail": "n=34 (other arm 25) below N_MIN_ANY=30",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 59,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "gate_mask_checked": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 0.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 23,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "target_px",
+    "max_hold",
+    "week",
+    "gate_at",
+    "all3_exp",
+    "wed_exp"
+   ],
+   "ignored": [],
+   "lookback": "30D",
+   "recent": "1D",
+   "events_fp": "e2a87e5c04e4a41e",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "per-row column",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": null,
+  "entry_mode": "next_open",
+  "hold_basis": "bars",
+  "mde_threshold": null,
+  "cluster": "column:week",
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "Gate test of the new claim only (consolidation day disqualifies), on TGIF-qualified weeks (Mon/Tue extreme, Thursday expansion, weekly objective hit); SMT dropped as optional confluence. Clustered by week; hold_basis='bars'. AUDIT 2026-10-07: first run omitted the weekly objective.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/update_20261007/tgif-setup.py",
+ "runtime_sec": 0.04,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-10-07T06:19:13+00:00",
+ "n_events_in": 59,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 0,
+  "target_not_beyond_entry": 0,
+  "no_bars_in_hold": 0
+ },
+ "n_complement": 25,
+ "gate_firing_rate": 0.576271186440678,
+ "events_fp": "e2a87e5c04e4a41e",
+ "mask_fp": "2887b516bb7622d9",
+ "mask_col": "wed_exp",
+ "exit_mix": {
+  "stop": 0.6176470588235294,
+  "target": 0.3235294117647059,
+  "time": 0.058823529411764705
+ },
+ "gated_vs_own_control": {
+  "diff": 0.32047823013215093,
+  "ci_lo": -0.3860919197052216,
+  "ci_hi": 1.0383561197398972,
+  "p": 0.3778191698928404
+ },
+ "complement": {
+  "n": 25,
+  "avg_R": -0.13678760822602876,
+  "win_rate": 0.4,
+  "pf": 0.7763619537130682,
+  "sd_R": 1.3453763507891898,
+  "exit_mix": {
+   "stop": 0.56,
+   "target": 0.4,
+   "time": 0.04
+  },
+  "vs_own_control": {
+   "diff": 0.14395563810728706,
+   "ci_lo": -0.3978879130067529,
+   "ci_hi": 0.7376510395085267,
+   "p": 0.6192307360873388
+  }
+ },
+ "ci_components": {
+  "phase3_iid": [
+   -0.6840079948027032,
+   1.0424948551720548
+  ],
+  "day_block": [
+   -0.6900220782961657,
+   1.0759313604363656
+  ],
+  "cluster": [
+   -0.6634961698960287,
+   1.101984828108156
+  ]
+ },
+ "diff_meaning": "mean(R-ctrl | gated) - mean(R-ctrl | complement)",
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_eff_gated": 34,
+  "n_eff_complement": 25,
+  "n_eff": 25
+ },
+ "ties": {
+  "real_ambiguous": 0.0,
+  "control_ambiguous": 0.003389830508474576,
+  "real_gap_stop": 0.03389830508474576,
+  "control_gap_stop": 0.010169491525423728,
+  "gated_excess": -0.0058823529411764705,
+  "complement_excess": 0.0,
+  "verdict_stop_first": "UNTESTABLE"
+ },
+ "ctrl_overlap": 0.0,
+ "exposure_bars": {
+  "real_mean": 936.6101694915254,
+  "control_mean": 936.6101694915254,
+  "hold_basis": "bars"
+ },
+ "run_id": "23bee5ffc8c1455b96815f0197045e1d",
+ "hyp_key": "27ebbb635cefc180"
+}

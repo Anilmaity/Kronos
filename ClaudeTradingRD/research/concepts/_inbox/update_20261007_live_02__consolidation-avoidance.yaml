@@ -1,0 +1,55 @@
+id: consolidation-avoidance
+name: Consolidation Avoidance
+category: model
+status: specified
+voice: ttrades
+aliases:
+- range deviation
+- consolidation day
+definition: 'Restated live under the name ''range deviation'': when price is consolidating he does not
+  expect a breakout, he expects a deviation - price trades outside the range and comes back in. On a consolidation
+  day the expectation after a target is hit is a return into the range, so the only way to profit is to
+  catch a move and take profit repeatedly rather than hold; a trader long off the open who never took
+  profit made nothing. He stays away because with no expansion expected there is no risk-to-reward to
+  define.'
+timeframes:
+  htf:
+  - 1D
+  - 30m
+  ltf:
+  - 5m
+  fractal: true
+preconditions:
+- Price is inside a defined range (in the example a double inside day, neither previous-day extreme taken).
+detection_rules:
+- A range deviation = price trades outside a range and then closes back inside it.
+- While consolidating, default expectation is deviation and return, not breakout.
+- After a target at a range extreme is hit on a consolidation day, expect price back inside the range.
+- Do not hold for expansion on a range day; take profit at each target or stay out.
+invalidation:
+- Price leaves the range and does not close back inside it (see consolidation-open-whipsaw).
+measurable:
+- share of range-boundary breaches that close back inside within N bars
+- P&L of hold-to-close vs take-profit-at-range-extreme on inside days
+sources:
+- video_id: h1ZQWWQDhKA
+  title: TTrades MNQ Cup - Afternoon Session
+  quote: you don't expect it to break out. you expect it to deviate
+- video_id: h1ZQWWQDhKA
+  title: TTrades MNQ Cup - Afternoon Session
+  quote: So normally we hit a target come back into the range
+- video_id: h1ZQWWQDhKA
+  title: TTrades MNQ Cup - Afternoon Session
+  quote: the only way to really get profit like that on a range day
+ambiguities:
+- '''Range'' is undefined beyond the day''s example (morning open range / previous-day range); no width
+  or duration bound.'
+- He says range deviation, inducement and AMD are different words for the same thing, so the alias set
+  is his, not a distinct concept.
+related:
+- consolidation-phase
+- consolidation-open-whipsaw
+- consolidation-range-no-trade
+- power-of-three-amd
+contributing_units:
+- update_20261007_live_02

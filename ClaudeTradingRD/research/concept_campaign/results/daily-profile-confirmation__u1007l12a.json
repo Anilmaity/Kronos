@@ -1,0 +1,294 @@
+{
+ "concept_id": "daily-profile-confirmation",
+ "reading": "u1007l12a",
+ "testable": true,
+ "test_type": "gate",
+ "claim": "-",
+ "operationalization": {
+  "rules": [
+   "trading day rolls 18:00 NY; decision 09:30 NY (one event per day); available_at = decision (1h bars closed by 09:00, M1 closed by 09:30)",
+   "prior day = last completed 18:00-NY session with >= 600 M1 bars, 1-4 calendar days back; PDH/PDL its high/low",
+   "overnight = the day's 1h bars closed by 09:30 (>= 12 of 15 required)",
+   "expansion: first overnight 1h CLOSE above PDH (long continuation) or below PDL (short); days with both or neither are dropped",
+   "after the expansion bar, each 1h bar printing a new session extreme is a swing attempt: success if it closes beyond the prior session extreme, failure swing if it closes back inside; days with no attempt dropped",
+   "trade: continuation direction, entry next M1 open at/after 09:30, stop = day's running opposite extreme (M1 closed by 09:30), 2R target, time exit 17:00 NY (450 min); drop risk < 0.10 x prior-day range",
+   "claim '-': continuation trades on gated days do worse than on complement days (control-adjusted)",
+   "gate only_fail: >= 1 failure swing and NO successful swing after the expansion"
+  ],
+  "params": {
+   "decision": "09:30 NY",
+   "overnight_min_h1": 12,
+   "stub_day_min_n_m1": 600,
+   "expansion": "1h close beyond PDH/PDL",
+   "swing_tf": "1h",
+   "mirror": true,
+   "stop": "day running opposite extreme",
+   "rr": 2.0,
+   "max_hold": "450min",
+   "min_risk_frac": 0.1,
+   "day_roll": "18:00 NY",
+   "grid4h": "n/a",
+   "gate": "only_fail"
+  }
+ },
+ "params_source": {
+  "decision": "corpus: rTomJ8URFnw 'Usually, you have 930 some sort of manipulation and a move lower'",
+  "overnight_min_h1": "declared-before-run: data-hole guard on the overnight hourly sequence",
+  "stub_day_min_n_m1": "declared-before-run: README trap 6 stub sessions (same cut as model_own_01a/_common)",
+  "expansion": "corpus: rTomJ8URFnw 'we've already expanded right over previous highs' (closure = expansion; 'previous highs' read as the prior session high; the all-time-high variant is index-specific and not probe-able)",
+  "swing_tf": "corpus: rTomJ8URFnw 'on the hour, right? Kind of just failure swings up mostly'",
+  "mirror": "declared-before-run: source shows the upside case only; mirror applied",
+  "stop": "method_spec: stop is the protected swing; day's running opposite extreme as in model_own_01a baseline",
+  "rr": "method_spec: \u00a75.3 2R fixed target (no target named for the vetoed long)",
+  "max_hold": "corpus: rTomJ8URFnw 'normally on a day like this, you either consolidate or you have a reversal' (the rest of the daily candle, to the 17:00 NY halt)",
+  "min_risk_frac": "declared-before-run: degenerate-stop guard, model_own_01a/_common.MIN_RISK_FRAC",
+  "day_roll": "session_window_fit: settled 18:00 NY daily roll",
+  "grid4h": "declared-before-run: no 4h bars used",
+  "gate": "corpus: rTomJ8URFnw 'because we just have failure swings' (draft: 'only failure swings up')"
+ },
+ "n": 262,
+ "span": {
+  "start": "2016-01-06 14:30:00+00:00",
+  "end": "2026-07-22 13:30:00+00:00",
+  "years": 10.538
+ },
+ "avg_R": -0.0351378460342634,
+ "avg_R_gross": 0.004862153965736596,
+ "win_rate": 0.4122137404580153,
+ "pf": 0.9163631605955125,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "avg_R_gated": -0.013874352015967262,
+  "avg_R_complement": -0.023196247631080122,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": -0.016979719040889678,
+ "ci_lo": -0.15826834578333382,
+ "ci_hi": 0.1379909804785481,
+ "ci_method": "phase3_block",
+ "p": 0.8222394360839946,
+ "halves": {
+  "H1": {
+   "n": 516,
+   "diff": -0.11148450701781773,
+   "ci_lo": -0.3037842198323431,
+   "ci_hi": 0.09605556936253845,
+   "ci_method": "iid",
+   "p": 0.2744087878670656,
+   "start": "2016-01-06 14:30:00+00:00",
+   "end": "2020-12-31 14:30:00+00:00",
+   "n_gated": 141
+  },
+  "H2": {
+   "n": 569,
+   "diff": 0.09606214577216039,
+   "ci_lo": -0.1169844051014454,
+   "ci_hi": 0.3131018156524179,
+   "ci_method": "iid",
+   "p": 0.381281413628909,
+   "start": "2021-01-04 14:30:00+00:00",
+   "end": "2026-07-22 13:30:00+00:00",
+   "n_gated": 121
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 275,
+   "diff": -0.05106054060588129,
+   "ci_lo": -0.33077902840824314,
+   "ci_hi": 0.23321094035234494,
+   "ci_method": "iid",
+   "p": 0.7226730061863321,
+   "start": "2016-01-06 14:30:00+00:00",
+   "end": "2018-08-21 13:30:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 267,
+   "diff": -0.16300296056077593,
+   "ci_lo": -0.4042629296309994,
+   "ci_hi": 0.09832357495062034,
+   "ci_method": "iid",
+   "p": 0.20360662657528944,
+   "start": "2018-08-22 13:30:00+00:00",
+   "end": "2021-04-08 13:30:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 253,
+   "diff": 0.0258068047340869,
+   "ci_lo": -0.2378146667974915,
+   "ci_hi": 0.32726263936186045,
+   "ci_method": "iid",
+   "p": 0.8579210567554887,
+   "start": "2021-04-16 13:30:00+00:00",
+   "end": "2023-11-29 14:30:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 290,
+   "diff": 0.1656423437493677,
+   "ci_lo": -0.12310557975454733,
+   "ci_hi": 0.48539890653840023,
+   "ci_method": "iid",
+   "p": 0.28594825715535305,
+   "start": "2023-12-11 14:30:00+00:00",
+   "end": "2026-07-22 13:30:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.21173748205716902,
+ "mde_threshold": 0.1,
+ "power_floor_n": 1175,
+ "verdict": "UNDERPOWERED",
+ "verdict_detail": "CI contains 0; MDE 0.2117 vs threshold 0.1000, effective n 262 (power floor n=1175, have 262)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 1085,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "gate_mask_checked": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 0.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 97,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "rr",
+    "only_fail",
+    "last_fail",
+    "x_nfail",
+    "x_nsucc"
+   ],
+   "ignored": [],
+   "lookback": "20D",
+   "recent": "1D",
+   "events_fp": "146b5e9461002ddf",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "450min",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": null,
+  "entry_mode": "next_open",
+  "hold_basis": "clock",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "New claim from draft live_12 (rTomJ8URFnw, indices example). The source's own outcome contradicted the framing (indices bullish after 10:00). Two pre-declared readings of 'only ... mostly'; both are run and ledgered.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/update_20261007/daily-profile-confirmation.py",
+ "runtime_sec": 0.37,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-10-07T05:29:52+00:00",
+ "n_events_in": 1085,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 0,
+  "target_not_beyond_entry": 0,
+  "no_bars_in_hold": 0
+ },
+ "n_complement": 823,
+ "gate_firing_rate": 0.24147465437788018,
+ "events_fp": "146b5e9461002ddf",
+ "mask_fp": "211f3c31c1cc9bfe",
+ "mask_col": "only_fail",
+ "exit_mix": {
+  "stop": 0.3282442748091603,
+  "target": 0.11450381679389313,
+  "time": 0.5572519083969466
+ },
+ "gated_vs_own_control": {
+  "diff": -0.021263494018296136,
+  "ci_lo": -0.15612716157478604,
+  "ci_hi": 0.13019371415788492,
+  "p": 0.7709658687224964
+ },
+ "complement": {
+  "n": 823,
+  "avg_R": -0.02748002260848658,
+  "win_rate": 0.47509113001215064,
+  "pf": 0.9132072276792362,
+  "sd_R": 0.7942465422102888,
+  "exit_mix": {
+   "stop": 0.21142162818955043,
+   "target": 0.05224787363304982,
+   "time": 0.7363304981773997
+  },
+  "vs_own_control": {
+   "diff": -0.0042837749774064585,
+   "ci_lo": -0.06557523992602111,
+   "ci_hi": 0.055589402583205966,
+   "p": 0.8897749176344477
+  }
+ },
+ "ci_components": {
+  "phase3_block": [
+   -0.15826834578333382,
+   0.1379909804785481
+  ],
+  "day_block": [
+   -0.16100872194298604,
+   0.1308024827542698
+  ]
+ },
+ "diff_meaning": "mean(R-ctrl | gated) - mean(R-ctrl | complement)",
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_eff_gated": 262,
+  "n_eff_complement": 823,
+  "n_eff": 262
+ },
+ "ties": {
+  "real_ambiguous": 0.0,
+  "control_ambiguous": 0.00018433179723502304,
+  "real_gap_stop": 0.0018433179723502304,
+  "control_gap_stop": 0.0027649769585253456,
+  "gated_excess": -0.0007633587786259542,
+  "complement_excess": 0.0,
+  "verdict_stop_first": "UNDERPOWERED"
+ },
+ "ctrl_overlap": 0.005714285714285714,
+ "exposure_bars": {
+  "real_mean": 440.7032258064516,
+  "control_mean": 416.86248847926265,
+  "hold_basis": "clock"
+ },
+ "run_id": "2e9f8ae128084b8c9e1d0bf7d4c6e203",
+ "hyp_key": "11de0cb32b7cb0c1"
+}

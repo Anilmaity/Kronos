@@ -1,0 +1,270 @@
+{
+ "concept_id": "ttfm-swing-trading-model",
+ "reading": "u1007a",
+ "testable": true,
+ "test_type": "trade",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "weekly bias: last weekly candle closed by the day's first 1H close is a weekly C2 closure, else C3 (Reading A); draw = that week's high (bull) / low (bear) = previous week's high/low; live only while the week-to-date high < draw (low > draw) at the decision",
+   "daily swing: the previous non-stub (>=600 M1) 18:00-NY day P is a daily C2 (else C3) closure in the bias direction with a 1H CISD (series_open) inside it",
+   "entry: on day D's 1H bars, IC-CISD at the forming daily wick (running extreme, opposing series' first open, first later 1H close through it; new extreme re-derives; confirmed series consumed); the confirming 1H bar starts in fx Asia 20:00-00:00 NY or fx NY AM 07:00-10:00 NY; D's extreme has not taken P's extreme",
+   "decide at the 1H close (top of the hour), enter next M1 open, stop = D's extreme so far, 2R, time exit at D's 17:00 NY close, hold in trading minutes",
+   "u1007a: one trade per trading day = first qualifying event (Asia first, NY if Asia gave nothing); trade_test, control NY clock +-30 min"
+  ],
+  "params": {
+   "bias_tf": "1W",
+   "weekly_bias": "C2 else C3 (Reading A); draw = previous week's high/low, untaken",
+   "swing_tf": "1D",
+   "daily_closure": "C2 else C3 + 1H CISD inside",
+   "entry_tf": "1h",
+   "entry": "IC-CISD at the day's running extreme (series_open, series <= 10, run within 2 bars)",
+   "sessions": "fx_asia 20:00-00:00 NY, fx_ny_am 07:00-10:00 NY (confirm-bar start)",
+   "invalidation": "D's extreme beyond P's extreme",
+   "rr": 2.0,
+   "exit": "D 17:00 NY close",
+   "day_open_hour": 18,
+   "min_day_m1": 600,
+   "hold_basis": "bars",
+   "grid4h": "n/a (no 4H bars read)",
+   "ctrl_tod_tol_min": 30
+  }
+ },
+ "params_source": {
+  "bias_tf": "corpus: cWDnzI3lpUk 'The first thing to start with is a weekly bias.'",
+  "weekly_bias": "corpus: cWDnzI3lpUk 'is price going to reach for previous week's high or previous week's low?' / 'a candle two or a candle three closure on the weekly'",
+  "swing_tf": "corpus: cWDnzI3lpUk 'look to align daily swing points with that bias'",
+  "daily_closure": "corpus: cWDnzI3lpUk 'A candle two or a candle three closure with a change in the state of delivery'",
+  "entry_tf": "corpus: cWDnzI3lpUk 'it would really be 1 minute taking a look at the top of every hour'",
+  "entry": "corpus: cWDnzI3lpUk 'the go-to is always going to be an intra-candle change in the state of delivery' / 'just letting that daily wick form and then looking to trade away'; method_spec \u00a74.2 series_open",
+  "sessions": "corpus: cWDnzI3lpUk 'focus on Asia session, see if I can position myself for the day' / 'If that doesn't work, then I can check the New York session.'; windows: killzones.yaml forex Asia 20-00, NY AM 07-10 (vault Session Timing on Gold)",
+  "invalidation": "corpus: ttfm-swing-trading-model yaml invalidation 'The daily swing point's protected swing is taken out.'",
+  "rr": "corpus: cWDnzI3lpUk 'not only can you many times get 2R in the same daily range'",
+  "exit": "corpus: cWDnzI3lpUk '2R in the same daily range' (the weekly-range hold is the prior reading's target)",
+  "day_open_hour": "session_window_fit: settled 18:00 NY daily candle",
+  "min_day_m1": "declared-before-run: README trap 6 stub sessions (as weekly-profile-framework)",
+  "hold_basis": "declared-before-run (README trap 7): the hold ends at 17:00 NY, controls +-30d can span the halt/weekend, so hold in trading minutes",
+  "grid4h": "declared-before-run: no 4H bars are read",
+  "ctrl_tod_tol_min": "declared-before-run: README trap 9 - events sit only in two session windows and the model is not a timing claim, so the control holds the NY clock"
+ },
+ "n": 39,
+ "span": {
+  "start": "2016-03-02 02:00:00+00:00",
+  "end": "2026-04-22 12:00:00+00:00",
+  "years": 10.138
+ },
+ "avg_R": -0.05786783462550748,
+ "avg_R_gross": -0.017867834625507475,
+ "win_rate": 0.41025641025641024,
+ "pf": 0.8962232075595508,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "n": 195,
+  "avg_R": 0.06715452217474295,
+  "win_rate": 0.38974358974358975,
+  "pf": 1.1209244515744647,
+  "sd_R": 1.312152846475691,
+  "exit_mix": {
+   "stop": 0.49230769230769234,
+   "target": 0.28717948717948716,
+   "time": 0.2205128205128205
+  },
+  "avg_R_gross": 0.10715452217474297,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": -0.12502235680025042,
+ "ci_lo": -0.5714704750475389,
+ "ci_hi": 0.3448376207096496,
+ "ci_method": "day_block",
+ "p": 0.5927601874310373,
+ "halves": {
+  "H1": {
+   "n": 19,
+   "diff": -0.3248778991994244,
+   "ci_lo": -0.9099729745024902,
+   "ci_hi": 0.28388373481248774,
+   "ci_method": "iid",
+   "p": 0.28610315692087557,
+   "start": "2016-03-02 02:00:00+00:00",
+   "end": "2020-10-23 01:00:00+00:00"
+  },
+  "H2": {
+   "n": 20,
+   "diff": 0.06484040847896479,
+   "ci_lo": -0.5208382707049991,
+   "ci_hi": 0.6590423672694541,
+   "ci_method": "block",
+   "p": 0.8294399802358898,
+   "start": "2021-07-13 14:00:00+00:00",
+   "end": "2026-04-22 12:00:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 12,
+   "diff": 0.010068591336281277,
+   "ci_lo": -0.8726993160990713,
+   "ci_hi": 0.8144414983844408,
+   "ci_method": "iid",
+   "p": 0.9813363782747246,
+   "start": "2016-03-02 02:00:00+00:00",
+   "end": "2018-05-10 02:00:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 7,
+   "diff": -0.8990718829749198,
+   "ci_lo": -1.3220555988114668,
+   "ci_hi": -0.41162824401603254,
+   "ci_method": "iid",
+   "p": 0.00010837379262905817,
+   "start": "2018-10-01 13:00:00+00:00",
+   "end": "2020-10-23 01:00:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 9,
+   "diff": -0.2540795209853166,
+   "ci_lo": -0.8533081632798326,
+   "ci_hi": 0.5103153320574308,
+   "ci_method": "iid",
+   "p": 0.4651534138488495,
+   "start": "2021-07-13 14:00:00+00:00",
+   "end": "2023-08-07 13:00:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 11,
+   "diff": 0.32577489622246764,
+   "ci_lo": -0.38510937564731795,
+   "ci_hi": 1.10756842204515,
+   "ci_method": "iid",
+   "p": 0.39226391994548754,
+   "start": "2024-02-29 02:00:00+00:00",
+   "end": "2026-04-22 12:00:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.6548883082678822,
+ "mde_threshold": 0.1,
+ "power_floor_n": 1673,
+ "verdict": "UNDERPOWERED",
+ "verdict_detail": "CI contains 0; MDE 0.6549 vs threshold 0.1000, effective n 39 (power floor n=1673, have 39)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 39,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 0.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 20,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "rr",
+    "max_hold"
+   ],
+   "ignored": [],
+   "lookback": "60D",
+   "recent": "1D",
+   "events_fp": "d7c09196c10ba186",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "per-row column",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": 30,
+  "entry_mode": "next_open",
+  "hold_basis": "bars",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "The 9-5 model as stated in cWDnzI3lpUk (weekly C2/C3 bias with the previous-week draw, daily C2/C3 + H1 CISD swing, hourly IC-CISD at the top of the hour inside the next daily candle, Asia first). Caveat (campaign lesson 1): the stop sits at the day's fresh extreme, which beats a random stop at the same distance generically, so the control flatters. u1007a descriptive: gated/all n=39: median stop 5.22 pt, gross -0.018R, net at 0.45 pt -0.110R / 0.6 pt -0.141R spread",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/update_20261007/ttfm-swing-trading-model.py",
+ "runtime_sec": 0.07,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-10-07T06:36:14+00:00",
+ "n_events_in": 39,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 0,
+  "target_not_beyond_entry": 0,
+  "no_bars_in_hold": 0
+ },
+ "events_fp": "d7c09196c10ba186",
+ "sd_R": 1.200967326679686,
+ "exit_mix": {
+  "stop": 0.48717948717948717,
+  "target": 0.20512820512820512,
+  "time": 0.3076923076923077
+ },
+ "trades_per_year": 3.846813394544964,
+ "ci_components": {
+  "phase3_iid": [
+   -0.5360104818992522,
+   0.30616955494457215
+  ],
+  "day_block": [
+   -0.5714704750475389,
+   0.3448376207096496
+  ]
+ },
+ "diff_win": 0.020512820512820495,
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 39,
+  "n_clusters": null,
+  "n_eff": 39
+ },
+ "ties": {
+  "real_ambiguous": 0.0,
+  "control_ambiguous": 0.0,
+  "real_gap_stop": 0.05128205128205128,
+  "control_gap_stop": 0.010256410256410256,
+  "verdict_stop_first": "UNDERPOWERED"
+ },
+ "ctrl_overlap": 0.005128205128205128,
+ "exposure_bars": {
+  "real_mean": 847.6923076923077,
+  "control_mean": 847.6923076923077,
+  "hold_basis": "bars"
+ },
+ "run_id": "9936b6889ed644419816eae422308707",
+ "hyp_key": "f9986d068f93e2fc"
+}

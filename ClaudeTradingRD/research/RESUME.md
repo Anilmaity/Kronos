@@ -3,6 +3,14 @@
 Sessions of **2026-08-14** (corpus) and **2026-08-25** (phase 2: fitting and
 backtesting). Everything below is verified state, not intention.
 
+> **UPDATE PASS (2026-10-07): 64 new videos, 0 tradeable.** 50 transcribed (14 Shorts still
+> missing — IP-blocked), studied in 20 new units, 14 new concept ids (library 519), 63 concepts
+> tested (111 readings): 2 raw EDGEs, both refuted; the only BH survivor is a NEGATIVE
+> (`upper-half-eq-expansion-filter` hurts on gold). Family now 1,005 hypotheses. 18 of the 31
+> tests first run without the vault had real flaws (mostly time-of-day-unmatched nulls) — testers
+> must preload the vault. yt-dlp captions are dead (429 everywhere): use
+> `fetch_transcripts.py --api-first`. Read `meta/update_20261007.md`.
+
 > **PHASE 4 (2026-09-23): all 471 non-psychology concepts were tested one by one. None is
 > tradeable.** 43 raw EDGEs led to 5 that survived verification and BH, and the deep dive found 0 tradeable
 > (2 artefacts, 3 descriptive only). Read

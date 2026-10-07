@@ -5,6 +5,11 @@ variants:
   - Fixed-Risk Position Sizing
   - Fixed-Risk Position Sizing (stop from the chart, size from the risk)
   definition:
+  - 'Definition of R in his own words: R is your risk - the size of your stop loss, which
+    for him is a dollar risk determined by entry and stop placement, and which then determines
+    position size. Every trade risks exactly 1R regardless of stop width; reward is counted
+    in multiples of that rectangle ($100 risk: 1R = $100, 2R = $200, 3R = $300). ''I got 2R''
+    means the target was twice the stop distance and was held to.'
   - A platform Short showing the procedure end to end with a concrete number. The risk amount
     is the input ($300 in the example), and the platform back-solves the contract count from
     the stop distance. Where the stop is close enough that no whole contract count can express
@@ -53,14 +58,16 @@ status: contested
 aliases:
 - consistent position sizing
 - four percent of the drawdown
+- 1R
+- R is your risk
 - one percent per trade
 - same risk every trade
 - fixed dollar risk
 - fixed percentage risk
-- 1R
 preconditions:
 - A defined stop distance and a known per-point value for the instrument.
 - A chosen fixed dollar risk.
+- Entry and stop are defined.
 - An entry, a stop loss and a take profit are already placed on the chart.
 - A fixed dollar risk amount has been chosen.
 - A stop distance is known before the position is sized.
@@ -75,6 +82,9 @@ detection_rules:
 - 'On a prop evaluation, size the risk against the drawdown allowance rather than the nominal
   balance: 4% of a $2,500 trailing drawdown = $100.'
 - Never deviate; a single oversized trade breaks the win-rate / payoff arithmetic.
+- 1R = dollar loss at the stop, set by entry-to-stop distance and position size.
+- A wider stop is still 1R - size changes, not the risk.
+- Trade outcome in R = (exit - entry) / (entry - stop), signed.
 - Input the fixed dollar risk amount, not the contract count.
 - If the stop is too tight for the full-size contract to express that risk, switch to micros
   (MGC in the example).
@@ -103,13 +113,14 @@ detection_rules:
   risk), which turns a -1R, -1R, +4R sequence into -$800 instead of +2R.'
 invalidation:
 - Any trade whose realised risk deviates from the fixed amount breaks the regime.
-- Not applicable - a sizing procedure.
 - Not applicable.
+- Not applicable - a sizing procedure.
 - Any trade whose actual risk deviates from the fixed amount breaks the model.
 measurable:
 - variance of realised risk per trade across a live sample (target zero)
 - days to pass an evaluation at 4% of drawdown per trade vs at 1%
 - maximum consecutive-loss drawdown under the fixed regime
+- dispersion of realized loss per losing trade around 1R
 - realised dollar risk per trade versus the $300 target
 - rounding error introduced by whole-contract sizing at each stop distance
 - variance of realised risk per trade (should be flat if the rule is followed)
@@ -131,6 +142,18 @@ sources:
 - video_id: 0bH_kkG2q6s
   title: Stream Q & A with Trade For Opportunity  - ICT concepts
   quote: four percent per trade on that of my drawdown
+- video_id: brI51kBw-Fk
+  title: What Does “R” Actually Mean in Risk to Reward?
+  quote: R is your risk. That's what it means.
+- video_id: brI51kBw-Fk
+  title: What Does “R” Actually Mean in Risk to Reward?
+  quote: It means the size of your stop loss.
+- video_id: brI51kBw-Fk
+  title: What Does “R” Actually Mean in Risk to Reward?
+  quote: R is equal to, for me, dollar risk.
+- video_id: brI51kBw-Fk
+  title: What Does “R” Actually Mean in Risk to Reward?
+  quote: that means they had a target that was twice as big as their stop loss
 - video_id: JPB273sQJsk
   title: Position Sizing on TradingView + NinjaTrader
   quote: There's no way to risk $300 with my stop loss there
@@ -161,6 +184,8 @@ ambiguities:
 - Commissions and slippage are excluded from every figure.
 - The $145 deviation shows the regime is manually enforced rather than platform-enforced.
 - The account was an evaluation, so the reported outcome is not a live-funded result.
+- The R-outcome formula in detection_rules is the arithmetic implied by his rectangle illustration,
+  not his words.
 - $300 is used as the worked example, not stated as his risk-per-trade policy; no percentage
   of account is given anywhere in the clip.
 - The rounding is acknowledged ("we can't get any closer to 300 there") but no rule says whether
@@ -187,8 +212,8 @@ related:
 - stop-loss-placement
 - prop-cushion-scaling
 - daily-trade-cap-risk-envelope
-- position-sizing
 - risk-reward-minimum
+- position-sizing
 - risk-limits-and-trade-frequency
 - stop-size-reduction
 - no-size-reduction-in-drawdown
@@ -216,5 +241,6 @@ contributing_units:
 - live_stream_guests_03
 - shorts_02
 - the_foundation_01
-draft_count: 5
+- update_20261007_shorts_03
+draft_count: 6
 voice: mixed

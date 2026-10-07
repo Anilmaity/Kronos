@@ -28,16 +28,43 @@ variants:
     (or the higher-timeframe open when used fractally), the SESSION LOWS/HIGHS, and the CURRENT
     candle''s low/high. He also gives the disqualifier: if the overnight session highs/lows
     have ALREADY been taken, there is no low-resistance liquidity left and the R is not there.'
+  - 'A viewer case: daily close bearish, then a 1-hour CISD and a 1-hour close above the daily
+    C2 EQ. He calls this a SOFT invalidation of the bearish bias, not a mechanical one: price
+    can still reverse, but trading higher builds a larger wick, so less expansion is expected;
+    if price goes back lower, targets are adjusted to the current daily open, the intraday
+    lows and sometimes the previous day low.'
+  - 'Worked on NQ live: once price closed over the daily EQ the day was a reversal candle
+    (large wick, small body, price likely to close near its open). He does not expect large
+    range because much of the range is made; targets become the opening price and the liquidity
+    around the open, plus the intraday low. He picks the low left of a V-shape (the ''easy''
+    low) over the protected-swing low. The NQ target level he marked at the start of the stream
+    is read as 29262.5.'
+  - 'Reviewing the previous day on air, he states the large-wick target set as an ORDERED
+    ladder, not a menu. When the day carries a larger wick (a larger opposing run), no expansion
+    is expected and the targets are taken in this fixed sequence: the daily open first, then
+    the intraday (overnight) lows, then the previous day low (mirror: daily open, intraday
+    highs, previous day high). He says the order never changes. In the worked day all three
+    were hit and he considered the day done.'
+  - 'Applied three times in the stream. Pre-open: a larger opposing run (EQ not respected)
+    means the day is not set up for expansion, so targets are the daily open, the overnight
+    lows or intraday liquidity, and then potentially the previous day high. On the 15-minute
+    C2 at 9:45: a large wick means he does not enter on that C2; the targets are the daily
+    open and intracandle highs, and he expects a retracement with the following candle doing
+    the expansion. On CL hourly: a large wick gives targets of daily open, intraday lows,
+    then previous day low.'
 category: risk
 status: contested
 aliases:
 - adjust your targets
 - trading a larger wick
+- reversal candle
+- liquidity around the open
 preconditions:
 - A reversal is being framed away from a candle whose opposing run is large (see wick-size-test).
 - A daily bias exists.
 - The current daily candle has printed a large opposing wick.
 - A reversal candle whose wick against the intended direction is large.
+- The candle being traded away from has a large wick / large opposing run.
 detection_rules:
 - 'Classify the opposing run: shallow run, or large opposing run?'
 - 'If large: do not target a full expansion through the far side of the range.'
@@ -61,12 +88,26 @@ detection_rules:
   swings left as targets -- the R does not work and the setup is skipped.'
 - 'Preferred alternative to trading a large-wick candle at all: let the reversal day trade,
   then look for the continuation day and check whether IT has a small wick.'
+- 'Bearish bias + an H1 close above the daily C2 EQ = soft invalidation: keep the bias but
+  cut targets to daily open / intraday lows / sometimes previous day low (mirror for bullish).'
+- 'Large-wick day: target the daily opening price and liquidity around it.'
+- Do not expect expansion beyond the open.
+- Classify the daily wick as large (a larger opposing run).
+- Target 1 = daily open; Target 2 = intraday/overnight extreme on the trade side; Target 3
+  = previous day low (bearish) or previous day high (bullish).
+- Targets are expected to be reached in that order; once the third is hit, stop looking for
+  more on that day.
+- Do not enter on the large-wick C2 itself; expect a retracement and look to the following
+  candle for expansion.
+- 'Target ladder: daily open, then intraday / overnight session liquidity, then the previous
+  day high (or low).'
 invalidation:
 - The candle turns out to carry a small wick after all - the ordinary expansion targets apply.
 - In the worked example the day simply closed as a reversal candle and the further move never
   came, which is the cost the rule is designed to avoid paying.
 - The reduced target set is reached -- expectations end there; further movement is a bonus,
   not a plan.
+- Not applicable - a target-setting rule.
 measurable:
 - hit rate of the daily-open target on large-wick days vs the hit rate of the far-extreme
   target on the same days
@@ -77,6 +118,13 @@ measurable:
 - hit rate of the daily open as a target on large-wick days
 - range covered after a large-wick candle vs a small-wick candle
 - how often session extremes are already taken at decision time
+- target hit rates (daily open vs previous day low) conditional on an H1 close beyond the
+  daily C2 EQ
+- frequency with which large-wick-day targets are hit in the stated order (DO -> intraday
+  extreme -> PDL/PDH)
+- hit rate of each rung conditional on the previous rung being hit
+- hit rate of daily open vs intraday liquidity vs previous-day extreme after a large-wick
+  C2
 sources:
 - video_id: 5UsKZ7pZqvY
   title: Trading C2 Back Into the Daily Open
@@ -115,6 +163,42 @@ sources:
   title: Trading the Invalidation of Daily Bias
 - video_id: qdQYhePcvGE
   title: TTrades Fractal Model - Trading Candle 3
+- video_id: rVRk4MLTJSs
+  title: New York Open Live Q&A
+  quote: this can be considered a soft invalidation of the bias if you're looking lower.
+- video_id: rVRk4MLTJSs
+  title: New York Open Live Q&A
+  quote: it has a larger wick, which means you're expecting less expansion.
+- video_id: rVRk4MLTJSs
+  title: New York Open Live Q&A
+  quote: It's just I'm adjusting my targets.
+- video_id: 4rNC3QXxC20
+  title: New York Open Live Q&A
+  quote: A large wick and a small body.
+- video_id: 4rNC3QXxC20
+  title: New York Open Live Q&A
+  quote: Price is likely to close near its open.
+- video_id: 4rNC3QXxC20
+  title: New York Open Live Q&A
+  quote: Opening price and liquidity around the open.
+- video_id: K7XVj2w3CP4
+  title: New York Open Live Q&A
+  quote: back to the daily open, back to those intraday lows, or previous day low.
+- video_id: K7XVj2w3CP4
+  title: New York Open Live Q&A
+  quote: It's always in that order.
+- video_id: K7XVj2w3CP4
+  title: New York Open Live Q&A
+  quote: We have a larger wick, right? a larger opposing run
+- video_id: Hlwq1dRjBZo
+  title: New York Open Live Q&A
+  quote: Go back to the daily open, the overnight lows or the intraday liquidity
+- video_id: Hlwq1dRjBZo
+  title: New York Open Live Q&A
+  quote: Would it be ideal to enter on the 15-minut C2? No
+- video_id: Hlwq1dRjBZo
+  title: New York Open Live Q&A
+  quote: Daily open, intraday lows, and then previous day low
 ambiguities:
 - '''Larger wick'' is not quantified - the threshold that separates it from a shallow run
   is the same unresolved judgement recorded in wick-size-test.'
@@ -134,6 +218,13 @@ ambiguities:
   are named only in passing.'
 - The large/small threshold is the same unquantified classification the whole model rests
   on.
+- The level 29262.5 is from auto-captions and could be mis-transcribed.
+- He says 'previous day high or previous day low' in the same breath; which one is the third
+  rung depends on trade direction - inferred, not stated.
+- No rule for partial exits at each rung.
+- '''Large'' wick is not quantified here.'
+- Whether the previous-day extreme is a standard third target or a stretch target ('potentially')
+  is unclear.
 related:
 - wick-size-test
 - small-wick-expansion-rule
@@ -146,6 +237,10 @@ related:
 - average-daily-range
 - standard-deviation-projection
 - session-high-low
+- invalidation-trade
+- harder-target-behind-protected-swing
+- daily-open-eighteen-hundred
+- upper-half-eq-expansion-filter
 timeframes:
   htf:
   - 1D
@@ -167,5 +262,9 @@ contributing_units:
 - build_a_model_intro_to_ttrades_fractal_model_02
 - shorts_01
 - shorts_03
-draft_count: 3
+- update_20261007_live_03
+- update_20261007_live_05
+- update_20261007_live_08
+- update_20261007_live_09
+draft_count: 7
 voice: ttrades

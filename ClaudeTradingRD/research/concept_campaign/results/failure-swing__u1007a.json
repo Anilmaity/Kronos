@@ -1,0 +1,295 @@
+{
+ "concept_id": "failure-swing",
+ "reading": "u1007a",
+ "testable": true,
+ "test_type": "gate",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "4H bars on the forex grid (17/21/01/05/09/13 NY), bars with < 60 M1 skipped",
+   "C2: low < prior low, close >= prior low, close > open (bullish); mirror bearish (detectors.fractal.c2_events defaults)",
+   "earlier high (bearish C2) = max high over bars p..C1, p = latest 2/2 swing high at p <= C2-2 (its right bars closed by the C2 close); mirror for lows",
+   "FAILURE-SWING C2 (population): the C2 extreme did NOT take the earlier high/low (C2 high < earlier high; bullish C2 low > earlier low); C2s that took it are excluded",
+   "silver = XAG_USD H1 aggregated into the same 4H bars; a C2 is dropped (never scored) unless every bar p..C2 has silver H1 coverage equal to gold's hour count",
+   "trade C3: decide at the C2 close_time, enter next M1 open in the C2 direction, stop = C2 extreme, target = max(C1 high, C2 high) bullish / min(C1 low, C2 low) bearish, time exit after 240 trading minutes (fractal-model-c2 reading a)",
+   "gate_test: control-adjusted R (matched random entries, same direction/stop/target distance, +-30 d, held at the NY clock +-30 min) of SMT-gated failure-swing C2s minus the non-SMT failure-swing C2s; claim '+' (SMT makes them tradeable)",
+   "gate = SMT at the swept candle: on the C2 bar silver did NOT take its own C1 extreme (bearish: silver C2 high <= silver C1 high; bullish mirror)"
+  ],
+  "params": {
+   "htf": "4h",
+   "grid4h": "forex",
+   "min_m1": 60,
+   "swing": "2/2",
+   "sweep_ref": "prior_candle",
+   "require_reversal_close": true,
+   "earlier_extreme": "max high (min low) from latest confirmed 2/2 swing through C1",
+   "target": "nearest unswept of C1/C2 far extremes",
+   "max_hold": "240min",
+   "hold_basis": "bars",
+   "correlate": "XAG_USD H1 -> 4H",
+   "silver_coverage": "full",
+   "ctrl_tod_tol_min": 30,
+   "gate": "smt_c1"
+  }
+ },
+ "params_source": {
+  "htf": "corpus: tUbrCewFdCU 'we want to find a swing point on the 4-hour chart' / 'This is a valid candle to closure' (the 4H C2)",
+  "grid4h": "session_window_fit: forex grid for gold (phase3 knob, primary)",
+  "min_m1": "declared-before-run: fractal-model-c2 reading a stub-bar guard (60 M1)",
+  "swing": "phase3: locked 2/2 fractal",
+  "sweep_ref": "corpus: tUbrCewFdCU 'it swept out its previous candle and then close below'",
+  "require_reversal_close": "corpus: fractal-model-c2 'The candle's own shape must be a reversal' (c2_events default)",
+  "earlier_extreme": "corpus: tUbrCewFdCU 'it did fail to take out this previous high' -> the previous swing high (latest confirmed 2/2) and anything higher printed since it; declared-before-run",
+  "target": "corpus: fractal-model-c2 execution.targets 'previous candles' unswept highs/lows' / method_spec \u00a75.2 'starting with candle 1's'",
+  "max_hold": "method_spec: \u00a75.5 time-based exit at the close of the HTF candle traded (C3)",
+  "hold_basis": "declared-before-run: README trap 7 - 4H holds cross the daily halt",
+  "correlate": "corpus: tUbrCewFdCU 'I would prefer there to be SMT here' (gold example: 'if we have SMT on the low'); XAG is the campaign's gold correlate (vault XAUUSD Data Inventory)",
+  "silver_coverage": "declared-before-run: README trap 5 - an SMT never evaluated must not look like no-SMT, so uncovered rows are dropped, not set False",
+  "ctrl_tod_tol_min": "declared-before-run: README trap 9 - 4H C2s close at only six NY clock times; SMT is not a timing concept",
+  "gate": "corpus: smt-divergence.yaml 'one asset takes the level and the other does not' with the level = C1's extreme the gold C2 swept ('swept out its previous candle'); declared-before-run"
+ },
+ "n": 931,
+ "span": {
+  "start": "2016-01-05 10:00:00+00:00",
+  "end": "2026-07-23 01:00:00+00:00",
+  "years": 10.543
+ },
+ "avg_R": -0.06243615604553034,
+ "avg_R_gross": -0.022436156045530332,
+ "win_rate": 0.5565302144249513,
+ "pf": 0.8071972332949694,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "avg_R_gated": -0.03467255392742347,
+  "avg_R_complement": -0.03645881276916012,
+  "reps": 5,
+  "fill_rate": 0.9427956989247311
+ },
+ "diff": -0.05851058318086433,
+ "ci_lo": -0.12375763909666215,
+ "ci_hi": 0.009763452035343146,
+ "ci_method": "phase3_iid",
+ "p": 0.08584028576492594,
+ "halves": {
+  "H1": {
+   "n": 1486,
+   "diff": -0.08780339213734442,
+   "ci_lo": -0.19322224916851388,
+   "ci_hi": 0.01634458827857906,
+   "ci_method": "iid",
+   "p": 0.10051662102069348,
+   "start": "2016-01-05 10:00:00+00:00",
+   "end": "2020-12-30 14:00:00+00:00",
+   "n_gated": 425
+  },
+  "H2": {
+   "n": 1769,
+   "diff": -0.03397935097441254,
+   "ci_lo": -0.12467994779164487,
+   "ci_hi": 0.05276978704587182,
+   "ci_method": "iid",
+   "p": 0.452883792060898,
+   "start": "2021-01-05 18:00:00+00:00",
+   "end": "2026-07-23 01:00:00+00:00",
+   "n_gated": 506
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 750,
+   "diff": -0.09101319480283669,
+   "ci_lo": -0.24660788444206347,
+   "ci_hi": 0.06907741380897293,
+   "ci_method": "iid",
+   "p": 0.25842179116062186,
+   "start": "2016-01-05 10:00:00+00:00",
+   "end": "2018-08-22 09:00:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 827,
+   "diff": -0.059240566399938716,
+   "ci_lo": -0.20187116056535026,
+   "ci_hi": 0.09474616917778833,
+   "ci_method": "iid",
+   "p": 0.43369168321997975,
+   "start": "2018-08-22 21:00:00+00:00",
+   "end": "2021-04-09 05:00:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 859,
+   "diff": -0.0850855619933708,
+   "ci_lo": -0.20234408340685445,
+   "ci_hi": 0.030879264621967002,
+   "ci_method": "iid",
+   "p": 0.15269254457098314,
+   "start": "2021-04-13 05:00:00+00:00",
+   "end": "2023-11-30 06:00:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 819,
+   "diff": 0.007940414319769124,
+   "ci_lo": -0.11465853342529136,
+   "ci_hi": 0.12987230524475613,
+   "ci_method": "iid",
+   "p": 0.8987124219602248,
+   "start": "2023-12-05 10:00:00+00:00",
+   "end": "2026-07-23 01:00:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.09542794819166553,
+ "mde_threshold": 0.1,
+ "power_floor_n": 848,
+ "verdict": "NULL",
+ "verdict_detail": "CI contains 0; powered (MDE 0.0954 <= 0.1000)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 3255,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "gate_mask_checked": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 3184.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 231,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "target_px",
+    "smt_c1",
+    "smt_fs",
+    "ref_bars"
+   ],
+   "ignored": [],
+   "lookback": "60D",
+   "recent": "1D",
+   "events_fp": "c1122c35f1120e20",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "240min",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": 30,
+  "entry_mode": "next_open",
+  "hold_basis": "bars",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "Population = failure-swing 4H C2s only (C2s that took the earlier extreme excluded): 4,484 4H C2s -> 3,271 failure-swing (72.9%) -> 3,269 after 2 silver-coverage drops (counted before the run). The two gates are mutually exclusive by construction. Untested: the 'clearly clean lower-timeframe continuation structure' alternative ('clean' is discretionary, unquantified), and proximity ('quite close' vs 'further away' from the reversal, unquantified in the source). Related prior tests NOT repeated here: smt-swing-point-substitute__b (daily C2 + silver SMT gate, all C2s, UNDERPOWERED) and __a (1h failure swing + silver sweep, trade test). Diagnostics: {'events': 3269, 'bull_share': 0.505, 'smt_c1_rate': 0.315, 'smt_fs_rate': 0.133, 'both': 0.0, 'median_ref_bars': 5.0}",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/update_20261007/failure-swing.py",
+ "runtime_sec": 0.53,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-10-07T06:37:16+00:00",
+ "n_events_in": 3269,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 2,
+  "target_not_beyond_entry": 12,
+  "no_bars_in_hold": 0
+ },
+ "n_complement": 2138,
+ "gate_firing_rate": 0.3152073732718894,
+ "events_fp": "c1122c35f1120e20",
+ "mask_fp": "c992a01a54bf921e",
+ "mask_col": "smt_c1",
+ "exit_mix": {
+  "stop": 0.24951267056530213,
+  "target": 0.5107212475633528,
+  "time": 0.23976608187134502
+ },
+ "gated_vs_own_control": {
+  "diff": -0.038642352693300956,
+  "ci_lo": -0.09342280387638956,
+  "ci_hi": 0.016202179642581634,
+  "p": 0.16704590038311615
+ },
+ "complement": {
+  "n": 2229,
+  "avg_R": -0.016569981940224986,
+  "win_rate": 0.5684163301929116,
+  "pf": 0.9429612577551973,
+  "sd_R": 0.7703690441649327,
+  "exit_mix": {
+   "stop": 0.22611036339165544,
+   "target": 0.5123373710183939,
+   "time": 0.26155226558995065
+  },
+  "vs_own_control": {
+   "diff": 0.019868230487563372,
+   "ci_lo": -0.014886534778833685,
+   "ci_hi": 0.0567735110950952,
+   "p": 0.2771135176590446
+  }
+ },
+ "ci_components": {
+  "phase3_iid": [
+   -0.12375763909666215,
+   0.009763452035343146
+  ],
+  "day_block": [
+   -0.12386412773210498,
+   0.008672960999056486
+  ]
+ },
+ "diff_meaning": "mean(R-ctrl | gated) - mean(R-ctrl | complement)",
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_eff_gated": 814,
+  "n_eff_complement": 1551,
+  "n_eff": 814
+ },
+ "ties": {
+  "real_ambiguous": 0.0006144393241167435,
+  "control_ambiguous": 0.00026068821689259646,
+  "real_gap_stop": 0.004608294930875576,
+  "control_gap_stop": 0.0047575599582898856,
+  "gated_excess": -0.00021482277121374866,
+  "complement_excess": 0.0006548175865294668,
+  "verdict_stop_first": "NULL"
+ },
+ "ctrl_overlap": 0.11613660062565172,
+ "exposure_bars": {
+  "real_mean": 239.98402457757297,
+  "control_mean": 239.9966110531804,
+  "hold_basis": "bars"
+ },
+ "run_id": "04fec2840d92404eaadf74003c5866aa",
+ "hyp_key": "5af782b5783d087a"
+}

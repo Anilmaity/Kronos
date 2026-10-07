@@ -1,0 +1,27 @@
+id: rr-gated-entry-refinement
+name: "R-Gated Entry Refinement"
+aliases: ["hourly idea, 5-minute entry"]
+category: entry
+status: specified
+voice: ttrades
+definition: >
+  Live application on the gold invalidation: an hourly idea can be executed on the 5-minute,
+  but the 5-minute did not give enough R to the previous day low without a limit order, and he
+  does not like trading a limit against that, so the entry steps down to the 3- or 1-minute.
+timeframes:
+  htf: ["1H"]
+  ltf: ["5m", "3m", "1m"]
+  fractal: true
+detection_rules:
+  - "If the 5m entry lacks R to the fixed target without a limit order, step to 3m/1m rather than using a limit."
+sources:
+  - video_id: KBJAGgkXdeI
+    title: "New York Open Live Q&A"
+    quote: "Obviously, if I'm going to trade an hourly, I can trade a 5minute."
+  - video_id: KBJAGgkXdeI
+    title: "New York Open Live Q&A"
+    quote: "and I don't like to trade a limit against that"
+ambiguities:
+  - "The R threshold that counts as 'enough' is not stated."
+python_detector: null
+related: ["market-order-entry", "invalidation-trade"]

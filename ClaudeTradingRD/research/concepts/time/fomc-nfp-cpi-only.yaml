@@ -1,27 +1,132 @@
 id: fomc-nfp-cpi-only
 name: Only Three Releases Are Tracked; Never Trade After FOMC
-definition: The entire economic calendar is reduced to three releases. Everything else - the
-  red and orange impact colouring on calendar sites - is ignored. On FOMC day he holds no
-  expectation for the release, does not trade after it, and waits for the next day. He also
-  does not use fundamental analysis intraday.
+variants:
+  name:
+  - FOMC, NFP, CPI Only
+  definition:
+  - 'Restated with a CPI reading that is unambiguous in this transcript: only FOMC, CPI and
+    NFP matter (PMI and the 10 a.m. data are ignored). New boundary: these are the only releases
+    he will not trade through or hold an intraday position through; he will trade the day
+    before, but not the session immediately before the release.'
+  - The entire economic calendar is reduced to three releases. Everything else - the red and
+    orange impact colouring on calendar sites - is ignored. On FOMC day he holds no expectation
+    for the release, does not trade after it, and waits for the next day. He also does not
+    use fundamental analysis intraday.
+  - Distinguishes the FOMC minutes from the FOMC rate decision. The minutes (released at 2
+    p.m. that day) do not bring volatility and are ignored; only the actual FOMC (federal
+    funds rate, statement, economic projections) does. With no USD 8:30 news and only crude
+    inventories and minutes on the calendar, he cared about no news that day.
+  - 'Restated: he does not trade through CPI, FOMC or NFP, and expects markets to stay rangebound
+    before the FOMC release.'
+  - 'Stated as his only news rule: he avoids the day of CPI, NFP and FOMC (and days where
+    they coincide). He does not care much about the day before FOMC and thinks it can have
+    fine moves, and he denies ever saying to avoid the session before PPI.'
+  - He states plainly that he does not trade through NFP, CPI or FOMC. This spelling confirms
+    that the library's 'API' reading was CPI, and adds that no position is held across any
+    of the three releases, not just FOMC.
+definition: 'Restated as ''don''t trade right before'' FOMC, NFP or CPI, and otherwise no
+  news matters; orange folder news is ignored. New secondary list: crude oil inventories (normally
+  10:30) matter only when trading oil; bond auctions ''sometimes''; and a Fed chair speech.
+
+  '
 category: time
-status: specified
+status: contested
+preconditions:
+- A CPI, NFP or FOMC release is scheduled.
+- One of NFP, CPI, FOMC is scheduled.
 detection_rules:
+- Do not enter shortly before an FOMC, NFP or CPI release.
+- Ignore orange-folder (medium) news.
+- If trading crude oil, also treat the 10:30 crude oil inventories release as a news event.
+- Bond auctions and Fed chair speeches are optional secondary events.
+- Track only FOMC, CPI and NFP; ignore PMI and other releases.
+- Do not hold an intraday position through FOMC, CPI or NFP.
+- Do not open a trade in the session immediately before one of these releases.
+- Trading on the day before the release is allowed.
 - Filter the economic calendar to the three named releases; ignore all other impact tiering.
 - Do not take a trade after the FOMC release; resume the next session.
 - Expect a low-quality, range-bound session on FOMC day before the release.
 - No fundamental or rate-expectation input feeds the intraday model.
+- FOMC minutes are not treated as an FOMC event.
+- No position held through CPI / FOMC / NFP.
+- Expect a range-bound session before FOMC.
+- Skip trading entirely on the day of a CPI, NFP or FOMC release.
+- The day before FOMC is tradeable.
+- PPI is not a filter.
+- Hold no open position across an NFP, CPI or FOMC release.
+invalidation:
+- Not applicable - a calendar filter.
+- n/a
 measurable:
+- crude-oil intraday entries taken before vs after the 10:30 inventories release
 - expectancy of signals taken after an FOMC release vs all other sessions
 - how many sessions per year the filter removes
+- expectancy on CPI/NFP/FOMC days vs other days
+- expectancy on the day before FOMC vs other days
+- equity curve with vs without trades open across the three releases
 sources:
+- video_id: wa9m30UHrm0
+  title: New York Open Live Q&A
+  quote: FOMC, NFP, CPI. Don't trade right before it. Otherwise, I do not care.
+- video_id: wa9m30UHrm0
+  title: New York Open Live Q&A
+  quote: Don't care about orange orange folder news.
+- video_id: wa9m30UHrm0
+  title: New York Open Live Q&A
+  quote: The only other news I'd care about is crude oil inventories.
+- video_id: wa9m30UHrm0
+  title: New York Open Live Q&A
+  quote: And that would be normally at 10:30. And that's only if I'm
+- video_id: wa9m30UHrm0
+  title: New York Open Live Q&A
+  quote: you can care about bond auctions sometimes.
+- video_id: uW55Tuk-ngY
+  title: New York Open Live Q&A
+  quote: I don't really care about PMI. I really only care about FOMC, CPI, NFP.
+- video_id: uW55Tuk-ngY
+  title: New York Open Live Q&A
+  quote: volatile news events that I tend to not trade through or hold something intraday
+- video_id: uW55Tuk-ngY
+  title: New York Open Live Q&A
+  quote: I'll trade the day before. I just won't trade the session before
 - video_id: m0wTBdUe7gs
   title: New York Open Live Q&A
   quote: I only focus on three things
 - video_id: xraklBJHW5k
   title: New York Open Live Q&A
   quote: never trade after FOMC. I just wait for the next day
+- video_id: rVRk4MLTJSs
+  title: New York Open Live Q&A
+  quote: I care about the actual FMC, not the minutes.
+- video_id: rVRk4MLTJSs
+  title: New York Open Live Q&A
+  quote: This is the one that brings volatility. This doesn't.
+- video_id: 9YVBe-20Hdg
+  title: New York Open Live Q&A
+  quote: Don't trade through CPI FOMC NFP.
+- video_id: 9YVBe-20Hdg
+  title: New York Open Live Q&A
+  quote: I'm expecting stuff to stay rangebound prior to FOMC, generally speaking.
+- video_id: Hlwq1dRjBZo
+  title: New York Open Live Q&A
+  quote: I avoid the day of CPI and NF NFP and NFP FOMC CPI same day
+- video_id: Hlwq1dRjBZo
+  title: New York Open Live Q&A
+  quote: I don't really care too much about the day before FOMC
+- video_id: h1ZQWWQDhKA
+  title: TTrades MNQ Cup - Afternoon Session
+  quote: And I do not trade through NFP, CPI or FOMC
 ambiguities:
+- Caption 'trading red older days' = red folder days.
+- '''Right before'' is not quantified (minutes vs the session before); conflicts with other
+  units that avoid the whole release day.'
+- '''when Fed speaker. Not Powell anymore'' - the chair is meant; name not given.'
+- '"Session before" is not mapped to clock times (e.g. whether London is the session before
+  an 8:30 CPI).'
+- He is holding a multi-day swing in this stream; whether swing positions are also flattened
+  before these releases is not stated - "hold something intraday" suggests only intraday positions
+  are excluded.
+- Confirms that the earlier "API, FOMC, NFP" caption in this concept was CPI.
 - The auto-captioner renders the three releases as 'API, FOMC, NFP'. FOMC and NFP are unambiguous;
   'API' is almost certainly CPI mis-transcribed (there is no plausible reason for the American
   Petroleum Institute crude stocks report to sit alongside FOMC and NFP for an index trader).
@@ -29,12 +134,32 @@ ambiguities:
 - '''After FOMC'' is not bounded - no rule says whether the rest of that day or a fixed number
   of hours is excluded.'
 - Nothing is said about trading before the release on FOMC day beyond low expectations.
+- Conflicts with the library's 'do not trade after the FOMC release' (implies trading before
+  it) and with pre-event-avoidance-rule (avoid days before); this stream says avoid the whole
+  release day.
+- '''Through'' is not bounded - whether he also stays flat for a window before/after is not
+  said here.'
 related:
+- economic-calendar-filter
+- pre-event-avoidance-rule
+- news-impact-tiering
 - fomc-week-protocol
 - nfp-week-protocol
-- news-impact-tiering
-- pre-event-avoidance-rule
+- fomc-day-participation
+- news-not-used
+- no-bias-reaction-day
+- news-events-ignored
+timeframes:
+  htf: []
+  ltf: []
+  fractal: false
 contributing_units:
 - live_streams_01
-draft_count: 1
+- update_20261007_live_02
+- update_20261007_live_03
+- update_20261007_live_06
+- update_20261007_live_07
+- update_20261007_live_09
+- update_20261007_live_13
+draft_count: 7
 voice: ttrades

@@ -1,0 +1,35 @@
+id: wait-for-candle-close
+name: "Wait For Candle Close"
+aliases: ["bullish candle, be patient for the next one"]
+category: psychology
+status: specified
+voice: ttrades
+definition: >
+  Entering a short into a 3-minute fair value gap while the current 3-minute candle is
+  bullish: either wait for that candle to turn into a reversal and trade the following one, or
+  let it close higher and wait for the next candle to react. The next candle's wick decides
+  it - a small wick then trading lower can expand; too high a wick makes expansion less likely.
+timeframes:
+  htf: ["3m"]
+  ltf: ["1m"]
+  fractal: true
+detection_rules:
+  - "If the current execution-timeframe candle is against the idea, do not enter until it closes."
+  - "After a close against the idea, require the next candle to react (small wick, trade in the idea's direction)."
+  - "If the next candle makes a large wick against the idea, downgrade the expansion expectation."
+measurable:
+  - "Expansion rate of the next 3m candle by wick size after a counter-direction 3m close."
+sources:
+  - video_id: KBJAGgkXdeI
+    title: "New York Open Live Q&A"
+    quote: "when I see a bullish candle, I'm just being patient for the next one."
+  - video_id: KBJAGgkXdeI
+    title: "New York Open Live Q&A"
+    quote: "If it has a small wick and trades lower, then it's possible"
+  - video_id: KBJAGgkXdeI
+    title: "New York Open Live Q&A"
+    quote: "If it makes too high of a wick, then it's less likely"
+ambiguities:
+  - "'Too high of a wick' is not quantified."
+python_detector: null
+related: ["small-wick-expansion-rule", "fair-value-gap"]

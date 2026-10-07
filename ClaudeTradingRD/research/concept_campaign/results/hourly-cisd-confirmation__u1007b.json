@@ -1,0 +1,266 @@
+{
+ "concept_id": "hourly-cisd-confirmation",
+ "reading": "u1007b",
+ "testable": true,
+ "test_type": "trade",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "1H bars, NY trading day (18:00 roll); day's running low (high) must take out the previous full day's low (high)",
+   "CISD level = high (low) of the consecutive down- (up-) close 1H series that made the extreme",
+   "large leg: |CISD level - extreme| >= 0.5 x ADR20 (prior full days)",
+   "substitute confirmation before any CISD close-through: a 1H close over the nearest still-open opposing 1H FVG formed in the leg into the extreme",
+   "one event per extreme (new extreme re-arms); decide at the confirming close, next M1 open; stop at the day's extreme; 2R; 10h"
+  ],
+  "params": {
+   "tf": "1h",
+   "day_open_hour": 18,
+   "series_rule": "run<=10,<=2 bars back",
+   "cisd_level": "series_extreme",
+   "leg_frac": 0.5,
+   "adr_n": 20,
+   "min_day_bars": 12,
+   "substitute": "fvg",
+   "grid4h": "forex",
+   "stop": "day_extreme",
+   "rr": 2.0,
+   "max_hold": "10h",
+   "ctrl_tod_tol_min": 30
+  }
+ },
+ "params_source": {
+  "context": "corpus: rVRk4MLTJSs 'gold today, we sweep previous day [low] ... hourly CST [CISD]' (the question's swept-PDL case); 'in the cases where you have a very large manipulation leg'",
+  "tf": "corpus: hourly-cisd-confirmation.yaml 'On the 1H chart ... inside the candidate daily candle'; rVRk4MLTJSs 'hourly CST [CISD]'",
+  "series_rule": "phase3: detectors.cisd run rule (extreme bar or run ending <=2 bars before it, max 10 candles), restricted to the day, same as prior reading a",
+  "min_day_bars": "declared-before-run: README trap 6 stub sessions; a prior day with <12 1H bars is skipped as PDH/PDL/ADR source (min_coverage ~0.5 equivalent)",
+  "cisd_level": "phase3/prior reading a: high of the down-close series that made the low (run<=10, <=2 bars back), same as hourly-cisd-confirmation__a",
+  "leg_frac": "declared-before-run: 'by the time you get that closure through, you're already creating like most of the daily range' (rVRk4MLTJSs) -> 'most' read as > half: CISD distance >= 0.5 x ADR20; the source gives no number (draft ambiguity), one pre-declared value, not searched",
+  "adr_n": "declared-before-run: conventional 20-day ADR for 'the daily range'",
+  "ctrl_tod_tol_min": "declared-before-run: README trap 9 / vault Concept Campaign lesson 3 - not a timing concept but events cluster in NY hours (4H closes only; NY session), so the control holds the NY clock +/-30 min (audit fix of the first run)",
+  "substitute": "corpus: rVRk4MLTJSs 'here's a 4hour candle closure. You could use that' (reading u1007a: 4H close beyond the prior 4H candle's extreme) / 'we reach into a fair value gap close over it' (reading u1007b: 1H close over the nearest open opposing FVG of the leg)",
+  "grid4h": "method_spec: forex 4H grid 17/21/01/05/09/13 NY (README trap 8 default)",
+  "stop": "corpus: hourly-cisd-confirmation.yaml execution.stop 'Beyond the confirmed extreme'",
+  "rr": "phase3: \u00a71.12 2R (same as prior readings)",
+  "max_hold": "phase3: \u00a71.13 10 entry-TF bars (same as prior readings)",
+  "day_open_hour": "session_window_fit: 18:00 NY daily candle (settled)"
+ },
+ "n": 385,
+ "span": {
+  "start": "2016-02-08 21:00:00+00:00",
+  "end": "2026-07-22 07:00:00+00:00",
+  "years": 10.448
+ },
+ "avg_R": -0.13459827894735604,
+ "avg_R_gross": -0.094598278947356,
+ "win_rate": 0.4,
+ "pf": 0.6456846186236603,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "n": 1855,
+  "avg_R": -0.05113729101460789,
+  "win_rate": 0.42587601078167114,
+  "pf": 0.8508187481951741,
+  "sd_R": 0.8251250769139752,
+  "exit_mix": {
+   "stop": 0.23557951482479783,
+   "target": 0.0673854447439353,
+   "time": 0.6970350404312669
+  },
+  "avg_R_gross": -0.011137291014607878,
+  "reps": 5,
+  "fill_rate": 0.9636363636363636
+ },
+ "diff": -0.08346098793274814,
+ "ci_lo": -0.17700731354334534,
+ "ci_hi": 0.013109938750086075,
+ "ci_method": "phase3_block",
+ "p": 0.08528015667388605,
+ "halves": {
+  "H1": {
+   "n": 183,
+   "diff": -0.11816752490931459,
+   "ci_lo": -0.2460389859919263,
+   "ci_hi": 0.05143790952950523,
+   "ci_method": "block",
+   "p": 0.11944122656580224,
+   "start": "2016-02-08 21:00:00+00:00",
+   "end": "2020-12-09 09:00:00+00:00"
+  },
+  "H2": {
+   "n": 202,
+   "diff": -0.05016628058120508,
+   "ci_lo": -0.17629808346736595,
+   "ci_hi": 0.0841302760128948,
+   "ci_method": "block",
+   "p": 0.4501918544620575,
+   "start": "2021-01-06 12:00:00+00:00",
+   "end": "2026-07-22 07:00:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 97,
+   "diff": 0.001151391979691191,
+   "ci_lo": -0.2036333728571154,
+   "ci_hi": 0.20849547030322046,
+   "ci_method": "block",
+   "p": 0.9912622490777251,
+   "start": "2016-02-08 21:00:00+00:00",
+   "end": "2018-08-20 12:00:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 98,
+   "diff": -0.19777943852232802,
+   "ci_lo": -0.35962989584316135,
+   "ci_hi": -0.024038929795752895,
+   "ci_method": "iid",
+   "p": 0.020877263935909718,
+   "start": "2018-08-23 13:00:00+00:00",
+   "end": "2021-04-09 15:00:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 89,
+   "diff": -0.02889278283933927,
+   "ci_lo": -0.25268147388936585,
+   "ci_hi": 0.19878051478672024,
+   "ci_method": "block",
+   "p": 0.8019157165253983,
+   "start": "2021-04-13 12:00:00+00:00",
+   "end": "2023-11-30 17:00:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 101,
+   "diff": -0.09741570095418678,
+   "ci_lo": -0.26674658508198773,
+   "ci_hi": 0.0778428160656388,
+   "ci_method": "iid",
+   "p": 0.26778978633138456,
+   "start": "2024-01-11 20:00:00+00:00",
+   "end": "2026-07-22 07:00:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.13587740444888097,
+ "mde_threshold": 0.1,
+ "power_floor_n": 711,
+ "verdict": "UNDERPOWERED",
+ "verdict_detail": "CI contains 0; MDE 0.1359 vs threshold 0.1000, effective n 360 (power floor n=711, have 385)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 385,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 69.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 44,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "rr"
+   ],
+   "ignored": [],
+   "lookback": "45D",
+   "recent": "1D",
+   "events_fp": "49b6c7b810c74c22",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "10h",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": 30,
+  "entry_mode": "next_open",
+  "hold_basis": "clock",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "Tests only the new substitute-confirmation claim (rVRk4MLTJSs). Source calls it a discretionary allowance; mechanically the trend is unchanged until the CISD close.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/update_20261007/hourly-cisd-confirmation.py",
+ "runtime_sec": 0.17,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-10-07T06:16:19+00:00",
+ "n_events_in": 388,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 0,
+  "target_not_beyond_entry": 0,
+  "no_bars_in_hold": 3
+ },
+ "events_fp": "49b6c7b810c74c22",
+ "sd_R": 0.7917936792337417,
+ "exit_mix": {
+  "stop": 0.2545454545454545,
+  "target": 0.05194805194805195,
+  "time": 0.6935064935064935
+ },
+ "trades_per_year": 36.850432389937104,
+ "ci_components": {
+  "phase3_block": [
+   -0.17700731354334534,
+   0.013109938750086075
+  ],
+  "day_block": [
+   -0.1733235203048164,
+   0.012855971801438756
+  ]
+ },
+ "diff_win": -0.02587601078167112,
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 360,
+  "n_clusters": null,
+  "n_eff": 360
+ },
+ "ties": {
+  "real_ambiguous": 0.0,
+  "control_ambiguous": 0.0,
+  "real_gap_stop": 0.0,
+  "control_gap_stop": 0.0016172506738544475,
+  "verdict_stop_first": "UNDERPOWERED"
+ },
+ "ctrl_overlap": 0.0026954177897574125,
+ "exposure_bars": {
+  "real_mean": 511.2025974025974,
+  "control_mean": 509.45121293800537,
+  "hold_basis": "clock"
+ },
+ "run_id": "1f30154b94ef414aa5c7a3b7a81400d7",
+ "hyp_key": "acdc5065e9b2e4a7"
+}

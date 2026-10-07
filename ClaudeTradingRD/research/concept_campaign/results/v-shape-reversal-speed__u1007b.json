@@ -1,0 +1,224 @@
+{
+ "concept_id": "v-shape-reversal-speed",
+ "reading": "u1007b",
+ "testable": true,
+ "test_type": "rate",
+ "claim": "-",
+ "operationalization": {
+  "rules": [
+   "15min bars; reaction = closure: extreme bar's low (high) below the 2 prior bars AND the lowest low (highest high) of the prior 20 bars (the swept low); opposing series = contiguous down-close (up-close) candles ending at the extreme (or <=2 bars before), <=10 long; first close beyond that series' first-candle OPEN within 10 candles, no new extreme first",
+   "T0 = the closing candle's close; R = |close - extreme|; expansion level E = close + 1R in the reaction direction",
+   "stale: M1 bars starting in [T0, T0+20min) (>= 18 of them) touched neither E nor the swept extreme; decision_time = T0 + 20 min",
+   "hit: from the first M1 bar at/after T0+20min, E touched before the extreme within 1380 M1 bars (same bar = 0.5; neither = dropped)",
+   "null: same signed distances to E and to the extreme from the first M1 open, same direction, at 5 random moments within +/-30 days and +/-30 min NY clock; claim '-' (stale setups expand less often than the geometry implies)",
+   "scope: T0 inside the forex NY AM window 07:00-10:00 New York"
+  ],
+  "params": {
+   "tf": "15min",
+   "poi_lookback": 20,
+   "left": 2,
+   "max_k": 10,
+   "level": "series first-candle open",
+   "wait_min": 20,
+   "expansion_R": 1.0,
+   "min_window_bars": 18,
+   "horizon_bars": 1380,
+   "tie": 0.5,
+   "null_window_days": 30,
+   "null_reps": 5,
+   "null_tod_tol_min": 30,
+   "scope": "fx_ny_am 07:00-10:00 NY"
+  }
+ },
+ "params_source": {
+  "tf": "corpus: Hlwq1dRjBZo 'It'd be a new C2 on the 15minute' + draft ambiguity (1-minute/15-minute NY open context); same 15m detector as library readings a/b",
+  "poi_lookback": "phase3: lookback 20 knob (backtest_conjunction)",
+  "left": "phase3: fractal 2/2 swing knob",
+  "max_k": "declared-before-run: library reading structure_own_02a (closures up to 10 candles)",
+  "level": "method_spec: \u00a74.2 first-candle-open default",
+  "wait_min": "corpus: Hlwq1dRjBZo 'it's not going to wait 35 minutes, not 35, 20 minutes to go expand'",
+  "expansion_R": "declared-before-run: the corpus gives no size for 'expand'; one reaction risk (close-to-swept-extreme) beyond the reaction close",
+  "min_window_bars": "declared-before-run: the 20 minutes must be traded minutes (>=18 of 20 M1 bars) so a window into the 17:00 NY halt/weekend is not 'no expansion'",
+  "horizon_bars": "declared-before-run: one trading day of M1 bars so nearly every event resolves; barrier order is then insensitive to the stale set's low local volatility (Concept Campaign lesson 3)",
+  "tie": "declared-before-run: same-bar ambiguity scored as a coin flip in both arms (README \u00a73 r2)",
+  "null_window_days": "phase3: +/-30-day regime window (locked)",
+  "null_reps": "phase3: 5 control reps (locked)",
+  "null_tod_tol_min": "declared-before-run: README trap 9 / Concept Campaign lesson 3, rate nulls hold the NY clock fixed",
+  "scope": "session_window_fit: forex NY AM killzone 07:00-10:00 (killzones.yaml); corpus: Hlwq1dRjBZo is a 'New York Open Live Q&A'"
+ },
+ "n": 1509,
+ "span": {
+  "start": "2016-01-04 12:20:00+00:00",
+  "end": "2026-07-22 13:20:00+00:00",
+  "years": 10.546
+ },
+ "avg_R": null,
+ "avg_R_gross": null,
+ "win_rate": null,
+ "pf": null,
+ "observed_rate": 0.49867461895294896,
+ "null_rate": 0.4891318754141815,
+ "lift": 1.0195095515512804,
+ "control": {
+  "rate": 0.4891318754141815,
+  "reps": 5,
+  "kind": "null_fn x5"
+ },
+ "diff": 0.010767514376887388,
+ "ci_lo": -0.018347038378041056,
+ "ci_hi": 0.03852423455692944,
+ "ci_method": "phase3_iid",
+ "p": 0.45798723496757615,
+ "halves": {
+  "H1": {
+   "n": 669,
+   "diff": 0.02140009965122064,
+   "ci_lo": -0.020480817140009915,
+   "ci_hi": 0.06406950672645739,
+   "ci_method": "iid",
+   "p": 0.32112293983364426,
+   "start": "2016-01-04 12:20:00+00:00",
+   "end": "2020-12-30 13:50:00+00:00"
+  },
+  "H2": {
+   "n": 840,
+   "diff": 9.920634920634885e-05,
+   "ci_lo": -0.03903174603174597,
+   "ci_hi": 0.03871775793650791,
+   "ci_method": "iid",
+   "p": 0.9960092163735135,
+   "start": "2021-01-05 13:05:00+00:00",
+   "end": "2026-07-22 13:20:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 340,
+   "diff": 0.06950980392156858,
+   "ci_lo": 0.006013480392156819,
+   "ci_hi": 0.12540318627450983,
+   "ci_method": "iid",
+   "p": 0.022476427985154708,
+   "start": "2016-01-04 12:20:00+00:00",
+   "end": "2018-08-20 13:50:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 363,
+   "diff": -0.024885215794306803,
+   "ci_lo": -0.08352043158861347,
+   "ci_hi": 0.032970615243342445,
+   "ci_method": "iid",
+   "p": 0.4023742701799154,
+   "start": "2018-08-22 13:35:00+00:00",
+   "end": "2021-04-09 11:35:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 425,
+   "diff": 0.0032156862745098547,
+   "ci_lo": -0.049655882352941196,
+   "ci_hi": 0.05455098039215686,
+   "ci_method": "iid",
+   "p": 0.9037197037309586,
+   "start": "2021-04-12 12:50:00+00:00",
+   "end": "2023-12-01 13:50:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 381,
+   "diff": -0.004111986001749779,
+   "ci_lo": -0.0556911636045494,
+   "ci_hi": 0.055040463692038494,
+   "ci_method": "iid",
+   "p": 0.8842645162657314,
+   "start": "2023-12-05 13:35:00+00:00",
+   "end": "2026-07-22 13:20:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.0406460795161338,
+ "mde_threshold": 0.05,
+ "power_floor_n": 998,
+ "verdict": "NULL",
+ "verdict_detail": "CI contains 0; powered (MDE 0.0406 <= 0.0500)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 1605,
+  "min_slack_min": 0.0,
+  "passed": true,
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 137,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "extreme",
+    "exp_level",
+    "k"
+   ],
+   "ignored": [],
+   "lookback": "10D",
+   "recent": "1D",
+   "events_fp": "e3ed172ed1a9d2da",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "reps": 5,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "mde_threshold": null,
+  "cluster": null,
+  "outcome_horizon": "1 days 00:00:00",
+  "null_kind": "null_fn x5"
+ },
+ "notes": "TTrades update 2026-10-07 wall-clock speed claim; library candle-count readings a/b untouched. Diagnostics: {'obs_resolved': 0.9414, 'null_resolved': [0.947, 0.9464, 0.9458, 0.9439, 0.9464], 'obs_ties': 1, 'median_R_up': 5.380000000000109, 'median_dn': 5.370000000000118}",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/update_20261007/v-shape-reversal-speed.py",
+ "runtime_sec": 0.2,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-10-07T05:28:34+00:00",
+ "dropped": {
+  "nan_rows": 96
+ },
+ "null_kind": "null_fn x5",
+ "events_fp": "e3ed172ed1a9d2da",
+ "predictors_probed": true,
+ "ci_components": {
+  "phase3_iid": [
+   -0.018347038378041056,
+   0.03852423455692944
+  ],
+  "day_block": [
+   -0.013853572082942968,
+   0.03410573733774108
+  ]
+ },
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 1328,
+  "n_clusters": null,
+  "n_eff": 1328
+ },
+ "run_id": "1cfca031d6904967b659f1653e7170d1",
+ "hyp_key": "3c4d941ac568a97d"
+}

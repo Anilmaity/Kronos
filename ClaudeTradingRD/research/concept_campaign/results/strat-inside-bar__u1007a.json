@@ -1,0 +1,293 @@
+{
+ "concept_id": "strat-inside-bar",
+ "reading": "u1007a",
+ "testable": true,
+ "test_type": "gate",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "range = the prior NY trading session (18:00 roll) high/low; prior session must have > 600 M1 bars",
+   "event = the first M1 bar of the trading day whose high > PDH (short) or low < PDL (long); a bar breaking both sides is dropped; decide at that bar's close, enter next M1 open",
+   "reversion trade back into the range: target = prior-session midpoint (EQ); stop = the broken level +/- half the prior range (symmetric race: reversion to EQ vs breakout by the same distance); hold one trading day of M1 bars",
+   "gate in_state (reading u1007a): last completed calendar month (session dates) inside the month before it (high <=, low >=) AND the current month's running high/low over M1 bars closed by the decision still inside the last completed month",
+   "gate_test claim '+': control-adjusted R in the state > complement; cluster = session month (the state is assigned per month)"
+  ],
+  "params": {
+   "range": "prior session (PDH/PDL)",
+   "event": "first break per side per day",
+   "target": "prior-session midpoint",
+   "stop": "broken level + half prior range",
+   "state": "prev month inside + current month so far inside",
+   "inside": "wick range, non-strict (<=, >=)",
+   "max_hold": "23h",
+   "hold_basis": "bars",
+   "ctrl_tod_tol_min": 30,
+   "cluster": "session month",
+   "day_open_hour": 18,
+   "min_session_bars": 600,
+   "grid4h": "n/a (1D/1M)"
+  }
+ },
+ "params_source": {
+  "range": "declared-before-run: the source fades a taken intraday low back 'into the range' (GRc5FVB5tdg 'favoring a retracement or reversal back into the range'); the prior session's range is the method's daily range",
+  "event": "corpus: GRc5FVB5tdg 'not at the low after we take out the target' (the breakout = a session extreme taken); first break per side declared-before-run",
+  "target": "corpus: GRc5FVB5tdg 'kind of respect around the EQ of this area' (EQ = midpoint)",
+  "stop": "declared-before-run: equal distance beyond the broken level, so the race is reversion vs breakout with no built-in cushion",
+  "state": "corpus: GRc5FVB5tdg 'Like we're just inside bar inside bar. So, it's more consolidation.'; draft rule 'If the current monthly candle (and the prior) are inside bars'",
+  "inside": "corpus: library strat-inside-bar 'inside_bar := candle.high <= prev.high AND candle.low >= prev.low'",
+  "max_hold": "declared-before-run: one trading day, as the prior strat-inside-bar reading",
+  "hold_basis": "declared-before-run: trading-time hold across halts/weekends (README trap 7)",
+  "ctrl_tod_tol_min": "declared-before-run: breaks cluster at session opens; concept is not about timing (README trap 9)",
+  "cluster": "declared-before-run: the state is a per-month assignment (README trap 11)",
+  "day_open_hour": "session_window_fit: settled 18:00 NY daily roll",
+  "min_session_bars": "declared-before-run: harness example_rate stub-day filter n_m1 > 600",
+  "grid4h": "declared-before-run: not used"
+ },
+ "n": 89,
+ "span": {
+  "start": "2016-02-29 23:34:00+00:00",
+  "end": "2026-07-22 00:08:00+00:00",
+  "years": 10.39
+ },
+ "avg_R": -0.11862415497434912,
+ "avg_R_gross": -0.0786241549743491,
+ "win_rate": 0.4606741573033708,
+ "pf": 0.7685764673396887,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "avg_R_gated": -0.06782896640680337,
+  "avg_R_complement": -0.06472002381465204,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": -0.06808292034717746,
+ "ci_lo": -0.29109661754433114,
+ "ci_hi": 0.15996809304504817,
+ "ci_method": "phase3_iid",
+ "p": 0.5540735367593531,
+ "halves": {
+  "H1": {
+   "n": 1184,
+   "diff": -0.3732592727751557,
+   "ci_lo": -0.8237714038430507,
+   "ci_hi": 0.07391495922562627,
+   "ci_method": "iid",
+   "p": 0.10312016791222667,
+   "start": "2016-02-29 23:34:00+00:00",
+   "end": "2020-12-30 23:12:00+00:00",
+   "n_gated": 17
+  },
+  "H2": {
+   "n": 1351,
+   "diff": 0.010277693588291188,
+   "ci_lo": -0.2370967515428396,
+   "ci_hi": 0.2568254655760834,
+   "ci_method": "iid",
+   "p": 0.9349909387291704,
+   "start": "2021-01-04 23:17:00+00:00",
+   "end": "2026-07-22 00:08:00+00:00",
+   "n_gated": 72
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 614,
+   "diff": -0.4167437739976827,
+   "ci_lo": -1.5901547201057706,
+   "ci_hi": 0.7053657738534187,
+   "ci_method": "iid",
+   "p": 0.47668196070905755,
+   "start": "2016-02-29 23:34:00+00:00",
+   "end": "2018-08-22 00:25:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 637,
+   "diff": -0.3422290995787465,
+   "ci_lo": -0.8038069337348829,
+   "ci_hi": 0.13020445685987905,
+   "ci_method": "iid",
+   "p": 0.15091916546916045,
+   "start": "2018-08-23 01:01:00+00:00",
+   "end": "2021-04-09 13:08:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 659,
+   "diff": -0.07043968336545245,
+   "ci_lo": -0.5775829778469518,
+   "ci_hi": 0.37717498803253335,
+   "ci_method": "iid",
+   "p": 0.7724263414869418,
+   "start": "2021-04-12 14:36:00+00:00",
+   "end": "2023-12-01 09:30:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 625,
+   "diff": 0.0733333591473214,
+   "ci_lo": -0.22482444840654167,
+   "ci_hi": 0.3647140016675872,
+   "ci_method": "iid",
+   "p": 0.625830143709297,
+   "start": "2023-12-03 23:04:00+00:00",
+   "end": "2026-07-22 00:08:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.322377382241854,
+ "mde_threshold": 0.1,
+ "power_floor_n": 925,
+ "verdict": "UNDERPOWERED",
+ "verdict_detail": "CI contains 0; MDE 0.3224 vs threshold 0.1000, effective n 14 (power floor n=925, have 89)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 2535,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "gate_mask_checked": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 1.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 225,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "target_px",
+    "in_state",
+    "month"
+   ],
+   "ignored": [],
+   "lookback": "100D",
+   "recent": "1D",
+   "events_fp": "2ff19bf41a2f9617",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "23h",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": 30,
+  "entry_mode": "next_open",
+  "hold_basis": "bars",
+  "mde_threshold": null,
+  "cluster": "column:month",
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "vault audit 2026-10-07: pre-test power: 91 in-state events in 15 state months (n_eff floor 200 is unreachable on 2016-2026); L3 volatility: median prior-session range/price in state / complement = 0.94. TTrades update 2026-10-07 (own voice, GRc5FVB5tdg): the monthly inside-inside state as a gate on daily-range reversion. Prior guest reading (daily inside-bar breakout trade) untouched. corpus: GRc5FVB5tdg 'So, I favor a reversion back into the range um over breakouts.'",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/update_20261007/strat-inside-bar.py",
+ "runtime_sec": 0.32,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-10-07T06:25:49+00:00",
+ "n_events_in": 2561,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 20,
+  "target_not_beyond_entry": 6,
+  "no_bars_in_hold": 0
+ },
+ "n_complement": 2446,
+ "gate_firing_rate": 0.035108481262327414,
+ "events_fp": "2ff19bf41a2f9617",
+ "mask_fp": "6709e5a9267cec27",
+ "mask_col": "in_state",
+ "exit_mix": {
+  "stop": 0.4606741573033708,
+  "target": 0.39325842696629215,
+  "time": 0.14606741573033707
+ },
+ "gated_vs_own_control": {
+  "diff": -0.05079518856754575,
+  "ci_lo": -0.26453339850378177,
+  "ci_hi": 0.16567487260538702,
+  "p": 0.6434859128255312
+ },
+ "complement": {
+  "n": 2446,
+  "avg_R": -0.04743229203502031,
+  "win_rate": 0.47914963205233035,
+  "pf": 0.9022785478212052,
+  "sd_R": 1.0807788288007245,
+  "exit_mix": {
+   "stop": 0.4358135731807032,
+   "target": 0.3875715453802126,
+   "time": 0.17661488143908421
+  },
+  "vs_own_control": {
+   "diff": 0.017287731779631735,
+   "ci_lo": -0.034159800481921195,
+   "ci_hi": 0.06850565921916714,
+   "p": 0.509207197629678
+  }
+ },
+ "ci_components": {
+  "phase3_iid": [
+   -0.29109661754433114,
+   0.15996809304504817
+  ],
+  "day_block": [
+   -0.27342935724853756,
+   0.12374020999279885
+  ],
+  "cluster": [
+   -0.2525025348142844,
+   0.09892555364148539
+  ]
+ },
+ "diff_meaning": "mean(R-ctrl | gated) - mean(R-ctrl | complement)",
+ "dependence": {
+  "day_block_mean_days": 2,
+  "n_eff_gated": 14,
+  "n_eff_complement": 124,
+  "n_eff": 14
+ },
+ "ties": {
+  "real_ambiguous": 0.0003944773175542406,
+  "control_ambiguous": 0.0003155818540433925,
+  "real_gap_stop": 0.0067061143984220905,
+  "control_gap_stop": 0.006232741617357002,
+  "gated_excess": 0.0,
+  "complement_excess": 8.176614881439083e-05,
+  "verdict_stop_first": "UNDERPOWERED"
+ },
+ "ctrl_overlap": 0.0007889546351084812,
+ "exposure_bars": {
+  "real_mean": 1380.0,
+  "control_mean": 1379.9582642998027,
+  "hold_basis": "bars"
+ },
+ "run_id": "78df22c61f8c4be69956bd7d45b63703",
+ "hyp_key": "176e7965f342304d"
+}

@@ -1,0 +1,49 @@
+id: cross-asset-reversal-confirmation
+name: The Strongest Asset Must Reverse for the Weakest to Expand
+category: structure
+status: specified
+voice: ttrades
+definition: 'Live NY-open application (long side): on a bullish reversal day he requires the WEAKEST index
+  (NQ that day) to trade into the hourly gap / below the reference low first and form a reversal there;
+  the stronger assets (YM strongest, ES middle) are then expected to continue higher, producing an SMT
+  off that gap. Because no asset had reached the gap at the open, he refused to frame an intraday long
+  until it did.'
+preconditions:
+- Daily reversal context (target hit, daily profile open-low-first).
+- Assets ranked strongest / middle / weakest on the hourly.
+detection_rules:
+- 'Before the reach: if the weakest asset has not traded into the hourly gap or below the reference low,
+  do not frame the long.'
+- Watch the weakest asset into that gap; a reversal there with the stronger asset holding its low = SMT.
+- Weakest asset reverses -> expect continuation on the middle/strong assets.
+- If the weakest asset instead continues lower, expect the other assets to reverse down with it (they
+  are still correlated).
+invalidation:
+- The weakest asset trades through the gap without reversing.
+sources:
+- video_id: GRc5FVB5tdg
+  title: New York Open Live Q&A
+  quote: you want the weakest asset in this case that is NQ to trade into
+- video_id: GRc5FVB5tdg
+  title: New York Open Live Q&A
+  quote: If the weakest asset forms a reversal, then what do we expect
+ambiguities:
+- '''Gap'' is an hourly gap he later says could be refined to a 30-minute gap; no rule chooses between
+  them.'
+- He says he would trade the reversal on NQ or ES interchangeably ('It doesn't really matter to me'),
+  so the traded asset is not fixed by this rule.
+related:
+- relative-strength-weakness
+- smt-divergence
+- relative-strength-asset-selection
+timeframes:
+  htf:
+  - 1D
+  - 4H
+  - 1H
+  ltf:
+  - 15m
+  - 1m
+  fractal: true
+python_detector: null
+notes: Unit update_20261007_live_10; NY open stream on index futures (NQ/ES/YM); no timestamps in transcript.

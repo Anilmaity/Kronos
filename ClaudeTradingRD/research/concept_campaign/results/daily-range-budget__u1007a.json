@@ -1,0 +1,220 @@
+{
+ "concept_id": "daily-range-budget",
+ "reading": "u1007a",
+ "testable": true,
+ "test_type": "rate",
+ "claim": "-",
+ "operationalization": {
+  "rules": [
+   "trading day (18:00 NY roll); decision at 08:30 NY (NY open)",
+   "expected = median H-L of last 3 completed real days; consumed = overnight 18:00->08:30 H-L / expected",
+   "observed rows: consumed >= 0.80; null: same-slot days with consumed < 0.50 within +/-30 d, 5 draws (seeded)",
+   "outcome = price extends beyond overnight high or low by >= 0.25 x expected before the trading day closes",
+   "claim -: high-consumption overnights see less NY expansion than low-consumption overnights"
+  ],
+  "params": {
+   "expected_range": "median H-L of last 3 completed real days",
+   "lookback_days": 3,
+   "day_open": "18:00 NY",
+   "stub_day_min_n_m1": 600,
+   "ext_frac": 0.25,
+   "outcome_window": "decision -> trading-day close",
+   "null_reps": 5,
+   "null_window_days": 30,
+   "ny_open": "08:30 NY",
+   "hi_cut": 0.8,
+   "lo_cut": 0.5
+  }
+ },
+ "params_source": {
+  "expected_range": "corpus: 0AYGNc9czYc 'from the high to the low, 658 points ... 740 ... 540 ... around 600, 500, 600 points' (median declared-before-run, as prior reading)",
+  "lookback_days": "corpus: 0AYGNc9czYc worked example reads three daily candles",
+  "day_open": "session_window_fit: settled 18:00 NY daily roll",
+  "stub_day_min_n_m1": "declared-before-run: skip data-hole stub days (README trap 6)",
+  "ext_frac": "declared-before-run: 9H15ZZvaKPQ 'We could sure expand a little more, but I'm not expecting price to just go send up here' -> 'much' NY range read as a further >= 25% of the expected daily range",
+  "outcome_window": "corpus: 9H15ZZvaKPQ 'use the rest of the range' (within the day)",
+  "null_reps": "method_spec: locked reps=5",
+  "null_window_days": "method_spec: locked window_days=30",
+  "ny_open": "session_window_fit: SESSION_WINDOWS ny_am starts 08:30 NY; 9H15ZZvaKPQ 'We get to New York'",
+  "hi_cut": "declared-before-run: 'we've already used all the range' = prior reading's bulk cut >= 80% (risk_own_02a)",
+  "lo_cut": "corpus: tUbrCewFdCU 'we're halfway through it ... we still have a lot of range left' -> < 50% used = range left; 9H15ZZvaKPQ 'we don't use any range all in the overnight'"
+ },
+ "n": 840,
+ "span": {
+  "start": "2016-01-08 13:30:00+00:00",
+  "end": "2026-07-22 12:30:00+00:00",
+  "years": 10.533
+ },
+ "avg_R": null,
+ "avg_R_gross": null,
+ "win_rate": null,
+ "pf": null,
+ "observed_rate": 0.4928571428571429,
+ "null_rate": 0.43214285714285716,
+ "lift": 1.140495867768595,
+ "control": {
+  "rate": 0.43214285714285716,
+  "reps": 5,
+  "kind": "null array x5"
+ },
+ "diff": 0.06071428571428572,
+ "ci_lo": 0.01855952380952317,
+ "ci_hi": 0.10333333333333368,
+ "ci_method": "phase3_block",
+ "p": 0.004994019173682858,
+ "halves": {
+  "H1": {
+   "n": 429,
+   "diff": 0.052214452214452256,
+   "ci_lo": -0.007937062937063567,
+   "ci_hi": 0.1105128205128214,
+   "ci_method": "block",
+   "p": 0.08399504385566153,
+   "start": "2016-01-08 13:30:00+00:00",
+   "end": "2020-12-28 13:30:00+00:00"
+  },
+  "H2": {
+   "n": 411,
+   "diff": 0.06958637469586376,
+   "ci_lo": 0.01653284671532847,
+   "ci_hi": 0.12750608272506078,
+   "ci_method": "iid",
+   "p": 0.013970839079306107,
+   "start": "2021-01-04 13:30:00+00:00",
+   "end": "2026-07-22 12:30:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 226,
+   "diff": 0.06283185840707961,
+   "ci_lo": -0.01597345132743419,
+   "ci_hi": 0.15046460176991086,
+   "ci_method": "block",
+   "p": 0.13892449537479348,
+   "start": "2016-01-08 13:30:00+00:00",
+   "end": "2018-08-16 12:30:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 225,
+   "diff": 0.05955555555555553,
+   "ci_lo": -0.02673333333333344,
+   "ci_hi": 0.13957777777777752,
+   "ci_method": "block",
+   "p": 0.1604035755060518,
+   "start": "2018-08-22 12:30:00+00:00",
+   "end": "2021-04-09 12:30:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 175,
+   "diff": 0.07657142857142862,
+   "ci_lo": -0.004571428571428561,
+   "ci_hi": 0.16002857142857144,
+   "ci_method": "iid",
+   "p": 0.06822182577219063,
+   "start": "2021-04-15 12:30:00+00:00",
+   "end": "2023-12-01 13:30:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 214,
+   "diff": 0.04672897196261683,
+   "ci_lo": -0.029906542056074688,
+   "ci_hi": 0.12523364485981298,
+   "ci_method": "block",
+   "p": 0.23772144272484927,
+   "start": "2023-12-04 13:30:00+00:00",
+   "end": "2026-07-22 12:30:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.060588111096623376,
+ "mde_threshold": 0.05,
+ "power_floor_n": 1234,
+ "verdict": "NEGATIVE",
+ "verdict_detail": "CI excludes 0 against the claim (-)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 840,
+  "min_slack_min": 0.0,
+  "passed": true,
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 76,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "day",
+    "slot",
+    "decision_time",
+    "day_close",
+    "expected",
+    "run_hi",
+    "run_lo",
+    "consumed",
+    "available_at"
+   ],
+   "ignored": [],
+   "lookback": "20D",
+   "recent": "1D",
+   "events_fp": "ee4d55462263e099",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "reps": 5,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "mde_threshold": null,
+  "cluster": null,
+  "outcome_horizon": "1 days 00:00:00",
+  "null_kind": "null array x5"
+ },
+ "notes": "Comparison group = the complementary consumption bucket on nearby days (regime-matched by +/-30 days and same slot), passed as the null array. Predictor known at decision: expected range from completed days, running range from M1 closed by the decision. Outcome is day-level, day-block CI.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/update_20261007/daily-range-budget.py",
+ "runtime_sec": 0.12,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-10-07T06:19:35+00:00",
+ "dropped": {
+  "nan_rows": 0
+ },
+ "null_kind": "null array x5",
+ "events_fp": "ee4d55462263e099",
+ "predictors_probed": true,
+ "ci_components": {
+  "phase3_block": [
+   0.01855952380952317,
+   0.10333333333333368
+  ],
+  "day_block": [
+   0.023333333333333588,
+   0.09999999999999948
+  ]
+ },
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 840,
+  "n_clusters": null,
+  "n_eff": 840
+ },
+ "run_id": "a1de306ec7bb493b8d8c88d3e3f34f91",
+ "hyp_key": "f0f360ea3090ff02"
+}

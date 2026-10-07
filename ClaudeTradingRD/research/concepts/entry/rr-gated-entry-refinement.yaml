@@ -1,14 +1,8 @@
 id: rr-gated-entry-refinement
 name: Refine The Entry Downward Until Risk-To-Reward Works
-definition: 'The dedicated earlier lesson, worked as an explicit arithmetic comparison on
-  one setup. Fix the target (the previous day''s low in his example). Enter on the highest
-  timeframe first and compute R: the 15-minute entry gives 1.79R. Step down to the 5-minute
-  - here the refinement yields nothing, because the order block available gives the same level.
-  Step down to the 1-minute and wait for a CONFIRMED setup (structure break plus fair value
-  gap), which allows a much tighter stop and a materially higher R to the same target. He
-  states the payoff in win-rate terms rather than profit terms: a higher risk-to-reward lets
-  you run a lower win rate.'
 variants:
+  name:
+  - R-Gated Entry Refinement
   definition:
   - 'The rule that decides which timeframe supplies the entry. The target is fixed first -
     the nearest real objective, typically the intraday highs or lows - and the entry timeframe
@@ -23,11 +17,26 @@ variants:
     rather than to force the trade.
 
     '
+  - 'Live application on the gold invalidation: an hourly idea can be executed on the 5-minute,
+    but the 5-minute did not give enough R to the previous day low without a limit order,
+    and he does not like trading a limit against that, so the entry steps down to the 3- or
+    1-minute.
+
+    '
+definition: 'The dedicated earlier lesson, worked as an explicit arithmetic comparison on
+  one setup. Fix the target (the previous day''s low in his example). Enter on the highest
+  timeframe first and compute R: the 15-minute entry gives 1.79R. Step down to the 5-minute
+  - here the refinement yields nothing, because the order block available gives the same level.
+  Step down to the 1-minute and wait for a CONFIRMED setup (structure break plus fair value
+  gap), which allows a much tighter stop and a materially higher R to the same target. He
+  states the payoff in win-rate terms rather than profit terms: a higher risk-to-reward lets
+  you run a lower win rate.'
 category: entry
 status: contested
 aliases:
 - seek continuations until the risk-to-reward makes sense
 - refining the entry
+- hourly idea, 5-minute entry
 preconditions:
 - A higher-timeframe point of interest has been tagged.
 - The target is already fixed.
@@ -55,6 +64,8 @@ detection_rules:
 - 'A second trigger for dropping a timeframe, independent of R: if the current timeframe will
   not produce a swing formation (because the higher-timeframe wick is already forming), step
   down to one that will.'
+- If the 5m entry lacks R to the fixed target without a limit order, step to 3m/1m rather
+  than using a limit.
 invalidation:
 - Price reaches the target before an acceptable entry appears - the trade is missed and is
   not chased.
@@ -85,6 +96,12 @@ sources:
 - video_id: Nlw-PZhoViQ
   title: 'TTrades Top-Down Chart Lessons #1'
   quote: I can drop down one timeframe or go to the 30 minute
+- video_id: KBJAGgkXdeI
+  title: New York Open Live Q&A
+  quote: Obviously, if I'm going to trade an hourly, I can trade a 5minute.
+- video_id: KBJAGgkXdeI
+  title: New York Open Live Q&A
+  quote: and I don't like to trade a limit against that
 ambiguities:
 - No minimum acceptable ratio is stated in this video; 1.79R is called 'not horrible'. The
   2R minimum recorded elsewhere in the corpus is absent here.
@@ -103,6 +120,7 @@ ambiguities:
   but not as a floor.
 - In video w-JekHg6Ldk the same logic appears as a refusal to use a distant protected low,
   without the explicit timeframe ladder.
+- The R threshold that counts as 'enough' is not stated.
 related:
 - nested-fvg-entry-refinement
 - stop-loss-placement
@@ -113,6 +131,8 @@ related:
 - timeframe-pairing
 - partial-profit-taking
 - top-down-analysis-procedure
+- market-order-entry
+- invalidation-trade
 timeframes:
   htf:
   - 15m
@@ -131,5 +151,6 @@ execution:
 contributing_units:
 - chart_lessons_01
 - education_ict_02
-draft_count: 2
+- update_20261007_live_11
+draft_count: 3
 voice: ttrades

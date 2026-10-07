@@ -1,0 +1,287 @@
+{
+ "concept_id": "gold-correlated-assets",
+ "reading": "u1007a",
+ "testable": true,
+ "test_type": "gate",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "4h gold bars (forex 4H grid 17/21/01/05/09/13 NY); C2 = sweeps prior bar high/low, closes back inside, closes in the reversal direction",
+   "enter next M1 open after C2 close, reversal direction; stop at C2 extreme; 2R; 10 4h bars of trading time (40h of M1 bars)",
+   "correlate HTF bars = OANDA H1 bars aggregated over the hours gold traded in that bar; row dropped unless all three correlates cover every such hour on C1 and C2",
+   "reversal SMT vs a correlate = that correlate did not take its own prior-bar extreme on the C2 bar",
+   "keep C2s where SMT vs XAG/USD disagrees with SMT vs {XAU/EUR or XAU/GBP}",
+   "gate = SMT vs silver (complement = gold-euro/gold-pound-only SMT); claim '+' = silver better on the HTF"
+  ],
+  "params": {
+   "tf": "4h",
+   "grid4h": "forex",
+   "day_open_hour": 18,
+   "rr": 2.0,
+   "max_hold": "40h",
+   "hold_basis": "bars",
+   "ag_family": "XAG_USD",
+   "eg_family": "SMT if XAU_EUR or XAU_GBP diverges",
+   "divergence_tolerance": "none (strict)",
+   "correlate_coverage": "all gold hours present",
+   "ctrl_grid": "4h",
+   "ctrl_tod_tol_min": 30
+  }
+ },
+ "params_source": {
+  "tf": "corpus: rTomJ8URFnw 'Why is the 4 hour and 15 minute model your favorite?' (his favourite HTF, same stream as 'I prefer gold and silver on the higher time frame'); 4H is in the library's htf list",
+  "grid4h": "session_window_fit: forex grid for gold (harness default; trap 8 knob recorded)",
+  "day_open_hour": "session_window_fit: settled 18:00 NY daily roll",
+  "rr": "phase3: locked 2R target (\u00a71.13)",
+  "max_hold": "phase3: 10 entry-TF bars (\u00a71.13); 4h=40h, 1D=10x23 trading h=230h",
+  "hold_basis": "declared-before-run: trading-time holds (trap 7), as the prior reading",
+  "ag_family": "corpus: rTomJ8URFnw 'But I prefer gold and silver on the higher time frame.'",
+  "eg_family": "corpus: rTomJ8URFnw 'Gold euro, gold pound for some divergences' (no ranking given)",
+  "divergence_tolerance": "declared-before-run: no tolerance given in the corpus (as prior reading)",
+  "correlate_coverage": "declared-before-run: a missing correlate hour must not read as a non-sweep (trap 5)",
+  "ctrl_grid": "declared-before-run (rerun): decisions sit on the 4h forex close grid, one in six at the 17:00 NY close with entry at the 18:00 reopen; controls drawn on the same grid (vault Session Timing on Gold: the reopen is a gap artefact)",
+  "ctrl_tod_tol_min": "declared-before-run (rerun): README trap 9, not a timing concept but events sit at six NY slots (TV 0.778 vs the auto control); 30 min on the 4h grid = same slot"
+ },
+ "n": 746,
+ "span": {
+  "start": "2016-01-04 18:00:00+00:00",
+  "end": "2026-07-21 17:00:00+00:00",
+  "years": 10.541
+ },
+ "avg_R": -0.006826154734906608,
+ "avg_R_gross": 0.03317384526509343,
+ "win_rate": 0.36595174262734587,
+ "pf": 0.9894377303011964,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "avg_R_gated": -0.013682881308593013,
+  "avg_R_complement": -0.030334439425994852,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": -0.045203618950480126,
+ "ci_lo": -0.1821858582010868,
+ "ci_hi": 0.0975998751997534,
+ "ci_method": "day_block",
+ "p": 0.5265222895426365,
+ "halves": {
+  "H1": {
+   "n": 865,
+   "diff": -0.032574647236100124,
+   "ci_lo": -0.256992542312287,
+   "ci_hi": 0.18510797684786037,
+   "ci_method": "block",
+   "p": 0.7727142796325784,
+   "start": "2016-01-04 18:00:00+00:00",
+   "end": "2020-12-31 22:00:00+00:00",
+   "n_gated": 291
+  },
+  "H2": {
+   "n": 975,
+   "diff": -0.06733956615206663,
+   "ci_lo": -0.2361141922738339,
+   "ci_hi": 0.11586102824166529,
+   "ci_method": "iid",
+   "p": 0.4532806536155389,
+   "start": "2021-01-04 18:00:00+00:00",
+   "end": "2026-07-21 17:00:00+00:00",
+   "n_gated": 455
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 437,
+   "diff": -0.06395757761545953,
+   "ci_lo": -0.38093795674914027,
+   "ci_hi": 0.2552813713873205,
+   "ci_method": "block",
+   "p": 0.6935361491378789,
+   "start": "2016-01-04 18:00:00+00:00",
+   "end": "2018-08-21 17:00:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 480,
+   "diff": 0.028982943747934725,
+   "ci_lo": -0.25976873079081575,
+   "ci_hi": 0.3125968689427501,
+   "ci_method": "iid",
+   "p": 0.8426586943470645,
+   "start": "2018-08-24 01:00:00+00:00",
+   "end": "2021-04-09 05:00:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 520,
+   "diff": -0.10167956010649748,
+   "ci_lo": -0.35173096454755176,
+   "ci_hi": 0.1625428331695521,
+   "ci_method": "iid",
+   "p": 0.43832315838984204,
+   "start": "2021-04-15 05:00:00+00:00",
+   "end": "2023-11-30 18:00:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 403,
+   "diff": -0.07427697798969395,
+   "ci_lo": -0.35752265179316667,
+   "ci_hi": 0.20602803474922748,
+   "ci_method": "iid",
+   "p": 0.6053980974965538,
+   "start": "2023-12-05 10:00:00+00:00",
+   "end": "2026-07-21 17:00:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.19996375288265317,
+ "mde_threshold": 0.1,
+ "power_floor_n": 2983,
+ "verdict": "UNDERPOWERED",
+ "verdict_detail": "CI contains 0; MDE 0.2000 vs threshold 0.1000, effective n 679 (power floor n=2983, have 746)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 1840,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "gate_mask_checked": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 4380.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 164,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "rr",
+    "ag_smt"
+   ],
+   "ignored": [],
+   "lookback": "10D",
+   "recent": "1D",
+   "events_fp": "7d2ef22838e39506",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "40h",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "4h",
+  "ctrl_tod_tol_min": 30,
+  "entry_mode": "next_open",
+  "hold_basis": "bars",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "1841 4h C2s where silver and gold-euro/pound SMT disagree; silver-SMT on 40.5%. Tests only the new 'silver on the higher timeframe' claim; the gold-euro/pound 1h head-to-head is the prior (unlabelled) reading. Correlates are OANDA spot crosses at H1 aggregated to the gold HTF bar. AUDIT 2026-10-07 (vault rerun): control now holds the NY clock ({'ctrl_grid': '4h', 'ctrl_tod_tol_min': 30}); stub C1/C2 bars, correlate extents and spread-in-pt checked, no change (see script docstring).",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/update_20261007/gold-correlated-assets.py",
+ "runtime_sec": 0.19,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-10-07T06:32:17+00:00",
+ "n_events_in": 1841,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 1,
+  "target_not_beyond_entry": 0,
+  "no_bars_in_hold": 0
+ },
+ "n_complement": 1094,
+ "gate_firing_rate": 0.40543478260869564,
+ "events_fp": "7d2ef22838e39506",
+ "mask_fp": "7f0748abc0595552",
+ "mask_col": "ag_smt",
+ "exit_mix": {
+  "stop": 0.6072386058981233,
+  "target": 0.30160857908847183,
+  "time": 0.09115281501340483
+ },
+ "gated_vs_own_control": {
+  "diff": 0.006856726573686405,
+  "ci_lo": -0.10096626707676697,
+  "ci_hi": 0.11203772745398123,
+  "p": 0.8995856131688489
+ },
+ "complement": {
+  "n": 1094,
+  "avg_R": 0.02172590609817166,
+  "win_rate": 0.37751371115173676,
+  "pf": 1.0350133220200353,
+  "sd_R": 1.3619031535655408,
+  "exit_mix": {
+   "stop": 0.5840950639853748,
+   "target": 0.30438756855575866,
+   "time": 0.11151736745886655
+  },
+  "vs_own_control": {
+   "diff": 0.05206034552416651,
+   "ci_lo": -0.039253251253765505,
+   "ci_hi": 0.1374387186192871,
+   "p": 0.24810530383865842
+  }
+ },
+ "ci_components": {
+  "phase3_iid": [
+   -0.17548600668401138,
+   0.09312981526657228
+  ],
+  "day_block": [
+   -0.1821858582010868,
+   0.0975998751997534
+  ]
+ },
+ "diff_meaning": "mean(R-ctrl | gated) - mean(R-ctrl | complement)",
+ "dependence": {
+  "day_block_mean_days": 4,
+  "n_eff_gated": 679,
+  "n_eff_complement": 922,
+  "n_eff": 679
+ },
+ "ties": {
+  "real_ambiguous": 0.0016304347826086956,
+  "control_ambiguous": 0.00010869565217391305,
+  "real_gap_stop": 0.011956521739130435,
+  "control_gap_stop": 0.01108695652173913,
+  "gated_excess": 0.0,
+  "complement_excess": 0.002559414990859232,
+  "verdict_stop_first": "UNDERPOWERED"
+ },
+ "ctrl_overlap": 0.08152173913043478,
+ "exposure_bars": {
+  "real_mean": 2399.771739130435,
+  "control_mean": 2400.0,
+  "hold_basis": "bars"
+ },
+ "run_id": "8e9199f35fdd45f18a235b5cfa75cb1f",
+ "hyp_key": "3a1b0668b4979aba"
+}

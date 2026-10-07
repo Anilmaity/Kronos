@@ -1,0 +1,270 @@
+{
+ "concept_id": "midweek-reversal-week",
+ "reading": "u1007b",
+ "testable": true,
+ "test_type": "trade",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "daily candles on the 18:00 NY roll (DST-aware); stub days (<50% of median M1 count) dropped",
+   "Monday closes in the setup direction, Tuesday against it (bullish: Mon close>open, Tue close<open); mirror for bearish",
+   "Wednesday = daily C2 closure in the setup direction vs Tuesday (bullish: low<Tue low, close>Tue low); Wednesday need NOT be the week's extreme",
+   "hourly CISD in the setup direction inside Wednesday (first-open series level, range scope); two-sided -> CISD side, both -> skip",
+   "enter at the Thursday session open (Wed 18:00 NY); stop at Wednesday's extreme; target 2R; exit Thursday 17:00 NY in trading minutes (hold_basis='bars')",
+   "POI (method spec \u00a74.1 enumeration): the Wednesday C2 takes Tuesday's low ('a low being taken out'), so no extra FVG gate"
+  ],
+  "params": {
+   "days": "Mon with, Tue against (close direction), Wed C2",
+   "rr": 2.0,
+   "cisd_scope": "range",
+   "cisd_level_rule": "series_open",
+   "day_open_hour": 18,
+   "min_coverage": 0.5,
+   "week_extreme_required": false,
+   "mirror": true,
+   "exit": "Thursday 17:00 NY",
+   "hold_basis": "bars",
+   "ctrl_tod_tol_min": 30,
+   "poi": "C2 sweep of Tuesday's extreme (\u00a74.1 low/high taken out)"
+  }
+ },
+ "params_source": {
+  "days": "corpus: HkYIaPT8cms 'Monday we expand higher, Tuesday we form a reversal candle.' -- measured by close direction, the exact relaxation of the library reading's 'Mon+Tue close against' (results/midweek-reversal-week.json rule 2); declared-before-run",
+  "rr": "method_spec: \u00a75.3 '2R is the floor'",
+  "cisd_scope": "method_spec: \u00a72.4 [P] scope default 'range'",
+  "cisd_level_rule": "method_spec: \u00a74.2 first-candle-open default",
+  "day_open_hour": "session_window_fit: settled 18:00 NY daily roll / method_spec \u00a71.4",
+  "min_coverage": "declared-before-run: drop stub sessions (README trap 6)",
+  "week_extreme_required": "corpus: draft ambiguity -- HkYIaPT8cms never says Wednesday's low is the week's low (Monday expanded higher first); not imposed",
+  "mirror": "declared-before-run: campaign convention, bearish weeks mirrored (example is bullish)",
+  "exit": "corpus: HkYIaPT8cms 'So, on this next day, it is okay to be bullish' -- Thursday (C3) only; Friday is conditional on a strong Thursday close (library rule, not new)",
+  "hold_basis": "declared-before-run: exit in trading minutes so control exposure matches (README trap 7)",
+  "ctrl_tod_tol_min": "declared-before-run: entries all at the 18:00 reopen (README trap 9; vault Session Timing on Gold: reopen is a gap artefact)",
+  "poi": "method_spec: \u00a74.1 'a fair value gap, a high being taken out, or a low being taken out'"
+ },
+ "n": 70,
+ "span": {
+  "start": "2016-03-02 23:00:00+00:00",
+  "end": "2026-05-20 22:00:00+00:00",
+  "years": 10.212
+ },
+ "avg_R": 0.05901237638784695,
+ "avg_R_gross": 0.09901237638784695,
+ "win_rate": 0.4714285714285714,
+ "pf": 1.1748689617904116,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "n": 220,
+  "avg_R": -0.09156785899312052,
+  "win_rate": 0.42272727272727273,
+  "pf": 0.7928723609905696,
+  "sd_R": 0.9399261114850015,
+  "exit_mix": {
+   "stop": 0.35,
+   "target": 0.08181818181818182,
+   "time": 0.5681818181818182
+  },
+  "avg_R_gross": -0.051567858993120504,
+  "reps": 5,
+  "fill_rate": 0.6285714285714286
+ },
+ "diff": 0.15058023538096746,
+ "ci_lo": -0.08178841066010979,
+ "ci_hi": 0.5346616642426351,
+ "ci_method": "day_block",
+ "p": 0.3383045249669889,
+ "halves": {
+  "H1": {
+   "n": 36,
+   "diff": 0.2675038126087501,
+   "ci_lo": -0.029392824349024047,
+   "ci_hi": 0.5603644272661154,
+   "ci_method": "iid",
+   "p": 0.07540182425485936,
+   "start": "2016-03-02 23:00:00+00:00",
+   "end": "2020-10-07 22:00:00+00:00"
+  },
+  "H2": {
+   "n": 34,
+   "diff": 0.028871064064001015,
+   "ci_lo": -0.6745169915600555,
+   "ci_hi": 0.7919036529723942,
+   "ci_method": "iid",
+   "p": 0.9384835269995712,
+   "start": "2021-04-14 22:00:00+00:00",
+   "end": "2026-05-20 22:00:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 18,
+   "diff": 0.29482763305974846,
+   "ci_lo": -0.12723625396087068,
+   "ci_hi": 0.6873285325886865,
+   "ci_method": "iid",
+   "p": 0.15595784292303524,
+   "start": "2016-03-02 23:00:00+00:00",
+   "end": "2018-07-04 22:00:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 18,
+   "diff": 0.24017999215775157,
+   "ci_lo": -0.20671435762948523,
+   "ci_hi": 0.7315840856591057,
+   "ci_method": "iid",
+   "p": 0.3156681003089141,
+   "start": "2018-10-03 22:00:00+00:00",
+   "end": "2020-10-07 22:00:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 20,
+   "diff": 0.028871064064001015,
+   "ci_lo": -0.6745169915600555,
+   "ci_hi": 0.7919036529723942,
+   "ci_method": "iid",
+   "p": 0.9384835269995712,
+   "start": "2021-04-14 22:00:00+00:00",
+   "end": "2023-09-20 22:00:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 14,
+   "diff": null,
+   "ci_lo": null,
+   "ci_hi": null,
+   "ci_method": "n/a",
+   "p": null,
+   "start": "2024-05-01 22:00:00+00:00",
+   "end": "2026-05-20 22:00:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.44057882774796026,
+ "mde_threshold": 0.1,
+ "power_floor_n": 1359,
+ "verdict": "UNDERPOWERED",
+ "verdict_detail": "CI contains 0; MDE 0.4406 vs threshold 0.1000, effective n 44 (power floor n=1359, have 70)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 70,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 176.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 26,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "rr",
+    "max_hold",
+    "week"
+   ],
+   "ignored": [],
+   "lookback": "30D",
+   "recent": "1D",
+   "events_fp": "72e8d7dcbb3aafe3",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "per-row column",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": 30,
+  "entry_mode": "next_open",
+  "hold_basis": "bars",
+  "mde_threshold": null,
+  "cluster": "column:week",
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "New-claim reading (draft update_20261007_shorts_02): Monday with the bias, Tuesday against; Thursday-only trade, clustered by week.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/update_20261007/midweek-reversal-week.py",
+ "runtime_sec": 0.15,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-10-07T06:43:39+00:00",
+ "n_events_in": 70,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 0,
+  "target_not_beyond_entry": 0,
+  "no_bars_in_hold": 0
+ },
+ "events_fp": "72e8d7dcbb3aafe3",
+ "sd_R": 0.9049360253222447,
+ "exit_mix": {
+  "stop": 0.24285714285714285,
+  "target": 0.07142857142857142,
+  "time": 0.6857142857142857
+ },
+ "trades_per_year": 6.85455764075067,
+ "ci_components": {
+  "phase3_iid": [
+   -0.08922156805723179,
+   0.3975501793528074
+  ],
+  "day_block": [
+   -0.08178841066010979,
+   0.5346616642426351
+  ],
+  "cluster": [
+   -0.0801243288569954,
+   0.5260974370964746
+  ]
+ },
+ "diff_win": 0.04870129870129869,
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 44,
+  "n_clusters": 44,
+  "n_eff": 44
+ },
+ "ties": {
+  "real_ambiguous": 0.0,
+  "control_ambiguous": 0.0,
+  "real_gap_stop": 0.014285714285714285,
+  "control_gap_stop": 0.00909090909090909,
+  "verdict_stop_first": "UNDERPOWERED"
+ },
+ "ctrl_overlap": 0.0,
+ "exposure_bars": {
+  "real_mean": 1380.0,
+  "control_mean": 1380.0,
+  "hold_basis": "bars"
+ },
+ "run_id": "58dfbf6e03f2418ab426bf6ddd5ca54c",
+ "hyp_key": "a52d1643937f0d87"
+}

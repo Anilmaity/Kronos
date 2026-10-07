@@ -1,0 +1,43 @@
+id: daily-bias-framework
+name: Daily Bias Framework
+category: model
+status: contested
+voice: ttrades
+definition: 'Two fallbacks answered in chat. If there is no candle 2 closure, bias comes from a candle 3 closure,
+  the open-high-low-close read, the daily or intra-candle profile, or the phases of price. On days with no sweep
+  of a higher-timeframe level, use the intraday profile or wait for the next day. Applied at the open: the index
+  closed below the level flagged the previous day, so he leaned bearish, wanting the 7 a.m. high to hold; a closure
+  back over the daily open is what flipped him bullish.'
+timeframes:
+  htf:
+  - 1D
+  - 4H
+  ltf:
+  - 15m
+  - 5m
+  fractal: true
+detection_rules:
+- No C2 closure -> use C3 closure / OHLC / daily or intra-candle profile / phases of price.
+- No HTF level swept -> intraday profile, or skip to the next day.
+- Bearish intraday bias is invalidated by a closure back over the daily open.
+sources:
+- video_id: ES-R3ByDYrY
+  title: TTrades MNQ Cup - Morning Session
+  quote: Candle three closure, you can use open, high, low, close
+- video_id: ES-R3ByDYrY
+  title: TTrades MNQ Cup - Morning Session
+  quote: You have to use the intraday profile or you just wait for the next day
+- video_id: ES-R3ByDYrY
+  title: TTrades MNQ Cup - Morning Session
+  quote: We failed to close over the level I talked about yesterday
+- video_id: ES-R3ByDYrY
+  title: TTrades MNQ Cup - Morning Session
+  quote: if we can get a closure over a daily open
+- video_id: ES-R3ByDYrY
+  title: TTrades MNQ Cup - Morning Session
+  quote: we wouldn't want to see this 7 a.m. high be taken out
+ambiguities:
+- Timeframe of the daily-open closure that flipped bias is not stated (chart shown was intraday).
+related:
+- consolidation
+- daily-profile-framework

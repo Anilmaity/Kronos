@@ -1,0 +1,266 @@
+{
+ "concept_id": "ic-cisd",
+ "reading": "u1007a",
+ "testable": true,
+ "test_type": "trade",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "NY trading day (18:00 roll); bias-source day and the two before it need >= 600 M1; day k-1 must be the previous session (<= 4 calendar days)",
+   "bias for day k: day k-1 is a daily C2 or C3 (C2-open ref) closure AND a same-direction 1h CISD inside day k-1",
+   "1h CISD (series_open, 2/2, mw3, ms1) with POI gate, in the bias direction, extreme bar and confirm bar inside day k, extreme beyond day k's open (wick side)",
+   "every qualifying IC-CISD; decide at the confirm close; next M1 open; stop protected swing; 2R; 600 trading minutes; control NY clock +/-30 min"
+  ],
+  "params": {
+   "pairing": "1D/1h",
+   "cisd": "phase3+poi",
+   "wick_side": true,
+   "day_open": "18:00 NY",
+   "stub_filter_min_m1": 600,
+   "max_hold": "600min",
+   "hold_basis": "bars",
+   "ctrl_tod_tol_min": 30,
+   "grid4h": "n/a",
+   "bias": "C2|C3 + 1h CISD",
+   "c3_reference": "c2_open",
+   "early": null,
+   "rr": 2.0,
+   "per_day": "all"
+  }
+ },
+ "params_source": {
+  "pairing": "corpus: cWDnzI3lpUk 'use the daily and hourly fractal model for an entry' / 'the go-to is always going to be an intra-candle change'",
+  "cisd": "phase3: \u00a71.8 series_open, 2/2, max_wait 3, min_series 1; POI gate per ic-cisd.yaml (same cisd_with_poi code as prior readings a/b)",
+  "wick_side": "corpus: RX8vtP3PLYk 'we let the wick form. Now, we're trying to trade the body' => IC-CISD extreme beyond day k's open",
+  "day_open": "session_window_fit: NY trading day rolling 18:00 (settled)",
+  "stub_filter_min_m1": "declared-before-run: README trap 6, bias source days need >= 600 M1",
+  "max_hold": "phase3: \u00a71.13 10 entry-TF bars (600 trading minutes on 1h)",
+  "hold_basis": "declared-before-run: README trap 7, the 10-bar hold is trading time; late-day 1h entries cross the 17:00 NY halt and the weekend",
+  "ctrl_tod_tol_min": "declared-before-run: README trap 9 / campaign lesson 3, the concept is not about timing but 1h decisions and limit fills cluster on the NY clock",
+  "grid4h": "declared-before-run: n/a, no 4H bars read (1D 18:00 NY + 1h only)",
+  "bias": "corpus: cWDnzI3lpUk 'A candle two or a candle three closure with a change in the state of delivery'; detectors.bias.daily_closures + hourly_cisd_in_candle (scope range)",
+  "c3_reference": "phase3: locked primary C3 reference (Reading A, C2 opening price)",
+  "early": "corpus: cWDnzI3lpUk 'this is really working on any session all times of the day' => no early-in-candle filter",
+  "rr": "corpus: cWDnzI3lpUk 'Put my stop on the high or the body and then look for 2R'",
+  "per_day": "corpus: ic-cisd.yaml 'New continuations forming later inside the same candle are additional valid entries' => every qualifying IC-CISD"
+ },
+ "n": 777,
+ "span": {
+  "start": "2016-01-11 10:00:00+00:00",
+  "end": "2026-07-20 04:00:00+00:00",
+  "years": 10.519
+ },
+ "avg_R": 0.005961154345935684,
+ "avg_R_gross": 0.04596115434593571,
+ "win_rate": 0.44144144144144143,
+ "pf": 1.0135201016041055,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "n": 3805,
+  "avg_R": -0.05081763714166006,
+  "win_rate": 0.40578186596583443,
+  "pf": 0.8927169928308548,
+  "sd_R": 1.0642082576678207,
+  "exit_mix": {
+   "stop": 0.3871222076215506,
+   "target": 0.14113009198423127,
+   "time": 0.47174770039421815
+  },
+  "avg_R_gross": -0.010817637141660043,
+  "reps": 5,
+  "fill_rate": 0.9794079794079794
+ },
+ "diff": 0.056778791487595744,
+ "ci_lo": -0.03762090880140064,
+ "ci_hi": 0.14328197337992768,
+ "ci_method": "day_block",
+ "p": 0.21857659309529862,
+ "halves": {
+  "H1": {
+   "n": 390,
+   "diff": 0.01989298049442572,
+   "ci_lo": -0.09479272183051173,
+   "ci_hi": 0.1389061144219876,
+   "ci_method": "iid",
+   "p": 0.7386261338789477,
+   "start": "2016-01-11 10:00:00+00:00",
+   "end": "2020-12-29 22:00:00+00:00"
+  },
+  "H2": {
+   "n": 387,
+   "diff": 0.08586944571395749,
+   "ci_lo": -0.03158200154807102,
+   "ci_hi": 0.2016823929090168,
+   "ci_method": "iid",
+   "p": 0.14901863152594785,
+   "start": "2021-01-07 04:00:00+00:00",
+   "end": "2026-07-20 04:00:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 205,
+   "diff": 0.035698261094112914,
+   "ci_lo": -0.12542286512476972,
+   "ci_hi": 0.18700390034806283,
+   "ci_method": "iid",
+   "p": 0.6542284524642538,
+   "start": "2016-01-11 10:00:00+00:00",
+   "end": "2018-08-10 18:00:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 199,
+   "diff": -0.013967935437118311,
+   "ci_lo": -0.1690504532486559,
+   "ci_hi": 0.14324796579055432,
+   "ci_method": "iid",
+   "p": 0.860825323253463,
+   "start": "2018-08-27 14:00:00+00:00",
+   "end": "2021-04-01 05:00:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 214,
+   "diff": 0.09505658038889787,
+   "ci_lo": -0.056744313579319645,
+   "ci_hi": 0.24621273550806602,
+   "ci_method": "iid",
+   "p": 0.21872457034595424,
+   "start": "2021-04-20 09:00:00+00:00",
+   "end": "2023-12-01 13:00:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 159,
+   "diff": 0.10120713208068935,
+   "ci_lo": -0.08479442131881726,
+   "ci_hi": 0.2941703571230232,
+   "ci_method": "iid",
+   "p": 0.2951622016642087,
+   "start": "2023-12-05 12:00:00+00:00",
+   "end": "2026-07-20 04:00:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.1292918648444504,
+ "mde_threshold": 0.1,
+ "power_floor_n": 1299,
+ "verdict": "UNDERPOWERED",
+ "verdict_detail": "CI contains 0; MDE 0.1293 vs threshold 0.1000, effective n 576 (power floor n=1299, have 777)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 777,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 2945.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 71,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "rr"
+   ],
+   "ignored": [],
+   "lookback": "20D",
+   "recent": "1D",
+   "events_fp": "3534abd9843f3043",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "600min",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": 30,
+  "entry_mode": "next_open",
+  "hold_basis": "bars",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "New claims only; prior readings a/b (4H/15m) untouched. NOT tested: 'prior to 9:30, I want to use the 15-minute candle' (RX8vtP3PLYk). It is said in passing inside an hourly/5-minute indices example; the draft itself flags whether 15m replaces the HTF candle or the confirmation TF as undecided, and the corpus's own session-open-volume-nyse maps 9:30 to the NYSE open (forex uses 8:30), so moving it to gold would need an invented parameter. 'Stated origin' (created to mechanise let-the-wick-form) is not a testable claim. Neighbour, not a repeat: phase-3's 1H swing stack (1h CISD / 1D / 1W bias) was underpowered at R4 (n=103).",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/update_20261007/ic-cisd.py",
+ "runtime_sec": 0.27,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-10-07T06:40:36+00:00",
+ "n_events_in": 777,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 0,
+  "target_not_beyond_entry": 0,
+  "no_bars_in_hold": 0
+ },
+ "events_fp": "3534abd9843f3043",
+ "sd_R": 1.066603103568005,
+ "exit_mix": {
+  "stop": 0.3552123552123552,
+  "target": 0.1492921492921493,
+  "time": 0.4954954954954955
+ },
+ "trades_per_year": 73.86758198854764,
+ "ci_components": {
+  "phase3_iid": [
+   -0.026326592040718372,
+   0.13791582496496105
+  ],
+  "day_block": [
+   -0.03762090880140064,
+   0.14328197337992768
+  ]
+ },
+ "diff_win": 0.035659575475607,
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 576,
+  "n_clusters": null,
+  "n_eff": 576
+ },
+ "ties": {
+  "real_ambiguous": 0.001287001287001287,
+  "control_ambiguous": 0.0007884362680683311,
+  "real_gap_stop": 0.003861003861003861,
+  "control_gap_stop": 0.006044678055190539,
+  "verdict_stop_first": "UNDERPOWERED"
+ },
+ "ctrl_overlap": 0.008672798948751642,
+ "exposure_bars": {
+  "real_mean": 600.0,
+  "control_mean": 599.8759526938239,
+  "hold_basis": "bars"
+ },
+ "run_id": "a923b06b9bd440129ace92a19cf430fc",
+ "hyp_key": "c4fb9829aef5b51a"
+}

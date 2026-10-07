@@ -7,13 +7,33 @@ definition: 'One of the corpus''s three load-bearing undefined terms, and this u
   video applies the complement on the daily chart: a day that forms a strong directional closure
   is explicitly not consolidating and is classified as a retracement or a reversal instead.
   No range width, bar count, duration or volatility bound is given anywhere in this unit.'
+variants:
+  definition:
+  - 'Asked live how he mechanically defines a consolidation, he gives a one-line positive
+    rule: price fails to take out a previous range. He applies it to the daily chart on the
+    spot - the previous day was a consolidation (an inside day), and the current day is ''by
+    definition so far also a consolidation'' because it has not left the prior day''s range.
+    This fills the gap the library entry records (whether an inside bar counts): in this stream,
+    it does. The stated handling is to typically avoid such days; if forced to trade one (the
+    competition), the single question to ask is whether price is more likely to reach the
+    previous day high or the previous day low, and that answer is the bias.'
+  - 'Asked for a mechanical definition he gives none beyond: a high and a low price stays
+    within for a period of time; you get used to seeing it.'
+  - 'A decidable proxy given live: nested inside candles. The daily is an inside day within
+    the prior candle, which is itself inside the candle before it - ''inside day inside day''
+    - and that alone classifies the market as consolidation / rangebound. The monthly is read
+    the same way.'
 category: structure
-status: underspecified
+status: contested
 aliases:
 - consolidating
 - no real Direction
+- inside day
+- inside day after inside day
 preconditions:
 - A stretch of price action with identifiable swing highs and lows.
+- A completed previous range (the previous daily candle in the worked case) with a defined
+  high and low.
 detection_rules:
 - 'No positive mechanical rule is given. The only test he applies is the ABSENCE of displacement:
   a higher-high / higher-low sequence with no displacement around it is labelled consolidation
@@ -24,13 +44,27 @@ detection_rules:
   lows'' with no real direction.'
 - 'Operational consequence stated: while consolidating, you do not know where price wants
   to go, so you let it play out.'
+- Consolidation = the current candle has not traded beyond the previous candle's high nor
+  its low (inside candle).
+- Consecutive inside days are each a consolidation ('inside day after inside day').
+- 'Default handling: avoid trading the inside range.'
+- If trading anyway, set bias by judging which of previous day high / previous day low price
+  is more likely to reach next.
+- Daily candle range contained in the prior daily candle, and that candle contained in the
+  one before it -> consolidation.
+- Apply the same nested-inside test to the monthly.
 invalidation:
 - Displacement appears (a close over the previous high / below the previous low) - the label
   moves to trend or to a structure shift.
+- Price trades beyond the previous range's high or low - the day is no longer a consolidation
+  by this definition.
 measurable:
 - 'candidate formalisations to test against his annotated examples: N bars with no close beyond
   the prior swing; range of the last N bars below k * ATR; ratio of body sum to net displacement'
 - how often a stretch he labels consolidation is followed by expansion in either direction
+- frequency of inside days on NQ/ES daily
+- conditional probability that the day after an inside day takes the PDH vs the PDL
+- daily range of inside days vs non-inside days
 sources:
 - video_id: sgAnVR6RSDg
   title: Understanding Market Structure For Trading
@@ -44,6 +78,30 @@ sources:
 - video_id: iEaMbuFZb24
   title: Trade Like TTrades - Top Down Analysis
   quote: it's not consolidating it is forming a nice bearish closure
+- video_id: ES-R3ByDYrY
+  title: TTrades MNQ Cup - Morning Session
+  quote: How do you mechanically define a consolidation
+- video_id: ES-R3ByDYrY
+  title: TTrades MNQ Cup - Morning Session
+  quote: price fails to take out a previous range
+- video_id: ES-R3ByDYrY
+  title: TTrades MNQ Cup - Morning Session
+  quote: you either typically avoid them
+- video_id: ES-R3ByDYrY
+  title: TTrades MNQ Cup - Morning Session
+  quote: Is price more likely to go to previous day high or previous day low
+- video_id: 4rNC3QXxC20
+  title: New York Open Live Q&A
+  quote: is there any mechanical way to define consolidation?
+- video_id: 4rNC3QXxC20
+  title: New York Open Live Q&A
+  quote: a high and a low that price stays within for a period of time
+- video_id: 9YVBe-20Hdg
+  title: New York Open Live Q&A
+  quote: inside day inside day pretty much just a consolidation
+- video_id: 9YVBe-20Hdg
+  title: New York Open Live Q&A
+  quote: So that's just consolidation. Same as the monthly.
 ambiguities:
 - 'The definition is circular for automation purposes: consolidation is the absence of displacement,
   and displacement is itself never quantified in this corpus.'
@@ -53,12 +111,27 @@ ambiguities:
 - The relationship between this bar-level 'consolidation' and the weekly consolidation-reversal
   profile is never drawn.
 - '''Strong directional closure'' (the disqualifier on the daily) is itself unquantified.'
+- Stated for the daily candle while the day is still forming ('so far'); whether a single
+  wick beyond the prior range ends the consolidation, or a close is required, is not said.
+- This rule is an inside-bar test and conflicts with the library's earlier negative test (higher
+  highs/lows without displacement can also be consolidation); the two are compatible only
+  if both are sufficient conditions.
+- How to decide which of PDH/PDL is 'more likely' is not given here; he later reads it from
+  a closure over the daily open (see notes).
+- No minimum duration or bar count.
+- Whether a single inside day suffices or two nested inside candles are required is not stated;
+  the example had two.
 related:
 - displacement
 - phases-of-price
 - basic-trend-structure
 - consolidation-avoidance
 - consolidation-range-no-trade
+- inside-day-three-levels
+- three-candle-outcomes
+- daily-bias-framework
+- consolidation-phase
+- no-bias-reaction-day
 timeframes:
   htf:
   - 1D
@@ -71,5 +144,8 @@ timeframes:
   fractal: true
 contributing_units:
 - the_foundation_02
-draft_count: 1
+- update_20261007_live_01
+- update_20261007_live_05
+- update_20261007_live_07
+draft_count: 4
 voice: ttrades

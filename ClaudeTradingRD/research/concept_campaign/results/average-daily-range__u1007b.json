@@ -1,0 +1,225 @@
+{
+ "concept_id": "average-daily-range",
+ "reading": "u1007b",
+ "testable": true,
+ "test_type": "rate",
+ "claim": "-",
+ "operationalization": {
+  "rules": [
+   "trading day rolls 18:00 NY; decisions at every NY hour close 19:00..16:00 inside the day",
+   "ADR = mean(high - low) of the last 5 COMPLETED real trading days (n_m1 >= 600), as of the decision",
+   "kept: running day range (M1 closed by the decision) < ADR, so both caps lie beyond the day's extremes",
+   "caps projected from the day's extreme: up = running low + ADR (above), down = running high - ADR (below); one row each",
+   "hit = price reaches the cap before the trading day closes (M1, horizon = M1 bars left in the day)",
+   "null = matched random moments (reps 5, +/-30 d, same NY minute: tod_tol 30 on the :00 grid), same side, same M1-bar horizon, same distance from the next M1 open scaled by local vol (mean M1 high-low over the 240 M1 bars closed before the moment)",
+   "claim '-': the ADR projection caps the day - caps are reached less often than equidistant (vol-matched) levels"
+  ],
+  "params": {
+   "adr_lookback_days": 5,
+   "adr_average": "mean of H-L (sum / N)",
+   "adr_days": "completed real days only",
+   "stub_day_min_n_m1": 600,
+   "day_roll": "18:00 NY",
+   "decision_grid": "NY hour closes 19:00..16:00",
+   "projection_anchor": "day's running extreme (opposite side)",
+   "outcome_window": "decision -> trading-day close, M1 bars",
+   "null_reps": 5,
+   "null_window_days": 30,
+   "null_tod_tol_min": 30,
+   "null_vol_bars": 240,
+   "grid4h": "n/a"
+  }
+ },
+ "params_source": {
+  "adr_lookback_days": "corpus: 3OIq9HmckH8 'this is only three daily candles. Ideally, you use a few more' -> N=5 (one trading week; declared-before-run)",
+  "adr_average": "corpus: 3OIq9HmckH8 'You get the total range divided by the total days'",
+  "adr_days": "declared-before-run: non-repainting reading of the daily ADR indicator (trap 9: no in-progress daily bar)",
+  "stub_day_min_n_m1": "declared-before-run: skip data-hole stub days (README trap 6), as prior readings",
+  "day_roll": "session_window_fit: settled 18:00 NY daily roll",
+  "decision_grid": "declared-before-run: the projection is re-read through the day ('how much further we could go'); every hour close",
+  "projection_anchor": "corpus: 3OIq9HmckH8 'If this is the high, where does our 115 lie?'",
+  "outcome_window": "corpus: 3OIq9HmckH8 'there's not too much range left in the day'",
+  "null_reps": "method_spec: locked reps=5",
+  "null_window_days": "method_spec: locked window_days=30",
+  "null_tod_tol_min": "declared-before-run: README trap 9 / campaign lesson 3 (rate nulls must match time of day)",
+  "null_vol_bars": "declared-before-run: campaign 2026-09-23 lesson 3 (rate nulls must match local volatility); running range < ADR selects calm days; 240 M1 bars = 4 trading hours, as sibling update_20261007 scripts",
+  "grid4h": "declared-before-run: no 4h bars used"
+ },
+ "n": 101834,
+ "span": {
+  "start": "2016-01-11 00:00:00+00:00",
+  "end": "2026-07-23 04:00:00+00:00",
+  "years": 10.53
+ },
+ "avg_R": null,
+ "avg_R_gross": null,
+ "win_rate": null,
+ "pf": null,
+ "observed_rate": 0.1503230748080209,
+ "null_rate": 0.15438213170453877,
+ "lift": 0.9737077286619787,
+ "control": {
+  "rate": 0.15438213170453877,
+  "reps": 5,
+  "kind": "null_fn x5"
+ },
+ "diff": -0.004059416830019674,
+ "ci_lo": -0.01093269281240631,
+ "ci_hi": 0.003238163298149282,
+ "ci_method": "day_block",
+ "p": 0.2614749508736749,
+ "halves": {
+  "H1": {
+   "n": 48552,
+   "diff": -0.007224213214697628,
+   "ci_lo": -0.015055301532338316,
+   "ci_hi": 0.0009336896523708865,
+   "ci_method": "block",
+   "p": 0.07654102344440025,
+   "start": "2016-01-11 00:00:00+00:00",
+   "end": "2020-12-31 21:00:00+00:00"
+  },
+  "H2": {
+   "n": 53282,
+   "diff": -0.0011748808227919905,
+   "ci_lo": -0.008918584137191581,
+   "ci_hi": 0.006757441537516747,
+   "ci_method": "block",
+   "p": 0.7689189301565954,
+   "start": "2021-01-04 00:00:00+00:00",
+   "end": "2026-07-23 04:00:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 25580,
+   "diff": -0.0023201720093823375,
+   "ci_lo": -0.01354202501953294,
+   "ci_hi": 0.008008502736525968,
+   "ci_method": "block",
+   "p": 0.6730052203225456,
+   "start": "2016-01-11 00:00:00+00:00",
+   "end": "2018-08-22 11:00:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 25528,
+   "diff": -0.012127859605139457,
+   "ci_lo": -0.022988287370718768,
+   "ci_hi": -0.0009156612347128087,
+   "ci_method": "block",
+   "p": 0.03125474266468159,
+   "start": "2018-08-22 12:00:00+00:00",
+   "end": "2021-04-12 08:00:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 25964,
+   "diff": -0.00805731012170699,
+   "ci_lo": -0.018799299029411944,
+   "ci_hi": 0.004005546140824742,
+   "ci_method": "block",
+   "p": 0.16606098197210423,
+   "start": "2021-04-12 09:00:00+00:00",
+   "end": "2023-12-01 15:00:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 24762,
+   "diff": 0.006655359017849916,
+   "ci_lo": -0.004985663516669728,
+   "ci_hi": 0.018795331556428416,
+   "ci_method": "block",
+   "p": 0.2726271174549622,
+   "start": "2023-12-05 00:00:00+00:00",
+   "end": "2026-07-23 04:00:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.010127955900335642,
+ "mde_threshold": 0.03859553292613469,
+ "power_floor_n": 7013,
+ "verdict": "NULL",
+ "verdict_detail": "CI contains 0; powered (MDE 0.0101 <= 0.0386)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 102478,
+  "min_slack_min": 0.0,
+  "passed": true,
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 7686,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "day_close",
+    "adr",
+    "run_hi",
+    "run_lo",
+    "side",
+    "cap",
+    "available_at"
+   ],
+   "ignored": [],
+   "lookback": "40D",
+   "recent": "1D",
+   "events_fp": "3f038beefab205d7",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "reps": 5,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "mde_threshold": null,
+  "cluster": null,
+  "outcome_horizon": "1 days 00:00:00",
+  "null_kind": "null_fn x5"
+ },
+ "notes": "New claim only: explicit ADR formula/indicator projected from the day's extreme as a cap. Rows share the day's outcome (two caps x up to 22 hour closes); day-block CI, n_eff = days. Caveat: cap levels always lie beyond the day's running extreme, while the equidistant null level may lie inside its own day's range; extremes acting as resistance would favour the claim, as liquidity draws against it. Vol scaling uses a 4h trailing window; volatility persistence beyond it is not matched.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/update_20261007/average-daily-range.py",
+ "runtime_sec": 6.07,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-10-07T06:41:10+00:00",
+ "dropped": {
+  "nan_rows": 644
+ },
+ "null_kind": "null_fn x5",
+ "events_fp": "3f038beefab205d7",
+ "predictors_probed": true,
+ "ci_components": {
+  "phase3_block": [
+   -0.009519254374815121,
+   0.0014874207042344008
+  ],
+  "day_block": [
+   -0.01093269281240631,
+   0.003238163298149282
+  ]
+ },
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 2708,
+  "n_clusters": null,
+  "n_eff": 2708
+ },
+ "run_id": "442fea0200534d7faa5933815db05443",
+ "hyp_key": "7290b5ea1ceb6500"
+}

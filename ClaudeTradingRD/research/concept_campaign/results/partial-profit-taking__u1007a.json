@@ -1,0 +1,251 @@
+{
+ "concept_id": "partial-profit-taking",
+ "reading": "u1007a",
+ "testable": true,
+ "test_type": "trade",
+ "claim": "-",
+ "operationalization": {
+  "rules": [
+   "ADR = mean high-low of the last 20 real trading days (18:00 NY roll, n_m1 >= 600), as of the last completed day (risk_own_01b daily_ref, = average-daily-range a)",
+   "event = first M1 bar of the trading day at which the running day range >= ADR; decide at that bar's close; direction = side that bar extended (new day high long, new day low short; bars making both dropped) = the side of the position being partialled",
+   "held leg modelled as a fresh entry next M1 open, stop = target = 0.25*ADR, exit by 4h",
+   "control: matched random same-direction entries, +/-30 d, NY time of day +/-30 min",
+   "claim '-': continuation in the expansion direction after the ADR prints is worse than a matched random same-direction entry (=> the partial at ADR is warranted)"
+  ],
+  "params": {
+   "adr_n": 20,
+   "min_n_m1": 600,
+   "bracket_adr": 0.25,
+   "max_hold": "4h",
+   "day_open_hour": 18,
+   "ctrl_tod_tol_min": 30
+  }
+ },
+ "params_source": {
+  "adr_n": "corpus: concepts/risk/average-daily-range.yaml (own voice) gives no lookback, only 'lately' / 'this month' -> ~20 trading days; the campaign's own-voice ADR object average-daily-range a (ADR20 mean H-L) reused unchanged (declared-before-run)",
+  "min_n_m1": "declared-before-run: days with < 600 M1 bars are data-hole stubs (README trap 6), as in average-daily-range a",
+  "bracket_adr": "declared-before-run: no stop/target given for the held leg; symmetric quarter-ADR bracket = the stop of adr-remaining-filter b (same event)",
+  "max_hold": "declared-before-run: 'it can definitely chop' \u2014 rest of the session, capped 4h, as adr-remaining-filter b",
+  "day_open_hour": "session_window_fit: settled 18:00 NY daily roll",
+  "ctrl_tod_tol_min": "declared-before-run: README trap 9 \u2014 ADR-reached events cluster in NY hours; average-daily-range a/b EDGE was refuted by verification as a time-of-day confound (NULL once ToD-matched)"
+ },
+ "n": 1100,
+ "span": {
+  "start": "2016-02-03 16:08:00+00:00",
+  "end": "2026-07-14 12:31:00+00:00",
+  "years": 10.439
+ },
+ "avg_R": -0.04791876596311361,
+ "avg_R_gross": -0.007918765963113599,
+ "win_rate": 0.4709090909090909,
+ "pf": 0.8930032163373834,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "n": 5500,
+  "avg_R": -0.028729166470114767,
+  "win_rate": 0.48672727272727273,
+  "pf": 0.9251052816745261,
+  "sd_R": 0.8266088540477278,
+  "exit_mix": {
+   "stop": 0.30272727272727273,
+   "target": 0.3181818181818182,
+   "time": 0.3790909090909091
+  },
+  "avg_R_gross": 0.01127083352988525,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": -0.019189599492998845,
+ "ci_lo": -0.07784096423645556,
+ "ci_hi": 0.036772720430832524,
+ "ci_method": "day_block",
+ "p": 0.5116261384638027,
+ "halves": {
+  "H1": {
+   "n": 503,
+   "diff": 0.0016992962949403737,
+   "ci_lo": -0.08150899945542803,
+   "ci_hi": 0.08678834193245201,
+   "ci_method": "iid",
+   "p": 0.968428397299331,
+   "start": "2016-02-03 16:08:00+00:00",
+   "end": "2020-12-28 11:55:00+00:00"
+  },
+  "H2": {
+   "n": 597,
+   "diff": -0.03678945641315534,
+   "ci_lo": -0.12015729180444948,
+   "ci_hi": 0.04478019493325735,
+   "ci_method": "iid",
+   "p": 0.3819312136593443,
+   "start": "2021-01-04 08:21:00+00:00",
+   "end": "2026-07-14 12:31:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 265,
+   "diff": -0.03160643197981351,
+   "ci_lo": -0.140966243843066,
+   "ci_hi": 0.08919553531710543,
+   "ci_method": "iid",
+   "p": 0.5903733943538119,
+   "start": "2016-02-03 16:08:00+00:00",
+   "end": "2018-08-17 20:16:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 268,
+   "diff": 0.02625199623128388,
+   "ci_lo": -0.08958847835972739,
+   "ci_hi": 0.14366218550563004,
+   "ci_method": "iid",
+   "p": 0.659081427281925,
+   "start": "2018-08-23 18:55:00+00:00",
+   "end": "2021-04-09 13:05:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 282,
+   "diff": -0.007225691748472301,
+   "ci_lo": -0.11968366105030523,
+   "ci_hi": 0.10573394500854273,
+   "ci_method": "iid",
+   "p": 0.9000073345632182,
+   "start": "2021-04-13 13:37:00+00:00",
+   "end": "2023-12-01 16:13:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 285,
+   "diff": -0.06221313994583527,
+   "ci_lo": -0.17612313588293638,
+   "ci_hi": 0.04824281110253315,
+   "ci_method": "iid",
+   "p": 0.2770658744902054,
+   "start": "2023-12-03 23:17:00+00:00",
+   "end": "2026-07-14 12:31:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.08191476469940374,
+ "mde_threshold": 0.1,
+ "power_floor_n": 739,
+ "verdict": "NULL",
+ "verdict_detail": "CI contains 0; powered (MDE 0.0819 <= 0.1000)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 1100,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 16.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 93,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_dist",
+    "target_dist"
+   ],
+   "ignored": [],
+   "lookback": "60D",
+   "recent": "1D",
+   "events_fp": "81c8eaf2d39448e6",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "4h",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": 30,
+  "entry_mode": "next_open",
+  "hold_basis": "clock",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "AUDIT 2026-10-07: rerun with a ToD-matched control and the campaign's own-voice ADR(20). Same hypothesis family as average-daily-range a/b (refuted EDGE, ToD confound) and adr-remaining-filter b (same event faded, ToD-matched, NULL): a replication, not independent evidence. Partial size ('a small part') does not affect the sign of the test.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/update_20261007/partial-profit-taking.py",
+ "runtime_sec": 0.22,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-10-07T06:25:53+00:00",
+ "n_events_in": 1101,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 0,
+  "target_not_beyond_entry": 0,
+  "no_bars_in_hold": 1
+ },
+ "events_fp": "81c8eaf2d39448e6",
+ "sd_R": 0.897592855391975,
+ "exit_mix": {
+  "stop": 0.37636363636363634,
+  "target": 0.39090909090909093,
+  "time": 0.23272727272727273
+ },
+ "trades_per_year": 105.36978756884344,
+ "ci_components": {
+  "phase3_iid": [
+   -0.07530890522634788,
+   0.03887701732105401
+  ],
+  "day_block": [
+   -0.07784096423645556,
+   0.036772720430832524
+  ]
+ },
+ "diff_win": -0.015818181818181842,
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 1100,
+  "n_clusters": null,
+  "n_eff": 1100
+ },
+ "ties": {
+  "real_ambiguous": 0.0,
+  "control_ambiguous": 0.0007272727272727272,
+  "real_gap_stop": 0.0036363636363636364,
+  "control_gap_stop": 0.0034545454545454545,
+  "verdict_stop_first": "NULL"
+ },
+ "ctrl_overlap": 0.0001818181818181818,
+ "exposure_bars": {
+  "real_mean": 229.43818181818182,
+  "control_mean": 228.35472727272727,
+  "hold_basis": "clock"
+ },
+ "run_id": "0a491db611bc4d79bab980a70b9eb6fc",
+ "hyp_key": "6558711f4663310c"
+}

@@ -1,0 +1,273 @@
+{
+ "concept_id": "internal-external-liquidity-model",
+ "reading": "u1007a",
+ "testable": true,
+ "test_type": "trade",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "ladder H1 -> 5m; H1 bars UTC-aligned; certified 2016+ M1",
+   "HTF C2 (bear): H1 high > previous high and close < previous high; bull mirrors",
+   "at FVG: an H1 bearish FVG (3rd bar k in [i-120, i-1]) not fully filled before C2 (max high k+1..i-1 < gap top) and C2's high >= gap bottom; bull mirrors",
+   "draw: latest H1 2/2 swing low confirmed by C2 (p <= i-2) untaken through C2 = the external target; none -> no setup",
+   "LTF 5m, phase-3 CISD (series_open, 2/2, max_wait 3). E1 = same-direction CISD with extreme at/after the C2 open; E2 = later same-direction CISD, extreme bar after E1's confirm, lower high than E1 (bear), E1's extreme never exceeded through E2's confirm, E2's extreme reaches into a same-side 5m FVG formed after E1's extreme and not fully filled before it; E2 confirms inside H1 C3",
+   "draw still open at E2 (no 5m low at/below target from C3 open to E2 confirm; target below E2's confirm close); first E2 per H1 setup; dedupe same minute+direction",
+   "enter next M1 open after E2's 5m confirm close; stop = E2's extreme (wick)",
+   "control: matched random entries, NY clock within +-30 min; holds in trading minutes",
+   "target 2R; time exit at the close of H1 C4 (C3 close + 60 trading min)"
+  ],
+  "params": {
+   "target": "2R",
+   "max_hold": "per row: C3 close - decision + 60 min (trading)",
+   "ladder": "1h -> 5min",
+   "c2": "sweep previous H1 extreme, close back inside",
+   "fvg_lookback_h1": 120,
+   "fvg_rule": "C2 wick reaches into an unfilled same-side H1 FVG",
+   "external": "latest confirmed untaken H1 2/2 swing",
+   "cisd": "5m series_open, 2/2, max_wait 3",
+   "continuation": "second CISD whose extreme reaches into a post-E1 5m FVG, lower high",
+   "stop": "E2 extreme (wick)",
+   "kill_zone": "none",
+   "ctrl_tod_tol_min": 30,
+   "hold_basis": "bars",
+   "grid4h": "n/a (no 4H bars)"
+  }
+ },
+ "params_source": {
+  "ladder": "corpus: vMq1l8Zzzjw 'We're trading this hourly internal to external model right here' / 'go to the 5-minute time frame and wait for a valid fractal model'",
+  "c2": "corpus: vMq1l8Zzzjw 'a candle two closure at a fair value gap'; method_spec: \u00a73.2 C2 closure",
+  "fvg_lookback_h1": "declared-before-run: one trading week of H1 bars (the source leaves the gap's age open)",
+  "fvg_rule": "corpus: vMq1l8Zzzjw 'if price reaches into internal liquidity here and we have a reaction or a candle two closure'",
+  "external": "corpus: vMq1l8Zzzjw 'the swing low that made the swing high'; phase3: locked 2/2 swing",
+  "cisd": "phase3: locked CISD config (series_open, 2/2, max_wait 3)",
+  "continuation": "corpus: vMq1l8Zzzjw 'a new protected swing ... because we reach into a fair value gap and then close through this level'",
+  "stop": "corpus: vMq1l8Zzzjw 'put our stop either on this high or on the bodies' (the wick reading; method_spec \u00a75 stop = protected swing)",
+  "kill_zone": "corpus: vMq1l8Zzzjw (no time filter stated; draft ambiguity)",
+  "ctrl_tod_tol_min": "declared-before-run: README trap 9 / vault Concept Campaign lesson 3; not a timing claim but events cluster in active hours",
+  "hold_basis": "declared-before-run: README trap 7; holds span the 17:00 NY halt / weekend, so trading minutes for real and control alike",
+  "grid4h": "declared-before-run: no 4H bars used",
+  "target": "corpus: vMq1l8Zzzjw 'then look for a 2R, which is right around that lower time frame target'",
+  "max_hold": "corpus: vMq1l8Zzzjw 'trade candle three in this fractal model towards that high or even candle four'"
+ },
+ "n": 810,
+ "span": {
+  "start": "2016-02-08 01:10:00+00:00",
+  "end": "2026-07-17 17:45:00+00:00",
+  "years": 10.437
+ },
+ "avg_R": -0.08596324573426377,
+ "avg_R_gross": -0.04596324573426375,
+ "win_rate": 0.38271604938271603,
+ "pf": 0.8514460119329799,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "n": 4050,
+  "avg_R": -0.01097270136590992,
+  "win_rate": 0.4103703703703704,
+  "pf": 0.9795254240475829,
+  "sd_R": 1.1961419942715112,
+  "exit_mix": {
+   "stop": 0.4748148148148148,
+   "target": 0.19654320987654322,
+   "time": 0.328641975308642
+  },
+  "avg_R_gross": 0.029027298634090107,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": -0.07499054436835385,
+ "ci_lo": -0.18627651279591784,
+ "ci_hi": 0.04086286242281759,
+ "ci_method": "phase3_block",
+ "p": 0.1956058410845176,
+ "halves": {
+  "H1": {
+   "n": 329,
+   "diff": 0.029558780018232853,
+   "ci_lo": -0.1354787104845718,
+   "ci_hi": 0.2083775223119819,
+   "ci_method": "block",
+   "p": 0.7361415878710458,
+   "start": "2016-02-08 01:10:00+00:00",
+   "end": "2020-12-28 16:40:00+00:00"
+  },
+  "H2": {
+   "n": 481,
+   "diff": -0.14650141281572815,
+   "ci_lo": -0.26658375589159045,
+   "ci_hi": -0.012262949048262004,
+   "ci_method": "block",
+   "p": 0.023941098125602175,
+   "start": "2021-01-11 01:00:00+00:00",
+   "end": "2026-07-17 17:45:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 136,
+   "diff": -0.16431611099999968,
+   "ci_lo": -0.37958212316023476,
+   "ci_hi": 0.05690004233771219,
+   "ci_method": "iid",
+   "p": 0.14003023444736445,
+   "start": "2016-02-08 01:10:00+00:00",
+   "end": "2018-08-01 19:10:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 214,
+   "diff": 0.13934767276650312,
+   "ci_lo": -0.07199224103852345,
+   "ci_hi": 0.3217663723942565,
+   "ci_method": "block",
+   "p": 0.165372350299672,
+   "start": "2018-08-28 04:40:00+00:00",
+   "end": "2021-04-09 05:20:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 240,
+   "diff": -0.06531701864180872,
+   "ci_lo": -0.2404422485088631,
+   "ci_hi": 0.11924197235717258,
+   "ci_method": "block",
+   "p": 0.47656318076291304,
+   "start": "2021-04-14 19:10:00+00:00",
+   "end": "2023-11-23 11:40:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 220,
+   "diff": -0.23881666972892834,
+   "ci_lo": -0.44030284093899186,
+   "ci_hi": -0.02817639265213764,
+   "ci_method": "block",
+   "p": 0.02311688495224798,
+   "start": "2023-12-04 18:05:00+00:00",
+   "end": "2026-07-17 17:45:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.162337233368108,
+ "mde_threshold": 0.1,
+ "power_floor_n": 2135,
+ "verdict": "UNDERPOWERED",
+ "verdict_detail": "CI contains 0; MDE 0.1623 vs threshold 0.1000, effective n 673 (power floor n=2135, have 810)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 810,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 60.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 89,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "target_ext",
+    "max_hold",
+    "rr"
+   ],
+   "ignored": [],
+   "lookback": "20D",
+   "recent": "1D",
+   "events_fp": "ecb207920fc79ba2",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "per-row column",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": 30,
+  "entry_mode": "next_open",
+  "hold_basis": "bars",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "New-claim reading of vMq1l8Zzzjw (TTFM execution of the internal/external model), not the library mwmWNCTEYtY kill-zone reading (n=227, UNDERPOWERED, untouched). Same entries in u1007a/u1007b, only the exit differs. Events 811; median stop 1.81 pt, 19.4% under 1 pt; median external target 2.83R. Spread cost per trade (mean R) at 0.45 / 0.60 pt: 0.313 / 0.417. Control matches stop DISTANCE, not placement at a fresh 5m swing extreme (campaign lesson 1), so the differential is flattered. Overlaps the refuted Conjunction Test (5m/1H/1D CISD stack). Not modelled: bodies stop, SMT/PSP, T-spot, daily layer.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/update_20261007/internal-external-liquidity-model.py",
+ "runtime_sec": 0.19,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-10-07T06:44:48+00:00",
+ "n_events_in": 811,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 1,
+  "target_not_beyond_entry": 0,
+  "no_bars_in_hold": 0
+ },
+ "events_fp": "ecb207920fc79ba2",
+ "sd_R": 1.1930383494519878,
+ "exit_mix": {
+  "stop": 0.5160493827160494,
+  "target": 0.18765432098765433,
+  "time": 0.2962962962962963
+ },
+ "trades_per_year": 77.61083420776495,
+ "ci_components": {
+  "phase3_block": [
+   -0.18627651279591784,
+   0.04086286242281759
+  ],
+  "day_block": [
+   -0.16065307506526066,
+   0.01729276602143406
+  ]
+ },
+ "diff_win": -0.027654320987654357,
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 673,
+  "n_clusters": null,
+  "n_eff": 673
+ },
+ "ties": {
+  "real_ambiguous": 0.0,
+  "control_ambiguous": 0.0002469135802469136,
+  "real_gap_stop": 0.014814814814814815,
+  "control_gap_stop": 0.016049382716049384,
+  "verdict_stop_first": "UNDERPOWERED"
+ },
+ "ctrl_overlap": 0.0014814814814814814,
+ "exposure_bars": {
+  "real_mean": 88.54320987654322,
+  "control_mean": 88.54320987654322,
+  "hold_basis": "bars"
+ },
+ "run_id": "33a2aed7c1ba46bb8003f0a9fdf72e81",
+ "hyp_key": "6918ef5b1a337ead"
+}

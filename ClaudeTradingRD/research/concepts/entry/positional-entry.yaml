@@ -19,6 +19,30 @@ variants:
     a very shallow wick to form before price trades away.
 
     '
+  - 'NASDAQ hourly example (9-5 model video): after a candle 2 closure with a V-shape, no
+    intra-candle continuation formed, so waiting would have missed the move. The positional
+    alternative: expect the EQ to hold and 50% of the change-in-state-of-delivery to hold,
+    put the stop below both, usually around the body of the opposing candle, which gave about
+    2R to the highs. He accepts that waiting for confirmation sometimes misses trades.
+
+    '
+  - 'Defined live as a protected swing existing prior to the open of the new higher-timeframe
+    candle. Whether to take it is gated on confidence that the bias is right and that the
+    low holds. On this day he declined a positional entry at the 10:00 open: the prior run
+    had been deep and left failure swings, so he could not trust the low, and with low confidence
+    he would first let the 4-hour candle form whatever wick it was going to form.'
+  - 'Restated twice in this unit: when the protected swing forms before the new higher-timeframe
+    candle opens, enter around that opening price with the stop on the protected swing (breakouts
+    video, last example); in the London model a continuation formed with SMT ''prior to the
+    open the new higher time frame candle'' can be taken as a positional entry, or one can
+    wait for a new continuation.
+
+    '
+  - 'Asia framing of the positional entry: it is only taken with a higher-timeframe bias that
+    explains why candle 3 should expand, after an ideal candle 2 closure with a change in
+    the state of delivery, and when the protected swing sits near the open of the higher-timeframe
+    candle. When the structure is not good enough, no positional entry - wait for a 4-hour
+    closure instead.'
   - 'An entry taken not on a lower-timeframe trigger but purely on location: when price opens
     right next to a freshly formed invalidation - a protected swing created by a close over
     a fair value gap - a position can be taken there and carried into the overnight session,
@@ -42,6 +66,8 @@ aliases:
 preconditions:
 - 'A valid model: C2 or C3 closure plus the aligned lower-timeframe CISD.'
 - A protected swing formed BEFORE the open of the continuation candle.
+- A protected swing formed before the open of a new higher-timeframe candle (here the 10:00
+  4-hour open).
 - A confirmed higher-timeframe candle 2 closure with a defined draw.
 - A recently formed protected swing on the hourly (price into a fair value gap, then a close
   over it).
@@ -60,6 +86,19 @@ detection_rules:
 - Measure the distance from the opening price to that invalidation.
 - Very close -> enter at the open, stop on the low.
 - Expect only a very shallow wick below the entry.
+- Use when confident in the move and the IC-CISD has not formed.
+- Stop below both the candle EQ and 50% of the CISD, usually around the body of the opposing
+  candle.
+- Proceed only if that gives about 2R to the target.
+- At the new higher-timeframe open, check for a protected swing formed before it.
+- Take the positional entry only when confidence in the bias and in that low holding is high.
+- If the run into the low was deep and left failure swings, treat the low as untrusted and
+  do not position on the open; let the higher-timeframe wick form first.
+- If the protected swing forms before the higher-timeframe open, enter around the opening
+  price, stop at the protected swing.
+- Require HTF bias + ideal C2 closure + CISD + protected swing near the HTF open.
+- Reject positional entry on reversal setups or poor structure; fall back to a 4H closure
+  + 15m model.
 - Identify the most recent, tightest protected swing on the hourly.
 - Require price to open near that level rather than extended away from it.
 - Require price to respect the level (trade into it and hold) before entering.
@@ -76,6 +115,8 @@ measurable:
 - stop-out rate of positional entries whose protected swing sat inside vs beyond the EQ
 - distribution of open-to-invalidation distances on trades taken this way
 - depth of the wick that forms after an at-open entry
+- stop-out rate of positional entries whose protected swing followed a deep run with failure
+  swings vs a clean sweep
 - overnight stop-out rate of positional entries at a protected swing
 - R at the New York session open for positions entered this way
 - difference in R between positional entries and same-idea intraday entries
@@ -101,6 +142,36 @@ sources:
 - video_id: VtFC9SCnlYM
   title: Using Inversion as an Entry Within the Fractal Model
   quote: that's when I can look to get on side with the open
+- video_id: cWDnzI3lpUk
+  title: How to Trade With a 9-5 Job (TTrades Fractal Model Explained)
+  quote: We expect the EQ to hold
+- video_id: cWDnzI3lpUk
+  title: How to Trade With a 9-5 Job (TTrades Fractal Model Explained)
+  quote: We expect 50% of this change in the state of delivery to hold.
+- video_id: cWDnzI3lpUk
+  title: How to Trade With a 9-5 Job (TTrades Fractal Model Explained)
+  quote: usually around the body of this opposing candle
+- video_id: Hlwq1dRjBZo
+  title: New York Open Live Q&A
+  quote: a positional entry is a protected swings prior to the open
+- video_id: Hlwq1dRjBZo
+  title: New York Open Live Q&A
+  quote: How confident are you on this bias and that this low holds?
+- video_id: Hlwq1dRjBZo
+  title: New York Open Live Q&A
+  quote: I'd want to first just let the 4hour candle form whatever wick
+- video_id: 8yt3jn8L6O4
+  title: How to Trade Breakouts (Failure to Manipulate)
+  quote: enter around the opening price with our stop on that protected low
+- video_id: tUbrCewFdCU
+  title: How to Trade London Using TTrades Fractal Model
+  quote: look to take that as a positional entry
+- video_id: BgVkJf0kMo4
+  title: How to Trade Asia Using TTrades Fractal Model
+  quote: You need a higher time frame bias that explains why
+- video_id: BgVkJf0kMo4
+  title: How to Trade Asia Using TTrades Fractal Model
+  quote: take a positional entry in here cuz the structure isn't good enough
 - video_id: IzOQmcgLyA0
   title: 'TTrades Top-Down Chart Lessons #3'
 ambiguities:
@@ -112,6 +183,11 @@ ambiguities:
   ATR or a fraction of the expected range.'
 - '''Very shallow wick'' is likewise unquantified.'
 - Which higher-timeframe open is meant is shown on the chart but never named.
+- Which EQ (candle 2's or the current candle's) is not named; inferred as the C2 range.
+- '''50% of the change in the state of delivery'' - the range it is measured over (the CISD
+  series or the CISD candle) is not defined.'
+- '''Confidence'' is not operationalised; the concrete trigger shown is the deep run with
+  failure swings.'
 - Right near an invalidation is not quantified - no maximum distance from the level is given.
 - The actual trigger is the speaker seeing price respect the level, which is not defined as
   a rule (no candle closure or structure requirement is stated).
@@ -129,6 +205,10 @@ related:
 - inversion-fair-value-gap
 - ltf-inversion-entry-in-tspot
 - half-wick-respect
+- ttfm-swing-trading-model
+- failure-swing
+- failure-to-manipulate
+- asia-entry-conditions
 - fractal-model-c2
 - order-block
 - rr-gated-entry-refinement
@@ -153,5 +233,9 @@ contributing_units:
 - build_a_model_intro_to_ttrades_fractal_model_01
 - chart_lessons_01
 - shorts_04
-draft_count: 3
+- update_20261007_edu_01
+- update_20261007_edu_02
+- update_20261007_edu_03
+- update_20261007_live_09
+draft_count: 7
 voice: ttrades

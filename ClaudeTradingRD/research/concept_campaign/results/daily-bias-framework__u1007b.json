@@ -1,0 +1,283 @@
+{
+ "concept_id": "daily-bias-framework",
+ "reading": "u1007b",
+ "testable": true,
+ "test_type": "gate",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "bias: daily C2 or C3 (C2-open reference) closure + same-direction 1h CISD inside that day (series_open, scope range) -> bias for the next session",
+   "baseline: next session, every 1h close with NY close time in 03:00-12:00; direction = bias; stop = day's running opposite extreme; target = prior day's bias-side extreme; exit 17:00 NY; drop rows where the target was already reached, target not beyond price, or stop distance < 0.10 x prior-day range",
+   "gate c3_day: the bias-source day (last daily close <= the 1h bar start) is a C2 closure, so the traded day is a C3 daily candle (one-sided); complement = bias source is a C3 closure, traded day is a C4 (two-sided continuation context)"
+  ],
+  "params": {
+   "window": "03:00-12:00 NY (1h closes)",
+   "min_risk_frac": 0.1,
+   "stub_filter_min_m1": 600,
+   "cisd_scope": "range",
+   "c3_reference": "c2_open",
+   "day_open": "18:00 NY",
+   "one_sided": "traded day = C3 (source C2)",
+   "two_sided": "traded day = C4 (source C3)"
+  }
+ },
+ "params_source": {
+  "window": "corpus: daily-profile-session-windows London 02:00-05:00 / NY a.m. 08:30-12:00 (method_spec \u00a72.5); same baseline as daily-profile-confirmation",
+  "min_risk_frac": "declared-before-run: degenerate-stop guard, _common.MIN_RISK_FRAC",
+  "stub_filter_min_m1": "declared-before-run: README trap 6 stub sessions",
+  "cisd_scope": "phase3: locked primary cisd_scope=range",
+  "c3_reference": "phase3: locked primary C3 reference (Reading A)",
+  "day_open": "method_spec: \u00a71.4 daily open is 18:00 (canon); library ambiguity notes the open is unstated",
+  "one_sided": "corpus: rVRk4MLTJSs 'This is a C3 daily candle. There's really only one way to frame this. That is one-sided'",
+  "two_sided": "corpus: rVRk4MLTJSs 'You could frame it bullish because of the reversal ... and we're in this continuation to C4. So I can really frame it both ways'"
+ },
+ "n": 2257,
+ "span": {
+  "start": "2016-01-11 08:00:00+00:00",
+  "end": "2026-07-15 16:00:00+00:00",
+  "years": 10.508
+ },
+ "avg_R": -0.0002537376999513332,
+ "avg_R_gross": 0.0397462623000487,
+ "win_rate": 0.44306601683650865,
+ "pf": 0.9994866452713838,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "avg_R_gated": -0.04153726922007046,
+  "avg_R_complement": -0.04332582124895159,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": 0.15399031172772615,
+ "ci_lo": -0.042146015233254765,
+ "ci_hi": 0.33700325826394767,
+ "ci_method": "phase3_block",
+ "p": 0.11136971718229506,
+ "halves": {
+  "H1": {
+   "n": 1380,
+   "diff": 0.14438906024509074,
+   "ci_lo": -0.15638028456753378,
+   "ci_hi": 0.42238490087429975,
+   "ci_method": "block",
+   "p": 0.32810648303220685,
+   "start": "2016-01-11 08:00:00+00:00",
+   "end": "2020-12-29 17:00:00+00:00",
+   "n_gated": 1080
+  },
+  "H2": {
+   "n": 1511,
+   "diff": 0.1621466148683988,
+   "ci_lo": -0.07529890900783592,
+   "ci_hi": 0.39795110346603974,
+   "ci_method": "block",
+   "p": 0.1792526189066772,
+   "start": "2021-01-07 08:00:00+00:00",
+   "end": "2026-07-15 16:00:00+00:00",
+   "n_gated": 1177
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 732,
+   "diff": 0.2253553358055959,
+   "ci_lo": -0.10849119102444799,
+   "ci_hi": 0.5567138145762813,
+   "ci_method": "block",
+   "p": 0.18418583283764797,
+   "start": "2016-01-11 08:00:00+00:00",
+   "end": "2018-08-06 16:00:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 697,
+   "diff": 0.060470250263906164,
+   "ci_lo": -0.36857159819425045,
+   "ci_hi": 0.44818413589713857,
+   "ci_method": "block",
+   "p": 0.77164776981839,
+   "start": "2018-08-27 12:00:00+00:00",
+   "end": "2021-03-29 16:00:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 754,
+   "diff": 0.10152414062261107,
+   "ci_lo": -0.20717016781915307,
+   "ci_hi": 0.3804932279774193,
+   "ci_method": "block",
+   "p": 0.49827726511918824,
+   "start": "2021-04-15 08:00:00+00:00",
+   "end": "2023-12-01 17:00:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 708,
+   "diff": 0.21095388890484346,
+   "ci_lo": -0.1092507734122584,
+   "ci_hi": 0.5409030546923238,
+   "ci_method": "block",
+   "p": 0.2034122581709156,
+   "start": "2023-12-05 11:00:00+00:00",
+   "end": "2026-07-15 16:00:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.2709791907888767,
+ "mde_threshold": 0.1,
+ "power_floor_n": 4656,
+ "verdict": "UNDERPOWERED",
+ "verdict_detail": "CI contains 0; MDE 0.2710 vs threshold 0.1000, effective n 113 (power floor n=16574, have 634)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 2891,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "gate_mask_checked": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 1.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 317,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "target_px",
+    "max_hold",
+    "x_bar_start",
+    "x_tday",
+    "x_day_open",
+    "x_close",
+    "x_run_high",
+    "x_run_low",
+    "c3_day"
+   ],
+   "ignored": [],
+   "lookback": "20D",
+   "recent": "1D",
+   "events_fp": "58127ff48cab8126",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "per-row column",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": null,
+  "entry_mode": "next_open",
+  "hold_basis": "clock",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "Two-sidedness is operationalised as the C4 day only; the reversal-plus-failed-continuation read is a discretionary framing with no stated rule.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/update_20261007/daily-bias-framework.py",
+ "runtime_sec": 0.4,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-10-07T06:15:37+00:00",
+ "n_events_in": 2891,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 0,
+  "target_not_beyond_entry": 0,
+  "no_bars_in_hold": 0
+ },
+ "n_complement": 634,
+ "gate_firing_rate": 0.7806987201660325,
+ "events_fp": "58127ff48cab8126",
+ "mask_fp": "5117d7e795f62c93",
+ "mask_col": "c3_day",
+ "exit_mix": {
+  "stop": 0.43420469649977844,
+  "target": 0.24457244129375277,
+  "time": 0.3212228622064688
+ },
+ "gated_vs_own_control": {
+  "diff": 0.04128353152011913,
+  "ci_lo": -0.06168196211851412,
+  "ci_hi": 0.13971207740054783,
+  "p": 0.42166181285430016
+ },
+ "complement": {
+  "n": 634,
+  "avg_R": -0.15603260145655862,
+  "win_rate": 0.41009463722397477,
+  "pf": 0.7001479514248694,
+  "sd_R": 1.0774561283265807,
+  "exit_mix": {
+   "stop": 0.44952681388012616,
+   "target": 0.23186119873817035,
+   "time": 0.3186119873817035
+  },
+  "vs_own_control": {
+   "diff": -0.11270678020760702,
+   "ci_lo": -0.26797845964722383,
+   "ci_hi": 0.02807886088284667,
+   "p": 0.13562394729769653
+  }
+ },
+ "ci_components": {
+  "phase3_block": [
+   -0.042146015233254765,
+   0.33700325826394767
+  ],
+  "day_block": [
+   -0.031023360235757032,
+   0.34060473759870935
+  ]
+ },
+ "diff_meaning": "mean(R-ctrl | gated) - mean(R-ctrl | complement)",
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_eff_gated": 382,
+  "n_eff_complement": 113,
+  "n_eff": 113
+ },
+ "ties": {
+  "real_ambiguous": 0.0017295053614666206,
+  "control_ambiguous": 6.918021445866483e-05,
+  "real_gap_stop": 0.0003459010722933241,
+  "control_gap_stop": 0.006157039086821169,
+  "gated_excess": 0.0016836508639787328,
+  "complement_excess": 0.0015772870662460567,
+  "verdict_stop_first": "UNDERPOWERED"
+ },
+ "ctrl_overlap": 0.02967831200276721,
+ "exposure_bars": {
+  "real_mean": 566.0702179176756,
+  "control_mean": 525.6877205119335,
+  "hold_basis": "clock"
+ },
+ "run_id": "113e01ac0b2d42edb89b5e3cd17fac0e",
+ "hyp_key": "1ee1f7b5c90e8313"
+}

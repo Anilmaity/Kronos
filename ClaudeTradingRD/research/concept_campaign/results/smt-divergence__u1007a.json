@@ -1,0 +1,265 @@
+{
+ "concept_id": "smt-divergence",
+ "reading": "u1007a",
+ "testable": true,
+ "test_type": "trade",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "pair: gold 1h (traded) vs silver XAG_USD H1 (OANDA) on gold's bar starts; only silver bars closed by the slice end are read",
+   "model: phase-3 1h gold CISD (series_open level, 2/2 swing, max_wait 3, min_series 1); decide at confirm-bar close, enter next M1 open",
+   "structural SMT (previous-day level, 18:00 NY roll): bullish = from the trading-day start through the confirm bar silver traded below its prior-day low while gold stayed >= its own prior-day low; bearish mirror at prior-day highs",
+   "keep only CISDs whose direction matches a structural SMT in the same trading day (SMT confirmed by the change in state of delivery); gold = the holder (strongest)",
+   "stop = CISD protected swing; target = gold's opposite prior-day extreme (PDH long / PDL short); drop if the confirm close is already beyond target or stop; 10h hold",
+   "control: matched random entries (direction, stop/target distance, +-30 days) held within +-30 min of the event's NY clock time (events cluster by hour)",
+   "untested here: 'readable before the model closes' (timing nuance, no measurable contrast on H1), the counter-trend-short filter, the 1m/3m floor and MTF stacking"
+  ],
+  "params": {
+   "tf": "1h",
+   "level_rule": "series_open",
+   "swing": "2/2",
+   "max_wait": 3,
+   "min_series": 1,
+   "max_hold": "10h",
+   "correlate": "XAG_USD H1",
+   "range_level": "previous trading day high/low",
+   "day_open_hour": 18,
+   "target": "opposite prior-day extreme",
+   "stop": "protected swing",
+   "ctrl_tod_tol_min": 30
+  }
+ },
+ "params_source": {
+  "tf": "phase3: meta/conjunction_preregistration.md \u00a71.8-1.13 (locked config); correlate held at H1 only",
+  "level_rule": "phase3: meta/conjunction_preregistration.md \u00a71.8-1.13 (locked config)",
+  "swing": "phase3: meta/conjunction_preregistration.md \u00a71.8-1.13 (locked config)",
+  "max_wait": "phase3: meta/conjunction_preregistration.md \u00a71.8-1.13 (locked config)",
+  "min_series": "phase3: meta/conjunction_preregistration.md \u00a71.8-1.13 (locked config)",
+  "max_hold": "phase3: 10 entry-TF bars (\u00a71.13)",
+  "stop": "phase3: meta/conjunction_preregistration.md \u00a71.8-1.13 (locked config)",
+  "correlate": "corpus: rVRk4MLTJSs 'I was using silver for this. Yeah, silver ran out the low. Gold didn't.'",
+  "range_level": "corpus: rVRk4MLTJSs 'there is no SMT there between previous day low on this. This is like a structural SMT.'",
+  "day_open_hour": "session_window_fit: settled 18:00 NY daily roll",
+  "ctrl_tod_tol_min": "declared-before-run: README trap 9, SMT is not a timing concept but these events cluster by NY hour (TV distance 0.163 vs all 1h closes, measured on the event frame before the audit re-run); same declaration as smt-divergence readings a/b",
+  "target": "corpus: rVRk4MLTJSs 'Gold is closer to these highs. So, it makes more sense to be longing gold ... Gold pushes through this high'"
+ },
+ "n": 524,
+ "span": {
+  "start": "2016-01-21 19:00:00+00:00",
+  "end": "2026-07-20 01:00:00+00:00",
+  "years": 10.491
+ },
+ "avg_R": -0.1279172729743222,
+ "avg_R_gross": -0.08791727297432217,
+ "win_rate": 0.43702290076335876,
+ "pf": 0.7246466342361846,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "n": 2585,
+  "avg_R": -0.03187803354373888,
+  "win_rate": 0.4831721470019342,
+  "pf": 0.9265752607505459,
+  "sd_R": 1.0732877376612229,
+  "exit_mix": {
+   "stop": 0.3690522243713733,
+   "target": 0.3071566731141199,
+   "time": 0.32379110251450677
+  },
+  "avg_R_gross": 0.008121966456261148,
+  "reps": 5,
+  "fill_rate": 0.9866412213740458
+ },
+ "diff": -0.09603923943058332,
+ "ci_lo": -0.20858917684499173,
+ "ci_hi": 0.00391957370911751,
+ "ci_method": "phase3_block",
+ "p": 0.07647161024846438,
+ "halves": {
+  "H1": {
+   "n": 208,
+   "diff": -0.09565686671127088,
+   "ci_lo": -0.24485224271985304,
+   "ci_hi": 0.07580647549658064,
+   "ci_method": "iid",
+   "p": 0.24225541411731363,
+   "start": "2016-01-21 19:00:00+00:00",
+   "end": "2020-12-23 10:00:00+00:00"
+  },
+  "H2": {
+   "n": 316,
+   "diff": -0.10689638367290571,
+   "ci_lo": -0.25906616996182996,
+   "ci_hi": 0.04452318086654713,
+   "ci_method": "block",
+   "p": 0.16751280054613643,
+   "start": "2021-01-13 11:00:00+00:00",
+   "end": "2026-07-20 01:00:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 104,
+   "diff": -0.06599058946954918,
+   "ci_lo": -0.3029102921901548,
+   "ci_hi": 0.19829009157533867,
+   "ci_method": "iid",
+   "p": 0.6057722481023489,
+   "start": "2016-01-21 19:00:00+00:00",
+   "end": "2018-08-22 11:00:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 118,
+   "diff": -0.13145846715651247,
+   "ci_lo": -0.3303473429938174,
+   "ci_hi": 0.0633724645677554,
+   "ci_method": "iid",
+   "p": 0.1905958746620457,
+   "start": "2018-08-29 10:00:00+00:00",
+   "end": "2021-04-05 05:00:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 158,
+   "diff": -0.030731644856190454,
+   "ci_lo": -0.19989584442733496,
+   "ci_hi": 0.1416764941832717,
+   "ci_method": "iid",
+   "p": 0.7243281291928831,
+   "start": "2021-04-15 02:00:00+00:00",
+   "end": "2023-11-30 21:00:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 144,
+   "diff": -0.18242128423665463,
+   "ci_lo": -0.4044348699911711,
+   "ci_hi": 0.06136179245397051,
+   "ci_method": "block",
+   "p": 0.12474142287220195,
+   "start": "2023-12-06 19:00:00+00:00",
+   "end": "2026-07-20 01:00:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.15188067942093175,
+ "mde_threshold": 0.1,
+ "power_floor_n": 1209,
+ "verdict": "UNDERPOWERED",
+ "verdict_detail": "CI contains 0; MDE 0.1519 vs threshold 0.1000, effective n 389 (power floor n=1209, have 524)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 524,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 64.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 71,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "target_px"
+   ],
+   "ignored": [],
+   "lookback": "20D",
+   "recent": "1D",
+   "events_fp": "40bd4fb9cb3fd3a7",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "10h",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": 30,
+  "entry_mode": "next_open",
+  "hold_basis": "clock",
+  "mde_threshold": null,
+  "cluster": null,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "Tests live_03's structural (previous-day) SMT + CISD confirmation with the traded asset as the holder. Hourly only. Distinct from smt-divergence-confluence__a (gold the SWEEPER at PDH/PDL). AUDIT 2026-10-07: control now held at the NY clock (ctrl_tod_tol_min=30).",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/update_20261007/smt-divergence.py",
+ "runtime_sec": 0.22,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-10-07T06:17:16+00:00",
+ "n_events_in": 529,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 0,
+  "target_not_beyond_entry": 0,
+  "no_bars_in_hold": 5
+ },
+ "events_fp": "40bd4fb9cb3fd3a7",
+ "sd_R": 1.0438832741617141,
+ "exit_mix": {
+  "stop": 0.3931297709923664,
+  "target": 0.25763358778625955,
+  "time": 0.34923664122137404
+ },
+ "trades_per_year": 49.94545929018789,
+ "ci_components": {
+  "phase3_block": [
+   -0.20858917684499173,
+   0.00391957370911751
+  ],
+  "day_block": [
+   -0.20721520786326106,
+   0.00013158835198806717
+  ]
+ },
+ "diff_win": -0.04614924623857547,
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 389,
+  "n_clusters": null,
+  "n_eff": 389
+ },
+ "ties": {
+  "real_ambiguous": 0.0,
+  "control_ambiguous": 0.0007736943907156673,
+  "real_gap_stop": 0.0057251908396946565,
+  "control_gap_stop": 0.0023210831721470018,
+  "verdict_stop_first": "UNDERPOWERED"
+ },
+ "ctrl_overlap": 0.006189555125725338,
+ "exposure_bars": {
+  "real_mean": 547.2041984732824,
+  "control_mean": 548.7520309477757,
+  "hold_basis": "clock"
+ },
+ "run_id": "fdcc8270aac64cb4ad1f727ce3fe0d8b",
+ "hyp_key": "0064fabe62ae5db0"
+}

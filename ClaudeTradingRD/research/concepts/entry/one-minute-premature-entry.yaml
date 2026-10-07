@@ -1,16 +1,24 @@
 id: one-minute-premature-entry
-name: 1-Minute Premature Entry Against A 5-Minute Level
-definition: The guest's method for entering before his signal timeframe confirms, used when
-  the 5-minute closes too late or too close to the target for a 2R trade. He marks the level
-  on the 5-minute (he calls it a breaker; the host disputes the naming). Instead of waiting
-  for the 5-minute close through that level, he takes the entry the moment a 1-minute candle
-  closes through it, keeping the stop where the 5-minute trade's stop would have been. If
-  the 5-minute candle then fails to close through, he exits early for a small loss and waits
-  for confirmation; if it does close through, he simply holds the position he is already in.
-  He notes this became necessary in a higher-volatility period and pairs it with a 4-hour
-  level plus a 15-minute level above it.
+name: Enter Before The Signal Timeframe Confirms (1-minute inside the higher candle)
+variants:
+  name:
+  - 1-Minute Premature Entry Against A 5-Minute Level
+  definition:
+  - The guest's method for entering before his signal timeframe confirms, used when the 5-minute
+    closes too late or too close to the target for a 2R trade. He marks the level on the 5-minute
+    (he calls it a breaker; the host disputes the naming). Instead of waiting for the 5-minute
+    close through that level, he takes the entry the moment a 1-minute candle closes through
+    it, keeping the stop where the 5-minute trade's stop would have been. If the 5-minute
+    candle then fails to close through, he exits early for a small loss and waits for confirmation;
+    if it does close through, he simply holds the position he is already in. He notes this
+    became necessary in a higher-volatility period and pairs it with a 4-hour level plus a
+    15-minute level above it.
+definition: TTrades' own statement of the pre-confirmation entry (previously only a guest's,
+  on 5m/1m). He takes a 1-minute entry inside a 15-minute candle that is expected to confirm
+  a protected low, and then requires that 15-minute candle to close over the level. If it
+  reverses and fails to close over, the trade is scratched.
 category: entry
-status: specified
+status: contested
 aliases:
 - premature entry
 - early entry
@@ -18,6 +26,10 @@ preconditions:
 - A 4-hour level and a 15-minute level in the trade direction.
 - A marked 5-minute level (breaker / order block) that price is returning to.
 detection_rules:
+- Mark the level the 15-minute candle must close over to protect the low.
+- Enter early on the 1-minute inside that 15-minute candle.
+- If the 15-minute closes over the level, hold.
+- If it fails to close over, scratch the trade.
 - Mark the level on the 5-minute chart.
 - Enter when a 1-minute candle closes through that 5-minute level.
 - Keep the stop at the 5-minute level's stop, not a 1-minute stop.
@@ -29,15 +41,27 @@ measurable:
 - R saved by the earlier fill vs the frequency of the small cut-loss cases
 - share of 1-minute closes through the level that the 5-minute then confirms
 sources:
+- video_id: GRc5FVB5tdg
+  title: New York Open Live Q&A
+  quote: it's an earlier entry into this 15minute confirming that this low is there
+- video_id: GRc5FVB5tdg
+  title: New York Open Live Q&A
+  quote: If that 15-minute candle would have reversed, didn't close over it
+- video_id: GRc5FVB5tdg
+  title: New York Open Live Q&A
+  quote: And then you can scratch the trade, do whatever.
 - video_id: tDiwwMRWF2k
   title: New York Open Live Q&A with NickDoesFutures
   quote: if a 1-minute candle closes above that breaker
 ambiguities:
+- Whether 'scratch' means exit at market at the close or move to break-even is not stated.
 - '''Small loss'' is not quantified.'
 - Whether the cut is taken at the 5-minute close or immediately on weakness is not stated.
 - The host disagrees the marked structure is a breaker at all (see breaker-block), so which
   object the rule attaches to is contested.
 related:
+- protected-swing
+- ttfm-scalping-model
 - breaker-block
 - order-block
 - continuation-timing
@@ -46,14 +70,16 @@ guest_sources:
 - NickDoesFutures
 timeframes:
   htf:
+  - 1D
   - 4H
-  - 15m
+  - 1H
   ltf:
-  - 5m
+  - 15m
   - 1m
   fractal: true
 contributing_units:
 - live_streams_05
-draft_count: 1
-voice: guest
+- update_20261007_live_10
+draft_count: 2
+voice: mixed
 voice_playlist: ttrades

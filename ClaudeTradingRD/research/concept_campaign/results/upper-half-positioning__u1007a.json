@@ -1,0 +1,295 @@
+{
+ "concept_id": "upper-half-positioning",
+ "reading": "u1007a",
+ "testable": true,
+ "test_type": "gate",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "dealing range on 1h bars (2/2 fractal swings): short = latest confirmed 1h swing high A (confirmed at close of A+2) and the 1h swing low that made it (last swing low before A); target T = lowest low from that swing low through A's bar. Long = mirror",
+   "range live only if no complete 5m bar from A's bar through the entry bar trades beyond A or reaches T",
+   "entry book: phase-3 locked 5m CISD (series_open, 2/2, max_wait 3) trading away from A; decide at the confirm bar close, enter next M1 open; stop = 5m protected swing; kept only if T < entry < stop <= A (mirror long)",
+   "target 2R, exit at target/stop/50min; same-bar tie = stop",
+   "frac = |T - entry| / |T - A| (0 at target, 1 at swing); gate above_floor: frac > 0.25 (complement = at or within the last 25% of the range toward the target); grey zone 25-50% and EQ sit in the gated arm",
+   "control: matched random entries (same direction, stop distance, 2R, +-30 days), clock held within +-30 min NY time; CI clustered by dealing range"
+  ],
+  "params": {
+   "htf": "1h",
+   "ltf": "5min",
+   "swing": "2/2",
+   "dealing_range": "anchor swing + origin swing (see rules)",
+   "floor": 0.25,
+   "eq_tolerance": "EQ inside the gated arm",
+   "entry": "CISD series_open, max_wait 3",
+   "stop": "5m protected swing",
+   "rr": 2.0,
+   "max_hold": "50min",
+   "range_live": "anchor unbroken, target untaken",
+   "mirror_long": true,
+   "ctrl_tod_tol_min": 30
+  }
+ },
+ "params_source": {
+  "htf": "corpus: yb3Te7tiGRk 'but on the hourly and 5 minute' (nested dealing ranges example); 1h = the HTF the range is marked on",
+  "ltf": "corpus: yb3Te7tiGRk 'but on the hourly and 5 minute'; 5m = entry TF, stop on its protected high",
+  "swing": "phase3: meta/conjunction_preregistration.md \u00a71.8-1.16 (locked 2/2 fractal swing)",
+  "dealing_range": "corpus: yb3Te7tiGRk 'Then I'm going to find the swing low that made that swing high' + 'on the higher time frame candles, I'm going to go higher and find the swing high'",
+  "floor": "corpus: yb3Te7tiGRk 'As I get to 25% of the range or lower, that is where I'm not really looking for shorts'",
+  "eq_tolerance": "corpus: yb3Te7tiGRk 'It's okay if I'm entering right around that EQ point' -> EQ and the 25-50% grey zone are not rejected (draft ambiguity: 'worse but not forbidden'); declared-before-run",
+  "entry": "phase3: meta/conjunction_preregistration.md \u00a71.8-1.16 (locked CISD); source leaves entry open ('I can take any sort of entry or retest in here')",
+  "stop": "corpus: yb3Te7tiGRk 'Put my stop on that protected high'",
+  "rr": "corpus: yb3Te7tiGRk 'I can get 2 R prior to my target'; draft measurable '2R hit rate of shorts by entry location'",
+  "max_hold": "phase3: \u00a71.13 10 entry-TF periods = 10 x 5m",
+  "range_live": "corpus: yb3Te7tiGRk 'We just took out the target. It doesn't make sense.' -> declared-before-run: a range whose target is taken or whose anchor is broken is no longer the range traded",
+  "mirror_long": "corpus: yb3Te7tiGRk 'I want to be looking to long in a discount or below the EQ around it'; the 25% number is stated for shorts only, long mirror inferred (draft)",
+  "ctrl_tod_tol_min": "declared-before-run: README trap 9 / vault Session Timing on Gold - the concept is positional, not timing, so the control holds the NY clock (+-30 min) to keep hour-of-day out of the gate diff"
+ },
+ "n": 30669,
+ "span": {
+  "start": "2016-01-04 18:40:00+00:00",
+  "end": "2026-07-23 01:45:00+00:00",
+  "years": 10.546
+ },
+ "avg_R": -0.042102605962946835,
+ "avg_R_gross": -0.0021026059629468087,
+ "win_rate": 0.42286999902181355,
+ "pf": 0.9084056187662796,
+ "observed_rate": null,
+ "null_rate": null,
+ "lift": null,
+ "control": {
+  "avg_R_gated": -0.03388464552054094,
+  "avg_R_complement": -0.03631128769367666,
+  "reps": 5,
+  "fill_rate": 1.0
+ },
+ "diff": -0.04656186915899277,
+ "ci_lo": -0.08461278546941474,
+ "ci_hi": -0.006488602927471954,
+ "ci_method": "cluster",
+ "p": 0.01947718023349111,
+ "halves": {
+  "H1": {
+   "n": 16920,
+   "diff": -0.057769426361379696,
+   "ci_lo": -0.11258305825289439,
+   "ci_hi": -0.0009928619231301607,
+   "ci_method": "block",
+   "p": 0.04242591300513997,
+   "start": "2016-01-04 18:40:00+00:00",
+   "end": "2020-12-31 15:25:00+00:00",
+   "n_gated": 15081
+  },
+  "H2": {
+   "n": 17694,
+   "diff": -0.03669330324823891,
+   "ci_lo": -0.08619550032518318,
+   "ci_hi": 0.010020128797235298,
+   "ci_method": "iid",
+   "p": 0.13493413231952528,
+   "start": "2021-01-04 19:20:00+00:00",
+   "end": "2026-07-23 01:45:00+00:00",
+   "n_gated": 15588
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 8893,
+   "diff": -0.07229086011191273,
+   "ci_lo": -0.16363134060836948,
+   "ci_hi": 0.007311350325258646,
+   "ci_method": "block",
+   "p": 0.09737417334506247,
+   "start": "2016-01-04 18:40:00+00:00",
+   "end": "2018-08-22 05:50:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 8984,
+   "diff": -0.054647006452454065,
+   "ci_lo": -0.1260349504839687,
+   "ci_hi": 0.018612494667171672,
+   "ci_method": "iid",
+   "p": 0.13862598360198627,
+   "start": "2018-08-22 15:05:00+00:00",
+   "end": "2021-04-12 05:00:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 8414,
+   "diff": -0.054458466903286686,
+   "ci_lo": -0.13191210250281948,
+   "ci_hi": 0.02131912102595275,
+   "ci_method": "block",
+   "p": 0.16357603372866594,
+   "start": "2021-04-12 08:50:00+00:00",
+   "end": "2023-12-01 08:25:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 8323,
+   "diff": -0.00763800525501962,
+   "ci_lo": -0.08107315252778184,
+   "ci_hi": 0.06792590446778932,
+   "ci_method": "iid",
+   "p": 0.8407425504307567,
+   "start": "2023-12-04 02:10:00+00:00",
+   "end": "2026-07-23 01:45:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.05583560155869414,
+ "mde_threshold": 0.1,
+ "power_floor_n": 1230,
+ "verdict": "NEGATIVE",
+ "verdict_detail": "CI excludes 0 against the claim (+)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 34614,
+  "min_slack_min": 0.0,
+  "entry_min_delay_min": 0.0,
+  "passed": true,
+  "gate_mask_checked": true,
+  "entry_delay_min": {
+   "median": 0.0,
+   "max": 12.0
+  },
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 2487,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "stop_px",
+    "rr",
+    "frac",
+    "dr_id",
+    "above_floor"
+   ],
+   "ignored": [],
+   "lookback": "20D",
+   "recent": "1D",
+   "events_fp": "4befe5b4ab170611",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "max_hold": "50min",
+  "cost": "0.04R",
+  "reps": 5,
+  "window_days": 30,
+  "ctrl_grid": "auto",
+  "ctrl_tod_tol_min": 30,
+  "entry_mode": "next_open",
+  "hold_basis": "clock",
+  "mde_threshold": null,
+  "cluster": "column:dr_id",
+  "n_boot": 2000,
+  "seed": 20260825,
+  "tie": "stop",
+  "resolution": "M1"
+ },
+ "notes": "TTrades dealing-range video yb3Te7tiGRk, 25% rejection floor only (50% rule = prior reading, NULL, untouched). gate firing rate 0.886 on 34812 events.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/update_20261007/upper-half-positioning.py",
+ "runtime_sec": 2.6,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-10-07T06:39:29+00:00",
+ "n_events_in": 34812,
+ "dropped": {
+  "no_bar_after_decision": 0,
+  "stop_not_beyond_entry": 28,
+  "target_not_beyond_entry": 0,
+  "no_bars_in_hold": 170
+ },
+ "n_complement": 3945,
+ "gate_firing_rate": 0.8860287744843127,
+ "events_fp": "4befe5b4ab170611",
+ "mask_fp": "8343334122402976",
+ "mask_col": "above_floor",
+ "exit_mix": {
+  "stop": 0.36825458932472527,
+  "target": 0.12589259512863152,
+  "time": 0.5058528155466432
+ },
+ "gated_vs_own_control": {
+  "diff": -0.008217960442405893,
+  "ci_lo": -0.020942528490551282,
+  "ci_hi": 0.005050453674806846,
+  "p": 0.21522430065742665
+ },
+ "complement": {
+  "n": 3945,
+  "avg_R": 0.0020326210229102233,
+  "win_rate": 0.4400506970849176,
+  "pf": 1.0047618685987993,
+  "sd_R": 1.0259164815974111,
+  "exit_mix": {
+   "stop": 0.3269961977186312,
+   "target": 0.13130544993662865,
+   "time": 0.5416983523447402
+  },
+  "vs_own_control": {
+   "diff": 0.03834390871658688,
+   "ci_lo": 0.0036164844014850823,
+   "ci_hi": 0.07392028013194872,
+   "p": 0.03252153892802426
+  }
+ },
+ "ci_components": {
+  "phase3_block": [
+   -0.08455967808655017,
+   -0.011011654691085731
+  ],
+  "day_block": [
+   -0.08635489619827268,
+   -0.010497314288940582
+  ],
+  "cluster": [
+   -0.08461278546941474,
+   -0.006488602927471954
+  ]
+ },
+ "diff_meaning": "mean(R-ctrl | gated) - mean(R-ctrl | complement)",
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_eff_gated": 2713,
+  "n_eff_complement": 1762,
+  "n_eff": 1762
+ },
+ "ties": {
+  "real_ambiguous": 0.0003177904893973537,
+  "control_ambiguous": 0.0005893569076096377,
+  "real_gap_stop": 0.01476281273473161,
+  "control_gap_stop": 0.012468943202172532,
+  "gated_excess": -0.00026084971795624254,
+  "complement_excess": -0.0003548795944233207,
+  "verdict_stop_first": "NEGATIVE"
+ },
+ "ctrl_overlap": 0.026480614780146763,
+ "exposure_bars": {
+  "real_mean": 48.309239036228114,
+  "control_mean": 48.50731495926504,
+  "hold_basis": "clock"
+ },
+ "run_id": "7538af2f8d9944cd8aa1035f21664cdf",
+ "hyp_key": "e48b2e24c643ae07"
+}

@@ -1,0 +1,220 @@
+{
+ "concept_id": "protected-swing",
+ "reading": "u1007a",
+ "testable": true,
+ "test_type": "rate",
+ "claim": "+",
+ "operationalization": {
+  "rules": [
+   "protected swing: 1h 2/2 extreme, close through series open within 3 bars, POI sweep|fvg (structure_own_01b reading a); confirmed at the 1h close",
+   "significant liquidity: PDH (bull) / PDL (bear) as of confirmation, min_coverage 0.5, beyond the extreme-to-confirm range",
+   "liquidity taken by M1 touch within 10h of confirmation while the protected swing holds; decision = close of that M1 bar",
+   "hit: price trades through the protected swing within 600 M1 bars",
+   "null (structural): a protected swing from the same base population (same detector and direction, confirmed within +/-30 d, not the event's own) at the first M1 bar within 10h where price is the same PS->taken-level distance away, that swing still holding and its own PDH/PDL still untaken; same outcome on that swing, same 600-bar horizon; 5 random draws"
+  ],
+  "params": {
+   "tf": "1h",
+   "swing": "2/2",
+   "level_rule": "series_open",
+   "max_wait": 3,
+   "poi": "sweep|fvg",
+   "liquidity": "PDH/PDL",
+   "min_coverage": 0.5,
+   "liq_wait": "10h",
+   "horizon_bars": 600,
+   "outcome": "re-sweep",
+   "null": "structural: same-distance protected swing without the liquidity take",
+   "null_window_days": 30
+  }
+ },
+ "params_source": {
+  "protected_swing": "phase3: structure_own_01b reading a construct (1h, 2/2, series_open, max_wait 3, POI sweep|fvg) \u2014 the library's own protected-swing operationalization",
+  "tf": "phase3: structure_own_01b reading a (concept ltf list 1H)",
+  "swing": "phase3: \u00a71.8 swing left=2,right=2",
+  "level_rule": "phase3: structure_own_01b reading a, close through the series open",
+  "max_wait": "phase3: \u00a71.8 max_wait=3 ('1, 2, maybe three')",
+  "poi": "corpus: G1IIdQ3RAkY 'we have to sweep out a low or reach into a gap'",
+  "liquidity": "corpus: 4rNC3QXxC20 'It is when we have taken out some sort of significant liquidity'; same stream 'your reference points are previous day high, previous day low' \u2014 declared-before-run: PDH/PDL as the significant liquidity",
+  "liq_wait": "declared-before-run: 10h = phase3 10 entry-TF bars hold",
+  "horizon_bars": "declared-before-run: 600 M1 bars (10 trading hours), phase3 10-bar hold",
+  "outcome": "corpus: 4rNC3QXxC20 'It takes out that liquidity then re- sweeps it and then goes' \u2014 a: re-sweep only; b: re-sweep then back to the decision price",
+  "null": "declared-before-run (audit 2026-10-07): structural null \u2014 the claim is conditional ('when we have taken out some sort of significant liquidity'), so the baseline is a protected swing at the same distance WITHOUT the take; vault Concept Campaign 2026-09-23 lesson 1 (matching distance is not matching placement): un-taken protected swings score -2.5pp/-2.7pp vs the arbitrary-level null, which therefore manufactured the sign",
+  "null_window_days": "phase3: locked window_days=30 (+/-30 d regime match)",
+  "min_coverage": "declared-before-run: skip stub days (trap 6)"
+ },
+ "n": 871,
+ "span": {
+  "start": "2016-01-13 02:21:00+00:00",
+  "end": "2026-07-05 23:29:00+00:00",
+  "years": 10.475
+ },
+ "avg_R": null,
+ "avg_R_gross": null,
+ "win_rate": null,
+ "pf": null,
+ "observed_rate": 0.21928817451205512,
+ "null_rate": 0.2197474167623421,
+ "lift": 0.9979101358411705,
+ "control": {
+  "rate": 0.2197474167623421,
+  "reps": 5,
+  "kind": "null_fn x5"
+ },
+ "diff": -0.00045924225028701193,
+ "ci_lo": -0.03306084055186505,
+ "ci_hi": 0.03329453525069459,
+ "ci_method": "day_block",
+ "p": 0.978356344996303,
+ "halves": {
+  "H1": {
+   "n": 400,
+   "diff": -0.012499999999999983,
+   "ci_lo": -0.059012499999999996,
+   "ci_hi": 0.03802499999999998,
+   "ci_method": "iid",
+   "p": 0.6135938505585559,
+   "start": "2016-01-13 02:21:00+00:00",
+   "end": "2020-12-30 14:56:00+00:00"
+  },
+  "H2": {
+   "n": 471,
+   "diff": 0.009766454352441611,
+   "ci_lo": -0.03654989384288749,
+   "ci_hi": 0.054363057324840744,
+   "ci_method": "iid",
+   "p": 0.6736792172241943,
+   "start": "2021-01-05 09:07:00+00:00",
+   "end": "2026-07-05 23:29:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 193,
+   "diff": 0.023834196891191733,
+   "ci_lo": -0.048730569948186565,
+   "ci_hi": 0.08914507772020726,
+   "ci_method": "iid",
+   "p": 0.4980078808424658,
+   "start": "2016-01-13 02:21:00+00:00",
+   "end": "2018-08-17 19:26:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 232,
+   "diff": -0.038793103448275856,
+   "ci_lo": -0.10691810344827593,
+   "ci_hi": 0.019870689655172358,
+   "ci_method": "iid",
+   "p": 0.23038564736678616,
+   "start": "2018-08-23 01:01:00+00:00",
+   "end": "2021-04-09 13:08:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 243,
+   "diff": 0.013991769547325117,
+   "ci_lo": -0.05104938271604956,
+   "ci_hi": 0.07325102880658416,
+   "ci_method": "block",
+   "p": 0.6590368374973925,
+   "start": "2021-04-13 13:36:00+00:00",
+   "end": "2023-12-01 09:30:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 203,
+   "diff": 0.0029556650246305716,
+   "ci_lo": -0.06209359605911326,
+   "ci_hi": 0.0729310344827586,
+   "ci_method": "iid",
+   "p": 0.9316202208699373,
+   "start": "2023-12-05 14:46:00+00:00",
+   "end": "2026-07-05 23:29:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.04742439797818073,
+ "mde_threshold": 0.05,
+ "power_floor_n": 784,
+ "verdict": "NULL",
+ "verdict_detail": "CI contains 0; powered (MDE 0.0474 <= 0.0500)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 944,
+  "min_slack_min": 0.0,
+  "passed": true,
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 82,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "ps",
+    "liq",
+    "confirm_time"
+   ],
+   "ignored": [],
+   "lookback": "45D",
+   "recent": "1D",
+   "events_fp": "812bf3ebd149f6f7",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "reps": 5,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "mde_threshold": null,
+  "cluster": null,
+  "outcome_horizon": "1 days 00:00:00",
+  "null_kind": "null_fn x5"
+ },
+ "notes": "Tests only the u1007 claim: after PDH/PDL (significant liquidity) is taken, the protected swing is re-swept more than a protected swing the same distance away whose liquidity is untaken. AUDIT: the first run's arbitrary-level null replaced (it scored un-taken protected swings -2.5pp/-2.7pp too). structural null: 871/944 events have >=1 valid control (median 5 candidates); median 60-bar range real 6.28 vs control 5.07",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/update_20261007/protected-swing.py",
+ "runtime_sec": 0.12,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-10-07T06:24:15+00:00",
+ "dropped": {
+  "nan_rows": 73
+ },
+ "null_kind": "null_fn x5",
+ "events_fp": "812bf3ebd149f6f7",
+ "predictors_probed": true,
+ "ci_components": {
+  "phase3_iid": [
+   -0.032376578645235354,
+   0.029632606199770338
+  ],
+  "day_block": [
+   -0.03306084055186505,
+   0.03329453525069459
+  ]
+ },
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 766,
+  "n_clusters": null,
+  "n_eff": 766
+ },
+ "run_id": "2d2109ab2e64439d9fd5bc3497ab23e0",
+ "hyp_key": "2b0db85d359f202f"
+}

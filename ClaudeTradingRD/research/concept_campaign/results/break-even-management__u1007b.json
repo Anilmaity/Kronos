@@ -1,0 +1,206 @@
+{
+ "concept_id": "break-even-management",
+ "reading": "u1007b",
+ "testable": true,
+ "test_type": "rate",
+ "claim": "-",
+ "operationalization": {
+  "rules": [
+   "daily bars, 18:00 NY roll, stub days (n_m1<=600) skipped",
+   "C2 closure: day closes below the prior real day's low (bearish) / above its high (bullish); decide at its close",
+   "level = 50% of that closed candle (high+low)/2",
+   "hit = the next session trades back through the level (bearish: M1 high >= mid; bullish: M1 low <= mid), horizon = next session's M1-bar count",
+   "null = same signed distance from price, same side, same bar count, at matched random moments (+/-30d)",
+   "claim -: after a good closure price should not come back beyond 50% -> hit rate below null"
+  ],
+  "params": {
+   "closure": "close beyond prior day extreme",
+   "level": "50% of closed candle",
+   "horizon": "next session (M1 bars)",
+   "day_open_hour": 18,
+   "min_n_m1": 600,
+   "grid4h": "n/a"
+  }
+ },
+ "params_source": {
+  "closure": "corpus: uW55Tuk-ngY 'if we get a good closure today ... candle two candle 3 continuation'",
+  "level": "corpus: uW55Tuk-ngY 'I don't want to see price come above 50% of this'",
+  "horizon": "declared-before-run: the C3 day that follows the closure",
+  "day_open_hour": "session_window_fit: settled 18:00 NY daily roll",
+  "min_n_m1": "declared-before-run: README stub-day skip as in the rate example",
+  "grid4h": "declared-before-run: no 4h bars used"
+ },
+ "n": 1296,
+ "span": {
+  "start": "2016-01-06 23:00:00+00:00",
+  "end": "2026-07-22 22:00:00+00:00",
+  "years": 10.538
+ },
+ "avg_R": null,
+ "avg_R_gross": null,
+ "win_rate": null,
+ "pf": null,
+ "observed_rate": 0.5702160493827161,
+ "null_rate": 0.5645061728395062,
+ "lift": 1.010114816839803,
+ "control": {
+  "rate": 0.5645061728395062,
+  "reps": 5,
+  "kind": "null_fn x5"
+ },
+ "diff": 0.005709876543209869,
+ "ci_lo": -0.02484953703703705,
+ "ci_hi": 0.03595679012345687,
+ "ci_method": "phase3_iid",
+ "p": 0.7128048521448643,
+ "halves": {
+  "H1": {
+   "n": 609,
+   "diff": -0.013136288998357948,
+   "ci_lo": -0.058152709359605884,
+   "ci_hi": 0.035139573070607555,
+   "ci_method": "iid",
+   "p": 0.580977970535992,
+   "start": "2016-01-06 23:00:00+00:00",
+   "end": "2020-12-31 23:00:00+00:00"
+  },
+  "H2": {
+   "n": 687,
+   "diff": 0.022416302765647655,
+   "ci_lo": -0.018049490538573413,
+   "ci_hi": 0.0643377001455604,
+   "ci_method": "iid",
+   "p": 0.2861738022982843,
+   "start": "2021-01-04 23:00:00+00:00",
+   "end": "2026-07-22 22:00:00+00:00"
+  },
+  "split": "2021-01-01 00:00:00+00:00"
+ },
+ "blocks": {
+  "B1": {
+   "n": 315,
+   "diff": -0.038730158730158615,
+   "ci_lo": -0.10033333333333337,
+   "ci_hi": 0.022920634920634914,
+   "ci_method": "iid",
+   "p": 0.21803836826155054,
+   "start": "2016-01-06 23:00:00+00:00",
+   "end": "2018-08-21 22:00:00+00:00",
+   "block_start": "2016-01-01 13:19:00+00:00",
+   "block_end": "2018-08-22 11:01:00+00:00"
+  },
+  "B2": {
+   "n": 323,
+   "diff": 0.02043343653250773,
+   "ci_lo": -0.04458204334365312,
+   "ci_hi": 0.0854489164086687,
+   "ci_method": "iid",
+   "p": 0.537901987219938,
+   "start": "2018-08-23 22:00:00+00:00",
+   "end": "2021-04-08 22:00:00+00:00",
+   "block_start": "2018-08-22 11:01:00+00:00",
+   "block_end": "2021-04-12 08:43:00+00:00"
+  },
+  "B3": {
+   "n": 324,
+   "diff": 0.01913580246913582,
+   "ci_lo": -0.042623456790123485,
+   "ci_hi": 0.08273148148148157,
+   "ci_method": "iid",
+   "p": 0.5495806605696507,
+   "start": "2021-04-13 22:00:00+00:00",
+   "end": "2023-12-01 23:00:00+00:00",
+   "block_start": "2021-04-12 08:43:00+00:00",
+   "block_end": "2023-12-02 06:25:00+00:00"
+  },
+  "B4": {
+   "n": 334,
+   "diff": 0.020359281437125842,
+   "ci_lo": -0.040119760479041866,
+   "ci_hi": 0.0832335329341316,
+   "ci_method": "iid",
+   "p": 0.5176459181232996,
+   "start": "2023-12-04 23:00:00+00:00",
+   "end": "2026-07-22 22:00:00+00:00",
+   "block_start": "2023-12-02 06:25:00+00:00",
+   "block_end": "2026-07-23 04:07:00+00:00"
+  }
+ },
+ "mde": 0.043458475277589885,
+ "mde_threshold": 0.05,
+ "power_floor_n": 980,
+ "verdict": "NULL",
+ "verdict_detail": "CI contains 0; powered (MDE 0.0435 <= 0.0500)",
+ "sanity_flags": [],
+ "lookahead": {
+  "rows_checked": 1296,
+  "min_slack_min": 0.0,
+  "passed": true,
+  "probe": {
+   "sampled": 20,
+   "n_targeted": 20,
+   "n_cuts": 200,
+   "events_compared": 106,
+   "failures": 0,
+   "examples": [],
+   "columns": [
+    "decision_time",
+    "available_at",
+    "direction",
+    "mid"
+   ],
+   "ignored": [],
+   "lookback": "45D",
+   "recent": "1D",
+   "events_fp": "1626f2cd0b71b34c",
+   "symmetric": true,
+   "passed": true
+  }
+ },
+ "settings": {
+  "reps": 5,
+  "n_boot": 2000,
+  "seed": 20260825,
+  "mde_threshold": null,
+  "cluster": null,
+  "outcome_horizon": "1 days 00:00:00",
+  "null_kind": "null_fn x5"
+ },
+ "notes": "New claim only (daily C2 50% break-even reference). Prior reading 'a' untouched.",
+ "script": "/Users/anil/Projects/Kronos/ClaudeTradingRD/research/concept_campaign/tests/update_20261007/break-even-management.py",
+ "runtime_sec": 0.19,
+ "rules_version": "concept_lab-rules-2 (2026-09-23)",
+ "harness_version": "concept_lab-1.1.0",
+ "data": {
+  "file": "/Users/anil/Projects/Kronos/ClaudeTradingRD/m3_scalper/xau_m1_full.parquet",
+  "start": "2016-01-01 13:19:00+00:00",
+  "end": "2026-07-23 04:07:00+00:00",
+  "years": 10.554,
+  "m1_bars": 3687209
+ },
+ "written_at": "2026-10-07T06:15:49+00:00",
+ "dropped": {
+  "nan_rows": 0
+ },
+ "null_kind": "null_fn x5",
+ "events_fp": "1626f2cd0b71b34c",
+ "predictors_probed": true,
+ "ci_components": {
+  "phase3_iid": [
+   -0.02484953703703705,
+   0.03595679012345687
+  ],
+  "day_block": [
+   -0.0188310185185196,
+   0.029629629629629135
+  ]
+ },
+ "dependence": {
+  "day_block_mean_days": 1,
+  "n_days": 1296,
+  "n_clusters": null,
+  "n_eff": 1296
+ },
+ "run_id": "efdc8759702b427ca6da027ef4c25670",
+ "hyp_key": "937a6ed3caa0b875"
+}
