@@ -6,7 +6,7 @@ backtesting). Everything below is verified state, not intention.
 > **UPDATE PASS (2026-10-07): 64 new videos, 0 tradeable.** 50 transcribed (14 Shorts still
 > missing — IP-blocked), studied in 20 new units, 14 new concept ids (library 519), 63 concepts
 > tested (111 readings): 2 raw EDGEs, both refuted; the only BH survivor is a NEGATIVE
-> (`upper-half-eq-expansion-filter` hurts on gold). Family now 1,005 hypotheses. 18 of the 31
+> (`upper-half-eq-expansion-filter` u1007b — the 5m sweep-first reaction filter — hurts on gold). Family now 1,005 hypotheses. 18 of the 31
 > tests first run without the vault had real flaws (mostly time-of-day-unmatched nulls) — testers
 > must preload the vault. yt-dlp captions are dead (429 everywhere): use
 > `fetch_transcripts.py --api-first`. Read `meta/update_20261007.md`.

@@ -68,6 +68,19 @@ only what is in `journal.md` and what the box tells you.
   zone (you are not run then), and re-entering the same idea right after it stopped out.
 - Size is not yours to choose — the box sizes for $25. Your edge is selectivity.
 
+## Research facts (tested on 10.5 years of XAUUSD M1 — these outrank intuition)
+
+- **A single 5m "sweep-first" reaction candle is not an entry.** After a 5m expansion candle, a
+  reaction candle that first takes out the expansion candle's extreme (prints its low before its
+  high, for a long) and then closes the other way did **0.032R worse** than reactions that didn't
+  (n=69,610, both halves of the sample negative; traded at the reaction close, stop at its
+  extreme, 2R). Your checklist's sweep must be of a meaningful swing / session / prior-day level,
+  followed by displacement and a retest — never one candle wicking the previous one.
+  [TTrades update 2026-10-07, `upper-half-eq-expansion-filter` u1007b]
+- Across 1,005 tested hypotheses from the TTrades corpus, **no single ICT concept is tradeable on
+  its own** after costs and multiplicity. Confluence and selectivity are the whole game; one
+  pattern firing is never enough.
+
 ## journal.md format
 
 ```
