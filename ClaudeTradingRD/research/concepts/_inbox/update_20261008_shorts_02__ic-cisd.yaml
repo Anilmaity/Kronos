@@ -1,0 +1,57 @@
+id: ic-cisd
+name: Intracandle CISD (IC-CISD)
+category: entry
+status: contested
+voice: ttrades
+definition: >
+  Short walkthrough (bearish case) of letting the intracandle CISD form the higher-timeframe
+  wick. The prior candle is a candle 2 closure with a change in the state of delivery that has
+  displaced lower, and candle 3 is opening. The question is "has this wick formed yet?", and it
+  is answered mechanically by waiting for the intracandle change in the state of delivery.
+  Inside candle 3 price makes a new high, which supplies a valid point of interest. The IC-CISD
+  is the close below the level he marks under it. That continuation inside the higher-timeframe
+  candle forms the wick, and the trade is taken lower. Because of how it forms, the previous
+  day low gives about 2R, and the example reaches that 2R.
+timeframes:
+  htf: ["1D"]
+  ltf: []
+  fractal: true
+preconditions:
+- A candle 2 closure with a change in the state of delivery, followed by displacement in the bias direction.
+- Candle 3 (the continuation candle) has opened.
+detection_rules:
+- Inside candle 3, wait for price to make a new extreme against the bias (a new high in the bearish case); that new extreme is the point of interest.
+- Require a close through the level marked under that new extreme. That close is the intracandle CISD, and until it prints the wick has not formed.
+- Once it prints, treat the continuation as the formed higher-timeframe wick and trade the body in the bias direction.
+invalidation:
+- No close through the marked level - the wick has not formed and there is no entry.
+execution:
+  bias: Direction of the candle 2 closure (bearish in the example).
+  entry: On the close of the intracandle CISD inside candle 3.
+  targets: ["previous day low (about 2R in the example)"]
+measurable:
+- share of candle-3 IC-CISD entries for which the previous-day extreme sits at 2R or more
+- hit rate of the previous-day extreme from a candle-3 IC-CISD entry
+sources:
+- video_id: A9QW9SuW0rs
+  title: Let the Intra-Candle CISD Form the HTF Wick
+  quote: has this wick formed yet?
+- video_id: A9QW9SuW0rs
+  title: Let the Intra-Candle CISD Form the HTF Wick
+  quote: wait for that intra-candle change in the state of delivery
+- video_id: A9QW9SuW0rs
+  title: Let the Intra-Candle CISD Form the HTF Wick
+  quote: We make a new high, which gives us a valid point of interest.
+- video_id: A9QW9SuW0rs
+  title: Let the Intra-Candle CISD Form the HTF Wick
+  quote: a continuation inside this higher time frame candle, which forms the wick
+- video_id: A9QW9SuW0rs
+  title: Let the Intra-Candle CISD Form the HTF Wick
+  quote: it gives great risk to reward to our previous day low
+ambiguities:
+- This Short re-cuts Vo2n47RjjMo (same example, same wording), which the library already cites for ic-cisd. It adds no new rule.
+- The level to close below is only pointed at ("this level here"). Whether it is the opening price of the up-close series into the new high is not said, although that is the library's CISD definition.
+- The stop is not stated. The roughly 2R to the previous day low implies a stop at the new high, but that is inference.
+- Neither timeframe is named. Using the previous day low as the target implies that the higher-timeframe candle is daily.
+- Any new high inside candle 3 is treated as a point of interest here. Whether it must sweep a specific earlier high is not stated.
+related: [fractal-model-c3, fractal-model-c2, previous-period-high-low, protected-swing, point-of-interest, htf-wick-formation]

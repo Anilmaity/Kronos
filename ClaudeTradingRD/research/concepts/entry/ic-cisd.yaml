@@ -18,6 +18,16 @@ variants:
     move out forms the continuation inside candle 3, which he takes as the formed daily wick.
     Trade: long, stop on the low, target the daily high, 2R reached by a retest (limit) entry;
     it is not filled and that is accepted.'
+  - 'Short walkthrough (bearish case) of letting the intracandle CISD form the higher-timeframe
+    wick. The prior candle is a candle 2 closure with a change in the state of delivery that
+    has displaced lower, and candle 3 is opening. The question is "has this wick formed yet?",
+    and it is answered mechanically by waiting for the intracandle change in the state of
+    delivery. Inside candle 3 price makes a new high, which supplies a valid point of interest.
+    The IC-CISD is the close below the level he marks under it. That continuation inside the
+    higher-timeframe candle forms the wick, and the trade is taken lower. Because of how it
+    forms, the previous day low gives about 2R, and the example reaches that 2R.
+
+    '
   - 'Restated as the mechanical definition of ''let the wick form'': with a directional expectation
     for the higher-timeframe candle, the candle first shows a short-term counter move (forming
     the wick) and then a shift back - price reaches an important level (fair value gap, swept
@@ -81,6 +91,9 @@ preconditions:
 - The continuation candle has opened.
 - A candle 2 closure exists and candle 3 is forming.
 - A point of interest against the bias is defined (the lows to be run, bullish case).
+- A candle 2 closure with a change in the state of delivery, followed by displacement in the
+  bias direction.
+- Candle 3 (the continuation candle) has opened.
 - Candle 2 closure with a valid CISD on the previous candle.
 - A new continuation (protected swing) formed before the new candle's open.
 - A higher-timeframe candle is open and its wick is still forming.
@@ -107,6 +120,12 @@ detection_rules:
   another sweep.
 - Accept the IC-CISD only after the sweep is followed by an aggressive move out.
 - Treat that continuation as the formed daily wick and trade the body in the bias direction.
+- Inside candle 3, wait for price to make a new extreme against the bias (a new high in the
+  bearish case); that new extreme is the point of interest.
+- Require a close through the level marked under that new extreme. That close is the intracandle
+  CISD, and until it prints the wick has not formed.
+- Once it prints, treat the continuation as the formed higher-timeframe wick and trade the
+  body in the bias direction.
 - Inside the higher-timeframe candle, wait for a reach into an important level against the
   intended direction (FVG, or sweep of a prior low/high).
 - Require a close through the series of opposing candles into that level - this forms the
@@ -145,6 +164,7 @@ invalidation:
 - A reversal off the previous day high (bullish case) - stated as the condition that would
   invalidate the bias.
 - 'Entry not filled on the retest: no trade.'
+- No close through the marked level - the wick has not formed and there is no entry.
 - The protected wick high is traded through.
 - The new extreme formed by the IC-CISD is taken out — the wick was not finished.
 - Price trades back through the wick the continuation formed.
@@ -158,6 +178,8 @@ measurable:
 - share of candle-3 IC-CISD setups where the first candidate swing was consolidation-like
   and a second sweep was required
 - fill rate of retest entries priced for 2R
+- share of candle-3 IC-CISD entries for which the previous-day extreme sits at 2R or more
+- hit rate of the previous-day extreme from a candle-3 IC-CISD entry
 - R achieved by IC-CISD entries vs discretionary pre-CISD entries
 - hit rate of IC-CISD-confirmed wicks (extreme not revisited before the candle closes)
 - R achieved from IC-CISD entries versus waiting for the higher-timeframe close
@@ -197,6 +219,21 @@ sources:
 - video_id: Kv6Y8IA7jYs
   title: Using Intra-Candle CISD to Trade Continuations
   quote: we'll see if we get tagged in, and if not, we don't.
+- video_id: A9QW9SuW0rs
+  title: Let the Intra-Candle CISD Form the HTF Wick
+  quote: has this wick formed yet?
+- video_id: A9QW9SuW0rs
+  title: Let the Intra-Candle CISD Form the HTF Wick
+  quote: wait for that intra-candle change in the state of delivery
+- video_id: A9QW9SuW0rs
+  title: Let the Intra-Candle CISD Form the HTF Wick
+  quote: We make a new high, which gives us a valid point of interest.
+- video_id: A9QW9SuW0rs
+  title: Let the Intra-Candle CISD Form the HTF Wick
+  quote: a continuation inside this higher time frame candle, which forms the wick
+- video_id: A9QW9SuW0rs
+  title: Let the Intra-Candle CISD Form the HTF Wick
+  quote: it gives great risk to reward to our previous day low
 - video_id: RX8vtP3PLYk
   title: Let The Wick Form, Trade The Body (Stop Getting Stopped Out)
   quote: the whole reason I created that concept was to try to mechanically define this logic
@@ -238,6 +275,17 @@ ambiguities:
 - Execution timeframe is not named in the Short.
 - Whether 'previous day high' here is the candle 2 high or the prior day of the chart is not
   explicit.
+- This Short re-cuts Vo2n47RjjMo (same example, same wording), which the library already cites
+  for ic-cisd. It adds no new rule.
+- The level to close below is only pointed at ("this level here"). Whether it is the opening
+  price of the up-close series into the new high is not said, although that is the library's
+  CISD definition.
+- The stop is not stated. The roughly 2R to the previous day low implies a stop at the new
+  high, but that is inference.
+- Neither timeframe is named. Using the previous day low as the target implies that the higher-timeframe
+  candle is daily.
+- Any new high inside candle 3 is treated as a point of interest here. Whether it must sweep
+  a specific earlier high is not stated.
 - The pre-9:30 15-minute preference is said in passing inside one 5-minute/hourly example;
   whether it means the 15-minute replaces the hourly as the HTF candle or as the confirmation
   timeframe is not explicit.
@@ -282,13 +330,14 @@ related:
 - continuation-signature
 - cancel-limit-after-target-run
 - continuation-failure-consolidation
-- wick-trust-test
+- fractal-model-c2
+- previous-period-high-low
 - point-of-interest
+- htf-wick-formation
+- wick-trust-test
 - half-wick-respect
 - c3-with-ic-highest-winrate
 - continuation-order-block
-- htf-wick-formation
-- fractal-model-c2
 timeframes:
   htf:
   - 1D
@@ -316,5 +365,6 @@ contributing_units:
 - update_20261007_edu_01
 - update_20261007_shorts_03
 - update_20261007_shorts_04
-draft_count: 8
+- update_20261008_shorts_02
+draft_count: 9
 voice: ttrades

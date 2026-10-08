@@ -31,6 +31,12 @@ variants:
     do not trade or you trade a reversal day, which requires a separate framework.
 
     '
+  - 'Asked how to know tomorrow''s bias, he answers that it cannot be known before today''s
+    daily candle has closed. If price trades all the way up and closes there today, tomorrow''s
+    bias is probably bullish; if it stays lower, it is bearish. Stop trying to predict bias
+    weeks in advance, and make no prediction until the daily closure is in.
+
+    '
   - 'The stated easiest method for obtaining a daily directional bias: look at the daily chart
     for a candle-2 or candle-3 closure and confirm it with a change in state of delivery on
     the hourly chart. That combination is the bias. Equilibrium, phases of price and relevant
@@ -63,6 +69,7 @@ preconditions:
 - Previous day high, previous day low and previous day EQ are marked.
 - A higher-timeframe candle 2 or candle 3 closure has printed.
 - A daily chart with a completed or forming candle relative to the previous daily candle.
+- The current daily candle has closed.
 - A completed or forming daily candle with a defined relationship to the prior daily candle.
 - A daily chart and an hourly chart of the same instrument.
 detection_rules:
@@ -96,6 +103,9 @@ detection_rules:
 - If there is no daily C2, either stand aside or switch to the reversal-day framework.
 - In the New York session a reversal day is entered off a 15-minute CISD rather than the hourly
   one.
+- Do not set the next day's bias until the current daily candle has closed.
+- 'Read the close: a close up at the high side of the move points to a bullish next day, and
+  a close that stays lower points to a bearish one.'
 - 'Daily candle 2: the daily sweeps the prior daily extreme and closes back inside, with a
   small wick.'
 - 'Daily candle 3: the daily is the expansion candle following a candle 2.'
@@ -116,6 +126,7 @@ invalidation:
   and the new series is tracked instead.
 - No close through occurs before the higher-timeframe candle ends.
 - No hourly CISD in the direction of the daily closure - the bias is not confirmed.
+- Not applicable - a timing rule for when bias may be set.
 - No hourly CISD in the direction of the daily closure.
 - The daily profile contradicts the daily closure.
 - Covered by his separate invalidation-of-daily-bias lesson, not restated here.
@@ -128,6 +139,7 @@ measurable:
 - frequency of the consolidate-then-take-one-side failure mode
 - share of days where daily C2/C3 plus H1 CISD is followed by expansion in that direction
 - how often the hourly CISD arrives late enough to make the bias untradeable that day
+- next-day direction conditional on where the daily candle closes
 - hit rate of the daily direction following C2 closure plus hourly CISD
 - share of days where both conditions are met
 sources:
@@ -174,6 +186,18 @@ sources:
 - video_id: X4XSsv5CNqg
   title: New York Open Live Q&A
   quote: wait for the hourly change in the state of delivering
+- video_id: NXhJ9uvxHbc
+  title: Stop Trying to Predict Your Bias
+  quote: How do I know the bias for tomorrow?
+- video_id: NXhJ9uvxHbc
+  title: Stop Trying to Predict Your Bias
+  quote: We haven't closed today.
+- video_id: NXhJ9uvxHbc
+  title: Stop Trying to Predict Your Bias
+  quote: Stop trying to predict the bias 3 weeks in advance
+- video_id: NXhJ9uvxHbc
+  title: Stop Trying to Predict Your Bias
+  quote: don't try to predict things until you have the daily closure.
 - video_id: WBwoiMDXT2c
   title: New York Open Live Q&A
 - video_id: 0AYGNc9czYc
@@ -210,6 +234,12 @@ ambiguities:
   is not restated here.
 - The New York 15-minute-CISD substitution for a reversal day is asserted in one sentence
   with no conditions attached, and he says a video on it is still to come.
+- This Short re-cuts uW55Tuk-ngY, and the library already holds its last quote from that stream.
+  It adds no new rule.
+- '"Up here" and "stays lower" are only pointed at on the chart. No level (PDH/PDL, EQ or
+  open) is named, so this clip cannot tie the close test to the C2/C3 closure definition.'
+- The bullish read is hedged ("probably bullish"). The Short does not mention the hourly CISD
+  step that this entry's full rule requires.
 - The candle-2 and candle-3 definitions are assumed from his other videos and are not restated
   mechanically in this unit.
 - Whether the daily must be closed or may still be forming when the bias is taken is not stated
@@ -231,6 +261,9 @@ related:
 - consolidation-vs-retracement-test
 - hourly-cisd-confirmation
 - session-timeframe-model-map
+- wait-for-candle-close
+- wait-for-closure-discipline
+- weekly-profile-not-predicted-in-advance
 - daily-profile-confirmation
 - small-wick-expansion-rule
 - timeframe-alignment-pairs
@@ -262,5 +295,6 @@ contributing_units:
 - live_streams_05
 - sunday_sessions_live_q_a_01
 - update_20261007_live_06
-draft_count: 6
+- update_20261008_shorts_02
+draft_count: 7
 voice: ttrades

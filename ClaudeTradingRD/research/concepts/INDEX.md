@@ -1,6 +1,6 @@
 # Concept index — TTrades_edu
 
-**519 concepts** distilled from 431 source videos.
+**519 concepts** distilled from 445 source videos.
 
 | status | n |
 |---|---:|
@@ -36,7 +36,7 @@
 | **c3-with-ic-highest-winrate** — Candle 3 With an Intracandle CISD Is the Highest Win-Rate Part of the Model | ttrades | specified | 3 | 1 | `concepts/entry/c3-with-ic-highest-winrate.yaml` |
 | **cancel-limit-after-target-run** — Cancel The Limit If Price Reaches The Target Before Filling It | guest | specified | 3 | 2 | `concepts/entry/cancel-limit-after-target-run.yaml` |
 | **cheat-code-entry** — Cheat Code Entry (anticipating the mitigation block) | ttrades | specified | 5 | 4 | `concepts/entry/cheat-code-entry.yaml` |
-| **cisd** — Change In The State Of Delivery (CISD) | ttrades | contested | 81 | 61 | `concepts/entry/cisd.yaml` |
+| **cisd** — Change In The State Of Delivery (CISD) | ttrades | contested | 83 | 64 | `concepts/entry/cisd.yaml` |
 | **cisd-skip-at-target** — Skip the CISD Entry When the CISD Level Sits at the Target | ttrades | specified | 3 | 2 | `concepts/entry/cisd-skip-at-target.yaml` |
 | **consequent-encroachment** — Consequent Encroachment (CE) | ttrades | contested | 8 | 6 | `concepts/entry/consequent-encroachment.yaml` |
 | **consolidation-external-liquidity-only** — In A Daily Range, Only The External High And Low Matter | guest | specified | 5 | 1 | `concepts/entry/consolidation-external-liquidity-only.yaml` |
@@ -66,7 +66,7 @@
 | **htf-opening-price-entry** — Enter Around The Higher-Timeframe Opening Price | ttrades | contested | 17 | 12 | `concepts/entry/htf-opening-price-entry.yaml` |
 | **htf-reaction-mss-retrace-entry** — HTF Level Reaction -> LTF Structure Shift -> Retracement Entry | guest | contested | 10 | 4 | `concepts/entry/htf-reaction-mss-retrace-entry.yaml` |
 | **htf-two-entry-opportunities** — Two Entry Opportunities On A Higher-Timeframe Curve, One On A Lower | guest | underspecified | 4 | 2 | `concepts/entry/htf-two-entry-opportunities.yaml` |
-| **ic-cisd** — Intracandle CISD (IC-CISD) | ttrades | contested | 32 | 21 | `concepts/entry/ic-cisd.yaml` |
+| **ic-cisd** — Intracandle CISD (IC-CISD) | ttrades | contested | 35 | 26 | `concepts/entry/ic-cisd.yaml` |
 | **ict-2022-mentorship-model** — The 2022 Mentorship Setup (as he taught it in the old playlist) | ttrades | underspecified | 6 | 4 | `concepts/entry/ict-2022-mentorship-model.yaml` |
 | **ignore-news-wick-in-range-fib** — Exclude The News Wick When Fibbing The Range | ttrades | specified | 4 | 1 | `concepts/entry/ignore-news-wick-in-range-fib.yaml` |
 | **invalidation-first-timeframe-selection** — Choose the Timeframe by Where the Stop Can Go | ttrades | contested | 9 | 7 | `concepts/entry/invalidation-first-timeframe-selection.yaml` |
@@ -131,7 +131,7 @@
 | **engineered-liquidity-before-htf-array** — Price Stops Shy Of The Intended Level And Engineers Liquidity First | guest | underspecified | 4 | 2 | `concepts/liquidity/engineered-liquidity-before-htf-array.yaml` |
 | **external-range-liquidity** — External Range Liquidity | ttrades | contested | 7 | 3 | `concepts/liquidity/external-range-liquidity.yaml` |
 | **fake-smt-strength-switch** — Fake SMT And The Strength Switch | guest | specified | 5 | 1 | `concepts/liquidity/fake-smt-strength-switch.yaml` |
-| **gold-correlated-assets** — Correlated Assets For Gold (gold-euro and gold-pound) | ttrades | contested | 5 | 7 | `concepts/liquidity/gold-correlated-assets.yaml` |
+| **gold-correlated-assets** — Correlated Assets For Gold (gold-euro and gold-pound) | ttrades | contested | 6 | 9 | `concepts/liquidity/gold-correlated-assets.yaml` |
 | **high-resistance-target-adjustment** — Do Not Target A High-Resistance Extreme Directly | ttrades | specified | 5 | 3 | `concepts/liquidity/high-resistance-target-adjustment.yaml` |
 | **high-vs-low-resistance-liquidity** — High Resistance vs Low Resistance Liquidity | ttrades | contested | 34 | 21 | `concepts/liquidity/high-vs-low-resistance-liquidity.yaml` |
 | **inducement-equals-sweep** — Inducement | ttrades | contested | 8 | 5 | `concepts/liquidity/inducement-equals-sweep.yaml` |
@@ -145,7 +145,7 @@
 | **low-expectation-target-selection** — Low-Expectation Day: Target The Failure Swing Right Of The Protected Swing | ttrades | contested | 6 | 3 | `concepts/liquidity/low-expectation-target-selection.yaml` |
 | **old-accumulation-new-distribution** — Old Accumulation Becomes New Distribution | guest | contested | 10 | 2 | `concepts/liquidity/old-accumulation-new-distribution.yaml` |
 | **previous-day-lookback-three-days** — Previous-Day Lookback: Three Days | ttrades | contested | 5 | 4 | `concepts/liquidity/previous-day-lookback-three-days.yaml` |
-| **previous-period-high-low** — Previous Day / Week / Month High & Low | ttrades | contested | 12 | 8 | `concepts/liquidity/previous-period-high-low.yaml` |
+| **previous-period-high-low** — Previous Day / Week / Month High & Low | ttrades | contested | 14 | 13 | `concepts/liquidity/previous-period-high-low.yaml` |
 | **relatively-equal-highs-lows** — Relatively Equal Highs / Lows | ttrades | contested | 11 | 7 | `concepts/liquidity/relatively-equal-highs-lows.yaml` |
 | **relevant-level** — Relevant Level (key level / drawn liquidity) | ttrades | contested | 17 | 10 | `concepts/liquidity/relevant-level.yaml` |
 | **session-high-low** — Session (Killzone) Highs & Lows | ttrades | specified | 5 | 3 | `concepts/liquidity/session-high-low.yaml` |
@@ -155,8 +155,8 @@
 | **smt-divergence-confluence** — SMT Divergence As Confluence | guest | contested | 7 | 6 | `concepts/liquidity/smt-divergence-confluence.yaml` |
 | **smt-in-fair-value-gap** — SMT Inside A Fair Value Gap | ttrades | specified | 3 | 1 | `concepts/liquidity/smt-in-fair-value-gap.yaml` |
 | **smt-invalidation-level** — An SMT Has Its Own Invalidation Level | ttrades | specified | 4 | 2 | `concepts/liquidity/smt-invalidation-level.yaml` |
-| **smt-requires-framework** — SMT Is a Confirmation, Not a Framework | ttrades | contested | 22 | 15 | `concepts/liquidity/smt-requires-framework.yaml` |
-| **smt-reversal-continuation-double** — Reversal SMT, Continuation SMT, Double SMT | ttrades | contested | 11 | 5 | `concepts/liquidity/smt-reversal-continuation-double.yaml` |
+| **smt-requires-framework** — SMT Is a Confirmation, Not a Framework | ttrades | contested | 24 | 19 | `concepts/liquidity/smt-requires-framework.yaml` |
+| **smt-reversal-continuation-double** — Reversal SMT, Continuation SMT, Double SMT | ttrades | contested | 14 | 9 | `concepts/liquidity/smt-reversal-continuation-double.yaml` |
 | **smt-two-chart-layout** — The Two-Pane Layout For Spotting SMT | ttrades | specified | 8 | 4 | `concepts/liquidity/smt-two-chart-layout.yaml` |
 | **strat-pivot-targets** — Previous Candles' Highs And Lows As Sequential Pivot Targets (TheSTRAT) | guest | specified | 4 | 1 | `concepts/liquidity/strat-pivot-targets.yaml` |
 | **swing-point-stop-hunt** — Three-Candle Swing Point And Its Stop Hunt | guest | specified | 5 | 1 | `concepts/liquidity/swing-point-stop-hunt.yaml` |
@@ -185,7 +185,7 @@
 | **continuation-failure-short-term-target** — Short-Term Target Already Taken (continuation invalidator) | ttrades | contested | 14 | 11 | `concepts/model/continuation-failure-short-term-target.yaml` |
 | **continuation-over-reversal** — Continuation-Only Doctrine | ttrades | contested | 32 | 28 | `concepts/model/continuation-over-reversal.yaml` |
 | **cot-commercial-net-check** — COT Commercial Net Position Check At A New Quarter | guest | specified | 4 | 1 | `concepts/model/cot-commercial-net-check.yaml` |
-| **daily-bias-c2-c3-h1-cisd** — Daily Bias = Daily C2/C3 Closure Confirmed by H1 CISD | ttrades | contested | 29 | 22 | `concepts/model/daily-bias-c2-c3-h1-cisd.yaml` |
+| **daily-bias-c2-c3-h1-cisd** — Daily Bias = Daily C2/C3 Closure Confirmed by H1 CISD | ttrades | contested | 31 | 26 | `concepts/model/daily-bias-c2-c3-h1-cisd.yaml` |
 | **daily-bias-framework** — Previous Candle High / Low Bias (intraday and daily) | ttrades | contested | 43 | 32 | `concepts/model/daily-bias-framework.yaml` |
 | **daily-bias-requirement** — Is A Daily Bias Required Before Entry? | guest | contested | 8 | 6 | `concepts/model/daily-bias-requirement.yaml` |
 | **daily-candle-profile-open-low-first** — Daily Candle Profile - Open Low First | ttrades | contested | 9 | 4 | `concepts/model/daily-candle-profile-open-low-first.yaml` |
@@ -201,9 +201,9 @@
 | **four-entry-models** — The Four Numbered Entry Models (plus BPR) | ttrades | specified | 6 | 6 | `concepts/model/four-entry-models.yaml` |
 | **fractal-model-c2** — Candle 2 Closure (the reversal candle) | ttrades | contested | 51 | 46 | `concepts/model/fractal-model-c2.yaml` |
 | **fractal-model-c3** — Candle 3 Continuation (the easier trade) | ttrades | contested | 46 | 35 | `concepts/model/fractal-model-c3.yaml` |
-| **fractal-model-c4** — Candle 4 (second continuation candle) | ttrades | contested | 20 | 18 | `concepts/model/fractal-model-c4.yaml` |
+| **fractal-model-c4** — Candle 4 (second continuation candle) | ttrades | contested | 23 | 23 | `concepts/model/fractal-model-c4.yaml` |
 | **framework-transfer** — Framework Transfer | ttrades | underspecified | 3 | 1 | `concepts/model/framework-transfer.yaml` |
-| **ideal-formation** — Ideal Formation (closure and protected swing in the same bar) | ttrades | contested | 13 | 12 | `concepts/model/ideal-formation.yaml` |
+| **ideal-formation** — Ideal Formation (closure and protected swing in the same bar) | ttrades | contested | 20 | 23 | `concepts/model/ideal-formation.yaml` |
 | **indicator-print-conditions** — What Counts As A Valid Model (closure plus CISD) | ttrades | contested | 19 | 11 | `concepts/model/indicator-print-conditions.yaml` |
 | **inducement-model** — The Inducement Model | ttrades | contested | 6 | 4 | `concepts/model/inducement-model.yaml` |
 | **internal-external-liquidity-model** — Internal & External Liquidity Model | ttrades | contested | 10 | 7 | `concepts/model/internal-external-liquidity-model.yaml` |
@@ -309,7 +309,7 @@
 | **take-the-risk** — Take the Risk (time passes regardless) | ttrades | underspecified | 0 | 2 | `concepts/psychology/take-the-risk.yaml` |
 | **tilt-stop-rule** — Rule-Based Step-Away (edge not in play) | guest | underspecified | 3 | 1 | `concepts/psychology/tilt-stop-rule.yaml` |
 | **wait-for-candle-close** — Wait For Candle Close | ttrades | contested | 8 | 5 | `concepts/psychology/wait-for-candle-close.yaml` |
-| **wait-for-closure-discipline** — Backtest-to-Live Gap Comes From Acting Before the Candle Closes | ttrades | contested | 6 | 4 | `concepts/psychology/wait-for-closure-discipline.yaml` |
+| **wait-for-closure-discipline** — Backtest-to-Live Gap Comes From Acting Before the Candle Closes | ttrades | contested | 8 | 9 | `concepts/psychology/wait-for-closure-discipline.yaml` |
 | **weak-longs-weak-shorts** — Weak Longs And Weak Shorts | guest | specified | 4 | 1 | `concepts/psychology/weak-longs-weak-shorts.yaml` |
 | **weekly-written-game-plan** — Written Weekly Game Plan | guest | specified | 5 | 1 | `concepts/psychology/weekly-written-game-plan.yaml` |
 
@@ -354,7 +354,7 @@
 | **low-probability-day-checklist** — Low Probability Day / Session Checklist | guest | specified | 9 | 1 | `concepts/risk/low-probability-day-checklist.yaml` |
 | **max-expansion-deviation-no-trade** — Do Not Trade Once The Max Expansion Deviation Is Already Reached | guest | specified | 3 | 2 | `concepts/risk/max-expansion-deviation-no-trade.yaml` |
 | **max-one-trade-per-day** — One Trade Per Day Cap | ttrades | contested | 26 | 17 | `concepts/risk/max-one-trade-per-day.yaml` |
-| **mechanical-trade-management** — Mechanical Management - Validation Or Invalidation Only | ttrades | contested | 7 | 8 | `concepts/risk/mechanical-trade-management.yaml` |
+| **mechanical-trade-management** — Mechanical Management - Validation Or Invalidation Only | ttrades | contested | 10 | 12 | `concepts/risk/mechanical-trade-management.yaml` |
 | **no-draw-no-trade** — No Monthly Draw And No Weekly Expansion Read, No Trade | guest | contested | 7 | 6 | `concepts/risk/no-draw-no-trade.yaml` |
 | **no-reversal-means-still-going** — If It Does Not Reverse Against You, It Is Still Going | guest | specified | 5 | 4 | `concepts/risk/no-reversal-means-still-going.yaml` |
 | **no-size-reduction-in-drawdown** — Do Not Reduce Position Size In Drawdown (with the arithmetic) | ttrades | specified | 4 | 3 | `concepts/risk/no-size-reduction-in-drawdown.yaml` |
@@ -479,7 +479,7 @@
 | **second-continuation-confirmation** — Wait For The Second Continuation Break | guest | underspecified | 4 | 1 | `concepts/structure/second-continuation-confirmation.yaml` |
 | **shallow-retracement** — Shallow Retracement Requirement (deep retracement = reversal) | ttrades | contested | 3 | 4 | `concepts/structure/shallow-retracement.yaml` |
 | **small-wick-supports-expansion** — Small Wick Supports Expansion | ttrades | contested | 5 | 3 | `concepts/structure/small-wick-supports-expansion.yaml` |
-| **smt-swing-point-substitute** — SMT As A Swing Point Substitute | ttrades | contested | 17 | 17 | `concepts/structure/smt-swing-point-substitute.yaml` |
+| **smt-swing-point-substitute** — SMT As A Swing Point Substitute | ttrades | contested | 20 | 20 | `concepts/structure/smt-swing-point-substitute.yaml` |
 | **strat-candle-taxonomy** — TheSTRAT Candle Taxonomy (1 / 2 / 3) | guest | specified | 6 | 5 | `concepts/structure/strat-candle-taxonomy.yaml` |
 | **strat-inside-bar** — Inside Bar Is A Consolidation (TheSTRAT) | mixed | contested | 6 | 3 | `concepts/structure/strat-inside-bar.yaml` |
 | **strat-outside-bar** — Outside Bar Is A Power Of Three (TheSTRAT) | guest | specified | 3 | 2 | `concepts/structure/strat-outside-bar.yaml` |
@@ -518,7 +518,7 @@
 | **daily-bias-candle-formation** — Daily Bias From Candle Formation (including inside days) | ttrades | specified | 5 | 3 | `concepts/time/daily-bias-candle-formation.yaml` |
 | **daily-open-eighteen-hundred** — The Daily Open He Uses | ttrades | contested | 6 | 3 | `concepts/time/daily-open-eighteen-hundred.yaml` |
 | **daily-profile-session-windows** — Session Windows for Daily Profiles (London 2-5, New York a.m. 8:30-12) | ttrades | underspecified | 3 | 4 | `concepts/time/daily-profile-session-windows.yaml` |
-| **daily-wick-confirmation-timeframes** — Confirming The Day's High Or Low: Which Timeframe, By Session | ttrades | contested | 17 | 9 | `concepts/time/daily-wick-confirmation-timeframes.yaml` |
+| **daily-wick-confirmation-timeframes** — Confirming The Day's High Or Low: Which Timeframe, By Session | ttrades | contested | 20 | 13 | `concepts/time/daily-wick-confirmation-timeframes.yaml` |
 | **driver-pairing-rule** — Driver Pairing - Continuation Versus Reversal | guest | specified | 5 | 1 | `concepts/time/driver-pairing-rule.yaml` |
 | **economic-calendar-filter** — Economic Calendar Filter (three-tier news avoidance) | mixed | contested | 20 | 16 | `concepts/time/economic-calendar-filter.yaml` |
 | **entry-time-window** — Entry Time Window (and rejection of kill zones) | ttrades | contested | 42 | 34 | `concepts/time/entry-time-window.yaml` |

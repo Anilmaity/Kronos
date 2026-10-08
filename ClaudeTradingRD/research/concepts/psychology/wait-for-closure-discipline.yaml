@@ -1,10 +1,17 @@
 id: wait-for-closure-discipline
 name: Backtest-to-Live Gap Comes From Acting Before the Candle Closes
-definition: 'Repeated live at Nick when he entered on the 15-second before the 5-minute candle
-  closed: wait for the five-minute closure; only once the 5-minute closes does a valid model
-  exist.'
+definition: 'Asked why trading only feels good in backtesting, he gives two causes. In a backtest
+  you let the candles close: you skip ahead until the close and then take the trade. You also
+  leave the trade alone and skip forward to see whether the stop or the TP is hit. Live, traders
+  make decisions on active candles before they close and actively manage trades by moving
+  the stop, and both break the strategy. His remedy, hedged as his usual diagnosis, is to
+  stop messing with your trades and wait for your closures.
+
+  '
 variants:
   definition:
+  - 'Repeated live at Nick when he entered on the 15-second before the 5-minute candle closed:
+    wait for the five-minute closure; only once the 5-minute closes does a valid model exist.'
   - 'His stated single most common diagnosis for a trader who backtests well and loses live:
     in the backtest every candle is already closed, so the rules are applied to closed candles;
     live, the trader acts on a still-forming candle and anticipates a closure that never happens.
@@ -18,6 +25,8 @@ status: contested
 preconditions:
 - n/a
 detection_rules:
+- Evaluate entries on closed candles only, as the backtest did.
+- After entry, do not move the stop or intervene before the stop or target is hit.
 - No entry on the execution timeframe until the paired higher-timeframe candle has closed.
 - Every rule in the model is evaluated on a closed candle of the relevant timeframe.
 - A still-forming candle produces no signal, however it currently looks.
@@ -32,6 +41,21 @@ measurable:
 - difference in signal count and expectancy between a closed-bar detector and one allowed
   to fire intrabar
 sources:
+- video_id: qzfBzzVoecU
+  title: Stop Messing With Your Trades, Wait for Candle Closures
+  quote: only good at trading when I'm backtesting
+- video_id: qzfBzzVoecU
+  title: Stop Messing With Your Trades, Wait for Candle Closures
+  quote: You're skipping ahead until it closes, then you're taking a trade.
+- video_id: qzfBzzVoecU
+  title: Stop Messing With Your Trades, Wait for Candle Closures
+  quote: making decisions on active candles prior to their closure
+- video_id: qzfBzzVoecU
+  title: Stop Messing With Your Trades, Wait for Candle Closures
+  quote: moving your stop loss, messing with it
+- video_id: qzfBzzVoecU
+  title: Stop Messing With Your Trades, Wait for Candle Closures
+  quote: stop messing with your trades, wait for your closures.
 - video_id: h1ZQWWQDhKA
   title: TTrades MNQ Cup - Afternoon Session
   quote: Wait for a five minute closure, bro.
@@ -45,6 +69,11 @@ sources:
   title: New York Open Live Q&A
   quote: Stop messing with your trades. Wait for your closures.
 ambiguities:
+- This Short re-cuts uW55Tuk-ngY, which the library already cites with the same closing line.
+  It adds no new rule.
+- The Short does not say which timeframe's closure governs.
+- It is offered as a common diagnosis ("I could be wrong", "most of the time"), with no evidence
+  attached.
 - Speaker attribution by turn-taking (Nick is the one entering).
 - The intracandle CISD (ic-cisd) is an explicit exception in his own model - it fires inside
   a higher-timeframe candle - so 'wait for the closure' means the closure of the timeframe
@@ -52,20 +81,22 @@ ambiguities:
 - He also says elsewhere to reverse engineer before ever backtesting, but does not define
   what reverse engineering means procedurally.
 related:
+- wait-for-candle-close
+- mechanical-trade-management
+- backtesting-protocol
 - indicator-print-conditions
 - ic-cisd
 - wick-trust-test
 - time-based-exit-htf-close
 - pattern-trading-error
 timeframes:
-  htf:
-  - 5m
-  ltf:
-  - 15s
+  htf: []
+  ltf: []
   fractal: true
 contributing_units:
 - live_streams_01
 - update_20261007_live_02
 - update_20261007_live_06
-draft_count: 3
+- update_20261008_shorts_02
+draft_count: 4
 voice: ttrades

@@ -11,6 +11,13 @@ definition: 'The targeting rule of the fractal model, and it is deliberately sim
   bias direction that has not yet been taken.'
 variants:
   definition:
+  - 'Price runs out a whole range and prints a candle 2 closure. The targets for the move
+    up are the previous highs. A high that has already been taken out is deliberately left
+    unmarked; only highs that have not been taken out count as targets. In the example price
+    takes all of them. His summary is to keep targets very simple: whatever the higher-timeframe
+    reference is supplies the targets, so focus on previous highs and lows.
+
+    '
   - 'The high and low of the previous completed daily, weekly or monthly candle, extended
     horizontally over the current period. They serve exactly two functions in this corpus:
     as a draw on liquidity (the target price is expected to reach) and as a level off which
@@ -31,6 +38,7 @@ aliases:
 - PDH/PDL
 preconditions:
 - A valid swing point / model on the reference timeframe.
+- A candle 2 closure on the reference timeframe.
 - The previous period's candle has closed.
 detection_rules:
 - Identify the candle you are trading away from (candle 2).
@@ -41,6 +49,9 @@ detection_rules:
 - Escalate one timeframe up for the runner target (e.g. daily entry -> weekly swing extreme).
 - 'SMT rule: a target counts as satisfied when the correlated asset takes it out.'
 - 'Feasibility check: do not expect all targets in one day - ''that''s too much daily range''.'
+- After a candle 2 closure, mark the previous highs (bullish) or lows (bearish) on the higher-timeframe
+  reference as targets.
+- Skip any high (or low) that has already been taken out.
 - PDH := high of the previous daily candle; PDL := low of the previous daily candle. Same
   construction for week and month.
 - 'Draw case: if the current period is not consolidating inside the previous range, expect
@@ -51,12 +62,14 @@ detection_rules:
   level to become the draw.'
 - Trend supplies the default choice of side when both are untaken (uptrend -> previous high).
 invalidation:
+- Not applicable - a targeting rule.
 - A close outside the previous range in the direction of the level converts the reversal read
   into a continuation read.
 measurable:
 - hit rate of the first previous-candle extreme vs the second and third
 - R achieved by taking partial at the short-term target and holding a runner (worked examples
   reached 1:11 and 1:16)
+- hit rate of untaken previous highs/lows after a candle 2 closure vs an equidistant level
 - frequency with which a day takes PDH, PDL, both, or neither
 - hit rate of the reversal read (reach-without-close-outside -> opposite level reached next
   period)
@@ -77,6 +90,21 @@ sources:
 - video_id: CqMIh-Vvhbg
   title: Intro To TTrades Fractal Model [Indicator & Settings]
   quote: this previous day's low has not been taken
+- video_id: LlpzUXZStfk
+  title: Using Previous Highs as Targets Within the Fractal Model
+  quote: why am I not marking out this high here?
+- video_id: LlpzUXZStfk
+  title: Using Previous Highs as Targets Within the Fractal Model
+  quote: it's already been taken out
+- video_id: LlpzUXZStfk
+  title: Using Previous Highs as Targets Within the Fractal Model
+  quote: I'm focusing on those highs that haven't been taken out
+- video_id: LlpzUXZStfk
+  title: Using Previous Highs as Targets Within the Fractal Model
+  quote: keep your targets very simple
+- video_id: LlpzUXZStfk
+  title: Using Previous Highs as Targets Within the Fractal Model
+  quote: Focus on those previous highs and lows.
 - video_id: g3oDYq4P9ZE
   title: ICT Daily Bias - The Only Video You Will Ever Need!
 - video_id: YESqIoA7Wyg
@@ -89,6 +117,11 @@ ambiguities:
 - No rule chooses between this previous-candle-extreme target set and the standard-deviation
   projections, which are also called targets and generally sit elsewhere.
 - '''Too much daily range'' is judged by eye - no ADR figure is used in this unit.'
+- This Short re-cuts A4NasIa371c (same "why am I not marking out this high here" line), which
+  the library already cites. It adds no new rule.
+- No limit is given on how far back to keep marking untaken highs. The example marks three.
+- The higher timeframe is not named, and the Short does not say whether "previous highs" means
+  candle highs or swing highs.
 - The distinction that carries all the weight — 'reach' vs 'close outside' — is used consistently
   in examples but the speaker also says 'displace', without defining it.
 - No threshold defines 'consolidation' (the no-bias case); on an inside bar he simply marks
@@ -102,6 +135,8 @@ related:
 - relatively-equal-highs-lows
 - partial-profit-taking
 - average-daily-range
+- target-liquidity-and-imbalances
+- fractal-model-c2
 - three-candle-outcomes
 - daily-bias-framework
 - failure-to-displace
@@ -130,5 +165,6 @@ execution:
 contributing_units:
 - build_a_model_intro_to_ttrades_fractal_model_01
 - the_foundation_01
-draft_count: 2
+- update_20261008_shorts_02
+draft_count: 3
 voice: ttrades
