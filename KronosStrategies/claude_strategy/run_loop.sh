@@ -9,6 +9,20 @@ mkdir -p logs journal_archive
 CYCLE_TIMEOUT=240
 fails=0
 
+# Auth. The launchd/tmux (GUI) context reads Claude's keychain credentials, whose rotating
+# refresh token is invalidated whenever an SSH session refreshes the file copy — then every
+# cycle 401s (2026-10-08). So pass a token explicitly: a long-lived one from
+# `claude setup-token` saved in .oauth_token (preferred), else the access token that SSH
+# sessions keep fresh in ~/.claude/.credentials.json (bridge: valid ~8h after a refresh).
+auth_env() {
+  if [ -s "$HOME/claude-strategy/.oauth_token" ]; then
+    CLAUDE_CODE_OAUTH_TOKEN="$(tr -d '[:space:]' < "$HOME/claude-strategy/.oauth_token")"
+  else
+    CLAUDE_CODE_OAUTH_TOKEN="$(python3 -c 'import json,os; print(json.load(open(os.path.expanduser("~/.claude/.credentials.json")))["claudeAiOauth"]["accessToken"])' 2>/dev/null)"
+  fi
+  export CLAUDE_CODE_OAUTH_TOKEN
+}
+
 while true; do
   now=$(date -u +%FT%TZ)
   dow=$(date -u +%u); hh=$(date -u +%H)
@@ -16,6 +30,7 @@ while true; do
   if [ "$dow" -le 5 ] && [ "$hh" -ge 7 ] && [ "$hh" -lt 20 ]; then
     echo "=== $now cycle" | tee -a "$log"
     prompt=$(sed "s/{{NOW}}/$now/" cycle_prompt.md)
+    auth_env
     # perl alarm = portable timeout (macOS has no coreutils timeout)
     if perl -e 'alarm shift; exec @ARGV' "$CYCLE_TIMEOUT" \
          claude -p "$prompt" \
