@@ -215,6 +215,25 @@ def _lookup_order_by_client_id(base_url: str, account_id: str, headers: dict,
     return "absent", None
 
 
+# ponytail: a fixed ~50 s watch; a fill later than that still lands untracked (the
+# copy bot saw one execute 2 min late on 2026-10-07) -- an orphan sweep is the upgrade.
+_LANDING_WAITS_SEC = (2, 3, 5, 5, 10, 10, 15)
+
+
+def _await_landing(base_url: str, account_id: str, headers: dict,
+                   client_id: str) -> str | None:
+    """positionId of an order whose POST got no ack but which reached the broker
+    anyway, else None. Only looks -- never re-POSTs."""
+    if not client_id:
+        return None
+    for wait in _LANDING_WAITS_SEC:
+        time.sleep(wait)
+        state, pid = _lookup_order_by_client_id(base_url, account_id, headers, client_id)
+        if state == "found" and pid:
+            return pid
+    return None
+
+
 def _post_order_with_retry(base_url: str, account_id: str, headers: dict,
                            payload: dict, side: str, broker_symbol: str,
                            volume: float, stop_loss: float,
@@ -266,6 +285,13 @@ def _post_order_with_retry(base_url: str, account_id: str, headers: dict,
 
         # Only a transient failure (5xx / timeout / connection) reaches here.
         if attempt >= max_retries:
+            # No ack is not "not placed": on 2026-10-07 two HTTP-504 entries filled
+            # 19 s / 37 s later and ran untracked by the DB, the guard and the kill-switch.
+            landed = _await_landing(base_url, account_id, headers, client_id)
+            if landed:
+                log.warning("[MetaAPI] clientId=%s landed after no ack -- adopted positionId=%s",
+                            client_id, landed)
+                return landed
             log.error("[MetaAPI] order not placed after %d attempt(s) (clientId=%s) -- giving up",
                       attempt + 1, client_id)
             return None
@@ -395,10 +421,9 @@ def place_market_order(
         log.error("[MetaAPI] META_API_TOKEN / META_ACCOUNT_ID not configured")
         return None
 
-    # opt15 Task 2: tag the order so a retry can verify-before-resend.
-    # With retries disabled the payload stays byte-identical to the old path.
-    if _order_max_retries() > 0:
-        payload["clientId"] = f"kr-{uuid4().hex[:16]}"
+    # Always tag the order so an unacked POST can be found at the broker
+    # (opt15 Task 2 verify-before-resend, and the no-ack adoption above).
+    payload["clientId"] = f"kr-{uuid4().hex[:16]}"
 
     return _post_order_with_retry(
         _trading_url(), _ACCOUNT, _headers(), payload,

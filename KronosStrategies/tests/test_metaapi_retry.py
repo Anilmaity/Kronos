@@ -234,7 +234,7 @@ def test_4xx_never_retried(monkeypatch):
     assert get_mock.call_count == 0             # 4xx -> no verification lookup
 
 
-def test_retries_zero_single_attempt_no_client_id(monkeypatch):
+def test_retries_zero_single_post_then_watches_and_gives_up(monkeypatch):
     monkeypatch.setenv("META_ORDER_MAX_RETRIES", "0")
     c = _client(monkeypatch)
     seen = {}
@@ -243,15 +243,41 @@ def test_retries_zero_single_attempt_no_client_id(monkeypatch):
         seen["payload"] = json
         raise mc.requests.Timeout("boom")
 
-    post_mock, get_mock = _patch_http(monkeypatch, post)
+    post_mock, get_mock = _patch_http(monkeypatch, post)   # lookups always empty
 
     result = c.place_market_order(side="BUY", symbol="XAU_USD", volume=0.05,
                                   stop_loss=4490.0, take_profit=4520.0)
 
     assert result is None
-    assert post_mock.call_count == 1            # exact old behavior: one attempt
-    assert get_mock.call_count == 0             # no verification lookup
-    assert "clientId" not in seen["payload"]    # retries disabled -> original payload
+    assert post_mock.call_count == 1            # one POST, never re-sent
+    assert seen["payload"]["clientId"].startswith("kr-")   # always tagged
+    assert get_mock.call_count == 2 * len(mc._LANDING_WAITS_SEC)   # watched, then gave up
+    assert seen["payload"]["clientId"] in c._last_order_error
+
+
+def test_no_ack_order_that_lands_late_is_adopted(monkeypatch):
+    """2026-10-07: HTTP 504, no retry, yet the order filled ~20 s later."""
+    monkeypatch.setenv("META_ORDER_MAX_RETRIES", "0")
+    c = _client(monkeypatch)
+    state = {"cid": None, "gets": 0}
+
+    def post(url, headers=None, json=None, timeout=None):
+        state["cid"] = json["clientId"]
+        return FakeResp(504, text="gateway timeout")
+
+    def get(url, headers=None, timeout=None):
+        state["gets"] += 1
+        if state["gets"] <= 2:                  # first poll: positions + orders empty
+            return FakeResp(200, [])
+        return FakeResp(200, [{"clientId": state["cid"], "id": "POS-LATE"}])
+
+    post_mock, _ = _patch_http(monkeypatch, post, get)
+
+    result = c.place_market_order(side="SELL", symbol="XAU_USD", volume=0.02,
+                                  stop_loss=4126.0, take_profit=4103.52)
+
+    assert result == "POS-LATE"
+    assert post_mock.call_count == 1
 
 
 def test_max_retries_exhausted_returns_none(monkeypatch):
