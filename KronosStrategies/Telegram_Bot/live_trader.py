@@ -1338,10 +1338,30 @@ def _infer_close_reason(last_price, last_profit, tp, sl) -> str:
     return "tp" if abs(last_price - tp) <= abs(last_price - sl) else "sl"
 
 
+def _own_and_duplicates(cands: list[dict] | None, o: dict) -> tuple[dict | None, list[dict]]:
+    """Split the broker positions carrying one leg's tag into the slice's own
+    position and duplicates. A timed-out leg POST can execute minutes after the
+    retry went through (2026-10-07, signal 7736 TP5: a second 0.04 lot ran
+    untracked and lost $38.72). Only a position matching the recorded ticket is
+    "own"; without exactly one match nothing is called a duplicate."""
+    if not cands:
+        return None, []
+    if len(cands) == 1:
+        return cands[0], []
+    ids = {str(o.get("ticket_id")), str(o.get("broker_position_id"))}
+    own = [p for p in cands if str(p.get("id")) in ids]
+    if len(own) != 1:
+        log.error("[%s] %d broker positions share this leg's tag, none clearly ours: %s",
+                  o.get("tp_index"), len(cands), [p.get("id") for p in cands])
+        return cands[-1], []
+    return own[0], [p for p in cands if p is not own[0]]
+
+
 async def reconcile_broker() -> None:
     """Reconcile tracked signals against broker positions/orders (broker truth).
 
-    Read-only against MetaAPI. Detects fills (pending limit -> live position),
+    Read-only against MetaAPI, except that it closes a duplicate position of a
+    tracked leg (see _own_and_duplicates). Detects fills (pending limit -> live position),
     snapshots live PnL, and confirms slice closes/cancels. When every slice of a
     signal is terminal it concludes the signal from broker state — recording the
     real outcome + PnL and unblocking the no-pyramiding guard on reality, rather
@@ -1379,7 +1399,7 @@ async def reconcile_broker() -> None:
         for p in positions:
             m = _TAG_RE.search(p.get("comment") or "")
             if m:
-                pos_by_tag[(int(m.group(1)), int(m.group(2)))] = p
+                pos_by_tag.setdefault((int(m.group(1)), int(m.group(2))), []).append(p)
         for o in orders:
             m = _TAG_RE.search(o.get("comment") or "")
             if m:
@@ -1405,7 +1425,12 @@ async def reconcile_broker() -> None:
             pos_by_tag, ord_by_tag = maps
             idx = o["tp_index"]
             prev = o.get("broker_state") or ("filled" if o.get("kind") == "market" else "pending")
-            bpos = pos_by_tag.get((sid_i, idx))
+            bpos, dupes = _own_and_duplicates(pos_by_tag.get((sid_i, idx)), o)
+            for d in dupes:
+                ok = await loop.run_in_executor(
+                    None, ACCOUNTS_BY_LABEL[label].close_position, str(d.get("id")))
+                log.error("[%s:%s] TP%d DUPLICATE position %s (slice is %s) — closed=%s",
+                          sid_i, label, idx, d.get("id"), bpos.get("id"), ok)
             bord = ord_by_tag.get((sid_i, idx))
 
             if bpos is not None:                       # slice is a live position
