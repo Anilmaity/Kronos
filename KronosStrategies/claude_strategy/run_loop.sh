@@ -2,8 +2,8 @@
 # Claude Strategy loop (runs inside tmux session "claude-strategy" on reaper, or on the
 # operator's Mac since 2026-10-13 while reaper is offline -- never on both at once).
 # User settings and MCP servers are not loaded: the cycle sees only this folder's CLAUDE.md.
-# In trading hours (Mon-Fri 07:00-20:00 UTC) one `claude -p` cycle every 5 min;
-# outside them only `status`, so a day lock still closes an open trade.
+# 24/5 while the market is open (one `claude -p` cycle every 5 min); while it is closed
+# only `status`, so a day lock still closes an open trade.
 # Exits after 5 failed cycles in a row so launchd (via start.sh) restarts it.
 cd "$(dirname "$0")" || exit 1
 export PATH="$HOME/.local/bin:/opt/homebrew/bin:/usr/local/bin:$PATH"
@@ -26,11 +26,24 @@ auth_env() {
   if [ -n "$CLAUDE_CODE_OAUTH_TOKEN" ]; then export CLAUDE_CODE_OAUTH_TOKEN; else unset CLAUDE_CODE_OAUTH_TOKEN; fi
 }
 
+# The box's market hours (shared/market_timing.py): Sun 22:00 - Fri 21:00 UTC, minus the
+# daily 21:00-22:00 maintenance. Args (for testing): ISO weekday 1-7, UTC hour.
+market_open() {
+  local dow=${1:-$(date -u +%u)} hh=${2:-$(date -u +%H)}
+  [ "$hh" -eq 21 ] && return 1
+  case $dow in
+    6) return 1 ;;
+    5) [ "$hh" -lt 21 ] ;;
+    7) [ "$hh" -ge 22 ] ;;
+    *) return 0 ;;
+  esac
+}
+[ "${1:-}" = "--market-open" ] && { market_open "$2" "$3"; exit; }
+
 while true; do
   now=$(date -u +%FT%TZ)
-  dow=$(date -u +%u); hh=$(date -u +%H)
   log="logs/$(date -u +%F).log"
-  if [ "$dow" -le 5 ] && [ "$hh" -ge 7 ] && [ "$hh" -lt 20 ]; then
+  if market_open; then
     echo "=== $now cycle" | tee -a "$log"
     prompt=$(sed "s/{{NOW}}/$now/" cycle_prompt.md)
     auth_env
@@ -39,8 +52,7 @@ while true; do
          claude -p "$prompt" \
            --setting-sources project,local --strict-mcp-config \
            --allowedTools "Bash(ssh kronos-claude:*)" "Read" "Edit(journal.md)" \
-                          "Write(journal.md)" "Write(journal_archive/**)" \
-                          "Edit(lessons.md)" "Write(lessons.md)" \
+                          "Edit(journal_archive/**)" "Edit(lessons.md)" \
          2>&1 | tee -a "$log"; [ "${PIPESTATUS[0]}" -eq 0 ]; then
       fails=0
     else
