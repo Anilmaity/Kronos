@@ -1,5 +1,7 @@
 #!/bin/bash
-# Claude Strategy loop (runs inside tmux session "claude-strategy" on reaper).
+# Claude Strategy loop (runs inside tmux session "claude-strategy" on reaper, or on the
+# operator's Mac since 2026-10-13 while reaper is offline -- never on both at once).
+# User settings and MCP servers are not loaded: the cycle sees only this folder's CLAUDE.md.
 # In trading hours (Mon-Fri 07:00-20:00 UTC) one `claude -p` cycle every 5 min;
 # outside them only `status`, so a day lock still closes an open trade.
 # Exits after 5 failed cycles in a row so launchd (via start.sh) restarts it.
@@ -20,7 +22,8 @@ auth_env() {
   else
     CLAUDE_CODE_OAUTH_TOKEN="$(python3 -c 'import json,os; print(json.load(open(os.path.expanduser("~/.claude/.credentials.json")))["claudeAiOauth"]["accessToken"])' 2>/dev/null)"
   fi
-  export CLAUDE_CODE_OAUTH_TOKEN
+  # Neither file (a Mac whose only login is the keychain): use claude's own login.
+  if [ -n "$CLAUDE_CODE_OAUTH_TOKEN" ]; then export CLAUDE_CODE_OAUTH_TOKEN; else unset CLAUDE_CODE_OAUTH_TOKEN; fi
 }
 
 while true; do
@@ -34,6 +37,7 @@ while true; do
     # perl alarm = portable timeout (macOS has no coreutils timeout)
     if perl -e 'alarm shift; exec @ARGV' "$CYCLE_TIMEOUT" \
          claude -p "$prompt" \
+           --setting-sources project,local --strict-mcp-config \
            --allowedTools "Bash(ssh kronos-claude:*)" "Read" "Edit(journal.md)" \
                           "Write(journal.md)" "Write(journal_archive/**)" \
                           "Edit(lessons.md)" "Write(lessons.md)" \
