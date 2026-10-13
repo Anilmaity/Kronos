@@ -114,6 +114,12 @@ ACT_ON_MANAGEMENT = os.getenv("TG_ACT_ON_MANAGEMENT", "true").lower() == "true"
 # genuine re-entry at an identical zone is plausible and must not be swallowed.
 DEDUP_WINDOW_SEC = float(os.getenv("TG_DEDUP_WINDOW_SEC", "0"))
 
+# "Re entry" posted with its own SL and TPs = take the trade again, but only when
+# nothing is live (the no-pyramiding guard decides that). It skips the repost
+# guard, since a re-entry repeats a zone by design. A bare "re entry" with no
+# levels is never traded.
+REENTRY_RE = re.compile(r"\bre[\s-]*ent[a-z]*\b", re.IGNORECASE)
+
 # A signal is only removed from the :open set on a TP3 / SL reply. If the channel
 # announces TP1/TP2 then goes quiet (no TP3, no SL), it would stay "open" forever
 # and the no-pyramiding guard below would skip every later signal. Expire — flatten
@@ -186,7 +192,7 @@ DB_ACCOUNTS = os.getenv("TG_DB_ACCOUNTS", "true").lower() == "true"
 # ── VIP priority (Neymar bot only) ──────────────────────────────────────────
 # The VIP channel posts ~91% of the free channel's trades, usually 1-2s BEFORE
 # it. On an account that is ALSO traded by the VIP bot, the VIP trade wins: the
-# Neymar bot skips a trade VIP already posted, and when Neymar posts first it
+# Neymar bot skips a trade VIP already posted with the same values, and when Neymar posts first it
 # waits up to PRIORITY_WAIT_SEC for VIP before trading those shared accounts.
 # Accounts only on the Neymar tab always trade instantly. Every bot records its
 # signals in the shared kronos_xchan_signals table on arrival.
@@ -198,7 +204,10 @@ PRIORITY_STRATEGY_ID = os.getenv(
     "TG_PRIORITY_STRATEGY_ID", VIP_STRATEGY_ID if PRIORITY_CHANNEL else "").strip()
 PRIORITY_WAIT_SEC = float(os.getenv("TG_PRIORITY_WAIT_SEC", "8"))   # Neymar led VIP by <=7s in 36 pairs
 PRIORITY_MATCH_SEC = float(os.getenv("TG_PRIORITY_MATCH_SEC", "1800"))
-PRIORITY_TOLERANCE = float(os.getenv("TG_PRIORITY_TOLERANCE", "5.0"))
+# "Same trade" = same side + entry zone + SL, each within this much price (so
+# 4116 vs 4116.0 match, 4116 vs 4118 do not). A VIP signal with different
+# values does not block the Neymar one — Neymar trades it.
+PRIORITY_TOLERANCE = float(os.getenv("TG_PRIORITY_TOLERANCE", "0.5"))
 _priority_meta: set[str] = set()      # MetaAPI ids the priority (VIP) bot trades
 
 
@@ -526,6 +535,10 @@ LEG_COUNT = int(os.getenv("TG_LEG_COUNT", "5"))
 # BE_KEEP_LEGS with the farthest TPs, which keep running with their stop moved
 # to entry. 0 = old behaviour (stop to entry on every leg, nothing closed).
 BE_KEEP_LEGS = int(os.getenv("TG_BE_KEEP_LEGS", "2"))
+# 2026-10-13: the operator wants "Set breakeven now for zero risk" to EXIT EVERY
+# LEG (banking whatever the trade made), not keep any running. On by default;
+# TG_BE_EXIT_ALL=false falls back to BE_KEEP_LEGS above.
+BE_EXIT_ALL = os.getenv("TG_BE_EXIT_ALL", "true").lower() == "true"
 
 
 def order_tps(sig: dict) -> list[float | None]:
@@ -1006,6 +1019,11 @@ async def apply_management(msg_id: int, text: str, parent_id: int | None) -> dic
         await modify_sl(target, action["move_sl"])
     elif action.get("breakeven"):
         log.info("[%s] management: breakeven (signal %s)", msg_id, target)
+        if BE_EXIT_ALL:
+            log.info("[%s] management: breakeven -> exit all (signal %s)", msg_id, target)
+            await close_order(target, "breakeven_exit")
+            action["close"] = "all"              # tells handle_reply the signal is flat
+            return action
         if BE_KEEP_LEGS > 0:
             await breakeven_partial(target)
         else:
@@ -1680,7 +1698,7 @@ async def handle_new_signal(msg) -> None:
     # *supersedes* it (cancel + replace), churning orders at the broker for no
     # reason. Catching it here also gives the dashboard an accurate reason.
     signal_ts = msg.date.astimezone(timezone.utc).timestamp()
-    if await _is_repost(sig, signal_ts):
+    if not REENTRY_RE.search(text) and await _is_repost(sig, signal_ts):
         log.warning(f"[{msg.id}] duplicate repost within {DEDUP_WINDOW_SEC:.0f}s — skip")
         loop = asyncio.get_running_loop()
         await loop.run_in_executor(None, lambda: _record_signals(
@@ -1846,6 +1864,19 @@ async def handle_reply(msg) -> None:
     if not text:
         return
 
+    # A complete signal (side + entry + SL + TPs) posted as a reply — the
+    # channel's "re entry" with fresh levels — is a new trade, not management
+    # of the parent. It goes through every new-signal gate, so it only trades
+    # when nothing is live. A bare "re entry" without levels is not traded.
+    if parse_signal(text):
+        log.info("[%s] signal posted as a reply to %s — treating as a new signal",
+                 msg.id, parent_id)
+        await handle_new_signal(msg)
+        return
+    if looks_like_signal(text):
+        log.warning("[%s] UNPARSEABLE signal-like reply to %s — not traded: %r",
+                    msg.id, parent_id, text)
+
     sl_fix = SL_FIX_RE.search(text)
     if sl_fix and "typo" in text.lower():
         await modify_sl(parent_id, float(sl_fix.group(1)))
@@ -1862,6 +1893,9 @@ async def handle_reply(msg) -> None:
 
     outcome = classify_outcome(text)
     if not outcome:
+        return
+    if outcome.get("breakeven") and BE_EXIT_ALL:
+        await close_order(parent_id, "breakeven_exit")   # "set breakeven / zero risk"
         return
     if outcome.get("breakeven") and BE_KEEP_LEGS > 0:
         await breakeven_partial(parent_id)          # "set breakeven / zero risk"

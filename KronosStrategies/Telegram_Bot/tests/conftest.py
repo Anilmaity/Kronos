@@ -19,3 +19,4 @@ def _one_leg_per_tp(monkeypatch):
     import live_trader as lt
     monkeypatch.setattr(lt, "LEG_COUNT", 0)
     monkeypatch.setattr(lt, "BE_KEEP_LEGS", 0)
+    monkeypatch.setattr(lt, "BE_EXIT_ALL", False)

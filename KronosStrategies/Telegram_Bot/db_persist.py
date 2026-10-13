@@ -189,6 +189,7 @@ CREATE TABLE IF NOT EXISTS kronos_xchan_signals (
     PRIMARY KEY (channel, msg_id)
 );
 CREATE INDEX IF NOT EXISTS kronos_xchan_signals_recent ON kronos_xchan_signals (received_at);
+ALTER TABLE kronos_xchan_signals ADD COLUMN IF NOT EXISTS sl NUMERIC;
 """
 
 
@@ -196,9 +197,9 @@ def record_channel_signal(channel: str, msg_id: int, sig: dict) -> None:
     try:
         with _connect() as conn, conn.cursor() as cur:
             cur.execute(
-                """INSERT INTO kronos_xchan_signals (channel, msg_id, side, entry_low, entry_high)
-                   VALUES (%s, %s, %s, %s, %s) ON CONFLICT DO NOTHING""",
-                (channel, msg_id, sig["side"], sig["entry_low"], sig["entry_high"]),
+                """INSERT INTO kronos_xchan_signals (channel, msg_id, side, entry_low, entry_high, sl)
+                   VALUES (%s, %s, %s, %s, %s, %s) ON CONFLICT DO NOTHING""",
+                (channel, msg_id, sig["side"], sig["entry_low"], sig["entry_high"], sig.get("sl")),
             )
     except Exception as e:
         log.warning("[db] record_channel_signal %s/%s failed: %s", channel, msg_id, e)
@@ -206,20 +207,23 @@ def record_channel_signal(channel: str, msg_id: int, sig: dict) -> None:
 
 def find_channel_match(channel: str, sig: dict, within_sec: float,
                        tolerance: float) -> int | None:
-    """msg_id of a signal `channel` posted in the last `within_sec` seconds with
-    the same side and an entry zone within `tolerance` price of `sig`'s
-    (overlapping zones always match), else None. None on DB error too."""
+    """msg_id of a signal `channel` posted in the last `within_sec` seconds that
+    is the SAME TRADE as `sig`: same side, and entry low, entry high and SL each
+    within `tolerance` price. A different zone or stop is a different trade and
+    does not match. None on DB error too (the caller then trades)."""
     try:
         with _connect() as conn, conn.cursor() as cur:
             cur.execute(
                 """SELECT msg_id FROM kronos_xchan_signals
                     WHERE channel = %s AND side = %s
                       AND received_at >= now() - make_interval(secs => %s)
-                      AND entry_low  <= %s + %s
-                      AND entry_high >= %s - %s
+                      AND abs(entry_low  - %s) <= %s
+                      AND abs(entry_high - %s) <= %s
+                      AND (sl IS NULL OR abs(sl - %s) <= %s)
                     ORDER BY received_at DESC LIMIT 1""",
                 (channel, sig["side"], within_sec,
-                 sig["entry_high"], tolerance, sig["entry_low"], tolerance),
+                 sig["entry_low"], tolerance, sig["entry_high"], tolerance,
+                 sig["sl"], tolerance),
             )
             row = cur.fetchone()
         return int(row[0]) if row else None
