@@ -54,6 +54,7 @@ DRY_RUN = os.getenv("DRY_RUN", "false").lower() == "true"
 # (verified 2026-10-01: this account answers fastest on new-york).
 _PROVISION_URL = "https://mt-provisioning-api-v1.agiliumtrade.agiliumtrade.ai"
 _TIMEOUT = 15
+REGION_RETRY_SEC = 60      # how soon a failed region lookup is tried again
 
 # MetaAPI's broker link blips for a few seconds at a time: the gateway returns
 # 504/503/502 ("account is not connected to broker yet ... before retrying the
@@ -195,7 +196,9 @@ class MetaApiClient:
         self._account = account
         self.dry_run = dry_run
         self.label = label
-        self._trading_url: str | None = None
+        self._trading_url: str | None = None      # set only from a successful region lookup
+        self._fallback_url: str | None = None
+        self._region_retry_at = 0.0
         self._spec_cache: dict[str, dict] = {}
         self._tl = threading.local()       # per-thread last error (legs run in parallel)
         self.account_error = ""            # summary of the last submit_signal_orders failure
@@ -217,19 +220,30 @@ class MetaApiClient:
         return {"auth-token": self._token, "Content-Type": "application/json"}
 
     def _resolve_trading_url(self) -> str:
+        # Only a looked-up region is kept. A failed lookup uses new-york for now
+        # and retries after REGION_RETRY_SEC — caching the fallback pinned a
+        # london account to new-york until restart (GoatFunded, 2026-10-22).
         if self._trading_url:
             return self._trading_url
+        now = time.monotonic()
+        if self._fallback_url and now < self._region_retry_at:
+            return self._fallback_url
         try:
             resp = requests.get(
                 f"{_PROVISION_URL}/users/current/accounts/{self._account}",
                 headers=self._headers(), timeout=10,
             )
             resp.raise_for_status()
-            region = resp.json().get("region", "new-york")
+            region = resp.json().get("region") or "new-york"
         except Exception:
-            log.info("[MetaAPI:%s] region lookup unavailable — using new-york", self.label)
-            region = "new-york"
+            self._region_retry_at = now + REGION_RETRY_SEC
+            if not self._fallback_url:
+                log.info("[MetaAPI:%s] region lookup unavailable — using new-york, "
+                         "retrying in %ds", self.label, REGION_RETRY_SEC)
+            self._fallback_url = "https://mt-client-api-v1.new-york.agiliumtrade.ai"
+            return self._fallback_url
         self._trading_url = f"https://mt-client-api-v1.{region}.agiliumtrade.ai"
+        self._fallback_url = None
         log.info("[MetaAPI:%s] trading host: %s", self.label, self._trading_url)
         return self._trading_url
 
