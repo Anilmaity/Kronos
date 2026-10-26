@@ -323,6 +323,15 @@ const StrategyTableRow: React.FC<StrategyTableRowProps> = ({
       )}
       <div className={`${copyTrade ? CT_COL.pnl : "w-1/12"} text-center`}>
         {totalPandL(data.totalProfitLoss)}
+        {copyTrade && data.realizedProfitLoss != null && (
+          <div className="tnum" style={{ fontSize: "11px", color: "var(--tv-text-3)" }}>
+            <div>Closed {formatCapital(Number(data.realizedProfitLoss.toFixed(2)))}</div>
+            <div>
+              Open{" "}
+              {formatCapital(Number((data.totalProfitLoss - data.realizedProfitLoss).toFixed(2)))}
+            </div>
+          </div>
+        )}
       </div>
       <div className={`${copyTrade ? CT_COL.actions : "w-1/12"} flex items-center justify-end`}>
         <Menubar className="bg-transparent border-none">

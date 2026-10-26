@@ -51,6 +51,9 @@ export interface UserStrategysProps {
   activePositionsCount : number;
   totalPositionCount : number;
   totalProfitLoss : number;
+  // Closed part of totalProfitLoss (= the broker's History); the rest is the
+  // open legs' floating P&L.
+  realizedProfitLoss?: number;
   positions: PositionProps[];
   clientCode: string;
 }

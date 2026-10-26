@@ -129,6 +129,7 @@ const StrategyTable: React.FC<StrategyTableProps> = ({
         activePositionsCount(date: $date)
         totalPositionCount(date: $date)
         totalProfitLoss(date: $date)
+        realizedProfitLoss(date: $date)
         strategy {
           id
           isActive
@@ -269,6 +270,19 @@ const StrategyTable: React.FC<StrategyTableProps> = ({
     0
   );
 
+  // Copy-trade tabs: split like MT5 — Closed (History) vs Open (floating).
+  const closedProfitLoss = visibleData.reduce(
+    (acc, broker) =>
+      acc +
+      broker.userstrategys.reduce(
+        (sAcc, strategy) => sAcc + Number(strategy.realizedProfitLoss ?? 0),
+        0
+      ),
+    0
+  );
+  const openProfitLoss = totalProfitLoss - closedProfitLoss;
+  const signedColor = (v: number) => (v < 0 ? "var(--tv-down)" : "var(--tv-up)");
+
   const rowCount = visibleData.reduce((n, broker) => n + broker.userstrategys.length, 0);
   useEffect(() => {
     onRowCount?.(rowCount);
@@ -396,6 +410,24 @@ const StrategyTable: React.FC<StrategyTableProps> = ({
           }}
         >
           {restoreRemoved}
+          {copyTrade && (
+            <>
+              <div style={{ color: "var(--tv-text-3)" }}>
+                Closed{" "}
+                <span className="tnum" style={{ color: signedColor(closedProfitLoss) }}>
+                  {currencySymbol}
+                  {closedProfitLoss.toFixed(2)}
+                </span>
+              </div>
+              <div style={{ color: "var(--tv-text-3)" }}>
+                Open{" "}
+                <span className="tnum" style={{ color: signedColor(openProfitLoss) }}>
+                  {currencySymbol}
+                  {openProfitLoss.toFixed(2)}
+                </span>
+              </div>
+            </>
+          )}
           <div style={{ color: "var(--tv-text-3)" }}>
             Total P&amp;L ·{" "}
             {formatLocalDate(selectedDate)}
