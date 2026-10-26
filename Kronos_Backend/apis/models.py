@@ -237,8 +237,10 @@ class Position(BaseModel):
         max_digits=25, decimal_places=2, default=0.00
     )
     ltp = models.DecimalField(max_digits=25, decimal_places=2, default=0.00)
+    # Stored as USD / 100 (points x lots), so 4dp = whole cents; 2dp rounded
+    # every closed trade to the nearest $1 (+$5.20 showed as +$5.00).
     realized_profit_loss = models.DecimalField(
-        max_digits=25, decimal_places=2, default=0.00
+        max_digits=25, decimal_places=4, default=0.00
     )
     user_strategy = models.ForeignKey(UserStrategy, on_delete=models.CASCADE)
     currencypair = models.ForeignKey(CurrencyPair, on_delete=models.CASCADE)

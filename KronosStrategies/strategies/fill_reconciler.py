@@ -52,7 +52,7 @@ LOOKBACK_H = int(os.getenv("RECON_LOOKBACK_H", "48"))
 # strategy_manager.manager._USD_PER_PNL_UNIT and the backend resolvers.
 _USD_PER_PNL_UNIT = {"XAU_USD": 100.0}
 _EPS_PX = 0.005          # ignore sub-half-cent price diffs
-_EPS_PNL = 0.006         # storage-column granularity is 2dp (= $1 steps)
+_EPS_PNL = 0.00005       # half a cent (column is 4dp = cents since apis 0012)
 _EPS_VOL = 0.005         # lot sizes are 2dp; anything larger is a real mismatch
 
 logging.basicConfig(
@@ -171,7 +171,7 @@ def apply_deals(sess, grouped: dict[str, dict]) -> int:
             real_units = g["total_usd"] / unit
             booked_units = float(pos.realized_profit_loss or 0)
             if abs(booked_units - real_units) > _EPS_PNL:
-                pos.realized_profit_loss = Decimal(str(round(real_units, 2)))
+                pos.realized_profit_loss = Decimal(str(round(real_units, 4)))
                 touched.append(
                     f"realized {booked_units * unit:+.2f}->"
                     f"{g['total_usd']:+.2f} USD (incl. commission/swap)")

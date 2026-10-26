@@ -79,8 +79,8 @@ def test_apply_trues_up_closed_short(db):
     assert n == 1
     db.refresh(pos)
     assert float(pos.avg_sell_price) == pytest.approx(4136.9)   # real fill
-    # realized in storage units (USD/100), commission included
-    assert float(pos.realized_profit_loss) == pytest.approx(-0.68, abs=0.006)
+    # realized in storage units (USD/100), commission included, to the cent
+    assert float(pos.realized_profit_loss) == pytest.approx(-0.684, abs=0.00005)
 
 
 def test_apply_is_idempotent(db):
@@ -89,6 +89,26 @@ def test_apply_is_idempotent(db):
     assert fr.apply_deals(db, grouped) == 1
     db.commit()
     assert fr.apply_deals(db, grouped) == 0, "second pass must be a no-op"
+
+
+def test_cent_difference_is_trued_up(db):
+    """Winprofx 2026-10-26: TP1 paid +$5.20 but the 2dp column held 0.05
+    (+$5.00); a $0.20 gap used to sit under the $0.60 threshold forever."""
+    pos = _mk_trade(db, side="BUY", booked_entry=4018.74, qty=0.0, realized=0.05,
+                    broker_pid="124230953")
+    db.query(Order).filter_by(position_id=pos.id).update({"quantity": Decimal("0.04")})
+    db.commit()
+    deals = [{"positionId": "124230953", "entryType": "DEAL_ENTRY_IN",
+              "type": "DEAL_TYPE_BUY", "price": 4018.74, "volume": 0.04,
+              "commission": 0, "swap": 0, "profit": 0},
+             {"positionId": "124230953", "entryType": "DEAL_ENTRY_OUT",
+              "type": "DEAL_TYPE_SELL", "price": 4020.0, "volume": 0.04,
+              "commission": 0, "swap": 0, "profit": 5.2}]
+    assert fr.apply_deals(db, fr.group_deals(deals)) == 1
+    db.commit()
+    db.refresh(pos)
+    assert float(pos.realized_profit_loss) * 100 == pytest.approx(5.20, abs=0.005)
+    assert fr.apply_deals(db, fr.group_deals(deals)) == 0, "then a no-op"
 
 
 def test_open_position_gets_entry_fix_only(db):
@@ -177,7 +197,7 @@ def test_matching_volume_still_trues_up(db):
     assert fr.apply_deals(db, fr.group_deals(_ONE_SLICE_OF_FOUR)) == 1
     db.commit()
     db.refresh(pos)
-    assert float(pos.realized_profit_loss) == pytest.approx(-0.1965, abs=0.006)
+    assert float(pos.realized_profit_loss) == pytest.approx(-0.1965, abs=0.00005)
     assert float(pos.avg_buy_price) == pytest.approx(4350.48)
 
 

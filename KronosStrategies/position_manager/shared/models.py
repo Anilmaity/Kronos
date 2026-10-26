@@ -241,7 +241,7 @@ class Position(BaseModel):
     profit_loss          = Column(Numeric(25, 2), default=0.00)
     profit_loss_percentage = Column(Numeric(25, 2), default=0.00)
     ltp                  = Column(Numeric(25, 2), default=0.00)
-    realized_profit_loss = Column(Numeric(25, 2), default=0.00)
+    realized_profit_loss = Column(Numeric(25, 4), default=0.00)  # USD/100 -> 4dp = cents (apis 0012)
 
     user_strategy_id = Column(
         UUID(as_uuid=True),

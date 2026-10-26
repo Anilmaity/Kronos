@@ -59,3 +59,15 @@ class PositionPnlTests(SimpleTestCase):
                                  avg_buy_price=0, avg_sell_price=0),
             0.0,
         )
+
+    def test_realized_keeps_cents(self):
+        # Winprofx 2026-10-26: TP1 paid +$5.20 at the broker; the 2dp column
+        # stored 0.05 and the dashboard showed +$5.00.
+        self.assertEqual(pnl.realized_pnl(0.052), 5.2)
+        self.assertEqual(pnl.position_pnl(0.052, ltp=4020.04, quantity=0,
+                                          avg_buy_price=4018.74, avg_sell_price=0), 5.2)
+
+    def test_realized_column_stores_cents(self):
+        from apis.models import Position
+        # USD / 100 storage -> 4dp is one cent; 2dp rounded to whole dollars.
+        self.assertEqual(Position._meta.get_field("realized_profit_loss").decimal_places, 4)

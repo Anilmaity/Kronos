@@ -8,7 +8,7 @@ from django.db.models import Q
 from apis.constants import today_ist
 from apis.models import (UserStrategy)
 from apis.schema.types.position_type import PositionType
-from apis.schema.types.pnl import position_pnl, mark_price
+from apis.schema.types.pnl import position_pnl, mark_price, realized_pnl
 
 
 def _positions_qs(self, date, userstrategy_ids):
@@ -34,6 +34,7 @@ class UserStrategyType(DjangoObjectType):
     dailypositions = graphene.List(PositionType, date=graphene.String())
     brokerName = graphene.String()
     total_profit_loss = graphene.Float(date=graphene.Date(), userstrategy_ids=graphene.List(graphene.UUID))
+    realized_profit_loss = graphene.Float(date=graphene.Date(), userstrategy_ids=graphene.List(graphene.UUID))
     total_position_count = graphene.Int(date=graphene.Date(), userstrategy_ids=graphene.List(graphene.UUID))
     active_positions_count = graphene.Int(date=graphene.Date(), userstrategy_ids=graphene.List(graphene.UUID))
     name = graphene.String()
@@ -67,6 +68,12 @@ class UserStrategyType(DjangoObjectType):
                          p.quantity, p.avg_buy_price, p.avg_sell_price)
             for p in positions
         )
+
+    def resolve_realized_profit_loss(self, info, date="", userstrategy_ids=[]):
+        # Closed part of total_profit_loss (same positions) — matches the broker's
+        # History; total minus this is the open legs' floating PnL.
+        positions = _positions_qs(self, date, userstrategy_ids)
+        return round(sum(realized_pnl(p.realized_profit_loss) for p in positions), 2)
 
 
     # Broker display name. UserBroker lost its `broker` FK in the MetaAPI

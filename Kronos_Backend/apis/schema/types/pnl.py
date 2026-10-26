@@ -51,6 +51,12 @@ def position_pnl(realized_profit_loss, ltp, quantity,
     return round((realized + unreal) * contract_size, 2)
 
 
+def realized_pnl(realized_profit_loss, contract_size=CONTRACT_SIZE) -> float:
+    """The closed (booked) part of a position's PnL, in account currency — what
+    the broker's History shows, without the open legs' floating PnL."""
+    return round(float(realized_profit_loss) * contract_size, 2)
+
+
 def position_notional(quantity, avg_buy_price, avg_sell_price,
                       contract_size=CONTRACT_SIZE) -> float:
     """Position value at entry (whichever side was opened), in account currency."""
