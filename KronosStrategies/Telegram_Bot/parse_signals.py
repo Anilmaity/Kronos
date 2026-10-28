@@ -37,14 +37,22 @@ SIGNAL_RE = re.compile(
     \s+(?P<side>buy|sell)(?:\s+(?P<otype>now|limit|re-?entry))?(?:\s+at)?\s+
     (?P<e1>\d+(?:\.\d+)?)\s*-\s*(?P<e2>\d+(?:\.\d+)?)
     \s+SL[:.\s]+(?P<sl>\d+(?:\.\d+)?)
-    \s+(?P<tps>(?:TP\d{0,2}[:.\s]+\S+\s*)+)
+    \s+(?P<tps>(?:TP\d{0,2}[:.\s]+\S+(?:\s+(?:pips?|points?)\b)?\s*)+)
     """,
     re.IGNORECASE | re.VERBOSE,
 )
 # Accept both the bare "TP: 4729" / "TP 4729" form and the numbered
 # "TP1 3338" / "TP2: 3342" form the channel actually posts (the digit glued to
 # "TP" previously matched zero TP tokens and silently dropped the whole signal).
-TP_VAL_RE = re.compile(r"TP\d{0,2}[:.\s]+(\d+(?:\.\d+)?|open)", re.IGNORECASE)
+# "TP: 100+ pips" (strip_decor leaves "100 pips") is a DISTANCE, i.e. the open
+# runner — read as a price, 100 sat below a buy's entry and the 2026-10-28 VIP
+# signal (all TPs hit) was skipped as malformed.
+TP_VAL_RE = re.compile(
+    r"TP\d{0,2}[:.\s]+(\d+(?:\.\d+)?\s+(?:pips?|points?)\b|\d+(?:\.\d+)?|open)", re.IGNORECASE)
+
+
+def _tp_is_open(v: str) -> bool:
+    return v.lower() == "open" or not v.replace(".", "").isdigit()
 NOW_RE = re.compile(r"\b(Gold|XAU\w*|BTC\w*)\s+(buy|sell)\s+now\b", re.IGNORECASE)
 # Loose "this message is a trade signal" detector: an instrument + a side + a
 # stop-loss. Used only to tell a genuinely-unparseable SIGNAL (worth shouting
@@ -112,7 +120,7 @@ def parse_signal(text: str) -> dict | None:
     if not m:
         return None
     tps = [v for v in TP_VAL_RE.findall(m.group("tps"))]
-    tp_nums = [float(v) for v in tps if v.lower() != "open"]
+    tp_nums = [float(v) for v in tps if not _tp_is_open(v)]
     instr = m.group("instr").upper()
     if instr == "GOLD":
         instr = "XAUUSD"
@@ -128,7 +136,7 @@ def parse_signal(text: str) -> dict | None:
         "entry_high": max(float(m.group("e1")), float(m.group("e2"))),
         "sl": float(m.group("sl")),
         "tps": tp_nums,
-        "tp_open": any(v.lower() == "open" for v in tps),
+        "tp_open": any(_tp_is_open(v) for v in tps),
         "order_type": "market" if otype == "now" else otype,
     }
 

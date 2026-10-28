@@ -13,6 +13,8 @@ order leg instead of three or four. test_all_tps_captured_between_emoji pins it.
 
 Messages below are copied verbatim from the prod telegram_trader logs.
 """
+import pytest
+
 import parse_signals as ps
 from parse_signals import parse_signal, clean, looks_like_signal
 
@@ -61,6 +63,17 @@ def test_trailing_chatter_after_open_runner_ignored():
     sig = parse_signal(clean(
         "Gold BUY NOW 4050 - 4046 ✨ SL: 4042 🚫 TP: 4052 🎯 TP: 4054 🎯 TP: 4056 🎯 "
         "TP: 4058 🎯 TP: open 200 pips = 📈"))
+    assert sig is not None
+    assert sig["tps"] == [4052.0, 4054.0, 4056.0, 4058.0]
+    assert sig["tp_open"] is True
+
+
+@pytest.mark.parametrize("last", ["TP: 100+ pips", "TP: 100 pips", "TP: 50+ points", "TP: 100+pips"])
+def test_pip_distance_runner_is_open_not_a_price(last):
+    """VIP msg 9333 (2026-10-28), verbatim: the last "TP: 100+ pips" was read as a
+    price of 100, below the buy entry, and the signal was skipped as malformed."""
+    sig = parse_signal(clean(
+        "Gold buy now 4049.7 - 4046\n\nSL: 4042\n\nTP: 4052\nTP: 4054\nTP: 4056\nTP: 4058\n" + last))
     assert sig is not None
     assert sig["tps"] == [4052.0, 4054.0, 4056.0, 4058.0]
     assert sig["tp_open"] is True
