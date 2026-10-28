@@ -2,6 +2,8 @@
 import asyncio
 import json
 
+import pytest
+
 import live_trader as lt
 from manage_signals import classify_management
 
@@ -27,7 +29,37 @@ def test_more_than_five_trimmed_vip_runner_dropped(monkeypatch):
     monkeypatch.setattr(lt, "TP_OPEN_LEG", True)
     tps = [2005.0, 2010.0, 2015.0, 2020.0, 2025.0]
     assert lt.order_tps(_sig(tps, tp_open=True)) == tps
-    assert lt.order_tps(_sig(tps[:4], tp_open=True)) == tps[:4] + [None]
+
+
+@pytest.mark.parametrize("tp_open_leg", [True, False])   # VIP and Neymar alike
+@pytest.mark.parametrize("side,tps,expected", [
+    # VIP msg 9333: 4052/54/56/58 then "TP: 100+ pips" -> TP5 = 4060
+    ("buy", [4052.0, 4054.0, 4056.0, 4058.0], [4052.0, 4054.0, 4056.0, 4058.0, 4060.0]),
+    ("buy", [4052.0, 4055.0, 4058.0, 4061.0], [4052.0, 4055.0, 4058.0, 4061.0, 4064.0]),
+    ("sell", [3998.0, 3996.0, 3994.0, 3992.0], [3998.0, 3996.0, 3994.0, 3992.0, 3990.0]),
+    ("sell", [4040.5, 4037.5, 4034.5, 4031.5], [4040.5, 4037.5, 4034.5, 4031.5, 4028.5]),
+    # uneven gaps -> TP5 = TP4
+    ("buy", [4052.0, 4054.0, 4057.0, 4058.0], [4052.0, 4054.0, 4057.0, 4058.0, 4058.0]),
+    ("sell", [3998.0, 3995.0, 3994.0, 3990.0], [3998.0, 3995.0, 3994.0, 3990.0, 3990.0]),
+    # 3 TPs + open: the ladder carries on for both missing legs
+    ("buy", [2005.0, 2010.0, 2015.0], [2005.0, 2010.0, 2015.0, 2020.0, 2025.0]),
+    # one TP has no gap to carry on
+    ("buy", [2005.0], [2005.0] * 5),
+])
+def test_open_last_tp_continues_an_even_ladder(monkeypatch, tp_open_leg, side, tps, expected):
+    monkeypatch.setattr(lt, "LEG_COUNT", 5)
+    monkeypatch.setattr(lt, "TP_OPEN_LEG", tp_open_leg)
+    sig = _sig(tps, tp_open=True)
+    sig["side"] = side
+    assert lt.order_tps(sig) == expected
+    assert sig["tps"] == tps                         # the stored signal is untouched
+
+
+def test_numeric_tps_only_still_repeat_the_last(monkeypatch):
+    """No "open"/pips TP: the channel named every target, nothing is invented."""
+    monkeypatch.setattr(lt, "LEG_COUNT", 5)
+    tps = [2005.0, 2010.0, 2015.0, 2020.0]
+    assert lt.order_tps(_sig(tps)) == tps + [2020.0]
 
 
 def test_single_tp_becomes_five_legs(monkeypatch):

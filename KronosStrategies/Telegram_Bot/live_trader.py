@@ -541,6 +541,17 @@ BE_KEEP_LEGS = int(os.getenv("TG_BE_KEEP_LEGS", "2"))
 BE_EXIT_ALL = os.getenv("TG_BE_EXIT_ALL", "true").lower() == "true"
 
 
+def _ladder_next(tps: list[float], side: str, n: int) -> list[float]:
+    """`n` more TPs: the posted TPs' gap carried on in the trade's direction when
+    every gap is the same, else `n` copies of the last TP."""
+    gaps = {round(b - a, 2) for a, b in zip(tps, tps[1:])}
+    if len(gaps) == 1:
+        gap = gaps.pop()
+        if (gap > 0 and side == "buy") or (gap < 0 and side == "sell"):
+            return [round(tps[-1] + gap * i, 2) for i in range(1, n + 1)]
+    return [tps[-1]] * n
+
+
 def order_tps(sig: dict) -> list[float | None]:
     """TP levels to actually place — one broker order per element.
 
@@ -550,7 +561,12 @@ def order_tps(sig: dict) -> list[float | None]:
     as a stop-only leg without polluting the stored signal.
     """
     tps: list[float | None] = list(sig["tps"])
-    if TP_OPEN_LEG and sig.get("tp_open"):
+    if LEG_COUNT > 0 and tps and sig.get("tp_open") and len(tps) < LEG_COUNT:
+        # The last TP is not a price ("TP: open" / "TP: 100+ pips"): the missing
+        # legs continue an evenly spaced ladder (4052/54/56/58 -> 4060), else
+        # repeat the last TP. Operator rule, 2026-10-28.
+        tps += _ladder_next(sig["tps"], sig["side"], LEG_COUNT - len(tps))
+    elif TP_OPEN_LEG and sig.get("tp_open"):
         tps.append(None)
     if LEG_COUNT > 0 and tps:
         tps = tps[:LEG_COUNT]
