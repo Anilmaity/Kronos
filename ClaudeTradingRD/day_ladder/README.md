@@ -208,3 +208,26 @@ oscillation filter on, flip OFF. Flipping after a win lowers PF (0.93), as does 
 On his own days: 11-05 +0.93 %, 11-06 -0.29 %, 11-09 +0.10 %, 11-10 -0.77 %, 11-11 +0.30 %. Same sign as his on
 11-05 and 11-09 and far smaller on both sides: his +$1,191 on 11-05 came from 0.08-0.16 lots on a ~$200 balance with
 nothing to stop a loss, which is exactly what the 1 % equity stop removes.
+
+## Fit to the trader's four days (`fit_days.py`, 2026-11-12) — operator's goal, an in-sample fit by design
+Goal: make the strategy's daily result match the XM Real trader's on 11-04 / 05 / 06 / 09 (10th and 11th ignored).
+`ping_pong.py` gained the behaviours read from his trade lists: side bias (`sides`), hand profit-taking (`take`),
+entry hours (`h0`/`h1`), optional news/end-of-day flat, fixed lot, no equity stop. Random search (4,000-5,000 draws) plus
+hill-climbs, objective = total absolute error on the four daily results (by the day a position was opened).
+
+Best two-sided fit (`fit_days_best_twosided.json`): 0.10-lot clips, 6-pt target, hand-take at +2 pts when the minute turns,
+adds every 8 pts up to 5 per side (no reversal-bar wait), flip to the other side after a target, entries 08-19 UTC on a
+0.5-ATR push in the outer 30 % of the 2-hour range, no oscillation filter, held through news and overnight, NO loss limit.
+
+| | 4 Nov | 5 Nov | 6 Nov | 9 Nov | total |
+|---|---|---|---|---|---|
+| Trader | -$28 | +$1,191 | +$473 | +$1,187 | +$2,823 |
+| Fitted strategy | -$24 | +$1,057 | +$361 | +$1,219 | +$2,613 |
+
+Outside the four days, same settings (`results_fit_days.txt`): 10-11 Nov -$2,171; October +$3,735 (PF 1.30, worst day
+-$1,976); September -$2,581; August -$7,121 (worst day -$7,202); full 16 months -$37,504, win rate 88 %, PF 0.92,
+worst day -$9,475, deepest fall in closed balance -$41,988 — on a $10,000 account that is ruin several times over.
+An unrestricted search found a buy-only setting that fits about as well (`fit_days_best_buyonly.json`); it is a hindsight
+artefact of that week's direction and loses $33,765 over 16 months.
+Fifteen settings were tuned to four numbers: the match shows the trader's results CAN be produced by rules of this
+shape at this leverage, not that the rules will produce them again.

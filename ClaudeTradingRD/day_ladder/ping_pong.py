@@ -29,6 +29,14 @@ class P:
     cost: float = 0.25
     start: float = 10_000.0
     lot: float = 0.0          # > 0: every clip is this fixed size (the trader used 0.04) instead of sizing from risk_pct
+    edge: float = 0.7         # how far into the 2-hour range a push must be (0.7 = outer 30 %)
+    confirm: bool = True      # adds wait for a minute that turns back
+    news_flat: bool = True    # close and stand aside for the New York release windows
+    eod_flat: bool = True     # close everything at 20:50 UTC and stop opening at 20:00
+    sides: str = "both"       # both / sell / buy — which side signal entries and flips may open
+    take: float = 0.0         # > 0: close a clip by hand once it is this many points up and the last minute turned against it
+    h0: int = 0               # signal entries only between h0 and h1 (UTC hours)
+    h1: int = 24
     stop: bool = True         # False: no equity stop (the trader's actual behaviour); set day_floor very low as well
 
 def run(d, p=P()):
@@ -54,7 +62,7 @@ def run(d, p=P()):
             fl = lambda px: sum((px - hs - x["e"]) * x["lot"] for x in book[1]) * 100 + sum((x["e"] - px - hs) * x["lot"] for x in book[-1]) * 100
             R = eq * p.risk_pct / 100; worst = min((l[i], h[i]), key=fl)
             stop = p.stop and fl(worst) <= -R
-            if stop or news[i] or mn[i] >= 20 * 60 + 50 or gap[i + 1]:
+            if stop or (p.news_flat and news[i]) or (p.eod_flat and mn[i] >= 20 * 60 + 50) or gap[i + 1]:
                 for s in (1, -1):
                     for x in book[s]: close(s, x, (worst if stop else c[i]) - s * hs, "equity stop" if stop else "flat", i)
                     book[s] = []
@@ -65,17 +73,18 @@ def run(d, p=P()):
                         tp = x["e"] + s * p.T
                         if (h[i] - hs >= tp) if s > 0 else (l[i] + hs <= tp):
                             close(s, x, tp, "target", i)
-                            if p.flip and len(book[-s]) < p.K and all(abs(y["e"] - tp) >= p.G for y in book[-s]): pend.append((-s, "flip"))
+                            if p.flip and p.sides in ("both", "buy" if -s > 0 else "sell") and len(book[-s]) < p.K and all(abs(y["e"] - tp) >= p.G for y in book[-s]): pend.append((-s, "flip"))
+                        elif p.take and (c[i] - s * hs - x["e"]) * s >= p.take and (c[i] - o[i]) * s < 0: close(s, x, c[i] - s * hs, "take", i)
                         else: keep.append(x)
                     book[s] = keep
                 for s in (1, -1):                                        # averaging
-                    if book[s] and len(book[s]) < p.K and (book[s][-1]["e"] - c[i]) * s >= p.G and (c[i] - o[i]) * s > 0 and not any(q[0] == s for q in pend):
+                    if book[s] and len(book[s]) < p.K and (book[s][-1]["e"] - c[i]) * s >= p.G and (not p.confirm or (c[i] - o[i]) * s > 0) and not any(q[0] == s for q in pend):
                         pend.append((s, "add"))
         days[day[i]] = (d0, eq); dp = (eq / d0 - 1) * 100
-        if dp <= p.day_floor or news[i] or gap[i + 1] or mn[i] >= 20 * 60: pend = []; continue
+        if dp <= p.day_floor or (p.news_flat and news[i]) or gap[i + 1] or (p.eod_flat and mn[i] >= 20 * 60): pend = []; continue
         if ER[i] <= p.er_max and RNG[i] >= 2 * p.G:
-            s = -1 if (POS[i] > 0.7 and R5[i] >= p.pull * A[i]) else 1 if (POS[i] < 0.3 and R5[i] <= -p.pull * A[i]) else 0
-            if s and not book[s] and not any(q[0] == s for q in pend): pend.append((s, "signal"))
+            s = -1 if (POS[i] > p.edge and R5[i] >= p.pull * A[i]) else 1 if (POS[i] < 1 - p.edge and R5[i] <= -p.pull * A[i]) else 0
+            if s and p.sides in ("both", "buy" if s > 0 else "sell") and p.h0 <= mn[i] // 60 < p.h1 and not book[s] and not any(q[0] == s for q in pend): pend.append((s, "signal"))
     t = pd.DataFrame(trades); dd = pd.DataFrame(days, index=["start", "end"]).T; dd["pct"] = (dd.end / dd.start - 1) * 100
     return t, dd
 
