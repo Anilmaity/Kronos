@@ -38,7 +38,7 @@ class P:
     press: float = 0.3
     trail: float = 4.0             # press mode: floor = peak - trail (a +4 % day can no longer end red)
     max_pct: float = 3.0           # never risk more than this % on one basket
-W = (0.4, 0.3, 0.3)
+    w: tuple = (0.4, 0.3, 0.3)     # leg weights; (1, 0, 0) = single entry, no averaging
 
 def prep(d):
     d = d.copy(); d["atr"] = atr(d, 30); d["ema"] = d.close.ewm(span=240, adjust=False).mean()
@@ -53,7 +53,7 @@ def run(d, p=P()):
     A, E, R5, news, gap = d.atr.to_numpy(), d.ema.to_numpy(), d.r5.to_numpy(), d.news.to_numpy(), d.gap.to_numpy()
     idx = d.index; hr = idx.hour.to_numpy(); mn = hr * 60 + idx.minute.to_numpy()
     day = idx.strftime("%Y-%m-%d").to_numpy(); wk = idx.strftime("%G-%V").to_numpy(); mo = idx.strftime("%Y-%m").to_numpy()
-    hs = p.cost / 2; hours = set(p.hours)
+    hs = p.cost / 2; hours = set(p.hours); W = p.w; NL = sum(1 for x in W if x > 0)
     eq = p.start; d0 = w0 = m0 = eq; peak = 0.0; halted = False
     b = None; trades = []; days = {}
     for i in range(len(c) - 1):
@@ -69,7 +69,7 @@ def run(d, p=P()):
                 px, why = ((o[i] - s * hs) if gapped else b["stop"]), "stop"
             else:
                 added = False
-                while b["n"] < 3 and ((l[i] + hs <= b["lv"][b["n"]]) if s > 0 else (h[i] - hs >= b["lv"][b["n"]])):
+                while b["n"] < NL and ((l[i] + hs <= b["lv"][b["n"]]) if s > 0 else (h[i] - hs >= b["lv"][b["n"]])):
                     k = b["n"]; b["fills"].append((b["lv"][k], b["lots"][k])); b["n"] += 1; added = True
                 if added:
                     lots = sum(q for _, q in b["fills"]); avg = sum(x * q for x, q in b["fills"]) / lots

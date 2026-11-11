@@ -16,13 +16,14 @@ def stats(part, **kw):
                 hold=t.mins.median(), total=round((dd.end.iloc[-1] / dd.start.iloc[0] - 1) * 100, 1)), dd, t
 
 if "pick" not in sys.argv:
-    rows = [dict(s_atr=S, pull=pull, giveback=g, **stats(sets["TRAIN"], s_atr=S, s_min=S, pull=pull, giveback=g)[0])
-            for S in (6.0, 9.0, 12.0) for pull in (1.0, 1.5) for g in (3.0, 6.0)]
+    WS = {"avg3": (0.4, 0.3, 0.3), "avg2": (0.6, 0.4, 0.0), "single": (1.0, 0.0, 0.0)}
+    rows = [dict(legs=k, s_atr=S, giveback=g, **stats(sets["TRAIN"], s_atr=S, s_min=S, pull=1.0, giveback=g, w=w)[0])
+            for k, w in WS.items() for S in (6.0, 9.0) for g in (3.0, 6.0, 99.0)]
     r = pd.DataFrame(rows).sort_values("d6", ascending=False); r.to_csv("grid_bold_train.csv", index=False); print(r.to_string(index=False))
 else:
-    S, pull, g = map(float, sys.argv[2:5])
+    S, pull, g = map(float, sys.argv[2:5]); w = {"avg3": (0.4, 0.3, 0.3), "avg2": (0.6, 0.4, 0.0), "single": (1.0, 0.0, 0.0)}[sys.argv[5]]
     for cost in (0.6, 0.9, 0.0):
         for n, part in sets.items():
-            s, dd, t = stats(part, s_atr=S, s_min=S, pull=pull, giveback=g, cost=cost); print(f"cost {cost} {n:<7}", s)
+            s, dd, t = stats(part, s_atr=S, s_min=S, pull=pull, giveback=g, cost=cost, w=w); print(f"cost {cost} {n:<7}", s)
             if cost == 0.6 and n == "LAST2W":
                 print(dd.assign(trades=t.groupby("day").size(), wins=t[t.pnl > 0].groupby("day").size()).fillna(0).round(2).to_string())

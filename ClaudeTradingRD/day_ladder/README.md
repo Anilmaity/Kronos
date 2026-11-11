@@ -64,3 +64,25 @@ identical to the harder-pressing pick, which already risked the whole room on it
 Wider stops (9, 12 x ATR) and a 6 % giveback are worse and let the worst day slip to about -4 %.
 Averaging keeps wins small (a one-leg win earns ~0.19 of the risk, not 0.33), so ~10 % is the ceiling
 for this brief; the arithmetic limit for any no-edge design is 29 %.
+
+## Ceiling demonstration and the single-entry "let it run" ladder
+`ceiling_demo.py` (output `ceiling_demo.txt`): simulated best play at profit factor 0.70-0.80 inside a -2.5 % floor.
+With 70-80 % win-rate scalps the most any strategy can do is +6 % on ~18-22 % of days and +20 % on ~5-7 %.
+
+That showed room above the averaging ladders (10 % / 0 %), so averaging became a setting (`w`) and the grid was re-run
+on TRAIN (`grid_bold.py`). Single entry, whole room risked each trade, stop 6 x ATR, target a third of the stop:
+
+| | giveback 3 % after +6 % | floor fixed at -2.5 % ("let it run") |
+|---|---|---|
+| TEST win rate / PF | 71.5 % / 0.95 | 71.5 % / 0.97 |
+| TEST worst day | -2.61 % | -2.64 % |
+| TEST days >= +6 % | 15.6 % | 9.0 % |
+| TEST days >= +20 % | 0 | 7.2 % (best +34.4 %) |
+| TEST losing days | 76 % | 91 % |
+| TEST total | -23.5 % | -15.3 % |
+| Last 2 weeks | 1 day +9.1 %, 1 day +5.1 %, 9 red, -8.9 % | 1 day +30.7 %, 9 red, +3.8 % |
+
+`python grid_bold.py pick 6 1.0 3 single` / `... 99 single` -> `results_single.txt`.
+Caveats: a big day comes from ~9 wins in a row with the whole day's profit re-risked each time (late trades risk
+15 %+ of the account on a 6-pt stop, ~3 lots on $10k); a firm that measures daily loss from peak equity instead of
+the day's starting balance would count the give-back as a breach; the weekly +18 % cap then stops the week.
