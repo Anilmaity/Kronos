@@ -30,7 +30,7 @@ for side, sym, nm in ((1, "triangle-up", "buy clip"), (-1, "triangle-down", "sel
                              marker=dict(symbol=sym, size=9, color=np.where(g.pnl > 0, WIN, LOSS), line=dict(color="white", width=0.8)),
                              customdata=np.stack([g.k, g.n, g.lot, g.pnl.round(2), g.why], axis=1),
                              hovertemplate=nm + " %{customdata[0]} of %{customdata[1]} · %{customdata[2]} lots @ %{y:.2f}<br>basket $%{customdata[3]} · exit: %{customdata[4]}<extra></extra>"), 1, 1)
-for why, sym, nm in (("tp", "circle", "exit: target"), ("stop", "x", "exit: hard stop"), ("time/flat", "square", "exit: time / flat")):
+for why, sym, nm in (("tp", "circle", "exit: target"), ("stop", "x", "exit: hard stop"), ("time", "square", "exit: time stop"), ("flat", "diamond", "exit: news / end of day")):
     g = t[t.why == why]
     fig.add_trace(go.Scatter(x=ist(g.exit_t), y=g.exit_px, mode="markers", name=nm,
                              marker=dict(symbol=sym, size=7 if why == "tp" else 10, color=np.where(g.pnl > 0, WIN, LOSS), line=dict(color="white", width=0.8)),

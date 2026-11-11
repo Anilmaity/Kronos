@@ -142,3 +142,25 @@ Pick K 4, step 1.5 ATR, target 2 ATR, decay 0.7, no range-break exit (`results_d
 
 At zero cost TEST is PF 0.91 (TRAIN 1.12): the TRAIN near-break-even does not hold out of sample, and on unseen data the
 dynamic version loses even before costs. Fading vs following the push is again indistinguishable (TEST 0.84 vs 0.89).
+
+## Time stop and stop-and-reverse (2026-11-12; `results_timestop.txt`, `results_reverse.txt`)
+Operator's ideas: close every trade within 5 or 10 minutes (re-entry allowed), and open the opposite side when a trade fails.
+Base: the dynamic pick (K 4, step 1.5 ATR, target 2 ATR, cost 0.25).
+
+Holding time in the 4-hour-limit baseline (TRAIN): 0-5 min +$2,461 (92 % wins), 6-10 min +$1,209, 11-20 min flat,
+21-40 min -$1,187, 41-80 min -$1,997, 80+ min -$788. So long holds are where the money goes — but that is a selection
+effect: a trade is "short" because it reached its target quickly.
+
+Forcing the exit:
+| | 5-min stop | 10-min stop | 4-hour limit |
+|---|---|---|---|
+| TRAIN win / PF / total | 49.4 % / 0.78 / -18.1 % | 55.3 % / 0.81 / -17.6 % | 83.1 % / 0.98 / -3.0 % |
+| TEST win / PF / total | 49.7 % / 0.77 / -13.2 % | 53.6 % / 0.79 / -13.6 % | 81.5 % / 0.84 / -16.2 % |
+| TEST worst day | -0.82 % | -0.72 % | -1.80 % |
+| Last 2 weeks PF / total | 0.66 / -1.6 % | 0.75 / -1.4 % | 0.76 / -2.0 % |
+| Exits at the time stop | 79 % | 63-64 % | 4-5 % |
+
+Reverse after a losing time stop or hard stop (TRAIN, `reverse` = max flips in a row): reverse entries win 47-52 % and
+lose money in all six cells (-$585 to -$1,253 on top of the first entries); PF 0.76-0.79 vs 0.78-0.81 without.
+Best TRAIN cell is no reversal, so nothing new went to TEST. Consistent with the earlier controls: fading and following
+the push are indistinguishable, so the opposite side has no edge either and each flip pays the cost again.

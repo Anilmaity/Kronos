@@ -30,12 +30,13 @@ class P:
     cost: float = 0.25
     start: float = 10_000.0
     flip: bool = False
+    reverse: int = 0          # after a losing time-stop or hard stop, open the opposite side, up to this many times in a row
 
 def run(d, p=P()):
     o, h, l, c = (d[k].to_numpy() for k in ("open", "high", "low", "close"))
     A, R5, RNG, POS, ER, news, gap = (d[k].to_numpy() for k in ("atr", "r5", "rng", "pos", "er", "news", "gap"))
     idx = d.index; mn = idx.hour.to_numpy() * 60 + idx.minute.to_numpy(); day = idx.strftime("%Y-%m-%d").to_numpy()
-    hs = p.cost / 2; eq = d0 = p.start; b = None; trades = []; days = {}
+    hs = p.cost / 2; eq = d0 = p.start; b = None; trades = []; days = {}; pend = None
     for i in range(len(c) - 1):
         if i == 0 or day[i] != day[i - 1]: d0 = eq
         if b:
@@ -49,26 +50,32 @@ def run(d, p=P()):
                 n = len(b["fills"]); tp = np.mean(b["fills"]) + s * b["tp0"] * p.decay ** (n - 1)
                 if (h[i] - hs >= tp) if s > 0 else (l[i] + hs <= tp): px, why = tp, "tp"
                 elif ER[i] > p.er_exit and (c[i] - b["fills"][0]) * s < 0: px, why = c[i] - s * hs, "range break"
-                elif i - b["i"] >= p.max_hold or news[i] or mn[i] >= 20 * 60 + 50 or gap[i + 1]: px, why = c[i] - s * hs, "time/flat"
+                elif news[i] or mn[i] >= 20 * 60 + 50 or gap[i + 1]: px, why = c[i] - s * hs, "flat"
+                elif i - b["i"] >= p.max_hold: px, why = c[i] - s * hs, "time"
                 elif n < p.K and (b["fills"][-1] - c[i]) * s >= b["g"] and (not p.confirm or (c[i] - o[i]) * s > 0):
                     b["add"] = True
             if px is not None:
                 pnl = sum((px - f) * s for f in b["fills"]) * b["lot"] * 100
                 eq += pnl; trades.append(dict(t=idx[b["i"]], day=day[b["i"]], side=s, clips=len(b["fills"]), pnl=pnl, why=why, mins=i - b["i"], lot=b["lot"],
-                                             exit_t=idx[i], exit_px=px, fills=list(b["fills"]), fill_t=[idx[k] for k in b["ft"]], eq=eq)); b = None
+                                             exit_t=idx[i], exit_px=px, fills=list(b["fills"]), fill_t=[idx[k] for k in b["ft"]], eq=eq, chain=b["chain"]))
+                if pnl < 0 and why in ("time", "stop") and b["chain"] < p.reverse: pend = (-s, b["chain"] + 1)
+                b = None
         days[day[i]] = (d0, eq); dp = (eq / d0 - 1) * 100
-        if b or dp <= p.day_floor or news[i] or gap[i + 1] or mn[i] >= 20 * 60: continue
-        g = p.step * A[i]
-        if ER[i] > p.er_max or RNG[i] < 2 * g: continue
-        s = -1 if (POS[i] > 0.7 and R5[i] >= p.pull * A[i]) else 1 if (POS[i] < 0.3 and R5[i] <= -p.pull * A[i]) else 0
-        if not s: continue
-        if p.flip: s = -s
+        if b or dp <= p.day_floor or news[i] or gap[i + 1] or mn[i] >= 20 * 60: pend = None if not b else pend; continue
+        g = p.step * A[i]; chain = 0
+        if pend:                                                         # reverse entry: no signal needed
+            s, chain = pend; pend = None
+        else:
+            if ER[i] > p.er_max or RNG[i] < 2 * g: continue
+            s = -1 if (POS[i] > 0.7 and R5[i] >= p.pull * A[i]) else 1 if (POS[i] < 0.3 and R5[i] <= -p.pull * A[i]) else 0
+            if not s: continue
+            if p.flip: s = -s
         risk = min(eq * p.risk_pct / 100, (dp - p.day_floor) / 100 * d0)
         S = (p.K + 1) * g                                                # stop distance from the first entry
         lot = round(risk / ((p.K * S - g * p.K * (p.K - 1) / 2) * 100), 2)  # worst case: every clip filled exactly one step apart
         if lot < 0.01: continue
         e = o[i + 1] + s * hs
-        b = dict(s=s, i=i + 1, fills=[e], ft=[i + 1], lot=lot, g=g, tp0=p.tpa * A[i], stop=e - s * S)
+        b = dict(s=s, i=i + 1, chain=chain, fills=[e], ft=[i + 1], lot=lot, g=g, tp0=p.tpa * A[i], stop=e - s * S)
     t = pd.DataFrame(trades); dd = pd.DataFrame(days, index=["start", "end"]).T; dd["pct"] = (dd.end / dd.start - 1) * 100
     return t, dd
 
