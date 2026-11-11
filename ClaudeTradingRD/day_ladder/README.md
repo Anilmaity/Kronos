@@ -86,3 +86,29 @@ on TRAIN (`grid_bold.py`). Single entry, whole room risked each trade, stop 6 x 
 Caveats: a big day comes from ~9 wins in a row with the whole day's profit re-risked each time (late trades risk
 15 %+ of the account on a 6-pt stop, ~3 lots on $10k); a firm that measures daily loss from peak equity instead of
 the day's starting balance would count the give-back as a breach; the weekly +18 % cap then stops the week.
+
+## Range Grid Scalper (`range_scalp.py`) — the XM Real trader's three profitable days, codified
+What 11-05 / 06 / 09 had in common vs 11-10 / 11: oscillating market (net move 7-20 % of the path vs 34 % on the
+trending 11-10), one 0.04 clip throughout (losing days went to 0.12 and 0.20), mostly sells into pushes up, winners
+of 5-9 pts held 30-100 min, 0-2 margin stop-outs (7 and 22 on the losing days).
+Rules: trade only while the last 120 min oscillate; fade a 5-min push in the outer 30 % of that range; one fixed
+clip; add a clip every G pts against up to K; small shared target; hard stop one step past the last clip sized to
+0.5 % of equity; day floor -2.5 %; flat for the New York releases.
+
+TRAIN grid (36 cells, `range_grid_train.csv`): the smaller the target the worse — PF ~0.60 at 1.2 pts, ~0.75 at 2 pts,
+~0.90 at 4 pts. The 0.6-pt spread is half of a 1.2-pt target.
+
+| cost 0.6 | TP 2 pts (G 6, K 3) TRAIN / TEST / last 2 wks | TP 4 pts (G 6, K 3) TRAIN / TEST / last 2 wks |
+|---|---|---|
+| Baskets per day | 16 / 16 / 13 | 13 / 12 / 11 |
+| Win rate | 89.6 % / 87.8 % / 90.3 % | 81.8 % / 79.6 % / 83.6 % |
+| Profit factor | 0.77 / 0.69 / 0.79 | 0.91 / 0.80 / 0.97 |
+| Worst day | -1.96 % / -1.34 % / -0.60 % | -1.67 % / -1.33 % / -0.44 % |
+| Best day | +0.95 % / +0.77 % / +0.60 % | +1.19 % / +1.39 % / +1.12 % |
+| Total | -21.9 % / -22.3 % / -0.9 % | -11.8 % / -19.4 % / -0.2 % |
+
+Zero cost is flat in both (PF 0.98-1.06): the fade has no edge, the spread is the loss. Fading vs following the push
+makes no consistent difference; dropping the oscillation filter triples the trade count and the loss.
+On the trader's own three profitable days the 2-pt version made -0.60 %, -0.30 %, -0.10 %: his profit came from
+5-9-pt winners held through deep drawdowns without a stop, which a hard-stopped small-target scalper does not reproduce.
+`results_range.txt` has the full output.
