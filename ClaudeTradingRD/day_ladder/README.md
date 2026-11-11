@@ -186,3 +186,25 @@ TRAIN grid, 48 cells (`hedge_grid_train.csv`), cost 0.25:
 Worse than the one-sided dynamic scalper (TEST PF 0.84). A buy and a sell held together are a flat position that pays
 two spreads; after the first target the cycle is exactly "a fade entered one target later", with its profit capped at
 that target and its loss at the hard stop.
+
+## Two-sided ping-pong scalper (`ping_pong.py`, 2026-11-12) — the closest replica of the profitable days
+Read from the 11-05 trade sequence and measured on all six days: each clip has its own 11-14-pt target (median winner
+captured 5-9 pts), an opposite clip is opened seconds after a target is hit (7 times on 11-05), buys and sells are open
+together part of the time (20 % on 11-05, 1 % on 11-06, 9 % on 11-09 — and 72 % on the losing 11-11), clips come in
+fixed-size pairs, and no loss is ever taken. Rail added: close everything when the floating loss reaches 1 % of equity.
+
+TRAIN grid, 32 cells (`pingpong_grid_train.csv`), cost 0.25: best PF 0.99 at target 12 / step 8 / 5 clips per side,
+oscillation filter on, flip OFF. Flipping after a win lowers PF (0.93), as does dropping the filter (0.93).
+
+| pick | TRAIN | TEST | Last 2 weeks |
+|---|---|---|---|
+| Clips per day | 14.1 | 12.5 | 11.3 |
+| Win rate | 64.7 % | 57.4 % | 62.1 % |
+| Profit factor | 0.99 | 0.81 | 0.98 |
+| Worst / best day | -2.86 / +3.17 % | -3.01 / +1.90 % | -1.47 / +0.95 % |
+| Total | -2.8 % | -23.9 % | -0.2 % |
+| Exits: target / equity stop / flat | 57 / 19 / 24 % | 47 / 21 / 33 % | 49 / 21 / 30 % |
+
+On his own days: 11-05 +0.93 %, 11-06 -0.29 %, 11-09 +0.10 %, 11-10 -0.77 %, 11-11 +0.30 %. Same sign as his on
+11-05 and 11-09 and far smaller on both sides: his +$1,191 on 11-05 came from 0.08-0.16 lots on a ~$200 balance with
+nothing to stop a loss, which is exactly what the 1 % equity stop removes.
