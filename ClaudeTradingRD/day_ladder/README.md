@@ -56,3 +56,11 @@ Base risk 2.5 %, press 1.0, per-basket cap 10 %, no trailing floor before the ta
 
 This is the ceiling found in 72 TRAIN cells: about one +6 % day in ten, none at +20 %. A losing day now
 ends after one or two stops, so "constant trading" is traded away for the bigger days.
+
+## Bold ladder check (`grid_bold.py`, TRAIN)
+Every basket risks the whole room to the day's floor (the play that maximises the chance of reaching a
+target inside a loss limit). 12 TRAIN cells: best is 9.6 % of days at +6 %, none at +20 %, PF 0.77 —
+identical to the harder-pressing pick, which already risked the whole room on its first basket.
+Wider stops (9, 12 x ATR) and a 6 % giveback are worse and let the worst day slip to about -4 %.
+Averaging keeps wins small (a one-leg win earns ~0.19 of the risk, not 0.33), so ~10 % is the ceiling
+for this brief; the arithmetic limit for any no-edge design is 29 %.
