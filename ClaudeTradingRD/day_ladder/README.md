@@ -261,3 +261,29 @@ A short time stop does what was asked on trending days — big losing days fall 
 not improve (-24k to -37k in every row) and the match to the trader's four days is lost, because his profit on those days
 came from positions held 30-300 minutes. Losers-only and trend-only variants are no better (-22k to -43k).
 The worst day stays near -$3,100 in every row: that is the daily limit day, not a slow trend day.
+
+## Asia-session-only fit (`fit_asia.py`, `fit_asia_best.json`, `results_fit_asia.txt`, 2026-11-12)
+Operator's goal: trade only in the Asia session and match the results. Asia = 00:00-08:00 UTC (05:30-13:30 IST);
+signals, adds and flips only inside it; $2,000 daily limit kept.
+
+The trader's profit by the session a position was OPENED in:
+| | Asia 00-08 | London 08-13 | New York 13-21 | late | day |
+|---|---|---|---|---|---|
+| 4 Nov | 0 (no trades) | +146 | -174 | 0 | -28 |
+| 5 Nov | +157 | +132 | +664 | +238 | +1,191 |
+| 6 Nov | +168 | +229 | +77 | 0 | +473 |
+| 9 Nov | +587 | +100 | +500 | 0 | +1,187 |
+Asia-only cannot reach the full-day figures (best fit to them: -590 / +76 / +38 / +36, error $3,263), so the target is
+the trader's own Asia column.
+
+Fitted (4,000 draws + 9,000 hill-climb steps): sell-only, 0.10-lot clips, 4-pt target, hand-take at +3, adds every 7 pts
+up to 8 after a reversal bar, only while the 2-hour net move is under 25 % of its range, flat for news and at session end.
+| | 4 Nov | 5 Nov | 6 Nov | 9 Nov | total |
+|---|---|---|---|---|---|
+| Trader, Asia entries | $0 | +$157 | +$168 | +$587 | +$912 |
+| Fitted, Asia only | +$40 | +$120 | +$280 | +$401 | +$841 |
+
+Outside the four days: 10-11 Nov -$137; October +$394 (PF 1.19); September -$1,639; August -$2,401; full 16 months
+-$8,263, 81 % wins, PF 0.88, 71 % winning days, worst day -$2,302, 15 days at -$1,000 or worse. Smaller swings than the
+all-day fit (-$27k, 87 such days) because it trades a third of the day and goes flat at 08:00 UTC; still a loser, and
+sell-only is fitted to a week in which Asia-session sells happened to work.

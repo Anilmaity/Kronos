@@ -37,6 +37,8 @@ class P:
     take: float = 0.0         # > 0: close a clip by hand once it is this many points up and the last minute turned against it
     h0: int = 0               # signal entries only between h0 and h1 (UTC hours)
     h1: int = 24
+    session_only: bool = False  # adds and flips are also limited to h0-h1 (signals always are)
+    session_flat: bool = False  # close everything when the session ends at h1
     max_hold: int = 0         # > 0: time stop — close a clip that has been open this many minutes
     hold_mode: str = "all"    # all: every clip; losers: only clips under water; trend: only losers while the 2-hour move is one-way (ER > 0.5)
     day_loss_usd: float = 0.0 # > 0: when the day is down this much (closed + open, from the day's opening value), close everything and stop until tomorrow
@@ -66,11 +68,11 @@ def run(d, p=P()):
         if n_open:
             fl = lambda px: sum((px - hs - x["e"]) * x["lot"] for x in book[1]) * 100 + sum((x["e"] - px - hs) * x["lot"] for x in book[-1]) * 100
             R = eq * p.risk_pct / 100; worst = min((l[i], h[i]), key=fl)
-            stop = p.stop and fl(worst) <= -R
+            stop = p.stop and fl(worst) <= -R; ses_end = p.session_flat and not (p.h0 <= mn[i] // 60 < p.h1)
             if p.day_loss_usd and eq + fl(worst) - d0m <= -p.day_loss_usd: stop = halted = True
-            if stop or (p.news_flat and news[i]) or (p.eod_flat and mn[i] >= 20 * 60 + 50) or gap[i + 1]:
+            if stop or ses_end or (p.news_flat and news[i]) or (p.eod_flat and mn[i] >= 20 * 60 + 50) or gap[i + 1]:
                 for s in (1, -1):
-                    for x in book[s]: close(s, x, (worst if stop else c[i]) - s * hs, ("day loss limit" if halted else "equity stop") if stop else "flat", i)
+                    for x in book[s]: close(s, x, (worst if stop else c[i]) - s * hs, ("day loss limit" if halted else "equity stop") if stop else ("session end" if ses_end else "flat"), i)
                     book[s] = []
             else:
                 for s in (1, -1):
@@ -88,6 +90,7 @@ def run(d, p=P()):
                     if book[s] and len(book[s]) < p.K and (book[s][-1]["e"] - c[i]) * s >= p.G and (not p.confirm or (c[i] - o[i]) * s > 0) and not any(q[0] == s for q in pend):
                         pend.append((s, "add"))
         days[day[i]] = (d0, eq); dp = (eq / d0 - 1) * 100
+        if p.session_only and not (p.h0 <= mn[i] // 60 < p.h1): pend = []
         if halted or dp <= p.day_floor or (p.news_flat and news[i]) or gap[i + 1] or (p.eod_flat and mn[i] >= 20 * 60): pend = []; continue
         if ER[i] <= p.er_max and RNG[i] >= 2 * p.G:
             s = -1 if (POS[i] > p.edge and R5[i] >= p.pull * A[i]) else 1 if (POS[i] < 1 - p.edge and R5[i] <= -p.pull * A[i]) else 0
