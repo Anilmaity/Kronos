@@ -112,3 +112,10 @@ makes no consistent difference; dropping the oscillation filter triples the trad
 On the trader's own three profitable days the 2-pt version made -0.60 %, -0.30 %, -0.10 %: his profit came from
 5-9-pt winners held through deep drawdowns without a stop, which a hard-stopped small-target scalper does not reproduce.
 `results_range.txt` has the full output.
+
+### Range scalper at a 0.2-pt spread (operator's figure; `results_range_spread02.txt`)
+The study measured 0.59 pt on the XM Real fills and 0.48 pt on OANDA; 0.2 pt is a raw-spread account before commission.
+TRAIN grid re-run at 0.2: PF 0.75-0.82 at 1.2 pts, 0.89-0.94 at 2 pts, 0.96-1.05 at 4 pts.
+- 2-pt target (G 6, K 3): TRAIN / TEST / last 2 wks — win 91.4 / 89.6 / 91.8 %, PF 0.94 / 0.80 / 0.95, worst day -1.59 / -1.12 / -0.51 %, total -5.5 / -13.2 / -0.2 %.
+- 1.2-pt target (G 4, K 4): win 94.1 / 94.1 / 95.1 %, PF 0.82 / 0.84 / 0.99, total -16.3 / -9.3 / 0.0 %.
+- Best on TRAIN (4 pts, G 3, K 3): PF 1.05 on TRAIN (+23.9 %) but 0.89 on TEST (-28.1 %) — did not hold out of sample.
