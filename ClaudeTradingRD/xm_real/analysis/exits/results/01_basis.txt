@@ -1,0 +1,57 @@
+== clock alignment: dispersion of (deal - OANDA) for manual market deals vs time shift ==
+shift -10s  n=272  median +0.158  MAD 0.459
+shift  -5s  n=272  median +0.084  MAD 0.293
+shift  -2s  n=272  median +0.053  MAD 0.157
+shift  +0s  n=272  median -0.011  MAD 0.126
+shift  +2s  n=272  median -0.026  MAD 0.166
+shift  +5s  n=272  median -0.109  MAD 0.288
+shift +10s  n=272  median -0.093  MAD 0.386
+
+== basis, manual market deals (XM - OANDA, same side) ==
+      count   mean    std    min     5%    25%    50%    75%    95%    max
+side                                                                      
+ask   129.0  0.044  0.229 -0.653 -0.336 -0.090  0.061  0.194  0.347  0.805
+bid   143.0 -0.035  0.284 -2.186 -0.345 -0.136 -0.053  0.057  0.336  0.769
+
+per day:
+      count     median           std       
+side    ask bid    ask    bid    ask    bid
+day                                        
+11-04    15  19  0.098 -0.003  0.138  0.188
+11-05    24  26  0.089 -0.050  0.317  0.268
+11-06    17  22  0.060  0.086  0.255  0.206
+11-09    21  28  0.247 -0.037  0.146  0.239
+11-10    25  22  0.006 -0.159  0.241  0.488
+11-11    27  26 -0.086 -0.091  0.116  0.107
+
+ESTIMATE  ask +0.061  bid -0.053  -> mid basis +0.004, XM effective spread = OANDA spread +0.114 (OANDA median spread 0.47)
+other deal kinds (not used):
+                                           count  median    min   max
+reason             entryType         side                            
+DEAL_REASON_MOBILE DEAL_ENTRY_OUT_BY ask       4    8.75   7.71  9.50
+                                     bid       4   -6.56  -7.30 -5.32
+DEAL_REASON_SO     DEAL_ENTRY_OUT    ask      15   -0.07  -0.70  0.88
+                                     bid      19   -0.80 -24.86 -0.10
+DEAL_REASON_TP     DEAL_ENTRY_OUT    ask      30   -0.12  -7.51  0.29
+                                     bid      12    0.22   0.00  0.81
+
+== validation: first touch of the final TP on corrected S5 vs the real TP fill time (42 TP exits) ==
+count    42.0
+mean     -3.0
+std       1.6
+min      -7.2
+5%       -4.7
+25%      -4.6
+50%      -3.0
+75%      -2.0
+95%      -0.8
+max       0.8
+within +-5s: 41/42; within +-60s: 42/42
+Empty DataFrame
+Columns: [position_id, reason, tp_dist, touch_minus_close_s]
+Index: []
+
+TP-set positions NOT closed by TP: 99; corrected series touched their final TP >5s before the real close: 0
+Empty DataFrame
+Columns: [position_id, reason, tp_dist, touch_minus_close_s]
+Index: []

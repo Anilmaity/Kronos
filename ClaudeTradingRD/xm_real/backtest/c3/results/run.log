@@ -1,0 +1,16 @@
+seam check: 378 overlapping M1 bars, max |mid close difference| 0.0000
+stitched M1: 469227 bars 2025-07-16 06:17:00+00:00 .. 2026-11-11 13:43:00+00:00; quoted (bid/ask) from 2026-07-16: 116197 bars
+CHECK look-ahead: 120 random truncation + poison points on the last 30000 bars: indicators at t unchanged -> PASS
+CHECK closed-bar probe: (last M5 open + 5 min) - c(t) over 468725 bars: max 0 s, positive on 0 -> PASS
+CHECK engine unit test: next-bar fill, same-bar stop-wins, stop slippage, time stop, lot rounding -> PASS
+CHECK trigger parity: on for 11 of 27 fresh entries and 39 of 124 decisions (spec: 11 of 27, 39 of 124) -> PASS
+TRAIN: 250460 M1 bars, 222 dates, median ATR5 4.28, in-session bars with ATR5>=3: 151398 (72% of in-session), K0.6 trigger rate per side 13.0%
+TEST: 211063 M1 bars, 185 dates, median ATR5 4.61, in-session bars with ATR5>=3: 168351 (95% of in-session), K0.6 trigger rate per side 13.0%
+WEEK: 7704 M1 bars, 7 dates, median ATR5 4.61, in-session bars with ATR5>=3: 6380 (98% of in-session), K0.6 trigger rate per side 13.1%
+default/spec_base: 2026 trades; exits {'stop': 962, 'tp': 732, 'time': 311, 'news': 20, 'eod': 1}; lots 0.01-0.07 (median 0.05); risk at stop USD 19.1-38.0; EOD exits filled at the last quote before a market break: 0
+same-bar ties: 0 of 962 stop exits (default, spec base) also had the target inside the same M1 bar and were booked as stops; end-of-day exits in all 24 runs: 363, of which filled at the last quote before a break: 225
+TEST halves split at 2026-07-18 12:00:00+00:00: spec_base -1244 / -2449; spec_stress -1692 / -3369; flat_0.45 -737 / -1983; flat_0.80 -1103 / -2297
+best TRAIN cell at spec base: TP2.5/SL2.5/K0.6 PF 0.834 (n 1496); its TEST: PF 0.796, n 1542, net -3645 USD
+brake: 304 of 331 trading days (91.8%) end on the third stop-out, median at 6.0 h UTC; trades per day median 6; kill-switch exits in all 24 runs: 0
+EOD rule: 0 of 2026 default trades exit at 21:00 into a market break and are filled at the last quote (their net +0 USD). Literal 'next open' variant: TRAIN PF 0.724, TEST PF 0.777, FULL net -8419 vs -8419 USD
+long-file QA against the OANDA file over their overlap: 347915 of 353408 OANDA bars present (98.4%); close identical on 100.00%; |high or low difference| > 0.01 on 0.055%

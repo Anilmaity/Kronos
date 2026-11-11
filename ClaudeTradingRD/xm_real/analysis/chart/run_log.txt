@@ -1,0 +1,172 @@
+################ 01_basis.py
+trade deals 356; used for basis (manual market fills, no close-by) n=272
+
+clock check - dispersion of (deal - OANDA) if the deal clock were shifted by s seconds:
+  shift -10s  median +0.158  MAD 0.459  rmse 1.117
+  shift  -5s  median +0.084  MAD 0.293  rmse 0.740
+  shift  -2s  median +0.053  MAD 0.157  rmse 0.412
+  shift  -1s  median +0.021  MAD 0.144  rmse 0.317
+  shift  +0s  median -0.011  MAD 0.126  rmse 0.261
+  shift  +1s  median -0.002  MAD 0.147  rmse 0.257
+  shift  +2s  median -0.026  MAD 0.166  rmse 0.293
+  shift  +5s  median -0.109  MAD 0.288  rmse 0.513
+  shift +10s  median -0.093  MAD 0.386  rmse 0.805
+
+basis by side, all manual fills (USD/oz):
+      count  median   mean    std
+side                             
+ask     129   0.061  0.044  0.229
+bid     143  -0.053 -0.035  0.284
+
+basis by side, calm bars only (5 s range <= 0.25):
+      count  median   mean    std
+side                             
+ask      16   0.070  0.115  0.137
+bid      21  -0.042 -0.043  0.110
+
+basis by day and side (median):
+           count     median       
+side         ask bid    ask    bid
+day                               
+2026-11-04    15  19  0.098 -0.003
+2026-11-05    24  26  0.089 -0.050
+2026-11-06    17  22  0.060  0.086
+2026-11-09    21  28  0.247 -0.037
+2026-11-10    25  22  0.006 -0.159
+2026-11-11    27  26 -0.086 -0.091
+
+ {
+  "ask_basis": 0.0612,
+  "bid_basis": -0.0526,
+  "mid_basis": 0.0043,
+  "n_ask": 129,
+  "n_bid": 143,
+  "oanda_median_spread": 0.47,
+  "xm_implied_median_spread": 0.584,
+  "note": "XM = OANDA + basis, per side; medians over manual market fills 2026-11-04..11-11"
+}
+################ 02_equity.py
+grid rows 92682  2026-11-03 23:05:00+00:00 .. 2026-11-11 13:44:00+00:00
+rows with a position open: 66105 (71.3% of market time since 11-03 22:00)
+final balance 0.00  final credit 2.97  min balance -147.95
+
+[check 1] floating at last grid instant before close - booked profit (USD per position, close-by legs excluded)
+  all       n=170  median  -0.48  mean  +0.55  MAE  9.53  p95|err|  31.32  worst  232.17
+  manual    n= 94  median  -0.21  mean  -0.34  MAE  1.15  p95|err|   3.97  worst    6.71
+  TP        n= 42  median  -5.89  mean -15.80  MAE 15.80  p95|err|  73.66  worst   89.96
+  stop-out  n= 34  median  +3.31  mean +23.20  MAE 24.97  p95|err| 146.33  worst  232.17
+
+[check 2] MT5 equity / used margin at the last grid instant before each stop-out cluster
+  11-04 16:40:14  n= 3  booked   -302.12  equity_mt5 before    22.57  gross 0.16 net -0.08 lots  margin   64.9  level    35%
+  11-09 00:34:33  n= 2  booked   -200.10  equity_mt5 before    16.38  gross 0.08 net -0.08 lots  margin   32.7  level    50%
+  11-10 13:30:03  n= 5  booked  -2040.72  equity_mt5 before   695.47  gross 0.36 net +0.36 lots  margin  146.6  level   474%
+  11-10 15:51:39  n= 1  booked    -72.40  equity_mt5 before    -2.38  gross 0.40 net -0.00 lots  margin  161.4  level    -1%
+  11-10 16:06:39  n= 1  booked     -4.78  equity_mt5 before     3.58  gross 0.02 net +0.02 lots  margin    8.1  level    44%
+  11-11 05:37:16  n=19  booked   -707.72  equity_mt5 before     7.42  gross 0.92 net +0.04 lots  margin  373.4  level     2%
+  11-11 07:03:29  n= 3  booked   -150.88  equity_mt5 before    38.35  gross 0.20 net -0.20 lots  margin   81.2  level    47%
+
+[check 3] cash accounting (BALANCE deals)
+  deposits (CD-* + transfer in)           884.74
+  deposit-fee rebates (EXP05)              50.28
+  withdrawals net of reversed attempts  -1805.00
+  bonus credit converted to cover negative balance (EXP06)   367.71
+  negative-balance reset by broker (EXP01)                    11.44
+  trading net (all positions)             490.83
+  sum of everything = final balance        -0.00
+  operator cash result = withdrawals - deposits = 920.26
+  peak balance 1919.01 at 2026-11-10 11:54:20+00:00   lowest equity_mt5 -7.96 at 2026-11-10 13:30:10+00:00
+################ 03_chart.py
+[marker check] 348 markers vs their own 1m candle (drawn = OANDA mid +0.0043):
+  inside the candle's high-low range: 316   outside by <=0.35 (half a spread): 32   outside by >0.35: 0   worst 0.31
+Empty DataFrame
+Columns: [x, y, what, off]
+Index: []
+[rangebreaks] 5 closed-market gaps cut out; deals hidden inside them: 0
+[round trips] 174 drawn from 178 positions (4 close-by pairs merged): Profit 134, STOP-OUT (margin) 34, Loss (manual / close-by) 6 · net +$490.83
+[cash events]
+                            time       kind     amt     bal_after                                           what
+2026-11-04 10:06:02.289000+00:00    deposit   52.13  5.213000e+01   CD-COD-BC 270465873 + EXP05-COD-BC 270465873
+       2026-11-04 14:19:24+00:00 withdrawal  -60.00  1.680300e+02                            CW-CPD-BC 58782419p
+2026-11-04 16:41:29.356000+00:00      bonus   35.83  7.105427e-15                                          EXP06
+2026-11-05 04:40:16.410000+00:00    deposit   81.44  8.144000e+01 CD-ZTP-UPI 270645047 + EXP05-ZTP-UPI 270645047
+       2026-11-05 17:56:17+00:00 withdrawal -516.00  2.000000e+02                           CW-ZTP-BWR 58860468p
+       2026-11-05 20:32:14+00:00 withdrawal -111.00  2.817200e+02                            CW-CPD-BC 58864151p
+       2026-11-05 20:53:15+00:00 withdrawal  -81.00  2.007200e+02                            CW-CPD-BC 58865728p
+       2026-11-06 03:01:27+00:00 withdrawal -364.00  2.002200e+02                            CW-CPD-BC 58876088p
+       2026-11-06 03:15:16+00:00 withdrawal  -69.00  2.009800e+02                            CW-CPD-BC 58876666p
+       2026-11-06 16:48:34+00:00 withdrawal -604.00  2.006200e+02                            CW-CPD-BC 58945196p
+2026-11-09 02:30:51.034000+00:00    deposit  123.09  1.236100e+02 CD-ZTP-UPI 271224767 + EXP05-ZTP-UPI 271224767
+2026-11-09 13:54:31.895000+00:00    deposit  134.78  9.283500e+02                        Transfer from 322398259
+2026-11-10 11:54:17.046000+00:00    deposit  153.84  1.919010e+03 CD-ZTP-UPI 271549055 + EXP05-ZTP-UPI 271549055
+2026-11-10 13:30:25.872000+00:00      bonus  147.95 -8.526513e-14                                  EXP01 + EXP06
+2026-11-10 13:40:34.001000+00:00    deposit  133.32  1.333200e+02 CD-PNM-UPI 271597557 + EXP05-PNM-UPI 271597557
+2026-11-10 15:54:55.219000+00:00      bonus   55.76 -8.526513e-14                                          EXP06
+2026-11-10 16:06:55.427000+00:00      bonus    8.80 -8.526513e-14                                          EXP06
+2026-11-10 17:24:08.070000+00:00    deposit  153.85  1.538500e+02 CD-PNM-UPI 271658793 + EXP05-PNM-UPI 271658793
+2026-11-11 05:37:17.133000+00:00      bonus   82.50  2.557954e-13                                  EXP01 + EXP06
+2026-11-11 06:09:24.469000+00:00    deposit  102.57  1.025700e+02 CD-PNM-UPI 271728134 + EXP05-PNM-UPI 271728134
+2026-11-11 07:04:00.754000+00:00      bonus   48.31  2.700062e-13                                          EXP06
+wrote xm_real_trades_equity.html  7.3 MB
+wrote xm_real_week_overview.png
+wrote xm_real_day_2026-11-04.png  tf=1m  window 11-04 09:21..11-04 17:26 UTC  session: 20 positions closed · net −$27.96 · 17 winners / 3 losers · stop-outs 3 (−$302.12)  | UTC-date net -27.96
+wrote xm_real_day_2026-11-05.png  tf=5m  window 11-05 03:55..11-05 21:56 UTC  session: 31 positions closed · net +$970.20 · 31 winners / 0 losers · stop-outs 0 (+$0.00)  | UTC-date net +970.20
+wrote xm_real_day_2026-11-06.png  tf=5m  window 11-06 00:45..11-06 17:33 UTC  session: 23 positions closed · net +$893.98 · 23 winners / 0 losers · stop-outs 0 (+$0.00)  | UTC-date net +893.98
+wrote xm_real_day_2026-11-09.png  tf=5m  window 11-08 23:49..11-09 19:16 UTC  session: 27 positions closed · net +$551.90 · 25 winners / 2 losers · stop-outs 2 (−$200.10)  | UTC-date net +551.90
+wrote xm_real_day_2026-11-10.png  tf=5m  window 11-10 01:43..11-10 18:09 UTC  session: 39 positions closed · net −$1,510.06 · 22 winners / 17 losers · stop-outs 7 (−$2,117.90)  | UTC-date net -1510.06
+wrote xm_real_day_2026-11-11.png  tf=1m  window 11-11 01:12..11-11 07:49 UTC  session: 38 positions closed · net −$387.23 · 17 winners / 21 losers · stop-outs 22 (−$858.60)  | UTC-date net -387.23
+################ 04_facts.py
+== exits: how positions ended, by sign of the booked net
+         count               sum              
+res       loss win zero     loss      win zero
+how                                           
+TP           0  42    0     0.00  2139.16  0.0
+close-by     4   0    4  -249.16     0.00  0.0
+manual       2  92    0   -30.26  2109.81  0.0
+stop-out    33   1    0 -3484.00     5.28  0.0
+positions closed by hand at a loss (not close-by, not stop-out): 2 of 178  worth -30.26
+stop-loss set on 1 positions, take-profit on 141
+
+== exposure (5 s grid, market hours from first trade to end of data)
+time with a position open: 78.1% of 118 market hours
+gross lots  max 0.92   net lots  min -0.44  max +0.44   positions open at once: max 19 (buys 13, sells 11)
+while open: floating P&L negative 71.6% of the time, median -47.69, worst -1476.79 at 2026-11-10 11:08:55+00:00
+balance peak 1919.01 at 2026-11-10 11:54:20+00:00: equity then 554.42 (floating -1364.59, net +0.44 lots)
+own-money equity peak 1405.23 at 2026-11-10 09:08:40+00:00
+
+== adds: was a same-side position already open, and under water, when each entry was made?
+entries with no same-side position open: 49   adds to an existing same-side stack: 129
+  of the 129 adds: stack under water 110 (85.3%), in profit 19
+  adds to a losing stack: stack was a median -3.11 USD/oz under water (p10 -12.03, worst -33.17); same-side positions already open: median 2, max 12
+  first entries            n= 49  win rate 81.6%  net    229.98  stop-outs 8
+  adds, stack in profit    n= 19  win rate 73.7%  net   -755.73  stop-outs 3
+  adds, stack under water  n=110  win rate 73.6%  net   1016.58  stop-outs 23
+  side split: {'SELL': 104, 'BUY': 74}  lots: {0.04: 163, 0.08: 6, 0.02: 3, 0.12: 3, 0.01: 2, 0.2: 1}
+
+== cash habit: what is left on the account after each withdrawal
+                     time  profit    bal
+2026-11-04 14:19:24+00:00  -60.00 168.03
+2026-11-05 17:56:17+00:00 -516.00 200.00
+2026-11-05 20:32:14+00:00 -111.00 281.72
+2026-11-05 20:53:15+00:00  -81.00 200.72
+2026-11-06 03:01:27+00:00 -364.00 200.22
+2026-11-06 03:15:16+00:00  -69.00 200.98
+2026-11-06 16:48:34+00:00 -604.00 200.62
+deposits n=8 median 119.67 total 884.74; withdrawals n=7 total -1805.00
+each deposit: balance just before it, floating P&L then, time since the last stop-out
+  11-04 10:06  +  51.69  balance before     0.00  floating      0.00  since last stop-out -
+  11-05 04:40  +  75.11  balance before     0.00  floating      0.00  since last stop-out 0 days 11:58:47
+  11-09 02:30  + 113.68  balance before     0.52  floating      0.00  since last stop-out 0 days 01:56:13
+  11-09 13:54  + 134.78  balance before   793.57  floating   -182.89  since last stop-out 0 days 13:19:54
+  11-10 11:54  + 142.16  balance before  1765.17  floating  -1364.59  since last stop-out 1 days 11:19:39
+  11-10 13:40  + 125.65  balance before    -0.00  floating      0.00  since last stop-out 0 days 00:10:28
+  11-10 17:24  + 145.00  balance before    -0.00  floating      0.00  since last stop-out 0 days 01:17:28
+  11-11 06:09  +  96.67  balance before     0.00  floating      0.00  since last stop-out 0 days 00:32:07
+
+== account wipe-outs: balance back to zero after a stop-out, refilled by a new deposit
+  11-04 16:40 UTC  n= 3  booked   -302.12  sides {'SELL': np.int64(3)}  before: balance   258.33 equity   -15.93 bonus  38.50   5 min later: balance    0.00
+  11-09 00:34 UTC  n= 2  booked   -200.10  sides {'SELL': np.int64(2)}  before: balance   200.62 equity    14.85 bonus   1.53   5 min later: balance    0.52
+  11-10 13:30 UTC  n= 5  booked  -2040.72  sides {'BUY': np.int64(5)}  before: balance  1892.77 equity   555.48 bonus 139.99   5 min later: balance   -0.00
+  11-10 15:51 UTC  n= 1  booked    -72.40  sides {'BUY': np.int64(1)}  before: balance   257.48 equity   -69.04 bonus  66.66   5 min later: balance   -0.00
+  11-10 16:06 UTC  n= 1  booked     -4.78  sides {'BUY': np.int64(1)}  before: balance    -0.00 equity    -7.32 bonus  10.90   5 min later: balance   -0.00
+  11-11 05:37 UTC  n=19  booked   -707.72  sides {'BUY': np.int64(12), 'SELL': np.int64(7)}  before: balance   625.22 equity   -71.60 bonus  79.02   5 min later: balance    0.00
+  11-11 07:03 UTC  n= 3  booked   -150.88  sides {'SELL': np.int64(3)}  before: balance   102.57 equity   -12.93 bonus  51.28   5 min later: balance    0.00
