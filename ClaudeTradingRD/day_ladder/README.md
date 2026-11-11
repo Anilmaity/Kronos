@@ -164,3 +164,25 @@ Reverse after a losing time stop or hard stop (TRAIN, `reverse` = max flips in a
 lose money in all six cells (-$585 to -$1,253 on top of the first entries); PF 0.76-0.79 vs 0.78-0.81 without.
 Best TRAIN cell is no reversal, so nothing new went to TEST. Consistent with the earlier controls: fading and following
 the push are indistinguishable, so the opposite side has no edge either and each flip pays the cost again.
+
+## Hedge-and-average scalper (`hedge_avg.py`, `hedge_test.py`, 2026-11-12)
+Operator's idea: open a buy and a sell together; close whichever reaches its target; average into the other; exit that
+side at no profit / no loss. Two readings were coded: `be="side"` (the averaged side exits at its own average entry, so a
+clean cycle keeps the banked target) and `be="cycle"` (the whole cycle exits at zero).
+
+TRAIN grid, 48 cells (`hedge_grid_train.csv`), cost 0.25:
+- `be="cycle"` can never win — its best outcome is zero and every stop or time exit is a loss (PF 0 in all cells).
+- `be="side"` best cell: target 2 ATR, step 2.5 ATR, 4 adds, 60-min limit.
+
+| be="side" pick | TRAIN | TEST | Last 2 weeks |
+|---|---|---|---|
+| Cycles per day | 17.3 | 19.3 | 19.3 |
+| Win rate | 78.1 % | 78.6 % | 79.2 % |
+| Profit factor | 0.77 | 0.72 | 0.78 |
+| Worst day | -1.58 % | -2.58 % | -0.80 % |
+| Total | -23.3 % | -28.4 % | -1.7 % |
+| Zero-cost PF | 0.94 | 0.92 | 1.01 |
+
+Worse than the one-sided dynamic scalper (TEST PF 0.84). A buy and a sell held together are a flat position that pays
+two spreads; after the first target the cycle is exactly "a fade entered one target later", with its profit capped at
+that target and its loss at the hard stop.
