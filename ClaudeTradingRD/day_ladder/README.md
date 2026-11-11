@@ -300,3 +300,6 @@ Total absolute error $191 (was $375). It takes 1 / 1 / 12 / 6 trades on those da
 Outside them: 10-11 Nov +$96; October +$1,729 (PF 1.46); September -$1,806; August -$6,570; 16 months -$13,800,
 PF 0.89, worst day -$2,853. The tighter in-sample match is worse out of sample than the first fit (-$8,263) — the usual
 price of fitting harder to four numbers.
+Third search (24,000 draws + 8 climbs of 4,000, finer steps; previous kept as `fit_asia_best_v2.json`): +$80 / +$180 /
++$153 / +$540, total $953 vs $912, per-day error $165. About 60,000 settings tried in all; the error floor is 4 Nov,
+where the trader simply did not trade in Asia and no rule of this family stays out. See `results_fit_asia.txt`.
