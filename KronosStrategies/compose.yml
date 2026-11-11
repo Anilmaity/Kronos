@@ -219,6 +219,33 @@ services:
       RESEARCH_DAYS_15M: "5"       # WIN_15M=100 needs >3 calendar days over a weekend
       DRY_RUN: "true"              # PAPER until live fills match the backtest
 
+  # S101 — Asia-session range fade (M1), demo deployment 2026-11-12 (operator decision).
+  # Engine-shaped form of the lab ping-pong strategy; lab PF 0.92-0.94, NOT a validated edge.
+  # Needs >= 150 closed M1 bars (MIN_BARS_1M) -> RESEARCH_WIN_1M pinned at 200.
+  s101_asia_range:
+    build: ./strategies
+    restart: always
+    command: python research_runner.py
+    mem_limit: 384m
+    healthcheck:
+      test: ["CMD-SHELL", "find /tmp/hb -mmin -5 | grep -q hb"]
+      interval: 60s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    env_file: .env
+    environment:
+      TSDB_TARGET: ${TSDB_TARGET:-tigerdata}
+      TIGERDATA_URL: ${TIGERDATA_URL:-}
+      RESEARCH_STRATEGY: s101_asia_range
+      RISK_PER_TRADE_USD: "38"
+      MAX_LOT: "0.02"              # 24-pt stop -> 0.01 lots; cap keeps it small whatever the stop
+      RESEARCH_WIN_1M: "200"
+      RESEARCH_DAYS_1M: "1"
+      RESEARCH_DAYS_5M: "5"        # unused by S101, kept at the roster values the window guard expects
+      RESEARCH_DAYS_15M: "5"
+      DRY_RUN: "false"             # demo account (Winprofx-Demo); arm is controlled on /manager
+
   # S99 — ICT MSS+FVG reversal (M5), the REVERSAL category (2026-07-06).
   # Liquidity sweep -> structure shift -> FVG retrace entry on the 1m touch.
   # Needs >= ~60 closed M5 bars; WIN_5M default 80 suffices but pinned higher.

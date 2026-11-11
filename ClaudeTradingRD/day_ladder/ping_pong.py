@@ -37,6 +37,7 @@ class P:
     take: float = 0.0         # > 0: close a clip by hand once it is this many points up and the last minute turned against it
     h0: int = 0               # signal entries only between h0 and h1 (UTC hours)
     h1: int = 24
+    sl: float = 0.0           # > 0: each clip has its own hard stop this many points from entry (the live engine's shape)
     session_only: bool = False  # adds and flips are also limited to h0-h1 (signals always are)
     session_flat: bool = False  # close everything when the session ends at h1
     max_hold: int = 0         # > 0: time stop — close a clip that has been open this many minutes
@@ -82,6 +83,7 @@ def run(d, p=P()):
                         if (h[i] - hs >= tp) if s > 0 else (l[i] + hs <= tp):
                             close(s, x, tp, "target", i)
                             if p.flip and p.sides in ("both", "buy" if -s > 0 else "sell") and len(book[-s]) < p.K and all(abs(y["e"] - tp) >= p.G for y in book[-s]): pend.append((-s, "flip"))
+                        elif p.sl and ((l[i] - hs <= x["e"] - p.sl) if s > 0 else (h[i] + hs >= x["e"] + p.sl)): close(s, x, x["e"] - s * p.sl, "stop", i)
                         elif p.max_hold and i - x["i"] >= p.max_hold and (p.hold_mode == "all" or ((c[i] - x["e"]) * s < 0 and (p.hold_mode == "losers" or ER[i] > 0.5))): close(s, x, c[i] - s * hs, "time stop", i)
                         elif p.take and (c[i] - s * hs - x["e"]) * s >= p.take and (c[i] - o[i]) * s < 0: close(s, x, c[i] - s * hs, "take", i)
                         else: keep.append(x)

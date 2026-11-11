@@ -493,6 +493,10 @@ _VARIATION_STRATEGY_NAME = {
     # Discretionary (2026-10-06): a Claude Code session on reaper decides,
     # claude_trade.py executes under claude_guard's limits.
     "claude_strategy":             "Claude Strategy",
+    # Scalping (2026-11-12): Asia-session range fade, the engine-shaped form of
+    # the lab ping-pong strategy fitted to the XM Real trader. Demo by operator
+    # decision; lab PF 0.92-0.94, not a validated edge.
+    "KRONOS_S101_ASIA_RANGE":      "S101 Asia Range Fade",
 }
 
 
