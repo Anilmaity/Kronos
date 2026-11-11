@@ -119,3 +119,26 @@ TRAIN grid re-run at 0.2: PF 0.75-0.82 at 1.2 pts, 0.89-0.94 at 2 pts, 0.96-1.05
 - 2-pt target (G 6, K 3): TRAIN / TEST / last 2 wks — win 91.4 / 89.6 / 91.8 %, PF 0.94 / 0.80 / 0.95, worst day -1.59 / -1.12 / -0.51 %, total -5.5 / -13.2 / -0.2 %.
 - 1.2-pt target (G 4, K 4): win 94.1 / 94.1 / 95.1 %, PF 0.82 / 0.84 / 0.99, total -16.3 / -9.3 / 0.0 %.
 - Best on TRAIN (4 pts, G 3, K 3): PF 1.05 on TRAIN (+23.9 %) but 0.89 on TEST (-28.1 %) — did not hold out of sample.
+
+## Dynamic Range Scalper (`range_dyn.py`) — more clips, volatility-based averaging, adaptive exit, FundingPips cost
+Cost 0.25 pt = the operator's 0.2-pt FundingPips spread + $2.50/lot per side commission measured from the account's
+own deals (`broker_deals`, FundingPips2). Adds: step = STEP x ATR30, a clip only when price is a step beyond the last
+fill and the last closed minute turned back; target = TPA x ATR30 shrinking 30 % per extra clip; hard stop (K+1) steps out.
+
+TRAIN (54 + 64 cells, `dyn_grid_train.csv`, `dyn_grid2_train.csv`):
+- reversal-bar rule for adds helps (PF 0.98 vs 0.93 without);
+- closing when the 2-hour range breaks hurts (PF 0.86 vs 0.98): it books losses that otherwise come back;
+- more clips do not help: K 4 > 6 > 8 (0.98 / 0.94 / 0.90); deep grids with wide steps barely trade;
+- longer holds (240 -> 600 min) change nothing.
+
+Pick K 4, step 1.5 ATR, target 2 ATR, decay 0.7, no range-break exit (`results_dyn.txt`):
+| cost 0.25 | TRAIN | TEST | Last 2 weeks |
+|---|---|---|---|
+| Baskets per day | 14.7 | 14.7 | 12.5 |
+| Win rate | 83.1 % | 81.5 % | 81.9 % |
+| Profit factor | 0.98 | 0.84 | 0.76 |
+| Worst / best day | -1.50 / +1.44 % | -1.80 / +1.22 % | -1.08 / +0.75 % |
+| Total | -3.0 % | -16.2 % | -2.0 % |
+
+At zero cost TEST is PF 0.91 (TRAIN 1.12): the TRAIN near-break-even does not hold out of sample, and on unseen data the
+dynamic version loses even before costs. Fading vs following the push is again indistinguishable (TEST 0.84 vs 0.89).
