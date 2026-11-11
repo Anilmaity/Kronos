@@ -287,3 +287,16 @@ Outside the four days: 10-11 Nov -$137; October +$394 (PF 1.19); September -$1,6
 -$8,263, 81 % wins, PF 0.88, 71 % winning days, worst day -$2,302, 15 days at -$1,000 or worse. Smaller swings than the
 all-day fit (-$27k, 87 such days) because it trades a third of the day and goes flat at 08:00 UTC; still a loser, and
 sell-only is fitted to a week in which Asia-session sells happened to work.
+
+### Deeper Asia-only fit (`fit_asia_deep.py`; first fit kept as `fit_asia_best_v1.json`)
+16,000 parallel draws + 8 hill-climbs of 2,500 steps. Two-sided, 0.12-lot clips, 8-pt target, adds every 8 pts up to 5,
+entries 00-08 UTC only while the 2-hour net move is under 15 % of its range and price is in the outer 25 %; positions
+opened in Asia may close later in the day; flat for news and at 20:50 UTC; $2,000 daily limit.
+| | 4 Nov | 5 Nov | 6 Nov | 9 Nov | total |
+|---|---|---|---|---|---|
+| Trader, Asia entries | $0 | +$157 | +$168 | +$587 | +$912 |
+| Fitted, Asia only | +$96 | +$96 | +$145 | +$576 | +$913 |
+Total absolute error $191 (was $375). It takes 1 / 1 / 12 / 6 trades on those days against the trader's 0 / 8 / 6 / 20.
+Outside them: 10-11 Nov +$96; October +$1,729 (PF 1.46); September -$1,806; August -$6,570; 16 months -$13,800,
+PF 0.89, worst day -$2,853. The tighter in-sample match is worse out of sample than the first fit (-$8,263) — the usual
+price of fitting harder to four numbers.
