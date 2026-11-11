@@ -37,13 +37,14 @@ class P:
     take: float = 0.0         # > 0: close a clip by hand once it is this many points up and the last minute turned against it
     h0: int = 0               # signal entries only between h0 and h1 (UTC hours)
     h1: int = 24
+    day_loss_usd: float = 0.0 # > 0: when the day is down this much (closed + open, from the day's opening value), close everything and stop until tomorrow
     stop: bool = True         # False: no equity stop (the trader's actual behaviour); set day_floor very low as well
 
 def run(d, p=P()):
     o, h, l, c = (d[k].to_numpy() for k in ("open", "high", "low", "close"))
     A, R5, RNG, POS, ER, news, gap = (d[k].to_numpy() for k in ("atr", "r5", "rng", "pos", "er", "news", "gap"))
     idx = d.index; mn = idx.hour.to_numpy() * 60 + idx.minute.to_numpy(); day = idx.strftime("%Y-%m-%d").to_numpy()
-    hs = p.cost / 2; eq = d0 = p.start; book = {1: [], -1: []}; pend = []; trades = []; days = {}
+    hs = p.cost / 2; eq = d0 = d0m = p.start; book = {1: [], -1: []}; pend = []; trades = []; days = {}; halted = False
     unit = p.G * p.K * (p.K + 1) / 2 * 100
 
     def close(s, clip, px, why, i):
@@ -52,7 +53,9 @@ def run(d, p=P()):
         trades.append(dict(t=idx[clip["i"]], exit_t=idx[i], day=day[clip["i"]], side=s, e=clip["e"], x=px, pnl=pnl, why=why, mins=i - clip["i"], lot=clip["lot"], kind=clip["kind"], eq=eq))
 
     for i in range(len(c) - 1):
-        if i == 0 or day[i] != day[i - 1]: d0 = eq
+        if i == 0 or day[i] != day[i - 1]:
+            d0 = eq; halted = False
+            d0m = eq + sum((o[i] - hs - x["e"]) * x["lot"] for x in book[1]) * 100 + sum((x["e"] - o[i] - hs) * x["lot"] for x in book[-1]) * 100
         for s, kind in pend:                                             # opens decided on the previous close
             lot = p.lot or round(eq * p.risk_pct / 100 / unit, 2)
             if lot >= 0.01 and len(book[s]) < p.K: book[s].append(dict(e=o[i] + s * hs, i=i, lot=lot, kind=kind))
@@ -62,9 +65,10 @@ def run(d, p=P()):
             fl = lambda px: sum((px - hs - x["e"]) * x["lot"] for x in book[1]) * 100 + sum((x["e"] - px - hs) * x["lot"] for x in book[-1]) * 100
             R = eq * p.risk_pct / 100; worst = min((l[i], h[i]), key=fl)
             stop = p.stop and fl(worst) <= -R
+            if p.day_loss_usd and eq + fl(worst) - d0m <= -p.day_loss_usd: stop = halted = True
             if stop or (p.news_flat and news[i]) or (p.eod_flat and mn[i] >= 20 * 60 + 50) or gap[i + 1]:
                 for s in (1, -1):
-                    for x in book[s]: close(s, x, (worst if stop else c[i]) - s * hs, "equity stop" if stop else "flat", i)
+                    for x in book[s]: close(s, x, (worst if stop else c[i]) - s * hs, ("day loss limit" if halted else "equity stop") if stop else "flat", i)
                     book[s] = []
             else:
                 for s in (1, -1):
@@ -81,7 +85,7 @@ def run(d, p=P()):
                     if book[s] and len(book[s]) < p.K and (book[s][-1]["e"] - c[i]) * s >= p.G and (not p.confirm or (c[i] - o[i]) * s > 0) and not any(q[0] == s for q in pend):
                         pend.append((s, "add"))
         days[day[i]] = (d0, eq); dp = (eq / d0 - 1) * 100
-        if dp <= p.day_floor or (p.news_flat and news[i]) or gap[i + 1] or (p.eod_flat and mn[i] >= 20 * 60): pend = []; continue
+        if halted or dp <= p.day_floor or (p.news_flat and news[i]) or gap[i + 1] or (p.eod_flat and mn[i] >= 20 * 60): pend = []; continue
         if ER[i] <= p.er_max and RNG[i] >= 2 * p.G:
             s = -1 if (POS[i] > p.edge and R5[i] >= p.pull * A[i]) else 1 if (POS[i] < 1 - p.edge and R5[i] <= -p.pull * A[i]) else 0
             if s and p.sides in ("both", "buy" if s > 0 else "sell") and p.h0 <= mn[i] // 60 < p.h1 and not book[s] and not any(q[0] == s for q in pend): pend.append((s, "signal"))

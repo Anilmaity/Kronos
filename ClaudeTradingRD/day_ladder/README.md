@@ -231,3 +231,16 @@ An unrestricted search found a buy-only setting that fits about as well (`fit_da
 artefact of that week's direction and loses $33,765 over 16 months.
 Fifteen settings were tuned to four numbers: the match shows the trader's results CAN be produced by rules of this
 shape at this leverage, not that the rules will produce them again.
+
+### Fitted strategy with a $2,000 daily loss limit (`day_loss_usd`, `results_fit_daylimit.txt`)
+When the day is down $2,000 (closed + open, measured from the day's opening value) everything is closed and trading stops
+until the next UTC day. The four fitted days are unchanged (the limit never triggers on them).
+| | no limit | $2,000 limit |
+|---|---|---|
+| 10-11 Nov | -$2,171 | -$2,122 (hit on 1 day) |
+| October 2026 | +$3,735 | +$1,342 (2 days) |
+| September 2026 | -$2,581 | -$4,393 (5 days) |
+| August 2026 | -$7,121 | +$998 (4 days) |
+| Full 16 months | -$37,504, worst day -$9,475 | -$27,283, worst day -$3,115, limit hit on 74 days |
+The closed result of a limit day can exceed $2,000 because positions carried from the day before bring their open loss with
+them and the exit is taken at the bar's extreme. On $10,000, a $2,000 day is 20 %.

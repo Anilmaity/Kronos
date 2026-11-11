@@ -10,7 +10,8 @@ MONTHS = 2; last = d.index[-1]; SINCE = (last.to_period("M") - (MONTHS - 1)).sta
 PP = dict(T=12.0, G=8.0, K=5, flip=False, er_max=0.3)
 FIT = json.load(open("fit_days_best_twosided.json"))["kw"]
 RUNS = {
-    "Fitted to the trader's 4-9 Nov results (0.10-lot clips, no loss limit)": lambda: ping_pong.run(d, ping_pong.P(stop=False, day_floor=-1e9, **FIT)),
+    "Fitted to the trader's 4-9 Nov results, $2,000 daily loss limit": lambda: ping_pong.run(d, ping_pong.P(stop=False, day_floor=-1e9, day_loss_usd=2000, **FIT)),
+    "Fitted to the trader's 4-9 Nov results, no loss limit": lambda: ping_pong.run(d, ping_pong.P(stop=False, day_floor=-1e9, **FIT)),
     "Ping-pong, 0.04-lot clips, close all at -$480 open loss": lambda: ping_pong.run(d, ping_pong.P(lot=0.04, risk_pct=4.8, **PP)),
     "Ping-pong, 0.04-lot clips, no loss limit (as the trader traded)": lambda: ping_pong.run(d, ping_pong.P(lot=0.04, stop=False, day_floor=-1e9, **PP)),
     "Ping-pong, 0.01-lot clips (1% loss limit)": lambda: ping_pong.run(d, ping_pong.P(T=12.0, G=8.0, K=5, flip=False, er_max=0.3)),
