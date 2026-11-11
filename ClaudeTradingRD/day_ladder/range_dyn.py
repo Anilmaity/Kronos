@@ -41,7 +41,7 @@ def run(d, p=P()):
         if b:
             s = b["s"]; px = None
             if b.get("add"):                                             # add decided on the previous close fills at this open
-                b["fills"].append(o[i] + s * hs); b["add"] = False
+                b["fills"].append(o[i] + s * hs); b["ft"].append(i); b["add"] = False
             if (l[i] - hs <= b["stop"]) if s > 0 else (h[i] + hs >= b["stop"]):
                 gapped = (o[i] - hs <= b["stop"]) if s > 0 else (o[i] + hs >= b["stop"])
                 px, why = ((o[i] - s * hs) if gapped else b["stop"]), "stop"
@@ -54,7 +54,8 @@ def run(d, p=P()):
                     b["add"] = True
             if px is not None:
                 pnl = sum((px - f) * s for f in b["fills"]) * b["lot"] * 100
-                eq += pnl; trades.append(dict(t=idx[b["i"]], day=day[b["i"]], side=s, clips=len(b["fills"]), pnl=pnl, why=why, mins=i - b["i"], lot=b["lot"])); b = None
+                eq += pnl; trades.append(dict(t=idx[b["i"]], day=day[b["i"]], side=s, clips=len(b["fills"]), pnl=pnl, why=why, mins=i - b["i"], lot=b["lot"],
+                                             exit_t=idx[i], exit_px=px, fills=list(b["fills"]), fill_t=[idx[k] for k in b["ft"]], eq=eq)); b = None
         days[day[i]] = (d0, eq); dp = (eq / d0 - 1) * 100
         if b or dp <= p.day_floor or news[i] or gap[i + 1] or mn[i] >= 20 * 60: continue
         g = p.step * A[i]
@@ -67,7 +68,7 @@ def run(d, p=P()):
         lot = round(risk / ((p.K * S - g * p.K * (p.K - 1) / 2) * 100), 2)  # worst case: every clip filled exactly one step apart
         if lot < 0.01: continue
         e = o[i + 1] + s * hs
-        b = dict(s=s, i=i + 1, fills=[e], lot=lot, g=g, tp0=p.tpa * A[i], stop=e - s * S)
+        b = dict(s=s, i=i + 1, fills=[e], ft=[i + 1], lot=lot, g=g, tp0=p.tpa * A[i], stop=e - s * S)
     t = pd.DataFrame(trades); dd = pd.DataFrame(days, index=["start", "end"]).T; dd["pct"] = (dd.end / dd.start - 1) * 100
     return t, dd
 
