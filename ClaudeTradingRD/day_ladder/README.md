@@ -303,3 +303,6 @@ price of fitting harder to four numbers.
 Third search (24,000 draws + 8 climbs of 4,000, finer steps; previous kept as `fit_asia_best_v2.json`): +$80 / +$180 /
 +$153 / +$540, total $953 vs $912, per-day error $165. About 60,000 settings tried in all; the error floor is 4 Nov,
 where the trader simply did not trade in Asia and no rule of this family stays out. See `results_fit_asia.txt`.
+The third fit is worse everywhere else (10-11 Nov -$1,554, September -$8,059, 16 months -$25,888), so it is kept only as
+`fit_asia_best_v3.json`; the active Asia-only version (`fit_asia_best.json`, used by the calendar) is the second fit
+(+$96 / +$96 / +$145 / +$576, 16 months -$13,800).
