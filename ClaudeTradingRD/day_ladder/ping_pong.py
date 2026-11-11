@@ -28,6 +28,8 @@ class P:
     day_floor: float = -2.5
     cost: float = 0.25
     start: float = 10_000.0
+    lot: float = 0.0          # > 0: every clip is this fixed size (the trader used 0.04) instead of sizing from risk_pct
+    stop: bool = True         # False: no equity stop (the trader's actual behaviour); set day_floor very low as well
 
 def run(d, p=P()):
     o, h, l, c = (d[k].to_numpy() for k in ("open", "high", "low", "close"))
@@ -44,15 +46,15 @@ def run(d, p=P()):
     for i in range(len(c) - 1):
         if i == 0 or day[i] != day[i - 1]: d0 = eq
         for s, kind in pend:                                             # opens decided on the previous close
-            lot = round(eq * p.risk_pct / 100 / unit, 2)
+            lot = p.lot or round(eq * p.risk_pct / 100 / unit, 2)
             if lot >= 0.01 and len(book[s]) < p.K: book[s].append(dict(e=o[i] + s * hs, i=i, lot=lot, kind=kind))
         pend = []
         n_open = len(book[1]) + len(book[-1])
         if n_open:
             fl = lambda px: sum((px - hs - x["e"]) * x["lot"] for x in book[1]) * 100 + sum((x["e"] - px - hs) * x["lot"] for x in book[-1]) * 100
             R = eq * p.risk_pct / 100; worst = min((l[i], h[i]), key=fl)
-            if fl(worst) <= -R or news[i] or mn[i] >= 20 * 60 + 50 or gap[i + 1]:
-                stop = fl(worst) <= -R
+            stop = p.stop and fl(worst) <= -R
+            if stop or news[i] or mn[i] >= 20 * 60 + 50 or gap[i + 1]:
                 for s in (1, -1):
                     for x in book[s]: close(s, x, (worst if stop else c[i]) - s * hs, "equity stop" if stop else "flat", i)
                     book[s] = []

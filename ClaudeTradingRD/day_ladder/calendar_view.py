@@ -7,8 +7,11 @@ import ping_pong, range_dyn, hedge_avg
 
 d = prep(load_m1())                      # features are computed on the full history, so they are warm on day one
 MONTHS = 2; last = d.index[-1]; SINCE = (last.to_period("M") - (MONTHS - 1)).start_time.tz_localize("UTC"); d = d[d.index >= SINCE]
+PP = dict(T=12.0, G=8.0, K=5, flip=False, er_max=0.3)
 RUNS = {
-    "Two-sided ping-pong (12-pt targets, 1% loss limit)": lambda: ping_pong.run(d, ping_pong.P(T=12.0, G=8.0, K=5, flip=False, er_max=0.3)),
+    "Ping-pong, 0.04-lot clips, close all at -$480 open loss": lambda: ping_pong.run(d, ping_pong.P(lot=0.04, risk_pct=4.8, **PP)),
+    "Ping-pong, 0.04-lot clips, no loss limit (as the trader traded)": lambda: ping_pong.run(d, ping_pong.P(lot=0.04, stop=False, day_floor=-1e9, **PP)),
+    "Ping-pong, 0.01-lot clips (1% loss limit)": lambda: ping_pong.run(d, ping_pong.P(T=12.0, G=8.0, K=5, flip=False, er_max=0.3)),
     "Dynamic range scalper (4-hour limit)": lambda: range_dyn.run(d, range_dyn.P(K=4, step=1.5, tpa=2.0, decay=0.7, er_exit=9)),
     "Dynamic range scalper (10-minute stop)": lambda: range_dyn.run(d, range_dyn.P(K=4, step=1.5, tpa=2.0, decay=0.7, er_exit=9, max_hold=10)),
     "Buy and sell together (hedge-and-average)": lambda: hedge_avg.run(d, hedge_avg.P(be="side", tpa=2.0, step=2.5, K=4, max_hold=60)),
