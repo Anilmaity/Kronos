@@ -37,6 +37,8 @@ class P:
     take: float = 0.0         # > 0: close a clip by hand once it is this many points up and the last minute turned against it
     h0: int = 0               # signal entries only between h0 and h1 (UTC hours)
     h1: int = 24
+    max_hold: int = 0         # > 0: time stop — close a clip that has been open this many minutes
+    hold_mode: str = "all"    # all: every clip; losers: only clips under water; trend: only losers while the 2-hour move is one-way (ER > 0.5)
     day_loss_usd: float = 0.0 # > 0: when the day is down this much (closed + open, from the day's opening value), close everything and stop until tomorrow
     stop: bool = True         # False: no equity stop (the trader's actual behaviour); set day_floor very low as well
 
@@ -78,6 +80,7 @@ def run(d, p=P()):
                         if (h[i] - hs >= tp) if s > 0 else (l[i] + hs <= tp):
                             close(s, x, tp, "target", i)
                             if p.flip and p.sides in ("both", "buy" if -s > 0 else "sell") and len(book[-s]) < p.K and all(abs(y["e"] - tp) >= p.G for y in book[-s]): pend.append((-s, "flip"))
+                        elif p.max_hold and i - x["i"] >= p.max_hold and (p.hold_mode == "all" or ((c[i] - x["e"]) * s < 0 and (p.hold_mode == "losers" or ER[i] > 0.5))): close(s, x, c[i] - s * hs, "time stop", i)
                         elif p.take and (c[i] - s * hs - x["e"]) * s >= p.take and (c[i] - o[i]) * s < 0: close(s, x, c[i] - s * hs, "take", i)
                         else: keep.append(x)
                     book[s] = keep

@@ -244,3 +244,20 @@ until the next UTC day. The four fitted days are unchanged (the limit never trig
 | Full 16 months | -$37,504, worst day -$9,475 | -$27,283, worst day -$3,115, limit hit on 74 days |
 The closed result of a limit day can exceed $2,000 because positions carried from the day before bring their open loss with
 them and the exit is taken at the bar's extreme. On $10,000, a $2,000 day is 20 %.
+
+### Time stop on the fitted strategy (`max_hold`, `hold_mode`; `results_fit_timestop.txt`)
+Operator: trending days lose a lot, so close trades after a set time. Tested on top of the $2,000 daily limit, three ways:
+every clip, losing clips only, and losing clips only while the 2-hour move is one-way.
+
+| Time stop (all clips) | 4 / 5 / 6 / 9 Nov | Oct 2026 | Sep 2026 | Aug 2026 | 16 months | Win rate | Days at -$1,000 or worse |
+|---|---|---|---|---|---|---|---|
+| none | -24 / +1,057 / +361 / +1,219 | +1,342 | -4,393 | +998 | -27,283 | 87 % | 87 |
+| 10 min | +133 / +216 / +130 / -56 | +235 | -287 | -2,510 | -29,238 | 60 % | 15 |
+| 30 min | +225 / -218 / -175 / +111 | +567 | -3,369 | -3,034 | -36,506 | 71 % | 41 |
+| 60 min | +187 / -154 / +39 / +55 | +1,809 | -5,614 | -653 | -34,881 | 77 % | 46 |
+| 4 hours | +477 / +923 / +359 / +890 | +215 | -7,058 | -282 | -24,429 | 86 % | 76 |
+
+A short time stop does what was asked on trending days — big losing days fall from 87 to 15 — but the 16-month total does
+not improve (-24k to -37k in every row) and the match to the trader's four days is lost, because his profit on those days
+came from positions held 30-300 minutes. Losers-only and trend-only variants are no better (-22k to -43k).
+The worst day stays near -$3,100 in every row: that is the daily limit day, not a slow trend day.
