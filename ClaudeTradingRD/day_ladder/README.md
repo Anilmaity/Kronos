@@ -38,3 +38,21 @@ picture, and at zero cost the TEST result is flat (PF 0.99): the entry has no ed
 (about 30 % of each 2-pt win) is the loss. With a -2.5 % floor and a +6 % target, a no-edge entry can
 reach the target on at most ~29 % of days even with zero cost; a 70-80 % win rate makes each win a
 third of a loss, so it needs ~7 net wins in a row from the floor's two stops.
+
+## Harder-pressing variant (same day, `grid_press.py`, chosen on TRAIN)
+Base risk 2.5 %, press 1.0, per-basket cap 10 %, no trailing floor before the target, 3 % giveback after it.
+`python ladder.py base_pct=2.5 press=1.0 max_pct=10 trail=99 giveback=3 pull=1.0` -> `results_press_hard.txt`.
+
+| | TRAIN | TEST | Last 2 weeks |
+|---|---|---|---|
+| Trades per day | 4 | 5 | 5 |
+| Win rate | 73.7 % | 75.9 % | 72.0 % |
+| Profit factor | 0.77 | 0.87 | 0.88 |
+| Worst day | -2.92 % | -2.81 % | -2.53 % |
+| Best day | +14.1 % | +14.0 % | +6.1 % |
+| Days >= +6 % | 10 % | 10 % | 1 of 11 |
+| Losing days | 79 % | 78 % | 8 of 11 |
+| Total | -77 % | -53 % | -5.0 % |
+
+This is the ceiling found in 72 TRAIN cells: about one +6 % day in ten, none at +20 %. A losing day now
+ends after one or two stops, so "constant trading" is traded away for the bigger days.
