@@ -15,7 +15,7 @@ const StrategyData = ({
 }) => {
   // "use client" exports are opaque references here, so the tab list is repeated.
   const v = searchParams.view;
-  const view = v === "paper" || v === "live" ? v : "backtest";
+  const view = v === "paper" || v === "live" || v === "lab" ? v : "backtest";
   return (
     <StrategyDataPage
       userStrategyId={searchParams.us ?? ""}

@@ -15,13 +15,15 @@ import MonthGrid from "../../reports/_components/MonthGrid";
 import { CalendarPayload } from "../../reports/_components/types";
 import DayChart, { Trade } from "./DayChart";
 
-export const VIEWS = ["backtest", "paper", "live"] as const;
+export const VIEWS = ["backtest", "paper", "live", "lab"] as const;
 export type View = (typeof VIEWS)[number];
 
-const VIEW_LABEL: Record<View, string> = { backtest: "Backtest", paper: "Paper", live: "Live" };
+const VIEW_LABEL: Record<View, string> = { backtest: "Backtest", paper: "Paper", live: "Live", lab: "Lab" };
+const LOTS = [0.01, 0.04, 0.1, 0.12];
 const VIEW_NOTE: Record<View, string> = {
-  backtest: "Server replay of the strategy's own code over the last two months, 0.01 lot.",
-  paper: "Every signal the strategy fired (placed or rejected), played forward on 1-minute candles to its stop or target, 0.01 lot.",
+  backtest: "Replay of the strategy's own code over the last two months.",
+  paper: "Every signal the strategy fired (placed or rejected), played forward on 1-minute candles to its stop or target.",
+  lab: "Research version from the lab (averaging ping-pong). Display only: the live engine cannot trade it.",
   live: "Closed positions on the broker account.",
 };
 const ACCOUNT_USD = 10000; // percentages are of the $10k demo account
@@ -33,6 +35,7 @@ interface Result {
   error: string | null;
   periodStart: string | null;
   periodEnd: string | null;
+  baseLot: number | null;
   trades: Trade[];
 }
 
@@ -77,6 +80,8 @@ const StrategyDataPage = ({
   const [result, setResult] = useState<Result | null>(null);
   const [failed, setFailed] = useState(false);
   const [day, setDay] = useState<string | null>(null);
+  // null = the lot the results were produced at; otherwise rescale the dollars.
+  const [lot, setLot] = useState<number | null>(null);
   const [tick, setTick] = useState(0);
   const requestRef = useRef(0);
 
@@ -128,11 +133,16 @@ const StrategyDataPage = ({
       .catch((err) => middleware(err));
   };
 
-  const trades = result?.trades ?? [];
-  const payload = useMemo(() => (result ? toPayload(result.trades) : null), [result]);
+  const baseLot = result?.baseLot ?? null; // null on Live: real fills are never rescaled
+  const shownLot = baseLot ? lot ?? baseLot : null;
+  const trades = useMemo(() => {
+    const k = baseLot && shownLot ? shownLot / baseLot : 1;
+    return (result?.trades ?? []).map((t) => ({ ...t, pnlUsd: t.pnlUsd * k }));
+  }, [result, shownLot]);
+  const payload = useMemo(() => (result ? toPayload(trades) : null), [result, trades]);
   const dayTrades = useMemo(
     () => trades.filter((t) => utcDay(t.entryTime) === day),
-    [result, day]
+    [trades, day]
   );
   const busy = result?.status === "PENDING" || result?.status === "RUNNING";
 
@@ -183,6 +193,30 @@ const StrategyDataPage = ({
           <Button variant="ghost" size="icon" onClick={() => setYm(ym + 1)} aria-label="Next month">
             <ChevronRight className="h-4 w-4" />
           </Button>
+
+          {baseLot && (
+            <div className="flex items-center gap-1">
+              <span className="text-sm" style={soft}>
+                Lot
+              </span>
+              {Array.from(new Set([baseLot, ...LOTS])).sort((a, b) => a - b).map((l) => (
+                <button
+                  type="button"
+                  key={l}
+                  onClick={() => setLot(l)}
+                  className={`tv-chip ${shownLot === l ? "tv-chip--up" : ""}`}
+                >
+                  {l.toFixed(2)}
+                </button>
+              ))}
+            </div>
+          )}
+
+          {view === "lab" && result?.status === "NONE" && (
+            <span className="text-sm" style={soft}>
+              No lab results loaded for this strategy.
+            </span>
+          )}
 
           {view === "backtest" && result && (
             <>

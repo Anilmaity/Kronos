@@ -6,6 +6,9 @@ calendar (/strategy-data).
   paper    - every StrategySignal the strategy fired (placed or rejected),
              played forward on OANDA M1 candles to its SL/TP at PAPER_LOT.
   live     - the strategy's closed Positions on the broker account.
+  lab      - display-only research results loaded by hand onto a
+             ManagerBacktestRun row labelled "lab:<userStrategyId>" (e.g. the
+             averaging ping-pong the live engine cannot trade).
 
 Times go out as UTC epoch seconds. DB datetimes are naive IST wall clock
 (USE_TZ=False, TIME_ZONE=Asia/Kolkata - see pnl_calendar.py), hence _IST.
@@ -24,7 +27,7 @@ from apis.models import (ManagerBacktestRun, Order, Position, StrategySignal,
 from apis.schema.query import get_candles
 from apis.schema.utils import user_authenticate
 
-KINDS = ("backtest", "paper", "live")
+KINDS = ("backtest", "paper", "live", "lab")
 PAPER_LOT = 0.01
 USD_PER_POINT_LOT = 100.0          # XAUUSD: 1.0 lot = 100 oz
 MAX_HOLD_S = 24 * 3600             # paper trades are force-closed after a day
@@ -54,6 +57,7 @@ class StrategyTradesType(graphene.ObjectType):
     error = graphene.String()
     periodStart = graphene.Date()
     periodEnd = graphene.Date()
+    baseLot = graphene.Float()      # lot the pnlUsd figures are at; null = real fills
     trades = graphene.List(StrategyTradeType)
 
 
@@ -162,8 +166,8 @@ def _live(us, year, month):
     return sorted(out, key=lambda t: t["entryTime"])
 
 
-def _backtest(us, year, month):
-    run = (ManagerBacktestRun.objects.filter(label=backtest_label(us.id))
+def _backtest(us, year, month, label=None):
+    run = (ManagerBacktestRun.objects.filter(label=label or backtest_label(us.id))
            .order_by("-created_at").first())
     if run is None:
         return dict(status="NONE", trades=[])
@@ -179,6 +183,8 @@ def _backtest(us, year, month):
             stopLoss=t["sl"], takeProfit=t["tp"], outcome=t["outcome"], note="",
             pnlUsd=round(t["pnl_usd"], 2)))
     return dict(status=run.status, progressPct=run.progress_pct, error=run.error,
+                baseLot=(run.result or {}).get("lot") or (run.params or {}).get("lots")
+                or PAPER_LOT,
                 periodStart=run.period_start, periodEnd=run.period_end, trades=trades)
 
 
@@ -205,10 +211,12 @@ class StrategyTrades(graphene.ObjectType):
         if not 1 <= month <= 12 or not 2020 <= year <= 2100:
             raise GraphQLError("year/month out of range")
         us = owned_user_strategy(info.context.user, userStrategyId)
-        if kind == "backtest":
-            data = _backtest(us, year, month)
+        if kind in ("backtest", "lab"):
+            data = _backtest(us, year, month,
+                             label=f"lab:{us.id}" if kind == "lab" else None)
+        elif kind == "paper":
+            data = dict(status="DONE", baseLot=PAPER_LOT, trades=_paper(us, year, month))
         else:
-            data = dict(status="DONE",
-                        trades=(_paper if kind == "paper" else _live)(us, year, month))
+            data = dict(status="DONE", trades=_live(us, year, month))
         data["trades"] = [StrategyTradeType(**t) for t in data["trades"]]
         return StrategyTradesType(kind=kind, **data)

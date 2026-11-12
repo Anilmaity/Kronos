@@ -10,6 +10,7 @@ export const STRATEGY_TRADES = gql`
       error
       periodStart
       periodEnd
+      baseLot
       trades {
         entryTime
         exitTime
