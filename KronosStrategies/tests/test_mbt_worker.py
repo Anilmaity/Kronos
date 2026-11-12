@@ -233,7 +233,7 @@ def test_comparing_phase_end_to_end_with_seeded_roster(db, monkeypatch, tmp_path
     run = _mk_run(db, params={
         "roster_snapshot": [{"name": STRAT_NAME, "policy_key": "always_on",
                              "policy_params": {}}],
-        "include_ungated": False,
+        "include_ungated": False, "emit_trades": True,
     })
     claimed = worker.claim_next(db)
     worker.process_run(db, claimed, cache_dir=tmp_path)
@@ -268,6 +268,10 @@ def test_comparing_phase_end_to_end_with_seeded_roster(db, monkeypatch, tmp_path
     assert recon["live_placed"] == 1
     assert recon["rejected"] == {"entry_drift": 2}
     assert recon["sim_trades"] == 2
+
+    # emit_trades (dashboard /strategy-data replay) stores the trade list
+    assert [t["outcome"] for t in result["trades"]] == ["TP", "SL"]
+    assert result["trades"][0]["entry_time"].startswith("2026-06-03T10:00")
 
 
 def test_no_metaapi_import_static_and_runtime():

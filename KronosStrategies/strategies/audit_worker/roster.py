@@ -14,13 +14,15 @@ from backtest_strategies import (
     s94_sweep_reversal,
     s99_mss_fvg,
     s100_m3_combo,
+    s101_asia_range,
 )
 from backtest.manager_sim_engine import StratSpec
 from strategy_manager.policies import POLICIES
 
 MODULES = {
     m.NAME: m
-    for m in (s93_fvg_scalp, s94_sweep_reversal, s99_mss_fvg, s100_m3_combo)
+    for m in (s93_fvg_scalp, s94_sweep_reversal, s99_mss_fvg, s100_m3_combo,
+              s101_asia_range)
 }
 
 

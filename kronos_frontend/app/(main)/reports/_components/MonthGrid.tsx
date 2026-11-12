@@ -70,9 +70,14 @@ interface MonthGridProps {
   payload: CalendarPayload | null;
   year: number;
   month: number;
+  // Optional (used by /strategy-data): clickable days, and each day's PnL as a
+  // percentage of this account size.
+  onDayClick?: (date: string) => void;
+  selectedDay?: string | null;
+  pctBase?: number;
 }
 
-const MonthGrid = ({ payload, year, month }: MonthGridProps) => {
+const MonthGrid = ({ payload, year, month, onDayClick, selectedDay, pctBase }: MonthGridProps) => {
   const weeks = React.useMemo(() => buildWeeks(year, month), [year, month]);
 
   if (payload === null) {
@@ -140,10 +145,12 @@ const MonthGrid = ({ payload, year, month }: MonthGridProps) => {
                   <div
                     key={cell.key}
                     className="flex flex-col justify-between px-2 py-1"
+                    onClick={day && onDayClick ? () => onDayClick(cell.key) : undefined}
                     style={{
-                      border: "1px solid var(--tv-border)",
+                      border: `1px solid ${selectedDay === cell.key ? "var(--tv-accent)" : "var(--tv-border)"}`,
                       minHeight: "72px",
                       opacity: cell.inMonth ? 1 : 0.4,
+                      cursor: day && onDayClick ? "pointer" : undefined,
                     }}
                   >
                     <span className="text-xs" style={soft}>
@@ -158,6 +165,7 @@ const MonthGrid = ({ payload, year, month }: MonthGridProps) => {
                           {fmtSignedUsd(day.pnlUsd)}
                         </span>
                         <span className="text-xs tnum" style={soft}>
+                          {pctBase ? `${((day.pnlUsd / pctBase) * 100).toFixed(2)}% - ` : ""}
                           {day.trades}t
                         </span>
                       </div>

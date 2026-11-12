@@ -1,5 +1,6 @@
 // React - Next default
 import React, { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
 // Libs
 import { toast } from "sonner";
@@ -78,6 +79,7 @@ const StrategyTableRow: React.FC<StrategyTableRowProps> = ({
   account,
 }) => {
   const sizeLabel = copyTrade ? "Price" : "Multiplier";
+  const router = useRouter();
   const [priceOpen, setPriceOpen] = useState(false);
   const [riskOpen, setRiskOpen] = useState(false);
   const equity = account?.ddEquity ? Number(account.ddEquity) : null;
@@ -394,6 +396,20 @@ const StrategyTableRow: React.FC<StrategyTableRowProps> = ({
                 <MenubarItem onClick={() => onRemove?.()}>Remove</MenubarItem>
               ) : (
               <>
+              {(["backtest", "paper"] as const).map((view) => (
+                <React.Fragment key={view}>
+                  <MenubarItem
+                    onClick={() =>
+                      router.push(
+                        `/strategy-data?us=${data.id}&view=${view}&name=${encodeURIComponent(data.name)}`
+                      )
+                    }
+                  >
+                    {view === "backtest" ? "View backtest data" : "View paper trade data"}
+                  </MenubarItem>
+                  <MenubarSeparator />
+                </React.Fragment>
+              ))}
               <MenubarItem
                 onClick={() => {
                   handleExitStrategy({

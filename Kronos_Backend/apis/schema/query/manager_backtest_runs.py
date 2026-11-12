@@ -47,4 +47,6 @@ class ManagerBacktestRuns(graphene.ObjectType):
 
     @user_authenticate
     def resolve_managerBacktestRuns(self, info):
-        return ManagerBacktestRunModel.objects.order_by("-created_at")[:100]
+        return (ManagerBacktestRunModel.objects
+                .exclude(label__startswith="strategy:")  # /strategy-data replays
+                .order_by("-created_at")[:100])

@@ -210,6 +210,10 @@ def process_run(session, run, cache_dir: Path = CACHE_DIR):
             s5_report=s5_report, notes=notes, trades_csv=csv_path,
             live_risk_usd_inferred=risk_usd, kill_trips=gated.kill_trips,
             paused_pct=gated.paused_pct, ungated=ungated)
+        if p.get("emit_trades"):
+            # single-strategy replay for the dashboard /strategy-data calendar
+            run.result = {**run.result, "trades": results.trades_frame(
+                gated.trades).to_dict("records")}
         run.status = "DONE"
         run.progress_pct = 100.0
         run.phase = "comparing"
