@@ -104,7 +104,7 @@ def test_first_attempt_carries_client_id(monkeypatch):
     c.place_market_order(side="BUY", symbol="XAU_USD", volume=0.05,
                          stop_loss=4490.0, take_profit=4520.0)
     assert "clientId" in seen["payload"]
-    assert seen["payload"]["clientId"].startswith("kr-")
+    assert seen["payload"]["clientId"].count("_") == 2
 
 
 def test_timeout_then_lookup_finds_order_no_repost(monkeypatch):
@@ -250,7 +250,7 @@ def test_retries_zero_single_post_then_watches_and_gives_up(monkeypatch):
 
     assert result is None
     assert post_mock.call_count == 1            # one POST, never re-sent
-    assert seen["payload"]["clientId"].startswith("kr-")   # always tagged
+    assert seen["payload"]["clientId"].count("_") == 2   # always tagged
     assert get_mock.call_count == 2 * len(mc._LANDING_WAITS_SEC)   # watched, then gave up
     assert seen["payload"]["clientId"] in c._last_order_error
 

@@ -542,7 +542,9 @@ class MetaApiClient:
 
         # Always tag the order so an unacked POST can be found at the broker
         # (opt15 Task 2 verify-before-resend, and the no-ack adoption above).
-        payload["clientId"] = f"kr-{uuid4().hex[:16]}"
+        # MetaAPI requires ${strategyId}_${positionId}_${orderId} (three "_" parts);
+        # "kr-<hex>" was rejected HTTP 400 on every order from 2026-10-12.
+        payload["clientId"] = f"kr_e_{uuid4().hex[:16]}"
 
         pid, err = _post_order_with_retry(
             self._trading_url(), self.account_id, self._headers(), payload,
