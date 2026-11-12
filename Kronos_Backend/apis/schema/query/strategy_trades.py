@@ -125,7 +125,7 @@ def _paper(us, year, month):
         _epoch(r.signal_at), r.side, float(r.entry_price),
         float(r.stop_loss) if r.stop_loss is not None else None,
         float(r.take_profit) if r.take_profit is not None else None,
-        f"{r.status}{': ' + r.rejection_reason if r.rejection_reason else ''}"[:200],
+        f"{r.status}{': ' + r.rejection_reason if r.rejection_reason else ''}"[:70],
     ) for r in rows]
     trades = []
     if signals:
@@ -149,11 +149,14 @@ def _live(us, year, month):
         if not lo <= ts < hi:
             continue
         buy = entry.side.upper() == "BUY"
+        # avg_buy/avg_sell only carry the entry side; the exit fill is the
+        # last non-ENTRY order's price.
+        exit_order = p.order_set.exclude(condition="ENTRY").order_by("created_at").last()
         out.append(dict(
             entryTime=ts, exitTime=_epoch(p.exit_at or p.modified_at),
             side="BUY" if buy else "SELL",
             entryPrice=float(p.avg_buy_price if buy else p.avg_sell_price),
-            exitPrice=float(p.avg_sell_price if buy else p.avg_buy_price),
+            exitPrice=float(exit_order.price) if exit_order else 0.0,
             stopLoss=None, takeProfit=None, outcome="CLOSED", note="",
             pnlUsd=round(float(p.realized_profit_loss or 0) * USD_PER_POINT_LOT, 2)))
     return sorted(out, key=lambda t: t["entryTime"])
