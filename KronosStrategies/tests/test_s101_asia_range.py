@@ -33,7 +33,7 @@ def _osc(last5, top=True):
 
 def test_registered_and_window():
     assert s.NAME in _VARIATION_STRATEGY_NAME
-    assert s.MIN_BARS_1M == 150 and s.CONFIG.session_start_hour == 0 and s.CONFIG.session_end_hour == 8
+    assert s.MIN_BARS_1M == 150 and s.CONFIG.session_start_hour == 0 and s.CONFIG.session_end_hour == 16
 
 
 def test_sell_at_top_after_push_up():

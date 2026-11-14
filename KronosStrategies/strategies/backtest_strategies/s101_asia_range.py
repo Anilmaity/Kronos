@@ -4,7 +4,8 @@ Kronos S101 -- Asia-session range fade (M1), demo deployment 2026-11-12
 The live-engine shape of the "Asia-only ping-pong" lab strategy that was fitted to a
 manual trader's (XM Real) results (ClaudeTradingRD/day_ladder/ping_pong.py, README).
 
-Setup (zero discretion), on the newest CLOSED 1m bar, 00:00-08:00 UTC only:
+Setup (zero discretion), on the newest CLOSED 1m bar, 00:00-16:00 UTC (Asia + London;
+the London hours were added 2026-11-12 by operator request and were never lab-fitted):
   regime : over the last 120 closed minutes the range is >= _MIN_RANGE pts and the net
            move is <= _ER_MAX of that range (gold is oscillating, not trending).
   entry  : price is in the outer _EDGE of that range and the last 5 minutes pushed
@@ -36,7 +37,7 @@ CONFIG = StrategyConfig(
     description="Asia-session range fade (M1): fade a 5-min push at the edge of the 2-hour range while gold oscillates; TP 8 / SL 24.",
     cooldown_s=300,
     session_start_hour=0,
-    session_end_hour=8,
+    session_end_hour=16,                # Asia + London (00:00-16:00 UTC) since 2026-11-12, operator request
     max_concurrent_positions=2,        # room for one buy and one sell
 )
 
